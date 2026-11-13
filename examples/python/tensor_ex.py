@@ -52,7 +52,7 @@ print("r >= 6 ->", mask.to_string())
 print("count(r >= 6) =", mask.sum())
 
 print("\n=================== A real dataset as a Tensor ===================")
-iris = dm.DataFrame.iris()
+iris = dm.data.iris()
 flat = []
 for i in range(iris.nrows()):
     flat.append(iris.numeric_at("Sepal.Length", i))

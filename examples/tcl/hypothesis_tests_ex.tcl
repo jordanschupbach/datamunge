@@ -1,3 +1,5 @@
+# CMD: just TARGET=hypothesis_tests_ex run-tcl
+
 package require Datamunge 0.0.1
 
 proc print_result {label r} {
@@ -34,7 +36,7 @@ proc szv {values} {
   return $v
 }
 
-set iris [datamunge::DataFrame_iris]
+set iris [datamunge::data_iris]
 
 set setosa_petal [column_for_species $iris "Petal.Length" "setosa"]
 set versicolor_petal [column_for_species $iris "Petal.Length" "versicolor"]

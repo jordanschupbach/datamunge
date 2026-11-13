@@ -1,3 +1,5 @@
+# CMD: just TARGET=gaussian_process_regression_iris_ex run-perl
+
 use strict;
 use warnings;
 
@@ -5,7 +7,7 @@ use Datamunge;
 
 my $FORMULA = "Petal.Length ~ Petal.Width";
 
-my $iris = Datamunge::DataFrame::iris();
+my $iris = Datamunge::data_iris();
 print "iris: " . $iris->nrows() . " rows x " . $iris->ncols() . " cols\n";
 print "formula: $FORMULA\n\n";
 

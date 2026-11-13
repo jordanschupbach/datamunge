@@ -1,8 +1,10 @@
+;; CMD: just TARGET=gaussian_process_regression_iris_ex run-guile
+
 (use-modules (datamunge))
 
 (define FORMULA "Petal.Length ~ Petal.Width")
 
-(define iris (DataFrame-iris))
+(define iris (data_iris))
 (format #t "iris: ~a rows x ~a cols\n" (DataFrame-nrows iris) (DataFrame-ncols iris))
 (format #t "formula: ~a\n\n" FORMULA)
 

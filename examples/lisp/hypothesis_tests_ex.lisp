@@ -1,3 +1,5 @@
+;; CMD: just TARGET=hypothesis_tests_ex run-lisp
+
 ;;;; Classical hypothesis tests (t, Wilcoxon, ANOVA, correlation, F, normality, chi-squared, binomial) on iris.
 (require "asdf")
 (asdf:load-system "datamunge")
@@ -21,7 +23,7 @@
                   collect (dm:numeric-at df column i))
           '(vector double-float)))
 
-(defparameter *iris* (dm:data-frame-iris))
+(defparameter *iris* (dm.data:iris))
 
 (defparameter *setosa-petal* (column-for-species *iris* "Petal.Length" "setosa"))
 (defparameter *versicolor-petal* (column-for-species *iris* "Petal.Length" "versicolor"))

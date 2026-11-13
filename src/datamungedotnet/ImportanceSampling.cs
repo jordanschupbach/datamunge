@@ -57,10 +57,13 @@ public class ImportanceSampling : global::System.IDisposable {
     }
   }
 
+  /// <summary>Stores the sampler settings.</summary>
+  /// <param name="options"> Sampler settings.</param>
   public ImportanceSampling(ImportanceSamplingOptions options) : this(datamungePINVOKE.new_ImportanceSampling__SWIG_0(ImportanceSamplingOptions.getCPtr(options)), true) {
     if (datamungePINVOKE.SWIGPendingException.Pending) throw datamungePINVOKE.SWIGPendingException.Retrieve();
   }
 
+  /// <summary>Stores the sampler settings.</summary>
   public ImportanceSampling() : this(datamungePINVOKE.new_ImportanceSampling__SWIG_1(), true) {
   }
 
@@ -68,6 +71,13 @@ public class ImportanceSampling : global::System.IDisposable {
   public ImportanceSamplingResult sample(ArbitraryFunction log_target, DVector proposal_mean, DVectorVector proposal_covariance) {
     ImportanceSamplingResult ret = new ImportanceSamplingResult(datamungePINVOKE.ImportanceSampling_sample(swigCPtr, ArbitraryFunction.getCPtr(log_target), DVector.getCPtr(proposal_mean), DVectorVector.getCPtr(proposal_covariance)), true);
     if (datamungePINVOKE.SWIGPendingException.Pending) throw datamungePINVOKE.SWIGPendingException.Retrieve();
+    return ret;
+  }
+
+  /// <summary>The options this ImportanceSampling was configured with.</summary>
+  /// <returns>The stored options.</returns>
+  public ImportanceSamplingOptions options() {
+    ImportanceSamplingOptions ret = new ImportanceSamplingOptions(datamungePINVOKE.ImportanceSampling_options(swigCPtr), false);
     return ret;
   }
 

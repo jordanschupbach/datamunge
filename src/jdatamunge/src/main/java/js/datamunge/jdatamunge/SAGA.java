@@ -9,9 +9,21 @@
 package js.datamunge.jdatamunge;
 
 /**
- *  SAGA (Defazio, Bach, Lacoste-Julien 2014) on a DifferentiableSeparableFunction.<br>
- *         SAGA maintains one stored gradient per component and updates from a variance-reduced<br>
- *         estimator formed from the sampled gradient, its stored value, and their running mean.
+ *  SAGA on the DifferentiableSeparableFunction callback interface.<br>
+ *  Uses current_i-table_i+mean(table), then refreshes one stored component gradient and its running mean. The estimator targets mean component loss while evaluate() returns their sum. Stops on epoch-boundary objective change or the last estimator norm; the latter is not the full gradient norm. O(n*p) gradient table.<br>
+ *  The caller supplies finite, dimensionally consistent callbacks. Inputs are borrowed;<br>
+ *  coordinates mutate in place and can retain a partial state if a callback throws.<br>
+ *  Calls use local optimizer state and propagate callback exceptions; sharing a mutable<br>
+ *  objective across threads requires external synchronisation. Normal return alone<br>
+ *  is not a uniform convergence certificate.<br>
+ *  <p alt="Example"><br>
+ *  {@code 
+ const dm::optim::SAGA optimizer;
+ std::print("{}\n",optimizer.options().max_iterations); // 10000
+ }</p><br>
+ *  <p alt="References"><br>
+ *  - A. Defazio, F. Bach and S. Lacoste-Julien (2014), SAGA: A Fast Incremental Gradient Method With Support for Non-Strongly Convex Composite Objectives, https://arxiv.org/abs/1407.0202<br>
+ *  </p>@see SAGAOptions, trace_optimize()
  */
 public class SAGA {
   private transient long swigCPtr;
@@ -53,16 +65,61 @@ public class SAGA {
     }
   }
 
+  /**
+   *  Store a copy of the controls without running the objective.<br>
+   *  @param options Method-specific controls; defaults are listed by SAGAOptions.<br>
+   *  <p alt="Example"><br>
+   *  {@code 
+   const dm::optim::SAGA optimizer;
+   std::print("{}\n",optimizer.options().max_iterations); // 10000
+   }</p><br>
+   *  @see optimize()
+   */
   public SAGA(SAGAOptions options) {
     this(datamungeJNI.new_SAGA__SWIG_0(SAGAOptions.getCPtr(options), options), true);
   }
 
+  /**
+   *  Store a copy of the controls without running the objective.<br>
+   *  <p alt="Example"><br>
+   *  {@code 
+   const dm::optim::SAGA optimizer;
+   std::print("{}\n",optimizer.options().max_iterations); // 10000
+   }</p><br>
+   *  @see optimize()
+   */
   public SAGA() {
     this(datamungeJNI.new_SAGA__SWIG_1(), true);
   }
 
+  /**
+   *  Run SAGA from the supplied point using the configured finite budget.<br>
+   *  Uses current_i-table_i+mean(table), then refreshes one stored component gradient and its running mean. The estimator targets mean component loss while evaluate() returns their sum. Stops on epoch-boundary objective change or the last estimator norm; the latter is not the full gradient norm. O(n*p) gradient table.<br>
+   *  @param function Borrowed DifferentiableSeparableFunction with matching finite output shapes.<br>
+   *  @param coordinates Owned-by-caller finite start; overwritten with the native returned point.<br>
+   *  @return Objective at the native returned coordinates; not a stop-status code.<br>
+   *  @throws std::invalid_argument SAGA: step_size must be positive; SAGA: tolerance must be non-negative; SAGA: function has zero terms.<br>
+   *  @throws std::exception Exceptions from supplied callbacks propagate. Raw solvers do not uniformly reject nonfinite inputs.<br>
+   *  <p alt="Example"><br>
+   *  {@code 
+   dm::optim::LeastSquaresObjective f({{1},{1}},{1,3});
+   dm::optim::SAGAOptions controls;controls.max_iterations=5;
+   std::vector<double> x{0};
+   const auto value=dm::optim::SAGA(controls).optimize(f,x);
+   std::print("{}\n",std::isfinite(value)); // true
+   }</p><br>
+   *  @see trace_optimize(), SAGAOptions
+   */
   public double optimize(DifferentiableSeparableFunction function, DVector coordinates) {
     return datamungeJNI.SAGA_optimize(swigCPtr, this, DifferentiableSeparableFunction.getCPtr(function), function, DVector.getCPtr(coordinates), coordinates);
+  }
+
+  /**
+   *  Borrow this optimizer's stored configuration.<br>
+   *  @return Const option reference, valid during this object's lifetime; no mutation.
+   */
+  public SAGAOptions options() {
+    return new SAGAOptions(datamungeJNI.SAGA_options(swigCPtr, this), false);
   }
 
 }

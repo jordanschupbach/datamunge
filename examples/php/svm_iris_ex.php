@@ -1,4 +1,6 @@
 <?php
+// CMD: just TARGET=svm_iris_ex run-php
+
 
 function dvector($values) {
     $out = new DVector(count($values));
@@ -6,7 +8,7 @@ function dvector($values) {
     return $out;
 }
 
-$iris = DataFrame::iris();
+$iris = data_iris();
 print("iris: " . $iris->nrows() . " rows x " . $iris->ncols() . " cols\n\n");
 
 print("=== RBF kernel (default) ===\n");

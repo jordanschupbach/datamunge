@@ -1,3 +1,5 @@
+// CMD: just TARGET=rplot_ex run-d
+
 module app;
 
 // Demonstrates datamunge.RPlot / datamunge.RLayout -- the R-base-graphics-style plotting library.

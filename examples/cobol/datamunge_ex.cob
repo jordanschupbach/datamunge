@@ -1,5 +1,5 @@
 *> The basic demo calls: vectors, pairs and a Callback object.
-*> Run with `just run-cobol TARGET=datamunge_ex`.
+*> CMD: just TARGET=datamunge_ex run-cobol
 IDENTIFICATION DIVISION.
 PROGRAM-ID. DATAMUNGE-EX.
 DATA DIVISION.

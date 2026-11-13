@@ -1,3 +1,5 @@
+// CMD: just TARGET=clustering_ex run-cpp
+
 #include <datamunge/datasets/datasets.hpp>
 #include <datamunge/dstruct/dstruct.hpp>
 #include <datamunge/stats/agglomerative_clustering.hpp>

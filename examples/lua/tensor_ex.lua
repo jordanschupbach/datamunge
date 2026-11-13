@@ -1,3 +1,5 @@
+-- CMD: just TARGET=tensor_ex run-lua
+
 local dm = require("datamunge")
 
 local function sv(t)
@@ -61,7 +63,7 @@ print("r >= 6 -> " .. mask:to_string())
 print("count(r >= 6) = " .. mask:sum())
 
 print("\n=================== A real dataset as a Tensor ===================")
-local iris = dm.DataFrame.iris()
+local iris = dm.data.iris()
 local flat = {}
 for i = 0, iris:nrows() - 1 do
   table.insert(flat, iris:numeric_at("Sepal.Length", i))

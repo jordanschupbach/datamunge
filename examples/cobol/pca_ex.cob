@@ -1,5 +1,5 @@
 *> Principal component analysis of the iris measurements, scaled and unscaled.
-*> Run with `just run-cobol TARGET=pca_ex`.
+*> CMD: just TARGET=pca_ex run-cobol
 IDENTIFICATION DIVISION.
 PROGRAM-ID. PCA-EX.
 DATA DIVISION.
@@ -31,9 +31,9 @@ COPY "datamunge.cpy".
 01 PERCENT-TEXT-2 PIC ZZ9.99.
 
 PROCEDURE DIVISION.
-    CALL "dm_data_frame_iris" USING DM-DATA-FRAME-IRIS DM-STATUS
+    CALL "dm_data_iris" USING DM-DATA-IRIS DM-STATUS
     PERFORM CHECK
-    MOVE DM-DATA-FRAME-IRIS-RESULT TO IRIS
+    MOVE DM-DATA-IRIS-RESULT TO IRIS
     MOVE 4 TO DM-VECTOR-STRING-TABLE-COUNT
     PERFORM VARYING I FROM 1 BY 1 UNTIL I > 4
         MOVE FEATURE-NAME(I) TO DM-VECTOR-STRING-TABLE-ITEM(I)

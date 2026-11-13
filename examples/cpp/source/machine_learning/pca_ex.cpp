@@ -1,3 +1,5 @@
+// CMD: just TARGET=pca_ex run-cpp
+
 #include <datamunge/datasets/datasets.hpp>
 #include <datamunge/stats/pca.hpp>
 

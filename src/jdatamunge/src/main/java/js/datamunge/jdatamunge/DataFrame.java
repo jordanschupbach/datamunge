@@ -56,8 +56,8 @@ public class DataFrame {
   }
 
   /**
-   *  Equivalent to the default constructor, exposed as a static factory (like iris()/<br>
-   *         penguins()) as a workaround for a SWIG R-backend bug where the plain no-argument<br>
+   *  Equivalent to the default constructor, exposed as a static factory (like read_csv())<br>
+   *         as a workaround for a SWIG R-backend bug where the plain no-argument<br>
    *         constructor's ownership-flagged pointer breaks method dispatch on the result.
    */
   public static DataFrame empty() {
@@ -510,6 +510,22 @@ public class DataFrame {
   }
 
   /**
+   *  The frame as a Markdown table (numeric columns right-aligned, at most <code>digits</code><br>
+   *         decimals each), like knitr::kable(); see dstruct::DataFrame::to_md().
+   */
+  public String to_md(int digits) {
+    return datamungeJNI.DataFrame_to_md__SWIG_0(swigCPtr, this, digits);
+  }
+
+  /**
+   *  The frame as a Markdown table (numeric columns right-aligned, at most <code>digits</code><br>
+   *         decimals each), like knitr::kable(); see dstruct::DataFrame::to_md().
+   */
+  public String to_md() {
+    return datamungeJNI.DataFrame_to_md__SWIG_1(swigCPtr, this);
+  }
+
+  /**
    *  true if column_name holds numeric values, false if it holds strings.
    */
   public boolean is_numeric_column(String column_name) {
@@ -534,13 +550,51 @@ public class DataFrame {
     return datamungeJNI.DataFrame_string_at(swigCPtr, this, column_name, row_index);
   }
 
-  public static DataFrame iris() {
-    long cPtr = datamungeJNI.DataFrame_iris();
+  /**
+   *  Reads a whole CSV file, typing columns automatically; see datasets::read_csv().<br>
+   *  @param path The file to read.<br>
+   *  @param delimiter The field separator.<br>
+   *  @throws std::runtime_error if the file cannot be read or is malformed.
+   */
+  public static DataFrame read_csv(String path, char delimiter) {
+    long cPtr = datamungeJNI.DataFrame_read_csv__SWIG_0(path, delimiter);
     return (cPtr == 0) ? null : new DataFrame(cPtr, false);
   }
 
-  public static DataFrame penguins() {
-    long cPtr = datamungeJNI.DataFrame_penguins();
+  /**
+   *  Reads a whole CSV file, typing columns automatically; see datasets::read_csv().<br>
+   *  @param path The file to read.<br>
+   *  @throws std::runtime_error if the file cannot be read or is malformed.
+   */
+  public static DataFrame read_csv(String path) {
+    long cPtr = datamungeJNI.DataFrame_read_csv__SWIG_1(path);
+    return (cPtr == 0) ? null : new DataFrame(cPtr, false);
+  }
+
+  /**
+   *  Parses CSV text, typing columns automatically; see datasets::parse_csv().<br>
+   *  @throws std::runtime_error if the text is malformed.
+   */
+  public static DataFrame parse_csv(String text, char delimiter) {
+    long cPtr = datamungeJNI.DataFrame_parse_csv__SWIG_0(text, delimiter);
+    return (cPtr == 0) ? null : new DataFrame(cPtr, false);
+  }
+
+  /**
+   *  Parses CSV text, typing columns automatically; see datasets::parse_csv().<br>
+   *  @throws std::runtime_error if the text is malformed.
+   */
+  public static DataFrame parse_csv(String text) {
+    long cPtr = datamungeJNI.DataFrame_parse_csv__SWIG_1(text);
+    return (cPtr == 0) ? null : new DataFrame(cPtr, false);
+  }
+
+  /**
+   *  An ImageLoader batch as a table (`pixel_0`.., `label`, `index`); see<br>
+   *         datasets::to_dataframe().
+   */
+  public static DataFrame from_image_batch(SWIGTYPE_p_datamunge__datasets__ImageBatch batch) {
+    long cPtr = datamungeJNI.DataFrame_from_image_batch(SWIGTYPE_p_datamunge__datasets__ImageBatch.getCPtr(batch));
     return (cPtr == 0) ? null : new DataFrame(cPtr, false);
   }
 

@@ -1,3 +1,5 @@
+// CMD: just TARGET=lm_ex run-cpp
+
 #include <datamunge/dstruct/dstruct.hpp>
 #include <datamunge/stats/stats.hpp>
 

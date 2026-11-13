@@ -72,4 +72,12 @@ public class CrossEntropyMethod {
     return datamungeJNI.CrossEntropyMethod_optimize(swigCPtr, this, ArbitraryFunction.getCPtr(function), function, DVector.getCPtr(coordinates), coordinates, DVector.getCPtr(lower_bound), lower_bound, DVector.getCPtr(upper_bound), upper_bound);
   }
 
+  /**
+   *  The options this CrossEntropyMethod was configured with.<br>
+   *  @return The stored options.
+   */
+  public CrossEntropyMethodOptions options() {
+    return new CrossEntropyMethodOptions(datamungeJNI.CrossEntropyMethod_options(swigCPtr, this), false);
+  }
+
 }

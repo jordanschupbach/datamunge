@@ -9,6 +9,23 @@
 //------------------------------------------------------------------------------
 
 
+/// <summary>One drawn layer of a plot (points, a line, bars, a box, a polygon, a label, or        segments), as stored by RPlot's layer verbs and read back through Plot::series().</summary>
+///  A plain aggregate holding data coordinates and styling. Which fields matter depends on
+///  kind; each Kind value documents how it reads x, y, and the other fields. Layers are drawn
+///  in insertion order, after the reference lines, and every layer's coordinates widen the
+///  automatic axis ranges (bars also pull the y range down or up to 0). A nonempty label puts
+///  the layer in the automatic legend unless it is a Text layer. User code normally creates
+///  layers through RPlot verbs (points(), lines(), bars(), ...) and only reads this struct.
+///
+/// Title: Example
+/// <code>      auto plt = dm::Plot().points(dm::c(1.0, 2.0), dm::c(3.0, 4.0), "pts");
+///      const dm::graphics::DataSeries&amp; s = plt.series()[0];
+///      std::print("{} {} {} {}\n", s.kind == dm::graphics::DataSeries::Kind::Scatter, s.x.size(),
+///                 s.label, s.marker_size);  // true 2 pts 4</code>
+///
+///
+///
+/// <seealso cref="Plot.series"/>
 public class DataSeries : global::System.IDisposable {
   private global::System.Runtime.InteropServices.HandleRef swigCPtr;
   protected bool swigCMemOwn;
@@ -66,6 +83,7 @@ public class DataSeries : global::System.IDisposable {
     } 
   }
 
+  ///  Horizontal data coordinates; meaning depends on kind.
   public DVector x {
     set {
       datamungePINVOKE.DataSeries_x_set(swigCPtr, DVector.getCPtr(value));
@@ -77,6 +95,7 @@ public class DataSeries : global::System.IDisposable {
     } 
   }
 
+  ///  Vertical data coordinates; meaning depends on kind.
   public DVector y {
     set {
       datamungePINVOKE.DataSeries_y_set(swigCPtr, DVector.getCPtr(value));
@@ -88,6 +107,7 @@ public class DataSeries : global::System.IDisposable {
     } 
   }
 
+  ///  Legend text (or the drawn text for Kind::Text); empty omits it.
   public string label {
     set {
       datamungePINVOKE.DataSeries_label_set(swigCPtr, value);
@@ -151,16 +171,36 @@ public class DataSeries : global::System.IDisposable {
     } 
   }
 
+  /// <summary>Optional scatter palette, recycled in input order; empty uses color for every point.</summary>
+  public SWIGTYPE_p_std__vectorT_datamunge__graphics__RGB_t point_colors {
+    set {
+      datamungePINVOKE.DataSeries_point_colors_set(swigCPtr, SWIGTYPE_p_std__vectorT_datamunge__graphics__RGB_t.getCPtr(value));
+    } 
+    get {
+      global::System.IntPtr cPtr = datamungePINVOKE.DataSeries_point_colors_get(swigCPtr);
+      SWIGTYPE_p_std__vectorT_datamunge__graphics__RGB_t ret = (cPtr == global::System.IntPtr.Zero) ? null : new SWIGTYPE_p_std__vectorT_datamunge__graphics__RGB_t(cPtr, false);
+      return ret;
+    } 
+  }
+
   public DataSeries() : this(datamungePINVOKE.new_DataSeries(), true) {
   }
 
+  /// <summary>How a DataSeries is drawn and how its coordinate vectors are read.</summary>
   public enum Kind {
+    ///  One marker (radius marker_size px) per (x[i], y[i]); colors from point_colors when set.
     Scatter,
+    ///  A polyline joining (x[i], y[i]) in order, stroke_width px wide (R's `lines()`).
     Line,
+    ///  Vertical bars from y = 0 to y[i], centered on x[i], bar_width data units wide.
     Bar,
+    /// <summary>One box-and-whisker at x[0]: y = {whisker_lo, q1, median, q3, whisker_hi,        outliers...}; bar_width is the box width in data units.</summary>
     Box,
+    ///  A closed polygon through (x[i], y[i]); filled selects fill vs. outline only.
     Polygon,
+    /// <summary>A centered text label at (x[0], y[0]); label holds the text and marker_size the        font size in pixels. Never listed in the automatic legend.</summary>
     Text,
+    /// <summary>Disconnected segments joining (x[2i], y[2i]) to (x[2i+1], y[2i+1]), stroke_width px        wide (R's `segments()`).</summary>
     Segment
   }
 

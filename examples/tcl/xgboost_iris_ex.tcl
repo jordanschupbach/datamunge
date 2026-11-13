@@ -1,6 +1,8 @@
+# CMD: just TARGET=xgboost_iris_ex run-tcl
+
 package require Datamunge 0.0.1
 
-set iris [datamunge::DataFrame_iris]
+set iris [datamunge::data_iris]
 puts "iris: [datamunge::DataFrame_nrows $iris] rows x [datamunge::DataFrame_ncols $iris] cols\n"
 
 set model [datamunge::new_XGBoostClassifier $iris "Species ~ Petal.Length + Petal.Width"]

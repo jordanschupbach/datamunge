@@ -63,16 +63,38 @@ public class GibbsSampler {
     }
   }
 
+  /**
+   *  Stores the sampler settings.<br>
+   *  @param options Sampler settings.
+   */
   public GibbsSampler(GibbsOptions options) {
     this(datamungeJNI.new_GibbsSampler__SWIG_0(GibbsOptions.getCPtr(options), options), true);
   }
 
+  /**
+   *  Stores the sampler settings.<br>
+   *  
+   */
   public GibbsSampler() {
     this(datamungeJNI.new_GibbsSampler__SWIG_1(), true);
   }
 
+  /**
+   *  Runs warmup sweeps (adapting each coordinate's step), then num_samples sweeps.<br>
+   *  @param log_posterior Log density up to a constant; only evaluate() is used.<br>
+   *  @param initial_params Starting point.<br>
+   *  @return Draws, per-coordinate acceptance rates and step sizes.
+   */
   public GibbsResult sample(ArbitraryFunction log_posterior, DVector initial_params) {
     return new GibbsResult(datamungeJNI.GibbsSampler_sample(swigCPtr, this, ArbitraryFunction.getCPtr(log_posterior), log_posterior, DVector.getCPtr(initial_params), initial_params), true);
+  }
+
+  /**
+   *  The options this GibbsSampler was configured with.<br>
+   *  @return The stored options.
+   */
+  public GibbsOptions options() {
+    return new GibbsOptions(datamungeJNI.GibbsSampler_options(swigCPtr, this), false);
   }
 
 }

@@ -1,3 +1,5 @@
+(* CMD: just TARGET=lda_iris_ex run-ocaml *)
+
 (* This binding uses SWIG-OCaml's untyped Swig.c_obj_t dynamic-dispatch protocol:
    - Datamunge._function_name args         -- free functions and static factories
    - new_ClassName (C_list [args])         -- constructors
@@ -15,7 +17,7 @@ let dv values =
   v
 
 let () =
-  let iris = _DataFrame_iris C_void in
+  let iris = _data_iris C_void in
   Printf.printf "iris: %d rows x %d cols\n\n"
     (get_int (invoke iris "nrows" C_void)) (get_int (invoke iris "ncols" C_void));
 

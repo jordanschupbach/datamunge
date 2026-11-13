@@ -1,3 +1,5 @@
+(* CMD: just TARGET=glmm_ex run-ocaml *)
+
 open Swig
 open Datamunge
 
@@ -17,7 +19,7 @@ let gauss () =
 
 let () =
   print_endline "=================== Binomial (logistic) mixed model on a real dataset (penguins) ===================";
-  let penguins = _DataFrame_penguins C_void in
+  let penguins = _data_penguins C_void in
   let n = get_int (invoke penguins "nrows" C_void) in
   let is_male = ref [] and body_mass = ref [] and island = ref [] in
   for i = 0 to n - 1 do

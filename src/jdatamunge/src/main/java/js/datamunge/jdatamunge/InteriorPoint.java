@@ -8,6 +8,23 @@
 
 package js.datamunge.jdatamunge;
 
+/**
+ *  InteriorPoint on the InequalityConstrainedFunction callback interface.<br>
+ *  Gradient steps on f-mu*sum(log(-c)) with c&lt;0. Backtracks only for strict feasibility, not barrier-objective decrease, then decays mu after each fixed inner budget. Requires a strictly feasible start and can fail later when feasible steps underflow. No KKT or barrier-stationarity stop test; no phase-I feasibility search.<br>
+ *  The caller supplies finite, dimensionally consistent callbacks. Inputs are borrowed;<br>
+ *  coordinates mutate in place and can retain a partial state if a callback throws.<br>
+ *  Calls use local optimizer state and propagate callback exceptions; sharing a mutable<br>
+ *  objective across threads requires external synchronisation. Normal return alone<br>
+ *  is not a uniform convergence certificate.<br>
+ *  <p alt="Example"><br>
+ *  {@code 
+ const dm::optim::InteriorPoint optimizer;
+ std::print("{}\n",optimizer.options().max_outer_iterations); // 20
+ }</p><br>
+ *  <p alt="References"><br>
+ *  - J. Nocedal and S. J. Wright (2006), Numerical Optimization, second edition, https://doi.org/10.1007/978-0-387-40065-5. The implemented variant and stopping rules are specified above.<br>
+ *  </p>@see InteriorPointOptions, trace_optimize()
+ */
 public class InteriorPoint {
   private transient long swigCPtr;
   protected transient boolean swigCMemOwn;
@@ -48,16 +65,62 @@ public class InteriorPoint {
     }
   }
 
+  /**
+   *  Store a copy of the controls without running the objective.<br>
+   *  @param options Method-specific controls; defaults are listed by InteriorPointOptions.<br>
+   *  <p alt="Example"><br>
+   *  {@code 
+   const dm::optim::InteriorPoint optimizer;
+   std::print("{}\n",optimizer.options().max_outer_iterations); // 20
+   }</p><br>
+   *  @see optimize()
+   */
   public InteriorPoint(InteriorPointOptions options) {
     this(datamungeJNI.new_InteriorPoint__SWIG_0(InteriorPointOptions.getCPtr(options), options), true);
   }
 
+  /**
+   *  Store a copy of the controls without running the objective.<br>
+   *  <p alt="Example"><br>
+   *  {@code 
+   const dm::optim::InteriorPoint optimizer;
+   std::print("{}\n",optimizer.options().max_outer_iterations); // 20
+   }</p><br>
+   *  @see optimize()
+   */
   public InteriorPoint() {
     this(datamungeJNI.new_InteriorPoint__SWIG_1(), true);
   }
 
+  /**
+   *  Run InteriorPoint from the supplied point using the configured finite budget.<br>
+   *  Gradient steps on f-mu*sum(log(-c)) with c&lt;0. Backtracks only for strict feasibility, not barrier-objective decrease, then decays mu after each fixed inner budget. Requires a strictly feasible start and can fail later when feasible steps underflow. No KKT or barrier-stationarity stop test; no phase-I feasibility search.<br>
+   *  @param function Borrowed InequalityConstrainedFunction with matching finite output shapes.<br>
+   *  @param coordinates Owned-by-caller finite start; overwritten with the native returned point.<br>
+   *  @return Objective at the native returned coordinates; not a stop-status code.<br>
+   *  @throws std::invalid_argument InteriorPoint: starting point must be strictly feasible.<br>
+   *  @throws std::runtime_error InteriorPoint: unable to find feasible step.<br>
+   *  @throws std::exception Exceptions from supplied callbacks propagate. Raw solvers do not uniformly reject nonfinite inputs.<br>
+   *  <p alt="Example"><br>
+   *  {@code 
+   dm::optim::NonnegativeQuadratic f({-1,2});
+   dm::optim::InteriorPointOptions controls;controls.max_outer_iterations=1;
+   std::vector<double> x{.5,.5};
+   const auto value=dm::optim::InteriorPoint(controls).optimize(f,x);
+   std::print("{}\n",std::isfinite(value)); // true
+   }</p><br>
+   *  @see trace_optimize(), InteriorPointOptions
+   */
   public double optimize(InequalityConstrainedFunction function, DVector coordinates) {
     return datamungeJNI.InteriorPoint_optimize(swigCPtr, this, InequalityConstrainedFunction.getCPtr(function), function, DVector.getCPtr(coordinates), coordinates);
+  }
+
+  /**
+   *  Borrow this optimizer's stored configuration.<br>
+   *  @return Const option reference, valid during this object's lifetime; no mutation.
+   */
+  public InteriorPointOptions options() {
+    return new InteriorPointOptions(datamungeJNI.InteriorPoint_options(swigCPtr, this), false);
   }
 
 }

@@ -9,7 +9,17 @@
 //------------------------------------------------------------------------------
 
 
-/// <summary>Nesterov accelerated gradient (look-ahead momentum) on a DifferentiableFunction.</summary>
+/// <summary>NesterovAcceleratedGradient on the DifferentiableFunction callback interface. Evaluates the gradient at coordinates+momentum*velocity, then updates velocity and coordinates. Tests that look-ahead gradient after the update. Fixed momentum and rate do not implement every strongly-convex acceleration schedule. O(p) reset local state. The caller supplies finite, dimensionally consistent callbacks. Inputs are borrowed; coordinates mutate in place and can retain a partial state if a callback throws. Calls use local optimizer state and propagate callback exceptions; sharing a mutable objective across threads requires external synchronisation. Normal return alone is not a uniform convergence certificate.</summary>
+/// Title: Example
+/// <code>      const dm::optim::NesterovAcceleratedGradient optimizer;
+///      std::print("{}\n",optimizer.options().max_iterations); // 10000</code>
+///
+///
+///
+/// Title: References
+///  - J. Nocedal and S. J. Wright (2006), Numerical Optimization, second edition, https://doi.org/10.1007/978-0-387-40065-5. The implemented variant and stopping rules are specified above.
+///
+/// <seealso cref="NesterovAcceleratedGradientOptions, trace_optimize"/>
 public class NesterovAcceleratedGradient : global::System.IDisposable {
   private global::System.Runtime.InteropServices.HandleRef swigCPtr;
   protected bool swigCMemOwn;
@@ -57,16 +67,56 @@ public class NesterovAcceleratedGradient : global::System.IDisposable {
     }
   }
 
+  /// <summary>Store a copy of the controls without running the objective.</summary>
+  /// <param name="options"> Method-specific controls; defaults are listed by NesterovAcceleratedGradientOptions.</param> 
+  /// Title: Example
+  /// <code>      const dm::optim::NesterovAcceleratedGradient optimizer;
+  ///      std::print("{}\n",optimizer.options().max_iterations); // 10000</code>
+  ///
+  ///
+  ///
+  /// <seealso cref="optimize"/>
   public NesterovAcceleratedGradient(NesterovAcceleratedGradientOptions options) : this(datamungePINVOKE.new_NesterovAcceleratedGradient__SWIG_0(NesterovAcceleratedGradientOptions.getCPtr(options)), true) {
     if (datamungePINVOKE.SWIGPendingException.Pending) throw datamungePINVOKE.SWIGPendingException.Retrieve();
   }
 
+  /// <summary>Store a copy of the controls without running the objective.</summary>
+  /// Title: Example
+  /// <code>      const dm::optim::NesterovAcceleratedGradient optimizer;
+  ///      std::print("{}\n",optimizer.options().max_iterations); // 10000</code>
+  ///
+  ///
+  ///
+  /// <seealso cref="optimize"/>
   public NesterovAcceleratedGradient() : this(datamungePINVOKE.new_NesterovAcceleratedGradient__SWIG_1(), true) {
   }
 
+  /// <summary>Run NesterovAcceleratedGradient from the supplied point using the configured finite budget. Evaluates the gradient at coordinates+momentum*velocity, then updates velocity and coordinates. Tests that look-ahead gradient after the update. Fixed momentum and rate do not implement every strongly-convex acceleration schedule. O(p) reset local state.</summary>
+  /// <param name="function"> Borrowed DifferentiableFunction with matching finite output shapes.</param> 
+  /// <param name="coordinates"> Owned-by-caller finite start; overwritten with the native returned point.</param> 
+  /// <returns>Objective at the native returned coordinates; not a stop-status code.</returns> 
+  /// <exception cref="std::invalid_argument"> NesterovAcceleratedGradient: step_size must be positive; NesterovAcceleratedGradient: momentum must be in [0, 1); NesterovAcceleratedGradient: tolerance must be non-negative.</exception> 
+  /// <exception cref="std::exception"> Exceptions from supplied callbacks propagate. Raw solvers do not uniformly reject nonfinite inputs.</exception> 
+  /// Title: Example
+  /// <code>      dm::optim::QuadraticObjective f({2,8},{1,-2});
+  ///      dm::optim::NesterovAcceleratedGradientOptions controls;controls.max_iterations=5;
+  ///      std::vector&lt;double&gt; x{0,0};
+  ///      const auto value=dm::optim::NesterovAcceleratedGradient(controls).optimize(f,x);
+  ///      std::print("{}\n",std::isfinite(value)); // true</code>
+  ///
+  ///
+  ///
+  /// <seealso cref="trace_optimize"/>
   public double optimize(DifferentiableFunction function, DVector coordinates) {
     double ret = datamungePINVOKE.NesterovAcceleratedGradient_optimize(swigCPtr, DifferentiableFunction.getCPtr(function), DVector.getCPtr(coordinates));
     if (datamungePINVOKE.SWIGPendingException.Pending) throw datamungePINVOKE.SWIGPendingException.Retrieve();
+    return ret;
+  }
+
+  /// <summary>Borrow this optimizer's stored configuration.</summary>
+  /// <returns>Const option reference, valid during this object's lifetime; no mutation.</returns>
+  public NesterovAcceleratedGradientOptions options() {
+    NesterovAcceleratedGradientOptions ret = new NesterovAcceleratedGradientOptions(datamungePINVOKE.NesterovAcceleratedGradient_options(swigCPtr), false);
     return ret;
   }
 

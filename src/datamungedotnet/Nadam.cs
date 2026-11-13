@@ -9,7 +9,17 @@
 //------------------------------------------------------------------------------
 
 
-/// <summary>Full-batch Nadam (Dozat 2016) on a DifferentiableFunction: Adam's adaptive second        moment combined with a Nesterov-style, bias-corrected first-moment direction.</summary>
+/// <summary>Nadam on the DifferentiableFunction callback interface. Fixed-beta Nadam variant: direction beta1*m/(1-beta1^t)+(1-beta1)*g/(1-beta1^t), divided by sqrt(v/(1-beta2^t))+epsilon. Does not implement scheduled momentum products. Tests the gradient used after updating; O(p) reset state. The caller supplies finite, dimensionally consistent callbacks. Inputs are borrowed; coordinates mutate in place and can retain a partial state if a callback throws. Calls use local optimizer state and propagate callback exceptions; sharing a mutable objective across threads requires external synchronisation. Normal return alone is not a uniform convergence certificate.</summary>
+/// Title: Example
+/// <code>      const dm::optim::Nadam optimizer;
+///      std::print("{}\n",optimizer.options().max_iterations); // 10000</code>
+///
+///
+///
+/// Title: References
+///  - T. Dozat (2016), Incorporating Nesterov Momentum into Adam, https://openreview.net/pdf?id=OM0jvwB8jIp57ZJjtNEZ
+///
+/// <seealso cref="NadamOptions, trace_optimize"/>
 public class Nadam : global::System.IDisposable {
   private global::System.Runtime.InteropServices.HandleRef swigCPtr;
   protected bool swigCMemOwn;
@@ -57,16 +67,56 @@ public class Nadam : global::System.IDisposable {
     }
   }
 
+  /// <summary>Store a copy of the controls without running the objective.</summary>
+  /// <param name="options"> Method-specific controls; defaults are listed by NadamOptions.</param> 
+  /// Title: Example
+  /// <code>      const dm::optim::Nadam optimizer;
+  ///      std::print("{}\n",optimizer.options().max_iterations); // 10000</code>
+  ///
+  ///
+  ///
+  /// <seealso cref="optimize"/>
   public Nadam(NadamOptions options) : this(datamungePINVOKE.new_Nadam__SWIG_0(NadamOptions.getCPtr(options)), true) {
     if (datamungePINVOKE.SWIGPendingException.Pending) throw datamungePINVOKE.SWIGPendingException.Retrieve();
   }
 
+  /// <summary>Store a copy of the controls without running the objective.</summary>
+  /// Title: Example
+  /// <code>      const dm::optim::Nadam optimizer;
+  ///      std::print("{}\n",optimizer.options().max_iterations); // 10000</code>
+  ///
+  ///
+  ///
+  /// <seealso cref="optimize"/>
   public Nadam() : this(datamungePINVOKE.new_Nadam__SWIG_1(), true) {
   }
 
+  /// <summary>Run Nadam from the supplied point using the configured finite budget. Fixed-beta Nadam variant: direction beta1*m/(1-beta1^t)+(1-beta1)*g/(1-beta1^t), divided by sqrt(v/(1-beta2^t))+epsilon. Does not implement scheduled momentum products. Tests the gradient used after updating; O(p) reset state.</summary>
+  /// <param name="function"> Borrowed DifferentiableFunction with matching finite output shapes.</param> 
+  /// <param name="coordinates"> Owned-by-caller finite start; overwritten with the native returned point.</param> 
+  /// <returns>Objective at the native returned coordinates; not a stop-status code.</returns> 
+  /// <exception cref="std::invalid_argument"> Nadam: step_size must be positive; Nadam: beta1 must be in [0, 1); Nadam: beta2 must be in [0, 1); Nadam: epsilon must be positive; Nadam: tolerance must be non-negative.</exception> 
+  /// <exception cref="std::exception"> Exceptions from supplied callbacks propagate. Raw solvers do not uniformly reject nonfinite inputs.</exception> 
+  /// Title: Example
+  /// <code>      dm::optim::QuadraticObjective f({2,8},{1,-2});
+  ///      dm::optim::NadamOptions controls;controls.max_iterations=5;
+  ///      std::vector&lt;double&gt; x{0,0};
+  ///      const auto value=dm::optim::Nadam(controls).optimize(f,x);
+  ///      std::print("{}\n",std::isfinite(value)); // true</code>
+  ///
+  ///
+  ///
+  /// <seealso cref="trace_optimize"/>
   public double optimize(DifferentiableFunction function, DVector coordinates) {
     double ret = datamungePINVOKE.Nadam_optimize(swigCPtr, DifferentiableFunction.getCPtr(function), DVector.getCPtr(coordinates));
     if (datamungePINVOKE.SWIGPendingException.Pending) throw datamungePINVOKE.SWIGPendingException.Retrieve();
+    return ret;
+  }
+
+  /// <summary>Borrow this optimizer's stored configuration.</summary>
+  /// <returns>Const option reference, valid during this object's lifetime; no mutation.</returns>
+  public NadamOptions options() {
+    NadamOptions ret = new NadamOptions(datamungePINVOKE.Nadam_options(swigCPtr), false);
     return ret;
   }
 

@@ -5053,7 +5053,7 @@ int rosetta_lua_open(lua_State* L) {
             lua_pushboolean(L, 1);
             lua_rawsetp(L, cls, &rosetta_lua::native_key());
             {
-                static const luaL_Reg members[] = {{"constant", rosetta_lua_227}, {"variable", rosetta_lua_228}, {"add", rosetta_lua_229}, {"subtract", rosetta_lua_230}, {"multiply", rosetta_lua_231}, {"divide", rosetta_lua_232}, {"power", rosetta_lua_233}, {"negate", rosetta_lua_234}, {"sin", rosetta_lua_235}, {"cos", rosetta_lua_236}, {"exp", rosetta_lua_237}, {"log", rosetta_lua_238}, {"differentiate", rosetta_lua_239}, {"integrate", rosetta_lua_240}, {"simplify", rosetta_lua_241}, {"evaluate", rosetta_lua_242}, {"to_string", rosetta_lua_243}, {"to_tex", rosetta_lua_244}, {nullptr, nullptr}};
+                static const luaL_Reg members[] = {{"constant", rosetta_lua_245}, {"variable", rosetta_lua_246}, {"add", rosetta_lua_247}, {"subtract", rosetta_lua_248}, {"multiply", rosetta_lua_249}, {"divide", rosetta_lua_250}, {"power", rosetta_lua_251}, {"negate", rosetta_lua_252}, {"sin", rosetta_lua_253}, {"cos", rosetta_lua_254}, {"exp", rosetta_lua_255}, {"log", rosetta_lua_256}, {"differentiate", rosetta_lua_257}, {"integrate", rosetta_lua_258}, {"simplify", rosetta_lua_259}, {"evaluate", rosetta_lua_260}, {"to_string", rosetta_lua_261}, {"to_tex", rosetta_lua_262}, {nullptr, nullptr}};
                 luaL_setfuncs(L, members, 0);
             }
             lua_pushcfunction(L, rosetta_lua::class_extend);
@@ -5079,11 +5079,11 @@ int rosetta_lua_open(lua_State* L) {
             lua_setfield(L, meta, "__close");
             lua_pushcfunction(L, rosetta_lua::object_eq);
             lua_setfield(L, meta, "__eq");
-            lua_pushcfunction(L, rosetta_lua_243);
+            lua_pushcfunction(L, rosetta_lua_261);
             lua_setfield(L, meta, "__tostring");
             lua_rawsetp(L, LUA_REGISTRYINDEX, &rosetta_lua::Info<datamunge::algebra::Expr>::value);
             lua_createtable(L, 0, 2);
-            lua_pushcfunction(L, rosetta_lua_245);
+            lua_pushcfunction(L, rosetta_lua_263);
             lua_setfield(L, -2, "__call");
             lua_pushliteral(L, "Expr");
             lua_setfield(L, -2, "__name");
@@ -5098,7 +5098,7 @@ int rosetta_lua_open(lua_State* L) {
             lua_pushboolean(L, 1);
             lua_rawsetp(L, cls, &rosetta_lua::native_key());
             {
-                static const luaL_Reg members[] = {{"degree", rosetta_lua_246}, {"is_zero", rosetta_lua_247}, {"coefficient", rosetta_lua_248}, {"coefficients", rosetta_lua_249}, {"evaluate", rosetta_lua_250}, {"derivative", rosetta_lua_251}, {"antiderivative", rosetta_lua_252}, {"add", rosetta_lua_253}, {"subtract", rosetta_lua_254}, {"multiply", rosetta_lua_255}, {"scale", rosetta_lua_256}, {"negate", rosetta_lua_257}, {"to_string", rosetta_lua_258}, {"to_tex", rosetta_lua_259}, {nullptr, nullptr}};
+                static const luaL_Reg members[] = {{"degree", rosetta_lua_264}, {"is_zero", rosetta_lua_265}, {"coefficient", rosetta_lua_266}, {"coefficients", rosetta_lua_267}, {"evaluate", rosetta_lua_268}, {"derivative", rosetta_lua_269}, {"antiderivative", rosetta_lua_270}, {"add", rosetta_lua_271}, {"subtract", rosetta_lua_272}, {"multiply", rosetta_lua_273}, {"scale", rosetta_lua_274}, {"negate", rosetta_lua_275}, {"to_string", rosetta_lua_276}, {"to_tex", rosetta_lua_277}, {nullptr, nullptr}};
                 luaL_setfuncs(L, members, 0);
             }
             lua_pushcfunction(L, rosetta_lua::class_extend);
@@ -5122,13 +5122,13 @@ int rosetta_lua_open(lua_State* L) {
             lua_setfield(L, meta, "__gc");
             lua_pushcfunction(L, rosetta_lua::object_gc);
             lua_setfield(L, meta, "__close");
-            lua_pushcfunction(L, rosetta_lua_260);
+            lua_pushcfunction(L, rosetta_lua_278);
             lua_setfield(L, meta, "__eq");
-            lua_pushcfunction(L, rosetta_lua_258);
+            lua_pushcfunction(L, rosetta_lua_276);
             lua_setfield(L, meta, "__tostring");
             lua_rawsetp(L, LUA_REGISTRYINDEX, &rosetta_lua::Info<datamunge::algebra::Polynomial>::value);
             lua_createtable(L, 0, 2);
-            lua_pushcfunction(L, rosetta_lua_261);
+            lua_pushcfunction(L, rosetta_lua_279);
             lua_setfield(L, -2, "__call");
             lua_pushliteral(L, "Polynomial");
             lua_setfield(L, -2, "__name");
@@ -5153,7 +5153,7 @@ int rosetta_lua_open(lua_State* L) {
             lua_pushvalue(L, cls);
             lua_newtable(L);
             {
-                static const luaL_Reg members[] = {{"gcd", rosetta_lua_262}, {"s", rosetta_lua_264}, {"t", rosetta_lua_266}, {nullptr, nullptr}};
+                static const luaL_Reg members[] = {{"gcd", rosetta_lua_280}, {"s", rosetta_lua_282}, {"t", rosetta_lua_284}, {nullptr, nullptr}};
                 luaL_setfuncs(L, members, 0);
             }
             lua_pushnil(L);
@@ -5161,7 +5161,7 @@ int rosetta_lua_open(lua_State* L) {
             lua_setfield(L, meta, "__index");
             lua_newtable(L);
             {
-                static const luaL_Reg members[] = {{"gcd", rosetta_lua_263}, {"s", rosetta_lua_265}, {"t", rosetta_lua_267}, {nullptr, nullptr}};
+                static const luaL_Reg members[] = {{"gcd", rosetta_lua_281}, {"s", rosetta_lua_283}, {"t", rosetta_lua_285}, {nullptr, nullptr}};
                 luaL_setfuncs(L, members, 0);
             }
             lua_pushliteral(L, "PolyExtendedGcdResult");
@@ -5177,7 +5177,7 @@ int rosetta_lua_open(lua_State* L) {
             lua_setfield(L, meta, "__tostring");
             lua_rawsetp(L, LUA_REGISTRYINDEX, &rosetta_lua::Info<datamunge::algebra::PolyExtendedGcdResult>::value);
             lua_createtable(L, 0, 2);
-            lua_pushcfunction(L, rosetta_lua_268);
+            lua_pushcfunction(L, rosetta_lua_286);
             lua_setfield(L, -2, "__call");
             lua_pushliteral(L, "PolyExtendedGcdResult");
             lua_setfield(L, -2, "__name");
@@ -5202,7 +5202,7 @@ int rosetta_lua_open(lua_State* L) {
             lua_pushvalue(L, cls);
             lua_newtable(L);
             {
-                static const luaL_Reg members[] = {{"lower", rosetta_lua_269}, {"upper", rosetta_lua_271}, {nullptr, nullptr}};
+                static const luaL_Reg members[] = {{"lower", rosetta_lua_287}, {"upper", rosetta_lua_289}, {nullptr, nullptr}};
                 luaL_setfuncs(L, members, 0);
             }
             lua_pushnil(L);
@@ -5210,7 +5210,7 @@ int rosetta_lua_open(lua_State* L) {
             lua_setfield(L, meta, "__index");
             lua_newtable(L);
             {
-                static const luaL_Reg members[] = {{"lower", rosetta_lua_270}, {"upper", rosetta_lua_272}, {nullptr, nullptr}};
+                static const luaL_Reg members[] = {{"lower", rosetta_lua_288}, {"upper", rosetta_lua_290}, {nullptr, nullptr}};
                 luaL_setfuncs(L, members, 0);
             }
             lua_pushliteral(L, "RealRootIntervals");
@@ -5226,7 +5226,7 @@ int rosetta_lua_open(lua_State* L) {
             lua_setfield(L, meta, "__tostring");
             lua_rawsetp(L, LUA_REGISTRYINDEX, &rosetta_lua::Info<datamunge::algebra::RealRootIntervals>::value);
             lua_createtable(L, 0, 2);
-            lua_pushcfunction(L, rosetta_lua_273);
+            lua_pushcfunction(L, rosetta_lua_291);
             lua_setfield(L, -2, "__call");
             lua_pushliteral(L, "RealRootIntervals");
             lua_setfield(L, -2, "__name");
@@ -5241,7 +5241,7 @@ int rosetta_lua_open(lua_State* L) {
             lua_pushboolean(L, 1);
             lua_rawsetp(L, cls, &rosetta_lua::native_key());
             {
-                static const luaL_Reg members[] = {{"modulus", rosetta_lua_274}, {nullptr, nullptr}};
+                static const luaL_Reg members[] = {{"modulus", rosetta_lua_292}, {nullptr, nullptr}};
                 luaL_setfuncs(L, members, 0);
             }
             lua_pushcfunction(L, rosetta_lua::class_extend);
@@ -5255,7 +5255,7 @@ int rosetta_lua_open(lua_State* L) {
             lua_pushvalue(L, cls);
             lua_newtable(L);
             {
-                static const luaL_Reg members[] = {{"re", rosetta_lua_276}, {"im", rosetta_lua_278}, {nullptr, nullptr}};
+                static const luaL_Reg members[] = {{"re", rosetta_lua_294}, {"im", rosetta_lua_296}, {nullptr, nullptr}};
                 luaL_setfuncs(L, members, 0);
             }
             lua_pushnil(L);
@@ -5263,7 +5263,7 @@ int rosetta_lua_open(lua_State* L) {
             lua_setfield(L, meta, "__index");
             lua_newtable(L);
             {
-                static const luaL_Reg members[] = {{"re", rosetta_lua_277}, {"im", rosetta_lua_279}, {nullptr, nullptr}};
+                static const luaL_Reg members[] = {{"re", rosetta_lua_295}, {"im", rosetta_lua_297}, {nullptr, nullptr}};
                 luaL_setfuncs(L, members, 0);
             }
             lua_pushliteral(L, "Complex");
@@ -5273,13 +5273,13 @@ int rosetta_lua_open(lua_State* L) {
             lua_setfield(L, meta, "__gc");
             lua_pushcfunction(L, rosetta_lua::object_gc);
             lua_setfield(L, meta, "__close");
-            lua_pushcfunction(L, rosetta_lua_275);
+            lua_pushcfunction(L, rosetta_lua_293);
             lua_setfield(L, meta, "__eq");
             lua_pushcfunction(L, rosetta_lua::object_tostring);
             lua_setfield(L, meta, "__tostring");
             lua_rawsetp(L, LUA_REGISTRYINDEX, &rosetta_lua::Info<datamunge::algebra::Complex>::value);
             lua_createtable(L, 0, 2);
-            lua_pushcfunction(L, rosetta_lua_280);
+            lua_pushcfunction(L, rosetta_lua_298);
             lua_setfield(L, -2, "__call");
             lua_pushliteral(L, "Complex");
             lua_setfield(L, -2, "__name");
@@ -5304,7 +5304,7 @@ int rosetta_lua_open(lua_State* L) {
             lua_pushvalue(L, cls);
             lua_newtable(L);
             {
-                static const luaL_Reg members[] = {{"re", rosetta_lua_281}, {"im", rosetta_lua_283}, {nullptr, nullptr}};
+                static const luaL_Reg members[] = {{"re", rosetta_lua_299}, {"im", rosetta_lua_301}, {nullptr, nullptr}};
                 luaL_setfuncs(L, members, 0);
             }
             lua_pushnil(L);
@@ -5312,7 +5312,7 @@ int rosetta_lua_open(lua_State* L) {
             lua_setfield(L, meta, "__index");
             lua_newtable(L);
             {
-                static const luaL_Reg members[] = {{"re", rosetta_lua_282}, {"im", rosetta_lua_284}, {nullptr, nullptr}};
+                static const luaL_Reg members[] = {{"re", rosetta_lua_300}, {"im", rosetta_lua_302}, {nullptr, nullptr}};
                 luaL_setfuncs(L, members, 0);
             }
             lua_pushliteral(L, "Cplx");
@@ -5328,7 +5328,7 @@ int rosetta_lua_open(lua_State* L) {
             lua_setfield(L, meta, "__tostring");
             lua_rawsetp(L, LUA_REGISTRYINDEX, &rosetta_lua::Info<datamunge::algebra::detail::Cplx>::value);
             lua_createtable(L, 0, 2);
-            lua_pushcfunction(L, rosetta_lua_285);
+            lua_pushcfunction(L, rosetta_lua_303);
             lua_setfield(L, -2, "__call");
             lua_pushliteral(L, "Cplx");
             lua_setfield(L, -2, "__name");
@@ -5353,7 +5353,7 @@ int rosetta_lua_open(lua_State* L) {
             lua_pushvalue(L, cls);
             lua_newtable(L);
             {
-                static const luaL_Reg members[] = {{"factor", rosetta_lua_286}, {"multiplicity", rosetta_lua_288}, {nullptr, nullptr}};
+                static const luaL_Reg members[] = {{"factor", rosetta_lua_304}, {"multiplicity", rosetta_lua_306}, {nullptr, nullptr}};
                 luaL_setfuncs(L, members, 0);
             }
             lua_pushnil(L);
@@ -5361,7 +5361,7 @@ int rosetta_lua_open(lua_State* L) {
             lua_setfield(L, meta, "__index");
             lua_newtable(L);
             {
-                static const luaL_Reg members[] = {{"factor", rosetta_lua_287}, {"multiplicity", rosetta_lua_289}, {nullptr, nullptr}};
+                static const luaL_Reg members[] = {{"factor", rosetta_lua_305}, {"multiplicity", rosetta_lua_307}, {nullptr, nullptr}};
                 luaL_setfuncs(L, members, 0);
             }
             lua_pushliteral(L, "SquareFreeFactor");
@@ -5377,7 +5377,7 @@ int rosetta_lua_open(lua_State* L) {
             lua_setfield(L, meta, "__tostring");
             lua_rawsetp(L, LUA_REGISTRYINDEX, &rosetta_lua::Info<datamunge::algebra::SquareFreeFactor>::value);
             lua_createtable(L, 0, 2);
-            lua_pushcfunction(L, rosetta_lua_290);
+            lua_pushcfunction(L, rosetta_lua_308);
             lua_setfield(L, -2, "__call");
             lua_pushliteral(L, "SquareFreeFactor");
             lua_setfield(L, -2, "__name");
@@ -5402,7 +5402,7 @@ int rosetta_lua_open(lua_State* L) {
             lua_pushvalue(L, cls);
             lua_newtable(L);
             {
-                static const luaL_Reg members[] = {{"factor", rosetta_lua_291}, {"multiplicity", rosetta_lua_293}, {nullptr, nullptr}};
+                static const luaL_Reg members[] = {{"factor", rosetta_lua_309}, {"multiplicity", rosetta_lua_311}, {nullptr, nullptr}};
                 luaL_setfuncs(L, members, 0);
             }
             lua_pushnil(L);
@@ -5410,7 +5410,7 @@ int rosetta_lua_open(lua_State* L) {
             lua_setfield(L, meta, "__index");
             lua_newtable(L);
             {
-                static const luaL_Reg members[] = {{"factor", rosetta_lua_292}, {"multiplicity", rosetta_lua_294}, {nullptr, nullptr}};
+                static const luaL_Reg members[] = {{"factor", rosetta_lua_310}, {"multiplicity", rosetta_lua_312}, {nullptr, nullptr}};
                 luaL_setfuncs(L, members, 0);
             }
             lua_pushliteral(L, "RealFactor");
@@ -5426,7 +5426,7 @@ int rosetta_lua_open(lua_State* L) {
             lua_setfield(L, meta, "__tostring");
             lua_rawsetp(L, LUA_REGISTRYINDEX, &rosetta_lua::Info<datamunge::algebra::RealFactor>::value);
             lua_createtable(L, 0, 2);
-            lua_pushcfunction(L, rosetta_lua_295);
+            lua_pushcfunction(L, rosetta_lua_313);
             lua_setfield(L, -2, "__call");
             lua_pushliteral(L, "RealFactor");
             lua_setfield(L, -2, "__name");
@@ -5441,7 +5441,7 @@ int rosetta_lua_open(lua_State* L) {
             lua_pushboolean(L, 1);
             lua_rawsetp(L, cls, &rosetta_lua::native_key());
             {
-                static const luaL_Reg members[] = {{"num_factors", rosetta_lua_296}, {"factor_at", rosetta_lua_297}, {nullptr, nullptr}};
+                static const luaL_Reg members[] = {{"num_factors", rosetta_lua_314}, {"factor_at", rosetta_lua_315}, {nullptr, nullptr}};
                 luaL_setfuncs(L, members, 0);
             }
             lua_pushcfunction(L, rosetta_lua::class_extend);
@@ -5455,7 +5455,7 @@ int rosetta_lua_open(lua_State* L) {
             lua_pushvalue(L, cls);
             lua_newtable(L);
             {
-                static const luaL_Reg members[] = {{"leading_coefficient", rosetta_lua_298}, {nullptr, nullptr}};
+                static const luaL_Reg members[] = {{"leading_coefficient", rosetta_lua_316}, {nullptr, nullptr}};
                 luaL_setfuncs(L, members, 0);
             }
             lua_pushnil(L);
@@ -5463,7 +5463,7 @@ int rosetta_lua_open(lua_State* L) {
             lua_setfield(L, meta, "__index");
             lua_newtable(L);
             {
-                static const luaL_Reg members[] = {{"leading_coefficient", rosetta_lua_299}, {nullptr, nullptr}};
+                static const luaL_Reg members[] = {{"leading_coefficient", rosetta_lua_317}, {nullptr, nullptr}};
                 luaL_setfuncs(L, members, 0);
             }
             lua_pushliteral(L, "RealFactorization");
@@ -5479,7 +5479,7 @@ int rosetta_lua_open(lua_State* L) {
             lua_setfield(L, meta, "__tostring");
             lua_rawsetp(L, LUA_REGISTRYINDEX, &rosetta_lua::Info<datamunge::algebra::RealFactorization>::value);
             lua_createtable(L, 0, 2);
-            lua_pushcfunction(L, rosetta_lua_300);
+            lua_pushcfunction(L, rosetta_lua_318);
             lua_setfield(L, -2, "__call");
             lua_pushliteral(L, "RealFactorization");
             lua_setfield(L, -2, "__name");
@@ -5494,7 +5494,7 @@ int rosetta_lua_open(lua_State* L) {
             lua_pushboolean(L, 1);
             lua_rawsetp(L, cls, &rosetta_lua::native_key());
             {
-                static const luaL_Reg members[] = {{"num_variables", rosetta_lua_301}, {"num_terms", rosetta_lua_302}, {"is_zero", rosetta_lua_303}, {"exponents", rosetta_lua_304}, {"coefficients", rosetta_lua_305}, {"evaluate", rosetta_lua_306}, {"add", rosetta_lua_307}, {"subtract", rosetta_lua_308}, {"multiply", rosetta_lua_309}, {"scale", rosetta_lua_310}, {"leading_exponent", rosetta_lua_311}, {"leading_coefficient", rosetta_lua_312}, {"to_string", rosetta_lua_313}, {nullptr, nullptr}};
+                static const luaL_Reg members[] = {{"num_variables", rosetta_lua_319}, {"num_terms", rosetta_lua_320}, {"is_zero", rosetta_lua_321}, {"exponents", rosetta_lua_322}, {"coefficients", rosetta_lua_323}, {"evaluate", rosetta_lua_324}, {"add", rosetta_lua_325}, {"subtract", rosetta_lua_326}, {"multiply", rosetta_lua_327}, {"scale", rosetta_lua_328}, {"leading_exponent", rosetta_lua_329}, {"leading_coefficient", rosetta_lua_330}, {"to_string", rosetta_lua_331}, {nullptr, nullptr}};
                 luaL_setfuncs(L, members, 0);
             }
             lua_pushcfunction(L, rosetta_lua::class_extend);
@@ -5520,11 +5520,11 @@ int rosetta_lua_open(lua_State* L) {
             lua_setfield(L, meta, "__close");
             lua_pushcfunction(L, rosetta_lua::object_eq);
             lua_setfield(L, meta, "__eq");
-            lua_pushcfunction(L, rosetta_lua_313);
+            lua_pushcfunction(L, rosetta_lua_331);
             lua_setfield(L, meta, "__tostring");
             lua_rawsetp(L, LUA_REGISTRYINDEX, &rosetta_lua::Info<datamunge::algebra::MultivariatePolynomial>::value);
             lua_createtable(L, 0, 2);
-            lua_pushcfunction(L, rosetta_lua_314);
+            lua_pushcfunction(L, rosetta_lua_332);
             lua_setfield(L, -2, "__call");
             lua_pushliteral(L, "MultivariatePolynomial");
             lua_setfield(L, -2, "__name");
@@ -5549,7 +5549,7 @@ int rosetta_lua_open(lua_State* L) {
             lua_pushvalue(L, cls);
             lua_newtable(L);
             {
-                static const luaL_Reg members[] = {{"leading", rosetta_lua_315}, {"factors", rosetta_lua_317}, {"multiplicities", rosetta_lua_319}, {nullptr, nullptr}};
+                static const luaL_Reg members[] = {{"leading", rosetta_lua_333}, {"factors", rosetta_lua_335}, {"multiplicities", rosetta_lua_337}, {nullptr, nullptr}};
                 luaL_setfuncs(L, members, 0);
             }
             lua_pushnil(L);
@@ -5557,7 +5557,7 @@ int rosetta_lua_open(lua_State* L) {
             lua_setfield(L, meta, "__index");
             lua_newtable(L);
             {
-                static const luaL_Reg members[] = {{"leading", rosetta_lua_316}, {"factors", rosetta_lua_318}, {"multiplicities", rosetta_lua_320}, {nullptr, nullptr}};
+                static const luaL_Reg members[] = {{"leading", rosetta_lua_334}, {"factors", rosetta_lua_336}, {"multiplicities", rosetta_lua_338}, {nullptr, nullptr}};
                 luaL_setfuncs(L, members, 0);
             }
             lua_pushliteral(L, "GfFactorization");
@@ -5573,7 +5573,7 @@ int rosetta_lua_open(lua_State* L) {
             lua_setfield(L, meta, "__tostring");
             lua_rawsetp(L, LUA_REGISTRYINDEX, &rosetta_lua::Info<datamunge::algebra::GfFactorization>::value);
             lua_createtable(L, 0, 2);
-            lua_pushcfunction(L, rosetta_lua_321);
+            lua_pushcfunction(L, rosetta_lua_339);
             lua_setfield(L, -2, "__call");
             lua_pushliteral(L, "GfFactorization");
             lua_setfield(L, -2, "__name");
@@ -5588,7 +5588,7 @@ int rosetta_lua_open(lua_State* L) {
             lua_pushboolean(L, 1);
             lua_rawsetp(L, cls, &rosetta_lua::native_key());
             {
-                static const luaL_Reg members[] = {{"numerator", rosetta_lua_322}, {"denominator", rosetta_lua_323}, {"evaluate", rosetta_lua_324}, {"add", rosetta_lua_325}, {"subtract", rosetta_lua_326}, {"multiply", rosetta_lua_327}, {"divide", rosetta_lua_328}, {"to_string", rosetta_lua_329}, {"to_tex", rosetta_lua_330}, {nullptr, nullptr}};
+                static const luaL_Reg members[] = {{"numerator", rosetta_lua_340}, {"denominator", rosetta_lua_341}, {"evaluate", rosetta_lua_342}, {"add", rosetta_lua_343}, {"subtract", rosetta_lua_344}, {"multiply", rosetta_lua_345}, {"divide", rosetta_lua_346}, {"to_string", rosetta_lua_347}, {"to_tex", rosetta_lua_348}, {nullptr, nullptr}};
                 luaL_setfuncs(L, members, 0);
             }
             lua_pushcfunction(L, rosetta_lua::class_extend);
@@ -5614,11 +5614,11 @@ int rosetta_lua_open(lua_State* L) {
             lua_setfield(L, meta, "__close");
             lua_pushcfunction(L, rosetta_lua::object_eq);
             lua_setfield(L, meta, "__eq");
-            lua_pushcfunction(L, rosetta_lua_329);
+            lua_pushcfunction(L, rosetta_lua_347);
             lua_setfield(L, meta, "__tostring");
             lua_rawsetp(L, LUA_REGISTRYINDEX, &rosetta_lua::Info<datamunge::algebra::RationalFunction>::value);
             lua_createtable(L, 0, 2);
-            lua_pushcfunction(L, rosetta_lua_331);
+            lua_pushcfunction(L, rosetta_lua_349);
             lua_setfield(L, -2, "__call");
             lua_pushliteral(L, "RationalFunction");
             lua_setfield(L, -2, "__name");
@@ -5633,7 +5633,7 @@ int rosetta_lua_open(lua_State* L) {
             lua_pushboolean(L, 1);
             lua_rawsetp(L, cls, &rosetta_lua::native_key());
             {
-                static const luaL_Reg members[] = {{"evaluate", rosetta_lua_332}, {nullptr, nullptr}};
+                static const luaL_Reg members[] = {{"evaluate", rosetta_lua_350}, {nullptr, nullptr}};
                 luaL_setfuncs(L, members, 0);
             }
             lua_pushcfunction(L, rosetta_lua::class_extend);
@@ -5663,7 +5663,7 @@ int rosetta_lua_open(lua_State* L) {
             lua_setfield(L, meta, "__tostring");
             lua_rawsetp(L, LUA_REGISTRYINDEX, &rosetta_lua::Info<datamunge::optim::ArbitraryFunction>::value);
             lua_createtable(L, 0, 2);
-            lua_pushcfunction(L, rosetta_lua_333);
+            lua_pushcfunction(L, rosetta_lua_351);
             lua_setfield(L, -2, "__call");
             lua_pushliteral(L, "ArbitraryFunction");
             lua_setfield(L, -2, "__name");
@@ -5678,7 +5678,7 @@ int rosetta_lua_open(lua_State* L) {
             lua_pushboolean(L, 1);
             lua_rawsetp(L, cls, &rosetta_lua::native_key());
             {
-                static const luaL_Reg members[] = {{"gradient", rosetta_lua_334}, {"evaluate", rosetta_lua_332}, {nullptr, nullptr}};
+                static const luaL_Reg members[] = {{"gradient", rosetta_lua_352}, {"evaluate", rosetta_lua_350}, {nullptr, nullptr}};
                 luaL_setfuncs(L, members, 0);
             }
             lua_pushcfunction(L, rosetta_lua::class_extend);
@@ -5708,7 +5708,7 @@ int rosetta_lua_open(lua_State* L) {
             lua_setfield(L, meta, "__tostring");
             lua_rawsetp(L, LUA_REGISTRYINDEX, &rosetta_lua::Info<datamunge::optim::DifferentiableFunction>::value);
             lua_createtable(L, 0, 2);
-            lua_pushcfunction(L, rosetta_lua_335);
+            lua_pushcfunction(L, rosetta_lua_353);
             lua_setfield(L, -2, "__call");
             lua_pushliteral(L, "DifferentiableFunction");
             lua_setfield(L, -2, "__name");
@@ -5723,7 +5723,7 @@ int rosetta_lua_open(lua_State* L) {
             lua_pushboolean(L, 1);
             lua_rawsetp(L, cls, &rosetta_lua::native_key());
             {
-                static const luaL_Reg members[] = {{"num_functions", rosetta_lua_336}, {"evaluate_term", rosetta_lua_337}, {"evaluate", rosetta_lua_338}, {nullptr, nullptr}};
+                static const luaL_Reg members[] = {{"num_functions", rosetta_lua_354}, {"evaluate_term", rosetta_lua_355}, {"evaluate", rosetta_lua_356}, {nullptr, nullptr}};
                 luaL_setfuncs(L, members, 0);
             }
             lua_pushcfunction(L, rosetta_lua::class_extend);
@@ -5753,7 +5753,7 @@ int rosetta_lua_open(lua_State* L) {
             lua_setfield(L, meta, "__tostring");
             lua_rawsetp(L, LUA_REGISTRYINDEX, &rosetta_lua::Info<datamunge::optim::SeparableFunction>::value);
             lua_createtable(L, 0, 2);
-            lua_pushcfunction(L, rosetta_lua_339);
+            lua_pushcfunction(L, rosetta_lua_357);
             lua_setfield(L, -2, "__call");
             lua_pushliteral(L, "SeparableFunction");
             lua_setfield(L, -2, "__name");
@@ -5768,7 +5768,7 @@ int rosetta_lua_open(lua_State* L) {
             lua_pushboolean(L, 1);
             lua_rawsetp(L, cls, &rosetta_lua::native_key());
             {
-                static const luaL_Reg members[] = {{"num_functions", rosetta_lua_340}, {"evaluate_term", rosetta_lua_341}, {"gradient_term", rosetta_lua_342}, {"evaluate", rosetta_lua_343}, {"gradient", rosetta_lua_344}, {nullptr, nullptr}};
+                static const luaL_Reg members[] = {{"num_functions", rosetta_lua_358}, {"evaluate_term", rosetta_lua_359}, {"gradient_term", rosetta_lua_360}, {"evaluate", rosetta_lua_361}, {"gradient", rosetta_lua_362}, {nullptr, nullptr}};
                 luaL_setfuncs(L, members, 0);
             }
             lua_pushcfunction(L, rosetta_lua::class_extend);
@@ -5798,7 +5798,7 @@ int rosetta_lua_open(lua_State* L) {
             lua_setfield(L, meta, "__tostring");
             lua_rawsetp(L, LUA_REGISTRYINDEX, &rosetta_lua::Info<datamunge::optim::DifferentiableSeparableFunction>::value);
             lua_createtable(L, 0, 2);
-            lua_pushcfunction(L, rosetta_lua_345);
+            lua_pushcfunction(L, rosetta_lua_363);
             lua_setfield(L, -2, "__call");
             lua_pushliteral(L, "DifferentiableSeparableFunction");
             lua_setfield(L, -2, "__name");
@@ -5813,7 +5813,7 @@ int rosetta_lua_open(lua_State* L) {
             lua_pushboolean(L, 1);
             lua_rawsetp(L, cls, &rosetta_lua::native_key());
             {
-                static const luaL_Reg members[] = {{"proximal", rosetta_lua_346}, {"gradient", rosetta_lua_334}, {"evaluate", rosetta_lua_332}, {nullptr, nullptr}};
+                static const luaL_Reg members[] = {{"proximal", rosetta_lua_364}, {"gradient", rosetta_lua_352}, {"evaluate", rosetta_lua_350}, {nullptr, nullptr}};
                 luaL_setfuncs(L, members, 0);
             }
             lua_pushcfunction(L, rosetta_lua::class_extend);
@@ -5843,7 +5843,7 @@ int rosetta_lua_open(lua_State* L) {
             lua_setfield(L, meta, "__tostring");
             lua_rawsetp(L, LUA_REGISTRYINDEX, &rosetta_lua::Info<datamunge::optim::ProximalFunction>::value);
             lua_createtable(L, 0, 2);
-            lua_pushcfunction(L, rosetta_lua_347);
+            lua_pushcfunction(L, rosetta_lua_365);
             lua_setfield(L, -2, "__call");
             lua_pushliteral(L, "ProximalFunction");
             lua_setfield(L, -2, "__name");
@@ -5858,7 +5858,7 @@ int rosetta_lua_open(lua_State* L) {
             lua_pushboolean(L, 1);
             lua_rawsetp(L, cls, &rosetta_lua::native_key());
             {
-                static const luaL_Reg members[] = {{"hessian", rosetta_lua_348}, {"gradient", rosetta_lua_334}, {"evaluate", rosetta_lua_332}, {nullptr, nullptr}};
+                static const luaL_Reg members[] = {{"hessian", rosetta_lua_366}, {"gradient", rosetta_lua_352}, {"evaluate", rosetta_lua_350}, {nullptr, nullptr}};
                 luaL_setfuncs(L, members, 0);
             }
             lua_pushcfunction(L, rosetta_lua::class_extend);
@@ -5888,7 +5888,7 @@ int rosetta_lua_open(lua_State* L) {
             lua_setfield(L, meta, "__tostring");
             lua_rawsetp(L, LUA_REGISTRYINDEX, &rosetta_lua::Info<datamunge::optim::HessianFunction>::value);
             lua_createtable(L, 0, 2);
-            lua_pushcfunction(L, rosetta_lua_349);
+            lua_pushcfunction(L, rosetta_lua_367);
             lua_setfield(L, -2, "__call");
             lua_pushliteral(L, "HessianFunction");
             lua_setfield(L, -2, "__name");
@@ -5903,7 +5903,7 @@ int rosetta_lua_open(lua_State* L) {
             lua_pushboolean(L, 1);
             lua_rawsetp(L, cls, &rosetta_lua::native_key());
             {
-                static const luaL_Reg members[] = {{"constraints", rosetta_lua_350}, {"constraint_jacobian", rosetta_lua_351}, {"gradient", rosetta_lua_334}, {"evaluate", rosetta_lua_332}, {nullptr, nullptr}};
+                static const luaL_Reg members[] = {{"constraints", rosetta_lua_368}, {"constraint_jacobian", rosetta_lua_369}, {"gradient", rosetta_lua_352}, {"evaluate", rosetta_lua_350}, {nullptr, nullptr}};
                 luaL_setfuncs(L, members, 0);
             }
             lua_pushcfunction(L, rosetta_lua::class_extend);
@@ -5933,7 +5933,7 @@ int rosetta_lua_open(lua_State* L) {
             lua_setfield(L, meta, "__tostring");
             lua_rawsetp(L, LUA_REGISTRYINDEX, &rosetta_lua::Info<datamunge::optim::EqualityConstrainedFunction>::value);
             lua_createtable(L, 0, 2);
-            lua_pushcfunction(L, rosetta_lua_352);
+            lua_pushcfunction(L, rosetta_lua_370);
             lua_setfield(L, -2, "__call");
             lua_pushliteral(L, "EqualityConstrainedFunction");
             lua_setfield(L, -2, "__name");
@@ -5948,7 +5948,7 @@ int rosetta_lua_open(lua_State* L) {
             lua_pushboolean(L, 1);
             lua_rawsetp(L, cls, &rosetta_lua::native_key());
             {
-                static const luaL_Reg members[] = {{"inequalities", rosetta_lua_353}, {"inequality_jacobian", rosetta_lua_354}, {"gradient", rosetta_lua_334}, {"evaluate", rosetta_lua_332}, {nullptr, nullptr}};
+                static const luaL_Reg members[] = {{"inequalities", rosetta_lua_371}, {"inequality_jacobian", rosetta_lua_372}, {"gradient", rosetta_lua_352}, {"evaluate", rosetta_lua_350}, {nullptr, nullptr}};
                 luaL_setfuncs(L, members, 0);
             }
             lua_pushcfunction(L, rosetta_lua::class_extend);
@@ -5978,7 +5978,7 @@ int rosetta_lua_open(lua_State* L) {
             lua_setfield(L, meta, "__tostring");
             lua_rawsetp(L, LUA_REGISTRYINDEX, &rosetta_lua::Info<datamunge::optim::InequalityConstrainedFunction>::value);
             lua_createtable(L, 0, 2);
-            lua_pushcfunction(L, rosetta_lua_355);
+            lua_pushcfunction(L, rosetta_lua_373);
             lua_setfield(L, -2, "__call");
             lua_pushliteral(L, "InequalityConstrainedFunction");
             lua_setfield(L, -2, "__name");
@@ -5993,7 +5993,7 @@ int rosetta_lua_open(lua_State* L) {
             lua_pushboolean(L, 1);
             lua_rawsetp(L, cls, &rosetta_lua::native_key());
             {
-                static const luaL_Reg members[] = {{"residuals", rosetta_lua_356}, {"jacobian", rosetta_lua_357}, {nullptr, nullptr}};
+                static const luaL_Reg members[] = {{"residuals", rosetta_lua_374}, {"jacobian", rosetta_lua_375}, {nullptr, nullptr}};
                 luaL_setfuncs(L, members, 0);
             }
             lua_pushcfunction(L, rosetta_lua::class_extend);
@@ -6023,7 +6023,7 @@ int rosetta_lua_open(lua_State* L) {
             lua_setfield(L, meta, "__tostring");
             lua_rawsetp(L, LUA_REGISTRYINDEX, &rosetta_lua::Info<datamunge::optim::ResidualFunction>::value);
             lua_createtable(L, 0, 2);
-            lua_pushcfunction(L, rosetta_lua_358);
+            lua_pushcfunction(L, rosetta_lua_376);
             lua_setfield(L, -2, "__call");
             lua_pushliteral(L, "ResidualFunction");
             lua_setfield(L, -2, "__name");
@@ -6048,7 +6048,7 @@ int rosetta_lua_open(lua_State* L) {
             lua_pushvalue(L, cls);
             lua_newtable(L);
             {
-                static const luaL_Reg members[] = {{"num_samples", rosetta_lua_359}, {"num_warmup", rosetta_lua_361}, {"initial_step_sizes", rosetta_lua_363}, {"target_accept_rate", rosetta_lua_365}, {"seed", rosetta_lua_367}, {nullptr, nullptr}};
+                static const luaL_Reg members[] = {{"num_samples", rosetta_lua_377}, {"num_warmup", rosetta_lua_379}, {"initial_step_sizes", rosetta_lua_381}, {"target_accept_rate", rosetta_lua_383}, {"seed", rosetta_lua_385}, {nullptr, nullptr}};
                 luaL_setfuncs(L, members, 0);
             }
             lua_pushnil(L);
@@ -6056,7 +6056,7 @@ int rosetta_lua_open(lua_State* L) {
             lua_setfield(L, meta, "__index");
             lua_newtable(L);
             {
-                static const luaL_Reg members[] = {{"num_samples", rosetta_lua_360}, {"num_warmup", rosetta_lua_362}, {"initial_step_sizes", rosetta_lua_364}, {"target_accept_rate", rosetta_lua_366}, {"seed", rosetta_lua_368}, {nullptr, nullptr}};
+                static const luaL_Reg members[] = {{"num_samples", rosetta_lua_378}, {"num_warmup", rosetta_lua_380}, {"initial_step_sizes", rosetta_lua_382}, {"target_accept_rate", rosetta_lua_384}, {"seed", rosetta_lua_386}, {nullptr, nullptr}};
                 luaL_setfuncs(L, members, 0);
             }
             lua_pushliteral(L, "GibbsOptions");
@@ -6072,7 +6072,7 @@ int rosetta_lua_open(lua_State* L) {
             lua_setfield(L, meta, "__tostring");
             lua_rawsetp(L, LUA_REGISTRYINDEX, &rosetta_lua::Info<datamunge::bayes::GibbsOptions>::value);
             lua_createtable(L, 0, 2);
-            lua_pushcfunction(L, rosetta_lua_369);
+            lua_pushcfunction(L, rosetta_lua_387);
             lua_setfield(L, -2, "__call");
             lua_pushliteral(L, "GibbsOptions");
             lua_setfield(L, -2, "__name");
@@ -6097,7 +6097,7 @@ int rosetta_lua_open(lua_State* L) {
             lua_pushvalue(L, cls);
             lua_newtable(L);
             {
-                static const luaL_Reg members[] = {{"samples", rosetta_lua_370}, {"accept_rates", rosetta_lua_372}, {"final_step_sizes", rosetta_lua_374}, {nullptr, nullptr}};
+                static const luaL_Reg members[] = {{"samples", rosetta_lua_388}, {"accept_rates", rosetta_lua_390}, {"final_step_sizes", rosetta_lua_392}, {nullptr, nullptr}};
                 luaL_setfuncs(L, members, 0);
             }
             lua_pushnil(L);
@@ -6105,7 +6105,7 @@ int rosetta_lua_open(lua_State* L) {
             lua_setfield(L, meta, "__index");
             lua_newtable(L);
             {
-                static const luaL_Reg members[] = {{"samples", rosetta_lua_371}, {"accept_rates", rosetta_lua_373}, {"final_step_sizes", rosetta_lua_375}, {nullptr, nullptr}};
+                static const luaL_Reg members[] = {{"samples", rosetta_lua_389}, {"accept_rates", rosetta_lua_391}, {"final_step_sizes", rosetta_lua_393}, {nullptr, nullptr}};
                 luaL_setfuncs(L, members, 0);
             }
             lua_pushliteral(L, "GibbsResult");
@@ -6121,7 +6121,7 @@ int rosetta_lua_open(lua_State* L) {
             lua_setfield(L, meta, "__tostring");
             lua_rawsetp(L, LUA_REGISTRYINDEX, &rosetta_lua::Info<datamunge::bayes::GibbsResult>::value);
             lua_createtable(L, 0, 2);
-            lua_pushcfunction(L, rosetta_lua_376);
+            lua_pushcfunction(L, rosetta_lua_394);
             lua_setfield(L, -2, "__call");
             lua_pushliteral(L, "GibbsResult");
             lua_setfield(L, -2, "__name");
@@ -6136,7 +6136,7 @@ int rosetta_lua_open(lua_State* L) {
             lua_pushboolean(L, 1);
             lua_rawsetp(L, cls, &rosetta_lua::native_key());
             {
-                static const luaL_Reg members[] = {{"sample", rosetta_lua_377}, {"options", rosetta_lua_378}, {nullptr, nullptr}};
+                static const luaL_Reg members[] = {{"sample", rosetta_lua_395}, {"options", rosetta_lua_396}, {nullptr, nullptr}};
                 luaL_setfuncs(L, members, 0);
             }
             lua_pushcfunction(L, rosetta_lua::class_extend);
@@ -6166,7 +6166,7 @@ int rosetta_lua_open(lua_State* L) {
             lua_setfield(L, meta, "__tostring");
             lua_rawsetp(L, LUA_REGISTRYINDEX, &rosetta_lua::Info<datamunge::bayes::GibbsSampler>::value);
             lua_createtable(L, 0, 2);
-            lua_pushcfunction(L, rosetta_lua_379);
+            lua_pushcfunction(L, rosetta_lua_397);
             lua_setfield(L, -2, "__call");
             lua_pushliteral(L, "GibbsSampler");
             lua_setfield(L, -2, "__name");
@@ -6191,7 +6191,7 @@ int rosetta_lua_open(lua_State* L) {
             lua_pushvalue(L, cls);
             lua_newtable(L);
             {
-                static const luaL_Reg members[] = {{"num_samples", rosetta_lua_380}, {"num_warmup", rosetta_lua_382}, {"num_leapfrog_steps", rosetta_lua_384}, {"initial_step_size", rosetta_lua_386}, {"target_accept_rate", rosetta_lua_388}, {"seed", rosetta_lua_390}, {nullptr, nullptr}};
+                static const luaL_Reg members[] = {{"num_samples", rosetta_lua_398}, {"num_warmup", rosetta_lua_400}, {"num_leapfrog_steps", rosetta_lua_402}, {"initial_step_size", rosetta_lua_404}, {"target_accept_rate", rosetta_lua_406}, {"seed", rosetta_lua_408}, {nullptr, nullptr}};
                 luaL_setfuncs(L, members, 0);
             }
             lua_pushnil(L);
@@ -6199,7 +6199,7 @@ int rosetta_lua_open(lua_State* L) {
             lua_setfield(L, meta, "__index");
             lua_newtable(L);
             {
-                static const luaL_Reg members[] = {{"num_samples", rosetta_lua_381}, {"num_warmup", rosetta_lua_383}, {"num_leapfrog_steps", rosetta_lua_385}, {"initial_step_size", rosetta_lua_387}, {"target_accept_rate", rosetta_lua_389}, {"seed", rosetta_lua_391}, {nullptr, nullptr}};
+                static const luaL_Reg members[] = {{"num_samples", rosetta_lua_399}, {"num_warmup", rosetta_lua_401}, {"num_leapfrog_steps", rosetta_lua_403}, {"initial_step_size", rosetta_lua_405}, {"target_accept_rate", rosetta_lua_407}, {"seed", rosetta_lua_409}, {nullptr, nullptr}};
                 luaL_setfuncs(L, members, 0);
             }
             lua_pushliteral(L, "HMCOptions");
@@ -6215,7 +6215,7 @@ int rosetta_lua_open(lua_State* L) {
             lua_setfield(L, meta, "__tostring");
             lua_rawsetp(L, LUA_REGISTRYINDEX, &rosetta_lua::Info<datamunge::bayes::HMCOptions>::value);
             lua_createtable(L, 0, 2);
-            lua_pushcfunction(L, rosetta_lua_392);
+            lua_pushcfunction(L, rosetta_lua_410);
             lua_setfield(L, -2, "__call");
             lua_pushliteral(L, "HMCOptions");
             lua_setfield(L, -2, "__name");
@@ -6240,7 +6240,7 @@ int rosetta_lua_open(lua_State* L) {
             lua_pushvalue(L, cls);
             lua_newtable(L);
             {
-                static const luaL_Reg members[] = {{"samples", rosetta_lua_393}, {"accept_rate", rosetta_lua_395}, {"final_step_size", rosetta_lua_397}, {nullptr, nullptr}};
+                static const luaL_Reg members[] = {{"samples", rosetta_lua_411}, {"accept_rate", rosetta_lua_413}, {"final_step_size", rosetta_lua_415}, {nullptr, nullptr}};
                 luaL_setfuncs(L, members, 0);
             }
             lua_pushnil(L);
@@ -6248,7 +6248,7 @@ int rosetta_lua_open(lua_State* L) {
             lua_setfield(L, meta, "__index");
             lua_newtable(L);
             {
-                static const luaL_Reg members[] = {{"samples", rosetta_lua_394}, {"accept_rate", rosetta_lua_396}, {"final_step_size", rosetta_lua_398}, {nullptr, nullptr}};
+                static const luaL_Reg members[] = {{"samples", rosetta_lua_412}, {"accept_rate", rosetta_lua_414}, {"final_step_size", rosetta_lua_416}, {nullptr, nullptr}};
                 luaL_setfuncs(L, members, 0);
             }
             lua_pushliteral(L, "HMCResult");
@@ -6264,7 +6264,7 @@ int rosetta_lua_open(lua_State* L) {
             lua_setfield(L, meta, "__tostring");
             lua_rawsetp(L, LUA_REGISTRYINDEX, &rosetta_lua::Info<datamunge::bayes::HMCResult>::value);
             lua_createtable(L, 0, 2);
-            lua_pushcfunction(L, rosetta_lua_399);
+            lua_pushcfunction(L, rosetta_lua_417);
             lua_setfield(L, -2, "__call");
             lua_pushliteral(L, "HMCResult");
             lua_setfield(L, -2, "__name");
@@ -6279,7 +6279,7 @@ int rosetta_lua_open(lua_State* L) {
             lua_pushboolean(L, 1);
             lua_rawsetp(L, cls, &rosetta_lua::native_key());
             {
-                static const luaL_Reg members[] = {{"sample", rosetta_lua_400}, {"options", rosetta_lua_401}, {nullptr, nullptr}};
+                static const luaL_Reg members[] = {{"sample", rosetta_lua_418}, {"options", rosetta_lua_419}, {nullptr, nullptr}};
                 luaL_setfuncs(L, members, 0);
             }
             lua_pushcfunction(L, rosetta_lua::class_extend);
@@ -6309,7 +6309,7 @@ int rosetta_lua_open(lua_State* L) {
             lua_setfield(L, meta, "__tostring");
             lua_rawsetp(L, LUA_REGISTRYINDEX, &rosetta_lua::Info<datamunge::bayes::HMC>::value);
             lua_createtable(L, 0, 2);
-            lua_pushcfunction(L, rosetta_lua_402);
+            lua_pushcfunction(L, rosetta_lua_420);
             lua_setfield(L, -2, "__call");
             lua_pushliteral(L, "HMC");
             lua_setfield(L, -2, "__name");
@@ -6334,7 +6334,7 @@ int rosetta_lua_open(lua_State* L) {
             lua_pushvalue(L, cls);
             lua_newtable(L);
             {
-                static const luaL_Reg members[] = {{"num_samples", rosetta_lua_403}, {"seed", rosetta_lua_405}, {nullptr, nullptr}};
+                static const luaL_Reg members[] = {{"num_samples", rosetta_lua_421}, {"seed", rosetta_lua_423}, {nullptr, nullptr}};
                 luaL_setfuncs(L, members, 0);
             }
             lua_pushnil(L);
@@ -6342,7 +6342,7 @@ int rosetta_lua_open(lua_State* L) {
             lua_setfield(L, meta, "__index");
             lua_newtable(L);
             {
-                static const luaL_Reg members[] = {{"num_samples", rosetta_lua_404}, {"seed", rosetta_lua_406}, {nullptr, nullptr}};
+                static const luaL_Reg members[] = {{"num_samples", rosetta_lua_422}, {"seed", rosetta_lua_424}, {nullptr, nullptr}};
                 luaL_setfuncs(L, members, 0);
             }
             lua_pushliteral(L, "ImportanceSamplingOptions");
@@ -6358,7 +6358,7 @@ int rosetta_lua_open(lua_State* L) {
             lua_setfield(L, meta, "__tostring");
             lua_rawsetp(L, LUA_REGISTRYINDEX, &rosetta_lua::Info<datamunge::bayes::ImportanceSamplingOptions>::value);
             lua_createtable(L, 0, 2);
-            lua_pushcfunction(L, rosetta_lua_407);
+            lua_pushcfunction(L, rosetta_lua_425);
             lua_setfield(L, -2, "__call");
             lua_pushliteral(L, "ImportanceSamplingOptions");
             lua_setfield(L, -2, "__name");
@@ -6383,7 +6383,7 @@ int rosetta_lua_open(lua_State* L) {
             lua_pushvalue(L, cls);
             lua_newtable(L);
             {
-                static const luaL_Reg members[] = {{"samples", rosetta_lua_408}, {"normalized_weights", rosetta_lua_410}, {"effective_sample_size", rosetta_lua_412}, {"log_evidence", rosetta_lua_414}, {nullptr, nullptr}};
+                static const luaL_Reg members[] = {{"samples", rosetta_lua_426}, {"normalized_weights", rosetta_lua_428}, {"effective_sample_size", rosetta_lua_430}, {"log_evidence", rosetta_lua_432}, {nullptr, nullptr}};
                 luaL_setfuncs(L, members, 0);
             }
             lua_pushnil(L);
@@ -6391,7 +6391,7 @@ int rosetta_lua_open(lua_State* L) {
             lua_setfield(L, meta, "__index");
             lua_newtable(L);
             {
-                static const luaL_Reg members[] = {{"samples", rosetta_lua_409}, {"normalized_weights", rosetta_lua_411}, {"effective_sample_size", rosetta_lua_413}, {"log_evidence", rosetta_lua_415}, {nullptr, nullptr}};
+                static const luaL_Reg members[] = {{"samples", rosetta_lua_427}, {"normalized_weights", rosetta_lua_429}, {"effective_sample_size", rosetta_lua_431}, {"log_evidence", rosetta_lua_433}, {nullptr, nullptr}};
                 luaL_setfuncs(L, members, 0);
             }
             lua_pushliteral(L, "ImportanceSamplingResult");
@@ -6407,7 +6407,7 @@ int rosetta_lua_open(lua_State* L) {
             lua_setfield(L, meta, "__tostring");
             lua_rawsetp(L, LUA_REGISTRYINDEX, &rosetta_lua::Info<datamunge::bayes::ImportanceSamplingResult>::value);
             lua_createtable(L, 0, 2);
-            lua_pushcfunction(L, rosetta_lua_416);
+            lua_pushcfunction(L, rosetta_lua_434);
             lua_setfield(L, -2, "__call");
             lua_pushliteral(L, "ImportanceSamplingResult");
             lua_setfield(L, -2, "__name");
@@ -6422,7 +6422,7 @@ int rosetta_lua_open(lua_State* L) {
             lua_pushboolean(L, 1);
             lua_rawsetp(L, cls, &rosetta_lua::native_key());
             {
-                static const luaL_Reg members[] = {{"sample", rosetta_lua_417}, {"options", rosetta_lua_418}, {nullptr, nullptr}};
+                static const luaL_Reg members[] = {{"sample", rosetta_lua_435}, {"options", rosetta_lua_436}, {nullptr, nullptr}};
                 luaL_setfuncs(L, members, 0);
             }
             lua_pushcfunction(L, rosetta_lua::class_extend);
@@ -6452,7 +6452,7 @@ int rosetta_lua_open(lua_State* L) {
             lua_setfield(L, meta, "__tostring");
             lua_rawsetp(L, LUA_REGISTRYINDEX, &rosetta_lua::Info<datamunge::bayes::ImportanceSampling>::value);
             lua_createtable(L, 0, 2);
-            lua_pushcfunction(L, rosetta_lua_419);
+            lua_pushcfunction(L, rosetta_lua_437);
             lua_setfield(L, -2, "__call");
             lua_pushliteral(L, "ImportanceSampling");
             lua_setfield(L, -2, "__name");
@@ -6477,7 +6477,7 @@ int rosetta_lua_open(lua_State* L) {
             lua_pushvalue(L, cls);
             lua_newtable(L);
             {
-                static const luaL_Reg members[] = {{"max_iterations", rosetta_lua_420}, {"tolerance", rosetta_lua_422}, {"history_size", rosetta_lua_424}, {nullptr, nullptr}};
+                static const luaL_Reg members[] = {{"max_iterations", rosetta_lua_438}, {"tolerance", rosetta_lua_440}, {"history_size", rosetta_lua_442}, {nullptr, nullptr}};
                 luaL_setfuncs(L, members, 0);
             }
             lua_pushnil(L);
@@ -6485,7 +6485,7 @@ int rosetta_lua_open(lua_State* L) {
             lua_setfield(L, meta, "__index");
             lua_newtable(L);
             {
-                static const luaL_Reg members[] = {{"max_iterations", rosetta_lua_421}, {"tolerance", rosetta_lua_423}, {"history_size", rosetta_lua_425}, {nullptr, nullptr}};
+                static const luaL_Reg members[] = {{"max_iterations", rosetta_lua_439}, {"tolerance", rosetta_lua_441}, {"history_size", rosetta_lua_443}, {nullptr, nullptr}};
                 luaL_setfuncs(L, members, 0);
             }
             lua_pushliteral(L, "MAPOptions");
@@ -6501,7 +6501,7 @@ int rosetta_lua_open(lua_State* L) {
             lua_setfield(L, meta, "__tostring");
             lua_rawsetp(L, LUA_REGISTRYINDEX, &rosetta_lua::Info<datamunge::bayes::MAPOptions>::value);
             lua_createtable(L, 0, 2);
-            lua_pushcfunction(L, rosetta_lua_426);
+            lua_pushcfunction(L, rosetta_lua_444);
             lua_setfield(L, -2, "__call");
             lua_pushliteral(L, "MAPOptions");
             lua_setfield(L, -2, "__name");
@@ -6516,7 +6516,7 @@ int rosetta_lua_open(lua_State* L) {
             lua_pushboolean(L, 1);
             lua_rawsetp(L, cls, &rosetta_lua::native_key());
             {
-                static const luaL_Reg members[] = {{"optimize", rosetta_lua_427}, {"options", rosetta_lua_428}, {nullptr, nullptr}};
+                static const luaL_Reg members[] = {{"optimize", rosetta_lua_445}, {"options", rosetta_lua_446}, {nullptr, nullptr}};
                 luaL_setfuncs(L, members, 0);
             }
             lua_pushcfunction(L, rosetta_lua::class_extend);
@@ -6546,7 +6546,7 @@ int rosetta_lua_open(lua_State* L) {
             lua_setfield(L, meta, "__tostring");
             lua_rawsetp(L, LUA_REGISTRYINDEX, &rosetta_lua::Info<datamunge::bayes::MAP>::value);
             lua_createtable(L, 0, 2);
-            lua_pushcfunction(L, rosetta_lua_429);
+            lua_pushcfunction(L, rosetta_lua_447);
             lua_setfield(L, -2, "__call");
             lua_pushliteral(L, "MAP");
             lua_setfield(L, -2, "__name");
@@ -6571,7 +6571,7 @@ int rosetta_lua_open(lua_State* L) {
             lua_pushvalue(L, cls);
             lua_newtable(L);
             {
-                static const luaL_Reg members[] = {{"num_samples", rosetta_lua_430}, {"num_warmup", rosetta_lua_432}, {"max_tree_depth", rosetta_lua_434}, {"initial_step_size", rosetta_lua_436}, {"target_accept_rate", rosetta_lua_438}, {"max_delta_error", rosetta_lua_440}, {"seed", rosetta_lua_442}, {nullptr, nullptr}};
+                static const luaL_Reg members[] = {{"num_samples", rosetta_lua_448}, {"num_warmup", rosetta_lua_450}, {"max_tree_depth", rosetta_lua_452}, {"initial_step_size", rosetta_lua_454}, {"target_accept_rate", rosetta_lua_456}, {"max_delta_error", rosetta_lua_458}, {"seed", rosetta_lua_460}, {nullptr, nullptr}};
                 luaL_setfuncs(L, members, 0);
             }
             lua_pushnil(L);
@@ -6579,7 +6579,7 @@ int rosetta_lua_open(lua_State* L) {
             lua_setfield(L, meta, "__index");
             lua_newtable(L);
             {
-                static const luaL_Reg members[] = {{"num_samples", rosetta_lua_431}, {"num_warmup", rosetta_lua_433}, {"max_tree_depth", rosetta_lua_435}, {"initial_step_size", rosetta_lua_437}, {"target_accept_rate", rosetta_lua_439}, {"max_delta_error", rosetta_lua_441}, {"seed", rosetta_lua_443}, {nullptr, nullptr}};
+                static const luaL_Reg members[] = {{"num_samples", rosetta_lua_449}, {"num_warmup", rosetta_lua_451}, {"max_tree_depth", rosetta_lua_453}, {"initial_step_size", rosetta_lua_455}, {"target_accept_rate", rosetta_lua_457}, {"max_delta_error", rosetta_lua_459}, {"seed", rosetta_lua_461}, {nullptr, nullptr}};
                 luaL_setfuncs(L, members, 0);
             }
             lua_pushliteral(L, "NUTSOptions");
@@ -6595,7 +6595,7 @@ int rosetta_lua_open(lua_State* L) {
             lua_setfield(L, meta, "__tostring");
             lua_rawsetp(L, LUA_REGISTRYINDEX, &rosetta_lua::Info<datamunge::bayes::NUTSOptions>::value);
             lua_createtable(L, 0, 2);
-            lua_pushcfunction(L, rosetta_lua_444);
+            lua_pushcfunction(L, rosetta_lua_462);
             lua_setfield(L, -2, "__call");
             lua_pushliteral(L, "NUTSOptions");
             lua_setfield(L, -2, "__name");
@@ -6620,7 +6620,7 @@ int rosetta_lua_open(lua_State* L) {
             lua_pushvalue(L, cls);
             lua_newtable(L);
             {
-                static const luaL_Reg members[] = {{"samples", rosetta_lua_445}, {"accept_rate", rosetta_lua_447}, {"final_step_size", rosetta_lua_449}, {"num_divergences", rosetta_lua_451}, {"divergent", rosetta_lua_453}, {"tree_depth", rosetta_lua_455}, {"n_leapfrog", rosetta_lua_457}, {"energy", rosetta_lua_459}, {nullptr, nullptr}};
+                static const luaL_Reg members[] = {{"samples", rosetta_lua_463}, {"accept_rate", rosetta_lua_465}, {"final_step_size", rosetta_lua_467}, {"num_divergences", rosetta_lua_469}, {"divergent", rosetta_lua_471}, {"tree_depth", rosetta_lua_473}, {"n_leapfrog", rosetta_lua_475}, {"energy", rosetta_lua_477}, {nullptr, nullptr}};
                 luaL_setfuncs(L, members, 0);
             }
             lua_pushnil(L);
@@ -6628,7 +6628,7 @@ int rosetta_lua_open(lua_State* L) {
             lua_setfield(L, meta, "__index");
             lua_newtable(L);
             {
-                static const luaL_Reg members[] = {{"samples", rosetta_lua_446}, {"accept_rate", rosetta_lua_448}, {"final_step_size", rosetta_lua_450}, {"num_divergences", rosetta_lua_452}, {"divergent", rosetta_lua_454}, {"tree_depth", rosetta_lua_456}, {"n_leapfrog", rosetta_lua_458}, {"energy", rosetta_lua_460}, {nullptr, nullptr}};
+                static const luaL_Reg members[] = {{"samples", rosetta_lua_464}, {"accept_rate", rosetta_lua_466}, {"final_step_size", rosetta_lua_468}, {"num_divergences", rosetta_lua_470}, {"divergent", rosetta_lua_472}, {"tree_depth", rosetta_lua_474}, {"n_leapfrog", rosetta_lua_476}, {"energy", rosetta_lua_478}, {nullptr, nullptr}};
                 luaL_setfuncs(L, members, 0);
             }
             lua_pushliteral(L, "NUTSResult");
@@ -6644,7 +6644,7 @@ int rosetta_lua_open(lua_State* L) {
             lua_setfield(L, meta, "__tostring");
             lua_rawsetp(L, LUA_REGISTRYINDEX, &rosetta_lua::Info<datamunge::bayes::NUTSResult>::value);
             lua_createtable(L, 0, 2);
-            lua_pushcfunction(L, rosetta_lua_461);
+            lua_pushcfunction(L, rosetta_lua_479);
             lua_setfield(L, -2, "__call");
             lua_pushliteral(L, "NUTSResult");
             lua_setfield(L, -2, "__name");
@@ -6659,7 +6659,7 @@ int rosetta_lua_open(lua_State* L) {
             lua_pushboolean(L, 1);
             lua_rawsetp(L, cls, &rosetta_lua::native_key());
             {
-                static const luaL_Reg members[] = {{"sample", rosetta_lua_462}, {"options", rosetta_lua_463}, {nullptr, nullptr}};
+                static const luaL_Reg members[] = {{"sample", rosetta_lua_480}, {"options", rosetta_lua_481}, {nullptr, nullptr}};
                 luaL_setfuncs(L, members, 0);
             }
             lua_pushcfunction(L, rosetta_lua::class_extend);
@@ -6689,7 +6689,7 @@ int rosetta_lua_open(lua_State* L) {
             lua_setfield(L, meta, "__tostring");
             lua_rawsetp(L, LUA_REGISTRYINDEX, &rosetta_lua::Info<datamunge::bayes::NUTS>::value);
             lua_createtable(L, 0, 2);
-            lua_pushcfunction(L, rosetta_lua_464);
+            lua_pushcfunction(L, rosetta_lua_482);
             lua_setfield(L, -2, "__call");
             lua_pushliteral(L, "NUTS");
             lua_setfield(L, -2, "__name");
@@ -6714,7 +6714,7 @@ int rosetta_lua_open(lua_State* L) {
             lua_pushvalue(L, cls);
             lua_newtable(L);
             {
-                static const luaL_Reg members[] = {{"num_samples", rosetta_lua_465}, {"num_warmup", rosetta_lua_467}, {"initial_step_size", rosetta_lua_469}, {"target_accept_rate", rosetta_lua_471}, {"seed", rosetta_lua_473}, {"adapt_covariance", rosetta_lua_475}, {nullptr, nullptr}};
+                static const luaL_Reg members[] = {{"num_samples", rosetta_lua_483}, {"num_warmup", rosetta_lua_485}, {"initial_step_size", rosetta_lua_487}, {"target_accept_rate", rosetta_lua_489}, {"seed", rosetta_lua_491}, {"adapt_covariance", rosetta_lua_493}, {nullptr, nullptr}};
                 luaL_setfuncs(L, members, 0);
             }
             lua_pushnil(L);
@@ -6722,7 +6722,7 @@ int rosetta_lua_open(lua_State* L) {
             lua_setfield(L, meta, "__index");
             lua_newtable(L);
             {
-                static const luaL_Reg members[] = {{"num_samples", rosetta_lua_466}, {"num_warmup", rosetta_lua_468}, {"initial_step_size", rosetta_lua_470}, {"target_accept_rate", rosetta_lua_472}, {"seed", rosetta_lua_474}, {"adapt_covariance", rosetta_lua_476}, {nullptr, nullptr}};
+                static const luaL_Reg members[] = {{"num_samples", rosetta_lua_484}, {"num_warmup", rosetta_lua_486}, {"initial_step_size", rosetta_lua_488}, {"target_accept_rate", rosetta_lua_490}, {"seed", rosetta_lua_492}, {"adapt_covariance", rosetta_lua_494}, {nullptr, nullptr}};
                 luaL_setfuncs(L, members, 0);
             }
             lua_pushliteral(L, "RWMOptions");
@@ -6738,7 +6738,7 @@ int rosetta_lua_open(lua_State* L) {
             lua_setfield(L, meta, "__tostring");
             lua_rawsetp(L, LUA_REGISTRYINDEX, &rosetta_lua::Info<datamunge::bayes::RWMOptions>::value);
             lua_createtable(L, 0, 2);
-            lua_pushcfunction(L, rosetta_lua_477);
+            lua_pushcfunction(L, rosetta_lua_495);
             lua_setfield(L, -2, "__call");
             lua_pushliteral(L, "RWMOptions");
             lua_setfield(L, -2, "__name");
@@ -6763,7 +6763,7 @@ int rosetta_lua_open(lua_State* L) {
             lua_pushvalue(L, cls);
             lua_newtable(L);
             {
-                static const luaL_Reg members[] = {{"samples", rosetta_lua_478}, {"accept_rate", rosetta_lua_480}, {"final_step_size", rosetta_lua_482}, {"proposal_covariance", rosetta_lua_484}, {nullptr, nullptr}};
+                static const luaL_Reg members[] = {{"samples", rosetta_lua_496}, {"accept_rate", rosetta_lua_498}, {"final_step_size", rosetta_lua_500}, {"proposal_covariance", rosetta_lua_502}, {nullptr, nullptr}};
                 luaL_setfuncs(L, members, 0);
             }
             lua_pushnil(L);
@@ -6771,7 +6771,7 @@ int rosetta_lua_open(lua_State* L) {
             lua_setfield(L, meta, "__index");
             lua_newtable(L);
             {
-                static const luaL_Reg members[] = {{"samples", rosetta_lua_479}, {"accept_rate", rosetta_lua_481}, {"final_step_size", rosetta_lua_483}, {"proposal_covariance", rosetta_lua_485}, {nullptr, nullptr}};
+                static const luaL_Reg members[] = {{"samples", rosetta_lua_497}, {"accept_rate", rosetta_lua_499}, {"final_step_size", rosetta_lua_501}, {"proposal_covariance", rosetta_lua_503}, {nullptr, nullptr}};
                 luaL_setfuncs(L, members, 0);
             }
             lua_pushliteral(L, "RWMResult");
@@ -6787,7 +6787,7 @@ int rosetta_lua_open(lua_State* L) {
             lua_setfield(L, meta, "__tostring");
             lua_rawsetp(L, LUA_REGISTRYINDEX, &rosetta_lua::Info<datamunge::bayes::RWMResult>::value);
             lua_createtable(L, 0, 2);
-            lua_pushcfunction(L, rosetta_lua_486);
+            lua_pushcfunction(L, rosetta_lua_504);
             lua_setfield(L, -2, "__call");
             lua_pushliteral(L, "RWMResult");
             lua_setfield(L, -2, "__name");
@@ -6802,7 +6802,7 @@ int rosetta_lua_open(lua_State* L) {
             lua_pushboolean(L, 1);
             lua_rawsetp(L, cls, &rosetta_lua::native_key());
             {
-                static const luaL_Reg members[] = {{"sample", rosetta_lua_487}, {"options", rosetta_lua_488}, {nullptr, nullptr}};
+                static const luaL_Reg members[] = {{"sample", rosetta_lua_505}, {"options", rosetta_lua_506}, {nullptr, nullptr}};
                 luaL_setfuncs(L, members, 0);
             }
             lua_pushcfunction(L, rosetta_lua::class_extend);
@@ -6832,7 +6832,7 @@ int rosetta_lua_open(lua_State* L) {
             lua_setfield(L, meta, "__tostring");
             lua_rawsetp(L, LUA_REGISTRYINDEX, &rosetta_lua::Info<datamunge::bayes::RandomWalkMetropolis>::value);
             lua_createtable(L, 0, 2);
-            lua_pushcfunction(L, rosetta_lua_489);
+            lua_pushcfunction(L, rosetta_lua_507);
             lua_setfield(L, -2, "__call");
             lua_pushliteral(L, "RandomWalkMetropolis");
             lua_setfield(L, -2, "__name");
@@ -6857,7 +6857,7 @@ int rosetta_lua_open(lua_State* L) {
             lua_pushvalue(L, cls);
             lua_newtable(L);
             {
-                static const luaL_Reg members[] = {{"r", rosetta_lua_490}, {"g", rosetta_lua_492}, {"b", rosetta_lua_494}, {"a", rosetta_lua_496}, {nullptr, nullptr}};
+                static const luaL_Reg members[] = {{"r", rosetta_lua_508}, {"g", rosetta_lua_510}, {"b", rosetta_lua_512}, {"a", rosetta_lua_514}, {nullptr, nullptr}};
                 luaL_setfuncs(L, members, 0);
             }
             lua_pushnil(L);
@@ -6865,7 +6865,7 @@ int rosetta_lua_open(lua_State* L) {
             lua_setfield(L, meta, "__index");
             lua_newtable(L);
             {
-                static const luaL_Reg members[] = {{"r", rosetta_lua_491}, {"g", rosetta_lua_493}, {"b", rosetta_lua_495}, {"a", rosetta_lua_497}, {nullptr, nullptr}};
+                static const luaL_Reg members[] = {{"r", rosetta_lua_509}, {"g", rosetta_lua_511}, {"b", rosetta_lua_513}, {"a", rosetta_lua_515}, {nullptr, nullptr}};
                 luaL_setfuncs(L, members, 0);
             }
             lua_pushliteral(L, "Pixel");
@@ -6881,7 +6881,7 @@ int rosetta_lua_open(lua_State* L) {
             lua_setfield(L, meta, "__tostring");
             lua_rawsetp(L, LUA_REGISTRYINDEX, &rosetta_lua::Info<datamunge::image::Pixel>::value);
             lua_createtable(L, 0, 2);
-            lua_pushcfunction(L, rosetta_lua_498);
+            lua_pushcfunction(L, rosetta_lua_516);
             lua_setfield(L, -2, "__call");
             lua_pushliteral(L, "Pixel");
             lua_setfield(L, -2, "__name");
@@ -6896,7 +6896,7 @@ int rosetta_lua_open(lua_State* L) {
             lua_pushboolean(L, 1);
             lua_rawsetp(L, cls, &rosetta_lua::native_key());
             {
-                static const luaL_Reg members[] = {{"width", rosetta_lua_499}, {"height", rosetta_lua_500}, {"mode", rosetta_lua_501}, {"channels", rosetta_lua_502}, {"data", rosetta_lua_503}, {"get_pixel", rosetta_lua_504}, {"set_pixel", rosetta_lua_505}, {"fill", rosetta_lua_506}, {"channel_count", rosetta_lua_507}, {nullptr, nullptr}};
+                static const luaL_Reg members[] = {{"width", rosetta_lua_517}, {"height", rosetta_lua_518}, {"mode", rosetta_lua_519}, {"channels", rosetta_lua_520}, {"data", rosetta_lua_521}, {"get_pixel", rosetta_lua_522}, {"set_pixel", rosetta_lua_523}, {"fill", rosetta_lua_524}, {"channel_count", rosetta_lua_525}, {nullptr, nullptr}};
                 luaL_setfuncs(L, members, 0);
             }
             lua_pushcfunction(L, rosetta_lua::class_extend);
@@ -6926,7 +6926,7 @@ int rosetta_lua_open(lua_State* L) {
             lua_setfield(L, meta, "__tostring");
             lua_rawsetp(L, LUA_REGISTRYINDEX, &rosetta_lua::Info<datamunge::image::Image>::value);
             lua_createtable(L, 0, 2);
-            lua_pushcfunction(L, rosetta_lua_508);
+            lua_pushcfunction(L, rosetta_lua_526);
             lua_setfield(L, -2, "__call");
             lua_pushliteral(L, "Image");
             lua_setfield(L, -2, "__name");
@@ -6951,7 +6951,7 @@ int rosetta_lua_open(lua_State* L) {
             lua_pushvalue(L, cls);
             lua_newtable(L);
             {
-                static const luaL_Reg members[] = {{"h", rosetta_lua_509}, {"s", rosetta_lua_511}, {"v", rosetta_lua_513}, {nullptr, nullptr}};
+                static const luaL_Reg members[] = {{"h", rosetta_lua_527}, {"s", rosetta_lua_529}, {"v", rosetta_lua_531}, {nullptr, nullptr}};
                 luaL_setfuncs(L, members, 0);
             }
             lua_pushnil(L);
@@ -6959,7 +6959,7 @@ int rosetta_lua_open(lua_State* L) {
             lua_setfield(L, meta, "__index");
             lua_newtable(L);
             {
-                static const luaL_Reg members[] = {{"h", rosetta_lua_510}, {"s", rosetta_lua_512}, {"v", rosetta_lua_514}, {nullptr, nullptr}};
+                static const luaL_Reg members[] = {{"h", rosetta_lua_528}, {"s", rosetta_lua_530}, {"v", rosetta_lua_532}, {nullptr, nullptr}};
                 luaL_setfuncs(L, members, 0);
             }
             lua_pushliteral(L, "HSV");
@@ -6975,7 +6975,7 @@ int rosetta_lua_open(lua_State* L) {
             lua_setfield(L, meta, "__tostring");
             lua_rawsetp(L, LUA_REGISTRYINDEX, &rosetta_lua::Info<datamunge::image::HSV>::value);
             lua_createtable(L, 0, 2);
-            lua_pushcfunction(L, rosetta_lua_515);
+            lua_pushcfunction(L, rosetta_lua_533);
             lua_setfield(L, -2, "__call");
             lua_pushliteral(L, "HSV");
             lua_setfield(L, -2, "__name");
@@ -7000,7 +7000,7 @@ int rosetta_lua_open(lua_State* L) {
             lua_pushvalue(L, cls);
             lua_newtable(L);
             {
-                static const luaL_Reg members[] = {{"x", rosetta_lua_516}, {"y", rosetta_lua_518}, {"scale", rosetta_lua_520}, {"response", rosetta_lua_522}, {nullptr, nullptr}};
+                static const luaL_Reg members[] = {{"x", rosetta_lua_534}, {"y", rosetta_lua_536}, {"scale", rosetta_lua_538}, {"response", rosetta_lua_540}, {nullptr, nullptr}};
                 luaL_setfuncs(L, members, 0);
             }
             lua_pushnil(L);
@@ -7008,7 +7008,7 @@ int rosetta_lua_open(lua_State* L) {
             lua_setfield(L, meta, "__index");
             lua_newtable(L);
             {
-                static const luaL_Reg members[] = {{"x", rosetta_lua_517}, {"y", rosetta_lua_519}, {"scale", rosetta_lua_521}, {"response", rosetta_lua_523}, {nullptr, nullptr}};
+                static const luaL_Reg members[] = {{"x", rosetta_lua_535}, {"y", rosetta_lua_537}, {"scale", rosetta_lua_539}, {"response", rosetta_lua_541}, {nullptr, nullptr}};
                 luaL_setfuncs(L, members, 0);
             }
             lua_pushliteral(L, "KeyPoint");
@@ -7024,7 +7024,7 @@ int rosetta_lua_open(lua_State* L) {
             lua_setfield(L, meta, "__tostring");
             lua_rawsetp(L, LUA_REGISTRYINDEX, &rosetta_lua::Info<datamunge::cv::KeyPoint>::value);
             lua_createtable(L, 0, 2);
-            lua_pushcfunction(L, rosetta_lua_524);
+            lua_pushcfunction(L, rosetta_lua_542);
             lua_setfield(L, -2, "__call");
             lua_pushliteral(L, "KeyPoint");
             lua_setfield(L, -2, "__name");
@@ -7049,7 +7049,7 @@ int rosetta_lua_open(lua_State* L) {
             lua_pushvalue(L, cls);
             lua_newtable(L);
             {
-                static const luaL_Reg members[] = {{"x", rosetta_lua_525}, {"y", rosetta_lua_527}, {"response", rosetta_lua_529}, {nullptr, nullptr}};
+                static const luaL_Reg members[] = {{"x", rosetta_lua_543}, {"y", rosetta_lua_545}, {"response", rosetta_lua_547}, {nullptr, nullptr}};
                 luaL_setfuncs(L, members, 0);
             }
             lua_pushnil(L);
@@ -7057,7 +7057,7 @@ int rosetta_lua_open(lua_State* L) {
             lua_setfield(L, meta, "__index");
             lua_newtable(L);
             {
-                static const luaL_Reg members[] = {{"x", rosetta_lua_526}, {"y", rosetta_lua_528}, {"response", rosetta_lua_530}, {nullptr, nullptr}};
+                static const luaL_Reg members[] = {{"x", rosetta_lua_544}, {"y", rosetta_lua_546}, {"response", rosetta_lua_548}, {nullptr, nullptr}};
                 luaL_setfuncs(L, members, 0);
             }
             lua_pushliteral(L, "Corner");
@@ -7073,7 +7073,7 @@ int rosetta_lua_open(lua_State* L) {
             lua_setfield(L, meta, "__tostring");
             lua_rawsetp(L, LUA_REGISTRYINDEX, &rosetta_lua::Info<datamunge::cv::Corner>::value);
             lua_createtable(L, 0, 2);
-            lua_pushcfunction(L, rosetta_lua_531);
+            lua_pushcfunction(L, rosetta_lua_549);
             lua_setfield(L, -2, "__call");
             lua_pushliteral(L, "Corner");
             lua_setfield(L, -2, "__name");
@@ -7098,7 +7098,7 @@ int rosetta_lua_open(lua_State* L) {
             lua_pushvalue(L, cls);
             lua_newtable(L);
             {
-                static const luaL_Reg members[] = {{"sxx", rosetta_lua_532}, {"syy", rosetta_lua_534}, {"sxy", rosetta_lua_536}, {nullptr, nullptr}};
+                static const luaL_Reg members[] = {{"sxx", rosetta_lua_550}, {"syy", rosetta_lua_552}, {"sxy", rosetta_lua_554}, {nullptr, nullptr}};
                 luaL_setfuncs(L, members, 0);
             }
             lua_pushnil(L);
@@ -7106,7 +7106,7 @@ int rosetta_lua_open(lua_State* L) {
             lua_setfield(L, meta, "__index");
             lua_newtable(L);
             {
-                static const luaL_Reg members[] = {{"sxx", rosetta_lua_533}, {"syy", rosetta_lua_535}, {"sxy", rosetta_lua_537}, {nullptr, nullptr}};
+                static const luaL_Reg members[] = {{"sxx", rosetta_lua_551}, {"syy", rosetta_lua_553}, {"sxy", rosetta_lua_555}, {nullptr, nullptr}};
                 luaL_setfuncs(L, members, 0);
             }
             lua_pushliteral(L, "StructureTensorField");
@@ -7122,7 +7122,7 @@ int rosetta_lua_open(lua_State* L) {
             lua_setfield(L, meta, "__tostring");
             lua_rawsetp(L, LUA_REGISTRYINDEX, &rosetta_lua::Info<datamunge::cv::detail::StructureTensorField>::value);
             lua_createtable(L, 0, 2);
-            lua_pushcfunction(L, rosetta_lua_538);
+            lua_pushcfunction(L, rosetta_lua_556);
             lua_setfield(L, -2, "__call");
             lua_pushliteral(L, "StructureTensorField");
             lua_setfield(L, -2, "__name");
@@ -7147,7 +7147,7 @@ int rosetta_lua_open(lua_State* L) {
             lua_pushvalue(L, cls);
             lua_newtable(L);
             {
-                static const luaL_Reg members[] = {{"rho", rosetta_lua_539}, {"theta", rosetta_lua_541}, {"votes", rosetta_lua_543}, {nullptr, nullptr}};
+                static const luaL_Reg members[] = {{"rho", rosetta_lua_557}, {"theta", rosetta_lua_559}, {"votes", rosetta_lua_561}, {nullptr, nullptr}};
                 luaL_setfuncs(L, members, 0);
             }
             lua_pushnil(L);
@@ -7155,7 +7155,7 @@ int rosetta_lua_open(lua_State* L) {
             lua_setfield(L, meta, "__index");
             lua_newtable(L);
             {
-                static const luaL_Reg members[] = {{"rho", rosetta_lua_540}, {"theta", rosetta_lua_542}, {"votes", rosetta_lua_544}, {nullptr, nullptr}};
+                static const luaL_Reg members[] = {{"rho", rosetta_lua_558}, {"theta", rosetta_lua_560}, {"votes", rosetta_lua_562}, {nullptr, nullptr}};
                 luaL_setfuncs(L, members, 0);
             }
             lua_pushliteral(L, "HoughLine");
@@ -7171,7 +7171,7 @@ int rosetta_lua_open(lua_State* L) {
             lua_setfield(L, meta, "__tostring");
             lua_rawsetp(L, LUA_REGISTRYINDEX, &rosetta_lua::Info<datamunge::cv::HoughLine>::value);
             lua_createtable(L, 0, 2);
-            lua_pushcfunction(L, rosetta_lua_545);
+            lua_pushcfunction(L, rosetta_lua_563);
             lua_setfield(L, -2, "__call");
             lua_pushliteral(L, "HoughLine");
             lua_setfield(L, -2, "__name");
@@ -7196,7 +7196,7 @@ int rosetta_lua_open(lua_State* L) {
             lua_pushvalue(L, cls);
             lua_newtable(L);
             {
-                static const luaL_Reg members[] = {{"cx", rosetta_lua_546}, {"cy", rosetta_lua_548}, {"radius", rosetta_lua_550}, {"votes", rosetta_lua_552}, {nullptr, nullptr}};
+                static const luaL_Reg members[] = {{"cx", rosetta_lua_564}, {"cy", rosetta_lua_566}, {"radius", rosetta_lua_568}, {"votes", rosetta_lua_570}, {nullptr, nullptr}};
                 luaL_setfuncs(L, members, 0);
             }
             lua_pushnil(L);
@@ -7204,7 +7204,7 @@ int rosetta_lua_open(lua_State* L) {
             lua_setfield(L, meta, "__index");
             lua_newtable(L);
             {
-                static const luaL_Reg members[] = {{"cx", rosetta_lua_547}, {"cy", rosetta_lua_549}, {"radius", rosetta_lua_551}, {"votes", rosetta_lua_553}, {nullptr, nullptr}};
+                static const luaL_Reg members[] = {{"cx", rosetta_lua_565}, {"cy", rosetta_lua_567}, {"radius", rosetta_lua_569}, {"votes", rosetta_lua_571}, {nullptr, nullptr}};
                 luaL_setfuncs(L, members, 0);
             }
             lua_pushliteral(L, "HoughCircle");
@@ -7220,7 +7220,7 @@ int rosetta_lua_open(lua_State* L) {
             lua_setfield(L, meta, "__tostring");
             lua_rawsetp(L, LUA_REGISTRYINDEX, &rosetta_lua::Info<datamunge::cv::HoughCircle>::value);
             lua_createtable(L, 0, 2);
-            lua_pushcfunction(L, rosetta_lua_554);
+            lua_pushcfunction(L, rosetta_lua_572);
             lua_setfield(L, -2, "__call");
             lua_pushliteral(L, "HoughCircle");
             lua_setfield(L, -2, "__name");
@@ -7245,7 +7245,7 @@ int rosetta_lua_open(lua_State* L) {
             lua_pushvalue(L, cls);
             lua_newtable(L);
             {
-                static const luaL_Reg members[] = {{"dx", rosetta_lua_555}, {"dy", rosetta_lua_557}, {"valid", rosetta_lua_559}, {nullptr, nullptr}};
+                static const luaL_Reg members[] = {{"dx", rosetta_lua_573}, {"dy", rosetta_lua_575}, {"valid", rosetta_lua_577}, {nullptr, nullptr}};
                 luaL_setfuncs(L, members, 0);
             }
             lua_pushnil(L);
@@ -7253,7 +7253,7 @@ int rosetta_lua_open(lua_State* L) {
             lua_setfield(L, meta, "__index");
             lua_newtable(L);
             {
-                static const luaL_Reg members[] = {{"dx", rosetta_lua_556}, {"dy", rosetta_lua_558}, {"valid", rosetta_lua_560}, {nullptr, nullptr}};
+                static const luaL_Reg members[] = {{"dx", rosetta_lua_574}, {"dy", rosetta_lua_576}, {"valid", rosetta_lua_578}, {nullptr, nullptr}};
                 luaL_setfuncs(L, members, 0);
             }
             lua_pushliteral(L, "FlowVector");
@@ -7269,7 +7269,7 @@ int rosetta_lua_open(lua_State* L) {
             lua_setfield(L, meta, "__tostring");
             lua_rawsetp(L, LUA_REGISTRYINDEX, &rosetta_lua::Info<datamunge::cv::FlowVector>::value);
             lua_createtable(L, 0, 2);
-            lua_pushcfunction(L, rosetta_lua_561);
+            lua_pushcfunction(L, rosetta_lua_579);
             lua_setfield(L, -2, "__call");
             lua_pushliteral(L, "FlowVector");
             lua_setfield(L, -2, "__name");
@@ -7294,7 +7294,7 @@ int rosetta_lua_open(lua_State* L) {
             lua_pushvalue(L, cls);
             lua_newtable(L);
             {
-                static const luaL_Reg members[] = {{"labels", rosetta_lua_562}, {"width", rosetta_lua_564}, {"height", rosetta_lua_566}, {"count", rosetta_lua_568}, {nullptr, nullptr}};
+                static const luaL_Reg members[] = {{"labels", rosetta_lua_580}, {"width", rosetta_lua_582}, {"height", rosetta_lua_584}, {"count", rosetta_lua_586}, {nullptr, nullptr}};
                 luaL_setfuncs(L, members, 0);
             }
             lua_pushnil(L);
@@ -7302,7 +7302,7 @@ int rosetta_lua_open(lua_State* L) {
             lua_setfield(L, meta, "__index");
             lua_newtable(L);
             {
-                static const luaL_Reg members[] = {{"labels", rosetta_lua_563}, {"width", rosetta_lua_565}, {"height", rosetta_lua_567}, {"count", rosetta_lua_569}, {nullptr, nullptr}};
+                static const luaL_Reg members[] = {{"labels", rosetta_lua_581}, {"width", rosetta_lua_583}, {"height", rosetta_lua_585}, {"count", rosetta_lua_587}, {nullptr, nullptr}};
                 luaL_setfuncs(L, members, 0);
             }
             lua_pushliteral(L, "LabelMap");
@@ -7318,7 +7318,7 @@ int rosetta_lua_open(lua_State* L) {
             lua_setfield(L, meta, "__tostring");
             lua_rawsetp(L, LUA_REGISTRYINDEX, &rosetta_lua::Info<datamunge::cv::LabelMap>::value);
             lua_createtable(L, 0, 2);
-            lua_pushcfunction(L, rosetta_lua_570);
+            lua_pushcfunction(L, rosetta_lua_588);
             lua_setfield(L, -2, "__call");
             lua_pushliteral(L, "LabelMap");
             lua_setfield(L, -2, "__name");
@@ -7333,7 +7333,7 @@ int rosetta_lua_open(lua_State* L) {
             lua_pushboolean(L, 1);
             lua_rawsetp(L, cls, &rosetta_lua::native_key());
             {
-                static const luaL_Reg members[] = {{"size", rosetta_lua_571}, {"features", rosetta_lua_572}, {"image", rosetta_lua_573}, {nullptr, nullptr}};
+                static const luaL_Reg members[] = {{"size", rosetta_lua_589}, {"features", rosetta_lua_590}, {"image", rosetta_lua_591}, {nullptr, nullptr}};
                 luaL_setfuncs(L, members, 0);
             }
             lua_pushcfunction(L, rosetta_lua::class_extend);
@@ -7347,7 +7347,7 @@ int rosetta_lua_open(lua_State* L) {
             lua_pushvalue(L, cls);
             lua_newtable(L);
             {
-                static const luaL_Reg members[] = {{"pixels", rosetta_lua_574}, {"labels", rosetta_lua_576}, {"indices", rosetta_lua_578}, {"shape", rosetta_lua_580}, {nullptr, nullptr}};
+                static const luaL_Reg members[] = {{"pixels", rosetta_lua_592}, {"labels", rosetta_lua_594}, {"indices", rosetta_lua_596}, {"shape", rosetta_lua_598}, {nullptr, nullptr}};
                 luaL_setfuncs(L, members, 0);
             }
             lua_pushnil(L);
@@ -7355,7 +7355,7 @@ int rosetta_lua_open(lua_State* L) {
             lua_setfield(L, meta, "__index");
             lua_newtable(L);
             {
-                static const luaL_Reg members[] = {{"pixels", rosetta_lua_575}, {"labels", rosetta_lua_577}, {"indices", rosetta_lua_579}, {"shape", rosetta_lua_581}, {nullptr, nullptr}};
+                static const luaL_Reg members[] = {{"pixels", rosetta_lua_593}, {"labels", rosetta_lua_595}, {"indices", rosetta_lua_597}, {"shape", rosetta_lua_599}, {nullptr, nullptr}};
                 luaL_setfuncs(L, members, 0);
             }
             lua_pushliteral(L, "ImageBatch");
@@ -7369,12 +7369,12 @@ int rosetta_lua_open(lua_State* L) {
             lua_setfield(L, meta, "__eq");
             lua_pushcfunction(L, rosetta_lua::object_tostring);
             lua_setfield(L, meta, "__tostring");
-            lua_pushcfunction(L, rosetta_lua_571);
+            lua_pushcfunction(L, rosetta_lua_589);
             lua_pushcclosure(L, rosetta_lua::unary, 1);
             lua_setfield(L, meta, "__len");
             lua_rawsetp(L, LUA_REGISTRYINDEX, &rosetta_lua::Info<datamunge::datasets::ImageBatch>::value);
             lua_createtable(L, 0, 2);
-            lua_pushcfunction(L, rosetta_lua_582);
+            lua_pushcfunction(L, rosetta_lua_600);
             lua_setfield(L, -2, "__call");
             lua_pushliteral(L, "ImageBatch");
             lua_setfield(L, -2, "__name");
@@ -7389,7 +7389,7 @@ int rosetta_lua_open(lua_State* L) {
             lua_pushboolean(L, 1);
             lua_rawsetp(L, cls, &rosetta_lua::native_key());
             {
-                static const luaL_Reg members[] = {{"set_batch_size", rosetta_lua_583}, {"set_shuffle", rosetta_lua_584}, {"set_seed", rosetta_lua_585}, {"set_drop_last", rosetta_lua_586}, {"set_normalize", rosetta_lua_587}, {"set_layout", rosetta_lua_588}, {"set_limit", rosetta_lua_589}, {"set_coarse_labels", rosetta_lua_590}, {"dataset", rosetta_lua_591}, {"split", rosetta_lua_592}, {"directory", rosetta_lua_593}, {"batch_size", rosetta_lua_594}, {"shuffle", rosetta_lua_595}, {"seed", rosetta_lua_596}, {"drop_last", rosetta_lua_597}, {"normalize", rosetta_lua_598}, {"layout", rosetta_lua_599}, {"coarse_labels", rosetta_lua_600}, {"size", rosetta_lua_601}, {"split_size", rosetta_lua_602}, {"num_batches", rosetta_lua_603}, {"height", rosetta_lua_604}, {"width", rosetta_lua_605}, {"channels", rosetta_lua_606}, {"num_classes", rosetta_lua_607}, {"class_names", rosetta_lua_608}, {"epoch", rosetta_lua_609}, {"position", rosetta_lua_610}, {"has_next", rosetta_lua_611}, {"next", rosetta_lua_612}, {"reset", rosetta_lua_613}, {"batch", rosetta_lua_614}, {"take", rosetta_lua_615}, {"load_all", rosetta_lua_616}, {nullptr, nullptr}};
+                static const luaL_Reg members[] = {{"set_batch_size", rosetta_lua_601}, {"set_shuffle", rosetta_lua_602}, {"set_seed", rosetta_lua_603}, {"set_drop_last", rosetta_lua_604}, {"set_normalize", rosetta_lua_605}, {"set_layout", rosetta_lua_606}, {"set_limit", rosetta_lua_607}, {"set_coarse_labels", rosetta_lua_608}, {"dataset", rosetta_lua_609}, {"split", rosetta_lua_610}, {"directory", rosetta_lua_611}, {"batch_size", rosetta_lua_612}, {"shuffle", rosetta_lua_613}, {"seed", rosetta_lua_614}, {"drop_last", rosetta_lua_615}, {"normalize", rosetta_lua_616}, {"layout", rosetta_lua_617}, {"coarse_labels", rosetta_lua_618}, {"size", rosetta_lua_619}, {"split_size", rosetta_lua_620}, {"num_batches", rosetta_lua_621}, {"height", rosetta_lua_622}, {"width", rosetta_lua_623}, {"channels", rosetta_lua_624}, {"num_classes", rosetta_lua_625}, {"class_names", rosetta_lua_626}, {"epoch", rosetta_lua_627}, {"position", rosetta_lua_628}, {"has_next", rosetta_lua_629}, {"next", rosetta_lua_630}, {"reset", rosetta_lua_631}, {"batch", rosetta_lua_632}, {"take", rosetta_lua_633}, {"load_all", rosetta_lua_634}, {nullptr, nullptr}};
                 luaL_setfuncs(L, members, 0);
             }
             lua_pushcfunction(L, rosetta_lua::class_extend);
@@ -7417,12 +7417,12 @@ int rosetta_lua_open(lua_State* L) {
             lua_setfield(L, meta, "__eq");
             lua_pushcfunction(L, rosetta_lua::object_tostring);
             lua_setfield(L, meta, "__tostring");
-            lua_pushcfunction(L, rosetta_lua_601);
+            lua_pushcfunction(L, rosetta_lua_619);
             lua_pushcclosure(L, rosetta_lua::unary, 1);
             lua_setfield(L, meta, "__len");
             lua_rawsetp(L, LUA_REGISTRYINDEX, &rosetta_lua::Info<datamunge::datasets::ImageLoader>::value);
             lua_createtable(L, 0, 2);
-            lua_pushcfunction(L, rosetta_lua_617);
+            lua_pushcfunction(L, rosetta_lua_635);
             lua_setfield(L, -2, "__call");
             lua_pushliteral(L, "ImageLoader");
             lua_setfield(L, -2, "__name");
@@ -7437,7 +7437,7 @@ int rosetta_lua_open(lua_State* L) {
             lua_pushboolean(L, 1);
             lua_rawsetp(L, cls, &rosetta_lua::native_key());
             {
-                static const luaL_Reg members[] = {{"num_nodes", rosetta_lua_618}, {"num_elements", rosetta_lua_619}, {"node_at", rosetta_lua_620}, {"element_length", rosetta_lua_621}, {nullptr, nullptr}};
+                static const luaL_Reg members[] = {{"num_nodes", rosetta_lua_636}, {"num_elements", rosetta_lua_637}, {"node_at", rosetta_lua_638}, {"element_length", rosetta_lua_639}, {nullptr, nullptr}};
                 luaL_setfuncs(L, members, 0);
             }
             lua_pushcfunction(L, rosetta_lua::class_extend);
@@ -7467,7 +7467,7 @@ int rosetta_lua_open(lua_State* L) {
             lua_setfield(L, meta, "__tostring");
             lua_rawsetp(L, LUA_REGISTRYINDEX, &rosetta_lua::Info<datamunge::fem::Mesh1D>::value);
             lua_createtable(L, 0, 2);
-            lua_pushcfunction(L, rosetta_lua_622);
+            lua_pushcfunction(L, rosetta_lua_640);
             lua_setfield(L, -2, "__call");
             lua_pushliteral(L, "Mesh1D");
             lua_setfield(L, -2, "__name");
@@ -7482,7 +7482,7 @@ int rosetta_lua_open(lua_State* L) {
             lua_pushboolean(L, 1);
             lua_rawsetp(L, cls, &rosetta_lua::native_key());
             {
-                static const luaL_Reg members[] = {{"evaluate", rosetta_lua_623}, {nullptr, nullptr}};
+                static const luaL_Reg members[] = {{"evaluate", rosetta_lua_641}, {nullptr, nullptr}};
                 luaL_setfuncs(L, members, 0);
             }
             lua_pushcfunction(L, rosetta_lua::class_extend);
@@ -7512,7 +7512,7 @@ int rosetta_lua_open(lua_State* L) {
             lua_setfield(L, meta, "__tostring");
             lua_rawsetp(L, LUA_REGISTRYINDEX, &rosetta_lua::Info<datamunge::fem::ScalarField1D>::value);
             lua_createtable(L, 0, 2);
-            lua_pushcfunction(L, rosetta_lua_624);
+            lua_pushcfunction(L, rosetta_lua_642);
             lua_setfield(L, -2, "__call");
             lua_pushliteral(L, "ScalarField1D");
             lua_setfield(L, -2, "__name");
@@ -7527,7 +7527,7 @@ int rosetta_lua_open(lua_State* L) {
             lua_pushboolean(L, 1);
             lua_rawsetp(L, cls, &rosetta_lua::native_key());
             {
-                static const luaL_Reg members[] = {{"evaluate", rosetta_lua_625}, {nullptr, nullptr}};
+                static const luaL_Reg members[] = {{"evaluate", rosetta_lua_643}, {nullptr, nullptr}};
                 luaL_setfuncs(L, members, 0);
             }
             lua_pushcfunction(L, rosetta_lua::class_extend);
@@ -7557,7 +7557,7 @@ int rosetta_lua_open(lua_State* L) {
             lua_setfield(L, meta, "__tostring");
             lua_rawsetp(L, LUA_REGISTRYINDEX, &rosetta_lua::Info<datamunge::fem::ScalarField2D>::value);
             lua_createtable(L, 0, 2);
-            lua_pushcfunction(L, rosetta_lua_626);
+            lua_pushcfunction(L, rosetta_lua_644);
             lua_setfield(L, -2, "__call");
             lua_pushliteral(L, "ScalarField2D");
             lua_setfield(L, -2, "__name");
@@ -7582,7 +7582,7 @@ int rosetta_lua_open(lua_State* L) {
             lua_pushvalue(L, cls);
             lua_newtable(L);
             {
-                static const luaL_Reg members[] = {{"type", rosetta_lua_627}, {"value", rosetta_lua_629}, {"robin_coefficient", rosetta_lua_631}, {nullptr, nullptr}};
+                static const luaL_Reg members[] = {{"type", rosetta_lua_645}, {"value", rosetta_lua_647}, {"robin_coefficient", rosetta_lua_649}, {nullptr, nullptr}};
                 luaL_setfuncs(L, members, 0);
             }
             lua_pushnil(L);
@@ -7590,7 +7590,7 @@ int rosetta_lua_open(lua_State* L) {
             lua_setfield(L, meta, "__index");
             lua_newtable(L);
             {
-                static const luaL_Reg members[] = {{"type", rosetta_lua_628}, {"value", rosetta_lua_630}, {"robin_coefficient", rosetta_lua_632}, {nullptr, nullptr}};
+                static const luaL_Reg members[] = {{"type", rosetta_lua_646}, {"value", rosetta_lua_648}, {"robin_coefficient", rosetta_lua_650}, {nullptr, nullptr}};
                 luaL_setfuncs(L, members, 0);
             }
             lua_pushliteral(L, "BoundaryCondition1D");
@@ -7606,7 +7606,7 @@ int rosetta_lua_open(lua_State* L) {
             lua_setfield(L, meta, "__tostring");
             lua_rawsetp(L, LUA_REGISTRYINDEX, &rosetta_lua::Info<datamunge::fem::BoundaryCondition1D>::value);
             lua_createtable(L, 0, 2);
-            lua_pushcfunction(L, rosetta_lua_633);
+            lua_pushcfunction(L, rosetta_lua_651);
             lua_setfield(L, -2, "__call");
             lua_pushliteral(L, "BoundaryCondition1D");
             lua_setfield(L, -2, "__name");
@@ -7621,7 +7621,7 @@ int rosetta_lua_open(lua_State* L) {
             lua_pushboolean(L, 1);
             lua_rawsetp(L, cls, &rosetta_lua::native_key());
             {
-                static const luaL_Reg members[] = {{"size", rosetta_lua_634}, {"node_at", rosetta_lua_635}, {"value_at", rosetta_lua_636}, {nullptr, nullptr}};
+                static const luaL_Reg members[] = {{"size", rosetta_lua_652}, {"node_at", rosetta_lua_653}, {"value_at", rosetta_lua_654}, {nullptr, nullptr}};
                 luaL_setfuncs(L, members, 0);
             }
             lua_pushcfunction(L, rosetta_lua::class_extend);
@@ -7649,12 +7649,12 @@ int rosetta_lua_open(lua_State* L) {
             lua_setfield(L, meta, "__eq");
             lua_pushcfunction(L, rosetta_lua::object_tostring);
             lua_setfield(L, meta, "__tostring");
-            lua_pushcfunction(L, rosetta_lua_634);
+            lua_pushcfunction(L, rosetta_lua_652);
             lua_pushcclosure(L, rosetta_lua::unary, 1);
             lua_setfield(L, meta, "__len");
             lua_rawsetp(L, LUA_REGISTRYINDEX, &rosetta_lua::Info<datamunge::fem::FEM1DResult>::value);
             lua_createtable(L, 0, 2);
-            lua_pushcfunction(L, rosetta_lua_637);
+            lua_pushcfunction(L, rosetta_lua_655);
             lua_setfield(L, -2, "__call");
             lua_pushliteral(L, "FEM1DResult");
             lua_setfield(L, -2, "__name");
@@ -7669,7 +7669,7 @@ int rosetta_lua_open(lua_State* L) {
             lua_pushboolean(L, 1);
             lua_rawsetp(L, cls, &rosetta_lua::native_key());
             {
-                static const luaL_Reg members[] = {{"num_steps", rosetta_lua_638}, {"num_nodes", rosetta_lua_639}, {"node_at", rosetta_lua_640}, {"time_at", rosetta_lua_641}, {"value_at", rosetta_lua_642}, {nullptr, nullptr}};
+                static const luaL_Reg members[] = {{"num_steps", rosetta_lua_656}, {"num_nodes", rosetta_lua_657}, {"node_at", rosetta_lua_658}, {"time_at", rosetta_lua_659}, {"value_at", rosetta_lua_660}, {nullptr, nullptr}};
                 luaL_setfuncs(L, members, 0);
             }
             lua_pushcfunction(L, rosetta_lua::class_extend);
@@ -7699,7 +7699,7 @@ int rosetta_lua_open(lua_State* L) {
             lua_setfield(L, meta, "__tostring");
             lua_rawsetp(L, LUA_REGISTRYINDEX, &rosetta_lua::Info<datamunge::fem::FEM1DTimeSeries>::value);
             lua_createtable(L, 0, 2);
-            lua_pushcfunction(L, rosetta_lua_643);
+            lua_pushcfunction(L, rosetta_lua_661);
             lua_setfield(L, -2, "__call");
             lua_pushliteral(L, "FEM1DTimeSeries");
             lua_setfield(L, -2, "__name");
@@ -7714,7 +7714,7 @@ int rosetta_lua_open(lua_State* L) {
             lua_pushboolean(L, 1);
             lua_rawsetp(L, cls, &rosetta_lua::native_key());
             {
-                static const luaL_Reg members[] = {{"solve", rosetta_lua_644}, {"solve_builtin", rosetta_lua_645}, {"solve_transient", rosetta_lua_646}, {"solve_transient_builtin", rosetta_lua_647}, {nullptr, nullptr}};
+                static const luaL_Reg members[] = {{"solve", rosetta_lua_662}, {"solve_builtin", rosetta_lua_663}, {"solve_transient", rosetta_lua_664}, {"solve_transient_builtin", rosetta_lua_665}, {nullptr, nullptr}};
                 luaL_setfuncs(L, members, 0);
             }
             lua_pushcfunction(L, rosetta_lua::class_extend);
@@ -7744,7 +7744,7 @@ int rosetta_lua_open(lua_State* L) {
             lua_setfield(L, meta, "__tostring");
             lua_rawsetp(L, LUA_REGISTRYINDEX, &rosetta_lua::Info<datamunge::fem::FEM1D>::value);
             lua_createtable(L, 0, 2);
-            lua_pushcfunction(L, rosetta_lua_648);
+            lua_pushcfunction(L, rosetta_lua_666);
             lua_setfield(L, -2, "__call");
             lua_pushliteral(L, "FEM1D");
             lua_setfield(L, -2, "__name");
@@ -7769,7 +7769,7 @@ int rosetta_lua_open(lua_State* L) {
             lua_pushvalue(L, cls);
             lua_newtable(L);
             {
-                static const luaL_Reg members[] = {{"x", rosetta_lua_650}, {"y", rosetta_lua_652}, {nullptr, nullptr}};
+                static const luaL_Reg members[] = {{"x", rosetta_lua_668}, {"y", rosetta_lua_670}, {nullptr, nullptr}};
                 luaL_setfuncs(L, members, 0);
             }
             lua_pushnil(L);
@@ -7777,7 +7777,7 @@ int rosetta_lua_open(lua_State* L) {
             lua_setfield(L, meta, "__index");
             lua_newtable(L);
             {
-                static const luaL_Reg members[] = {{"x", rosetta_lua_651}, {"y", rosetta_lua_653}, {nullptr, nullptr}};
+                static const luaL_Reg members[] = {{"x", rosetta_lua_669}, {"y", rosetta_lua_671}, {nullptr, nullptr}};
                 luaL_setfuncs(L, members, 0);
             }
             lua_pushliteral(L, "Point2D");
@@ -7787,13 +7787,13 @@ int rosetta_lua_open(lua_State* L) {
             lua_setfield(L, meta, "__gc");
             lua_pushcfunction(L, rosetta_lua::object_gc);
             lua_setfield(L, meta, "__close");
-            lua_pushcfunction(L, rosetta_lua_649);
+            lua_pushcfunction(L, rosetta_lua_667);
             lua_setfield(L, meta, "__eq");
             lua_pushcfunction(L, rosetta_lua::object_tostring);
             lua_setfield(L, meta, "__tostring");
             lua_rawsetp(L, LUA_REGISTRYINDEX, &rosetta_lua::Info<datamunge::geometry::Point2D>::value);
             lua_createtable(L, 0, 2);
-            lua_pushcfunction(L, rosetta_lua_654);
+            lua_pushcfunction(L, rosetta_lua_672);
             lua_setfield(L, -2, "__call");
             lua_pushliteral(L, "Point2D");
             lua_setfield(L, -2, "__name");
@@ -7818,7 +7818,7 @@ int rosetta_lua_open(lua_State* L) {
             lua_pushvalue(L, cls);
             lua_newtable(L);
             {
-                static const luaL_Reg members[] = {{"a", rosetta_lua_655}, {"b", rosetta_lua_657}, {"c", rosetta_lua_659}, {nullptr, nullptr}};
+                static const luaL_Reg members[] = {{"a", rosetta_lua_673}, {"b", rosetta_lua_675}, {"c", rosetta_lua_677}, {nullptr, nullptr}};
                 luaL_setfuncs(L, members, 0);
             }
             lua_pushnil(L);
@@ -7826,7 +7826,7 @@ int rosetta_lua_open(lua_State* L) {
             lua_setfield(L, meta, "__index");
             lua_newtable(L);
             {
-                static const luaL_Reg members[] = {{"a", rosetta_lua_656}, {"b", rosetta_lua_658}, {"c", rosetta_lua_660}, {nullptr, nullptr}};
+                static const luaL_Reg members[] = {{"a", rosetta_lua_674}, {"b", rosetta_lua_676}, {"c", rosetta_lua_678}, {nullptr, nullptr}};
                 luaL_setfuncs(L, members, 0);
             }
             lua_pushliteral(L, "Triangle");
@@ -7842,7 +7842,7 @@ int rosetta_lua_open(lua_State* L) {
             lua_setfield(L, meta, "__tostring");
             lua_rawsetp(L, LUA_REGISTRYINDEX, &rosetta_lua::Info<datamunge::geometry::Triangle>::value);
             lua_createtable(L, 0, 2);
-            lua_pushcfunction(L, rosetta_lua_661);
+            lua_pushcfunction(L, rosetta_lua_679);
             lua_setfield(L, -2, "__call");
             lua_pushliteral(L, "Triangle");
             lua_setfield(L, -2, "__name");
@@ -7867,7 +7867,7 @@ int rosetta_lua_open(lua_State* L) {
             lua_pushvalue(L, cls);
             lua_newtable(L);
             {
-                static const luaL_Reg members[] = {{"seed_orientation_tests", rosetta_lua_662}, {"insertions", rosetta_lua_664}, {"incircle_tests", rosetta_lua_666}, {"hull_side_tests", rosetta_lua_668}, {"removed_faces", rosetta_lua_670}, {"boundary_edges", rosetta_lua_672}, {"created_faces", rosetta_lua_674}, {nullptr, nullptr}};
+                static const luaL_Reg members[] = {{"seed_orientation_tests", rosetta_lua_680}, {"insertions", rosetta_lua_682}, {"incircle_tests", rosetta_lua_684}, {"hull_side_tests", rosetta_lua_686}, {"removed_faces", rosetta_lua_688}, {"boundary_edges", rosetta_lua_690}, {"created_faces", rosetta_lua_692}, {nullptr, nullptr}};
                 luaL_setfuncs(L, members, 0);
             }
             lua_pushnil(L);
@@ -7875,7 +7875,7 @@ int rosetta_lua_open(lua_State* L) {
             lua_setfield(L, meta, "__index");
             lua_newtable(L);
             {
-                static const luaL_Reg members[] = {{"seed_orientation_tests", rosetta_lua_663}, {"insertions", rosetta_lua_665}, {"incircle_tests", rosetta_lua_667}, {"hull_side_tests", rosetta_lua_669}, {"removed_faces", rosetta_lua_671}, {"boundary_edges", rosetta_lua_673}, {"created_faces", rosetta_lua_675}, {nullptr, nullptr}};
+                static const luaL_Reg members[] = {{"seed_orientation_tests", rosetta_lua_681}, {"insertions", rosetta_lua_683}, {"incircle_tests", rosetta_lua_685}, {"hull_side_tests", rosetta_lua_687}, {"removed_faces", rosetta_lua_689}, {"boundary_edges", rosetta_lua_691}, {"created_faces", rosetta_lua_693}, {nullptr, nullptr}};
                 luaL_setfuncs(L, members, 0);
             }
             lua_pushliteral(L, "DelaunayWork");
@@ -7891,7 +7891,7 @@ int rosetta_lua_open(lua_State* L) {
             lua_setfield(L, meta, "__tostring");
             lua_rawsetp(L, LUA_REGISTRYINDEX, &rosetta_lua::Info<datamunge::geometry::DelaunayWork>::value);
             lua_createtable(L, 0, 2);
-            lua_pushcfunction(L, rosetta_lua_676);
+            lua_pushcfunction(L, rosetta_lua_694);
             lua_setfield(L, -2, "__call");
             lua_pushliteral(L, "DelaunayWork");
             lua_setfield(L, -2, "__name");
@@ -7916,7 +7916,7 @@ int rosetta_lua_open(lua_State* L) {
             lua_pushvalue(L, cls);
             lua_newtable(L);
             {
-                static const luaL_Reg members[] = {{"input_index", rosetta_lua_677}, {"faces_before", rosetta_lua_679}, {"faces_after", rosetta_lua_681}, {"removed", rosetta_lua_683}, {"boundary", rosetta_lua_685}, {"added", rosetta_lua_687}, {nullptr, nullptr}};
+                static const luaL_Reg members[] = {{"input_index", rosetta_lua_695}, {"faces_before", rosetta_lua_697}, {"faces_after", rosetta_lua_699}, {"removed", rosetta_lua_701}, {"boundary", rosetta_lua_703}, {"added", rosetta_lua_705}, {nullptr, nullptr}};
                 luaL_setfuncs(L, members, 0);
             }
             lua_pushnil(L);
@@ -7924,7 +7924,7 @@ int rosetta_lua_open(lua_State* L) {
             lua_setfield(L, meta, "__index");
             lua_newtable(L);
             {
-                static const luaL_Reg members[] = {{"input_index", rosetta_lua_678}, {"faces_before", rosetta_lua_680}, {"faces_after", rosetta_lua_682}, {"removed", rosetta_lua_684}, {"boundary", rosetta_lua_686}, {"added", rosetta_lua_688}, {nullptr, nullptr}};
+                static const luaL_Reg members[] = {{"input_index", rosetta_lua_696}, {"faces_before", rosetta_lua_698}, {"faces_after", rosetta_lua_700}, {"removed", rosetta_lua_702}, {"boundary", rosetta_lua_704}, {"added", rosetta_lua_706}, {nullptr, nullptr}};
                 luaL_setfuncs(L, members, 0);
             }
             lua_pushliteral(L, "DelaunayInsertion");
@@ -7940,7 +7940,7 @@ int rosetta_lua_open(lua_State* L) {
             lua_setfield(L, meta, "__tostring");
             lua_rawsetp(L, LUA_REGISTRYINDEX, &rosetta_lua::Info<datamunge::geometry::DelaunayInsertion>::value);
             lua_createtable(L, 0, 2);
-            lua_pushcfunction(L, rosetta_lua_689);
+            lua_pushcfunction(L, rosetta_lua_707);
             lua_setfield(L, -2, "__call");
             lua_pushliteral(L, "DelaunayInsertion");
             lua_setfield(L, -2, "__name");
@@ -7965,7 +7965,7 @@ int rosetta_lua_open(lua_State* L) {
             lua_pushvalue(L, cls);
             lua_newtable(L);
             {
-                static const luaL_Reg members[] = {{"points", rosetta_lua_690}, {"representatives", rosetta_lua_692}, {"representative_for_input", rosetta_lua_694}, {"has_seed", rosetta_lua_696}, {"seed", rosetta_lua_698}, {"triangles", rosetta_lua_700}, {"steps", rosetta_lua_702}, {"work", rosetta_lua_704}, {nullptr, nullptr}};
+                static const luaL_Reg members[] = {{"points", rosetta_lua_708}, {"representatives", rosetta_lua_710}, {"representative_for_input", rosetta_lua_712}, {"has_seed", rosetta_lua_714}, {"seed", rosetta_lua_716}, {"triangles", rosetta_lua_718}, {"steps", rosetta_lua_720}, {"work", rosetta_lua_722}, {nullptr, nullptr}};
                 luaL_setfuncs(L, members, 0);
             }
             lua_pushnil(L);
@@ -7973,7 +7973,7 @@ int rosetta_lua_open(lua_State* L) {
             lua_setfield(L, meta, "__index");
             lua_newtable(L);
             {
-                static const luaL_Reg members[] = {{"points", rosetta_lua_691}, {"representatives", rosetta_lua_693}, {"representative_for_input", rosetta_lua_695}, {"has_seed", rosetta_lua_697}, {"seed", rosetta_lua_699}, {"triangles", rosetta_lua_701}, {"steps", rosetta_lua_703}, {"work", rosetta_lua_705}, {nullptr, nullptr}};
+                static const luaL_Reg members[] = {{"points", rosetta_lua_709}, {"representatives", rosetta_lua_711}, {"representative_for_input", rosetta_lua_713}, {"has_seed", rosetta_lua_715}, {"seed", rosetta_lua_717}, {"triangles", rosetta_lua_719}, {"steps", rosetta_lua_721}, {"work", rosetta_lua_723}, {nullptr, nullptr}};
                 luaL_setfuncs(L, members, 0);
             }
             lua_pushliteral(L, "DelaunayTrace");
@@ -7989,7 +7989,7 @@ int rosetta_lua_open(lua_State* L) {
             lua_setfield(L, meta, "__tostring");
             lua_rawsetp(L, LUA_REGISTRYINDEX, &rosetta_lua::Info<datamunge::geometry::DelaunayTrace>::value);
             lua_createtable(L, 0, 2);
-            lua_pushcfunction(L, rosetta_lua_706);
+            lua_pushcfunction(L, rosetta_lua_724);
             lua_setfield(L, -2, "__call");
             lua_pushliteral(L, "DelaunayTrace");
             lua_setfield(L, -2, "__name");
@@ -8014,7 +8014,7 @@ int rosetta_lua_open(lua_State* L) {
             lua_pushvalue(L, cls);
             lua_newtable(L);
             {
-                static const luaL_Reg members[] = {{"distinct_points", rosetta_lua_707}, {"used_points", rosetta_lua_709}, {"triangles", rosetta_lua_711}, {"edges", rosetta_lua_713}, {"boundary_edges", rosetta_lua_715}, {"circle_tests", rosetta_lua_717}, {"interior_violations", rosetta_lua_719}, {"minimum_angle_degrees", rosetta_lua_721}, {nullptr, nullptr}};
+                static const luaL_Reg members[] = {{"distinct_points", rosetta_lua_725}, {"used_points", rosetta_lua_727}, {"triangles", rosetta_lua_729}, {"edges", rosetta_lua_731}, {"boundary_edges", rosetta_lua_733}, {"circle_tests", rosetta_lua_735}, {"interior_violations", rosetta_lua_737}, {"minimum_angle_degrees", rosetta_lua_739}, {nullptr, nullptr}};
                 luaL_setfuncs(L, members, 0);
             }
             lua_pushnil(L);
@@ -8022,7 +8022,7 @@ int rosetta_lua_open(lua_State* L) {
             lua_setfield(L, meta, "__index");
             lua_newtable(L);
             {
-                static const luaL_Reg members[] = {{"distinct_points", rosetta_lua_708}, {"used_points", rosetta_lua_710}, {"triangles", rosetta_lua_712}, {"edges", rosetta_lua_714}, {"boundary_edges", rosetta_lua_716}, {"circle_tests", rosetta_lua_718}, {"interior_violations", rosetta_lua_720}, {"minimum_angle_degrees", rosetta_lua_722}, {nullptr, nullptr}};
+                static const luaL_Reg members[] = {{"distinct_points", rosetta_lua_726}, {"used_points", rosetta_lua_728}, {"triangles", rosetta_lua_730}, {"edges", rosetta_lua_732}, {"boundary_edges", rosetta_lua_734}, {"circle_tests", rosetta_lua_736}, {"interior_violations", rosetta_lua_738}, {"minimum_angle_degrees", rosetta_lua_740}, {nullptr, nullptr}};
                 luaL_setfuncs(L, members, 0);
             }
             lua_pushliteral(L, "DelaunayAnalysis");
@@ -8038,7 +8038,7 @@ int rosetta_lua_open(lua_State* L) {
             lua_setfield(L, meta, "__tostring");
             lua_rawsetp(L, LUA_REGISTRYINDEX, &rosetta_lua::Info<datamunge::geometry::DelaunayAnalysis>::value);
             lua_createtable(L, 0, 2);
-            lua_pushcfunction(L, rosetta_lua_723);
+            lua_pushcfunction(L, rosetta_lua_741);
             lua_setfield(L, -2, "__call");
             lua_pushliteral(L, "DelaunayAnalysis");
             lua_setfield(L, -2, "__name");
@@ -8053,7 +8053,7 @@ int rosetta_lua_open(lua_State* L) {
             lua_pushboolean(L, 1);
             lua_rawsetp(L, cls, &rosetta_lua::native_key());
             {
-                static const luaL_Reg members[] = {{"num_nodes", rosetta_lua_724}, {"num_triangles", rosetta_lua_725}, {"node_at", rosetta_lua_726}, {"triangle_at", rosetta_lua_727}, {nullptr, nullptr}};
+                static const luaL_Reg members[] = {{"num_nodes", rosetta_lua_742}, {"num_triangles", rosetta_lua_743}, {"node_at", rosetta_lua_744}, {"triangle_at", rosetta_lua_745}, {nullptr, nullptr}};
                 luaL_setfuncs(L, members, 0);
             }
             lua_pushcfunction(L, rosetta_lua::class_extend);
@@ -8083,7 +8083,7 @@ int rosetta_lua_open(lua_State* L) {
             lua_setfield(L, meta, "__tostring");
             lua_rawsetp(L, LUA_REGISTRYINDEX, &rosetta_lua::Info<datamunge::fem::Mesh2D>::value);
             lua_createtable(L, 0, 2);
-            lua_pushcfunction(L, rosetta_lua_728);
+            lua_pushcfunction(L, rosetta_lua_746);
             lua_setfield(L, -2, "__call");
             lua_pushliteral(L, "Mesh2D");
             lua_setfield(L, -2, "__name");
@@ -8098,7 +8098,7 @@ int rosetta_lua_open(lua_State* L) {
             lua_pushboolean(L, 1);
             lua_rawsetp(L, cls, &rosetta_lua::native_key());
             {
-                static const luaL_Reg members[] = {{"size", rosetta_lua_729}, {"node_at", rosetta_lua_730}, {"value_at", rosetta_lua_731}, {nullptr, nullptr}};
+                static const luaL_Reg members[] = {{"size", rosetta_lua_747}, {"node_at", rosetta_lua_748}, {"value_at", rosetta_lua_749}, {nullptr, nullptr}};
                 luaL_setfuncs(L, members, 0);
             }
             lua_pushcfunction(L, rosetta_lua::class_extend);
@@ -8126,12 +8126,12 @@ int rosetta_lua_open(lua_State* L) {
             lua_setfield(L, meta, "__eq");
             lua_pushcfunction(L, rosetta_lua::object_tostring);
             lua_setfield(L, meta, "__tostring");
-            lua_pushcfunction(L, rosetta_lua_729);
+            lua_pushcfunction(L, rosetta_lua_747);
             lua_pushcclosure(L, rosetta_lua::unary, 1);
             lua_setfield(L, meta, "__len");
             lua_rawsetp(L, LUA_REGISTRYINDEX, &rosetta_lua::Info<datamunge::fem::FEM2DResult>::value);
             lua_createtable(L, 0, 2);
-            lua_pushcfunction(L, rosetta_lua_732);
+            lua_pushcfunction(L, rosetta_lua_750);
             lua_setfield(L, -2, "__call");
             lua_pushliteral(L, "FEM2DResult");
             lua_setfield(L, -2, "__name");
@@ -8146,7 +8146,7 @@ int rosetta_lua_open(lua_State* L) {
             lua_pushboolean(L, 1);
             lua_rawsetp(L, cls, &rosetta_lua::native_key());
             {
-                static const luaL_Reg members[] = {{"solve", rosetta_lua_733}, {"solve_builtin", rosetta_lua_734}, {nullptr, nullptr}};
+                static const luaL_Reg members[] = {{"solve", rosetta_lua_751}, {"solve_builtin", rosetta_lua_752}, {nullptr, nullptr}};
                 luaL_setfuncs(L, members, 0);
             }
             lua_pushcfunction(L, rosetta_lua::class_extend);
@@ -8176,7 +8176,7 @@ int rosetta_lua_open(lua_State* L) {
             lua_setfield(L, meta, "__tostring");
             lua_rawsetp(L, LUA_REGISTRYINDEX, &rosetta_lua::Info<datamunge::fem::FEM2D>::value);
             lua_createtable(L, 0, 2);
-            lua_pushcfunction(L, rosetta_lua_735);
+            lua_pushcfunction(L, rosetta_lua_753);
             lua_setfield(L, -2, "__call");
             lua_pushliteral(L, "FEM2D");
             lua_setfield(L, -2, "__name");
@@ -8201,7 +8201,7 @@ int rosetta_lua_open(lua_State* L) {
             lua_pushvalue(L, cls);
             lua_newtable(L);
             {
-                static const luaL_Reg members[] = {{"position", rosetta_lua_736}, {"velocity", rosetta_lua_738}, {nullptr, nullptr}};
+                static const luaL_Reg members[] = {{"position", rosetta_lua_754}, {"velocity", rosetta_lua_756}, {nullptr, nullptr}};
                 luaL_setfuncs(L, members, 0);
             }
             lua_pushnil(L);
@@ -8209,7 +8209,7 @@ int rosetta_lua_open(lua_State* L) {
             lua_setfield(L, meta, "__index");
             lua_newtable(L);
             {
-                static const luaL_Reg members[] = {{"position", rosetta_lua_737}, {"velocity", rosetta_lua_739}, {nullptr, nullptr}};
+                static const luaL_Reg members[] = {{"position", rosetta_lua_755}, {"velocity", rosetta_lua_757}, {nullptr, nullptr}};
                 luaL_setfuncs(L, members, 0);
             }
             lua_pushliteral(L, "AlphaBetaState");
@@ -8225,7 +8225,7 @@ int rosetta_lua_open(lua_State* L) {
             lua_setfield(L, meta, "__tostring");
             lua_rawsetp(L, LUA_REGISTRYINDEX, &rosetta_lua::Info<datamunge::filter::AlphaBetaState>::value);
             lua_createtable(L, 0, 2);
-            lua_pushcfunction(L, rosetta_lua_740);
+            lua_pushcfunction(L, rosetta_lua_758);
             lua_setfield(L, -2, "__call");
             lua_pushliteral(L, "AlphaBetaState");
             lua_setfield(L, -2, "__name");
@@ -8240,7 +8240,7 @@ int rosetta_lua_open(lua_State* L) {
             lua_pushboolean(L, 1);
             lua_rawsetp(L, cls, &rosetta_lua::native_key());
             {
-                static const luaL_Reg members[] = {{"update", rosetta_lua_741}, {"position", rosetta_lua_742}, {"velocity", rosetta_lua_743}, {"alpha", rosetta_lua_744}, {"beta", rosetta_lua_745}, {"dt", rosetta_lua_746}, {"filter", rosetta_lua_747}, {nullptr, nullptr}};
+                static const luaL_Reg members[] = {{"update", rosetta_lua_759}, {"position", rosetta_lua_760}, {"velocity", rosetta_lua_761}, {"alpha", rosetta_lua_762}, {"beta", rosetta_lua_763}, {"dt", rosetta_lua_764}, {"filter", rosetta_lua_765}, {nullptr, nullptr}};
                 luaL_setfuncs(L, members, 0);
             }
             lua_pushcfunction(L, rosetta_lua::class_extend);
@@ -8270,7 +8270,7 @@ int rosetta_lua_open(lua_State* L) {
             lua_setfield(L, meta, "__tostring");
             lua_rawsetp(L, LUA_REGISTRYINDEX, &rosetta_lua::Info<datamunge::filter::AlphaBetaFilter>::value);
             lua_createtable(L, 0, 2);
-            lua_pushcfunction(L, rosetta_lua_748);
+            lua_pushcfunction(L, rosetta_lua_766);
             lua_setfield(L, -2, "__call");
             lua_pushliteral(L, "AlphaBetaFilter");
             lua_setfield(L, -2, "__name");
@@ -8295,7 +8295,7 @@ int rosetta_lua_open(lua_State* L) {
             lua_pushvalue(L, cls);
             lua_newtable(L);
             {
-                static const luaL_Reg members[] = {{"position", rosetta_lua_749}, {"velocity", rosetta_lua_751}, {"acceleration", rosetta_lua_753}, {nullptr, nullptr}};
+                static const luaL_Reg members[] = {{"position", rosetta_lua_767}, {"velocity", rosetta_lua_769}, {"acceleration", rosetta_lua_771}, {nullptr, nullptr}};
                 luaL_setfuncs(L, members, 0);
             }
             lua_pushnil(L);
@@ -8303,7 +8303,7 @@ int rosetta_lua_open(lua_State* L) {
             lua_setfield(L, meta, "__index");
             lua_newtable(L);
             {
-                static const luaL_Reg members[] = {{"position", rosetta_lua_750}, {"velocity", rosetta_lua_752}, {"acceleration", rosetta_lua_754}, {nullptr, nullptr}};
+                static const luaL_Reg members[] = {{"position", rosetta_lua_768}, {"velocity", rosetta_lua_770}, {"acceleration", rosetta_lua_772}, {nullptr, nullptr}};
                 luaL_setfuncs(L, members, 0);
             }
             lua_pushliteral(L, "AlphaBetaGammaState");
@@ -8319,7 +8319,7 @@ int rosetta_lua_open(lua_State* L) {
             lua_setfield(L, meta, "__tostring");
             lua_rawsetp(L, LUA_REGISTRYINDEX, &rosetta_lua::Info<datamunge::filter::AlphaBetaGammaState>::value);
             lua_createtable(L, 0, 2);
-            lua_pushcfunction(L, rosetta_lua_755);
+            lua_pushcfunction(L, rosetta_lua_773);
             lua_setfield(L, -2, "__call");
             lua_pushliteral(L, "AlphaBetaGammaState");
             lua_setfield(L, -2, "__name");
@@ -8334,7 +8334,7 @@ int rosetta_lua_open(lua_State* L) {
             lua_pushboolean(L, 1);
             lua_rawsetp(L, cls, &rosetta_lua::native_key());
             {
-                static const luaL_Reg members[] = {{"update", rosetta_lua_756}, {"position", rosetta_lua_757}, {"velocity", rosetta_lua_758}, {"acceleration", rosetta_lua_759}, {"alpha", rosetta_lua_760}, {"beta", rosetta_lua_761}, {"gamma", rosetta_lua_762}, {"dt", rosetta_lua_763}, {"filter", rosetta_lua_764}, {nullptr, nullptr}};
+                static const luaL_Reg members[] = {{"update", rosetta_lua_774}, {"position", rosetta_lua_775}, {"velocity", rosetta_lua_776}, {"acceleration", rosetta_lua_777}, {"alpha", rosetta_lua_778}, {"beta", rosetta_lua_779}, {"gamma", rosetta_lua_780}, {"dt", rosetta_lua_781}, {"filter", rosetta_lua_782}, {nullptr, nullptr}};
                 luaL_setfuncs(L, members, 0);
             }
             lua_pushcfunction(L, rosetta_lua::class_extend);
@@ -8364,7 +8364,7 @@ int rosetta_lua_open(lua_State* L) {
             lua_setfield(L, meta, "__tostring");
             lua_rawsetp(L, LUA_REGISTRYINDEX, &rosetta_lua::Info<datamunge::filter::AlphaBetaGammaFilter>::value);
             lua_createtable(L, 0, 2);
-            lua_pushcfunction(L, rosetta_lua_765);
+            lua_pushcfunction(L, rosetta_lua_783);
             lua_setfield(L, -2, "__call");
             lua_pushliteral(L, "AlphaBetaGammaFilter");
             lua_setfield(L, -2, "__name");
@@ -8389,7 +8389,7 @@ int rosetta_lua_open(lua_State* L) {
             lua_pushvalue(L, cls);
             lua_newtable(L);
             {
-                static const luaL_Reg members[] = {{"x", rosetta_lua_766}, {"P", rosetta_lua_768}, {nullptr, nullptr}};
+                static const luaL_Reg members[] = {{"x", rosetta_lua_784}, {"P", rosetta_lua_786}, {nullptr, nullptr}};
                 luaL_setfuncs(L, members, 0);
             }
             lua_pushnil(L);
@@ -8397,7 +8397,7 @@ int rosetta_lua_open(lua_State* L) {
             lua_setfield(L, meta, "__index");
             lua_newtable(L);
             {
-                static const luaL_Reg members[] = {{"x", rosetta_lua_767}, {"P", rosetta_lua_769}, {nullptr, nullptr}};
+                static const luaL_Reg members[] = {{"x", rosetta_lua_785}, {"P", rosetta_lua_787}, {nullptr, nullptr}};
                 luaL_setfuncs(L, members, 0);
             }
             lua_pushliteral(L, "KalmanState");
@@ -8413,7 +8413,7 @@ int rosetta_lua_open(lua_State* L) {
             lua_setfield(L, meta, "__tostring");
             lua_rawsetp(L, LUA_REGISTRYINDEX, &rosetta_lua::Info<datamunge::filter::KalmanState>::value);
             lua_createtable(L, 0, 2);
-            lua_pushcfunction(L, rosetta_lua_770);
+            lua_pushcfunction(L, rosetta_lua_788);
             lua_setfield(L, -2, "__call");
             lua_pushliteral(L, "KalmanState");
             lua_setfield(L, -2, "__name");
@@ -8438,7 +8438,7 @@ int rosetta_lua_open(lua_State* L) {
             lua_pushvalue(L, cls);
             lua_newtable(L);
             {
-                static const luaL_Reg members[] = {{"filtered", rosetta_lua_771}, {"smoothed", rosetta_lua_773}, {nullptr, nullptr}};
+                static const luaL_Reg members[] = {{"filtered", rosetta_lua_789}, {"smoothed", rosetta_lua_791}, {nullptr, nullptr}};
                 luaL_setfuncs(L, members, 0);
             }
             lua_pushnil(L);
@@ -8446,7 +8446,7 @@ int rosetta_lua_open(lua_State* L) {
             lua_setfield(L, meta, "__index");
             lua_newtable(L);
             {
-                static const luaL_Reg members[] = {{"filtered", rosetta_lua_772}, {"smoothed", rosetta_lua_774}, {nullptr, nullptr}};
+                static const luaL_Reg members[] = {{"filtered", rosetta_lua_790}, {"smoothed", rosetta_lua_792}, {nullptr, nullptr}};
                 luaL_setfuncs(L, members, 0);
             }
             lua_pushliteral(L, "SmoothResult");
@@ -8462,7 +8462,7 @@ int rosetta_lua_open(lua_State* L) {
             lua_setfield(L, meta, "__tostring");
             lua_rawsetp(L, LUA_REGISTRYINDEX, &rosetta_lua::Info<datamunge::filter::SmoothResult>::value);
             lua_createtable(L, 0, 2);
-            lua_pushcfunction(L, rosetta_lua_775);
+            lua_pushcfunction(L, rosetta_lua_793);
             lua_setfield(L, -2, "__call");
             lua_pushliteral(L, "SmoothResult");
             lua_setfield(L, -2, "__name");
@@ -8477,7 +8477,7 @@ int rosetta_lua_open(lua_State* L) {
             lua_pushboolean(L, 1);
             lua_rawsetp(L, cls, &rosetta_lua::native_key());
             {
-                static const luaL_Reg members[] = {{"predict", rosetta_lua_776}, {"update", rosetta_lua_777}, {"state", rosetta_lua_778}, {"covariance", rosetta_lua_779}, {"filter", rosetta_lua_780}, {"smooth", rosetta_lua_781}, {nullptr, nullptr}};
+                static const luaL_Reg members[] = {{"predict", rosetta_lua_794}, {"update", rosetta_lua_795}, {"state", rosetta_lua_796}, {"covariance", rosetta_lua_797}, {"filter", rosetta_lua_798}, {"smooth", rosetta_lua_799}, {nullptr, nullptr}};
                 luaL_setfuncs(L, members, 0);
             }
             lua_pushcfunction(L, rosetta_lua::class_extend);
@@ -8507,7 +8507,7 @@ int rosetta_lua_open(lua_State* L) {
             lua_setfield(L, meta, "__tostring");
             lua_rawsetp(L, LUA_REGISTRYINDEX, &rosetta_lua::Info<datamunge::filter::KalmanFilter>::value);
             lua_createtable(L, 0, 2);
-            lua_pushcfunction(L, rosetta_lua_782);
+            lua_pushcfunction(L, rosetta_lua_800);
             lua_setfield(L, -2, "__call");
             lua_pushliteral(L, "KalmanFilter");
             lua_setfield(L, -2, "__name");
@@ -8522,7 +8522,7 @@ int rosetta_lua_open(lua_State* L) {
             lua_pushboolean(L, 1);
             lua_rawsetp(L, cls, &rosetta_lua::native_key());
             {
-                static const luaL_Reg members[] = {{"evaluate", rosetta_lua_783}, {nullptr, nullptr}};
+                static const luaL_Reg members[] = {{"evaluate", rosetta_lua_801}, {nullptr, nullptr}};
                 luaL_setfuncs(L, members, 0);
             }
             lua_pushcfunction(L, rosetta_lua::class_extend);
@@ -8552,7 +8552,7 @@ int rosetta_lua_open(lua_State* L) {
             lua_setfield(L, meta, "__tostring");
             lua_rawsetp(L, LUA_REGISTRYINDEX, &rosetta_lua::Info<datamunge::filter::VectorFunction>::value);
             lua_createtable(L, 0, 2);
-            lua_pushcfunction(L, rosetta_lua_784);
+            lua_pushcfunction(L, rosetta_lua_802);
             lua_setfield(L, -2, "__call");
             lua_pushliteral(L, "VectorFunction");
             lua_setfield(L, -2, "__name");
@@ -8567,7 +8567,7 @@ int rosetta_lua_open(lua_State* L) {
             lua_pushboolean(L, 1);
             lua_rawsetp(L, cls, &rosetta_lua::native_key());
             {
-                static const luaL_Reg members[] = {{"predict", rosetta_lua_785}, {"update", rosetta_lua_786}, {"state", rosetta_lua_787}, {"covariance", rosetta_lua_788}, {"filter", rosetta_lua_789}, {nullptr, nullptr}};
+                static const luaL_Reg members[] = {{"predict", rosetta_lua_803}, {"update", rosetta_lua_804}, {"state", rosetta_lua_805}, {"covariance", rosetta_lua_806}, {"filter", rosetta_lua_807}, {nullptr, nullptr}};
                 luaL_setfuncs(L, members, 0);
             }
             lua_pushcfunction(L, rosetta_lua::class_extend);
@@ -8597,7 +8597,7 @@ int rosetta_lua_open(lua_State* L) {
             lua_setfield(L, meta, "__tostring");
             lua_rawsetp(L, LUA_REGISTRYINDEX, &rosetta_lua::Info<datamunge::filter::EnsembleKalmanFilter>::value);
             lua_createtable(L, 0, 2);
-            lua_pushcfunction(L, rosetta_lua_790);
+            lua_pushcfunction(L, rosetta_lua_808);
             lua_setfield(L, -2, "__call");
             lua_pushliteral(L, "EnsembleKalmanFilter");
             lua_setfield(L, -2, "__name");
@@ -8612,7 +8612,7 @@ int rosetta_lua_open(lua_State* L) {
             lua_pushboolean(L, 1);
             lua_rawsetp(L, cls, &rosetta_lua::native_key());
             {
-                static const luaL_Reg members[] = {{"predict", rosetta_lua_791}, {"update", rosetta_lua_792}, {"state", rosetta_lua_793}, {"covariance", rosetta_lua_794}, {"filter", rosetta_lua_795}, {nullptr, nullptr}};
+                static const luaL_Reg members[] = {{"predict", rosetta_lua_809}, {"update", rosetta_lua_810}, {"state", rosetta_lua_811}, {"covariance", rosetta_lua_812}, {"filter", rosetta_lua_813}, {nullptr, nullptr}};
                 luaL_setfuncs(L, members, 0);
             }
             lua_pushcfunction(L, rosetta_lua::class_extend);
@@ -8642,7 +8642,7 @@ int rosetta_lua_open(lua_State* L) {
             lua_setfield(L, meta, "__tostring");
             lua_rawsetp(L, LUA_REGISTRYINDEX, &rosetta_lua::Info<datamunge::filter::ExtendedKalmanFilter>::value);
             lua_createtable(L, 0, 2);
-            lua_pushcfunction(L, rosetta_lua_796);
+            lua_pushcfunction(L, rosetta_lua_814);
             lua_setfield(L, -2, "__call");
             lua_pushliteral(L, "ExtendedKalmanFilter");
             lua_setfield(L, -2, "__name");
@@ -8657,7 +8657,7 @@ int rosetta_lua_open(lua_State* L) {
             lua_pushboolean(L, 1);
             lua_rawsetp(L, cls, &rosetta_lua::native_key());
             {
-                static const luaL_Reg members[] = {{"predict", rosetta_lua_797}, {"update", rosetta_lua_798}, {"state", rosetta_lua_799}, {"covariance", rosetta_lua_800}, {"filter", rosetta_lua_801}, {nullptr, nullptr}};
+                static const luaL_Reg members[] = {{"predict", rosetta_lua_815}, {"update", rosetta_lua_816}, {"state", rosetta_lua_817}, {"covariance", rosetta_lua_818}, {"filter", rosetta_lua_819}, {nullptr, nullptr}};
                 luaL_setfuncs(L, members, 0);
             }
             lua_pushcfunction(L, rosetta_lua::class_extend);
@@ -8687,7 +8687,7 @@ int rosetta_lua_open(lua_State* L) {
             lua_setfield(L, meta, "__tostring");
             lua_rawsetp(L, LUA_REGISTRYINDEX, &rosetta_lua::Info<datamunge::filter::InformationFilter>::value);
             lua_createtable(L, 0, 2);
-            lua_pushcfunction(L, rosetta_lua_802);
+            lua_pushcfunction(L, rosetta_lua_820);
             lua_setfield(L, -2, "__call");
             lua_pushliteral(L, "InformationFilter");
             lua_setfield(L, -2, "__name");
@@ -8702,7 +8702,7 @@ int rosetta_lua_open(lua_State* L) {
             lua_pushboolean(L, 1);
             lua_rawsetp(L, cls, &rosetta_lua::native_key());
             {
-                static const luaL_Reg members[] = {{"predict", rosetta_lua_803}, {"update", rosetta_lua_804}, {"state", rosetta_lua_805}, {"covariance", rosetta_lua_806}, {"filter", rosetta_lua_807}, {nullptr, nullptr}};
+                static const luaL_Reg members[] = {{"predict", rosetta_lua_821}, {"update", rosetta_lua_822}, {"state", rosetta_lua_823}, {"covariance", rosetta_lua_824}, {"filter", rosetta_lua_825}, {nullptr, nullptr}};
                 luaL_setfuncs(L, members, 0);
             }
             lua_pushcfunction(L, rosetta_lua::class_extend);
@@ -8732,7 +8732,7 @@ int rosetta_lua_open(lua_State* L) {
             lua_setfield(L, meta, "__tostring");
             lua_rawsetp(L, LUA_REGISTRYINDEX, &rosetta_lua::Info<datamunge::filter::ParticleFilter>::value);
             lua_createtable(L, 0, 2);
-            lua_pushcfunction(L, rosetta_lua_808);
+            lua_pushcfunction(L, rosetta_lua_826);
             lua_setfield(L, -2, "__call");
             lua_pushliteral(L, "ParticleFilter");
             lua_setfield(L, -2, "__name");
@@ -8747,7 +8747,7 @@ int rosetta_lua_open(lua_State* L) {
             lua_pushboolean(L, 1);
             lua_rawsetp(L, cls, &rosetta_lua::native_key());
             {
-                static const luaL_Reg members[] = {{"predict", rosetta_lua_809}, {"update", rosetta_lua_810}, {"state", rosetta_lua_811}, {"covariance", rosetta_lua_812}, {"filter", rosetta_lua_813}, {nullptr, nullptr}};
+                static const luaL_Reg members[] = {{"predict", rosetta_lua_827}, {"update", rosetta_lua_828}, {"state", rosetta_lua_829}, {"covariance", rosetta_lua_830}, {"filter", rosetta_lua_831}, {nullptr, nullptr}};
                 luaL_setfuncs(L, members, 0);
             }
             lua_pushcfunction(L, rosetta_lua::class_extend);
@@ -8777,7 +8777,7 @@ int rosetta_lua_open(lua_State* L) {
             lua_setfield(L, meta, "__tostring");
             lua_rawsetp(L, LUA_REGISTRYINDEX, &rosetta_lua::Info<datamunge::filter::UnscentedKalmanFilter>::value);
             lua_createtable(L, 0, 2);
-            lua_pushcfunction(L, rosetta_lua_814);
+            lua_pushcfunction(L, rosetta_lua_832);
             lua_setfield(L, -2, "__call");
             lua_pushliteral(L, "UnscentedKalmanFilter");
             lua_setfield(L, -2, "__name");
@@ -8802,7 +8802,7 @@ int rosetta_lua_open(lua_State* L) {
             lua_pushvalue(L, cls);
             lua_newtable(L);
             {
-                static const luaL_Reg members[] = {{"min", rosetta_lua_815}, {"max", rosetta_lua_817}, {nullptr, nullptr}};
+                static const luaL_Reg members[] = {{"min", rosetta_lua_833}, {"max", rosetta_lua_835}, {nullptr, nullptr}};
                 luaL_setfuncs(L, members, 0);
             }
             lua_pushnil(L);
@@ -8810,7 +8810,7 @@ int rosetta_lua_open(lua_State* L) {
             lua_setfield(L, meta, "__index");
             lua_newtable(L);
             {
-                static const luaL_Reg members[] = {{"min", rosetta_lua_816}, {"max", rosetta_lua_818}, {nullptr, nullptr}};
+                static const luaL_Reg members[] = {{"min", rosetta_lua_834}, {"max", rosetta_lua_836}, {nullptr, nullptr}};
                 luaL_setfuncs(L, members, 0);
             }
             lua_pushliteral(L, "BoundingBox");
@@ -8826,7 +8826,7 @@ int rosetta_lua_open(lua_State* L) {
             lua_setfield(L, meta, "__tostring");
             lua_rawsetp(L, LUA_REGISTRYINDEX, &rosetta_lua::Info<datamunge::geometry::BoundingBox>::value);
             lua_createtable(L, 0, 2);
-            lua_pushcfunction(L, rosetta_lua_819);
+            lua_pushcfunction(L, rosetta_lua_837);
             lua_setfield(L, -2, "__call");
             lua_pushliteral(L, "BoundingBox");
             lua_setfield(L, -2, "__name");
@@ -8851,7 +8851,7 @@ int rosetta_lua_open(lua_State* L) {
             lua_pushvalue(L, cls);
             lua_newtable(L);
             {
-                static const luaL_Reg members[] = {{"a", rosetta_lua_820}, {"b", rosetta_lua_822}, {"distance", rosetta_lua_824}, {nullptr, nullptr}};
+                static const luaL_Reg members[] = {{"a", rosetta_lua_838}, {"b", rosetta_lua_840}, {"distance", rosetta_lua_842}, {nullptr, nullptr}};
                 luaL_setfuncs(L, members, 0);
             }
             lua_pushnil(L);
@@ -8859,7 +8859,7 @@ int rosetta_lua_open(lua_State* L) {
             lua_setfield(L, meta, "__index");
             lua_newtable(L);
             {
-                static const luaL_Reg members[] = {{"a", rosetta_lua_821}, {"b", rosetta_lua_823}, {"distance", rosetta_lua_825}, {nullptr, nullptr}};
+                static const luaL_Reg members[] = {{"a", rosetta_lua_839}, {"b", rosetta_lua_841}, {"distance", rosetta_lua_843}, {nullptr, nullptr}};
                 luaL_setfuncs(L, members, 0);
             }
             lua_pushliteral(L, "ClosestPairResult");
@@ -8875,7 +8875,7 @@ int rosetta_lua_open(lua_State* L) {
             lua_setfield(L, meta, "__tostring");
             lua_rawsetp(L, LUA_REGISTRYINDEX, &rosetta_lua::Info<datamunge::geometry::ClosestPairResult>::value);
             lua_createtable(L, 0, 2);
-            lua_pushcfunction(L, rosetta_lua_826);
+            lua_pushcfunction(L, rosetta_lua_844);
             lua_setfield(L, -2, "__call");
             lua_pushliteral(L, "ClosestPairResult");
             lua_setfield(L, -2, "__name");
@@ -8900,7 +8900,7 @@ int rosetta_lua_open(lua_State* L) {
             lua_pushvalue(L, cls);
             lua_newtable(L);
             {
-                static const luaL_Reg members[] = {{"max_points", rosetta_lua_827}, {"max_events", rosetta_lua_829}, {nullptr, nullptr}};
+                static const luaL_Reg members[] = {{"max_points", rosetta_lua_845}, {"max_events", rosetta_lua_847}, {nullptr, nullptr}};
                 luaL_setfuncs(L, members, 0);
             }
             lua_pushnil(L);
@@ -8908,7 +8908,7 @@ int rosetta_lua_open(lua_State* L) {
             lua_setfield(L, meta, "__index");
             lua_newtable(L);
             {
-                static const luaL_Reg members[] = {{"max_points", rosetta_lua_828}, {"max_events", rosetta_lua_830}, {nullptr, nullptr}};
+                static const luaL_Reg members[] = {{"max_points", rosetta_lua_846}, {"max_events", rosetta_lua_848}, {nullptr, nullptr}};
                 luaL_setfuncs(L, members, 0);
             }
             lua_pushliteral(L, "ConvexHullOptions");
@@ -8924,7 +8924,7 @@ int rosetta_lua_open(lua_State* L) {
             lua_setfield(L, meta, "__tostring");
             lua_rawsetp(L, LUA_REGISTRYINDEX, &rosetta_lua::Info<datamunge::geometry::ConvexHullOptions>::value);
             lua_createtable(L, 0, 2);
-            lua_pushcfunction(L, rosetta_lua_831);
+            lua_pushcfunction(L, rosetta_lua_849);
             lua_setfield(L, -2, "__call");
             lua_pushliteral(L, "ConvexHullOptions");
             lua_setfield(L, -2, "__name");
@@ -8949,7 +8949,7 @@ int rosetta_lua_open(lua_State* L) {
             lua_pushvalue(L, cls);
             lua_newtable(L);
             {
-                static const luaL_Reg members[] = {{"point", rosetta_lua_832}, {"input_index", rosetta_lua_834}, {nullptr, nullptr}};
+                static const luaL_Reg members[] = {{"point", rosetta_lua_850}, {"input_index", rosetta_lua_852}, {nullptr, nullptr}};
                 luaL_setfuncs(L, members, 0);
             }
             lua_pushnil(L);
@@ -8957,7 +8957,7 @@ int rosetta_lua_open(lua_State* L) {
             lua_setfield(L, meta, "__index");
             lua_newtable(L);
             {
-                static const luaL_Reg members[] = {{"point", rosetta_lua_833}, {"input_index", rosetta_lua_835}, {nullptr, nullptr}};
+                static const luaL_Reg members[] = {{"point", rosetta_lua_851}, {"input_index", rosetta_lua_853}, {nullptr, nullptr}};
                 luaL_setfuncs(L, members, 0);
             }
             lua_pushliteral(L, "HullIndexedPoint");
@@ -8973,7 +8973,7 @@ int rosetta_lua_open(lua_State* L) {
             lua_setfield(L, meta, "__tostring");
             lua_rawsetp(L, LUA_REGISTRYINDEX, &rosetta_lua::Info<datamunge::geometry::HullIndexedPoint>::value);
             lua_createtable(L, 0, 2);
-            lua_pushcfunction(L, rosetta_lua_836);
+            lua_pushcfunction(L, rosetta_lua_854);
             lua_setfield(L, -2, "__call");
             lua_pushliteral(L, "HullIndexedPoint");
             lua_setfield(L, -2, "__name");
@@ -8998,7 +8998,7 @@ int rosetta_lua_open(lua_State* L) {
             lua_pushvalue(L, cls);
             lua_newtable(L);
             {
-                static const luaL_Reg members[] = {{"input_points", rosetta_lua_837}, {"distinct_points", rosetta_lua_839}, {"sort_comparisons", rosetta_lua_841}, {"duplicate_comparisons", rosetta_lua_843}, {"orientation_tests", rosetta_lua_845}, {"pushes", rosetta_lua_847}, {"pops", rosetta_lua_849}, {"max_stack", rosetta_lua_851}, {nullptr, nullptr}};
+                static const luaL_Reg members[] = {{"input_points", rosetta_lua_855}, {"distinct_points", rosetta_lua_857}, {"sort_comparisons", rosetta_lua_859}, {"duplicate_comparisons", rosetta_lua_861}, {"orientation_tests", rosetta_lua_863}, {"pushes", rosetta_lua_865}, {"pops", rosetta_lua_867}, {"max_stack", rosetta_lua_869}, {nullptr, nullptr}};
                 luaL_setfuncs(L, members, 0);
             }
             lua_pushnil(L);
@@ -9006,7 +9006,7 @@ int rosetta_lua_open(lua_State* L) {
             lua_setfield(L, meta, "__index");
             lua_newtable(L);
             {
-                static const luaL_Reg members[] = {{"input_points", rosetta_lua_838}, {"distinct_points", rosetta_lua_840}, {"sort_comparisons", rosetta_lua_842}, {"duplicate_comparisons", rosetta_lua_844}, {"orientation_tests", rosetta_lua_846}, {"pushes", rosetta_lua_848}, {"pops", rosetta_lua_850}, {"max_stack", rosetta_lua_852}, {nullptr, nullptr}};
+                static const luaL_Reg members[] = {{"input_points", rosetta_lua_856}, {"distinct_points", rosetta_lua_858}, {"sort_comparisons", rosetta_lua_860}, {"duplicate_comparisons", rosetta_lua_862}, {"orientation_tests", rosetta_lua_864}, {"pushes", rosetta_lua_866}, {"pops", rosetta_lua_868}, {"max_stack", rosetta_lua_870}, {nullptr, nullptr}};
                 luaL_setfuncs(L, members, 0);
             }
             lua_pushliteral(L, "ConvexHullWork");
@@ -9022,7 +9022,7 @@ int rosetta_lua_open(lua_State* L) {
             lua_setfield(L, meta, "__tostring");
             lua_rawsetp(L, LUA_REGISTRYINDEX, &rosetta_lua::Info<datamunge::geometry::ConvexHullWork>::value);
             lua_createtable(L, 0, 2);
-            lua_pushcfunction(L, rosetta_lua_853);
+            lua_pushcfunction(L, rosetta_lua_871);
             lua_setfield(L, -2, "__call");
             lua_pushliteral(L, "ConvexHullWork");
             lua_setfield(L, -2, "__name");
@@ -9047,7 +9047,7 @@ int rosetta_lua_open(lua_State* L) {
             lua_pushvalue(L, cls);
             lua_newtable(L);
             {
-                static const luaL_Reg members[] = {{"pass", rosetta_lua_854}, {"action", rosetta_lua_856}, {"candidate", rosetta_lua_858}, {"point", rosetta_lua_860}, {"a", rosetta_lua_862}, {"b", rosetta_lua_864}, {"turn", rosetta_lua_866}, {"stack_size", rosetta_lua_868}, {nullptr, nullptr}};
+                static const luaL_Reg members[] = {{"pass", rosetta_lua_872}, {"action", rosetta_lua_874}, {"candidate", rosetta_lua_876}, {"point", rosetta_lua_878}, {"a", rosetta_lua_880}, {"b", rosetta_lua_882}, {"turn", rosetta_lua_884}, {"stack_size", rosetta_lua_886}, {nullptr, nullptr}};
                 luaL_setfuncs(L, members, 0);
             }
             lua_pushnil(L);
@@ -9055,7 +9055,7 @@ int rosetta_lua_open(lua_State* L) {
             lua_setfield(L, meta, "__index");
             lua_newtable(L);
             {
-                static const luaL_Reg members[] = {{"pass", rosetta_lua_855}, {"action", rosetta_lua_857}, {"candidate", rosetta_lua_859}, {"point", rosetta_lua_861}, {"a", rosetta_lua_863}, {"b", rosetta_lua_865}, {"turn", rosetta_lua_867}, {"stack_size", rosetta_lua_869}, {nullptr, nullptr}};
+                static const luaL_Reg members[] = {{"pass", rosetta_lua_873}, {"action", rosetta_lua_875}, {"candidate", rosetta_lua_877}, {"point", rosetta_lua_879}, {"a", rosetta_lua_881}, {"b", rosetta_lua_883}, {"turn", rosetta_lua_885}, {"stack_size", rosetta_lua_887}, {nullptr, nullptr}};
                 luaL_setfuncs(L, members, 0);
             }
             lua_pushliteral(L, "HullEvent");
@@ -9071,7 +9071,7 @@ int rosetta_lua_open(lua_State* L) {
             lua_setfield(L, meta, "__tostring");
             lua_rawsetp(L, LUA_REGISTRYINDEX, &rosetta_lua::Info<datamunge::geometry::HullEvent>::value);
             lua_createtable(L, 0, 2);
-            lua_pushcfunction(L, rosetta_lua_870);
+            lua_pushcfunction(L, rosetta_lua_888);
             lua_setfield(L, -2, "__call");
             lua_pushliteral(L, "HullEvent");
             lua_setfield(L, -2, "__name");
@@ -9096,7 +9096,7 @@ int rosetta_lua_open(lua_State* L) {
             lua_pushvalue(L, cls);
             lua_newtable(L);
             {
-                static const luaL_Reg members[] = {{"hull", rosetta_lua_871}, {"input_indices", rosetta_lua_873}, {"work", rosetta_lua_875}, {nullptr, nullptr}};
+                static const luaL_Reg members[] = {{"hull", rosetta_lua_889}, {"input_indices", rosetta_lua_891}, {"work", rosetta_lua_893}, {nullptr, nullptr}};
                 luaL_setfuncs(L, members, 0);
             }
             lua_pushnil(L);
@@ -9104,7 +9104,7 @@ int rosetta_lua_open(lua_State* L) {
             lua_setfield(L, meta, "__index");
             lua_newtable(L);
             {
-                static const luaL_Reg members[] = {{"hull", rosetta_lua_872}, {"input_indices", rosetta_lua_874}, {"work", rosetta_lua_876}, {nullptr, nullptr}};
+                static const luaL_Reg members[] = {{"hull", rosetta_lua_890}, {"input_indices", rosetta_lua_892}, {"work", rosetta_lua_894}, {nullptr, nullptr}};
                 luaL_setfuncs(L, members, 0);
             }
             lua_pushliteral(L, "ConvexHullAnalysis");
@@ -9120,7 +9120,7 @@ int rosetta_lua_open(lua_State* L) {
             lua_setfield(L, meta, "__tostring");
             lua_rawsetp(L, LUA_REGISTRYINDEX, &rosetta_lua::Info<datamunge::geometry::ConvexHullAnalysis>::value);
             lua_createtable(L, 0, 2);
-            lua_pushcfunction(L, rosetta_lua_877);
+            lua_pushcfunction(L, rosetta_lua_895);
             lua_setfield(L, -2, "__call");
             lua_pushliteral(L, "ConvexHullAnalysis");
             lua_setfield(L, -2, "__name");
@@ -9145,7 +9145,7 @@ int rosetta_lua_open(lua_State* L) {
             lua_pushvalue(L, cls);
             lua_newtable(L);
             {
-                static const luaL_Reg members[] = {{"analysis", rosetta_lua_878}, {"sorted", rosetta_lua_880}, {"events", rosetta_lua_882}, {"lower", rosetta_lua_884}, {"upper", rosetta_lua_886}, {nullptr, nullptr}};
+                static const luaL_Reg members[] = {{"analysis", rosetta_lua_896}, {"sorted", rosetta_lua_898}, {"events", rosetta_lua_900}, {"lower", rosetta_lua_902}, {"upper", rosetta_lua_904}, {nullptr, nullptr}};
                 luaL_setfuncs(L, members, 0);
             }
             lua_pushnil(L);
@@ -9153,7 +9153,7 @@ int rosetta_lua_open(lua_State* L) {
             lua_setfield(L, meta, "__index");
             lua_newtable(L);
             {
-                static const luaL_Reg members[] = {{"analysis", rosetta_lua_879}, {"sorted", rosetta_lua_881}, {"events", rosetta_lua_883}, {"lower", rosetta_lua_885}, {"upper", rosetta_lua_887}, {nullptr, nullptr}};
+                static const luaL_Reg members[] = {{"analysis", rosetta_lua_897}, {"sorted", rosetta_lua_899}, {"events", rosetta_lua_901}, {"lower", rosetta_lua_903}, {"upper", rosetta_lua_905}, {nullptr, nullptr}};
                 luaL_setfuncs(L, members, 0);
             }
             lua_pushliteral(L, "ConvexHullTrace");
@@ -9169,7 +9169,7 @@ int rosetta_lua_open(lua_State* L) {
             lua_setfield(L, meta, "__tostring");
             lua_rawsetp(L, LUA_REGISTRYINDEX, &rosetta_lua::Info<datamunge::geometry::ConvexHullTrace>::value);
             lua_createtable(L, 0, 2);
-            lua_pushcfunction(L, rosetta_lua_888);
+            lua_pushcfunction(L, rosetta_lua_906);
             lua_setfield(L, -2, "__call");
             lua_pushliteral(L, "ConvexHullTrace");
             lua_setfield(L, -2, "__name");
@@ -9184,7 +9184,7 @@ int rosetta_lua_open(lua_State* L) {
             lua_pushboolean(L, 1);
             lua_rawsetp(L, cls, &rosetta_lua::native_key());
             {
-                static const luaL_Reg members[] = {{"call", rosetta_lua_889}, {nullptr, nullptr}};
+                static const luaL_Reg members[] = {{"call", rosetta_lua_907}, {nullptr, nullptr}};
                 luaL_setfuncs(L, members, 0);
             }
             lua_pushcfunction(L, rosetta_lua::class_extend);
@@ -9214,7 +9214,7 @@ int rosetta_lua_open(lua_State* L) {
             lua_setfield(L, meta, "__tostring");
             lua_rawsetp(L, LUA_REGISTRYINDEX, &rosetta_lua::Info<datamunge::Callback>::value);
             lua_createtable(L, 0, 2);
-            lua_pushcfunction(L, rosetta_lua_890);
+            lua_pushcfunction(L, rosetta_lua_908);
             lua_setfield(L, -2, "__call");
             lua_pushliteral(L, "Callback");
             lua_setfield(L, -2, "__name");
@@ -9239,7 +9239,7 @@ int rosetta_lua_open(lua_State* L) {
             lua_pushvalue(L, cls);
             lua_newtable(L);
             {
-                static const luaL_Reg members[] = {{"r", rosetta_lua_891}, {"g", rosetta_lua_893}, {"b", rosetta_lua_895}, {"alpha", rosetta_lua_897}, {nullptr, nullptr}};
+                static const luaL_Reg members[] = {{"r", rosetta_lua_909}, {"g", rosetta_lua_911}, {"b", rosetta_lua_913}, {"alpha", rosetta_lua_915}, {nullptr, nullptr}};
                 luaL_setfuncs(L, members, 0);
             }
             lua_pushnil(L);
@@ -9247,7 +9247,7 @@ int rosetta_lua_open(lua_State* L) {
             lua_setfield(L, meta, "__index");
             lua_newtable(L);
             {
-                static const luaL_Reg members[] = {{"r", rosetta_lua_892}, {"g", rosetta_lua_894}, {"b", rosetta_lua_896}, {"alpha", rosetta_lua_898}, {nullptr, nullptr}};
+                static const luaL_Reg members[] = {{"r", rosetta_lua_910}, {"g", rosetta_lua_912}, {"b", rosetta_lua_914}, {"alpha", rosetta_lua_916}, {nullptr, nullptr}};
                 luaL_setfuncs(L, members, 0);
             }
             lua_pushliteral(L, "RGB");
@@ -9263,7 +9263,7 @@ int rosetta_lua_open(lua_State* L) {
             lua_setfield(L, meta, "__tostring");
             lua_rawsetp(L, LUA_REGISTRYINDEX, &rosetta_lua::Info<datamunge::graphics::RGB>::value);
             lua_createtable(L, 0, 2);
-            lua_pushcfunction(L, rosetta_lua_899);
+            lua_pushcfunction(L, rosetta_lua_917);
             lua_setfield(L, -2, "__call");
             lua_pushliteral(L, "RGB");
             lua_setfield(L, -2, "__name");
@@ -9288,7 +9288,7 @@ int rosetta_lua_open(lua_State* L) {
             lua_pushvalue(L, cls);
             lua_newtable(L);
             {
-                static const luaL_Reg members[] = {{"kind", rosetta_lua_900}, {"x", rosetta_lua_902}, {"y", rosetta_lua_904}, {"label", rosetta_lua_906}, {"color", rosetta_lua_908}, {"stroke_width", rosetta_lua_910}, {"marker_size", rosetta_lua_912}, {"bar_width", rosetta_lua_914}, {"filled", rosetta_lua_916}, {"point_colors", rosetta_lua_918}, {nullptr, nullptr}};
+                static const luaL_Reg members[] = {{"kind", rosetta_lua_918}, {"x", rosetta_lua_920}, {"y", rosetta_lua_922}, {"label", rosetta_lua_924}, {"color", rosetta_lua_926}, {"stroke_width", rosetta_lua_928}, {"marker_size", rosetta_lua_930}, {"bar_width", rosetta_lua_932}, {"filled", rosetta_lua_934}, {"point_colors", rosetta_lua_936}, {nullptr, nullptr}};
                 luaL_setfuncs(L, members, 0);
             }
             lua_pushnil(L);
@@ -9296,7 +9296,7 @@ int rosetta_lua_open(lua_State* L) {
             lua_setfield(L, meta, "__index");
             lua_newtable(L);
             {
-                static const luaL_Reg members[] = {{"kind", rosetta_lua_901}, {"x", rosetta_lua_903}, {"y", rosetta_lua_905}, {"label", rosetta_lua_907}, {"color", rosetta_lua_909}, {"stroke_width", rosetta_lua_911}, {"marker_size", rosetta_lua_913}, {"bar_width", rosetta_lua_915}, {"filled", rosetta_lua_917}, {"point_colors", rosetta_lua_919}, {nullptr, nullptr}};
+                static const luaL_Reg members[] = {{"kind", rosetta_lua_919}, {"x", rosetta_lua_921}, {"y", rosetta_lua_923}, {"label", rosetta_lua_925}, {"color", rosetta_lua_927}, {"stroke_width", rosetta_lua_929}, {"marker_size", rosetta_lua_931}, {"bar_width", rosetta_lua_933}, {"filled", rosetta_lua_935}, {"point_colors", rosetta_lua_937}, {nullptr, nullptr}};
                 luaL_setfuncs(L, members, 0);
             }
             lua_pushliteral(L, "DataSeries");
@@ -9312,7 +9312,7 @@ int rosetta_lua_open(lua_State* L) {
             lua_setfield(L, meta, "__tostring");
             lua_rawsetp(L, LUA_REGISTRYINDEX, &rosetta_lua::Info<datamunge::graphics::DataSeries>::value);
             lua_createtable(L, 0, 2);
-            lua_pushcfunction(L, rosetta_lua_920);
+            lua_pushcfunction(L, rosetta_lua_938);
             lua_setfield(L, -2, "__call");
             lua_pushliteral(L, "DataSeries");
             lua_setfield(L, -2, "__name");
@@ -9337,7 +9337,7 @@ int rosetta_lua_open(lua_State* L) {
             lua_pushvalue(L, cls);
             lua_newtable(L);
             {
-                static const luaL_Reg members[] = {{"vertical", rosetta_lua_921}, {"value", rosetta_lua_923}, {"slope", rosetta_lua_925}, {"color", rosetta_lua_927}, {"stroke_width", rosetta_lua_929}, {nullptr, nullptr}};
+                static const luaL_Reg members[] = {{"vertical", rosetta_lua_939}, {"value", rosetta_lua_941}, {"slope", rosetta_lua_943}, {"color", rosetta_lua_945}, {"stroke_width", rosetta_lua_947}, {nullptr, nullptr}};
                 luaL_setfuncs(L, members, 0);
             }
             lua_pushnil(L);
@@ -9345,7 +9345,7 @@ int rosetta_lua_open(lua_State* L) {
             lua_setfield(L, meta, "__index");
             lua_newtable(L);
             {
-                static const luaL_Reg members[] = {{"vertical", rosetta_lua_922}, {"value", rosetta_lua_924}, {"slope", rosetta_lua_926}, {"color", rosetta_lua_928}, {"stroke_width", rosetta_lua_930}, {nullptr, nullptr}};
+                static const luaL_Reg members[] = {{"vertical", rosetta_lua_940}, {"value", rosetta_lua_942}, {"slope", rosetta_lua_944}, {"color", rosetta_lua_946}, {"stroke_width", rosetta_lua_948}, {nullptr, nullptr}};
                 luaL_setfuncs(L, members, 0);
             }
             lua_pushliteral(L, "ABLine");
@@ -9361,7 +9361,7 @@ int rosetta_lua_open(lua_State* L) {
             lua_setfield(L, meta, "__tostring");
             lua_rawsetp(L, LUA_REGISTRYINDEX, &rosetta_lua::Info<datamunge::graphics::ABLine>::value);
             lua_createtable(L, 0, 2);
-            lua_pushcfunction(L, rosetta_lua_931);
+            lua_pushcfunction(L, rosetta_lua_949);
             lua_setfield(L, -2, "__call");
             lua_pushliteral(L, "ABLine");
             lua_setfield(L, -2, "__name");
@@ -9386,7 +9386,7 @@ int rosetta_lua_open(lua_State* L) {
             lua_pushvalue(L, cls);
             lua_newtable(L);
             {
-                static const luaL_Reg members[] = {{"label", rosetta_lua_932}, {"color", rosetta_lua_934}, {nullptr, nullptr}};
+                static const luaL_Reg members[] = {{"label", rosetta_lua_950}, {"color", rosetta_lua_952}, {nullptr, nullptr}};
                 luaL_setfuncs(L, members, 0);
             }
             lua_pushnil(L);
@@ -9394,7 +9394,7 @@ int rosetta_lua_open(lua_State* L) {
             lua_setfield(L, meta, "__index");
             lua_newtable(L);
             {
-                static const luaL_Reg members[] = {{"label", rosetta_lua_933}, {"color", rosetta_lua_935}, {nullptr, nullptr}};
+                static const luaL_Reg members[] = {{"label", rosetta_lua_951}, {"color", rosetta_lua_953}, {nullptr, nullptr}};
                 luaL_setfuncs(L, members, 0);
             }
             lua_pushliteral(L, "LegendEntry");
@@ -9410,7 +9410,7 @@ int rosetta_lua_open(lua_State* L) {
             lua_setfield(L, meta, "__tostring");
             lua_rawsetp(L, LUA_REGISTRYINDEX, &rosetta_lua::Info<datamunge::graphics::LegendEntry>::value);
             lua_createtable(L, 0, 2);
-            lua_pushcfunction(L, rosetta_lua_936);
+            lua_pushcfunction(L, rosetta_lua_954);
             lua_setfield(L, -2, "__call");
             lua_pushliteral(L, "LegendEntry");
             lua_setfield(L, -2, "__name");
@@ -9425,7 +9425,7 @@ int rosetta_lua_open(lua_State* L) {
             lua_pushboolean(L, 1);
             lua_rawsetp(L, cls, &rosetta_lua::native_key());
             {
-                static const luaL_Reg members[] = {{"size", rosetta_lua_937}, {"title", rosetta_lua_938}, {"subtitle", rosetta_lua_939}, {"x_label", rosetta_lua_940}, {"y_label", rosetta_lua_941}, {"background", rosetta_lua_942}, {"axis_color", rosetta_lua_943}, {"grid_color", rosetta_lua_944}, {"show_grid", rosetta_lua_945}, {"x_limits", rosetta_lua_946}, {"y_limits", rosetta_lua_947}, {"hide_axes", rosetta_lua_948}, {"x_tick_labels", rosetta_lua_949}, {"x_ticks", rosetta_lua_950}, {"y_tick_labels", rosetta_lua_951}, {"y_ticks", rosetta_lua_952}, {"margins", rosetta_lua_953}, {"tick_font_size", rosetta_lua_954}, {"pretty_ticks", rosetta_lua_955}, {"width", rosetta_lua_956}, {"height", rosetta_lua_957}, {"title_text", rosetta_lua_958}, {"subtitle_text", rosetta_lua_959}, {"x_label_text", rosetta_lua_960}, {"y_label_text", rosetta_lua_961}, {"series", rosetta_lua_962}, {"background_color", rosetta_lua_963}, {"axes_color", rosetta_lua_964}, {"major_grid_color", rosetta_lua_965}, {"grid_visible", rosetta_lua_966}, {"has_x_limits", rosetta_lua_967}, {"has_y_limits", rosetta_lua_968}, {"x_min", rosetta_lua_969}, {"x_max", rosetta_lua_970}, {"y_min", rosetta_lua_971}, {"y_max", rosetta_lua_972}, {"axes_hidden", rosetta_lua_973}, {"x_tick_label_list", rosetta_lua_974}, {"x_tick_position_list", rosetta_lua_975}, {"y_tick_label_list", rosetta_lua_976}, {"y_tick_position_list", rosetta_lua_977}, {"reference_lines", rosetta_lua_978}, {"legend_entries", rosetta_lua_979}, {"has_custom_margins", rosetta_lua_980}, {"margin_left", rosetta_lua_981}, {"margin_right", rosetta_lua_982}, {"margin_top", rosetta_lua_983}, {"margin_bottom", rosetta_lua_984}, {"tick_font_px", rosetta_lua_985}, {"pretty_ticks_enabled", rosetta_lua_986}, {"to_svg", rosetta_lua_987}, {"save", rosetta_lua_988}, {"save_svg", rosetta_lua_989}, {"to_png", rosetta_lua_990}, {"to_pdf", rosetta_lua_991}, {"save_png", rosetta_lua_992}, {"save_pdf", rosetta_lua_993}, {"view", rosetta_lua_994}, {"show", rosetta_lua_995}, {nullptr, nullptr}};
+                static const luaL_Reg members[] = {{"size", rosetta_lua_955}, {"title", rosetta_lua_956}, {"subtitle", rosetta_lua_957}, {"x_label", rosetta_lua_958}, {"y_label", rosetta_lua_959}, {"background", rosetta_lua_960}, {"axis_color", rosetta_lua_961}, {"grid_color", rosetta_lua_962}, {"show_grid", rosetta_lua_963}, {"x_limits", rosetta_lua_964}, {"y_limits", rosetta_lua_965}, {"hide_axes", rosetta_lua_966}, {"x_tick_labels", rosetta_lua_967}, {"x_ticks", rosetta_lua_968}, {"y_tick_labels", rosetta_lua_969}, {"y_ticks", rosetta_lua_970}, {"margins", rosetta_lua_971}, {"tick_font_size", rosetta_lua_972}, {"pretty_ticks", rosetta_lua_973}, {"width", rosetta_lua_974}, {"height", rosetta_lua_975}, {"title_text", rosetta_lua_976}, {"subtitle_text", rosetta_lua_977}, {"x_label_text", rosetta_lua_978}, {"y_label_text", rosetta_lua_979}, {"series", rosetta_lua_980}, {"background_color", rosetta_lua_981}, {"axes_color", rosetta_lua_982}, {"major_grid_color", rosetta_lua_983}, {"grid_visible", rosetta_lua_984}, {"has_x_limits", rosetta_lua_985}, {"has_y_limits", rosetta_lua_986}, {"x_min", rosetta_lua_987}, {"x_max", rosetta_lua_988}, {"y_min", rosetta_lua_989}, {"y_max", rosetta_lua_990}, {"axes_hidden", rosetta_lua_991}, {"x_tick_label_list", rosetta_lua_992}, {"x_tick_position_list", rosetta_lua_993}, {"y_tick_label_list", rosetta_lua_994}, {"y_tick_position_list", rosetta_lua_995}, {"reference_lines", rosetta_lua_996}, {"legend_entries", rosetta_lua_997}, {"has_custom_margins", rosetta_lua_998}, {"margin_left", rosetta_lua_999}, {"margin_right", rosetta_lua_1000}, {"margin_top", rosetta_lua_1001}, {"margin_bottom", rosetta_lua_1002}, {"tick_font_px", rosetta_lua_1003}, {"pretty_ticks_enabled", rosetta_lua_1004}, {"to_svg", rosetta_lua_1005}, {"save", rosetta_lua_1006}, {"save_svg", rosetta_lua_1007}, {"to_png", rosetta_lua_1008}, {"to_pdf", rosetta_lua_1009}, {"save_png", rosetta_lua_1010}, {"save_pdf", rosetta_lua_1011}, {"view", rosetta_lua_1012}, {"show", rosetta_lua_1013}, {nullptr, nullptr}};
                 luaL_setfuncs(L, members, 0);
             }
             lua_pushcfunction(L, rosetta_lua::class_extend);
@@ -9455,7 +9455,7 @@ int rosetta_lua_open(lua_State* L) {
             lua_setfield(L, meta, "__tostring");
             lua_rawsetp(L, LUA_REGISTRYINDEX, &rosetta_lua::Info<datamunge::graphics::Plot>::value);
             lua_createtable(L, 0, 2);
-            lua_pushcfunction(L, rosetta_lua_996);
+            lua_pushcfunction(L, rosetta_lua_1014);
             lua_setfield(L, -2, "__call");
             lua_pushliteral(L, "Plot");
             lua_setfield(L, -2, "__name");
@@ -9470,7 +9470,7 @@ int rosetta_lua_open(lua_State* L) {
             lua_pushboolean(L, 1);
             lua_rawsetp(L, cls, &rosetta_lua::native_key());
             {
-                static const luaL_Reg members[] = {{"create", rosetta_lua_997}, {"size", rosetta_lua_998}, {"title", rosetta_lua_999}, {"subtitle", rosetta_lua_1000}, {"x_label", rosetta_lua_1001}, {"y_label", rosetta_lua_1002}, {"xlab", rosetta_lua_1003}, {"ylab", rosetta_lua_1004}, {"set_title", rosetta_lua_1005}, {"set_subtitle", rosetta_lua_1006}, {"set_xlab", rosetta_lua_1007}, {"set_ylab", rosetta_lua_1008}, {"set_col", rosetta_lua_1009}, {"background", rosetta_lua_1010}, {"axis_color", rosetta_lua_1011}, {"grid_color", rosetta_lua_1012}, {"show_grid", rosetta_lua_1013}, {"x_limits", rosetta_lua_1014}, {"y_limits", rosetta_lua_1015}, {"xlim", rosetta_lua_1016}, {"ylim", rosetta_lua_1017}, {"hide_axes", rosetta_lua_1018}, {"x_tick_labels", rosetta_lua_1019}, {"x_ticks", rosetta_lua_1020}, {"y_tick_labels", rosetta_lua_1021}, {"y_ticks", rosetta_lua_1022}, {"margins", rosetta_lua_1023}, {"tick_font_size", rosetta_lua_1024}, {"pretty_ticks", rosetta_lua_1025}, {"plot", rosetta_lua_1026}, {"hist", rosetta_lua_1027}, {"barplot", rosetta_lua_1028}, {"boxplot", rosetta_lua_1029}, {"pie", rosetta_lua_1030}, {"curve", rosetta_lua_1031}, {"qqnorm", rosetta_lua_1032}, {"points", rosetta_lua_1033}, {"points_colored", rosetta_lua_1034}, {"line", rosetta_lua_1035}, {"lines", rosetta_lua_1036}, {"bars", rosetta_lua_1037}, {"box", rosetta_lua_1038}, {"abline", rosetta_lua_1039}, {"abline_h", rosetta_lua_1040}, {"abline_v", rosetta_lua_1041}, {"qqline", rosetta_lua_1042}, {"legend", rosetta_lua_1043}, {"text", rosetta_lua_1044}, {"polygon", rosetta_lua_1045}, {"image", rosetta_lua_1046}, {"segments", rosetta_lua_1047}, {"width", rosetta_lua_956}, {"height", rosetta_lua_957}, {"title_text", rosetta_lua_958}, {"subtitle_text", rosetta_lua_959}, {"x_label_text", rosetta_lua_960}, {"y_label_text", rosetta_lua_961}, {"series", rosetta_lua_962}, {"background_color", rosetta_lua_963}, {"axes_color", rosetta_lua_964}, {"major_grid_color", rosetta_lua_965}, {"grid_visible", rosetta_lua_966}, {"has_x_limits", rosetta_lua_967}, {"has_y_limits", rosetta_lua_968}, {"x_min", rosetta_lua_969}, {"x_max", rosetta_lua_970}, {"y_min", rosetta_lua_971}, {"y_max", rosetta_lua_972}, {"axes_hidden", rosetta_lua_973}, {"x_tick_label_list", rosetta_lua_974}, {"x_tick_position_list", rosetta_lua_975}, {"y_tick_label_list", rosetta_lua_976}, {"y_tick_position_list", rosetta_lua_977}, {"reference_lines", rosetta_lua_978}, {"legend_entries", rosetta_lua_979}, {"has_custom_margins", rosetta_lua_980}, {"margin_left", rosetta_lua_981}, {"margin_right", rosetta_lua_982}, {"margin_top", rosetta_lua_983}, {"margin_bottom", rosetta_lua_984}, {"tick_font_px", rosetta_lua_985}, {"pretty_ticks_enabled", rosetta_lua_986}, {"to_svg", rosetta_lua_987}, {"save", rosetta_lua_988}, {"save_svg", rosetta_lua_989}, {"to_png", rosetta_lua_990}, {"to_pdf", rosetta_lua_991}, {"save_png", rosetta_lua_992}, {"save_pdf", rosetta_lua_993}, {"view", rosetta_lua_994}, {"show", rosetta_lua_995}, {nullptr, nullptr}};
+                static const luaL_Reg members[] = {{"create", rosetta_lua_1015}, {"size", rosetta_lua_1016}, {"title", rosetta_lua_1017}, {"subtitle", rosetta_lua_1018}, {"x_label", rosetta_lua_1019}, {"y_label", rosetta_lua_1020}, {"xlab", rosetta_lua_1021}, {"ylab", rosetta_lua_1022}, {"set_title", rosetta_lua_1023}, {"set_subtitle", rosetta_lua_1024}, {"set_xlab", rosetta_lua_1025}, {"set_ylab", rosetta_lua_1026}, {"set_col", rosetta_lua_1027}, {"background", rosetta_lua_1028}, {"axis_color", rosetta_lua_1029}, {"grid_color", rosetta_lua_1030}, {"show_grid", rosetta_lua_1031}, {"x_limits", rosetta_lua_1032}, {"y_limits", rosetta_lua_1033}, {"xlim", rosetta_lua_1034}, {"ylim", rosetta_lua_1035}, {"hide_axes", rosetta_lua_1036}, {"x_tick_labels", rosetta_lua_1037}, {"x_ticks", rosetta_lua_1038}, {"y_tick_labels", rosetta_lua_1039}, {"y_ticks", rosetta_lua_1040}, {"margins", rosetta_lua_1041}, {"tick_font_size", rosetta_lua_1042}, {"pretty_ticks", rosetta_lua_1043}, {"plot", rosetta_lua_1044}, {"hist", rosetta_lua_1045}, {"barplot", rosetta_lua_1046}, {"boxplot", rosetta_lua_1047}, {"pie", rosetta_lua_1048}, {"curve", rosetta_lua_1049}, {"qqnorm", rosetta_lua_1050}, {"points", rosetta_lua_1051}, {"points_colored", rosetta_lua_1052}, {"line", rosetta_lua_1053}, {"lines", rosetta_lua_1054}, {"bars", rosetta_lua_1055}, {"box", rosetta_lua_1056}, {"abline", rosetta_lua_1057}, {"abline_h", rosetta_lua_1058}, {"abline_v", rosetta_lua_1059}, {"qqline", rosetta_lua_1060}, {"legend", rosetta_lua_1061}, {"text", rosetta_lua_1062}, {"polygon", rosetta_lua_1063}, {"image", rosetta_lua_1064}, {"segments", rosetta_lua_1065}, {"width", rosetta_lua_974}, {"height", rosetta_lua_975}, {"title_text", rosetta_lua_976}, {"subtitle_text", rosetta_lua_977}, {"x_label_text", rosetta_lua_978}, {"y_label_text", rosetta_lua_979}, {"series", rosetta_lua_980}, {"background_color", rosetta_lua_981}, {"axes_color", rosetta_lua_982}, {"major_grid_color", rosetta_lua_983}, {"grid_visible", rosetta_lua_984}, {"has_x_limits", rosetta_lua_985}, {"has_y_limits", rosetta_lua_986}, {"x_min", rosetta_lua_987}, {"x_max", rosetta_lua_988}, {"y_min", rosetta_lua_989}, {"y_max", rosetta_lua_990}, {"axes_hidden", rosetta_lua_991}, {"x_tick_label_list", rosetta_lua_992}, {"x_tick_position_list", rosetta_lua_993}, {"y_tick_label_list", rosetta_lua_994}, {"y_tick_position_list", rosetta_lua_995}, {"reference_lines", rosetta_lua_996}, {"legend_entries", rosetta_lua_997}, {"has_custom_margins", rosetta_lua_998}, {"margin_left", rosetta_lua_999}, {"margin_right", rosetta_lua_1000}, {"margin_top", rosetta_lua_1001}, {"margin_bottom", rosetta_lua_1002}, {"tick_font_px", rosetta_lua_1003}, {"pretty_ticks_enabled", rosetta_lua_1004}, {"to_svg", rosetta_lua_1005}, {"save", rosetta_lua_1006}, {"save_svg", rosetta_lua_1007}, {"to_png", rosetta_lua_1008}, {"to_pdf", rosetta_lua_1009}, {"save_png", rosetta_lua_1010}, {"save_pdf", rosetta_lua_1011}, {"view", rosetta_lua_1012}, {"show", rosetta_lua_1013}, {nullptr, nullptr}};
                 luaL_setfuncs(L, members, 0);
             }
             lua_pushcfunction(L, rosetta_lua::class_extend);
@@ -9500,7 +9500,7 @@ int rosetta_lua_open(lua_State* L) {
             lua_setfield(L, meta, "__tostring");
             lua_rawsetp(L, LUA_REGISTRYINDEX, &rosetta_lua::Info<datamunge::graphics::RPlot>::value);
             lua_createtable(L, 0, 2);
-            lua_pushcfunction(L, rosetta_lua_1048);
+            lua_pushcfunction(L, rosetta_lua_1066);
             lua_setfield(L, -2, "__call");
             lua_pushliteral(L, "RPlot");
             lua_setfield(L, -2, "__name");
@@ -9515,7 +9515,7 @@ int rosetta_lua_open(lua_State* L) {
             lua_pushboolean(L, 1);
             lua_rawsetp(L, cls, &rosetta_lua::native_key());
             {
-                static const luaL_Reg members[] = {{"create", rosetta_lua_1049}, {"add", rosetta_lua_1050}, {"size", rosetta_lua_1051}, {"title", rosetta_lua_1052}, {"rows", rosetta_lua_1053}, {"cols", rosetta_lua_1054}, {"width", rosetta_lua_1055}, {"height", rosetta_lua_1056}, {"panel_count", rosetta_lua_1057}, {"title_text", rosetta_lua_1058}, {"panel", rosetta_lua_1059}, {"to_svg", rosetta_lua_1060}, {"save", rosetta_lua_1061}, {"save_svg", rosetta_lua_1062}, {"to_png", rosetta_lua_1063}, {"to_pdf", rosetta_lua_1064}, {"save_png", rosetta_lua_1065}, {"save_pdf", rosetta_lua_1066}, {"fit_panels", rosetta_lua_1067}, {"show", rosetta_lua_1068}, {"view", rosetta_lua_1069}, {nullptr, nullptr}};
+                static const luaL_Reg members[] = {{"create", rosetta_lua_1067}, {"add", rosetta_lua_1068}, {"size", rosetta_lua_1069}, {"title", rosetta_lua_1070}, {"rows", rosetta_lua_1071}, {"cols", rosetta_lua_1072}, {"width", rosetta_lua_1073}, {"height", rosetta_lua_1074}, {"panel_count", rosetta_lua_1075}, {"title_text", rosetta_lua_1076}, {"panel", rosetta_lua_1077}, {"to_svg", rosetta_lua_1078}, {"save", rosetta_lua_1079}, {"save_svg", rosetta_lua_1080}, {"to_png", rosetta_lua_1081}, {"to_pdf", rosetta_lua_1082}, {"save_png", rosetta_lua_1083}, {"save_pdf", rosetta_lua_1084}, {"fit_panels", rosetta_lua_1085}, {"show", rosetta_lua_1086}, {"view", rosetta_lua_1087}, {nullptr, nullptr}};
                 luaL_setfuncs(L, members, 0);
             }
             lua_pushcfunction(L, rosetta_lua::class_extend);
@@ -9549,7 +9549,7 @@ int rosetta_lua_open(lua_State* L) {
             lua_setfield(L, meta, "__tostring");
             lua_rawsetp(L, LUA_REGISTRYINDEX, &rosetta_lua::Info<datamunge::graphics::RLayout>::value);
             lua_createtable(L, 0, 2);
-            lua_pushcfunction(L, rosetta_lua_1070);
+            lua_pushcfunction(L, rosetta_lua_1088);
             lua_setfield(L, -2, "__call");
             lua_pushliteral(L, "RLayout");
             lua_setfield(L, -2, "__name");
@@ -9574,7 +9574,7 @@ int rosetta_lua_open(lua_State* L) {
             lua_pushvalue(L, cls);
             lua_newtable(L);
             {
-                static const luaL_Reg members[] = {{"distance", rosetta_lua_1071}, {"path_a", rosetta_lua_1073}, {"path_b", rosetta_lua_1075}, {nullptr, nullptr}};
+                static const luaL_Reg members[] = {{"distance", rosetta_lua_1089}, {"path_a", rosetta_lua_1091}, {"path_b", rosetta_lua_1093}, {nullptr, nullptr}};
                 luaL_setfuncs(L, members, 0);
             }
             lua_pushnil(L);
@@ -9582,7 +9582,7 @@ int rosetta_lua_open(lua_State* L) {
             lua_setfield(L, meta, "__index");
             lua_newtable(L);
             {
-                static const luaL_Reg members[] = {{"distance", rosetta_lua_1072}, {"path_a", rosetta_lua_1074}, {"path_b", rosetta_lua_1076}, {nullptr, nullptr}};
+                static const luaL_Reg members[] = {{"distance", rosetta_lua_1090}, {"path_a", rosetta_lua_1092}, {"path_b", rosetta_lua_1094}, {nullptr, nullptr}};
                 luaL_setfuncs(L, members, 0);
             }
             lua_pushliteral(L, "DTWResult");
@@ -9598,7 +9598,7 @@ int rosetta_lua_open(lua_State* L) {
             lua_setfield(L, meta, "__tostring");
             lua_rawsetp(L, LUA_REGISTRYINDEX, &rosetta_lua::Info<datamunge::geometry::DTWResult>::value);
             lua_createtable(L, 0, 2);
-            lua_pushcfunction(L, rosetta_lua_1077);
+            lua_pushcfunction(L, rosetta_lua_1095);
             lua_setfield(L, -2, "__call");
             lua_pushliteral(L, "DTWResult");
             lua_setfield(L, -2, "__name");
@@ -9623,7 +9623,7 @@ int rosetta_lua_open(lua_State* L) {
             lua_pushvalue(L, cls);
             lua_newtable(L);
             {
-                static const luaL_Reg members[] = {{"cells", rosetta_lua_1078}, {"predecessor_reads", rosetta_lua_1080}, {"traceback_steps", rosetta_lua_1082}, {nullptr, nullptr}};
+                static const luaL_Reg members[] = {{"cells", rosetta_lua_1096}, {"predecessor_reads", rosetta_lua_1098}, {"traceback_steps", rosetta_lua_1100}, {nullptr, nullptr}};
                 luaL_setfuncs(L, members, 0);
             }
             lua_pushnil(L);
@@ -9631,7 +9631,7 @@ int rosetta_lua_open(lua_State* L) {
             lua_setfield(L, meta, "__index");
             lua_newtable(L);
             {
-                static const luaL_Reg members[] = {{"cells", rosetta_lua_1079}, {"predecessor_reads", rosetta_lua_1081}, {"traceback_steps", rosetta_lua_1083}, {nullptr, nullptr}};
+                static const luaL_Reg members[] = {{"cells", rosetta_lua_1097}, {"predecessor_reads", rosetta_lua_1099}, {"traceback_steps", rosetta_lua_1101}, {nullptr, nullptr}};
                 luaL_setfuncs(L, members, 0);
             }
             lua_pushliteral(L, "DTWWork");
@@ -9647,7 +9647,7 @@ int rosetta_lua_open(lua_State* L) {
             lua_setfield(L, meta, "__tostring");
             lua_rawsetp(L, LUA_REGISTRYINDEX, &rosetta_lua::Info<datamunge::geometry::DTWWork>::value);
             lua_createtable(L, 0, 2);
-            lua_pushcfunction(L, rosetta_lua_1084);
+            lua_pushcfunction(L, rosetta_lua_1102);
             lua_setfield(L, -2, "__call");
             lua_pushliteral(L, "DTWWork");
             lua_setfield(L, -2, "__name");
@@ -9672,7 +9672,7 @@ int rosetta_lua_open(lua_State* L) {
             lua_pushvalue(L, cls);
             lua_newtable(L);
             {
-                static const luaL_Reg members[] = {{"result", rosetta_lua_1085}, {"work", rosetta_lua_1087}, {nullptr, nullptr}};
+                static const luaL_Reg members[] = {{"result", rosetta_lua_1103}, {"work", rosetta_lua_1105}, {nullptr, nullptr}};
                 luaL_setfuncs(L, members, 0);
             }
             lua_pushnil(L);
@@ -9680,7 +9680,7 @@ int rosetta_lua_open(lua_State* L) {
             lua_setfield(L, meta, "__index");
             lua_newtable(L);
             {
-                static const luaL_Reg members[] = {{"result", rosetta_lua_1086}, {"work", rosetta_lua_1088}, {nullptr, nullptr}};
+                static const luaL_Reg members[] = {{"result", rosetta_lua_1104}, {"work", rosetta_lua_1106}, {nullptr, nullptr}};
                 luaL_setfuncs(L, members, 0);
             }
             lua_pushliteral(L, "DTWComputation");
@@ -9696,7 +9696,7 @@ int rosetta_lua_open(lua_State* L) {
             lua_setfield(L, meta, "__tostring");
             lua_rawsetp(L, LUA_REGISTRYINDEX, &rosetta_lua::Info<datamunge::geometry::DTWComputation>::value);
             lua_createtable(L, 0, 2);
-            lua_pushcfunction(L, rosetta_lua_1089);
+            lua_pushcfunction(L, rosetta_lua_1107);
             lua_setfield(L, -2, "__call");
             lua_pushliteral(L, "DTWComputation");
             lua_setfield(L, -2, "__name");
@@ -9721,7 +9721,7 @@ int rosetta_lua_open(lua_State* L) {
             lua_pushvalue(L, cls);
             lua_newtable(L);
             {
-                static const luaL_Reg members[] = {{"a", rosetta_lua_1090}, {"b", rosetta_lua_1092}, {"cumulative", rosetta_lua_1094}, {"predecessors", rosetta_lua_1096}, {"result", rosetta_lua_1098}, {"work", rosetta_lua_1100}, {"captured_entries", rosetta_lua_1102}, {nullptr, nullptr}};
+                static const luaL_Reg members[] = {{"a", rosetta_lua_1108}, {"b", rosetta_lua_1110}, {"cumulative", rosetta_lua_1112}, {"predecessors", rosetta_lua_1114}, {"result", rosetta_lua_1116}, {"work", rosetta_lua_1118}, {"captured_entries", rosetta_lua_1120}, {nullptr, nullptr}};
                 luaL_setfuncs(L, members, 0);
             }
             lua_pushnil(L);
@@ -9729,7 +9729,7 @@ int rosetta_lua_open(lua_State* L) {
             lua_setfield(L, meta, "__index");
             lua_newtable(L);
             {
-                static const luaL_Reg members[] = {{"a", rosetta_lua_1091}, {"b", rosetta_lua_1093}, {"cumulative", rosetta_lua_1095}, {"predecessors", rosetta_lua_1097}, {"result", rosetta_lua_1099}, {"work", rosetta_lua_1101}, {"captured_entries", rosetta_lua_1103}, {nullptr, nullptr}};
+                static const luaL_Reg members[] = {{"a", rosetta_lua_1109}, {"b", rosetta_lua_1111}, {"cumulative", rosetta_lua_1113}, {"predecessors", rosetta_lua_1115}, {"result", rosetta_lua_1117}, {"work", rosetta_lua_1119}, {"captured_entries", rosetta_lua_1121}, {nullptr, nullptr}};
                 luaL_setfuncs(L, members, 0);
             }
             lua_pushliteral(L, "DTWTrace");
@@ -9745,7 +9745,7 @@ int rosetta_lua_open(lua_State* L) {
             lua_setfield(L, meta, "__tostring");
             lua_rawsetp(L, LUA_REGISTRYINDEX, &rosetta_lua::Info<datamunge::geometry::DTWTrace>::value);
             lua_createtable(L, 0, 2);
-            lua_pushcfunction(L, rosetta_lua_1104);
+            lua_pushcfunction(L, rosetta_lua_1122);
             lua_setfield(L, -2, "__call");
             lua_pushliteral(L, "DTWTrace");
             lua_setfield(L, -2, "__name");
@@ -9760,7 +9760,7 @@ int rosetta_lua_open(lua_State* L) {
             lua_pushboolean(L, 1);
             lua_rawsetp(L, cls, &rosetta_lua::native_key());
             {
-                static const luaL_Reg members[] = {{"empty", rosetta_lua_1105}, {"size", rosetta_lua_1106}, {"nearest", rosetta_lua_1107}, {"k_nearest", rosetta_lua_1108}, {"points_in_radius", rosetta_lua_1109}, {nullptr, nullptr}};
+                static const luaL_Reg members[] = {{"empty", rosetta_lua_1123}, {"size", rosetta_lua_1124}, {"nearest", rosetta_lua_1125}, {"k_nearest", rosetta_lua_1126}, {"points_in_radius", rosetta_lua_1127}, {nullptr, nullptr}};
                 luaL_setfuncs(L, members, 0);
             }
             lua_pushcfunction(L, rosetta_lua::class_extend);
@@ -9788,12 +9788,12 @@ int rosetta_lua_open(lua_State* L) {
             lua_setfield(L, meta, "__eq");
             lua_pushcfunction(L, rosetta_lua::object_tostring);
             lua_setfield(L, meta, "__tostring");
-            lua_pushcfunction(L, rosetta_lua_1106);
+            lua_pushcfunction(L, rosetta_lua_1124);
             lua_pushcclosure(L, rosetta_lua::unary, 1);
             lua_setfield(L, meta, "__len");
             lua_rawsetp(L, LUA_REGISTRYINDEX, &rosetta_lua::Info<datamunge::geometry::KDTree2D>::value);
             lua_createtable(L, 0, 2);
-            lua_pushcfunction(L, rosetta_lua_1110);
+            lua_pushcfunction(L, rosetta_lua_1128);
             lua_setfield(L, -2, "__call");
             lua_pushliteral(L, "KDTree2D");
             lua_setfield(L, -2, "__name");
@@ -9818,7 +9818,7 @@ int rosetta_lua_open(lua_State* L) {
             lua_pushvalue(L, cls);
             lua_newtable(L);
             {
-                static const luaL_Reg members[] = {{"center", rosetta_lua_1111}, {"radius", rosetta_lua_1113}, {nullptr, nullptr}};
+                static const luaL_Reg members[] = {{"center", rosetta_lua_1129}, {"radius", rosetta_lua_1131}, {nullptr, nullptr}};
                 luaL_setfuncs(L, members, 0);
             }
             lua_pushnil(L);
@@ -9826,7 +9826,7 @@ int rosetta_lua_open(lua_State* L) {
             lua_setfield(L, meta, "__index");
             lua_newtable(L);
             {
-                static const luaL_Reg members[] = {{"center", rosetta_lua_1112}, {"radius", rosetta_lua_1114}, {nullptr, nullptr}};
+                static const luaL_Reg members[] = {{"center", rosetta_lua_1130}, {"radius", rosetta_lua_1132}, {nullptr, nullptr}};
                 luaL_setfuncs(L, members, 0);
             }
             lua_pushliteral(L, "Circle");
@@ -9842,7 +9842,7 @@ int rosetta_lua_open(lua_State* L) {
             lua_setfield(L, meta, "__tostring");
             lua_rawsetp(L, LUA_REGISTRYINDEX, &rosetta_lua::Info<datamunge::geometry::Circle>::value);
             lua_createtable(L, 0, 2);
-            lua_pushcfunction(L, rosetta_lua_1115);
+            lua_pushcfunction(L, rosetta_lua_1133);
             lua_setfield(L, -2, "__call");
             lua_pushliteral(L, "Circle");
             lua_setfield(L, -2, "__name");
@@ -9867,7 +9867,7 @@ int rosetta_lua_open(lua_State* L) {
             lua_pushvalue(L, cls);
             lua_newtable(L);
             {
-                static const luaL_Reg members[] = {{"a", rosetta_lua_1116}, {"b", rosetta_lua_1118}, {"distance", rosetta_lua_1120}, {nullptr, nullptr}};
+                static const luaL_Reg members[] = {{"a", rosetta_lua_1134}, {"b", rosetta_lua_1136}, {"distance", rosetta_lua_1138}, {nullptr, nullptr}};
                 luaL_setfuncs(L, members, 0);
             }
             lua_pushnil(L);
@@ -9875,7 +9875,7 @@ int rosetta_lua_open(lua_State* L) {
             lua_setfield(L, meta, "__index");
             lua_newtable(L);
             {
-                static const luaL_Reg members[] = {{"a", rosetta_lua_1117}, {"b", rosetta_lua_1119}, {"distance", rosetta_lua_1121}, {nullptr, nullptr}};
+                static const luaL_Reg members[] = {{"a", rosetta_lua_1135}, {"b", rosetta_lua_1137}, {"distance", rosetta_lua_1139}, {nullptr, nullptr}};
                 luaL_setfuncs(L, members, 0);
             }
             lua_pushliteral(L, "DiameterResult");
@@ -9891,7 +9891,7 @@ int rosetta_lua_open(lua_State* L) {
             lua_setfield(L, meta, "__tostring");
             lua_rawsetp(L, LUA_REGISTRYINDEX, &rosetta_lua::Info<datamunge::geometry::DiameterResult>::value);
             lua_createtable(L, 0, 2);
-            lua_pushcfunction(L, rosetta_lua_1122);
+            lua_pushcfunction(L, rosetta_lua_1140);
             lua_setfield(L, -2, "__call");
             lua_pushliteral(L, "DiameterResult");
             lua_setfield(L, -2, "__name");
@@ -9916,7 +9916,7 @@ int rosetta_lua_open(lua_State* L) {
             lua_pushvalue(L, cls);
             lua_newtable(L);
             {
-                static const luaL_Reg members[] = {{"corners", rosetta_lua_1123}, {"width", rosetta_lua_1125}, {"height", rosetta_lua_1127}, {"area", rosetta_lua_1129}, {nullptr, nullptr}};
+                static const luaL_Reg members[] = {{"corners", rosetta_lua_1141}, {"width", rosetta_lua_1143}, {"height", rosetta_lua_1145}, {"area", rosetta_lua_1147}, {nullptr, nullptr}};
                 luaL_setfuncs(L, members, 0);
             }
             lua_pushnil(L);
@@ -9924,7 +9924,7 @@ int rosetta_lua_open(lua_State* L) {
             lua_setfield(L, meta, "__index");
             lua_newtable(L);
             {
-                static const luaL_Reg members[] = {{"corners", rosetta_lua_1124}, {"width", rosetta_lua_1126}, {"height", rosetta_lua_1128}, {"area", rosetta_lua_1130}, {nullptr, nullptr}};
+                static const luaL_Reg members[] = {{"corners", rosetta_lua_1142}, {"width", rosetta_lua_1144}, {"height", rosetta_lua_1146}, {"area", rosetta_lua_1148}, {nullptr, nullptr}};
                 luaL_setfuncs(L, members, 0);
             }
             lua_pushliteral(L, "MinimumBoundingRectangle");
@@ -9940,7 +9940,7 @@ int rosetta_lua_open(lua_State* L) {
             lua_setfield(L, meta, "__tostring");
             lua_rawsetp(L, LUA_REGISTRYINDEX, &rosetta_lua::Info<datamunge::geometry::MinimumBoundingRectangle>::value);
             lua_createtable(L, 0, 2);
-            lua_pushcfunction(L, rosetta_lua_1131);
+            lua_pushcfunction(L, rosetta_lua_1149);
             lua_setfield(L, -2, "__call");
             lua_pushliteral(L, "MinimumBoundingRectangle");
             lua_setfield(L, -2, "__name");
@@ -9965,7 +9965,7 @@ int rosetta_lua_open(lua_State* L) {
             lua_pushvalue(L, cls);
             lua_newtable(L);
             {
-                static const luaL_Reg members[] = {{"vertices", rosetta_lua_1132}, {"cells", rosetta_lua_1134}, {nullptr, nullptr}};
+                static const luaL_Reg members[] = {{"vertices", rosetta_lua_1150}, {"cells", rosetta_lua_1152}, {nullptr, nullptr}};
                 luaL_setfuncs(L, members, 0);
             }
             lua_pushnil(L);
@@ -9973,7 +9973,7 @@ int rosetta_lua_open(lua_State* L) {
             lua_setfield(L, meta, "__index");
             lua_newtable(L);
             {
-                static const luaL_Reg members[] = {{"vertices", rosetta_lua_1133}, {"cells", rosetta_lua_1135}, {nullptr, nullptr}};
+                static const luaL_Reg members[] = {{"vertices", rosetta_lua_1151}, {"cells", rosetta_lua_1153}, {nullptr, nullptr}};
                 luaL_setfuncs(L, members, 0);
             }
             lua_pushliteral(L, "VoronoiDiagram");
@@ -9989,7 +9989,7 @@ int rosetta_lua_open(lua_State* L) {
             lua_setfield(L, meta, "__tostring");
             lua_rawsetp(L, LUA_REGISTRYINDEX, &rosetta_lua::Info<datamunge::geometry::VoronoiDiagram>::value);
             lua_createtable(L, 0, 2);
-            lua_pushcfunction(L, rosetta_lua_1136);
+            lua_pushcfunction(L, rosetta_lua_1154);
             lua_setfield(L, -2, "__call");
             lua_pushliteral(L, "VoronoiDiagram");
             lua_setfield(L, -2, "__name");
@@ -10004,7 +10004,7 @@ int rosetta_lua_open(lua_State* L) {
             lua_pushboolean(L, 1);
             lua_rawsetp(L, cls, &rosetta_lua::native_key());
             {
-                static const luaL_Reg members[] = {{"rows", rosetta_lua_1137}, {"cols", rosetta_lua_1138}, {"is_sparse", rosetta_lua_1139}, {"transpose", rosetta_lua_1140}, {"multiply", rosetta_lua_1141}, {"inverse_action", rosetta_lua_1142}, {"solve", rosetta_lua_1143}, {"eval", rosetta_lua_1144}, {"values", rosetta_lua_1145}, {"text", rosetta_lua_1146}, {nullptr, nullptr}};
+                static const luaL_Reg members[] = {{"rows", rosetta_lua_1155}, {"cols", rosetta_lua_1156}, {"is_sparse", rosetta_lua_1157}, {"transpose", rosetta_lua_1158}, {"multiply", rosetta_lua_1159}, {"inverse_action", rosetta_lua_1160}, {"solve", rosetta_lua_1161}, {"eval", rosetta_lua_1162}, {"values", rosetta_lua_1163}, {"text", rosetta_lua_1164}, {nullptr, nullptr}};
                 luaL_setfuncs(L, members, 0);
             }
             lua_pushcfunction(L, rosetta_lua::class_extend);
@@ -10034,7 +10034,7 @@ int rosetta_lua_open(lua_State* L) {
             lua_setfield(L, meta, "__tostring");
             lua_rawsetp(L, LUA_REGISTRYINDEX, &rosetta_lua::Info<datamunge::LinalgMatrix>::value);
             lua_createtable(L, 0, 2);
-            lua_pushcfunction(L, rosetta_lua_1147);
+            lua_pushcfunction(L, rosetta_lua_1165);
             lua_setfield(L, -2, "__call");
             lua_pushliteral(L, "LinalgMatrix");
             lua_setfield(L, -2, "__name");
@@ -10049,7 +10049,7 @@ int rosetta_lua_open(lua_State* L) {
             lua_pushboolean(L, 1);
             lua_rawsetp(L, cls, &rosetta_lua::native_key());
             {
-                static const luaL_Reg members[] = {{"evaluate", rosetta_lua_1148}, {nullptr, nullptr}};
+                static const luaL_Reg members[] = {{"evaluate", rosetta_lua_1166}, {nullptr, nullptr}};
                 luaL_setfuncs(L, members, 0);
             }
             lua_pushcfunction(L, rosetta_lua::class_extend);
@@ -10079,7 +10079,7 @@ int rosetta_lua_open(lua_State* L) {
             lua_setfield(L, meta, "__tostring");
             lua_rawsetp(L, LUA_REGISTRYINDEX, &rosetta_lua::Info<datamunge::ode::RHS>::value);
             lua_createtable(L, 0, 2);
-            lua_pushcfunction(L, rosetta_lua_1149);
+            lua_pushcfunction(L, rosetta_lua_1167);
             lua_setfield(L, -2, "__call");
             lua_pushliteral(L, "RHS");
             lua_setfield(L, -2, "__name");
@@ -10104,7 +10104,7 @@ int rosetta_lua_open(lua_State* L) {
             lua_pushvalue(L, cls);
             lua_newtable(L);
             {
-                static const luaL_Reg members[] = {{"method", rosetta_lua_1150}, {"multistep_order", rosetta_lua_1152}, {"step_size", rosetta_lua_1154}, {"abs_tol", rosetta_lua_1156}, {"rel_tol", rosetta_lua_1158}, {"max_step", rosetta_lua_1160}, {nullptr, nullptr}};
+                static const luaL_Reg members[] = {{"method", rosetta_lua_1168}, {"multistep_order", rosetta_lua_1170}, {"step_size", rosetta_lua_1172}, {"abs_tol", rosetta_lua_1174}, {"rel_tol", rosetta_lua_1176}, {"max_step", rosetta_lua_1178}, {nullptr, nullptr}};
                 luaL_setfuncs(L, members, 0);
             }
             lua_pushnil(L);
@@ -10112,7 +10112,7 @@ int rosetta_lua_open(lua_State* L) {
             lua_setfield(L, meta, "__index");
             lua_newtable(L);
             {
-                static const luaL_Reg members[] = {{"method", rosetta_lua_1151}, {"multistep_order", rosetta_lua_1153}, {"step_size", rosetta_lua_1155}, {"abs_tol", rosetta_lua_1157}, {"rel_tol", rosetta_lua_1159}, {"max_step", rosetta_lua_1161}, {nullptr, nullptr}};
+                static const luaL_Reg members[] = {{"method", rosetta_lua_1169}, {"multistep_order", rosetta_lua_1171}, {"step_size", rosetta_lua_1173}, {"abs_tol", rosetta_lua_1175}, {"rel_tol", rosetta_lua_1177}, {"max_step", rosetta_lua_1179}, {nullptr, nullptr}};
                 luaL_setfuncs(L, members, 0);
             }
             lua_pushliteral(L, "ODEOptions");
@@ -10128,7 +10128,7 @@ int rosetta_lua_open(lua_State* L) {
             lua_setfield(L, meta, "__tostring");
             lua_rawsetp(L, LUA_REGISTRYINDEX, &rosetta_lua::Info<datamunge::ode::ODEOptions>::value);
             lua_createtable(L, 0, 2);
-            lua_pushcfunction(L, rosetta_lua_1162);
+            lua_pushcfunction(L, rosetta_lua_1180);
             lua_setfield(L, -2, "__call");
             lua_pushliteral(L, "ODEOptions");
             lua_setfield(L, -2, "__name");
@@ -10143,7 +10143,7 @@ int rosetta_lua_open(lua_State* L) {
             lua_pushboolean(L, 1);
             lua_rawsetp(L, cls, &rosetta_lua::native_key());
             {
-                static const luaL_Reg members[] = {{"size", rosetta_lua_1163}, {"time_at", rosetta_lua_1164}, {"state_at", rosetta_lua_1165}, {nullptr, nullptr}};
+                static const luaL_Reg members[] = {{"size", rosetta_lua_1181}, {"time_at", rosetta_lua_1182}, {"state_at", rosetta_lua_1183}, {nullptr, nullptr}};
                 luaL_setfuncs(L, members, 0);
             }
             lua_pushcfunction(L, rosetta_lua::class_extend);
@@ -10157,7 +10157,7 @@ int rosetta_lua_open(lua_State* L) {
             lua_pushvalue(L, cls);
             lua_newtable(L);
             {
-                static const luaL_Reg members[] = {{"steps_taken", rosetta_lua_1166}, {"function_evaluations", rosetta_lua_1168}, {nullptr, nullptr}};
+                static const luaL_Reg members[] = {{"steps_taken", rosetta_lua_1184}, {"function_evaluations", rosetta_lua_1186}, {nullptr, nullptr}};
                 luaL_setfuncs(L, members, 0);
             }
             lua_pushnil(L);
@@ -10165,7 +10165,7 @@ int rosetta_lua_open(lua_State* L) {
             lua_setfield(L, meta, "__index");
             lua_newtable(L);
             {
-                static const luaL_Reg members[] = {{"steps_taken", rosetta_lua_1167}, {"function_evaluations", rosetta_lua_1169}, {nullptr, nullptr}};
+                static const luaL_Reg members[] = {{"steps_taken", rosetta_lua_1185}, {"function_evaluations", rosetta_lua_1187}, {nullptr, nullptr}};
                 luaL_setfuncs(L, members, 0);
             }
             lua_pushliteral(L, "ODESolution");
@@ -10179,12 +10179,12 @@ int rosetta_lua_open(lua_State* L) {
             lua_setfield(L, meta, "__eq");
             lua_pushcfunction(L, rosetta_lua::object_tostring);
             lua_setfield(L, meta, "__tostring");
-            lua_pushcfunction(L, rosetta_lua_1163);
+            lua_pushcfunction(L, rosetta_lua_1181);
             lua_pushcclosure(L, rosetta_lua::unary, 1);
             lua_setfield(L, meta, "__len");
             lua_rawsetp(L, LUA_REGISTRYINDEX, &rosetta_lua::Info<datamunge::ode::ODESolution>::value);
             lua_createtable(L, 0, 2);
-            lua_pushcfunction(L, rosetta_lua_1170);
+            lua_pushcfunction(L, rosetta_lua_1188);
             lua_setfield(L, -2, "__call");
             lua_pushliteral(L, "ODESolution");
             lua_setfield(L, -2, "__name");
@@ -10199,7 +10199,7 @@ int rosetta_lua_open(lua_State* L) {
             lua_pushboolean(L, 1);
             lua_rawsetp(L, cls, &rosetta_lua::native_key());
             {
-                static const luaL_Reg members[] = {{"solve", rosetta_lua_1171}, {"solve_builtin", rosetta_lua_1172}, {"options", rosetta_lua_1173}, {nullptr, nullptr}};
+                static const luaL_Reg members[] = {{"solve", rosetta_lua_1189}, {"solve_builtin", rosetta_lua_1190}, {"options", rosetta_lua_1191}, {nullptr, nullptr}};
                 luaL_setfuncs(L, members, 0);
             }
             lua_pushcfunction(L, rosetta_lua::class_extend);
@@ -10229,7 +10229,7 @@ int rosetta_lua_open(lua_State* L) {
             lua_setfield(L, meta, "__tostring");
             lua_rawsetp(L, LUA_REGISTRYINDEX, &rosetta_lua::Info<datamunge::ode::ODESolver>::value);
             lua_createtable(L, 0, 2);
-            lua_pushcfunction(L, rosetta_lua_1174);
+            lua_pushcfunction(L, rosetta_lua_1192);
             lua_setfield(L, -2, "__call");
             lua_pushliteral(L, "ODESolver");
             lua_setfield(L, -2, "__name");
@@ -10254,7 +10254,7 @@ int rosetta_lua_open(lua_State* L) {
             lua_pushvalue(L, cls);
             lua_newtable(L);
             {
-                static const luaL_Reg members[] = {{"archive_size", rosetta_lua_1175}, {"samples_per_iteration", rosetta_lua_1177}, {"locality", rosetta_lua_1179}, {"convergence_speed", rosetta_lua_1181}, {"max_iterations", rosetta_lua_1183}, {"tolerance", rosetta_lua_1185}, {"seed", rosetta_lua_1187}, {nullptr, nullptr}};
+                static const luaL_Reg members[] = {{"archive_size", rosetta_lua_1193}, {"samples_per_iteration", rosetta_lua_1195}, {"locality", rosetta_lua_1197}, {"convergence_speed", rosetta_lua_1199}, {"max_iterations", rosetta_lua_1201}, {"tolerance", rosetta_lua_1203}, {"seed", rosetta_lua_1205}, {nullptr, nullptr}};
                 luaL_setfuncs(L, members, 0);
             }
             lua_pushnil(L);
@@ -10262,7 +10262,7 @@ int rosetta_lua_open(lua_State* L) {
             lua_setfield(L, meta, "__index");
             lua_newtable(L);
             {
-                static const luaL_Reg members[] = {{"archive_size", rosetta_lua_1176}, {"samples_per_iteration", rosetta_lua_1178}, {"locality", rosetta_lua_1180}, {"convergence_speed", rosetta_lua_1182}, {"max_iterations", rosetta_lua_1184}, {"tolerance", rosetta_lua_1186}, {"seed", rosetta_lua_1188}, {nullptr, nullptr}};
+                static const luaL_Reg members[] = {{"archive_size", rosetta_lua_1194}, {"samples_per_iteration", rosetta_lua_1196}, {"locality", rosetta_lua_1198}, {"convergence_speed", rosetta_lua_1200}, {"max_iterations", rosetta_lua_1202}, {"tolerance", rosetta_lua_1204}, {"seed", rosetta_lua_1206}, {nullptr, nullptr}};
                 luaL_setfuncs(L, members, 0);
             }
             lua_pushliteral(L, "ACOROptions");
@@ -10278,7 +10278,7 @@ int rosetta_lua_open(lua_State* L) {
             lua_setfield(L, meta, "__tostring");
             lua_rawsetp(L, LUA_REGISTRYINDEX, &rosetta_lua::Info<datamunge::optim::ACOROptions>::value);
             lua_createtable(L, 0, 2);
-            lua_pushcfunction(L, rosetta_lua_1189);
+            lua_pushcfunction(L, rosetta_lua_1207);
             lua_setfield(L, -2, "__call");
             lua_pushliteral(L, "ACOROptions");
             lua_setfield(L, -2, "__name");
@@ -10293,7 +10293,7 @@ int rosetta_lua_open(lua_State* L) {
             lua_pushboolean(L, 1);
             lua_rawsetp(L, cls, &rosetta_lua::native_key());
             {
-                static const luaL_Reg members[] = {{"optimize", rosetta_lua_1190}, {"options", rosetta_lua_1191}, {nullptr, nullptr}};
+                static const luaL_Reg members[] = {{"optimize", rosetta_lua_1208}, {"options", rosetta_lua_1209}, {nullptr, nullptr}};
                 luaL_setfuncs(L, members, 0);
             }
             lua_pushcfunction(L, rosetta_lua::class_extend);
@@ -10323,7 +10323,7 @@ int rosetta_lua_open(lua_State* L) {
             lua_setfield(L, meta, "__tostring");
             lua_rawsetp(L, LUA_REGISTRYINDEX, &rosetta_lua::Info<datamunge::optim::ACOR>::value);
             lua_createtable(L, 0, 2);
-            lua_pushcfunction(L, rosetta_lua_1192);
+            lua_pushcfunction(L, rosetta_lua_1210);
             lua_setfield(L, -2, "__call");
             lua_pushliteral(L, "ACOR");
             lua_setfield(L, -2, "__name");
@@ -10348,7 +10348,7 @@ int rosetta_lua_open(lua_State* L) {
             lua_pushvalue(L, cls);
             lua_newtable(L);
             {
-                static const luaL_Reg members[] = {{"step_size", rosetta_lua_1193}, {"beta1", rosetta_lua_1195}, {"beta2", rosetta_lua_1197}, {"epsilon", rosetta_lua_1199}, {"max_iterations", rosetta_lua_1201}, {"tolerance", rosetta_lua_1203}, {nullptr, nullptr}};
+                static const luaL_Reg members[] = {{"step_size", rosetta_lua_1211}, {"beta1", rosetta_lua_1213}, {"beta2", rosetta_lua_1215}, {"epsilon", rosetta_lua_1217}, {"max_iterations", rosetta_lua_1219}, {"tolerance", rosetta_lua_1221}, {nullptr, nullptr}};
                 luaL_setfuncs(L, members, 0);
             }
             lua_pushnil(L);
@@ -10356,7 +10356,7 @@ int rosetta_lua_open(lua_State* L) {
             lua_setfield(L, meta, "__index");
             lua_newtable(L);
             {
-                static const luaL_Reg members[] = {{"step_size", rosetta_lua_1194}, {"beta1", rosetta_lua_1196}, {"beta2", rosetta_lua_1198}, {"epsilon", rosetta_lua_1200}, {"max_iterations", rosetta_lua_1202}, {"tolerance", rosetta_lua_1204}, {nullptr, nullptr}};
+                static const luaL_Reg members[] = {{"step_size", rosetta_lua_1212}, {"beta1", rosetta_lua_1214}, {"beta2", rosetta_lua_1216}, {"epsilon", rosetta_lua_1218}, {"max_iterations", rosetta_lua_1220}, {"tolerance", rosetta_lua_1222}, {nullptr, nullptr}};
                 luaL_setfuncs(L, members, 0);
             }
             lua_pushliteral(L, "AdamOptions");
@@ -10372,7 +10372,7 @@ int rosetta_lua_open(lua_State* L) {
             lua_setfield(L, meta, "__tostring");
             lua_rawsetp(L, LUA_REGISTRYINDEX, &rosetta_lua::Info<datamunge::optim::AdamOptions>::value);
             lua_createtable(L, 0, 2);
-            lua_pushcfunction(L, rosetta_lua_1205);
+            lua_pushcfunction(L, rosetta_lua_1223);
             lua_setfield(L, -2, "__call");
             lua_pushliteral(L, "AdamOptions");
             lua_setfield(L, -2, "__name");
@@ -10387,7 +10387,7 @@ int rosetta_lua_open(lua_State* L) {
             lua_pushboolean(L, 1);
             lua_rawsetp(L, cls, &rosetta_lua::native_key());
             {
-                static const luaL_Reg members[] = {{"optimize", rosetta_lua_1206}, {"options", rosetta_lua_1207}, {nullptr, nullptr}};
+                static const luaL_Reg members[] = {{"optimize", rosetta_lua_1224}, {"options", rosetta_lua_1225}, {nullptr, nullptr}};
                 luaL_setfuncs(L, members, 0);
             }
             lua_pushcfunction(L, rosetta_lua::class_extend);
@@ -10417,7 +10417,7 @@ int rosetta_lua_open(lua_State* L) {
             lua_setfield(L, meta, "__tostring");
             lua_rawsetp(L, LUA_REGISTRYINDEX, &rosetta_lua::Info<datamunge::optim::Adam>::value);
             lua_createtable(L, 0, 2);
-            lua_pushcfunction(L, rosetta_lua_1208);
+            lua_pushcfunction(L, rosetta_lua_1226);
             lua_setfield(L, -2, "__call");
             lua_pushliteral(L, "Adam");
             lua_setfield(L, -2, "__name");
@@ -10442,7 +10442,7 @@ int rosetta_lua_open(lua_State* L) {
             lua_pushvalue(L, cls);
             lua_newtable(L);
             {
-                static const luaL_Reg members[] = {{"step_size", rosetta_lua_1209}, {"epsilon", rosetta_lua_1211}, {"max_iterations", rosetta_lua_1213}, {"tolerance", rosetta_lua_1215}, {nullptr, nullptr}};
+                static const luaL_Reg members[] = {{"step_size", rosetta_lua_1227}, {"epsilon", rosetta_lua_1229}, {"max_iterations", rosetta_lua_1231}, {"tolerance", rosetta_lua_1233}, {nullptr, nullptr}};
                 luaL_setfuncs(L, members, 0);
             }
             lua_pushnil(L);
@@ -10450,7 +10450,7 @@ int rosetta_lua_open(lua_State* L) {
             lua_setfield(L, meta, "__index");
             lua_newtable(L);
             {
-                static const luaL_Reg members[] = {{"step_size", rosetta_lua_1210}, {"epsilon", rosetta_lua_1212}, {"max_iterations", rosetta_lua_1214}, {"tolerance", rosetta_lua_1216}, {nullptr, nullptr}};
+                static const luaL_Reg members[] = {{"step_size", rosetta_lua_1228}, {"epsilon", rosetta_lua_1230}, {"max_iterations", rosetta_lua_1232}, {"tolerance", rosetta_lua_1234}, {nullptr, nullptr}};
                 luaL_setfuncs(L, members, 0);
             }
             lua_pushliteral(L, "AdaGradOptions");
@@ -10466,7 +10466,7 @@ int rosetta_lua_open(lua_State* L) {
             lua_setfield(L, meta, "__tostring");
             lua_rawsetp(L, LUA_REGISTRYINDEX, &rosetta_lua::Info<datamunge::optim::AdaGradOptions>::value);
             lua_createtable(L, 0, 2);
-            lua_pushcfunction(L, rosetta_lua_1217);
+            lua_pushcfunction(L, rosetta_lua_1235);
             lua_setfield(L, -2, "__call");
             lua_pushliteral(L, "AdaGradOptions");
             lua_setfield(L, -2, "__name");
@@ -10481,7 +10481,7 @@ int rosetta_lua_open(lua_State* L) {
             lua_pushboolean(L, 1);
             lua_rawsetp(L, cls, &rosetta_lua::native_key());
             {
-                static const luaL_Reg members[] = {{"optimize", rosetta_lua_1218}, {"options", rosetta_lua_1219}, {nullptr, nullptr}};
+                static const luaL_Reg members[] = {{"optimize", rosetta_lua_1236}, {"options", rosetta_lua_1237}, {nullptr, nullptr}};
                 luaL_setfuncs(L, members, 0);
             }
             lua_pushcfunction(L, rosetta_lua::class_extend);
@@ -10511,7 +10511,7 @@ int rosetta_lua_open(lua_State* L) {
             lua_setfield(L, meta, "__tostring");
             lua_rawsetp(L, LUA_REGISTRYINDEX, &rosetta_lua::Info<datamunge::optim::AdaGrad>::value);
             lua_createtable(L, 0, 2);
-            lua_pushcfunction(L, rosetta_lua_1220);
+            lua_pushcfunction(L, rosetta_lua_1238);
             lua_setfield(L, -2, "__call");
             lua_pushliteral(L, "AdaGrad");
             lua_setfield(L, -2, "__name");
@@ -10536,7 +10536,7 @@ int rosetta_lua_open(lua_State* L) {
             lua_pushvalue(L, cls);
             lua_newtable(L);
             {
-                static const luaL_Reg members[] = {{"decay_rate", rosetta_lua_1221}, {"epsilon", rosetta_lua_1223}, {"max_iterations", rosetta_lua_1225}, {"tolerance", rosetta_lua_1227}, {nullptr, nullptr}};
+                static const luaL_Reg members[] = {{"decay_rate", rosetta_lua_1239}, {"epsilon", rosetta_lua_1241}, {"max_iterations", rosetta_lua_1243}, {"tolerance", rosetta_lua_1245}, {nullptr, nullptr}};
                 luaL_setfuncs(L, members, 0);
             }
             lua_pushnil(L);
@@ -10544,7 +10544,7 @@ int rosetta_lua_open(lua_State* L) {
             lua_setfield(L, meta, "__index");
             lua_newtable(L);
             {
-                static const luaL_Reg members[] = {{"decay_rate", rosetta_lua_1222}, {"epsilon", rosetta_lua_1224}, {"max_iterations", rosetta_lua_1226}, {"tolerance", rosetta_lua_1228}, {nullptr, nullptr}};
+                static const luaL_Reg members[] = {{"decay_rate", rosetta_lua_1240}, {"epsilon", rosetta_lua_1242}, {"max_iterations", rosetta_lua_1244}, {"tolerance", rosetta_lua_1246}, {nullptr, nullptr}};
                 luaL_setfuncs(L, members, 0);
             }
             lua_pushliteral(L, "AdaDeltaOptions");
@@ -10560,7 +10560,7 @@ int rosetta_lua_open(lua_State* L) {
             lua_setfield(L, meta, "__tostring");
             lua_rawsetp(L, LUA_REGISTRYINDEX, &rosetta_lua::Info<datamunge::optim::AdaDeltaOptions>::value);
             lua_createtable(L, 0, 2);
-            lua_pushcfunction(L, rosetta_lua_1229);
+            lua_pushcfunction(L, rosetta_lua_1247);
             lua_setfield(L, -2, "__call");
             lua_pushliteral(L, "AdaDeltaOptions");
             lua_setfield(L, -2, "__name");
@@ -10575,7 +10575,7 @@ int rosetta_lua_open(lua_State* L) {
             lua_pushboolean(L, 1);
             lua_rawsetp(L, cls, &rosetta_lua::native_key());
             {
-                static const luaL_Reg members[] = {{"optimize", rosetta_lua_1230}, {"options", rosetta_lua_1231}, {nullptr, nullptr}};
+                static const luaL_Reg members[] = {{"optimize", rosetta_lua_1248}, {"options", rosetta_lua_1249}, {nullptr, nullptr}};
                 luaL_setfuncs(L, members, 0);
             }
             lua_pushcfunction(L, rosetta_lua::class_extend);
@@ -10605,7 +10605,7 @@ int rosetta_lua_open(lua_State* L) {
             lua_setfield(L, meta, "__tostring");
             lua_rawsetp(L, LUA_REGISTRYINDEX, &rosetta_lua::Info<datamunge::optim::AdaDelta>::value);
             lua_createtable(L, 0, 2);
-            lua_pushcfunction(L, rosetta_lua_1232);
+            lua_pushcfunction(L, rosetta_lua_1250);
             lua_setfield(L, -2, "__call");
             lua_pushliteral(L, "AdaDelta");
             lua_setfield(L, -2, "__name");
@@ -10630,7 +10630,7 @@ int rosetta_lua_open(lua_State* L) {
             lua_pushvalue(L, cls);
             lua_newtable(L);
             {
-                static const luaL_Reg members[] = {{"step_size", rosetta_lua_1233}, {"beta1", rosetta_lua_1235}, {"beta2", rosetta_lua_1237}, {"epsilon", rosetta_lua_1239}, {"max_iterations", rosetta_lua_1241}, {"tolerance", rosetta_lua_1243}, {nullptr, nullptr}};
+                static const luaL_Reg members[] = {{"step_size", rosetta_lua_1251}, {"beta1", rosetta_lua_1253}, {"beta2", rosetta_lua_1255}, {"epsilon", rosetta_lua_1257}, {"max_iterations", rosetta_lua_1259}, {"tolerance", rosetta_lua_1261}, {nullptr, nullptr}};
                 luaL_setfuncs(L, members, 0);
             }
             lua_pushnil(L);
@@ -10638,7 +10638,7 @@ int rosetta_lua_open(lua_State* L) {
             lua_setfield(L, meta, "__index");
             lua_newtable(L);
             {
-                static const luaL_Reg members[] = {{"step_size", rosetta_lua_1234}, {"beta1", rosetta_lua_1236}, {"beta2", rosetta_lua_1238}, {"epsilon", rosetta_lua_1240}, {"max_iterations", rosetta_lua_1242}, {"tolerance", rosetta_lua_1244}, {nullptr, nullptr}};
+                static const luaL_Reg members[] = {{"step_size", rosetta_lua_1252}, {"beta1", rosetta_lua_1254}, {"beta2", rosetta_lua_1256}, {"epsilon", rosetta_lua_1258}, {"max_iterations", rosetta_lua_1260}, {"tolerance", rosetta_lua_1262}, {nullptr, nullptr}};
                 luaL_setfuncs(L, members, 0);
             }
             lua_pushliteral(L, "AMSGradOptions");
@@ -10654,7 +10654,7 @@ int rosetta_lua_open(lua_State* L) {
             lua_setfield(L, meta, "__tostring");
             lua_rawsetp(L, LUA_REGISTRYINDEX, &rosetta_lua::Info<datamunge::optim::AMSGradOptions>::value);
             lua_createtable(L, 0, 2);
-            lua_pushcfunction(L, rosetta_lua_1245);
+            lua_pushcfunction(L, rosetta_lua_1263);
             lua_setfield(L, -2, "__call");
             lua_pushliteral(L, "AMSGradOptions");
             lua_setfield(L, -2, "__name");
@@ -10669,7 +10669,7 @@ int rosetta_lua_open(lua_State* L) {
             lua_pushboolean(L, 1);
             lua_rawsetp(L, cls, &rosetta_lua::native_key());
             {
-                static const luaL_Reg members[] = {{"optimize", rosetta_lua_1246}, {"options", rosetta_lua_1247}, {nullptr, nullptr}};
+                static const luaL_Reg members[] = {{"optimize", rosetta_lua_1264}, {"options", rosetta_lua_1265}, {nullptr, nullptr}};
                 luaL_setfuncs(L, members, 0);
             }
             lua_pushcfunction(L, rosetta_lua::class_extend);
@@ -10699,7 +10699,7 @@ int rosetta_lua_open(lua_State* L) {
             lua_setfield(L, meta, "__tostring");
             lua_rawsetp(L, LUA_REGISTRYINDEX, &rosetta_lua::Info<datamunge::optim::AMSGrad>::value);
             lua_createtable(L, 0, 2);
-            lua_pushcfunction(L, rosetta_lua_1248);
+            lua_pushcfunction(L, rosetta_lua_1266);
             lua_setfield(L, -2, "__call");
             lua_pushliteral(L, "AMSGrad");
             lua_setfield(L, -2, "__name");
@@ -10724,7 +10724,7 @@ int rosetta_lua_open(lua_State* L) {
             lua_pushvalue(L, cls);
             lua_newtable(L);
             {
-                static const luaL_Reg members[] = {{"population_size", rosetta_lua_1249}, {"abandonment_limit", rosetta_lua_1251}, {"max_generations", rosetta_lua_1253}, {"tolerance", rosetta_lua_1255}, {"seed", rosetta_lua_1257}, {nullptr, nullptr}};
+                static const luaL_Reg members[] = {{"population_size", rosetta_lua_1267}, {"abandonment_limit", rosetta_lua_1269}, {"max_generations", rosetta_lua_1271}, {"tolerance", rosetta_lua_1273}, {"seed", rosetta_lua_1275}, {nullptr, nullptr}};
                 luaL_setfuncs(L, members, 0);
             }
             lua_pushnil(L);
@@ -10732,7 +10732,7 @@ int rosetta_lua_open(lua_State* L) {
             lua_setfield(L, meta, "__index");
             lua_newtable(L);
             {
-                static const luaL_Reg members[] = {{"population_size", rosetta_lua_1250}, {"abandonment_limit", rosetta_lua_1252}, {"max_generations", rosetta_lua_1254}, {"tolerance", rosetta_lua_1256}, {"seed", rosetta_lua_1258}, {nullptr, nullptr}};
+                static const luaL_Reg members[] = {{"population_size", rosetta_lua_1268}, {"abandonment_limit", rosetta_lua_1270}, {"max_generations", rosetta_lua_1272}, {"tolerance", rosetta_lua_1274}, {"seed", rosetta_lua_1276}, {nullptr, nullptr}};
                 luaL_setfuncs(L, members, 0);
             }
             lua_pushliteral(L, "ArtificialBeeColonyOptions");
@@ -10748,7 +10748,7 @@ int rosetta_lua_open(lua_State* L) {
             lua_setfield(L, meta, "__tostring");
             lua_rawsetp(L, LUA_REGISTRYINDEX, &rosetta_lua::Info<datamunge::optim::ArtificialBeeColonyOptions>::value);
             lua_createtable(L, 0, 2);
-            lua_pushcfunction(L, rosetta_lua_1259);
+            lua_pushcfunction(L, rosetta_lua_1277);
             lua_setfield(L, -2, "__call");
             lua_pushliteral(L, "ArtificialBeeColonyOptions");
             lua_setfield(L, -2, "__name");
@@ -10763,7 +10763,7 @@ int rosetta_lua_open(lua_State* L) {
             lua_pushboolean(L, 1);
             lua_rawsetp(L, cls, &rosetta_lua::native_key());
             {
-                static const luaL_Reg members[] = {{"optimize", rosetta_lua_1260}, {"options", rosetta_lua_1261}, {nullptr, nullptr}};
+                static const luaL_Reg members[] = {{"optimize", rosetta_lua_1278}, {"options", rosetta_lua_1279}, {nullptr, nullptr}};
                 luaL_setfuncs(L, members, 0);
             }
             lua_pushcfunction(L, rosetta_lua::class_extend);
@@ -10793,7 +10793,7 @@ int rosetta_lua_open(lua_State* L) {
             lua_setfield(L, meta, "__tostring");
             lua_rawsetp(L, LUA_REGISTRYINDEX, &rosetta_lua::Info<datamunge::optim::ArtificialBeeColony>::value);
             lua_createtable(L, 0, 2);
-            lua_pushcfunction(L, rosetta_lua_1262);
+            lua_pushcfunction(L, rosetta_lua_1280);
             lua_setfield(L, -2, "__call");
             lua_pushliteral(L, "ArtificialBeeColony");
             lua_setfield(L, -2, "__name");
@@ -10818,7 +10818,7 @@ int rosetta_lua_open(lua_State* L) {
             lua_pushvalue(L, cls);
             lua_newtable(L);
             {
-                static const luaL_Reg members[] = {{"step_size", rosetta_lua_1263}, {"initial_penalty", rosetta_lua_1265}, {"max_outer_iterations", rosetta_lua_1267}, {"inner_iterations", rosetta_lua_1269}, {"tolerance", rosetta_lua_1271}, {nullptr, nullptr}};
+                static const luaL_Reg members[] = {{"step_size", rosetta_lua_1281}, {"initial_penalty", rosetta_lua_1283}, {"max_outer_iterations", rosetta_lua_1285}, {"inner_iterations", rosetta_lua_1287}, {"tolerance", rosetta_lua_1289}, {nullptr, nullptr}};
                 luaL_setfuncs(L, members, 0);
             }
             lua_pushnil(L);
@@ -10826,7 +10826,7 @@ int rosetta_lua_open(lua_State* L) {
             lua_setfield(L, meta, "__index");
             lua_newtable(L);
             {
-                static const luaL_Reg members[] = {{"step_size", rosetta_lua_1264}, {"initial_penalty", rosetta_lua_1266}, {"max_outer_iterations", rosetta_lua_1268}, {"inner_iterations", rosetta_lua_1270}, {"tolerance", rosetta_lua_1272}, {nullptr, nullptr}};
+                static const luaL_Reg members[] = {{"step_size", rosetta_lua_1282}, {"initial_penalty", rosetta_lua_1284}, {"max_outer_iterations", rosetta_lua_1286}, {"inner_iterations", rosetta_lua_1288}, {"tolerance", rosetta_lua_1290}, {nullptr, nullptr}};
                 luaL_setfuncs(L, members, 0);
             }
             lua_pushliteral(L, "AugmentedLagrangianOptions");
@@ -10842,7 +10842,7 @@ int rosetta_lua_open(lua_State* L) {
             lua_setfield(L, meta, "__tostring");
             lua_rawsetp(L, LUA_REGISTRYINDEX, &rosetta_lua::Info<datamunge::optim::AugmentedLagrangianOptions>::value);
             lua_createtable(L, 0, 2);
-            lua_pushcfunction(L, rosetta_lua_1273);
+            lua_pushcfunction(L, rosetta_lua_1291);
             lua_setfield(L, -2, "__call");
             lua_pushliteral(L, "AugmentedLagrangianOptions");
             lua_setfield(L, -2, "__name");
@@ -10857,7 +10857,7 @@ int rosetta_lua_open(lua_State* L) {
             lua_pushboolean(L, 1);
             lua_rawsetp(L, cls, &rosetta_lua::native_key());
             {
-                static const luaL_Reg members[] = {{"optimize", rosetta_lua_1274}, {"options", rosetta_lua_1275}, {nullptr, nullptr}};
+                static const luaL_Reg members[] = {{"optimize", rosetta_lua_1292}, {"options", rosetta_lua_1293}, {nullptr, nullptr}};
                 luaL_setfuncs(L, members, 0);
             }
             lua_pushcfunction(L, rosetta_lua::class_extend);
@@ -10887,7 +10887,7 @@ int rosetta_lua_open(lua_State* L) {
             lua_setfield(L, meta, "__tostring");
             lua_rawsetp(L, LUA_REGISTRYINDEX, &rosetta_lua::Info<datamunge::optim::AugmentedLagrangian>::value);
             lua_createtable(L, 0, 2);
-            lua_pushcfunction(L, rosetta_lua_1276);
+            lua_pushcfunction(L, rosetta_lua_1294);
             lua_setfield(L, -2, "__call");
             lua_pushliteral(L, "AugmentedLagrangian");
             lua_setfield(L, -2, "__name");
@@ -10902,7 +10902,7 @@ int rosetta_lua_open(lua_State* L) {
             lua_pushboolean(L, 1);
             lua_rawsetp(L, cls, &rosetta_lua::native_key());
             {
-                static const luaL_Reg members[] = {{"fit", rosetta_lua_1277}, {"acquisition", rosetta_lua_1278}, {nullptr, nullptr}};
+                static const luaL_Reg members[] = {{"fit", rosetta_lua_1295}, {"acquisition", rosetta_lua_1296}, {nullptr, nullptr}};
                 luaL_setfuncs(L, members, 0);
             }
             lua_pushcfunction(L, rosetta_lua::class_extend);
@@ -10932,7 +10932,7 @@ int rosetta_lua_open(lua_State* L) {
             lua_setfield(L, meta, "__tostring");
             lua_rawsetp(L, LUA_REGISTRYINDEX, &rosetta_lua::Info<datamunge::optim::BayesianSurrogate>::value);
             lua_createtable(L, 0, 2);
-            lua_pushcfunction(L, rosetta_lua_1279);
+            lua_pushcfunction(L, rosetta_lua_1297);
             lua_setfield(L, -2, "__call");
             lua_pushliteral(L, "BayesianSurrogate");
             lua_setfield(L, -2, "__name");
@@ -10957,7 +10957,7 @@ int rosetta_lua_open(lua_State* L) {
             lua_pushvalue(L, cls);
             lua_newtable(L);
             {
-                static const luaL_Reg members[] = {{"initial_samples", rosetta_lua_1280}, {"max_iterations", rosetta_lua_1282}, {"seed", rosetta_lua_1284}, {"candidates", rosetta_lua_1286}, {"refine_iterations", rosetta_lua_1288}, {nullptr, nullptr}};
+                static const luaL_Reg members[] = {{"initial_samples", rosetta_lua_1298}, {"max_iterations", rosetta_lua_1300}, {"seed", rosetta_lua_1302}, {"candidates", rosetta_lua_1304}, {"refine_iterations", rosetta_lua_1306}, {nullptr, nullptr}};
                 luaL_setfuncs(L, members, 0);
             }
             lua_pushnil(L);
@@ -10965,7 +10965,7 @@ int rosetta_lua_open(lua_State* L) {
             lua_setfield(L, meta, "__index");
             lua_newtable(L);
             {
-                static const luaL_Reg members[] = {{"initial_samples", rosetta_lua_1281}, {"max_iterations", rosetta_lua_1283}, {"seed", rosetta_lua_1285}, {"candidates", rosetta_lua_1287}, {"refine_iterations", rosetta_lua_1289}, {nullptr, nullptr}};
+                static const luaL_Reg members[] = {{"initial_samples", rosetta_lua_1299}, {"max_iterations", rosetta_lua_1301}, {"seed", rosetta_lua_1303}, {"candidates", rosetta_lua_1305}, {"refine_iterations", rosetta_lua_1307}, {nullptr, nullptr}};
                 luaL_setfuncs(L, members, 0);
             }
             lua_pushliteral(L, "BayesianOptimizationOptions");
@@ -10981,7 +10981,7 @@ int rosetta_lua_open(lua_State* L) {
             lua_setfield(L, meta, "__tostring");
             lua_rawsetp(L, LUA_REGISTRYINDEX, &rosetta_lua::Info<datamunge::optim::BayesianOptimizationOptions>::value);
             lua_createtable(L, 0, 2);
-            lua_pushcfunction(L, rosetta_lua_1290);
+            lua_pushcfunction(L, rosetta_lua_1308);
             lua_setfield(L, -2, "__call");
             lua_pushliteral(L, "BayesianOptimizationOptions");
             lua_setfield(L, -2, "__name");
@@ -11006,7 +11006,7 @@ int rosetta_lua_open(lua_State* L) {
             lua_pushvalue(L, cls);
             lua_newtable(L);
             {
-                static const luaL_Reg members[] = {{"best_point", rosetta_lua_1291}, {"best_value", rosetta_lua_1293}, {"points", rosetta_lua_1295}, {"values", rosetta_lua_1297}, {"best_values", rosetta_lua_1299}, {"acquisition_values", rosetta_lua_1301}, {nullptr, nullptr}};
+                static const luaL_Reg members[] = {{"best_point", rosetta_lua_1309}, {"best_value", rosetta_lua_1311}, {"points", rosetta_lua_1313}, {"values", rosetta_lua_1315}, {"best_values", rosetta_lua_1317}, {"acquisition_values", rosetta_lua_1319}, {nullptr, nullptr}};
                 luaL_setfuncs(L, members, 0);
             }
             lua_pushnil(L);
@@ -11014,7 +11014,7 @@ int rosetta_lua_open(lua_State* L) {
             lua_setfield(L, meta, "__index");
             lua_newtable(L);
             {
-                static const luaL_Reg members[] = {{"best_point", rosetta_lua_1292}, {"best_value", rosetta_lua_1294}, {"points", rosetta_lua_1296}, {"values", rosetta_lua_1298}, {"best_values", rosetta_lua_1300}, {"acquisition_values", rosetta_lua_1302}, {nullptr, nullptr}};
+                static const luaL_Reg members[] = {{"best_point", rosetta_lua_1310}, {"best_value", rosetta_lua_1312}, {"points", rosetta_lua_1314}, {"values", rosetta_lua_1316}, {"best_values", rosetta_lua_1318}, {"acquisition_values", rosetta_lua_1320}, {nullptr, nullptr}};
                 luaL_setfuncs(L, members, 0);
             }
             lua_pushliteral(L, "BayesianOptimizationResult");
@@ -11030,7 +11030,7 @@ int rosetta_lua_open(lua_State* L) {
             lua_setfield(L, meta, "__tostring");
             lua_rawsetp(L, LUA_REGISTRYINDEX, &rosetta_lua::Info<datamunge::optim::BayesianOptimizationResult>::value);
             lua_createtable(L, 0, 2);
-            lua_pushcfunction(L, rosetta_lua_1303);
+            lua_pushcfunction(L, rosetta_lua_1321);
             lua_setfield(L, -2, "__call");
             lua_pushliteral(L, "BayesianOptimizationResult");
             lua_setfield(L, -2, "__name");
@@ -11045,7 +11045,7 @@ int rosetta_lua_open(lua_State* L) {
             lua_pushboolean(L, 1);
             lua_rawsetp(L, cls, &rosetta_lua::native_key());
             {
-                static const luaL_Reg members[] = {{"run", rosetta_lua_1304}, {"optimize", rosetta_lua_1305}, {"options", rosetta_lua_1306}, {nullptr, nullptr}};
+                static const luaL_Reg members[] = {{"run", rosetta_lua_1322}, {"optimize", rosetta_lua_1323}, {"options", rosetta_lua_1324}, {nullptr, nullptr}};
                 luaL_setfuncs(L, members, 0);
             }
             lua_pushcfunction(L, rosetta_lua::class_extend);
@@ -11075,7 +11075,7 @@ int rosetta_lua_open(lua_State* L) {
             lua_setfield(L, meta, "__tostring");
             lua_rawsetp(L, LUA_REGISTRYINDEX, &rosetta_lua::Info<datamunge::optim::BayesianOptimization>::value);
             lua_createtable(L, 0, 2);
-            lua_pushcfunction(L, rosetta_lua_1307);
+            lua_pushcfunction(L, rosetta_lua_1325);
             lua_setfield(L, -2, "__call");
             lua_pushliteral(L, "BayesianOptimization");
             lua_setfield(L, -2, "__name");
@@ -11100,7 +11100,7 @@ int rosetta_lua_open(lua_State* L) {
             lua_pushvalue(L, cls);
             lua_newtable(L);
             {
-                static const luaL_Reg members[] = {{"max_iterations", rosetta_lua_1308}, {"tolerance", rosetta_lua_1310}, {"armijo_c1", rosetta_lua_1312}, {"backtracking_factor", rosetta_lua_1314}, {"max_line_search_trials", rosetta_lua_1316}, {nullptr, nullptr}};
+                static const luaL_Reg members[] = {{"max_iterations", rosetta_lua_1326}, {"tolerance", rosetta_lua_1328}, {"armijo_c1", rosetta_lua_1330}, {"backtracking_factor", rosetta_lua_1332}, {"max_line_search_trials", rosetta_lua_1334}, {nullptr, nullptr}};
                 luaL_setfuncs(L, members, 0);
             }
             lua_pushnil(L);
@@ -11108,7 +11108,7 @@ int rosetta_lua_open(lua_State* L) {
             lua_setfield(L, meta, "__index");
             lua_newtable(L);
             {
-                static const luaL_Reg members[] = {{"max_iterations", rosetta_lua_1309}, {"tolerance", rosetta_lua_1311}, {"armijo_c1", rosetta_lua_1313}, {"backtracking_factor", rosetta_lua_1315}, {"max_line_search_trials", rosetta_lua_1317}, {nullptr, nullptr}};
+                static const luaL_Reg members[] = {{"max_iterations", rosetta_lua_1327}, {"tolerance", rosetta_lua_1329}, {"armijo_c1", rosetta_lua_1331}, {"backtracking_factor", rosetta_lua_1333}, {"max_line_search_trials", rosetta_lua_1335}, {nullptr, nullptr}};
                 luaL_setfuncs(L, members, 0);
             }
             lua_pushliteral(L, "ConjugateGradientOptions");
@@ -11124,7 +11124,7 @@ int rosetta_lua_open(lua_State* L) {
             lua_setfield(L, meta, "__tostring");
             lua_rawsetp(L, LUA_REGISTRYINDEX, &rosetta_lua::Info<datamunge::optim::ConjugateGradientOptions>::value);
             lua_createtable(L, 0, 2);
-            lua_pushcfunction(L, rosetta_lua_1318);
+            lua_pushcfunction(L, rosetta_lua_1336);
             lua_setfield(L, -2, "__call");
             lua_pushliteral(L, "ConjugateGradientOptions");
             lua_setfield(L, -2, "__name");
@@ -11139,7 +11139,7 @@ int rosetta_lua_open(lua_State* L) {
             lua_pushboolean(L, 1);
             lua_rawsetp(L, cls, &rosetta_lua::native_key());
             {
-                static const luaL_Reg members[] = {{"optimize", rosetta_lua_1319}, {"options", rosetta_lua_1320}, {nullptr, nullptr}};
+                static const luaL_Reg members[] = {{"optimize", rosetta_lua_1337}, {"options", rosetta_lua_1338}, {nullptr, nullptr}};
                 luaL_setfuncs(L, members, 0);
             }
             lua_pushcfunction(L, rosetta_lua::class_extend);
@@ -11169,7 +11169,7 @@ int rosetta_lua_open(lua_State* L) {
             lua_setfield(L, meta, "__tostring");
             lua_rawsetp(L, LUA_REGISTRYINDEX, &rosetta_lua::Info<datamunge::optim::ConjugateGradient>::value);
             lua_createtable(L, 0, 2);
-            lua_pushcfunction(L, rosetta_lua_1321);
+            lua_pushcfunction(L, rosetta_lua_1339);
             lua_setfield(L, -2, "__call");
             lua_pushliteral(L, "ConjugateGradient");
             lua_setfield(L, -2, "__name");
@@ -11194,7 +11194,7 @@ int rosetta_lua_open(lua_State* L) {
             lua_pushvalue(L, cls);
             lua_newtable(L);
             {
-                static const luaL_Reg members[] = {{"population_size", rosetta_lua_1322}, {"initial_step_size", rosetta_lua_1324}, {"max_generations", rosetta_lua_1326}, {"tolerance", rosetta_lua_1328}, {"seed", rosetta_lua_1330}, {nullptr, nullptr}};
+                static const luaL_Reg members[] = {{"population_size", rosetta_lua_1340}, {"initial_step_size", rosetta_lua_1342}, {"max_generations", rosetta_lua_1344}, {"tolerance", rosetta_lua_1346}, {"seed", rosetta_lua_1348}, {nullptr, nullptr}};
                 luaL_setfuncs(L, members, 0);
             }
             lua_pushnil(L);
@@ -11202,7 +11202,7 @@ int rosetta_lua_open(lua_State* L) {
             lua_setfield(L, meta, "__index");
             lua_newtable(L);
             {
-                static const luaL_Reg members[] = {{"population_size", rosetta_lua_1323}, {"initial_step_size", rosetta_lua_1325}, {"max_generations", rosetta_lua_1327}, {"tolerance", rosetta_lua_1329}, {"seed", rosetta_lua_1331}, {nullptr, nullptr}};
+                static const luaL_Reg members[] = {{"population_size", rosetta_lua_1341}, {"initial_step_size", rosetta_lua_1343}, {"max_generations", rosetta_lua_1345}, {"tolerance", rosetta_lua_1347}, {"seed", rosetta_lua_1349}, {nullptr, nullptr}};
                 luaL_setfuncs(L, members, 0);
             }
             lua_pushliteral(L, "CMAESOptions");
@@ -11218,7 +11218,7 @@ int rosetta_lua_open(lua_State* L) {
             lua_setfield(L, meta, "__tostring");
             lua_rawsetp(L, LUA_REGISTRYINDEX, &rosetta_lua::Info<datamunge::optim::CMAESOptions>::value);
             lua_createtable(L, 0, 2);
-            lua_pushcfunction(L, rosetta_lua_1332);
+            lua_pushcfunction(L, rosetta_lua_1350);
             lua_setfield(L, -2, "__call");
             lua_pushliteral(L, "CMAESOptions");
             lua_setfield(L, -2, "__name");
@@ -11233,7 +11233,7 @@ int rosetta_lua_open(lua_State* L) {
             lua_pushboolean(L, 1);
             lua_rawsetp(L, cls, &rosetta_lua::native_key());
             {
-                static const luaL_Reg members[] = {{"optimize", rosetta_lua_1333}, {"options", rosetta_lua_1334}, {nullptr, nullptr}};
+                static const luaL_Reg members[] = {{"optimize", rosetta_lua_1351}, {"options", rosetta_lua_1352}, {nullptr, nullptr}};
                 luaL_setfuncs(L, members, 0);
             }
             lua_pushcfunction(L, rosetta_lua::class_extend);
@@ -11263,7 +11263,7 @@ int rosetta_lua_open(lua_State* L) {
             lua_setfield(L, meta, "__tostring");
             lua_rawsetp(L, LUA_REGISTRYINDEX, &rosetta_lua::Info<datamunge::optim::CMAES>::value);
             lua_createtable(L, 0, 2);
-            lua_pushcfunction(L, rosetta_lua_1335);
+            lua_pushcfunction(L, rosetta_lua_1353);
             lua_setfield(L, -2, "__call");
             lua_pushliteral(L, "CMAES");
             lua_setfield(L, -2, "__name");
@@ -11288,7 +11288,7 @@ int rosetta_lua_open(lua_State* L) {
             lua_pushvalue(L, cls);
             lua_newtable(L);
             {
-                static const luaL_Reg members[] = {{"step_size", rosetta_lua_1336}, {"max_iterations", rosetta_lua_1338}, {"tolerance", rosetta_lua_1340}, {"armijo_c1", rosetta_lua_1342}, {"backtracking_factor", rosetta_lua_1344}, {"max_line_search_trials", rosetta_lua_1346}, {nullptr, nullptr}};
+                static const luaL_Reg members[] = {{"step_size", rosetta_lua_1354}, {"max_iterations", rosetta_lua_1356}, {"tolerance", rosetta_lua_1358}, {"armijo_c1", rosetta_lua_1360}, {"backtracking_factor", rosetta_lua_1362}, {"max_line_search_trials", rosetta_lua_1364}, {nullptr, nullptr}};
                 luaL_setfuncs(L, members, 0);
             }
             lua_pushnil(L);
@@ -11296,7 +11296,7 @@ int rosetta_lua_open(lua_State* L) {
             lua_setfield(L, meta, "__index");
             lua_newtable(L);
             {
-                static const luaL_Reg members[] = {{"step_size", rosetta_lua_1337}, {"max_iterations", rosetta_lua_1339}, {"tolerance", rosetta_lua_1341}, {"armijo_c1", rosetta_lua_1343}, {"backtracking_factor", rosetta_lua_1345}, {"max_line_search_trials", rosetta_lua_1347}, {nullptr, nullptr}};
+                static const luaL_Reg members[] = {{"step_size", rosetta_lua_1355}, {"max_iterations", rosetta_lua_1357}, {"tolerance", rosetta_lua_1359}, {"armijo_c1", rosetta_lua_1361}, {"backtracking_factor", rosetta_lua_1363}, {"max_line_search_trials", rosetta_lua_1365}, {nullptr, nullptr}};
                 luaL_setfuncs(L, members, 0);
             }
             lua_pushliteral(L, "CoordinateDescentOptions");
@@ -11312,7 +11312,7 @@ int rosetta_lua_open(lua_State* L) {
             lua_setfield(L, meta, "__tostring");
             lua_rawsetp(L, LUA_REGISTRYINDEX, &rosetta_lua::Info<datamunge::optim::CoordinateDescentOptions>::value);
             lua_createtable(L, 0, 2);
-            lua_pushcfunction(L, rosetta_lua_1348);
+            lua_pushcfunction(L, rosetta_lua_1366);
             lua_setfield(L, -2, "__call");
             lua_pushliteral(L, "CoordinateDescentOptions");
             lua_setfield(L, -2, "__name");
@@ -11327,7 +11327,7 @@ int rosetta_lua_open(lua_State* L) {
             lua_pushboolean(L, 1);
             lua_rawsetp(L, cls, &rosetta_lua::native_key());
             {
-                static const luaL_Reg members[] = {{"optimize", rosetta_lua_1349}, {"options", rosetta_lua_1350}, {nullptr, nullptr}};
+                static const luaL_Reg members[] = {{"optimize", rosetta_lua_1367}, {"options", rosetta_lua_1368}, {nullptr, nullptr}};
                 luaL_setfuncs(L, members, 0);
             }
             lua_pushcfunction(L, rosetta_lua::class_extend);
@@ -11357,7 +11357,7 @@ int rosetta_lua_open(lua_State* L) {
             lua_setfield(L, meta, "__tostring");
             lua_rawsetp(L, LUA_REGISTRYINDEX, &rosetta_lua::Info<datamunge::optim::CoordinateDescent>::value);
             lua_createtable(L, 0, 2);
-            lua_pushcfunction(L, rosetta_lua_1351);
+            lua_pushcfunction(L, rosetta_lua_1369);
             lua_setfield(L, -2, "__call");
             lua_pushliteral(L, "CoordinateDescent");
             lua_setfield(L, -2, "__name");
@@ -11382,7 +11382,7 @@ int rosetta_lua_open(lua_State* L) {
             lua_pushvalue(L, cls);
             lua_newtable(L);
             {
-                static const luaL_Reg members[] = {{"population_size", rosetta_lua_1352}, {"elite_ratio", rosetta_lua_1354}, {"initial_std_dev", rosetta_lua_1356}, {"smoothing", rosetta_lua_1358}, {"max_iterations", rosetta_lua_1360}, {"tolerance", rosetta_lua_1362}, {"seed", rosetta_lua_1364}, {nullptr, nullptr}};
+                static const luaL_Reg members[] = {{"population_size", rosetta_lua_1370}, {"elite_ratio", rosetta_lua_1372}, {"initial_std_dev", rosetta_lua_1374}, {"smoothing", rosetta_lua_1376}, {"max_iterations", rosetta_lua_1378}, {"tolerance", rosetta_lua_1380}, {"seed", rosetta_lua_1382}, {nullptr, nullptr}};
                 luaL_setfuncs(L, members, 0);
             }
             lua_pushnil(L);
@@ -11390,7 +11390,7 @@ int rosetta_lua_open(lua_State* L) {
             lua_setfield(L, meta, "__index");
             lua_newtable(L);
             {
-                static const luaL_Reg members[] = {{"population_size", rosetta_lua_1353}, {"elite_ratio", rosetta_lua_1355}, {"initial_std_dev", rosetta_lua_1357}, {"smoothing", rosetta_lua_1359}, {"max_iterations", rosetta_lua_1361}, {"tolerance", rosetta_lua_1363}, {"seed", rosetta_lua_1365}, {nullptr, nullptr}};
+                static const luaL_Reg members[] = {{"population_size", rosetta_lua_1371}, {"elite_ratio", rosetta_lua_1373}, {"initial_std_dev", rosetta_lua_1375}, {"smoothing", rosetta_lua_1377}, {"max_iterations", rosetta_lua_1379}, {"tolerance", rosetta_lua_1381}, {"seed", rosetta_lua_1383}, {nullptr, nullptr}};
                 luaL_setfuncs(L, members, 0);
             }
             lua_pushliteral(L, "CrossEntropyMethodOptions");
@@ -11406,7 +11406,7 @@ int rosetta_lua_open(lua_State* L) {
             lua_setfield(L, meta, "__tostring");
             lua_rawsetp(L, LUA_REGISTRYINDEX, &rosetta_lua::Info<datamunge::optim::CrossEntropyMethodOptions>::value);
             lua_createtable(L, 0, 2);
-            lua_pushcfunction(L, rosetta_lua_1366);
+            lua_pushcfunction(L, rosetta_lua_1384);
             lua_setfield(L, -2, "__call");
             lua_pushliteral(L, "CrossEntropyMethodOptions");
             lua_setfield(L, -2, "__name");
@@ -11421,7 +11421,7 @@ int rosetta_lua_open(lua_State* L) {
             lua_pushboolean(L, 1);
             lua_rawsetp(L, cls, &rosetta_lua::native_key());
             {
-                static const luaL_Reg members[] = {{"optimize", rosetta_lua_1367}, {"options", rosetta_lua_1368}, {nullptr, nullptr}};
+                static const luaL_Reg members[] = {{"optimize", rosetta_lua_1385}, {"options", rosetta_lua_1386}, {nullptr, nullptr}};
                 luaL_setfuncs(L, members, 0);
             }
             lua_pushcfunction(L, rosetta_lua::class_extend);
@@ -11451,7 +11451,7 @@ int rosetta_lua_open(lua_State* L) {
             lua_setfield(L, meta, "__tostring");
             lua_rawsetp(L, LUA_REGISTRYINDEX, &rosetta_lua::Info<datamunge::optim::CrossEntropyMethod>::value);
             lua_createtable(L, 0, 2);
-            lua_pushcfunction(L, rosetta_lua_1369);
+            lua_pushcfunction(L, rosetta_lua_1387);
             lua_setfield(L, -2, "__call");
             lua_pushliteral(L, "CrossEntropyMethod");
             lua_setfield(L, -2, "__name");
@@ -11476,7 +11476,7 @@ int rosetta_lua_open(lua_State* L) {
             lua_pushvalue(L, cls);
             lua_newtable(L);
             {
-                static const luaL_Reg members[] = {{"population_size", rosetta_lua_1370}, {"discovery_rate", rosetta_lua_1372}, {"levy_beta", rosetta_lua_1374}, {"step_scale", rosetta_lua_1376}, {"max_iterations", rosetta_lua_1378}, {"tolerance", rosetta_lua_1380}, {"seed", rosetta_lua_1382}, {nullptr, nullptr}};
+                static const luaL_Reg members[] = {{"population_size", rosetta_lua_1388}, {"discovery_rate", rosetta_lua_1390}, {"levy_beta", rosetta_lua_1392}, {"step_scale", rosetta_lua_1394}, {"max_iterations", rosetta_lua_1396}, {"tolerance", rosetta_lua_1398}, {"seed", rosetta_lua_1400}, {nullptr, nullptr}};
                 luaL_setfuncs(L, members, 0);
             }
             lua_pushnil(L);
@@ -11484,7 +11484,7 @@ int rosetta_lua_open(lua_State* L) {
             lua_setfield(L, meta, "__index");
             lua_newtable(L);
             {
-                static const luaL_Reg members[] = {{"population_size", rosetta_lua_1371}, {"discovery_rate", rosetta_lua_1373}, {"levy_beta", rosetta_lua_1375}, {"step_scale", rosetta_lua_1377}, {"max_iterations", rosetta_lua_1379}, {"tolerance", rosetta_lua_1381}, {"seed", rosetta_lua_1383}, {nullptr, nullptr}};
+                static const luaL_Reg members[] = {{"population_size", rosetta_lua_1389}, {"discovery_rate", rosetta_lua_1391}, {"levy_beta", rosetta_lua_1393}, {"step_scale", rosetta_lua_1395}, {"max_iterations", rosetta_lua_1397}, {"tolerance", rosetta_lua_1399}, {"seed", rosetta_lua_1401}, {nullptr, nullptr}};
                 luaL_setfuncs(L, members, 0);
             }
             lua_pushliteral(L, "CuckooSearchOptions");
@@ -11500,7 +11500,7 @@ int rosetta_lua_open(lua_State* L) {
             lua_setfield(L, meta, "__tostring");
             lua_rawsetp(L, LUA_REGISTRYINDEX, &rosetta_lua::Info<datamunge::optim::CuckooSearchOptions>::value);
             lua_createtable(L, 0, 2);
-            lua_pushcfunction(L, rosetta_lua_1384);
+            lua_pushcfunction(L, rosetta_lua_1402);
             lua_setfield(L, -2, "__call");
             lua_pushliteral(L, "CuckooSearchOptions");
             lua_setfield(L, -2, "__name");
@@ -11515,7 +11515,7 @@ int rosetta_lua_open(lua_State* L) {
             lua_pushboolean(L, 1);
             lua_rawsetp(L, cls, &rosetta_lua::native_key());
             {
-                static const luaL_Reg members[] = {{"optimize", rosetta_lua_1385}, {"options", rosetta_lua_1386}, {nullptr, nullptr}};
+                static const luaL_Reg members[] = {{"optimize", rosetta_lua_1403}, {"options", rosetta_lua_1404}, {nullptr, nullptr}};
                 luaL_setfuncs(L, members, 0);
             }
             lua_pushcfunction(L, rosetta_lua::class_extend);
@@ -11545,7 +11545,7 @@ int rosetta_lua_open(lua_State* L) {
             lua_setfield(L, meta, "__tostring");
             lua_rawsetp(L, LUA_REGISTRYINDEX, &rosetta_lua::Info<datamunge::optim::CuckooSearch>::value);
             lua_createtable(L, 0, 2);
-            lua_pushcfunction(L, rosetta_lua_1387);
+            lua_pushcfunction(L, rosetta_lua_1405);
             lua_setfield(L, -2, "__call");
             lua_pushliteral(L, "CuckooSearch");
             lua_setfield(L, -2, "__name");
@@ -11570,7 +11570,7 @@ int rosetta_lua_open(lua_State* L) {
             lua_pushvalue(L, cls);
             lua_newtable(L);
             {
-                static const luaL_Reg members[] = {{"population_size", rosetta_lua_1388}, {"max_generations", rosetta_lua_1390}, {"differential_weight", rosetta_lua_1392}, {"crossover_rate", rosetta_lua_1394}, {"mutation_strategy", rosetta_lua_1396}, {"crossover_strategy", rosetta_lua_1398}, {"tolerance", rosetta_lua_1400}, {"seed", rosetta_lua_1402}, {nullptr, nullptr}};
+                static const luaL_Reg members[] = {{"population_size", rosetta_lua_1406}, {"max_generations", rosetta_lua_1408}, {"differential_weight", rosetta_lua_1410}, {"crossover_rate", rosetta_lua_1412}, {"mutation_strategy", rosetta_lua_1414}, {"crossover_strategy", rosetta_lua_1416}, {"tolerance", rosetta_lua_1418}, {"seed", rosetta_lua_1420}, {nullptr, nullptr}};
                 luaL_setfuncs(L, members, 0);
             }
             lua_pushnil(L);
@@ -11578,7 +11578,7 @@ int rosetta_lua_open(lua_State* L) {
             lua_setfield(L, meta, "__index");
             lua_newtable(L);
             {
-                static const luaL_Reg members[] = {{"population_size", rosetta_lua_1389}, {"max_generations", rosetta_lua_1391}, {"differential_weight", rosetta_lua_1393}, {"crossover_rate", rosetta_lua_1395}, {"mutation_strategy", rosetta_lua_1397}, {"crossover_strategy", rosetta_lua_1399}, {"tolerance", rosetta_lua_1401}, {"seed", rosetta_lua_1403}, {nullptr, nullptr}};
+                static const luaL_Reg members[] = {{"population_size", rosetta_lua_1407}, {"max_generations", rosetta_lua_1409}, {"differential_weight", rosetta_lua_1411}, {"crossover_rate", rosetta_lua_1413}, {"mutation_strategy", rosetta_lua_1415}, {"crossover_strategy", rosetta_lua_1417}, {"tolerance", rosetta_lua_1419}, {"seed", rosetta_lua_1421}, {nullptr, nullptr}};
                 luaL_setfuncs(L, members, 0);
             }
             lua_pushliteral(L, "DEOptions");
@@ -11594,7 +11594,7 @@ int rosetta_lua_open(lua_State* L) {
             lua_setfield(L, meta, "__tostring");
             lua_rawsetp(L, LUA_REGISTRYINDEX, &rosetta_lua::Info<datamunge::optim::DEOptions>::value);
             lua_createtable(L, 0, 2);
-            lua_pushcfunction(L, rosetta_lua_1404);
+            lua_pushcfunction(L, rosetta_lua_1422);
             lua_setfield(L, -2, "__call");
             lua_pushliteral(L, "DEOptions");
             lua_setfield(L, -2, "__name");
@@ -11609,7 +11609,7 @@ int rosetta_lua_open(lua_State* L) {
             lua_pushboolean(L, 1);
             lua_rawsetp(L, cls, &rosetta_lua::native_key());
             {
-                static const luaL_Reg members[] = {{"optimize", rosetta_lua_1405}, {"options", rosetta_lua_1406}, {nullptr, nullptr}};
+                static const luaL_Reg members[] = {{"optimize", rosetta_lua_1423}, {"options", rosetta_lua_1424}, {nullptr, nullptr}};
                 luaL_setfuncs(L, members, 0);
             }
             lua_pushcfunction(L, rosetta_lua::class_extend);
@@ -11639,7 +11639,7 @@ int rosetta_lua_open(lua_State* L) {
             lua_setfield(L, meta, "__tostring");
             lua_rawsetp(L, LUA_REGISTRYINDEX, &rosetta_lua::Info<datamunge::optim::DifferentialEvolution>::value);
             lua_createtable(L, 0, 2);
-            lua_pushcfunction(L, rosetta_lua_1407);
+            lua_pushcfunction(L, rosetta_lua_1425);
             lua_setfield(L, -2, "__call");
             lua_pushliteral(L, "DifferentialEvolution");
             lua_setfield(L, -2, "__name");
@@ -11664,7 +11664,7 @@ int rosetta_lua_open(lua_State* L) {
             lua_pushvalue(L, cls);
             lua_newtable(L);
             {
-                static const luaL_Reg members[] = {{"population_size", rosetta_lua_1408}, {"selection_ratio", rosetta_lua_1410}, {"initial_std_dev", rosetta_lua_1412}, {"covariance_regularization", rosetta_lua_1414}, {"max_generations", rosetta_lua_1416}, {"tolerance", rosetta_lua_1418}, {"seed", rosetta_lua_1420}, {nullptr, nullptr}};
+                static const luaL_Reg members[] = {{"population_size", rosetta_lua_1426}, {"selection_ratio", rosetta_lua_1428}, {"initial_std_dev", rosetta_lua_1430}, {"covariance_regularization", rosetta_lua_1432}, {"max_generations", rosetta_lua_1434}, {"tolerance", rosetta_lua_1436}, {"seed", rosetta_lua_1438}, {nullptr, nullptr}};
                 luaL_setfuncs(L, members, 0);
             }
             lua_pushnil(L);
@@ -11672,7 +11672,7 @@ int rosetta_lua_open(lua_State* L) {
             lua_setfield(L, meta, "__index");
             lua_newtable(L);
             {
-                static const luaL_Reg members[] = {{"population_size", rosetta_lua_1409}, {"selection_ratio", rosetta_lua_1411}, {"initial_std_dev", rosetta_lua_1413}, {"covariance_regularization", rosetta_lua_1415}, {"max_generations", rosetta_lua_1417}, {"tolerance", rosetta_lua_1419}, {"seed", rosetta_lua_1421}, {nullptr, nullptr}};
+                static const luaL_Reg members[] = {{"population_size", rosetta_lua_1427}, {"selection_ratio", rosetta_lua_1429}, {"initial_std_dev", rosetta_lua_1431}, {"covariance_regularization", rosetta_lua_1433}, {"max_generations", rosetta_lua_1435}, {"tolerance", rosetta_lua_1437}, {"seed", rosetta_lua_1439}, {nullptr, nullptr}};
                 luaL_setfuncs(L, members, 0);
             }
             lua_pushliteral(L, "EstimationOfDistributionOptions");
@@ -11688,7 +11688,7 @@ int rosetta_lua_open(lua_State* L) {
             lua_setfield(L, meta, "__tostring");
             lua_rawsetp(L, LUA_REGISTRYINDEX, &rosetta_lua::Info<datamunge::optim::EstimationOfDistributionOptions>::value);
             lua_createtable(L, 0, 2);
-            lua_pushcfunction(L, rosetta_lua_1422);
+            lua_pushcfunction(L, rosetta_lua_1440);
             lua_setfield(L, -2, "__call");
             lua_pushliteral(L, "EstimationOfDistributionOptions");
             lua_setfield(L, -2, "__name");
@@ -11703,7 +11703,7 @@ int rosetta_lua_open(lua_State* L) {
             lua_pushboolean(L, 1);
             lua_rawsetp(L, cls, &rosetta_lua::native_key());
             {
-                static const luaL_Reg members[] = {{"optimize", rosetta_lua_1423}, {"options", rosetta_lua_1424}, {nullptr, nullptr}};
+                static const luaL_Reg members[] = {{"optimize", rosetta_lua_1441}, {"options", rosetta_lua_1442}, {nullptr, nullptr}};
                 luaL_setfuncs(L, members, 0);
             }
             lua_pushcfunction(L, rosetta_lua::class_extend);
@@ -11733,7 +11733,7 @@ int rosetta_lua_open(lua_State* L) {
             lua_setfield(L, meta, "__tostring");
             lua_rawsetp(L, LUA_REGISTRYINDEX, &rosetta_lua::Info<datamunge::optim::EstimationOfDistribution>::value);
             lua_createtable(L, 0, 2);
-            lua_pushcfunction(L, rosetta_lua_1425);
+            lua_pushcfunction(L, rosetta_lua_1443);
             lua_setfield(L, -2, "__call");
             lua_pushliteral(L, "EstimationOfDistribution");
             lua_setfield(L, -2, "__name");
@@ -11758,7 +11758,7 @@ int rosetta_lua_open(lua_State* L) {
             lua_pushvalue(L, cls);
             lua_newtable(L);
             {
-                static const luaL_Reg members[] = {{"mu", rosetta_lua_1426}, {"offspring_size", rosetta_lua_1428}, {"strategy", rosetta_lua_1430}, {"initial_step_size", rosetta_lua_1432}, {"max_generations", rosetta_lua_1434}, {"tolerance", rosetta_lua_1436}, {"seed", rosetta_lua_1438}, {nullptr, nullptr}};
+                static const luaL_Reg members[] = {{"mu", rosetta_lua_1444}, {"offspring_size", rosetta_lua_1446}, {"strategy", rosetta_lua_1448}, {"initial_step_size", rosetta_lua_1450}, {"max_generations", rosetta_lua_1452}, {"tolerance", rosetta_lua_1454}, {"seed", rosetta_lua_1456}, {nullptr, nullptr}};
                 luaL_setfuncs(L, members, 0);
             }
             lua_pushnil(L);
@@ -11766,7 +11766,7 @@ int rosetta_lua_open(lua_State* L) {
             lua_setfield(L, meta, "__index");
             lua_newtable(L);
             {
-                static const luaL_Reg members[] = {{"mu", rosetta_lua_1427}, {"offspring_size", rosetta_lua_1429}, {"strategy", rosetta_lua_1431}, {"initial_step_size", rosetta_lua_1433}, {"max_generations", rosetta_lua_1435}, {"tolerance", rosetta_lua_1437}, {"seed", rosetta_lua_1439}, {nullptr, nullptr}};
+                static const luaL_Reg members[] = {{"mu", rosetta_lua_1445}, {"offspring_size", rosetta_lua_1447}, {"strategy", rosetta_lua_1449}, {"initial_step_size", rosetta_lua_1451}, {"max_generations", rosetta_lua_1453}, {"tolerance", rosetta_lua_1455}, {"seed", rosetta_lua_1457}, {nullptr, nullptr}};
                 luaL_setfuncs(L, members, 0);
             }
             lua_pushliteral(L, "EvolutionStrategyOptions");
@@ -11782,7 +11782,7 @@ int rosetta_lua_open(lua_State* L) {
             lua_setfield(L, meta, "__tostring");
             lua_rawsetp(L, LUA_REGISTRYINDEX, &rosetta_lua::Info<datamunge::optim::EvolutionStrategyOptions>::value);
             lua_createtable(L, 0, 2);
-            lua_pushcfunction(L, rosetta_lua_1440);
+            lua_pushcfunction(L, rosetta_lua_1458);
             lua_setfield(L, -2, "__call");
             lua_pushliteral(L, "EvolutionStrategyOptions");
             lua_setfield(L, -2, "__name");
@@ -11797,7 +11797,7 @@ int rosetta_lua_open(lua_State* L) {
             lua_pushboolean(L, 1);
             lua_rawsetp(L, cls, &rosetta_lua::native_key());
             {
-                static const luaL_Reg members[] = {{"optimize", rosetta_lua_1441}, {"options", rosetta_lua_1442}, {nullptr, nullptr}};
+                static const luaL_Reg members[] = {{"optimize", rosetta_lua_1459}, {"options", rosetta_lua_1460}, {nullptr, nullptr}};
                 luaL_setfuncs(L, members, 0);
             }
             lua_pushcfunction(L, rosetta_lua::class_extend);
@@ -11827,7 +11827,7 @@ int rosetta_lua_open(lua_State* L) {
             lua_setfield(L, meta, "__tostring");
             lua_rawsetp(L, LUA_REGISTRYINDEX, &rosetta_lua::Info<datamunge::optim::EvolutionStrategy>::value);
             lua_createtable(L, 0, 2);
-            lua_pushcfunction(L, rosetta_lua_1443);
+            lua_pushcfunction(L, rosetta_lua_1461);
             lua_setfield(L, -2, "__call");
             lua_pushliteral(L, "EvolutionStrategy");
             lua_setfield(L, -2, "__name");
@@ -11852,7 +11852,7 @@ int rosetta_lua_open(lua_State* L) {
             lua_pushvalue(L, cls);
             lua_newtable(L);
             {
-                static const luaL_Reg members[] = {{"population_size", rosetta_lua_1444}, {"attractiveness_at_zero", rosetta_lua_1446}, {"light_absorption", rosetta_lua_1448}, {"randomization_step", rosetta_lua_1450}, {"randomization_decay", rosetta_lua_1452}, {"max_iterations", rosetta_lua_1454}, {"tolerance", rosetta_lua_1456}, {"seed", rosetta_lua_1458}, {nullptr, nullptr}};
+                static const luaL_Reg members[] = {{"population_size", rosetta_lua_1462}, {"attractiveness_at_zero", rosetta_lua_1464}, {"light_absorption", rosetta_lua_1466}, {"randomization_step", rosetta_lua_1468}, {"randomization_decay", rosetta_lua_1470}, {"max_iterations", rosetta_lua_1472}, {"tolerance", rosetta_lua_1474}, {"seed", rosetta_lua_1476}, {nullptr, nullptr}};
                 luaL_setfuncs(L, members, 0);
             }
             lua_pushnil(L);
@@ -11860,7 +11860,7 @@ int rosetta_lua_open(lua_State* L) {
             lua_setfield(L, meta, "__index");
             lua_newtable(L);
             {
-                static const luaL_Reg members[] = {{"population_size", rosetta_lua_1445}, {"attractiveness_at_zero", rosetta_lua_1447}, {"light_absorption", rosetta_lua_1449}, {"randomization_step", rosetta_lua_1451}, {"randomization_decay", rosetta_lua_1453}, {"max_iterations", rosetta_lua_1455}, {"tolerance", rosetta_lua_1457}, {"seed", rosetta_lua_1459}, {nullptr, nullptr}};
+                static const luaL_Reg members[] = {{"population_size", rosetta_lua_1463}, {"attractiveness_at_zero", rosetta_lua_1465}, {"light_absorption", rosetta_lua_1467}, {"randomization_step", rosetta_lua_1469}, {"randomization_decay", rosetta_lua_1471}, {"max_iterations", rosetta_lua_1473}, {"tolerance", rosetta_lua_1475}, {"seed", rosetta_lua_1477}, {nullptr, nullptr}};
                 luaL_setfuncs(L, members, 0);
             }
             lua_pushliteral(L, "FireflyAlgorithmOptions");
@@ -11876,7 +11876,7 @@ int rosetta_lua_open(lua_State* L) {
             lua_setfield(L, meta, "__tostring");
             lua_rawsetp(L, LUA_REGISTRYINDEX, &rosetta_lua::Info<datamunge::optim::FireflyAlgorithmOptions>::value);
             lua_createtable(L, 0, 2);
-            lua_pushcfunction(L, rosetta_lua_1460);
+            lua_pushcfunction(L, rosetta_lua_1478);
             lua_setfield(L, -2, "__call");
             lua_pushliteral(L, "FireflyAlgorithmOptions");
             lua_setfield(L, -2, "__name");
@@ -11891,7 +11891,7 @@ int rosetta_lua_open(lua_State* L) {
             lua_pushboolean(L, 1);
             lua_rawsetp(L, cls, &rosetta_lua::native_key());
             {
-                static const luaL_Reg members[] = {{"optimize", rosetta_lua_1461}, {"options", rosetta_lua_1462}, {nullptr, nullptr}};
+                static const luaL_Reg members[] = {{"optimize", rosetta_lua_1479}, {"options", rosetta_lua_1480}, {nullptr, nullptr}};
                 luaL_setfuncs(L, members, 0);
             }
             lua_pushcfunction(L, rosetta_lua::class_extend);
@@ -11921,7 +11921,7 @@ int rosetta_lua_open(lua_State* L) {
             lua_setfield(L, meta, "__tostring");
             lua_rawsetp(L, LUA_REGISTRYINDEX, &rosetta_lua::Info<datamunge::optim::FireflyAlgorithm>::value);
             lua_createtable(L, 0, 2);
-            lua_pushcfunction(L, rosetta_lua_1463);
+            lua_pushcfunction(L, rosetta_lua_1481);
             lua_setfield(L, -2, "__call");
             lua_pushliteral(L, "FireflyAlgorithm");
             lua_setfield(L, -2, "__name");
@@ -11946,7 +11946,7 @@ int rosetta_lua_open(lua_State* L) {
             lua_pushvalue(L, cls);
             lua_newtable(L);
             {
-                static const luaL_Reg members[] = {{"step_size", rosetta_lua_1464}, {"max_iterations", rosetta_lua_1466}, {"tolerance", rosetta_lua_1468}, {nullptr, nullptr}};
+                static const luaL_Reg members[] = {{"step_size", rosetta_lua_1482}, {"max_iterations", rosetta_lua_1484}, {"tolerance", rosetta_lua_1486}, {nullptr, nullptr}};
                 luaL_setfuncs(L, members, 0);
             }
             lua_pushnil(L);
@@ -11954,7 +11954,7 @@ int rosetta_lua_open(lua_State* L) {
             lua_setfield(L, meta, "__index");
             lua_newtable(L);
             {
-                static const luaL_Reg members[] = {{"step_size", rosetta_lua_1465}, {"max_iterations", rosetta_lua_1467}, {"tolerance", rosetta_lua_1469}, {nullptr, nullptr}};
+                static const luaL_Reg members[] = {{"step_size", rosetta_lua_1483}, {"max_iterations", rosetta_lua_1485}, {"tolerance", rosetta_lua_1487}, {nullptr, nullptr}};
                 luaL_setfuncs(L, members, 0);
             }
             lua_pushliteral(L, "FISTAOptions");
@@ -11970,7 +11970,7 @@ int rosetta_lua_open(lua_State* L) {
             lua_setfield(L, meta, "__tostring");
             lua_rawsetp(L, LUA_REGISTRYINDEX, &rosetta_lua::Info<datamunge::optim::FISTAOptions>::value);
             lua_createtable(L, 0, 2);
-            lua_pushcfunction(L, rosetta_lua_1470);
+            lua_pushcfunction(L, rosetta_lua_1488);
             lua_setfield(L, -2, "__call");
             lua_pushliteral(L, "FISTAOptions");
             lua_setfield(L, -2, "__name");
@@ -11985,7 +11985,7 @@ int rosetta_lua_open(lua_State* L) {
             lua_pushboolean(L, 1);
             lua_rawsetp(L, cls, &rosetta_lua::native_key());
             {
-                static const luaL_Reg members[] = {{"optimize", rosetta_lua_1471}, {"options", rosetta_lua_1472}, {nullptr, nullptr}};
+                static const luaL_Reg members[] = {{"optimize", rosetta_lua_1489}, {"options", rosetta_lua_1490}, {nullptr, nullptr}};
                 luaL_setfuncs(L, members, 0);
             }
             lua_pushcfunction(L, rosetta_lua::class_extend);
@@ -12015,7 +12015,7 @@ int rosetta_lua_open(lua_State* L) {
             lua_setfield(L, meta, "__tostring");
             lua_rawsetp(L, LUA_REGISTRYINDEX, &rosetta_lua::Info<datamunge::optim::FISTA>::value);
             lua_createtable(L, 0, 2);
-            lua_pushcfunction(L, rosetta_lua_1473);
+            lua_pushcfunction(L, rosetta_lua_1491);
             lua_setfield(L, -2, "__call");
             lua_pushliteral(L, "FISTA");
             lua_setfield(L, -2, "__name");
@@ -12040,7 +12040,7 @@ int rosetta_lua_open(lua_State* L) {
             lua_pushvalue(L, cls);
             lua_newtable(L);
             {
-                static const luaL_Reg members[] = {{"population_size", rosetta_lua_1474}, {"max_generations", rosetta_lua_1476}, {"crossover_rate", rosetta_lua_1478}, {"mutation_rate", rosetta_lua_1480}, {"mutation_std_dev", rosetta_lua_1482}, {"selection_strategy", rosetta_lua_1484}, {"tournament_size", rosetta_lua_1486}, {"crossover_strategy", rosetta_lua_1488}, {"blend_alpha", rosetta_lua_1490}, {"elitism", rosetta_lua_1492}, {"elite_count", rosetta_lua_1494}, {"tolerance", rosetta_lua_1496}, {"seed", rosetta_lua_1498}, {nullptr, nullptr}};
+                static const luaL_Reg members[] = {{"population_size", rosetta_lua_1492}, {"max_generations", rosetta_lua_1494}, {"crossover_rate", rosetta_lua_1496}, {"mutation_rate", rosetta_lua_1498}, {"mutation_std_dev", rosetta_lua_1500}, {"selection_strategy", rosetta_lua_1502}, {"tournament_size", rosetta_lua_1504}, {"crossover_strategy", rosetta_lua_1506}, {"blend_alpha", rosetta_lua_1508}, {"elitism", rosetta_lua_1510}, {"elite_count", rosetta_lua_1512}, {"tolerance", rosetta_lua_1514}, {"seed", rosetta_lua_1516}, {nullptr, nullptr}};
                 luaL_setfuncs(L, members, 0);
             }
             lua_pushnil(L);
@@ -12048,7 +12048,7 @@ int rosetta_lua_open(lua_State* L) {
             lua_setfield(L, meta, "__index");
             lua_newtable(L);
             {
-                static const luaL_Reg members[] = {{"population_size", rosetta_lua_1475}, {"max_generations", rosetta_lua_1477}, {"crossover_rate", rosetta_lua_1479}, {"mutation_rate", rosetta_lua_1481}, {"mutation_std_dev", rosetta_lua_1483}, {"selection_strategy", rosetta_lua_1485}, {"tournament_size", rosetta_lua_1487}, {"crossover_strategy", rosetta_lua_1489}, {"blend_alpha", rosetta_lua_1491}, {"elitism", rosetta_lua_1493}, {"elite_count", rosetta_lua_1495}, {"tolerance", rosetta_lua_1497}, {"seed", rosetta_lua_1499}, {nullptr, nullptr}};
+                static const luaL_Reg members[] = {{"population_size", rosetta_lua_1493}, {"max_generations", rosetta_lua_1495}, {"crossover_rate", rosetta_lua_1497}, {"mutation_rate", rosetta_lua_1499}, {"mutation_std_dev", rosetta_lua_1501}, {"selection_strategy", rosetta_lua_1503}, {"tournament_size", rosetta_lua_1505}, {"crossover_strategy", rosetta_lua_1507}, {"blend_alpha", rosetta_lua_1509}, {"elitism", rosetta_lua_1511}, {"elite_count", rosetta_lua_1513}, {"tolerance", rosetta_lua_1515}, {"seed", rosetta_lua_1517}, {nullptr, nullptr}};
                 luaL_setfuncs(L, members, 0);
             }
             lua_pushliteral(L, "GAOptions");
@@ -12064,7 +12064,7 @@ int rosetta_lua_open(lua_State* L) {
             lua_setfield(L, meta, "__tostring");
             lua_rawsetp(L, LUA_REGISTRYINDEX, &rosetta_lua::Info<datamunge::optim::GAOptions>::value);
             lua_createtable(L, 0, 2);
-            lua_pushcfunction(L, rosetta_lua_1500);
+            lua_pushcfunction(L, rosetta_lua_1518);
             lua_setfield(L, -2, "__call");
             lua_pushliteral(L, "GAOptions");
             lua_setfield(L, -2, "__name");
@@ -12079,7 +12079,7 @@ int rosetta_lua_open(lua_State* L) {
             lua_pushboolean(L, 1);
             lua_rawsetp(L, cls, &rosetta_lua::native_key());
             {
-                static const luaL_Reg members[] = {{"optimize", rosetta_lua_1501}, {"options", rosetta_lua_1502}, {nullptr, nullptr}};
+                static const luaL_Reg members[] = {{"optimize", rosetta_lua_1519}, {"options", rosetta_lua_1520}, {nullptr, nullptr}};
                 luaL_setfuncs(L, members, 0);
             }
             lua_pushcfunction(L, rosetta_lua::class_extend);
@@ -12109,7 +12109,7 @@ int rosetta_lua_open(lua_State* L) {
             lua_setfield(L, meta, "__tostring");
             lua_rawsetp(L, LUA_REGISTRYINDEX, &rosetta_lua::Info<datamunge::optim::GeneticAlgorithm>::value);
             lua_createtable(L, 0, 2);
-            lua_pushcfunction(L, rosetta_lua_1503);
+            lua_pushcfunction(L, rosetta_lua_1521);
             lua_setfield(L, -2, "__call");
             lua_pushliteral(L, "GeneticAlgorithm");
             lua_setfield(L, -2, "__name");
@@ -12134,7 +12134,7 @@ int rosetta_lua_open(lua_State* L) {
             lua_pushvalue(L, cls);
             lua_newtable(L);
             {
-                static const luaL_Reg members[] = {{"step_size", rosetta_lua_1504}, {"momentum", rosetta_lua_1506}, {"max_iterations", rosetta_lua_1508}, {"tolerance", rosetta_lua_1510}, {nullptr, nullptr}};
+                static const luaL_Reg members[] = {{"step_size", rosetta_lua_1522}, {"momentum", rosetta_lua_1524}, {"max_iterations", rosetta_lua_1526}, {"tolerance", rosetta_lua_1528}, {nullptr, nullptr}};
                 luaL_setfuncs(L, members, 0);
             }
             lua_pushnil(L);
@@ -12142,7 +12142,7 @@ int rosetta_lua_open(lua_State* L) {
             lua_setfield(L, meta, "__index");
             lua_newtable(L);
             {
-                static const luaL_Reg members[] = {{"step_size", rosetta_lua_1505}, {"momentum", rosetta_lua_1507}, {"max_iterations", rosetta_lua_1509}, {"tolerance", rosetta_lua_1511}, {nullptr, nullptr}};
+                static const luaL_Reg members[] = {{"step_size", rosetta_lua_1523}, {"momentum", rosetta_lua_1525}, {"max_iterations", rosetta_lua_1527}, {"tolerance", rosetta_lua_1529}, {nullptr, nullptr}};
                 luaL_setfuncs(L, members, 0);
             }
             lua_pushliteral(L, "GradientDescentOptions");
@@ -12158,7 +12158,7 @@ int rosetta_lua_open(lua_State* L) {
             lua_setfield(L, meta, "__tostring");
             lua_rawsetp(L, LUA_REGISTRYINDEX, &rosetta_lua::Info<datamunge::optim::GradientDescentOptions>::value);
             lua_createtable(L, 0, 2);
-            lua_pushcfunction(L, rosetta_lua_1512);
+            lua_pushcfunction(L, rosetta_lua_1530);
             lua_setfield(L, -2, "__call");
             lua_pushliteral(L, "GradientDescentOptions");
             lua_setfield(L, -2, "__name");
@@ -12173,7 +12173,7 @@ int rosetta_lua_open(lua_State* L) {
             lua_pushboolean(L, 1);
             lua_rawsetp(L, cls, &rosetta_lua::native_key());
             {
-                static const luaL_Reg members[] = {{"optimize", rosetta_lua_1513}, {"options", rosetta_lua_1514}, {nullptr, nullptr}};
+                static const luaL_Reg members[] = {{"optimize", rosetta_lua_1531}, {"options", rosetta_lua_1532}, {nullptr, nullptr}};
                 luaL_setfuncs(L, members, 0);
             }
             lua_pushcfunction(L, rosetta_lua::class_extend);
@@ -12203,7 +12203,7 @@ int rosetta_lua_open(lua_State* L) {
             lua_setfield(L, meta, "__tostring");
             lua_rawsetp(L, LUA_REGISTRYINDEX, &rosetta_lua::Info<datamunge::optim::GradientDescent>::value);
             lua_createtable(L, 0, 2);
-            lua_pushcfunction(L, rosetta_lua_1515);
+            lua_pushcfunction(L, rosetta_lua_1533);
             lua_setfield(L, -2, "__call");
             lua_pushliteral(L, "GradientDescent");
             lua_setfield(L, -2, "__name");
@@ -12228,7 +12228,7 @@ int rosetta_lua_open(lua_State* L) {
             lua_pushvalue(L, cls);
             lua_newtable(L);
             {
-                static const luaL_Reg members[] = {{"population_size", rosetta_lua_1516}, {"max_iterations", rosetta_lua_1518}, {"tolerance", rosetta_lua_1520}, {"seed", rosetta_lua_1522}, {nullptr, nullptr}};
+                static const luaL_Reg members[] = {{"population_size", rosetta_lua_1534}, {"max_iterations", rosetta_lua_1536}, {"tolerance", rosetta_lua_1538}, {"seed", rosetta_lua_1540}, {nullptr, nullptr}};
                 luaL_setfuncs(L, members, 0);
             }
             lua_pushnil(L);
@@ -12236,7 +12236,7 @@ int rosetta_lua_open(lua_State* L) {
             lua_setfield(L, meta, "__index");
             lua_newtable(L);
             {
-                static const luaL_Reg members[] = {{"population_size", rosetta_lua_1517}, {"max_iterations", rosetta_lua_1519}, {"tolerance", rosetta_lua_1521}, {"seed", rosetta_lua_1523}, {nullptr, nullptr}};
+                static const luaL_Reg members[] = {{"population_size", rosetta_lua_1535}, {"max_iterations", rosetta_lua_1537}, {"tolerance", rosetta_lua_1539}, {"seed", rosetta_lua_1541}, {nullptr, nullptr}};
                 luaL_setfuncs(L, members, 0);
             }
             lua_pushliteral(L, "GreyWolfOptimizerOptions");
@@ -12252,7 +12252,7 @@ int rosetta_lua_open(lua_State* L) {
             lua_setfield(L, meta, "__tostring");
             lua_rawsetp(L, LUA_REGISTRYINDEX, &rosetta_lua::Info<datamunge::optim::GreyWolfOptimizerOptions>::value);
             lua_createtable(L, 0, 2);
-            lua_pushcfunction(L, rosetta_lua_1524);
+            lua_pushcfunction(L, rosetta_lua_1542);
             lua_setfield(L, -2, "__call");
             lua_pushliteral(L, "GreyWolfOptimizerOptions");
             lua_setfield(L, -2, "__name");
@@ -12267,7 +12267,7 @@ int rosetta_lua_open(lua_State* L) {
             lua_pushboolean(L, 1);
             lua_rawsetp(L, cls, &rosetta_lua::native_key());
             {
-                static const luaL_Reg members[] = {{"optimize", rosetta_lua_1525}, {"options", rosetta_lua_1526}, {nullptr, nullptr}};
+                static const luaL_Reg members[] = {{"optimize", rosetta_lua_1543}, {"options", rosetta_lua_1544}, {nullptr, nullptr}};
                 luaL_setfuncs(L, members, 0);
             }
             lua_pushcfunction(L, rosetta_lua::class_extend);
@@ -12297,7 +12297,7 @@ int rosetta_lua_open(lua_State* L) {
             lua_setfield(L, meta, "__tostring");
             lua_rawsetp(L, LUA_REGISTRYINDEX, &rosetta_lua::Info<datamunge::optim::GreyWolfOptimizer>::value);
             lua_createtable(L, 0, 2);
-            lua_pushcfunction(L, rosetta_lua_1527);
+            lua_pushcfunction(L, rosetta_lua_1545);
             lua_setfield(L, -2, "__call");
             lua_pushliteral(L, "GreyWolfOptimizer");
             lua_setfield(L, -2, "__name");
@@ -12322,7 +12322,7 @@ int rosetta_lua_open(lua_State* L) {
             lua_pushvalue(L, cls);
             lua_newtable(L);
             {
-                static const luaL_Reg members[] = {{"population_size", rosetta_lua_1528}, {"memory_consideration_rate", rosetta_lua_1530}, {"pitch_adjustment_rate", rosetta_lua_1532}, {"bandwidth_fraction", rosetta_lua_1534}, {"max_iterations", rosetta_lua_1536}, {"tolerance", rosetta_lua_1538}, {"seed", rosetta_lua_1540}, {nullptr, nullptr}};
+                static const luaL_Reg members[] = {{"population_size", rosetta_lua_1546}, {"memory_consideration_rate", rosetta_lua_1548}, {"pitch_adjustment_rate", rosetta_lua_1550}, {"bandwidth_fraction", rosetta_lua_1552}, {"max_iterations", rosetta_lua_1554}, {"tolerance", rosetta_lua_1556}, {"seed", rosetta_lua_1558}, {nullptr, nullptr}};
                 luaL_setfuncs(L, members, 0);
             }
             lua_pushnil(L);
@@ -12330,7 +12330,7 @@ int rosetta_lua_open(lua_State* L) {
             lua_setfield(L, meta, "__index");
             lua_newtable(L);
             {
-                static const luaL_Reg members[] = {{"population_size", rosetta_lua_1529}, {"memory_consideration_rate", rosetta_lua_1531}, {"pitch_adjustment_rate", rosetta_lua_1533}, {"bandwidth_fraction", rosetta_lua_1535}, {"max_iterations", rosetta_lua_1537}, {"tolerance", rosetta_lua_1539}, {"seed", rosetta_lua_1541}, {nullptr, nullptr}};
+                static const luaL_Reg members[] = {{"population_size", rosetta_lua_1547}, {"memory_consideration_rate", rosetta_lua_1549}, {"pitch_adjustment_rate", rosetta_lua_1551}, {"bandwidth_fraction", rosetta_lua_1553}, {"max_iterations", rosetta_lua_1555}, {"tolerance", rosetta_lua_1557}, {"seed", rosetta_lua_1559}, {nullptr, nullptr}};
                 luaL_setfuncs(L, members, 0);
             }
             lua_pushliteral(L, "HarmonySearchOptions");
@@ -12346,7 +12346,7 @@ int rosetta_lua_open(lua_State* L) {
             lua_setfield(L, meta, "__tostring");
             lua_rawsetp(L, LUA_REGISTRYINDEX, &rosetta_lua::Info<datamunge::optim::HarmonySearchOptions>::value);
             lua_createtable(L, 0, 2);
-            lua_pushcfunction(L, rosetta_lua_1542);
+            lua_pushcfunction(L, rosetta_lua_1560);
             lua_setfield(L, -2, "__call");
             lua_pushliteral(L, "HarmonySearchOptions");
             lua_setfield(L, -2, "__name");
@@ -12361,7 +12361,7 @@ int rosetta_lua_open(lua_State* L) {
             lua_pushboolean(L, 1);
             lua_rawsetp(L, cls, &rosetta_lua::native_key());
             {
-                static const luaL_Reg members[] = {{"optimize", rosetta_lua_1543}, {"options", rosetta_lua_1544}, {nullptr, nullptr}};
+                static const luaL_Reg members[] = {{"optimize", rosetta_lua_1561}, {"options", rosetta_lua_1562}, {nullptr, nullptr}};
                 luaL_setfuncs(L, members, 0);
             }
             lua_pushcfunction(L, rosetta_lua::class_extend);
@@ -12391,7 +12391,7 @@ int rosetta_lua_open(lua_State* L) {
             lua_setfield(L, meta, "__tostring");
             lua_rawsetp(L, LUA_REGISTRYINDEX, &rosetta_lua::Info<datamunge::optim::HarmonySearch>::value);
             lua_createtable(L, 0, 2);
-            lua_pushcfunction(L, rosetta_lua_1545);
+            lua_pushcfunction(L, rosetta_lua_1563);
             lua_setfield(L, -2, "__call");
             lua_pushliteral(L, "HarmonySearch");
             lua_setfield(L, -2, "__name");
@@ -12416,7 +12416,7 @@ int rosetta_lua_open(lua_State* L) {
             lua_pushvalue(L, cls);
             lua_newtable(L);
             {
-                static const luaL_Reg members[] = {{"step_size", rosetta_lua_1546}, {"initial_barrier", rosetta_lua_1548}, {"barrier_decay", rosetta_lua_1550}, {"max_outer_iterations", rosetta_lua_1552}, {"inner_iterations", rosetta_lua_1554}, {nullptr, nullptr}};
+                static const luaL_Reg members[] = {{"step_size", rosetta_lua_1564}, {"initial_barrier", rosetta_lua_1566}, {"barrier_decay", rosetta_lua_1568}, {"max_outer_iterations", rosetta_lua_1570}, {"inner_iterations", rosetta_lua_1572}, {nullptr, nullptr}};
                 luaL_setfuncs(L, members, 0);
             }
             lua_pushnil(L);
@@ -12424,7 +12424,7 @@ int rosetta_lua_open(lua_State* L) {
             lua_setfield(L, meta, "__index");
             lua_newtable(L);
             {
-                static const luaL_Reg members[] = {{"step_size", rosetta_lua_1547}, {"initial_barrier", rosetta_lua_1549}, {"barrier_decay", rosetta_lua_1551}, {"max_outer_iterations", rosetta_lua_1553}, {"inner_iterations", rosetta_lua_1555}, {nullptr, nullptr}};
+                static const luaL_Reg members[] = {{"step_size", rosetta_lua_1565}, {"initial_barrier", rosetta_lua_1567}, {"barrier_decay", rosetta_lua_1569}, {"max_outer_iterations", rosetta_lua_1571}, {"inner_iterations", rosetta_lua_1573}, {nullptr, nullptr}};
                 luaL_setfuncs(L, members, 0);
             }
             lua_pushliteral(L, "InteriorPointOptions");
@@ -12440,7 +12440,7 @@ int rosetta_lua_open(lua_State* L) {
             lua_setfield(L, meta, "__tostring");
             lua_rawsetp(L, LUA_REGISTRYINDEX, &rosetta_lua::Info<datamunge::optim::InteriorPointOptions>::value);
             lua_createtable(L, 0, 2);
-            lua_pushcfunction(L, rosetta_lua_1556);
+            lua_pushcfunction(L, rosetta_lua_1574);
             lua_setfield(L, -2, "__call");
             lua_pushliteral(L, "InteriorPointOptions");
             lua_setfield(L, -2, "__name");
@@ -12455,7 +12455,7 @@ int rosetta_lua_open(lua_State* L) {
             lua_pushboolean(L, 1);
             lua_rawsetp(L, cls, &rosetta_lua::native_key());
             {
-                static const luaL_Reg members[] = {{"optimize", rosetta_lua_1557}, {"options", rosetta_lua_1558}, {nullptr, nullptr}};
+                static const luaL_Reg members[] = {{"optimize", rosetta_lua_1575}, {"options", rosetta_lua_1576}, {nullptr, nullptr}};
                 luaL_setfuncs(L, members, 0);
             }
             lua_pushcfunction(L, rosetta_lua::class_extend);
@@ -12485,7 +12485,7 @@ int rosetta_lua_open(lua_State* L) {
             lua_setfield(L, meta, "__tostring");
             lua_rawsetp(L, LUA_REGISTRYINDEX, &rosetta_lua::Info<datamunge::optim::InteriorPoint>::value);
             lua_createtable(L, 0, 2);
-            lua_pushcfunction(L, rosetta_lua_1559);
+            lua_pushcfunction(L, rosetta_lua_1577);
             lua_setfield(L, -2, "__call");
             lua_pushliteral(L, "InteriorPoint");
             lua_setfield(L, -2, "__name");
@@ -12510,7 +12510,7 @@ int rosetta_lua_open(lua_State* L) {
             lua_pushvalue(L, cls);
             lua_newtable(L);
             {
-                static const luaL_Reg members[] = {{"max_iterations", rosetta_lua_1560}, {"tolerance", rosetta_lua_1562}, {"history_size", rosetta_lua_1564}, {"armijo_c1", rosetta_lua_1566}, {"wolfe_c2", rosetta_lua_1568}, {"max_line_search_trials", rosetta_lua_1570}, {nullptr, nullptr}};
+                static const luaL_Reg members[] = {{"max_iterations", rosetta_lua_1578}, {"tolerance", rosetta_lua_1580}, {"history_size", rosetta_lua_1582}, {"armijo_c1", rosetta_lua_1584}, {"wolfe_c2", rosetta_lua_1586}, {"max_line_search_trials", rosetta_lua_1588}, {nullptr, nullptr}};
                 luaL_setfuncs(L, members, 0);
             }
             lua_pushnil(L);
@@ -12518,7 +12518,7 @@ int rosetta_lua_open(lua_State* L) {
             lua_setfield(L, meta, "__index");
             lua_newtable(L);
             {
-                static const luaL_Reg members[] = {{"max_iterations", rosetta_lua_1561}, {"tolerance", rosetta_lua_1563}, {"history_size", rosetta_lua_1565}, {"armijo_c1", rosetta_lua_1567}, {"wolfe_c2", rosetta_lua_1569}, {"max_line_search_trials", rosetta_lua_1571}, {nullptr, nullptr}};
+                static const luaL_Reg members[] = {{"max_iterations", rosetta_lua_1579}, {"tolerance", rosetta_lua_1581}, {"history_size", rosetta_lua_1583}, {"armijo_c1", rosetta_lua_1585}, {"wolfe_c2", rosetta_lua_1587}, {"max_line_search_trials", rosetta_lua_1589}, {nullptr, nullptr}};
                 luaL_setfuncs(L, members, 0);
             }
             lua_pushliteral(L, "LBFGSOptions");
@@ -12534,7 +12534,7 @@ int rosetta_lua_open(lua_State* L) {
             lua_setfield(L, meta, "__tostring");
             lua_rawsetp(L, LUA_REGISTRYINDEX, &rosetta_lua::Info<datamunge::optim::LBFGSOptions>::value);
             lua_createtable(L, 0, 2);
-            lua_pushcfunction(L, rosetta_lua_1572);
+            lua_pushcfunction(L, rosetta_lua_1590);
             lua_setfield(L, -2, "__call");
             lua_pushliteral(L, "LBFGSOptions");
             lua_setfield(L, -2, "__name");
@@ -12549,7 +12549,7 @@ int rosetta_lua_open(lua_State* L) {
             lua_pushboolean(L, 1);
             lua_rawsetp(L, cls, &rosetta_lua::native_key());
             {
-                static const luaL_Reg members[] = {{"optimize", rosetta_lua_1573}, {"options", rosetta_lua_1574}, {nullptr, nullptr}};
+                static const luaL_Reg members[] = {{"optimize", rosetta_lua_1591}, {"options", rosetta_lua_1592}, {nullptr, nullptr}};
                 luaL_setfuncs(L, members, 0);
             }
             lua_pushcfunction(L, rosetta_lua::class_extend);
@@ -12579,7 +12579,7 @@ int rosetta_lua_open(lua_State* L) {
             lua_setfield(L, meta, "__tostring");
             lua_rawsetp(L, LUA_REGISTRYINDEX, &rosetta_lua::Info<datamunge::optim::LBFGS>::value);
             lua_createtable(L, 0, 2);
-            lua_pushcfunction(L, rosetta_lua_1575);
+            lua_pushcfunction(L, rosetta_lua_1593);
             lua_setfield(L, -2, "__call");
             lua_pushliteral(L, "LBFGS");
             lua_setfield(L, -2, "__name");
@@ -12604,7 +12604,7 @@ int rosetta_lua_open(lua_State* L) {
             lua_pushvalue(L, cls);
             lua_newtable(L);
             {
-                static const luaL_Reg members[] = {{"initial_damping", rosetta_lua_1576}, {"max_iterations", rosetta_lua_1578}, {"tolerance", rosetta_lua_1580}, {nullptr, nullptr}};
+                static const luaL_Reg members[] = {{"initial_damping", rosetta_lua_1594}, {"max_iterations", rosetta_lua_1596}, {"tolerance", rosetta_lua_1598}, {nullptr, nullptr}};
                 luaL_setfuncs(L, members, 0);
             }
             lua_pushnil(L);
@@ -12612,7 +12612,7 @@ int rosetta_lua_open(lua_State* L) {
             lua_setfield(L, meta, "__index");
             lua_newtable(L);
             {
-                static const luaL_Reg members[] = {{"initial_damping", rosetta_lua_1577}, {"max_iterations", rosetta_lua_1579}, {"tolerance", rosetta_lua_1581}, {nullptr, nullptr}};
+                static const luaL_Reg members[] = {{"initial_damping", rosetta_lua_1595}, {"max_iterations", rosetta_lua_1597}, {"tolerance", rosetta_lua_1599}, {nullptr, nullptr}};
                 luaL_setfuncs(L, members, 0);
             }
             lua_pushliteral(L, "LevenbergMarquardtOptions");
@@ -12628,7 +12628,7 @@ int rosetta_lua_open(lua_State* L) {
             lua_setfield(L, meta, "__tostring");
             lua_rawsetp(L, LUA_REGISTRYINDEX, &rosetta_lua::Info<datamunge::optim::LevenbergMarquardtOptions>::value);
             lua_createtable(L, 0, 2);
-            lua_pushcfunction(L, rosetta_lua_1582);
+            lua_pushcfunction(L, rosetta_lua_1600);
             lua_setfield(L, -2, "__call");
             lua_pushliteral(L, "LevenbergMarquardtOptions");
             lua_setfield(L, -2, "__name");
@@ -12643,7 +12643,7 @@ int rosetta_lua_open(lua_State* L) {
             lua_pushboolean(L, 1);
             lua_rawsetp(L, cls, &rosetta_lua::native_key());
             {
-                static const luaL_Reg members[] = {{"optimize", rosetta_lua_1583}, {"options", rosetta_lua_1584}, {nullptr, nullptr}};
+                static const luaL_Reg members[] = {{"optimize", rosetta_lua_1601}, {"options", rosetta_lua_1602}, {nullptr, nullptr}};
                 luaL_setfuncs(L, members, 0);
             }
             lua_pushcfunction(L, rosetta_lua::class_extend);
@@ -12673,7 +12673,7 @@ int rosetta_lua_open(lua_State* L) {
             lua_setfield(L, meta, "__tostring");
             lua_rawsetp(L, LUA_REGISTRYINDEX, &rosetta_lua::Info<datamunge::optim::LevenbergMarquardt>::value);
             lua_createtable(L, 0, 2);
-            lua_pushcfunction(L, rosetta_lua_1585);
+            lua_pushcfunction(L, rosetta_lua_1603);
             lua_setfield(L, -2, "__call");
             lua_pushliteral(L, "LevenbergMarquardt");
             lua_setfield(L, -2, "__name");
@@ -12698,7 +12698,7 @@ int rosetta_lua_open(lua_State* L) {
             lua_pushvalue(L, cls);
             lua_newtable(L);
             {
-                static const luaL_Reg members[] = {{"initial_simplex_scale", rosetta_lua_1586}, {"reflection", rosetta_lua_1588}, {"expansion", rosetta_lua_1590}, {"contraction", rosetta_lua_1592}, {"shrink", rosetta_lua_1594}, {"max_iterations", rosetta_lua_1596}, {"tolerance", rosetta_lua_1598}, {nullptr, nullptr}};
+                static const luaL_Reg members[] = {{"initial_simplex_scale", rosetta_lua_1604}, {"reflection", rosetta_lua_1606}, {"expansion", rosetta_lua_1608}, {"contraction", rosetta_lua_1610}, {"shrink", rosetta_lua_1612}, {"max_iterations", rosetta_lua_1614}, {"tolerance", rosetta_lua_1616}, {nullptr, nullptr}};
                 luaL_setfuncs(L, members, 0);
             }
             lua_pushnil(L);
@@ -12706,7 +12706,7 @@ int rosetta_lua_open(lua_State* L) {
             lua_setfield(L, meta, "__index");
             lua_newtable(L);
             {
-                static const luaL_Reg members[] = {{"initial_simplex_scale", rosetta_lua_1587}, {"reflection", rosetta_lua_1589}, {"expansion", rosetta_lua_1591}, {"contraction", rosetta_lua_1593}, {"shrink", rosetta_lua_1595}, {"max_iterations", rosetta_lua_1597}, {"tolerance", rosetta_lua_1599}, {nullptr, nullptr}};
+                static const luaL_Reg members[] = {{"initial_simplex_scale", rosetta_lua_1605}, {"reflection", rosetta_lua_1607}, {"expansion", rosetta_lua_1609}, {"contraction", rosetta_lua_1611}, {"shrink", rosetta_lua_1613}, {"max_iterations", rosetta_lua_1615}, {"tolerance", rosetta_lua_1617}, {nullptr, nullptr}};
                 luaL_setfuncs(L, members, 0);
             }
             lua_pushliteral(L, "NelderMeadOptions");
@@ -12722,7 +12722,7 @@ int rosetta_lua_open(lua_State* L) {
             lua_setfield(L, meta, "__tostring");
             lua_rawsetp(L, LUA_REGISTRYINDEX, &rosetta_lua::Info<datamunge::optim::NelderMeadOptions>::value);
             lua_createtable(L, 0, 2);
-            lua_pushcfunction(L, rosetta_lua_1600);
+            lua_pushcfunction(L, rosetta_lua_1618);
             lua_setfield(L, -2, "__call");
             lua_pushliteral(L, "NelderMeadOptions");
             lua_setfield(L, -2, "__name");
@@ -12737,7 +12737,7 @@ int rosetta_lua_open(lua_State* L) {
             lua_pushboolean(L, 1);
             lua_rawsetp(L, cls, &rosetta_lua::native_key());
             {
-                static const luaL_Reg members[] = {{"optimize", rosetta_lua_1601}, {"options", rosetta_lua_1602}, {nullptr, nullptr}};
+                static const luaL_Reg members[] = {{"optimize", rosetta_lua_1619}, {"options", rosetta_lua_1620}, {nullptr, nullptr}};
                 luaL_setfuncs(L, members, 0);
             }
             lua_pushcfunction(L, rosetta_lua::class_extend);
@@ -12767,7 +12767,7 @@ int rosetta_lua_open(lua_State* L) {
             lua_setfield(L, meta, "__tostring");
             lua_rawsetp(L, LUA_REGISTRYINDEX, &rosetta_lua::Info<datamunge::optim::NelderMead>::value);
             lua_createtable(L, 0, 2);
-            lua_pushcfunction(L, rosetta_lua_1603);
+            lua_pushcfunction(L, rosetta_lua_1621);
             lua_setfield(L, -2, "__call");
             lua_pushliteral(L, "NelderMead");
             lua_setfield(L, -2, "__name");
@@ -12792,7 +12792,7 @@ int rosetta_lua_open(lua_State* L) {
             lua_pushvalue(L, cls);
             lua_newtable(L);
             {
-                static const luaL_Reg members[] = {{"step_size", rosetta_lua_1604}, {"momentum", rosetta_lua_1606}, {"max_iterations", rosetta_lua_1608}, {"tolerance", rosetta_lua_1610}, {nullptr, nullptr}};
+                static const luaL_Reg members[] = {{"step_size", rosetta_lua_1622}, {"momentum", rosetta_lua_1624}, {"max_iterations", rosetta_lua_1626}, {"tolerance", rosetta_lua_1628}, {nullptr, nullptr}};
                 luaL_setfuncs(L, members, 0);
             }
             lua_pushnil(L);
@@ -12800,7 +12800,7 @@ int rosetta_lua_open(lua_State* L) {
             lua_setfield(L, meta, "__index");
             lua_newtable(L);
             {
-                static const luaL_Reg members[] = {{"step_size", rosetta_lua_1605}, {"momentum", rosetta_lua_1607}, {"max_iterations", rosetta_lua_1609}, {"tolerance", rosetta_lua_1611}, {nullptr, nullptr}};
+                static const luaL_Reg members[] = {{"step_size", rosetta_lua_1623}, {"momentum", rosetta_lua_1625}, {"max_iterations", rosetta_lua_1627}, {"tolerance", rosetta_lua_1629}, {nullptr, nullptr}};
                 luaL_setfuncs(L, members, 0);
             }
             lua_pushliteral(L, "NesterovAcceleratedGradientOptions");
@@ -12816,7 +12816,7 @@ int rosetta_lua_open(lua_State* L) {
             lua_setfield(L, meta, "__tostring");
             lua_rawsetp(L, LUA_REGISTRYINDEX, &rosetta_lua::Info<datamunge::optim::NesterovAcceleratedGradientOptions>::value);
             lua_createtable(L, 0, 2);
-            lua_pushcfunction(L, rosetta_lua_1612);
+            lua_pushcfunction(L, rosetta_lua_1630);
             lua_setfield(L, -2, "__call");
             lua_pushliteral(L, "NesterovAcceleratedGradientOptions");
             lua_setfield(L, -2, "__name");
@@ -12831,7 +12831,7 @@ int rosetta_lua_open(lua_State* L) {
             lua_pushboolean(L, 1);
             lua_rawsetp(L, cls, &rosetta_lua::native_key());
             {
-                static const luaL_Reg members[] = {{"optimize", rosetta_lua_1613}, {"options", rosetta_lua_1614}, {nullptr, nullptr}};
+                static const luaL_Reg members[] = {{"optimize", rosetta_lua_1631}, {"options", rosetta_lua_1632}, {nullptr, nullptr}};
                 luaL_setfuncs(L, members, 0);
             }
             lua_pushcfunction(L, rosetta_lua::class_extend);
@@ -12861,7 +12861,7 @@ int rosetta_lua_open(lua_State* L) {
             lua_setfield(L, meta, "__tostring");
             lua_rawsetp(L, LUA_REGISTRYINDEX, &rosetta_lua::Info<datamunge::optim::NesterovAcceleratedGradient>::value);
             lua_createtable(L, 0, 2);
-            lua_pushcfunction(L, rosetta_lua_1615);
+            lua_pushcfunction(L, rosetta_lua_1633);
             lua_setfield(L, -2, "__call");
             lua_pushliteral(L, "NesterovAcceleratedGradient");
             lua_setfield(L, -2, "__name");
@@ -12886,7 +12886,7 @@ int rosetta_lua_open(lua_State* L) {
             lua_pushvalue(L, cls);
             lua_newtable(L);
             {
-                static const luaL_Reg members[] = {{"step_size", rosetta_lua_1616}, {"beta1", rosetta_lua_1618}, {"beta2", rosetta_lua_1620}, {"epsilon", rosetta_lua_1622}, {"max_iterations", rosetta_lua_1624}, {"tolerance", rosetta_lua_1626}, {nullptr, nullptr}};
+                static const luaL_Reg members[] = {{"step_size", rosetta_lua_1634}, {"beta1", rosetta_lua_1636}, {"beta2", rosetta_lua_1638}, {"epsilon", rosetta_lua_1640}, {"max_iterations", rosetta_lua_1642}, {"tolerance", rosetta_lua_1644}, {nullptr, nullptr}};
                 luaL_setfuncs(L, members, 0);
             }
             lua_pushnil(L);
@@ -12894,7 +12894,7 @@ int rosetta_lua_open(lua_State* L) {
             lua_setfield(L, meta, "__index");
             lua_newtable(L);
             {
-                static const luaL_Reg members[] = {{"step_size", rosetta_lua_1617}, {"beta1", rosetta_lua_1619}, {"beta2", rosetta_lua_1621}, {"epsilon", rosetta_lua_1623}, {"max_iterations", rosetta_lua_1625}, {"tolerance", rosetta_lua_1627}, {nullptr, nullptr}};
+                static const luaL_Reg members[] = {{"step_size", rosetta_lua_1635}, {"beta1", rosetta_lua_1637}, {"beta2", rosetta_lua_1639}, {"epsilon", rosetta_lua_1641}, {"max_iterations", rosetta_lua_1643}, {"tolerance", rosetta_lua_1645}, {nullptr, nullptr}};
                 luaL_setfuncs(L, members, 0);
             }
             lua_pushliteral(L, "NadamOptions");
@@ -12910,7 +12910,7 @@ int rosetta_lua_open(lua_State* L) {
             lua_setfield(L, meta, "__tostring");
             lua_rawsetp(L, LUA_REGISTRYINDEX, &rosetta_lua::Info<datamunge::optim::NadamOptions>::value);
             lua_createtable(L, 0, 2);
-            lua_pushcfunction(L, rosetta_lua_1628);
+            lua_pushcfunction(L, rosetta_lua_1646);
             lua_setfield(L, -2, "__call");
             lua_pushliteral(L, "NadamOptions");
             lua_setfield(L, -2, "__name");
@@ -12925,7 +12925,7 @@ int rosetta_lua_open(lua_State* L) {
             lua_pushboolean(L, 1);
             lua_rawsetp(L, cls, &rosetta_lua::native_key());
             {
-                static const luaL_Reg members[] = {{"optimize", rosetta_lua_1629}, {"options", rosetta_lua_1630}, {nullptr, nullptr}};
+                static const luaL_Reg members[] = {{"optimize", rosetta_lua_1647}, {"options", rosetta_lua_1648}, {nullptr, nullptr}};
                 luaL_setfuncs(L, members, 0);
             }
             lua_pushcfunction(L, rosetta_lua::class_extend);
@@ -12955,7 +12955,7 @@ int rosetta_lua_open(lua_State* L) {
             lua_setfield(L, meta, "__tostring");
             lua_rawsetp(L, LUA_REGISTRYINDEX, &rosetta_lua::Info<datamunge::optim::Nadam>::value);
             lua_createtable(L, 0, 2);
-            lua_pushcfunction(L, rosetta_lua_1631);
+            lua_pushcfunction(L, rosetta_lua_1649);
             lua_setfield(L, -2, "__call");
             lua_pushliteral(L, "Nadam");
             lua_setfield(L, -2, "__name");
@@ -12980,7 +12980,7 @@ int rosetta_lua_open(lua_State* L) {
             lua_pushvalue(L, cls);
             lua_newtable(L);
             {
-                static const luaL_Reg members[] = {{"max_iterations", rosetta_lua_1632}, {"tolerance", rosetta_lua_1634}, {"damping", rosetta_lua_1636}, {nullptr, nullptr}};
+                static const luaL_Reg members[] = {{"max_iterations", rosetta_lua_1650}, {"tolerance", rosetta_lua_1652}, {"damping", rosetta_lua_1654}, {nullptr, nullptr}};
                 luaL_setfuncs(L, members, 0);
             }
             lua_pushnil(L);
@@ -12988,7 +12988,7 @@ int rosetta_lua_open(lua_State* L) {
             lua_setfield(L, meta, "__index");
             lua_newtable(L);
             {
-                static const luaL_Reg members[] = {{"max_iterations", rosetta_lua_1633}, {"tolerance", rosetta_lua_1635}, {"damping", rosetta_lua_1637}, {nullptr, nullptr}};
+                static const luaL_Reg members[] = {{"max_iterations", rosetta_lua_1651}, {"tolerance", rosetta_lua_1653}, {"damping", rosetta_lua_1655}, {nullptr, nullptr}};
                 luaL_setfuncs(L, members, 0);
             }
             lua_pushliteral(L, "NewtonOptions");
@@ -13004,7 +13004,7 @@ int rosetta_lua_open(lua_State* L) {
             lua_setfield(L, meta, "__tostring");
             lua_rawsetp(L, LUA_REGISTRYINDEX, &rosetta_lua::Info<datamunge::optim::NewtonOptions>::value);
             lua_createtable(L, 0, 2);
-            lua_pushcfunction(L, rosetta_lua_1638);
+            lua_pushcfunction(L, rosetta_lua_1656);
             lua_setfield(L, -2, "__call");
             lua_pushliteral(L, "NewtonOptions");
             lua_setfield(L, -2, "__name");
@@ -13019,7 +13019,7 @@ int rosetta_lua_open(lua_State* L) {
             lua_pushboolean(L, 1);
             lua_rawsetp(L, cls, &rosetta_lua::native_key());
             {
-                static const luaL_Reg members[] = {{"optimize", rosetta_lua_1639}, {"options", rosetta_lua_1640}, {nullptr, nullptr}};
+                static const luaL_Reg members[] = {{"optimize", rosetta_lua_1657}, {"options", rosetta_lua_1658}, {nullptr, nullptr}};
                 luaL_setfuncs(L, members, 0);
             }
             lua_pushcfunction(L, rosetta_lua::class_extend);
@@ -13049,7 +13049,7 @@ int rosetta_lua_open(lua_State* L) {
             lua_setfield(L, meta, "__tostring");
             lua_rawsetp(L, LUA_REGISTRYINDEX, &rosetta_lua::Info<datamunge::optim::Newton>::value);
             lua_createtable(L, 0, 2);
-            lua_pushcfunction(L, rosetta_lua_1641);
+            lua_pushcfunction(L, rosetta_lua_1659);
             lua_setfield(L, -2, "__call");
             lua_pushliteral(L, "Newton");
             lua_setfield(L, -2, "__name");
@@ -13074,7 +13074,7 @@ int rosetta_lua_open(lua_State* L) {
             lua_pushvalue(L, cls);
             lua_newtable(L);
             {
-                static const luaL_Reg members[] = {{"num_replicas", rosetta_lua_1642}, {"initial_temperature", rosetta_lua_1644}, {"final_temperature", rosetta_lua_1646}, {"step_std_dev", rosetta_lua_1648}, {"swap_interval", rosetta_lua_1650}, {"max_sweeps", rosetta_lua_1652}, {"seed", rosetta_lua_1654}, {nullptr, nullptr}};
+                static const luaL_Reg members[] = {{"num_replicas", rosetta_lua_1660}, {"initial_temperature", rosetta_lua_1662}, {"final_temperature", rosetta_lua_1664}, {"step_std_dev", rosetta_lua_1666}, {"swap_interval", rosetta_lua_1668}, {"max_sweeps", rosetta_lua_1670}, {"seed", rosetta_lua_1672}, {nullptr, nullptr}};
                 luaL_setfuncs(L, members, 0);
             }
             lua_pushnil(L);
@@ -13082,7 +13082,7 @@ int rosetta_lua_open(lua_State* L) {
             lua_setfield(L, meta, "__index");
             lua_newtable(L);
             {
-                static const luaL_Reg members[] = {{"num_replicas", rosetta_lua_1643}, {"initial_temperature", rosetta_lua_1645}, {"final_temperature", rosetta_lua_1647}, {"step_std_dev", rosetta_lua_1649}, {"swap_interval", rosetta_lua_1651}, {"max_sweeps", rosetta_lua_1653}, {"seed", rosetta_lua_1655}, {nullptr, nullptr}};
+                static const luaL_Reg members[] = {{"num_replicas", rosetta_lua_1661}, {"initial_temperature", rosetta_lua_1663}, {"final_temperature", rosetta_lua_1665}, {"step_std_dev", rosetta_lua_1667}, {"swap_interval", rosetta_lua_1669}, {"max_sweeps", rosetta_lua_1671}, {"seed", rosetta_lua_1673}, {nullptr, nullptr}};
                 luaL_setfuncs(L, members, 0);
             }
             lua_pushliteral(L, "ParallelTemperingOptions");
@@ -13098,7 +13098,7 @@ int rosetta_lua_open(lua_State* L) {
             lua_setfield(L, meta, "__tostring");
             lua_rawsetp(L, LUA_REGISTRYINDEX, &rosetta_lua::Info<datamunge::optim::ParallelTemperingOptions>::value);
             lua_createtable(L, 0, 2);
-            lua_pushcfunction(L, rosetta_lua_1656);
+            lua_pushcfunction(L, rosetta_lua_1674);
             lua_setfield(L, -2, "__call");
             lua_pushliteral(L, "ParallelTemperingOptions");
             lua_setfield(L, -2, "__name");
@@ -13113,7 +13113,7 @@ int rosetta_lua_open(lua_State* L) {
             lua_pushboolean(L, 1);
             lua_rawsetp(L, cls, &rosetta_lua::native_key());
             {
-                static const luaL_Reg members[] = {{"optimize", rosetta_lua_1657}, {"options", rosetta_lua_1658}, {nullptr, nullptr}};
+                static const luaL_Reg members[] = {{"optimize", rosetta_lua_1675}, {"options", rosetta_lua_1676}, {nullptr, nullptr}};
                 luaL_setfuncs(L, members, 0);
             }
             lua_pushcfunction(L, rosetta_lua::class_extend);
@@ -13143,7 +13143,7 @@ int rosetta_lua_open(lua_State* L) {
             lua_setfield(L, meta, "__tostring");
             lua_rawsetp(L, LUA_REGISTRYINDEX, &rosetta_lua::Info<datamunge::optim::ParallelTempering>::value);
             lua_createtable(L, 0, 2);
-            lua_pushcfunction(L, rosetta_lua_1659);
+            lua_pushcfunction(L, rosetta_lua_1677);
             lua_setfield(L, -2, "__call");
             lua_pushliteral(L, "ParallelTempering");
             lua_setfield(L, -2, "__name");
@@ -13168,7 +13168,7 @@ int rosetta_lua_open(lua_State* L) {
             lua_pushvalue(L, cls);
             lua_newtable(L);
             {
-                static const luaL_Reg members[] = {{"population_size", rosetta_lua_1660}, {"max_iterations", rosetta_lua_1662}, {"inertia_weight", rosetta_lua_1664}, {"cognitive_coefficient", rosetta_lua_1666}, {"social_coefficient", rosetta_lua_1668}, {"topology", rosetta_lua_1670}, {"ring_neighbors", rosetta_lua_1672}, {"inertia_strategy", rosetta_lua_1674}, {"final_inertia_weight", rosetta_lua_1676}, {"tolerance", rosetta_lua_1678}, {"seed", rosetta_lua_1680}, {nullptr, nullptr}};
+                static const luaL_Reg members[] = {{"population_size", rosetta_lua_1678}, {"max_iterations", rosetta_lua_1680}, {"inertia_weight", rosetta_lua_1682}, {"cognitive_coefficient", rosetta_lua_1684}, {"social_coefficient", rosetta_lua_1686}, {"topology", rosetta_lua_1688}, {"ring_neighbors", rosetta_lua_1690}, {"inertia_strategy", rosetta_lua_1692}, {"final_inertia_weight", rosetta_lua_1694}, {"tolerance", rosetta_lua_1696}, {"seed", rosetta_lua_1698}, {nullptr, nullptr}};
                 luaL_setfuncs(L, members, 0);
             }
             lua_pushnil(L);
@@ -13176,7 +13176,7 @@ int rosetta_lua_open(lua_State* L) {
             lua_setfield(L, meta, "__index");
             lua_newtable(L);
             {
-                static const luaL_Reg members[] = {{"population_size", rosetta_lua_1661}, {"max_iterations", rosetta_lua_1663}, {"inertia_weight", rosetta_lua_1665}, {"cognitive_coefficient", rosetta_lua_1667}, {"social_coefficient", rosetta_lua_1669}, {"topology", rosetta_lua_1671}, {"ring_neighbors", rosetta_lua_1673}, {"inertia_strategy", rosetta_lua_1675}, {"final_inertia_weight", rosetta_lua_1677}, {"tolerance", rosetta_lua_1679}, {"seed", rosetta_lua_1681}, {nullptr, nullptr}};
+                static const luaL_Reg members[] = {{"population_size", rosetta_lua_1679}, {"max_iterations", rosetta_lua_1681}, {"inertia_weight", rosetta_lua_1683}, {"cognitive_coefficient", rosetta_lua_1685}, {"social_coefficient", rosetta_lua_1687}, {"topology", rosetta_lua_1689}, {"ring_neighbors", rosetta_lua_1691}, {"inertia_strategy", rosetta_lua_1693}, {"final_inertia_weight", rosetta_lua_1695}, {"tolerance", rosetta_lua_1697}, {"seed", rosetta_lua_1699}, {nullptr, nullptr}};
                 luaL_setfuncs(L, members, 0);
             }
             lua_pushliteral(L, "PSOOptions");
@@ -13192,7 +13192,7 @@ int rosetta_lua_open(lua_State* L) {
             lua_setfield(L, meta, "__tostring");
             lua_rawsetp(L, LUA_REGISTRYINDEX, &rosetta_lua::Info<datamunge::optim::PSOOptions>::value);
             lua_createtable(L, 0, 2);
-            lua_pushcfunction(L, rosetta_lua_1682);
+            lua_pushcfunction(L, rosetta_lua_1700);
             lua_setfield(L, -2, "__call");
             lua_pushliteral(L, "PSOOptions");
             lua_setfield(L, -2, "__name");
@@ -13207,7 +13207,7 @@ int rosetta_lua_open(lua_State* L) {
             lua_pushboolean(L, 1);
             lua_rawsetp(L, cls, &rosetta_lua::native_key());
             {
-                static const luaL_Reg members[] = {{"optimize", rosetta_lua_1683}, {"options", rosetta_lua_1684}, {nullptr, nullptr}};
+                static const luaL_Reg members[] = {{"optimize", rosetta_lua_1701}, {"options", rosetta_lua_1702}, {nullptr, nullptr}};
                 luaL_setfuncs(L, members, 0);
             }
             lua_pushcfunction(L, rosetta_lua::class_extend);
@@ -13237,7 +13237,7 @@ int rosetta_lua_open(lua_State* L) {
             lua_setfield(L, meta, "__tostring");
             lua_rawsetp(L, LUA_REGISTRYINDEX, &rosetta_lua::Info<datamunge::optim::PSO>::value);
             lua_createtable(L, 0, 2);
-            lua_pushcfunction(L, rosetta_lua_1685);
+            lua_pushcfunction(L, rosetta_lua_1703);
             lua_setfield(L, -2, "__call");
             lua_pushliteral(L, "PSO");
             lua_setfield(L, -2, "__name");
@@ -13262,7 +13262,7 @@ int rosetta_lua_open(lua_State* L) {
             lua_pushvalue(L, cls);
             lua_newtable(L);
             {
-                static const luaL_Reg members[] = {{"step_size", rosetta_lua_1686}, {"max_iterations", rosetta_lua_1688}, {"tolerance", rosetta_lua_1690}, {nullptr, nullptr}};
+                static const luaL_Reg members[] = {{"step_size", rosetta_lua_1704}, {"max_iterations", rosetta_lua_1706}, {"tolerance", rosetta_lua_1708}, {nullptr, nullptr}};
                 luaL_setfuncs(L, members, 0);
             }
             lua_pushnil(L);
@@ -13270,7 +13270,7 @@ int rosetta_lua_open(lua_State* L) {
             lua_setfield(L, meta, "__index");
             lua_newtable(L);
             {
-                static const luaL_Reg members[] = {{"step_size", rosetta_lua_1687}, {"max_iterations", rosetta_lua_1689}, {"tolerance", rosetta_lua_1691}, {nullptr, nullptr}};
+                static const luaL_Reg members[] = {{"step_size", rosetta_lua_1705}, {"max_iterations", rosetta_lua_1707}, {"tolerance", rosetta_lua_1709}, {nullptr, nullptr}};
                 luaL_setfuncs(L, members, 0);
             }
             lua_pushliteral(L, "ProximalGradientOptions");
@@ -13286,7 +13286,7 @@ int rosetta_lua_open(lua_State* L) {
             lua_setfield(L, meta, "__tostring");
             lua_rawsetp(L, LUA_REGISTRYINDEX, &rosetta_lua::Info<datamunge::optim::ProximalGradientOptions>::value);
             lua_createtable(L, 0, 2);
-            lua_pushcfunction(L, rosetta_lua_1692);
+            lua_pushcfunction(L, rosetta_lua_1710);
             lua_setfield(L, -2, "__call");
             lua_pushliteral(L, "ProximalGradientOptions");
             lua_setfield(L, -2, "__name");
@@ -13301,7 +13301,7 @@ int rosetta_lua_open(lua_State* L) {
             lua_pushboolean(L, 1);
             lua_rawsetp(L, cls, &rosetta_lua::native_key());
             {
-                static const luaL_Reg members[] = {{"optimize", rosetta_lua_1693}, {"options", rosetta_lua_1694}, {nullptr, nullptr}};
+                static const luaL_Reg members[] = {{"optimize", rosetta_lua_1711}, {"options", rosetta_lua_1712}, {nullptr, nullptr}};
                 luaL_setfuncs(L, members, 0);
             }
             lua_pushcfunction(L, rosetta_lua::class_extend);
@@ -13331,7 +13331,7 @@ int rosetta_lua_open(lua_State* L) {
             lua_setfield(L, meta, "__tostring");
             lua_rawsetp(L, LUA_REGISTRYINDEX, &rosetta_lua::Info<datamunge::optim::ProximalGradient>::value);
             lua_createtable(L, 0, 2);
-            lua_pushcfunction(L, rosetta_lua_1695);
+            lua_pushcfunction(L, rosetta_lua_1713);
             lua_setfield(L, -2, "__call");
             lua_pushliteral(L, "ProximalGradient");
             lua_setfield(L, -2, "__name");
@@ -13356,7 +13356,7 @@ int rosetta_lua_open(lua_State* L) {
             lua_pushvalue(L, cls);
             lua_newtable(L);
             {
-                static const luaL_Reg members[] = {{"block_size", rosetta_lua_1696}, {"step_size", rosetta_lua_1698}, {"max_iterations", rosetta_lua_1700}, {"tolerance", rosetta_lua_1702}, {"armijo_c1", rosetta_lua_1704}, {"backtracking_factor", rosetta_lua_1706}, {"max_line_search_trials", rosetta_lua_1708}, {"seed", rosetta_lua_1710}, {nullptr, nullptr}};
+                static const luaL_Reg members[] = {{"block_size", rosetta_lua_1714}, {"step_size", rosetta_lua_1716}, {"max_iterations", rosetta_lua_1718}, {"tolerance", rosetta_lua_1720}, {"armijo_c1", rosetta_lua_1722}, {"backtracking_factor", rosetta_lua_1724}, {"max_line_search_trials", rosetta_lua_1726}, {"seed", rosetta_lua_1728}, {nullptr, nullptr}};
                 luaL_setfuncs(L, members, 0);
             }
             lua_pushnil(L);
@@ -13364,7 +13364,7 @@ int rosetta_lua_open(lua_State* L) {
             lua_setfield(L, meta, "__index");
             lua_newtable(L);
             {
-                static const luaL_Reg members[] = {{"block_size", rosetta_lua_1697}, {"step_size", rosetta_lua_1699}, {"max_iterations", rosetta_lua_1701}, {"tolerance", rosetta_lua_1703}, {"armijo_c1", rosetta_lua_1705}, {"backtracking_factor", rosetta_lua_1707}, {"max_line_search_trials", rosetta_lua_1709}, {"seed", rosetta_lua_1711}, {nullptr, nullptr}};
+                static const luaL_Reg members[] = {{"block_size", rosetta_lua_1715}, {"step_size", rosetta_lua_1717}, {"max_iterations", rosetta_lua_1719}, {"tolerance", rosetta_lua_1721}, {"armijo_c1", rosetta_lua_1723}, {"backtracking_factor", rosetta_lua_1725}, {"max_line_search_trials", rosetta_lua_1727}, {"seed", rosetta_lua_1729}, {nullptr, nullptr}};
                 luaL_setfuncs(L, members, 0);
             }
             lua_pushliteral(L, "RandomizedBlockCoordinateDescentOptions");
@@ -13380,7 +13380,7 @@ int rosetta_lua_open(lua_State* L) {
             lua_setfield(L, meta, "__tostring");
             lua_rawsetp(L, LUA_REGISTRYINDEX, &rosetta_lua::Info<datamunge::optim::RandomizedBlockCoordinateDescentOptions>::value);
             lua_createtable(L, 0, 2);
-            lua_pushcfunction(L, rosetta_lua_1712);
+            lua_pushcfunction(L, rosetta_lua_1730);
             lua_setfield(L, -2, "__call");
             lua_pushliteral(L, "RandomizedBlockCoordinateDescentOptions");
             lua_setfield(L, -2, "__name");
@@ -13395,7 +13395,7 @@ int rosetta_lua_open(lua_State* L) {
             lua_pushboolean(L, 1);
             lua_rawsetp(L, cls, &rosetta_lua::native_key());
             {
-                static const luaL_Reg members[] = {{"optimize", rosetta_lua_1713}, {"options", rosetta_lua_1714}, {nullptr, nullptr}};
+                static const luaL_Reg members[] = {{"optimize", rosetta_lua_1731}, {"options", rosetta_lua_1732}, {nullptr, nullptr}};
                 luaL_setfuncs(L, members, 0);
             }
             lua_pushcfunction(L, rosetta_lua::class_extend);
@@ -13425,7 +13425,7 @@ int rosetta_lua_open(lua_State* L) {
             lua_setfield(L, meta, "__tostring");
             lua_rawsetp(L, LUA_REGISTRYINDEX, &rosetta_lua::Info<datamunge::optim::RandomizedBlockCoordinateDescent>::value);
             lua_createtable(L, 0, 2);
-            lua_pushcfunction(L, rosetta_lua_1715);
+            lua_pushcfunction(L, rosetta_lua_1733);
             lua_setfield(L, -2, "__call");
             lua_pushliteral(L, "RandomizedBlockCoordinateDescent");
             lua_setfield(L, -2, "__name");
@@ -13450,7 +13450,7 @@ int rosetta_lua_open(lua_State* L) {
             lua_pushvalue(L, cls);
             lua_newtable(L);
             {
-                static const luaL_Reg members[] = {{"step_size", rosetta_lua_1716}, {"decay_rate", rosetta_lua_1718}, {"epsilon", rosetta_lua_1720}, {"max_iterations", rosetta_lua_1722}, {"tolerance", rosetta_lua_1724}, {nullptr, nullptr}};
+                static const luaL_Reg members[] = {{"step_size", rosetta_lua_1734}, {"decay_rate", rosetta_lua_1736}, {"epsilon", rosetta_lua_1738}, {"max_iterations", rosetta_lua_1740}, {"tolerance", rosetta_lua_1742}, {nullptr, nullptr}};
                 luaL_setfuncs(L, members, 0);
             }
             lua_pushnil(L);
@@ -13458,7 +13458,7 @@ int rosetta_lua_open(lua_State* L) {
             lua_setfield(L, meta, "__index");
             lua_newtable(L);
             {
-                static const luaL_Reg members[] = {{"step_size", rosetta_lua_1717}, {"decay_rate", rosetta_lua_1719}, {"epsilon", rosetta_lua_1721}, {"max_iterations", rosetta_lua_1723}, {"tolerance", rosetta_lua_1725}, {nullptr, nullptr}};
+                static const luaL_Reg members[] = {{"step_size", rosetta_lua_1735}, {"decay_rate", rosetta_lua_1737}, {"epsilon", rosetta_lua_1739}, {"max_iterations", rosetta_lua_1741}, {"tolerance", rosetta_lua_1743}, {nullptr, nullptr}};
                 luaL_setfuncs(L, members, 0);
             }
             lua_pushliteral(L, "RMSPropOptions");
@@ -13474,7 +13474,7 @@ int rosetta_lua_open(lua_State* L) {
             lua_setfield(L, meta, "__tostring");
             lua_rawsetp(L, LUA_REGISTRYINDEX, &rosetta_lua::Info<datamunge::optim::RMSPropOptions>::value);
             lua_createtable(L, 0, 2);
-            lua_pushcfunction(L, rosetta_lua_1726);
+            lua_pushcfunction(L, rosetta_lua_1744);
             lua_setfield(L, -2, "__call");
             lua_pushliteral(L, "RMSPropOptions");
             lua_setfield(L, -2, "__name");
@@ -13489,7 +13489,7 @@ int rosetta_lua_open(lua_State* L) {
             lua_pushboolean(L, 1);
             lua_rawsetp(L, cls, &rosetta_lua::native_key());
             {
-                static const luaL_Reg members[] = {{"optimize", rosetta_lua_1727}, {"options", rosetta_lua_1728}, {nullptr, nullptr}};
+                static const luaL_Reg members[] = {{"optimize", rosetta_lua_1745}, {"options", rosetta_lua_1746}, {nullptr, nullptr}};
                 luaL_setfuncs(L, members, 0);
             }
             lua_pushcfunction(L, rosetta_lua::class_extend);
@@ -13519,7 +13519,7 @@ int rosetta_lua_open(lua_State* L) {
             lua_setfield(L, meta, "__tostring");
             lua_rawsetp(L, LUA_REGISTRYINDEX, &rosetta_lua::Info<datamunge::optim::RMSProp>::value);
             lua_createtable(L, 0, 2);
-            lua_pushcfunction(L, rosetta_lua_1729);
+            lua_pushcfunction(L, rosetta_lua_1747);
             lua_setfield(L, -2, "__call");
             lua_pushliteral(L, "RMSProp");
             lua_setfield(L, -2, "__name");
@@ -13544,7 +13544,7 @@ int rosetta_lua_open(lua_State* L) {
             lua_pushvalue(L, cls);
             lua_newtable(L);
             {
-                static const luaL_Reg members[] = {{"mean", rosetta_lua_1730}, {"sd", rosetta_lua_1732}, {nullptr, nullptr}};
+                static const luaL_Reg members[] = {{"mean", rosetta_lua_1748}, {"sd", rosetta_lua_1750}, {nullptr, nullptr}};
                 luaL_setfuncs(L, members, 0);
             }
             lua_pushnil(L);
@@ -13552,7 +13552,7 @@ int rosetta_lua_open(lua_State* L) {
             lua_setfield(L, meta, "__index");
             lua_newtable(L);
             {
-                static const luaL_Reg members[] = {{"mean", rosetta_lua_1731}, {"sd", rosetta_lua_1733}, {nullptr, nullptr}};
+                static const luaL_Reg members[] = {{"mean", rosetta_lua_1749}, {"sd", rosetta_lua_1751}, {nullptr, nullptr}};
                 luaL_setfuncs(L, members, 0);
             }
             lua_pushliteral(L, "SurrogatePrediction");
@@ -13568,7 +13568,7 @@ int rosetta_lua_open(lua_State* L) {
             lua_setfield(L, meta, "__tostring");
             lua_rawsetp(L, LUA_REGISTRYINDEX, &rosetta_lua::Info<datamunge::optim::SurrogatePrediction>::value);
             lua_createtable(L, 0, 2);
-            lua_pushcfunction(L, rosetta_lua_1734);
+            lua_pushcfunction(L, rosetta_lua_1752);
             lua_setfield(L, -2, "__call");
             lua_pushliteral(L, "SurrogatePrediction");
             lua_setfield(L, -2, "__name");
@@ -13593,7 +13593,7 @@ int rosetta_lua_open(lua_State* L) {
             lua_pushvalue(L, cls);
             lua_newtable(L);
             {
-                static const luaL_Reg members[] = {{"length_scale", rosetta_lua_1735}, {"signal_variance", rosetta_lua_1737}, {"noise", rosetta_lua_1739}, {"normalize_values", rosetta_lua_1741}, {"fit_hyperparameters", rosetta_lua_1743}, {"fit_noise", rosetta_lua_1745}, {"min_length_scale", rosetta_lua_1747}, {"max_length_scale", rosetta_lua_1749}, {"acquisition", rosetta_lua_1751}, {"exploration", rosetta_lua_1753}, {"kappa", rosetta_lua_1755}, {nullptr, nullptr}};
+                static const luaL_Reg members[] = {{"length_scale", rosetta_lua_1753}, {"signal_variance", rosetta_lua_1755}, {"noise", rosetta_lua_1757}, {"normalize_values", rosetta_lua_1759}, {"fit_hyperparameters", rosetta_lua_1761}, {"fit_noise", rosetta_lua_1763}, {"min_length_scale", rosetta_lua_1765}, {"max_length_scale", rosetta_lua_1767}, {"acquisition", rosetta_lua_1769}, {"exploration", rosetta_lua_1771}, {"kappa", rosetta_lua_1773}, {nullptr, nullptr}};
                 luaL_setfuncs(L, members, 0);
             }
             lua_pushnil(L);
@@ -13601,7 +13601,7 @@ int rosetta_lua_open(lua_State* L) {
             lua_setfield(L, meta, "__index");
             lua_newtable(L);
             {
-                static const luaL_Reg members[] = {{"length_scale", rosetta_lua_1736}, {"signal_variance", rosetta_lua_1738}, {"noise", rosetta_lua_1740}, {"normalize_values", rosetta_lua_1742}, {"fit_hyperparameters", rosetta_lua_1744}, {"fit_noise", rosetta_lua_1746}, {"min_length_scale", rosetta_lua_1748}, {"max_length_scale", rosetta_lua_1750}, {"acquisition", rosetta_lua_1752}, {"exploration", rosetta_lua_1754}, {"kappa", rosetta_lua_1756}, {nullptr, nullptr}};
+                static const luaL_Reg members[] = {{"length_scale", rosetta_lua_1754}, {"signal_variance", rosetta_lua_1756}, {"noise", rosetta_lua_1758}, {"normalize_values", rosetta_lua_1760}, {"fit_hyperparameters", rosetta_lua_1762}, {"fit_noise", rosetta_lua_1764}, {"min_length_scale", rosetta_lua_1766}, {"max_length_scale", rosetta_lua_1768}, {"acquisition", rosetta_lua_1770}, {"exploration", rosetta_lua_1772}, {"kappa", rosetta_lua_1774}, {nullptr, nullptr}};
                 luaL_setfuncs(L, members, 0);
             }
             lua_pushliteral(L, "GaussianProcessSurrogateOptions");
@@ -13617,7 +13617,7 @@ int rosetta_lua_open(lua_State* L) {
             lua_setfield(L, meta, "__tostring");
             lua_rawsetp(L, LUA_REGISTRYINDEX, &rosetta_lua::Info<datamunge::optim::GaussianProcessSurrogateOptions>::value);
             lua_createtable(L, 0, 2);
-            lua_pushcfunction(L, rosetta_lua_1757);
+            lua_pushcfunction(L, rosetta_lua_1775);
             lua_setfield(L, -2, "__call");
             lua_pushliteral(L, "GaussianProcessSurrogateOptions");
             lua_setfield(L, -2, "__name");
@@ -13632,7 +13632,7 @@ int rosetta_lua_open(lua_State* L) {
             lua_pushboolean(L, 1);
             lua_rawsetp(L, cls, &rosetta_lua::native_key());
             {
-                static const luaL_Reg members[] = {{"options", rosetta_lua_1758}, {"fit", rosetta_lua_1759}, {"acquisition", rosetta_lua_1760}, {"predict", rosetta_lua_1761}, {"log_marginal_likelihood", rosetta_lua_1762}, {"length_scale", rosetta_lua_1763}, {"noise", rosetta_lua_1764}, {"signal_variance", rosetta_lua_1765}, {"prior_mean", rosetta_lua_1766}, {"value_scale", rosetta_lua_1767}, {"points", rosetta_lua_1768}, {"values", rosetta_lua_1769}, {nullptr, nullptr}};
+                static const luaL_Reg members[] = {{"options", rosetta_lua_1776}, {"fit", rosetta_lua_1777}, {"acquisition", rosetta_lua_1778}, {"predict", rosetta_lua_1779}, {"log_marginal_likelihood", rosetta_lua_1780}, {"length_scale", rosetta_lua_1781}, {"noise", rosetta_lua_1782}, {"signal_variance", rosetta_lua_1783}, {"prior_mean", rosetta_lua_1784}, {"value_scale", rosetta_lua_1785}, {"points", rosetta_lua_1786}, {"values", rosetta_lua_1787}, {nullptr, nullptr}};
                 luaL_setfuncs(L, members, 0);
             }
             lua_pushcfunction(L, rosetta_lua::class_extend);
@@ -13662,7 +13662,7 @@ int rosetta_lua_open(lua_State* L) {
             lua_setfield(L, meta, "__tostring");
             lua_rawsetp(L, LUA_REGISTRYINDEX, &rosetta_lua::Info<datamunge::optim::RBFGaussianProcessSurrogate>::value);
             lua_createtable(L, 0, 2);
-            lua_pushcfunction(L, rosetta_lua_1770);
+            lua_pushcfunction(L, rosetta_lua_1788);
             lua_setfield(L, -2, "__call");
             lua_pushliteral(L, "RBFGaussianProcessSurrogate");
             lua_setfield(L, -2, "__name");
@@ -13687,7 +13687,7 @@ int rosetta_lua_open(lua_State* L) {
             lua_pushvalue(L, cls);
             lua_newtable(L);
             {
-                static const luaL_Reg members[] = {{"step_size", rosetta_lua_1771}, {"max_epochs", rosetta_lua_1773}, {"batch_size", rosetta_lua_1775}, {"tolerance", rosetta_lua_1777}, {"shuffle", rosetta_lua_1779}, {"seed", rosetta_lua_1781}, {nullptr, nullptr}};
+                static const luaL_Reg members[] = {{"step_size", rosetta_lua_1789}, {"max_epochs", rosetta_lua_1791}, {"batch_size", rosetta_lua_1793}, {"tolerance", rosetta_lua_1795}, {"shuffle", rosetta_lua_1797}, {"seed", rosetta_lua_1799}, {nullptr, nullptr}};
                 luaL_setfuncs(L, members, 0);
             }
             lua_pushnil(L);
@@ -13695,7 +13695,7 @@ int rosetta_lua_open(lua_State* L) {
             lua_setfield(L, meta, "__index");
             lua_newtable(L);
             {
-                static const luaL_Reg members[] = {{"step_size", rosetta_lua_1772}, {"max_epochs", rosetta_lua_1774}, {"batch_size", rosetta_lua_1776}, {"tolerance", rosetta_lua_1778}, {"shuffle", rosetta_lua_1780}, {"seed", rosetta_lua_1782}, {nullptr, nullptr}};
+                static const luaL_Reg members[] = {{"step_size", rosetta_lua_1790}, {"max_epochs", rosetta_lua_1792}, {"batch_size", rosetta_lua_1794}, {"tolerance", rosetta_lua_1796}, {"shuffle", rosetta_lua_1798}, {"seed", rosetta_lua_1800}, {nullptr, nullptr}};
                 luaL_setfuncs(L, members, 0);
             }
             lua_pushliteral(L, "SGDOptions");
@@ -13711,7 +13711,7 @@ int rosetta_lua_open(lua_State* L) {
             lua_setfield(L, meta, "__tostring");
             lua_rawsetp(L, LUA_REGISTRYINDEX, &rosetta_lua::Info<datamunge::optim::SGDOptions>::value);
             lua_createtable(L, 0, 2);
-            lua_pushcfunction(L, rosetta_lua_1783);
+            lua_pushcfunction(L, rosetta_lua_1801);
             lua_setfield(L, -2, "__call");
             lua_pushliteral(L, "SGDOptions");
             lua_setfield(L, -2, "__name");
@@ -13726,7 +13726,7 @@ int rosetta_lua_open(lua_State* L) {
             lua_pushboolean(L, 1);
             lua_rawsetp(L, cls, &rosetta_lua::native_key());
             {
-                static const luaL_Reg members[] = {{"optimize", rosetta_lua_1784}, {"options", rosetta_lua_1785}, {nullptr, nullptr}};
+                static const luaL_Reg members[] = {{"optimize", rosetta_lua_1802}, {"options", rosetta_lua_1803}, {nullptr, nullptr}};
                 luaL_setfuncs(L, members, 0);
             }
             lua_pushcfunction(L, rosetta_lua::class_extend);
@@ -13756,7 +13756,7 @@ int rosetta_lua_open(lua_State* L) {
             lua_setfield(L, meta, "__tostring");
             lua_rawsetp(L, LUA_REGISTRYINDEX, &rosetta_lua::Info<datamunge::optim::SGD>::value);
             lua_createtable(L, 0, 2);
-            lua_pushcfunction(L, rosetta_lua_1786);
+            lua_pushcfunction(L, rosetta_lua_1804);
             lua_setfield(L, -2, "__call");
             lua_pushliteral(L, "SGD");
             lua_setfield(L, -2, "__name");
@@ -13781,7 +13781,7 @@ int rosetta_lua_open(lua_State* L) {
             lua_pushvalue(L, cls);
             lua_newtable(L);
             {
-                static const luaL_Reg members[] = {{"initial_temperature", rosetta_lua_1787}, {"cooling_rate", rosetta_lua_1789}, {"max_iterations", rosetta_lua_1791}, {"step_std_dev", rosetta_lua_1793}, {"seed", rosetta_lua_1795}, {nullptr, nullptr}};
+                static const luaL_Reg members[] = {{"initial_temperature", rosetta_lua_1805}, {"cooling_rate", rosetta_lua_1807}, {"max_iterations", rosetta_lua_1809}, {"step_std_dev", rosetta_lua_1811}, {"seed", rosetta_lua_1813}, {nullptr, nullptr}};
                 luaL_setfuncs(L, members, 0);
             }
             lua_pushnil(L);
@@ -13789,7 +13789,7 @@ int rosetta_lua_open(lua_State* L) {
             lua_setfield(L, meta, "__index");
             lua_newtable(L);
             {
-                static const luaL_Reg members[] = {{"initial_temperature", rosetta_lua_1788}, {"cooling_rate", rosetta_lua_1790}, {"max_iterations", rosetta_lua_1792}, {"step_std_dev", rosetta_lua_1794}, {"seed", rosetta_lua_1796}, {nullptr, nullptr}};
+                static const luaL_Reg members[] = {{"initial_temperature", rosetta_lua_1806}, {"cooling_rate", rosetta_lua_1808}, {"max_iterations", rosetta_lua_1810}, {"step_std_dev", rosetta_lua_1812}, {"seed", rosetta_lua_1814}, {nullptr, nullptr}};
                 luaL_setfuncs(L, members, 0);
             }
             lua_pushliteral(L, "SimulatedAnnealingOptions");
@@ -13805,7 +13805,7 @@ int rosetta_lua_open(lua_State* L) {
             lua_setfield(L, meta, "__tostring");
             lua_rawsetp(L, LUA_REGISTRYINDEX, &rosetta_lua::Info<datamunge::optim::SimulatedAnnealingOptions>::value);
             lua_createtable(L, 0, 2);
-            lua_pushcfunction(L, rosetta_lua_1797);
+            lua_pushcfunction(L, rosetta_lua_1815);
             lua_setfield(L, -2, "__call");
             lua_pushliteral(L, "SimulatedAnnealingOptions");
             lua_setfield(L, -2, "__name");
@@ -13820,7 +13820,7 @@ int rosetta_lua_open(lua_State* L) {
             lua_pushboolean(L, 1);
             lua_rawsetp(L, cls, &rosetta_lua::native_key());
             {
-                static const luaL_Reg members[] = {{"optimize", rosetta_lua_1798}, {"options", rosetta_lua_1799}, {nullptr, nullptr}};
+                static const luaL_Reg members[] = {{"optimize", rosetta_lua_1816}, {"options", rosetta_lua_1817}, {nullptr, nullptr}};
                 luaL_setfuncs(L, members, 0);
             }
             lua_pushcfunction(L, rosetta_lua::class_extend);
@@ -13850,7 +13850,7 @@ int rosetta_lua_open(lua_State* L) {
             lua_setfield(L, meta, "__tostring");
             lua_rawsetp(L, LUA_REGISTRYINDEX, &rosetta_lua::Info<datamunge::optim::SimulatedAnnealing>::value);
             lua_createtable(L, 0, 2);
-            lua_pushcfunction(L, rosetta_lua_1800);
+            lua_pushcfunction(L, rosetta_lua_1818);
             lua_setfield(L, -2, "__call");
             lua_pushliteral(L, "SimulatedAnnealing");
             lua_setfield(L, -2, "__name");
@@ -13875,7 +13875,7 @@ int rosetta_lua_open(lua_State* L) {
             lua_pushvalue(L, cls);
             lua_newtable(L);
             {
-                static const luaL_Reg members[] = {{"step_size", rosetta_lua_1801}, {"max_iterations", rosetta_lua_1803}, {"tolerance", rosetta_lua_1805}, {"seed", rosetta_lua_1807}, {nullptr, nullptr}};
+                static const luaL_Reg members[] = {{"step_size", rosetta_lua_1819}, {"max_iterations", rosetta_lua_1821}, {"tolerance", rosetta_lua_1823}, {"seed", rosetta_lua_1825}, {nullptr, nullptr}};
                 luaL_setfuncs(L, members, 0);
             }
             lua_pushnil(L);
@@ -13883,7 +13883,7 @@ int rosetta_lua_open(lua_State* L) {
             lua_setfield(L, meta, "__index");
             lua_newtable(L);
             {
-                static const luaL_Reg members[] = {{"step_size", rosetta_lua_1802}, {"max_iterations", rosetta_lua_1804}, {"tolerance", rosetta_lua_1806}, {"seed", rosetta_lua_1808}, {nullptr, nullptr}};
+                static const luaL_Reg members[] = {{"step_size", rosetta_lua_1820}, {"max_iterations", rosetta_lua_1822}, {"tolerance", rosetta_lua_1824}, {"seed", rosetta_lua_1826}, {nullptr, nullptr}};
                 luaL_setfuncs(L, members, 0);
             }
             lua_pushliteral(L, "SAGAOptions");
@@ -13899,7 +13899,7 @@ int rosetta_lua_open(lua_State* L) {
             lua_setfield(L, meta, "__tostring");
             lua_rawsetp(L, LUA_REGISTRYINDEX, &rosetta_lua::Info<datamunge::optim::SAGAOptions>::value);
             lua_createtable(L, 0, 2);
-            lua_pushcfunction(L, rosetta_lua_1809);
+            lua_pushcfunction(L, rosetta_lua_1827);
             lua_setfield(L, -2, "__call");
             lua_pushliteral(L, "SAGAOptions");
             lua_setfield(L, -2, "__name");
@@ -13914,7 +13914,7 @@ int rosetta_lua_open(lua_State* L) {
             lua_pushboolean(L, 1);
             lua_rawsetp(L, cls, &rosetta_lua::native_key());
             {
-                static const luaL_Reg members[] = {{"optimize", rosetta_lua_1810}, {"options", rosetta_lua_1811}, {nullptr, nullptr}};
+                static const luaL_Reg members[] = {{"optimize", rosetta_lua_1828}, {"options", rosetta_lua_1829}, {nullptr, nullptr}};
                 luaL_setfuncs(L, members, 0);
             }
             lua_pushcfunction(L, rosetta_lua::class_extend);
@@ -13944,7 +13944,7 @@ int rosetta_lua_open(lua_State* L) {
             lua_setfield(L, meta, "__tostring");
             lua_rawsetp(L, LUA_REGISTRYINDEX, &rosetta_lua::Info<datamunge::optim::SAGA>::value);
             lua_createtable(L, 0, 2);
-            lua_pushcfunction(L, rosetta_lua_1812);
+            lua_pushcfunction(L, rosetta_lua_1830);
             lua_setfield(L, -2, "__call");
             lua_pushliteral(L, "SAGA");
             lua_setfield(L, -2, "__name");
@@ -13969,7 +13969,7 @@ int rosetta_lua_open(lua_State* L) {
             lua_pushvalue(L, cls);
             lua_newtable(L);
             {
-                static const luaL_Reg members[] = {{"step_size", rosetta_lua_1813}, {"max_epochs", rosetta_lua_1815}, {"inner_iterations", rosetta_lua_1817}, {"tolerance", rosetta_lua_1819}, {"seed", rosetta_lua_1821}, {nullptr, nullptr}};
+                static const luaL_Reg members[] = {{"step_size", rosetta_lua_1831}, {"max_epochs", rosetta_lua_1833}, {"inner_iterations", rosetta_lua_1835}, {"tolerance", rosetta_lua_1837}, {"seed", rosetta_lua_1839}, {nullptr, nullptr}};
                 luaL_setfuncs(L, members, 0);
             }
             lua_pushnil(L);
@@ -13977,7 +13977,7 @@ int rosetta_lua_open(lua_State* L) {
             lua_setfield(L, meta, "__index");
             lua_newtable(L);
             {
-                static const luaL_Reg members[] = {{"step_size", rosetta_lua_1814}, {"max_epochs", rosetta_lua_1816}, {"inner_iterations", rosetta_lua_1818}, {"tolerance", rosetta_lua_1820}, {"seed", rosetta_lua_1822}, {nullptr, nullptr}};
+                static const luaL_Reg members[] = {{"step_size", rosetta_lua_1832}, {"max_epochs", rosetta_lua_1834}, {"inner_iterations", rosetta_lua_1836}, {"tolerance", rosetta_lua_1838}, {"seed", rosetta_lua_1840}, {nullptr, nullptr}};
                 luaL_setfuncs(L, members, 0);
             }
             lua_pushliteral(L, "SVRGOptions");
@@ -13993,7 +13993,7 @@ int rosetta_lua_open(lua_State* L) {
             lua_setfield(L, meta, "__tostring");
             lua_rawsetp(L, LUA_REGISTRYINDEX, &rosetta_lua::Info<datamunge::optim::SVRGOptions>::value);
             lua_createtable(L, 0, 2);
-            lua_pushcfunction(L, rosetta_lua_1823);
+            lua_pushcfunction(L, rosetta_lua_1841);
             lua_setfield(L, -2, "__call");
             lua_pushliteral(L, "SVRGOptions");
             lua_setfield(L, -2, "__name");
@@ -14008,7 +14008,7 @@ int rosetta_lua_open(lua_State* L) {
             lua_pushboolean(L, 1);
             lua_rawsetp(L, cls, &rosetta_lua::native_key());
             {
-                static const luaL_Reg members[] = {{"optimize", rosetta_lua_1824}, {"options", rosetta_lua_1825}, {nullptr, nullptr}};
+                static const luaL_Reg members[] = {{"optimize", rosetta_lua_1842}, {"options", rosetta_lua_1843}, {nullptr, nullptr}};
                 luaL_setfuncs(L, members, 0);
             }
             lua_pushcfunction(L, rosetta_lua::class_extend);
@@ -14038,7 +14038,7 @@ int rosetta_lua_open(lua_State* L) {
             lua_setfield(L, meta, "__tostring");
             lua_rawsetp(L, LUA_REGISTRYINDEX, &rosetta_lua::Info<datamunge::optim::SVRG>::value);
             lua_createtable(L, 0, 2);
-            lua_pushcfunction(L, rosetta_lua_1826);
+            lua_pushcfunction(L, rosetta_lua_1844);
             lua_setfield(L, -2, "__call");
             lua_pushliteral(L, "SVRG");
             lua_setfield(L, -2, "__name");
@@ -14063,7 +14063,7 @@ int rosetta_lua_open(lua_State* L) {
             lua_pushvalue(L, cls);
             lua_newtable(L);
             {
-                static const luaL_Reg members[] = {{"step_size", rosetta_lua_1827}, {"regularization", rosetta_lua_1829}, {"max_iterations", rosetta_lua_1831}, {"tolerance", rosetta_lua_1833}, {nullptr, nullptr}};
+                static const luaL_Reg members[] = {{"step_size", rosetta_lua_1845}, {"regularization", rosetta_lua_1847}, {"max_iterations", rosetta_lua_1849}, {"tolerance", rosetta_lua_1851}, {nullptr, nullptr}};
                 luaL_setfuncs(L, members, 0);
             }
             lua_pushnil(L);
@@ -14071,7 +14071,7 @@ int rosetta_lua_open(lua_State* L) {
             lua_setfield(L, meta, "__index");
             lua_newtable(L);
             {
-                static const luaL_Reg members[] = {{"step_size", rosetta_lua_1828}, {"regularization", rosetta_lua_1830}, {"max_iterations", rosetta_lua_1832}, {"tolerance", rosetta_lua_1834}, {nullptr, nullptr}};
+                static const luaL_Reg members[] = {{"step_size", rosetta_lua_1846}, {"regularization", rosetta_lua_1848}, {"max_iterations", rosetta_lua_1850}, {"tolerance", rosetta_lua_1852}, {nullptr, nullptr}};
                 luaL_setfuncs(L, members, 0);
             }
             lua_pushliteral(L, "SQPOptions");
@@ -14087,7 +14087,7 @@ int rosetta_lua_open(lua_State* L) {
             lua_setfield(L, meta, "__tostring");
             lua_rawsetp(L, LUA_REGISTRYINDEX, &rosetta_lua::Info<datamunge::optim::SQPOptions>::value);
             lua_createtable(L, 0, 2);
-            lua_pushcfunction(L, rosetta_lua_1835);
+            lua_pushcfunction(L, rosetta_lua_1853);
             lua_setfield(L, -2, "__call");
             lua_pushliteral(L, "SQPOptions");
             lua_setfield(L, -2, "__name");
@@ -14102,7 +14102,7 @@ int rosetta_lua_open(lua_State* L) {
             lua_pushboolean(L, 1);
             lua_rawsetp(L, cls, &rosetta_lua::native_key());
             {
-                static const luaL_Reg members[] = {{"optimize", rosetta_lua_1836}, {"options", rosetta_lua_1837}, {nullptr, nullptr}};
+                static const luaL_Reg members[] = {{"optimize", rosetta_lua_1854}, {"options", rosetta_lua_1855}, {nullptr, nullptr}};
                 luaL_setfuncs(L, members, 0);
             }
             lua_pushcfunction(L, rosetta_lua::class_extend);
@@ -14132,7 +14132,7 @@ int rosetta_lua_open(lua_State* L) {
             lua_setfield(L, meta, "__tostring");
             lua_rawsetp(L, LUA_REGISTRYINDEX, &rosetta_lua::Info<datamunge::optim::SQP>::value);
             lua_createtable(L, 0, 2);
-            lua_pushcfunction(L, rosetta_lua_1838);
+            lua_pushcfunction(L, rosetta_lua_1856);
             lua_setfield(L, -2, "__call");
             lua_pushliteral(L, "SQP");
             lua_setfield(L, -2, "__name");
@@ -14157,7 +14157,7 @@ int rosetta_lua_open(lua_State* L) {
             lua_pushvalue(L, cls);
             lua_newtable(L);
             {
-                static const luaL_Reg members[] = {{"initial_radius", rosetta_lua_1839}, {"max_radius", rosetta_lua_1841}, {"max_iterations", rosetta_lua_1843}, {"tolerance", rosetta_lua_1845}, {nullptr, nullptr}};
+                static const luaL_Reg members[] = {{"initial_radius", rosetta_lua_1857}, {"max_radius", rosetta_lua_1859}, {"max_iterations", rosetta_lua_1861}, {"tolerance", rosetta_lua_1863}, {nullptr, nullptr}};
                 luaL_setfuncs(L, members, 0);
             }
             lua_pushnil(L);
@@ -14165,7 +14165,7 @@ int rosetta_lua_open(lua_State* L) {
             lua_setfield(L, meta, "__index");
             lua_newtable(L);
             {
-                static const luaL_Reg members[] = {{"initial_radius", rosetta_lua_1840}, {"max_radius", rosetta_lua_1842}, {"max_iterations", rosetta_lua_1844}, {"tolerance", rosetta_lua_1846}, {nullptr, nullptr}};
+                static const luaL_Reg members[] = {{"initial_radius", rosetta_lua_1858}, {"max_radius", rosetta_lua_1860}, {"max_iterations", rosetta_lua_1862}, {"tolerance", rosetta_lua_1864}, {nullptr, nullptr}};
                 luaL_setfuncs(L, members, 0);
             }
             lua_pushliteral(L, "TrustRegionNewtonOptions");
@@ -14181,7 +14181,7 @@ int rosetta_lua_open(lua_State* L) {
             lua_setfield(L, meta, "__tostring");
             lua_rawsetp(L, LUA_REGISTRYINDEX, &rosetta_lua::Info<datamunge::optim::TrustRegionNewtonOptions>::value);
             lua_createtable(L, 0, 2);
-            lua_pushcfunction(L, rosetta_lua_1847);
+            lua_pushcfunction(L, rosetta_lua_1865);
             lua_setfield(L, -2, "__call");
             lua_pushliteral(L, "TrustRegionNewtonOptions");
             lua_setfield(L, -2, "__name");
@@ -14196,7 +14196,7 @@ int rosetta_lua_open(lua_State* L) {
             lua_pushboolean(L, 1);
             lua_rawsetp(L, cls, &rosetta_lua::native_key());
             {
-                static const luaL_Reg members[] = {{"optimize", rosetta_lua_1848}, {"options", rosetta_lua_1849}, {nullptr, nullptr}};
+                static const luaL_Reg members[] = {{"optimize", rosetta_lua_1866}, {"options", rosetta_lua_1867}, {nullptr, nullptr}};
                 luaL_setfuncs(L, members, 0);
             }
             lua_pushcfunction(L, rosetta_lua::class_extend);
@@ -14226,7 +14226,7 @@ int rosetta_lua_open(lua_State* L) {
             lua_setfield(L, meta, "__tostring");
             lua_rawsetp(L, LUA_REGISTRYINDEX, &rosetta_lua::Info<datamunge::optim::TrustRegionNewton>::value);
             lua_createtable(L, 0, 2);
-            lua_pushcfunction(L, rosetta_lua_1850);
+            lua_pushcfunction(L, rosetta_lua_1868);
             lua_setfield(L, -2, "__call");
             lua_pushliteral(L, "TrustRegionNewton");
             lua_setfield(L, -2, "__name");
@@ -14251,7 +14251,7 @@ int rosetta_lua_open(lua_State* L) {
             lua_pushvalue(L, cls);
             lua_newtable(L);
             {
-                static const luaL_Reg members[] = {{"population_size", rosetta_lua_1851}, {"spiral_constant", rosetta_lua_1853}, {"max_iterations", rosetta_lua_1855}, {"tolerance", rosetta_lua_1857}, {"seed", rosetta_lua_1859}, {nullptr, nullptr}};
+                static const luaL_Reg members[] = {{"population_size", rosetta_lua_1869}, {"spiral_constant", rosetta_lua_1871}, {"max_iterations", rosetta_lua_1873}, {"tolerance", rosetta_lua_1875}, {"seed", rosetta_lua_1877}, {nullptr, nullptr}};
                 luaL_setfuncs(L, members, 0);
             }
             lua_pushnil(L);
@@ -14259,7 +14259,7 @@ int rosetta_lua_open(lua_State* L) {
             lua_setfield(L, meta, "__index");
             lua_newtable(L);
             {
-                static const luaL_Reg members[] = {{"population_size", rosetta_lua_1852}, {"spiral_constant", rosetta_lua_1854}, {"max_iterations", rosetta_lua_1856}, {"tolerance", rosetta_lua_1858}, {"seed", rosetta_lua_1860}, {nullptr, nullptr}};
+                static const luaL_Reg members[] = {{"population_size", rosetta_lua_1870}, {"spiral_constant", rosetta_lua_1872}, {"max_iterations", rosetta_lua_1874}, {"tolerance", rosetta_lua_1876}, {"seed", rosetta_lua_1878}, {nullptr, nullptr}};
                 luaL_setfuncs(L, members, 0);
             }
             lua_pushliteral(L, "WhaleOptimizationOptions");
@@ -14275,7 +14275,7 @@ int rosetta_lua_open(lua_State* L) {
             lua_setfield(L, meta, "__tostring");
             lua_rawsetp(L, LUA_REGISTRYINDEX, &rosetta_lua::Info<datamunge::optim::WhaleOptimizationOptions>::value);
             lua_createtable(L, 0, 2);
-            lua_pushcfunction(L, rosetta_lua_1861);
+            lua_pushcfunction(L, rosetta_lua_1879);
             lua_setfield(L, -2, "__call");
             lua_pushliteral(L, "WhaleOptimizationOptions");
             lua_setfield(L, -2, "__name");
@@ -14290,7 +14290,7 @@ int rosetta_lua_open(lua_State* L) {
             lua_pushboolean(L, 1);
             lua_rawsetp(L, cls, &rosetta_lua::native_key());
             {
-                static const luaL_Reg members[] = {{"optimize", rosetta_lua_1862}, {"options", rosetta_lua_1863}, {nullptr, nullptr}};
+                static const luaL_Reg members[] = {{"optimize", rosetta_lua_1880}, {"options", rosetta_lua_1881}, {nullptr, nullptr}};
                 luaL_setfuncs(L, members, 0);
             }
             lua_pushcfunction(L, rosetta_lua::class_extend);
@@ -14320,7 +14320,7 @@ int rosetta_lua_open(lua_State* L) {
             lua_setfield(L, meta, "__tostring");
             lua_rawsetp(L, LUA_REGISTRYINDEX, &rosetta_lua::Info<datamunge::optim::WhaleOptimization>::value);
             lua_createtable(L, 0, 2);
-            lua_pushcfunction(L, rosetta_lua_1864);
+            lua_pushcfunction(L, rosetta_lua_1882);
             lua_setfield(L, -2, "__call");
             lua_pushliteral(L, "WhaleOptimization");
             lua_setfield(L, -2, "__name");
@@ -14335,7 +14335,7 @@ int rosetta_lua_open(lua_State* L) {
             lua_pushboolean(L, 1);
             lua_rawsetp(L, cls, &rosetta_lua::native_key());
             {
-                static const luaL_Reg members[] = {{"open_uniform", rosetta_lua_1865}, {"degree", rosetta_lua_1866}, {"basis_size", rosetta_lua_1867}, {"knots", rosetta_lua_1868}, {"domain", rosetta_lua_1869}, {nullptr, nullptr}};
+                static const luaL_Reg members[] = {{"open_uniform", rosetta_lua_1883}, {"degree", rosetta_lua_1884}, {"basis_size", rosetta_lua_1885}, {"knots", rosetta_lua_1886}, {"domain", rosetta_lua_1887}, {nullptr, nullptr}};
                 luaL_setfuncs(L, members, 0);
             }
             lua_pushcfunction(L, rosetta_lua::class_extend);
@@ -14365,7 +14365,7 @@ int rosetta_lua_open(lua_State* L) {
             lua_setfield(L, meta, "__tostring");
             lua_rawsetp(L, LUA_REGISTRYINDEX, &rosetta_lua::Info<datamunge::fda::BSplineBasis>::value);
             lua_createtable(L, 0, 2);
-            lua_pushcfunction(L, rosetta_lua_1870);
+            lua_pushcfunction(L, rosetta_lua_1888);
             lua_setfield(L, -2, "__call");
             lua_pushliteral(L, "BSplineBasis");
             lua_setfield(L, -2, "__name");
@@ -14390,7 +14390,7 @@ int rosetta_lua_open(lua_State* L) {
             lua_pushvalue(L, cls);
             lua_newtable(L);
             {
-                static const luaL_Reg members[] = {{"statistic", rosetta_lua_1871}, {"parameter1", rosetta_lua_1873}, {"parameter2", rosetta_lua_1875}, {"p_value", rosetta_lua_1877}, {"estimate1", rosetta_lua_1879}, {"estimate2", rosetta_lua_1881}, {"conf_int_lower", rosetta_lua_1883}, {"conf_int_upper", rosetta_lua_1885}, {"has_conf_int", rosetta_lua_1887}, {"alternative", rosetta_lua_1889}, {"method", rosetta_lua_1891}, {nullptr, nullptr}};
+                static const luaL_Reg members[] = {{"statistic", rosetta_lua_1889}, {"parameter1", rosetta_lua_1891}, {"parameter2", rosetta_lua_1893}, {"p_value", rosetta_lua_1895}, {"estimate1", rosetta_lua_1897}, {"estimate2", rosetta_lua_1899}, {"conf_int_lower", rosetta_lua_1901}, {"conf_int_upper", rosetta_lua_1903}, {"has_conf_int", rosetta_lua_1905}, {"alternative", rosetta_lua_1907}, {"method", rosetta_lua_1909}, {nullptr, nullptr}};
                 luaL_setfuncs(L, members, 0);
             }
             lua_pushnil(L);
@@ -14398,7 +14398,7 @@ int rosetta_lua_open(lua_State* L) {
             lua_setfield(L, meta, "__index");
             lua_newtable(L);
             {
-                static const luaL_Reg members[] = {{"statistic", rosetta_lua_1872}, {"parameter1", rosetta_lua_1874}, {"parameter2", rosetta_lua_1876}, {"p_value", rosetta_lua_1878}, {"estimate1", rosetta_lua_1880}, {"estimate2", rosetta_lua_1882}, {"conf_int_lower", rosetta_lua_1884}, {"conf_int_upper", rosetta_lua_1886}, {"has_conf_int", rosetta_lua_1888}, {"alternative", rosetta_lua_1890}, {"method", rosetta_lua_1892}, {nullptr, nullptr}};
+                static const luaL_Reg members[] = {{"statistic", rosetta_lua_1890}, {"parameter1", rosetta_lua_1892}, {"parameter2", rosetta_lua_1894}, {"p_value", rosetta_lua_1896}, {"estimate1", rosetta_lua_1898}, {"estimate2", rosetta_lua_1900}, {"conf_int_lower", rosetta_lua_1902}, {"conf_int_upper", rosetta_lua_1904}, {"has_conf_int", rosetta_lua_1906}, {"alternative", rosetta_lua_1908}, {"method", rosetta_lua_1910}, {nullptr, nullptr}};
                 luaL_setfuncs(L, members, 0);
             }
             lua_pushliteral(L, "HypothesisTestResult");
@@ -14414,7 +14414,7 @@ int rosetta_lua_open(lua_State* L) {
             lua_setfield(L, meta, "__tostring");
             lua_rawsetp(L, LUA_REGISTRYINDEX, &rosetta_lua::Info<datamunge::stats::HypothesisTestResult>::value);
             lua_createtable(L, 0, 2);
-            lua_pushcfunction(L, rosetta_lua_1893);
+            lua_pushcfunction(L, rosetta_lua_1911);
             lua_setfield(L, -2, "__call");
             lua_pushliteral(L, "HypothesisTestResult");
             lua_setfield(L, -2, "__name");
@@ -14439,7 +14439,7 @@ int rosetta_lua_open(lua_State* L) {
             lua_pushvalue(L, cls);
             lua_newtable(L);
             {
-                static const luaL_Reg members[] = {{"p", rosetta_lua_1894}, {"d", rosetta_lua_1896}, {"q", rosetta_lua_1898}, {"seasonal_p", rosetta_lua_1900}, {"seasonal_d", rosetta_lua_1902}, {"seasonal_q", rosetta_lua_1904}, {"seasonal_period", rosetta_lua_1906}, {"include_mean", rosetta_lua_1908}, {"de_population_size", rosetta_lua_1910}, {"de_max_generations", rosetta_lua_1912}, {"coefficient_bound", rosetta_lua_1914}, {"seed", rosetta_lua_1916}, {nullptr, nullptr}};
+                static const luaL_Reg members[] = {{"p", rosetta_lua_1912}, {"d", rosetta_lua_1914}, {"q", rosetta_lua_1916}, {"seasonal_p", rosetta_lua_1918}, {"seasonal_d", rosetta_lua_1920}, {"seasonal_q", rosetta_lua_1922}, {"seasonal_period", rosetta_lua_1924}, {"include_mean", rosetta_lua_1926}, {"de_population_size", rosetta_lua_1928}, {"de_max_generations", rosetta_lua_1930}, {"coefficient_bound", rosetta_lua_1932}, {"seed", rosetta_lua_1934}, {nullptr, nullptr}};
                 luaL_setfuncs(L, members, 0);
             }
             lua_pushnil(L);
@@ -14447,7 +14447,7 @@ int rosetta_lua_open(lua_State* L) {
             lua_setfield(L, meta, "__index");
             lua_newtable(L);
             {
-                static const luaL_Reg members[] = {{"p", rosetta_lua_1895}, {"d", rosetta_lua_1897}, {"q", rosetta_lua_1899}, {"seasonal_p", rosetta_lua_1901}, {"seasonal_d", rosetta_lua_1903}, {"seasonal_q", rosetta_lua_1905}, {"seasonal_period", rosetta_lua_1907}, {"include_mean", rosetta_lua_1909}, {"de_population_size", rosetta_lua_1911}, {"de_max_generations", rosetta_lua_1913}, {"coefficient_bound", rosetta_lua_1915}, {"seed", rosetta_lua_1917}, {nullptr, nullptr}};
+                static const luaL_Reg members[] = {{"p", rosetta_lua_1913}, {"d", rosetta_lua_1915}, {"q", rosetta_lua_1917}, {"seasonal_p", rosetta_lua_1919}, {"seasonal_d", rosetta_lua_1921}, {"seasonal_q", rosetta_lua_1923}, {"seasonal_period", rosetta_lua_1925}, {"include_mean", rosetta_lua_1927}, {"de_population_size", rosetta_lua_1929}, {"de_max_generations", rosetta_lua_1931}, {"coefficient_bound", rosetta_lua_1933}, {"seed", rosetta_lua_1935}, {nullptr, nullptr}};
                 luaL_setfuncs(L, members, 0);
             }
             lua_pushliteral(L, "ARIMAOptions");
@@ -14463,7 +14463,7 @@ int rosetta_lua_open(lua_State* L) {
             lua_setfield(L, meta, "__tostring");
             lua_rawsetp(L, LUA_REGISTRYINDEX, &rosetta_lua::Info<datamunge::stats::ARIMAOptions>::value);
             lua_createtable(L, 0, 2);
-            lua_pushcfunction(L, rosetta_lua_1918);
+            lua_pushcfunction(L, rosetta_lua_1936);
             lua_setfield(L, -2, "__call");
             lua_pushliteral(L, "ARIMAOptions");
             lua_setfield(L, -2, "__name");
@@ -14478,7 +14478,7 @@ int rosetta_lua_open(lua_State* L) {
             lua_pushboolean(L, 1);
             lua_rawsetp(L, cls, &rosetta_lua::native_key());
             {
-                static const luaL_Reg members[] = {{"options", rosetta_lua_1919}, {"ar_coefficients", rosetta_lua_1920}, {"ma_coefficients", rosetta_lua_1921}, {"seasonal_ar_coefficients", rosetta_lua_1922}, {"seasonal_ma_coefficients", rosetta_lua_1923}, {"mean", rosetta_lua_1924}, {"observations", rosetta_lua_1925}, {"n_used", rosetta_lua_1926}, {"sigma2", rosetta_lua_1927}, {"log_likelihood", rosetta_lua_1928}, {"aic", rosetta_lua_1929}, {"bic", rosetta_lua_1930}, {"fitted_values", rosetta_lua_1931}, {"residuals", rosetta_lua_1932}, {"forecast", rosetta_lua_1933}, {"expanded_ar_coefficients", rosetta_lua_1934}, {"expanded_ma_coefficients", rosetta_lua_1935}, {"psi_weights", rosetta_lua_1936}, {"forecast_with_intervals", rosetta_lua_1937}, {nullptr, nullptr}};
+                static const luaL_Reg members[] = {{"options", rosetta_lua_1937}, {"ar_coefficients", rosetta_lua_1938}, {"ma_coefficients", rosetta_lua_1939}, {"seasonal_ar_coefficients", rosetta_lua_1940}, {"seasonal_ma_coefficients", rosetta_lua_1941}, {"mean", rosetta_lua_1942}, {"observations", rosetta_lua_1943}, {"n_used", rosetta_lua_1944}, {"sigma2", rosetta_lua_1945}, {"log_likelihood", rosetta_lua_1946}, {"aic", rosetta_lua_1947}, {"bic", rosetta_lua_1948}, {"fitted_values", rosetta_lua_1949}, {"residuals", rosetta_lua_1950}, {"forecast", rosetta_lua_1951}, {"expanded_ar_coefficients", rosetta_lua_1952}, {"expanded_ma_coefficients", rosetta_lua_1953}, {"psi_weights", rosetta_lua_1954}, {"forecast_with_intervals", rosetta_lua_1955}, {nullptr, nullptr}};
                 luaL_setfuncs(L, members, 0);
             }
             lua_pushcfunction(L, rosetta_lua::class_extend);
@@ -14508,7 +14508,7 @@ int rosetta_lua_open(lua_State* L) {
             lua_setfield(L, meta, "__tostring");
             lua_rawsetp(L, LUA_REGISTRYINDEX, &rosetta_lua::Info<datamunge::stats::ARIMA>::value);
             lua_createtable(L, 0, 2);
-            lua_pushcfunction(L, rosetta_lua_1938);
+            lua_pushcfunction(L, rosetta_lua_1956);
             lua_setfield(L, -2, "__call");
             lua_pushliteral(L, "ARIMA");
             lua_setfield(L, -2, "__name");
@@ -14533,7 +14533,7 @@ int rosetta_lua_open(lua_State* L) {
             lua_pushvalue(L, cls);
             lua_newtable(L);
             {
-                static const luaL_Reg members[] = {{"concordant", rosetta_lua_1939}, {"discordant", rosetta_lua_1941}, {"ties_x", rosetta_lua_1943}, {"ties_y", rosetta_lua_1945}, {"ties_xy", rosetta_lua_1947}, {"tau_a", rosetta_lua_1949}, {"tau_b", rosetta_lua_1951}, {nullptr, nullptr}};
+                static const luaL_Reg members[] = {{"concordant", rosetta_lua_1957}, {"discordant", rosetta_lua_1959}, {"ties_x", rosetta_lua_1961}, {"ties_y", rosetta_lua_1963}, {"ties_xy", rosetta_lua_1965}, {"tau_a", rosetta_lua_1967}, {"tau_b", rosetta_lua_1969}, {nullptr, nullptr}};
                 luaL_setfuncs(L, members, 0);
             }
             lua_pushnil(L);
@@ -14541,7 +14541,7 @@ int rosetta_lua_open(lua_State* L) {
             lua_setfield(L, meta, "__index");
             lua_newtable(L);
             {
-                static const luaL_Reg members[] = {{"concordant", rosetta_lua_1940}, {"discordant", rosetta_lua_1942}, {"ties_x", rosetta_lua_1944}, {"ties_y", rosetta_lua_1946}, {"ties_xy", rosetta_lua_1948}, {"tau_a", rosetta_lua_1950}, {"tau_b", rosetta_lua_1952}, {nullptr, nullptr}};
+                static const luaL_Reg members[] = {{"concordant", rosetta_lua_1958}, {"discordant", rosetta_lua_1960}, {"ties_x", rosetta_lua_1962}, {"ties_y", rosetta_lua_1964}, {"ties_xy", rosetta_lua_1966}, {"tau_a", rosetta_lua_1968}, {"tau_b", rosetta_lua_1970}, {nullptr, nullptr}};
                 luaL_setfuncs(L, members, 0);
             }
             lua_pushliteral(L, "KendallTau");
@@ -14557,7 +14557,7 @@ int rosetta_lua_open(lua_State* L) {
             lua_setfield(L, meta, "__tostring");
             lua_rawsetp(L, LUA_REGISTRYINDEX, &rosetta_lua::Info<datamunge::stats::KendallTau>::value);
             lua_createtable(L, 0, 2);
-            lua_pushcfunction(L, rosetta_lua_1953);
+            lua_pushcfunction(L, rosetta_lua_1971);
             lua_setfield(L, -2, "__call");
             lua_pushliteral(L, "KendallTau");
             lua_setfield(L, -2, "__name");
@@ -14582,7 +14582,7 @@ int rosetta_lua_open(lua_State* L) {
             lua_pushvalue(L, cls);
             lua_newtable(L);
             {
-                static const luaL_Reg members[] = {{"trend", rosetta_lua_1954}, {"seasonal", rosetta_lua_1956}, {"seasonal_period", rosetta_lua_1958}, {"alpha", rosetta_lua_1960}, {"beta", rosetta_lua_1962}, {"gamma", rosetta_lua_1964}, {"phi", rosetta_lua_1966}, {"de_population_size", rosetta_lua_1968}, {"de_max_generations", rosetta_lua_1970}, {"seed", rosetta_lua_1972}, {nullptr, nullptr}};
+                static const luaL_Reg members[] = {{"trend", rosetta_lua_1972}, {"seasonal", rosetta_lua_1974}, {"seasonal_period", rosetta_lua_1976}, {"alpha", rosetta_lua_1978}, {"beta", rosetta_lua_1980}, {"gamma", rosetta_lua_1982}, {"phi", rosetta_lua_1984}, {"de_population_size", rosetta_lua_1986}, {"de_max_generations", rosetta_lua_1988}, {"seed", rosetta_lua_1990}, {nullptr, nullptr}};
                 luaL_setfuncs(L, members, 0);
             }
             lua_pushnil(L);
@@ -14590,7 +14590,7 @@ int rosetta_lua_open(lua_State* L) {
             lua_setfield(L, meta, "__index");
             lua_newtable(L);
             {
-                static const luaL_Reg members[] = {{"trend", rosetta_lua_1955}, {"seasonal", rosetta_lua_1957}, {"seasonal_period", rosetta_lua_1959}, {"alpha", rosetta_lua_1961}, {"beta", rosetta_lua_1963}, {"gamma", rosetta_lua_1965}, {"phi", rosetta_lua_1967}, {"de_population_size", rosetta_lua_1969}, {"de_max_generations", rosetta_lua_1971}, {"seed", rosetta_lua_1973}, {nullptr, nullptr}};
+                static const luaL_Reg members[] = {{"trend", rosetta_lua_1973}, {"seasonal", rosetta_lua_1975}, {"seasonal_period", rosetta_lua_1977}, {"alpha", rosetta_lua_1979}, {"beta", rosetta_lua_1981}, {"gamma", rosetta_lua_1983}, {"phi", rosetta_lua_1985}, {"de_population_size", rosetta_lua_1987}, {"de_max_generations", rosetta_lua_1989}, {"seed", rosetta_lua_1991}, {nullptr, nullptr}};
                 luaL_setfuncs(L, members, 0);
             }
             lua_pushliteral(L, "ExponentialSmoothingOptions");
@@ -14606,7 +14606,7 @@ int rosetta_lua_open(lua_State* L) {
             lua_setfield(L, meta, "__tostring");
             lua_rawsetp(L, LUA_REGISTRYINDEX, &rosetta_lua::Info<datamunge::stats::ExponentialSmoothingOptions>::value);
             lua_createtable(L, 0, 2);
-            lua_pushcfunction(L, rosetta_lua_1974);
+            lua_pushcfunction(L, rosetta_lua_1992);
             lua_setfield(L, -2, "__call");
             lua_pushliteral(L, "ExponentialSmoothingOptions");
             lua_setfield(L, -2, "__name");
@@ -14621,7 +14621,7 @@ int rosetta_lua_open(lua_State* L) {
             lua_pushboolean(L, 1);
             lua_rawsetp(L, cls, &rosetta_lua::native_key());
             {
-                static const luaL_Reg members[] = {{"options", rosetta_lua_1975}, {"alpha", rosetta_lua_1976}, {"beta", rosetta_lua_1977}, {"gamma", rosetta_lua_1978}, {"phi", rosetta_lua_1979}, {"observations", rosetta_lua_1980}, {"sse", rosetta_lua_1981}, {"sigma2", rosetta_lua_1982}, {"log_likelihood", rosetta_lua_1983}, {"aic", rosetta_lua_1984}, {"bic", rosetta_lua_1985}, {"fitted_values", rosetta_lua_1986}, {"residuals", rosetta_lua_1987}, {"forecast", rosetta_lua_1988}, {nullptr, nullptr}};
+                static const luaL_Reg members[] = {{"options", rosetta_lua_1993}, {"alpha", rosetta_lua_1994}, {"beta", rosetta_lua_1995}, {"gamma", rosetta_lua_1996}, {"phi", rosetta_lua_1997}, {"observations", rosetta_lua_1998}, {"sse", rosetta_lua_1999}, {"sigma2", rosetta_lua_2000}, {"log_likelihood", rosetta_lua_2001}, {"aic", rosetta_lua_2002}, {"bic", rosetta_lua_2003}, {"fitted_values", rosetta_lua_2004}, {"residuals", rosetta_lua_2005}, {"forecast", rosetta_lua_2006}, {nullptr, nullptr}};
                 luaL_setfuncs(L, members, 0);
             }
             lua_pushcfunction(L, rosetta_lua::class_extend);
@@ -14651,7 +14651,7 @@ int rosetta_lua_open(lua_State* L) {
             lua_setfield(L, meta, "__tostring");
             lua_rawsetp(L, LUA_REGISTRYINDEX, &rosetta_lua::Info<datamunge::stats::ExponentialSmoothing>::value);
             lua_createtable(L, 0, 2);
-            lua_pushcfunction(L, rosetta_lua_1989);
+            lua_pushcfunction(L, rosetta_lua_2007);
             lua_setfield(L, -2, "__call");
             lua_pushliteral(L, "ExponentialSmoothing");
             lua_setfield(L, -2, "__name");
@@ -14692,7 +14692,7 @@ int rosetta_lua_open(lua_State* L) {
             lua_setfield(L, meta, "__tostring");
             lua_rawsetp(L, LUA_REGISTRYINDEX, &rosetta_lua::Info<datamunge::Bspline>::value);
             lua_createtable(L, 0, 2);
-            lua_pushcfunction(L, rosetta_lua_1990);
+            lua_pushcfunction(L, rosetta_lua_2008);
             lua_setfield(L, -2, "__call");
             lua_pushliteral(L, "Bspline");
             lua_setfield(L, -2, "__name");
@@ -14707,7 +14707,7 @@ int rosetta_lua_open(lua_State* L) {
             lua_pushboolean(L, 1);
             lua_rawsetp(L, cls, &rosetta_lua::native_key());
             {
-                static const luaL_Reg members[] = {{"predict", rosetta_lua_1991}, {"coefficients", rosetta_lua_1992}, {"fitted", rosetta_lua_1993}, {"residuals", rosetta_lua_1994}, {"r_squared", rosetta_lua_1995}, {"basis_size", rosetta_lua_1996}, {"degree", rosetta_lua_1997}, {"knots", rosetta_lua_1998}, {"domain", rosetta_lua_1999}, {nullptr, nullptr}};
+                static const luaL_Reg members[] = {{"predict", rosetta_lua_2009}, {"coefficients", rosetta_lua_2010}, {"fitted", rosetta_lua_2011}, {"residuals", rosetta_lua_2012}, {"r_squared", rosetta_lua_2013}, {"basis_size", rosetta_lua_2014}, {"degree", rosetta_lua_2015}, {"knots", rosetta_lua_2016}, {"domain", rosetta_lua_2017}, {nullptr, nullptr}};
                 luaL_setfuncs(L, members, 0);
             }
             lua_pushcfunction(L, rosetta_lua::class_extend);
@@ -14737,7 +14737,7 @@ int rosetta_lua_open(lua_State* L) {
             lua_setfield(L, meta, "__tostring");
             lua_rawsetp(L, LUA_REGISTRYINDEX, &rosetta_lua::Info<datamunge::BSplineRegression>::value);
             lua_createtable(L, 0, 2);
-            lua_pushcfunction(L, rosetta_lua_2000);
+            lua_pushcfunction(L, rosetta_lua_2018);
             lua_setfield(L, -2, "__call");
             lua_pushliteral(L, "BSplineRegression");
             lua_setfield(L, -2, "__name");
@@ -14752,7 +14752,7 @@ int rosetta_lua_open(lua_State* L) {
             lua_pushboolean(L, 1);
             lua_rawsetp(L, cls, &rosetta_lua::native_key());
             {
-                static const luaL_Reg members[] = {{"predict", rosetta_lua_2001}, {"coefficients", rosetta_lua_2002}, {"fitted", rosetta_lua_2003}, {"residuals", rosetta_lua_2004}, {"r_squared", rosetta_lua_2005}, {"lambda", rosetta_lua_2006}, {"penalty_order", rosetta_lua_2007}, {"effective_df", rosetta_lua_2008}, {"gcv", rosetta_lua_2009}, {"basis_size", rosetta_lua_2010}, {"degree", rosetta_lua_2011}, {"knots", rosetta_lua_2012}, {"domain", rosetta_lua_2013}, {"coefficient_differences", rosetta_lua_2014}, {nullptr, nullptr}};
+                static const luaL_Reg members[] = {{"predict", rosetta_lua_2019}, {"coefficients", rosetta_lua_2020}, {"fitted", rosetta_lua_2021}, {"residuals", rosetta_lua_2022}, {"r_squared", rosetta_lua_2023}, {"lambda", rosetta_lua_2024}, {"penalty_order", rosetta_lua_2025}, {"effective_df", rosetta_lua_2026}, {"gcv", rosetta_lua_2027}, {"basis_size", rosetta_lua_2028}, {"degree", rosetta_lua_2029}, {"knots", rosetta_lua_2030}, {"domain", rosetta_lua_2031}, {"coefficient_differences", rosetta_lua_2032}, {nullptr, nullptr}};
                 luaL_setfuncs(L, members, 0);
             }
             lua_pushcfunction(L, rosetta_lua::class_extend);
@@ -14782,7 +14782,7 @@ int rosetta_lua_open(lua_State* L) {
             lua_setfield(L, meta, "__tostring");
             lua_rawsetp(L, LUA_REGISTRYINDEX, &rosetta_lua::Info<datamunge::PSplineRegression>::value);
             lua_createtable(L, 0, 2);
-            lua_pushcfunction(L, rosetta_lua_2015);
+            lua_pushcfunction(L, rosetta_lua_2033);
             lua_setfield(L, -2, "__call");
             lua_pushliteral(L, "PSplineRegression");
             lua_setfield(L, -2, "__name");
@@ -14797,7 +14797,7 @@ int rosetta_lua_open(lua_State* L) {
             lua_pushboolean(L, 1);
             lua_rawsetp(L, cls, &rosetta_lua::native_key());
             {
-                static const luaL_Reg members[] = {{"empty", rosetta_lua_2016}, {"nrows", rosetta_lua_2017}, {"ncols", rosetta_lua_2018}, {"shape", rosetta_lua_2019}, {"columns", rosetta_lua_2020}, {"add_numeric_column", rosetta_lua_2021}, {"add_string_column", rosetta_lua_2022}, {"add_string_column_encoded", rosetta_lua_2023}, {"fill_null_numeric", rosetta_lua_2024}, {"fill_null_string", rosetta_lua_2025}, {"mutate_numeric", rosetta_lua_2026}, {"mutate_string", rosetta_lua_2027}, {"mutate_string_encoded", rosetta_lua_2028}, {"rename", rosetta_lua_2029}, {"select", rosetta_lua_2030}, {"select_encoded", rosetta_lua_2031}, {"relocate", rosetta_lua_2032}, {"relocate_encoded", rosetta_lua_2033}, {"sort_by", rosetta_lua_2034}, {"arrange", rosetta_lua_2035}, {"arrange_encoded", rosetta_lua_2036}, {"drop_duplicates", rosetta_lua_2037}, {"drop_duplicates_encoded", rosetta_lua_2038}, {"distinct", rosetta_lua_2039}, {"distinct_encoded", rosetta_lua_2040}, {"pull_numeric", rosetta_lua_2041}, {"pull_numeric_valid", rosetta_lua_2042}, {"pull_string", rosetta_lua_2043}, {"pull_string_valid", rosetta_lua_2044}, {"n_distinct", rosetta_lua_2045}, {"group_by_sum", rosetta_lua_2046}, {"group_by_sum_encoded", rosetta_lua_2047}, {"count", rosetta_lua_2048}, {"count_encoded", rosetta_lua_2049}, {"summarise", rosetta_lua_2050}, {"summarise_encoded", rosetta_lua_2051}, {"pivot_longer", rosetta_lua_2052}, {"pivot_longer_encoded", rosetta_lua_2053}, {"pivot_wider", rosetta_lua_2054}, {"pivot_wider_encoded", rosetta_lua_2055}, {"bind_rows", rosetta_lua_2056}, {"bind_cols", rosetta_lua_2057}, {"join", rosetta_lua_2058}, {"numeric_count", rosetta_lua_2059}, {"numeric_null_count", rosetta_lua_2060}, {"numeric_sum", rosetta_lua_2061}, {"numeric_mean", rosetta_lua_2062}, {"numeric_min", rosetta_lua_2063}, {"numeric_max", rosetta_lua_2064}, {"to_string", rosetta_lua_2065}, {"to_md", rosetta_lua_2066}, {"is_numeric_column", rosetta_lua_2067}, {"is_null", rosetta_lua_2068}, {"numeric_at", rosetta_lua_2069}, {"string_at", rosetta_lua_2070}, {"iris", rosetta_lua_2071}, {"penguins", rosetta_lua_2072}, {"tooth_growth", rosetta_lua_2073}, {"wine", rosetta_lua_2074}, {"titanic", rosetta_lua_2075}, {"eight_schools", rosetta_lua_2076}, {"air_passengers", rosetta_lua_2077}, {"volcano", rosetta_lua_2078}, {"faithful", rosetta_lua_2079}, {"mtcars", rosetta_lua_2080}, {"airquality", rosetta_lua_2081}, {"breast_cancer", rosetta_lua_2082}, {"diabetes", rosetta_lua_2083}, {"digits", rosetta_lua_2084}, {"diamonds", rosetta_lua_2085}, {"california_housing", rosetta_lua_2086}, {"dataset", rosetta_lua_2087}, {"dataset_catalog", rosetta_lua_2088}, {"read_csv", rosetta_lua_2089}, {"parse_csv", rosetta_lua_2090}, {"from_image_batch", rosetta_lua_2091}, {nullptr, nullptr}};
+                static const luaL_Reg members[] = {{"empty", rosetta_lua_2034}, {"nrows", rosetta_lua_2035}, {"ncols", rosetta_lua_2036}, {"shape", rosetta_lua_2037}, {"columns", rosetta_lua_2038}, {"add_numeric_column", rosetta_lua_2039}, {"add_string_column", rosetta_lua_2040}, {"add_string_column_encoded", rosetta_lua_2041}, {"fill_null_numeric", rosetta_lua_2042}, {"fill_null_string", rosetta_lua_2043}, {"mutate_numeric", rosetta_lua_2044}, {"mutate_string", rosetta_lua_2045}, {"mutate_string_encoded", rosetta_lua_2046}, {"rename", rosetta_lua_2047}, {"select", rosetta_lua_2048}, {"select_encoded", rosetta_lua_2049}, {"relocate", rosetta_lua_2050}, {"relocate_encoded", rosetta_lua_2051}, {"sort_by", rosetta_lua_2052}, {"arrange", rosetta_lua_2053}, {"arrange_encoded", rosetta_lua_2054}, {"drop_duplicates", rosetta_lua_2055}, {"drop_duplicates_encoded", rosetta_lua_2056}, {"distinct", rosetta_lua_2057}, {"distinct_encoded", rosetta_lua_2058}, {"pull_numeric", rosetta_lua_2059}, {"pull_numeric_valid", rosetta_lua_2060}, {"pull_string", rosetta_lua_2061}, {"pull_string_valid", rosetta_lua_2062}, {"n_distinct", rosetta_lua_2063}, {"group_by_sum", rosetta_lua_2064}, {"group_by_sum_encoded", rosetta_lua_2065}, {"count", rosetta_lua_2066}, {"count_encoded", rosetta_lua_2067}, {"summarise", rosetta_lua_2068}, {"summarise_encoded", rosetta_lua_2069}, {"pivot_longer", rosetta_lua_2070}, {"pivot_longer_encoded", rosetta_lua_2071}, {"pivot_wider", rosetta_lua_2072}, {"pivot_wider_encoded", rosetta_lua_2073}, {"bind_rows", rosetta_lua_2074}, {"bind_cols", rosetta_lua_2075}, {"join", rosetta_lua_2076}, {"numeric_count", rosetta_lua_2077}, {"numeric_null_count", rosetta_lua_2078}, {"numeric_sum", rosetta_lua_2079}, {"numeric_mean", rosetta_lua_2080}, {"numeric_min", rosetta_lua_2081}, {"numeric_max", rosetta_lua_2082}, {"to_string", rosetta_lua_2083}, {"to_md", rosetta_lua_2084}, {"is_numeric_column", rosetta_lua_2085}, {"is_null", rosetta_lua_2086}, {"numeric_at", rosetta_lua_2087}, {"string_at", rosetta_lua_2088}, {"read_csv", rosetta_lua_2089}, {"parse_csv", rosetta_lua_2090}, {"from_image_batch", rosetta_lua_2091}, {nullptr, nullptr}};
                 luaL_setfuncs(L, members, 0);
             }
             lua_pushcfunction(L, rosetta_lua::class_extend);
@@ -14823,7 +14823,7 @@ int rosetta_lua_open(lua_State* L) {
             lua_setfield(L, meta, "__close");
             lua_pushcfunction(L, rosetta_lua::object_eq);
             lua_setfield(L, meta, "__eq");
-            lua_pushcfunction(L, rosetta_lua_2065);
+            lua_pushcfunction(L, rosetta_lua_2083);
             lua_setfield(L, meta, "__tostring");
             lua_rawsetp(L, LUA_REGISTRYINDEX, &rosetta_lua::Info<datamunge::DataFrame>::value);
             lua_createtable(L, 0, 2);
@@ -17620,8 +17620,14 @@ int rosetta_lua_open(lua_State* L) {
             lua_settop(L, cls - 1);
         }
         {
-                static const luaL_Reg members[] = {{"poly_quotient", rosetta_lua_0}, {"poly_remainder", rosetta_lua_1}, {"simpson_estimate", rosetta_lua_2}, {"adaptive_simpson_recurse", rosetta_lua_3}, {"definite_integral", rosetta_lua_4}, {"taylor_series", rosetta_lua_5}, {"descartes_sign_changes", rosetta_lua_6}, {"descartes_negative_root_bound", rosetta_lua_7}, {"monic", rosetta_lua_8}, {"is_negligible_remainder", rosetta_lua_9}, {"poly_gcd", rosetta_lua_10}, {"poly_extended_gcd", rosetta_lua_11}, {"poly_gcd_pseudo_remainder_sequence", rosetta_lua_12}, {"sturm_sequence", rosetta_lua_13}, {"sturm_sign_changes", rosetta_lua_14}, {"cauchy_root_bound", rosetta_lua_15}, {"sturm_root_count", rosetta_lua_16}, {"isolate_real_roots", rosetta_lua_17}, {"refine_root", rosetta_lua_18}, {"real_roots", rosetta_lua_19}, {"c_add", rosetta_lua_20}, {"c_sub", rosetta_lua_21}, {"c_mul", rosetta_lua_22}, {"c_div", rosetta_lua_23}, {"c_abs", rosetta_lua_24}, {"c_eval", rosetta_lua_25}, {"complex_roots", rosetta_lua_26}, {"rational_roots", rosetta_lua_27}, {"square_free_factorization", rosetta_lua_28}, {"factor_over_reals", rosetta_lua_29}, {"total_degree", rosetta_lua_30}, {"compare_monomials", rosetta_lua_31}, {"lcm_exponent", rosetta_lua_32}, {"monomial_divides", rosetta_lua_33}, {"s_polynomial", rosetta_lua_34}, {"reduce", rosetta_lua_35}, {"multivariate_reduce", rosetta_lua_36}, {"groebner_basis", rosetta_lua_37}, {"lagrange_interpolate", rosetta_lua_38}, {"newton_interpolate", rosetta_lua_39}, {"to_integer", rosetta_lua_40}, {"mod_pow", rosetta_lua_41}, {"mod_inverse", rosetta_lua_42}, {"crt", rosetta_lua_43}, {"gf_mul", rosetta_lua_44}, {"gf_derivative", rosetta_lua_45}, {"gf_square_free", rosetta_lua_46}, {"berlekamp_null_space", rosetta_lua_47}, {"berlekamp_factor_mod", rosetta_lua_48}, {"berlekamp_factor_count", rosetta_lua_49}, {"factor_gf_p", rosetta_lua_50}, {"count_monic_irreducibles", rosetta_lua_51}, {"expected_distinct_irreducible_factors", rosetta_lua_52}, {"sylvester_matrix", rosetta_lua_53}, {"determinant", rosetta_lua_54}, {"resultant", rosetta_lua_55}, {"discriminant", rosetta_lua_56}, {"leapfrog_gaussian_acceptance", rosetta_lua_57}, {"gaussian_importance_efficiency", rosetta_lua_58}, {"rgb_to_gray", rosetta_lua_59}, {"rgb_to_hsv", rosetta_lua_60}, {"hsv_to_rgb", rosetta_lua_61}, {"to_grayscale", rosetta_lua_62}, {"to_rgb", rosetta_lua_63}, {"to_rgba", rosetta_lua_64}, {"split_channels", rosetta_lua_65}, {"merge_channels", rosetta_lua_66}, {"dog_blobs", rosetta_lua_67}, {"structure_tensor", rosetta_lua_68}, {"extract_local_maxima", rosetta_lua_69}, {"harris_corners", rosetta_lua_70}, {"shi_tomasi_corners", rosetta_lua_71}, {"fast_corners", rosetta_lua_72}, {"line_endpoints", rosetta_lua_73}, {"hough_lines", rosetta_lua_74}, {"hough_circles", rosetta_lua_75}, {"in_structuring_element", rosetta_lua_76}, {"is_foreground", rosetta_lua_77}, {"erode", rosetta_lua_78}, {"dilate", rosetta_lua_79}, {"morphological_open", rosetta_lua_80}, {"morphological_close", rosetta_lua_81}, {"lucas_kanade_optical_flow", rosetta_lua_82}, {"box_kernel", rosetta_lua_83}, {"gaussian_kernel", rosetta_lua_84}, {"convolve", rosetta_lua_85}, {"box_blur", rosetta_lua_86}, {"gaussian_blur", rosetta_lua_87}, {"sharpen", rosetta_lua_88}, {"sobel_edges", rosetta_lua_89}, {"adjust_brightness", rosetta_lua_90}, {"adjust_contrast", rosetta_lua_91}, {"threshold", rosetta_lua_92}, {"lerp_byte", rosetta_lua_93}, {"bilinear_sample", rosetta_lua_94}, {"resize", rosetta_lua_95}, {"crop", rosetta_lua_96}, {"flip_horizontal", rosetta_lua_97}, {"flip_vertical", rosetta_lua_98}, {"rotate90", rosetta_lua_99}, {"rotate", rosetta_lua_100}, {"gaussian_pyramid", rosetta_lua_101}, {"signed_difference_image", rosetta_lua_102}, {"laplacian_pyramid", rosetta_lua_103}, {"connected_components", rosetta_lua_104}, {"otsu_threshold", rosetta_lua_105}, {"kmeans_segment", rosetta_lua_106}, {"data_home", rosetta_lua_107}, {"downloadable", rosetta_lua_108}, {"fetch", rosetta_lua_109}, {"download_file", rosetta_lua_110}, {"make_uniform_mesh1d", rosetta_lua_111}, {"squared_distance", rosetta_lua_112}, {"distance", rosetta_lua_113}, {"cross", rosetta_lua_114}, {"delaunay_triangulation", rosetta_lua_115}, {"delaunay_trace", rosetta_lua_116}, {"delaunay_analyze", rosetta_lua_117}, {"delaunay_uniform_cloud", rosetta_lua_118}, {"make_rectangular_mesh2d", rosetta_lua_119}, {"make_mesh2d_from_points", rosetta_lua_120}, {"boundary_nodes", rosetta_lua_121}, {"bounding_box", rosetta_lua_122}, {"closest_pair", rosetta_lua_123}, {"convex_hull", rosetta_lua_124}, {"convex_hull_analyze", rosetta_lua_125}, {"convex_hull_trace", rosetta_lua_126}, {"sample_gaussian_points", rosetta_lua_127}, {"terrain_colors", rosetta_lua_128}, {"diverging_colors", rosetta_lua_129}, {"viridis_colors", rosetta_lua_130}, {"value_colors", rosetta_lua_131}, {"dtw_trace_entries", rosetta_lua_132}, {"dynamic_time_warping_work", rosetta_lua_133}, {"dynamic_time_warping", rosetta_lua_134}, {"dynamic_time_warping_trace", rosetta_lua_135}, {"dtw_path_cost", rosetta_lua_136}, {"plot_dtw_alignment", rosetta_lua_137}, {"discrete_frechet_distance", rosetta_lua_138}, {"circle_from_one_point", rosetta_lua_139}, {"circle_from_two_points", rosetta_lua_140}, {"circle_from_three_points", rosetta_lua_141}, {"circle_contains", rosetta_lua_142}, {"min_enclosing_circle", rosetta_lua_143}, {"point_in_polygon", rosetta_lua_144}, {"signed_polygon_area", rosetta_lua_145}, {"polygon_area", rosetta_lua_146}, {"polygon_centroid", rosetta_lua_147}, {"is_convex_polygon", rosetta_lua_148}, {"orientation", rosetta_lua_149}, {"on_segment", rosetta_lua_150}, {"segments_intersect", rosetta_lua_151}, {"line_intersection_point", rosetta_lua_152}, {"segment_intersection_point", rosetta_lua_153}, {"inside_clip_edge", rosetta_lua_154}, {"clip_polygon", rosetta_lua_155}, {"point_in_triangle", rosetta_lua_156}, {"triangulate_polygon", rosetta_lua_157}, {"polygon_diameter", rosetta_lua_158}, {"minimum_bounding_rectangle", rosetta_lua_159}, {"point_to_line_distance", rosetta_lua_160}, {"simplify_polyline", rosetta_lua_161}, {"circumcenter", rosetta_lua_162}, {"voronoi_diagram", rosetta_lua_163}, {"read_bmp", rosetta_lua_164}, {"write_bmp", rosetta_lua_165}, {"set_pixel_clipped", rosetta_lua_166}, {"stamp", rosetta_lua_167}, {"draw_line", rosetta_lua_168}, {"draw_rectangle", rosetta_lua_169}, {"draw_circle", rosetta_lua_170}, {"draw_polygon", rosetta_lua_171}, {"read_ppm", rosetta_lua_172}, {"write_ppm", rosetta_lua_173}, {"read_pgm", rosetta_lua_174}, {"write_pgm", rosetta_lua_175}, {"read_pbm", rosetta_lua_176}, {"write_pbm", rosetta_lua_177}, {"read_png", rosetta_lua_178}, {"write_png", rosetta_lua_179}, {"expected_improvement", rosetta_lua_180}, {"probability_of_improvement", rosetta_lua_181}, {"one_way_anova", rosetta_lua_182}, {"kruskal_wallis_test", rosetta_lua_183}, {"chi_squared_goodness_of_fit", rosetta_lua_184}, {"chi_squared_test_independence", rosetta_lua_185}, {"pearson_correlation_test", rosetta_lua_186}, {"spearman_correlation_test", rosetta_lua_187}, {"kendall_tau", rosetta_lua_188}, {"fisher_exact_test_2x2", rosetta_lua_189}, {"ks_test_one_sample_normal", rosetta_lua_190}, {"ks_test_one_sample_uniform", rosetta_lua_191}, {"ks_test_two_sample", rosetta_lua_192}, {"shapiro_francia_test", rosetta_lua_193}, {"p_adjust", rosetta_lua_194}, {"westfall_young_adjust", rosetta_lua_195}, {"romano_wolf_adjust", rosetta_lua_196}, {"proportion_test_one_sample", rosetta_lua_197}, {"proportion_test_two_sample", rosetta_lua_198}, {"binomial_test", rosetta_lua_199}, {"t_test_one_sample", rosetta_lua_200}, {"t_test_two_sample", rosetta_lua_201}, {"t_test_paired", rosetta_lua_202}, {"f_test_variance", rosetta_lua_203}, {"wilcoxon_signed_rank_test", rosetta_lua_204}, {"wilcoxon_rank_sum_test", rosetta_lua_205}, {"bs", rosetta_lua_206}, {"mkdir", rosetta_lua_207}, {"hello", rosetta_lua_208}, {"call_with_callback", rosetta_lua_209}, {"map_dvector_with_callback", rosetta_lua_210}, {"make_dvector", rosetta_lua_211}, {"sum_dvector", rosetta_lua_212}, {"make_dpair", rosetta_lua_213}, {"sum_dpair", rosetta_lua_214}, {"refine_basis", rosetta_lua_215}, {"dyadic_refine", rosetta_lua_216}, {"fit_tensor_bspline", rosetta_lua_217}, {"fit_tensor_pspline", rosetta_lua_218}, {"nn_gemm_backend", rosetta_lua_219}, {"nn_get_num_threads", rosetta_lua_220}, {"nn_set_num_threads", rosetta_lua_221}, {"set_seed", rosetta_lua_222}, {"unif", rosetta_lua_223}, {"runif", rosetta_lua_224}, {"rnorm", rosetta_lua_225}, {"seql", rosetta_lua_226}, {nullptr, nullptr}};
+                static const luaL_Reg members[] = {{"poly_quotient", rosetta_lua_0}, {"poly_remainder", rosetta_lua_1}, {"simpson_estimate", rosetta_lua_2}, {"adaptive_simpson_recurse", rosetta_lua_3}, {"definite_integral", rosetta_lua_4}, {"taylor_series", rosetta_lua_5}, {"descartes_sign_changes", rosetta_lua_6}, {"descartes_negative_root_bound", rosetta_lua_7}, {"monic", rosetta_lua_8}, {"is_negligible_remainder", rosetta_lua_9}, {"poly_gcd", rosetta_lua_10}, {"poly_extended_gcd", rosetta_lua_11}, {"poly_gcd_pseudo_remainder_sequence", rosetta_lua_12}, {"sturm_sequence", rosetta_lua_13}, {"sturm_sign_changes", rosetta_lua_14}, {"cauchy_root_bound", rosetta_lua_15}, {"sturm_root_count", rosetta_lua_16}, {"isolate_real_roots", rosetta_lua_17}, {"refine_root", rosetta_lua_18}, {"real_roots", rosetta_lua_19}, {"c_add", rosetta_lua_20}, {"c_sub", rosetta_lua_21}, {"c_mul", rosetta_lua_22}, {"c_div", rosetta_lua_23}, {"c_abs", rosetta_lua_24}, {"c_eval", rosetta_lua_25}, {"complex_roots", rosetta_lua_26}, {"rational_roots", rosetta_lua_27}, {"square_free_factorization", rosetta_lua_28}, {"factor_over_reals", rosetta_lua_29}, {"total_degree", rosetta_lua_30}, {"compare_monomials", rosetta_lua_31}, {"lcm_exponent", rosetta_lua_32}, {"monomial_divides", rosetta_lua_33}, {"s_polynomial", rosetta_lua_34}, {"reduce", rosetta_lua_35}, {"multivariate_reduce", rosetta_lua_36}, {"groebner_basis", rosetta_lua_37}, {"lagrange_interpolate", rosetta_lua_38}, {"newton_interpolate", rosetta_lua_39}, {"to_integer", rosetta_lua_40}, {"mod_pow", rosetta_lua_41}, {"mod_inverse", rosetta_lua_42}, {"crt", rosetta_lua_43}, {"gf_mul", rosetta_lua_44}, {"gf_derivative", rosetta_lua_45}, {"gf_square_free", rosetta_lua_46}, {"berlekamp_null_space", rosetta_lua_47}, {"berlekamp_factor_mod", rosetta_lua_48}, {"berlekamp_factor_count", rosetta_lua_49}, {"factor_gf_p", rosetta_lua_50}, {"count_monic_irreducibles", rosetta_lua_51}, {"expected_distinct_irreducible_factors", rosetta_lua_52}, {"sylvester_matrix", rosetta_lua_53}, {"determinant", rosetta_lua_54}, {"resultant", rosetta_lua_55}, {"discriminant", rosetta_lua_56}, {"leapfrog_gaussian_acceptance", rosetta_lua_57}, {"gaussian_importance_efficiency", rosetta_lua_58}, {"rgb_to_gray", rosetta_lua_59}, {"rgb_to_hsv", rosetta_lua_60}, {"hsv_to_rgb", rosetta_lua_61}, {"to_grayscale", rosetta_lua_62}, {"to_rgb", rosetta_lua_63}, {"to_rgba", rosetta_lua_64}, {"split_channels", rosetta_lua_65}, {"merge_channels", rosetta_lua_66}, {"dog_blobs", rosetta_lua_67}, {"structure_tensor", rosetta_lua_68}, {"extract_local_maxima", rosetta_lua_69}, {"harris_corners", rosetta_lua_70}, {"shi_tomasi_corners", rosetta_lua_71}, {"fast_corners", rosetta_lua_72}, {"line_endpoints", rosetta_lua_73}, {"hough_lines", rosetta_lua_74}, {"hough_circles", rosetta_lua_75}, {"in_structuring_element", rosetta_lua_76}, {"is_foreground", rosetta_lua_77}, {"erode", rosetta_lua_78}, {"dilate", rosetta_lua_79}, {"morphological_open", rosetta_lua_80}, {"morphological_close", rosetta_lua_81}, {"lucas_kanade_optical_flow", rosetta_lua_82}, {"box_kernel", rosetta_lua_83}, {"gaussian_kernel", rosetta_lua_84}, {"convolve", rosetta_lua_85}, {"box_blur", rosetta_lua_86}, {"gaussian_blur", rosetta_lua_87}, {"sharpen", rosetta_lua_88}, {"sobel_edges", rosetta_lua_89}, {"adjust_brightness", rosetta_lua_90}, {"adjust_contrast", rosetta_lua_91}, {"threshold", rosetta_lua_92}, {"lerp_byte", rosetta_lua_93}, {"bilinear_sample", rosetta_lua_94}, {"resize", rosetta_lua_95}, {"crop", rosetta_lua_96}, {"flip_horizontal", rosetta_lua_97}, {"flip_vertical", rosetta_lua_98}, {"rotate90", rosetta_lua_99}, {"rotate", rosetta_lua_100}, {"gaussian_pyramid", rosetta_lua_101}, {"signed_difference_image", rosetta_lua_102}, {"laplacian_pyramid", rosetta_lua_103}, {"connected_components", rosetta_lua_104}, {"otsu_threshold", rosetta_lua_105}, {"kmeans_segment", rosetta_lua_106}, {"data_home", rosetta_lua_107}, {"downloadable", rosetta_lua_108}, {"fetch", rosetta_lua_109}, {"download_file", rosetta_lua_110}, {"make_uniform_mesh1d", rosetta_lua_111}, {"squared_distance", rosetta_lua_112}, {"distance", rosetta_lua_113}, {"cross", rosetta_lua_114}, {"delaunay_triangulation", rosetta_lua_115}, {"delaunay_trace", rosetta_lua_116}, {"delaunay_analyze", rosetta_lua_117}, {"delaunay_uniform_cloud", rosetta_lua_118}, {"make_rectangular_mesh2d", rosetta_lua_119}, {"make_mesh2d_from_points", rosetta_lua_120}, {"boundary_nodes", rosetta_lua_121}, {"bounding_box", rosetta_lua_122}, {"closest_pair", rosetta_lua_123}, {"convex_hull", rosetta_lua_124}, {"convex_hull_analyze", rosetta_lua_125}, {"convex_hull_trace", rosetta_lua_126}, {"sample_gaussian_points", rosetta_lua_127}, {"terrain_colors", rosetta_lua_128}, {"diverging_colors", rosetta_lua_129}, {"viridis_colors", rosetta_lua_130}, {"value_colors", rosetta_lua_131}, {"dtw_trace_entries", rosetta_lua_132}, {"dynamic_time_warping_work", rosetta_lua_133}, {"dynamic_time_warping", rosetta_lua_134}, {"dynamic_time_warping_trace", rosetta_lua_135}, {"dtw_path_cost", rosetta_lua_136}, {"plot_dtw_alignment", rosetta_lua_137}, {"discrete_frechet_distance", rosetta_lua_138}, {"circle_from_one_point", rosetta_lua_139}, {"circle_from_two_points", rosetta_lua_140}, {"circle_from_three_points", rosetta_lua_141}, {"circle_contains", rosetta_lua_142}, {"min_enclosing_circle", rosetta_lua_143}, {"point_in_polygon", rosetta_lua_144}, {"signed_polygon_area", rosetta_lua_145}, {"polygon_area", rosetta_lua_146}, {"polygon_centroid", rosetta_lua_147}, {"is_convex_polygon", rosetta_lua_148}, {"orientation", rosetta_lua_149}, {"on_segment", rosetta_lua_150}, {"segments_intersect", rosetta_lua_151}, {"line_intersection_point", rosetta_lua_152}, {"segment_intersection_point", rosetta_lua_153}, {"inside_clip_edge", rosetta_lua_154}, {"clip_polygon", rosetta_lua_155}, {"point_in_triangle", rosetta_lua_156}, {"triangulate_polygon", rosetta_lua_157}, {"polygon_diameter", rosetta_lua_158}, {"minimum_bounding_rectangle", rosetta_lua_159}, {"point_to_line_distance", rosetta_lua_160}, {"simplify_polyline", rosetta_lua_161}, {"circumcenter", rosetta_lua_162}, {"voronoi_diagram", rosetta_lua_163}, {"read_bmp", rosetta_lua_164}, {"write_bmp", rosetta_lua_165}, {"set_pixel_clipped", rosetta_lua_166}, {"stamp", rosetta_lua_167}, {"draw_line", rosetta_lua_168}, {"draw_rectangle", rosetta_lua_169}, {"draw_circle", rosetta_lua_170}, {"draw_polygon", rosetta_lua_171}, {"read_ppm", rosetta_lua_172}, {"write_ppm", rosetta_lua_173}, {"read_pgm", rosetta_lua_174}, {"write_pgm", rosetta_lua_175}, {"read_pbm", rosetta_lua_176}, {"write_pbm", rosetta_lua_177}, {"read_png", rosetta_lua_178}, {"write_png", rosetta_lua_179}, {"expected_improvement", rosetta_lua_180}, {"probability_of_improvement", rosetta_lua_181}, {"one_way_anova", rosetta_lua_182}, {"kruskal_wallis_test", rosetta_lua_183}, {"chi_squared_goodness_of_fit", rosetta_lua_184}, {"chi_squared_test_independence", rosetta_lua_185}, {"pearson_correlation_test", rosetta_lua_186}, {"spearman_correlation_test", rosetta_lua_187}, {"kendall_tau", rosetta_lua_188}, {"fisher_exact_test_2x2", rosetta_lua_189}, {"ks_test_one_sample_normal", rosetta_lua_190}, {"ks_test_one_sample_uniform", rosetta_lua_191}, {"ks_test_two_sample", rosetta_lua_192}, {"shapiro_francia_test", rosetta_lua_193}, {"p_adjust", rosetta_lua_194}, {"westfall_young_adjust", rosetta_lua_195}, {"romano_wolf_adjust", rosetta_lua_196}, {"proportion_test_one_sample", rosetta_lua_197}, {"proportion_test_two_sample", rosetta_lua_198}, {"binomial_test", rosetta_lua_199}, {"t_test_one_sample", rosetta_lua_200}, {"t_test_two_sample", rosetta_lua_201}, {"t_test_paired", rosetta_lua_202}, {"f_test_variance", rosetta_lua_203}, {"wilcoxon_signed_rank_test", rosetta_lua_204}, {"wilcoxon_rank_sum_test", rosetta_lua_205}, {"bs", rosetta_lua_206}, {"mkdir", rosetta_lua_207}, {"hello", rosetta_lua_208}, {"call_with_callback", rosetta_lua_209}, {"map_dvector_with_callback", rosetta_lua_210}, {"make_dvector", rosetta_lua_211}, {"sum_dvector", rosetta_lua_212}, {"make_dpair", rosetta_lua_213}, {"sum_dpair", rosetta_lua_214}, {"refine_basis", rosetta_lua_233}, {"dyadic_refine", rosetta_lua_234}, {"fit_tensor_bspline", rosetta_lua_235}, {"fit_tensor_pspline", rosetta_lua_236}, {"nn_gemm_backend", rosetta_lua_237}, {"nn_get_num_threads", rosetta_lua_238}, {"nn_set_num_threads", rosetta_lua_239}, {"set_seed", rosetta_lua_240}, {"unif", rosetta_lua_241}, {"runif", rosetta_lua_242}, {"rnorm", rosetta_lua_243}, {"seql", rosetta_lua_244}, {nullptr, nullptr}};
                 luaL_setfuncs(L, members, 0);
+        }
+        {
+            lua_createtable(L, 0, 18);
+                static const luaL_Reg members[] = {{"iris", rosetta_lua_215}, {"penguins", rosetta_lua_216}, {"tooth_growth", rosetta_lua_217}, {"wine", rosetta_lua_218}, {"titanic", rosetta_lua_219}, {"eight_schools", rosetta_lua_220}, {"air_passengers", rosetta_lua_221}, {"volcano", rosetta_lua_222}, {"faithful", rosetta_lua_223}, {"mtcars", rosetta_lua_224}, {"airquality", rosetta_lua_225}, {"breast_cancer", rosetta_lua_226}, {"diabetes", rosetta_lua_227}, {"digits", rosetta_lua_228}, {"diamonds", rosetta_lua_229}, {"california_housing", rosetta_lua_230}, {"load", rosetta_lua_231}, {"catalog", rosetta_lua_232}, {nullptr, nullptr}};
+                luaL_setfuncs(L, members, 0);
+            lua_setfield(L, module, "data");
         }
         lua_createtable(L, 0, 3);
         rosetta_lua::Value<datamunge::algebra::MonomialOrder>::push(L, datamunge::algebra::MonomialOrder::Lex);

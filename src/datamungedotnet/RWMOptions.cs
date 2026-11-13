@@ -9,6 +9,7 @@
 //------------------------------------------------------------------------------
 
 
+///  Settings for RandomWalkMetropolis.
 public class RWMOptions : global::System.IDisposable {
   private global::System.Runtime.InteropServices.HandleRef swigCPtr;
   protected bool swigCMemOwn;
@@ -56,6 +57,7 @@ public class RWMOptions : global::System.IDisposable {
     }
   }
 
+  /// <summary>Number of post-warmup draws.</summary>
   public uint num_samples {
     set {
       datamungePINVOKE.RWMOptions_num_samples_set(swigCPtr, value);
@@ -66,6 +68,7 @@ public class RWMOptions : global::System.IDisposable {
     } 
   }
 
+  /// <summary>Number of warmup iterations (adaptation).</summary>
   public uint num_warmup {
     set {
       datamungePINVOKE.RWMOptions_num_warmup_set(swigCPtr, value);
@@ -98,12 +101,24 @@ public class RWMOptions : global::System.IDisposable {
     } 
   }
 
+  /// <summary>Random seed.</summary>
   public ulong seed {
     set {
       datamungePINVOKE.RWMOptions_seed_set(swigCPtr, value);
     } 
     get {
       ulong ret = datamungePINVOKE.RWMOptions_seed_get(swigCPtr);
+      return ret;
+    } 
+  }
+
+  /// <summary>Learn a proposal covariance during warmup (adaptive Metropolis, Haario et al.        2001). The first half of warmup is isotropic; at its end the covariance        :math:`\hat\Sigma` of the second quarter's draws, shrunk slightly towards        ^{-3}I:math:`, becomes the proposal shape \f$x'=x+\varepsilon Lz` with        ^=:math:`, and the step size is re-adapted from`=2.38/d:math:`for the rest of warmup.`</summary>
+  public bool adapt_covariance {
+    set {
+      datamungePINVOKE.RWMOptions_adapt_covariance_set(swigCPtr, value);
+    } 
+    get {
+      bool ret = datamungePINVOKE.RWMOptions_adapt_covariance_get(swigCPtr);
       return ret;
     } 
   }

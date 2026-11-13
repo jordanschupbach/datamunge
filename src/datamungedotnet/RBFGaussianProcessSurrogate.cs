@@ -9,7 +9,27 @@
 //------------------------------------------------------------------------------
 
 
-/// <summary>Vector-native RBF Gaussian-process surrogate with expected-improvement acquisition.</summary>
+/// <summary>Exact Gaussian-process regression surrogate with the squared-exponential kernel        (-x-x'^2/2^2):math:`. fit() Cholesky-factors \f$K+\sigma_n^2I=LL^\top`</summary>
+///  once and solves for
+///  :math:`\alpha=(K+\sigma_n^2I)^{-1}(y-m)`; predict() then needs one forward substitution per point:
+///  mean +k_*^:math:`and variance \f$s-\lVert L^{-1}k_*\rVert^2`.
+///  The two-argument constructor keeps the original fixed setup: zero prior mean, unit signal
+///  variance, no normalisation or fitting, expected improvement. The options constructor adds
+///  value normalisation, marginal-likelihood fitting of the hyperparameters and other acquisitions.
+///  The kernel is isotropic, so the inputs should be on comparable scales.
+///
+/// Title: Example
+/// <code>      dm::optim::RBFGaussianProcessSurrogate gp(1.0, 0.0);
+///      gp.fit({{0.0}, {2.0}}, {1.0, -1.0});
+///      const auto p = gp.predict({1.0});
+///      std::print("{:.4f} {:.4f}\n", p.mean, p.sd);  // 0.0000 0.5933</code>
+///
+///
+///
+/// <seealso cref="BayesianOptimization, expected_improvement"/>
+/// Title: References
+///  - C. E. Rasmussen and C. K. I. Williams (2006). *Gaussian Processes for Machine Learning*,
+///    chapters 2 and 5. MIT Press.
 public class RBFGaussianProcessSurrogate : BayesianSurrogate {
   private global::System.Runtime.InteropServices.HandleRef swigCPtr;
 
@@ -47,23 +67,110 @@ public class RBFGaussianProcessSurrogate : BayesianSurrogate {
     }
   }
 
+  /// <summary>Fixed-hyperparameter surrogate with expected improvement.</summary>
+  /// <param name="length_scale">  Kernel length scale :math:`\ell>0`.</param> 
+  /// <param name="noise">         Noise variance added to the diagonal (:math:`\ge0`).</param> 
+  /// <exception cref="std::invalid_argument">  If ``length_scale`` is not positive or ``noise`` is negative.</exception>
   public RBFGaussianProcessSurrogate(double length_scale, double noise) : this(datamungePINVOKE.new_RBFGaussianProcessSurrogate__SWIG_0(length_scale, noise), true) {
   }
 
+  /// <summary>Fixed-hyperparameter surrogate with expected improvement.</summary>
+  /// <param name="length_scale">  Kernel length scale :math:`\ell>0`.</param> 
+  /// <exception cref="std::invalid_argument">  If ``length_scale`` is not positive or ``noise`` is negative.</exception>
   public RBFGaussianProcessSurrogate(double length_scale) : this(datamungePINVOKE.new_RBFGaussianProcessSurrogate__SWIG_1(length_scale), true) {
   }
 
+  /// <summary>Fixed-hyperparameter surrogate with expected improvement.</summary>
+  /// <exception cref="std::invalid_argument">  If ``length_scale`` is not positive or ``noise`` is negative.</exception>
   public RBFGaussianProcessSurrogate() : this(datamungePINVOKE.new_RBFGaussianProcessSurrogate__SWIG_2(), true) {
   }
 
+  /// <summary>Fits the GP to the observations (refitting hyperparameters when configured).</summary>
+  /// <param name="points">  Training points, all of one dimension.</param> 
+  /// <param name="values">  Objective values.</param> 
+  /// <exception cref="std::invalid_argument">  If the data are empty, mismatched or of mixed dimension.</exception>
   public override void fit(DVectorVector points, DVector values) {
     datamungePINVOKE.RBFGaussianProcessSurrogate_fit(swigCPtr, DVectorVector.getCPtr(points), DVector.getCPtr(values));
     if (datamungePINVOKE.SWIGPendingException.Pending) throw datamungePINVOKE.SWIGPendingException.Retrieve();
   }
 
+  /// <summary>The configured acquisition at ``point``.</summary>
+  /// <param name="point">      Candidate point.</param> 
+  /// <param name="incumbent">  Smallest observed value.</param> 
+  /// <returns>The acquisition value (0 before fitting).</returns> 
+  /// <exception cref="std::invalid_argument">  If ``point`` has the wrong dimension.</exception>
   public override double acquisition(DVector point, double incumbent) {
     double ret = datamungePINVOKE.RBFGaussianProcessSurrogate_acquisition(swigCPtr, DVector.getCPtr(point), incumbent);
     if (datamungePINVOKE.SWIGPendingException.Pending) throw datamungePINVOKE.SWIGPendingException.Retrieve();
+    return ret;
+  }
+
+  /// <summary>Posterior mean and standard deviation at ``point``.</summary>
+  /// <param name="point">  Query point.</param> 
+  /// <returns>The prediction, in the objective's units.</returns> 
+  /// <exception cref="std::logic_error">      Before fit().</exception> 
+  /// <exception cref="std::invalid_argument">  If ``point`` has the wrong dimension.</exception>
+  public SurrogatePrediction predict(DVector point) {
+    SurrogatePrediction ret = new SurrogatePrediction(datamungePINVOKE.RBFGaussianProcessSurrogate_predict(swigCPtr, DVector.getCPtr(point)), true);
+    if (datamungePINVOKE.SWIGPendingException.Pending) throw datamungePINVOKE.SWIGPendingException.Retrieve();
+    return ret;
+  }
+
+  /// <summary>Log marginal likelihood of the values at the hyperparameters in use.</summary>
+  ///  The density of the raw values under the GP with the prior mean (and scale, when
+  ///  normalising) treated as known, so it includes the :math:`-n\log(\text{scale})` Jacobian.
+  /// <returns>:math:`\log p(y)`; 0 before fit().</returns>
+  public double log_marginal_likelihood() {
+    double ret = datamungePINVOKE.RBFGaussianProcessSurrogate_log_marginal_likelihood(swigCPtr);
+    return ret;
+  }
+
+  /// <summary>The length scale in use (fitted, after fit(), when fitting is on).</summary>
+  /// <returns>:math:`\ell`.</returns>
+  public double length_scale() {
+    double ret = datamungePINVOKE.RBFGaussianProcessSurrogate_length_scale(swigCPtr);
+    return ret;
+  }
+
+  /// <summary>The noise variance in use, in normalised units when normalising.</summary>
+  /// <returns>:math:`\sigma_n^2`.</returns>
+  public double noise() {
+    double ret = datamungePINVOKE.RBFGaussianProcessSurrogate_noise(swigCPtr);
+    return ret;
+  }
+
+  /// <summary>The signal variance in use, in normalised units when normalising.</summary>
+  /// <returns>:math:`.`</returns>
+  public double signal_variance() {
+    double ret = datamungePINVOKE.RBFGaussianProcessSurrogate_signal_variance(swigCPtr);
+    return ret;
+  }
+
+  /// <summary>The prior mean: the mean of the values when normalising, else 0.</summary>
+  /// <returns>:math:`.`</returns>
+  public double prior_mean() {
+    double ret = datamungePINVOKE.RBFGaussianProcessSurrogate_prior_mean(swigCPtr);
+    return ret;
+  }
+
+  /// <summary>The value scale: the standard deviation of the values when normalising, else 1.</summary>
+  /// <returns>The scale.</returns>
+  public double value_scale() {
+    double ret = datamungePINVOKE.RBFGaussianProcessSurrogate_value_scale(swigCPtr);
+    return ret;
+  }
+
+  /// <summary>The training points from the last fit() (empty before fitting).</summary>
+  /// <returns>The stored training points.</returns>
+  public DVectorVector points() {
+    DVectorVector ret = new DVectorVector(datamungePINVOKE.RBFGaussianProcessSurrogate_points(swigCPtr), false);
+    return ret;
+  }
+
+  /// <summary>The training values from the last fit() (empty before fitting).</summary>
+  /// <returns>The stored training values.</returns>
+  public DVector values() {
+    DVector ret = new DVector(datamungePINVOKE.RBFGaussianProcessSurrogate_values(swigCPtr), false);
     return ret;
   }
 

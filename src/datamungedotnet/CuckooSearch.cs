@@ -71,4 +71,11 @@ public class CuckooSearch : global::System.IDisposable {
     return ret;
   }
 
+  /// <summary>The options this CuckooSearch was configured with.</summary>
+  /// <returns>The stored options.</returns>
+  public CuckooSearchOptions options() {
+    CuckooSearchOptions ret = new CuckooSearchOptions(datamungePINVOKE.CuckooSearch_options(swigCPtr), false);
+    return ret;
+  }
+
 }

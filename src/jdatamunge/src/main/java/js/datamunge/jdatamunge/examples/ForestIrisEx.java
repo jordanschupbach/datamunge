@@ -9,7 +9,7 @@ public class ForestIrisEx {
   }
 
   public static void run() {
-    var iris = DataFrame.iris();
+    var iris = datamunge.data_iris();
     System.out.println("iris: " + iris.nrows() + " rows x " + iris.ncols() + " cols\n");
 
     var model = new RandomForestClassifier(iris, "Species ~ Petal.Length + Petal.Width");

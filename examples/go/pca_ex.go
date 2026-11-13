@@ -1,3 +1,5 @@
+// CMD: just TARGET=pca_ex run-go
+
 package main
 
 import (
@@ -14,7 +16,7 @@ func svector(values []string) datamunge.SVector {
 }
 
 func main() {
-	iris := datamunge.DataFrameIris()
+	iris := datamunge.DataIris()
 	features := svector([]string{"Sepal.Length", "Sepal.Width", "Petal.Length", "Petal.Width"})
 
 	// species labels as an SVector, for the grouped (colored-by-species) scores plot

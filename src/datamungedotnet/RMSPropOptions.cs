@@ -9,6 +9,14 @@
 //------------------------------------------------------------------------------
 
 
+/// <summary>Configuration for RMSProp; fields retain their documented native defaults. Supply finite values in the supported ranges. Controls are copied at construction; validation, stopping and loss scaling belong to optimize().</summary>
+/// Title: Example
+/// <code>      dm::optim::RMSPropOptions o;
+///      std::print("{}\n",o.max_iterations); // 10000</code>
+///
+///
+///
+/// <seealso cref="RMSProp"/>
 public class RMSPropOptions : global::System.IDisposable {
   private global::System.Runtime.InteropServices.HandleRef swigCPtr;
   protected bool swigCMemOwn;
@@ -66,7 +74,6 @@ public class RMSPropOptions : global::System.IDisposable {
     } 
   }
 
-  /// <summary>Exponential decay of the per-coordinate squared-gradient average.</summary>
   public double decay_rate {
     set {
       datamungePINVOKE.RMSPropOptions_decay_rate_set(swigCPtr, value);

@@ -1,10 +1,12 @@
+// CMD: just TARGET=glm_iris_ex run-csharp
+
 using System;
 using System.Collections.Generic;
 using System.Linq;
 
 class Program {
   static void Main() {
-    var iris = DataFrame.iris();
+    var iris = datamunge.data_iris();
 
     var isVirginica = new List<double>();
     var petalLength = new List<double>();

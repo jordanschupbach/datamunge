@@ -1,3 +1,5 @@
+;; CMD: just TARGET=ode_ex run-lisp
+
 ;;;; ODEs: built-in named systems, harmonic-oscillator energy check and a Lorenz phase plot.
 (require "asdf")
 (asdf:load-system "datamunge")

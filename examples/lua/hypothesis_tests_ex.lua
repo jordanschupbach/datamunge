@@ -1,3 +1,5 @@
+-- CMD: just TARGET=hypothesis_tests_ex run-lua
+
 local dm = require("datamunge")
 
 local function dv(t)
@@ -30,7 +32,7 @@ local function column_for_species(df, column, species)
   return out
 end
 
-local iris = dm.DataFrame.iris()
+local iris = dm.data.iris()
 
 local setosa_petal = column_for_species(iris, "Petal.Length", "setosa")
 local versicolor_petal = column_for_species(iris, "Petal.Length", "versicolor")

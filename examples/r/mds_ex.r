@@ -1,9 +1,9 @@
-# CMD: nix develop .#r --command Rscript examples/r/mds_ex.r
-# REPL: nix develop .#r --command R --no-save --quiet
+# CMD: nix develop .#r --command env R_LIBS_USER=build/r/library Rscript examples/r/mds_ex.r
+# REPL: nix develop .#r --command env R_LIBS_USER=build/r/library R --no-save --quiet
 library(datamunger)
 
 
-iris <- DataFrame$iris()
+iris <- data$iris()
 n <- iris$nrows()
 species <- c()
 for (i in 0:(n - 1)) species <- c(species, iris$string_at("Species", i))

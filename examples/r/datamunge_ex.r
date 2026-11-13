@@ -1,5 +1,5 @@
-# CMD: nix develop .#r --command Rscript examples/r/datamunge_ex.r
-# REPL: nix develop .#r --command R --no-save --quiet
+# CMD: nix develop .#r --command env R_LIBS_USER=build/r/library Rscript examples/r/datamunge_ex.r
+# REPL: nix develop .#r --command env R_LIBS_USER=build/r/library R --no-save --quiet
 library(datamunger)
 
 

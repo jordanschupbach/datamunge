@@ -8,6 +8,9 @@
 
 package js.datamunge.jdatamunge;
 
+/**
+ *  Settings for RandomWalkMetropolis.
+ */
 public class RWMOptions {
   private transient long swigCPtr;
   protected transient boolean swigCMemOwn;
@@ -48,18 +51,30 @@ public class RWMOptions {
     }
   }
 
+  /**
+   *  Number of post-warmup draws.
+   */
   public void setNum_samples(long value) {
     datamungeJNI.RWMOptions_num_samples_set(swigCPtr, this, value);
   }
 
+  /**
+   *  Number of post-warmup draws.
+   */
   public long getNum_samples() {
     return datamungeJNI.RWMOptions_num_samples_get(swigCPtr, this);
   }
 
+  /**
+   *  Number of warmup iterations (adaptation).
+   */
   public void setNum_warmup(long value) {
     datamungeJNI.RWMOptions_num_warmup_set(swigCPtr, this, value);
   }
 
+  /**
+   *  Number of warmup iterations (adaptation).
+   */
   public long getNum_warmup() {
     return datamungeJNI.RWMOptions_num_warmup_get(swigCPtr, this);
   }
@@ -102,12 +117,44 @@ public class RWMOptions {
     return datamungeJNI.RWMOptions_target_accept_rate_get(swigCPtr, this);
   }
 
+  /**
+   *  Random seed.
+   */
   public void setSeed(java.math.BigInteger value) {
     datamungeJNI.RWMOptions_seed_set(swigCPtr, this, value);
   }
 
+  /**
+   *  Random seed.
+   */
   public java.math.BigInteger getSeed() {
     return datamungeJNI.RWMOptions_seed_get(swigCPtr, this);
+  }
+
+  /**
+   *  Learn a proposal covariance during warmup (adaptive Metropolis, Haario et al.<br>
+   *         2001). The first half of warmup is isotropic; at its end the covariance<br>
+   *          \hat\Sigma of the second quarter's draws, shrunk slightly towards<br>
+   *         ^{-3}I , becomes the proposal shape \f$x'=x+\varepsilon Lz with<br>
+   *         ^= , and the step size is re-adapted from
+          =2.38/d  for the rest of warmup.
+  
+   */
+  public void setAdapt_covariance(boolean value) {
+    datamungeJNI.RWMOptions_adapt_covariance_set(swigCPtr, this, value);
+  }
+
+  /**
+   *  Learn a proposal covariance during warmup (adaptive Metropolis, Haario et al.<br>
+   *         2001). The first half of warmup is isotropic; at its end the covariance<br>
+   *          \hat\Sigma of the second quarter's draws, shrunk slightly towards<br>
+   *         ^{-3}I , becomes the proposal shape \f$x'=x+\varepsilon Lz with<br>
+   *         ^= , and the step size is re-adapted from
+          =2.38/d  for the rest of warmup.
+  
+   */
+  public boolean getAdapt_covariance() {
+    return datamungeJNI.RWMOptions_adapt_covariance_get(swigCPtr, this);
   }
 
   public RWMOptions() {

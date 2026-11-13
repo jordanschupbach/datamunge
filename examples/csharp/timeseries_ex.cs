@@ -1,3 +1,5 @@
+// CMD: just TARGET=timeseries_ex run-csharp
+
 using System;
 using System.Collections.Generic;
 using System.Linq;

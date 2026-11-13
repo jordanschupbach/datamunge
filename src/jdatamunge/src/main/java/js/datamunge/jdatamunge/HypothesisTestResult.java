@@ -9,11 +9,20 @@
 package js.datamunge.jdatamunge;
 
 /**
- *  A generic hypothesis-test result, reused across every test in this module the way<br>
- *         R's `htest` S3 class is reused across t.test/wilcox.test/chisq.test/ks.test/etc.<br>
- *         Not every field is meaningful for every test -- e.g. chi-squared and KS tests<br>
- *         don't report a confidence interval, so conf_int_lower/upper are left at 0; see<br>
- *         each test function's doc comment for which fields it actually fills in.
+ *  Owned hypothesis-test result, analogous to R's htest list.<br>
+ *  Each test documents which fields it populates and what its interval estimates.<br>
+ *  Unused numeric fields retain zero; this default is storage, not a claim of zero effect.<br>
+ *  Read bounds only when has_conf_int is true; one-sided intervals may be unbounded.<br>
+ *  p_value is a null-model tail probability, not a posterior probability of the null.<br>
+ *  Objects own their method string and contain no borrowed references or shared state.<br>
+ *  <p alt="Example"><br>
+ *  {@code 
+ const auto t=dm::stats::t_test_one_sample({1,2,3,4});
+ std::print("{}\n",t.has_conf_int); // true
+ }</p><br>
+ *  <p alt="References"><br>
+ *  - https://stat.ethz.ch/R-manual/R-devel/library/stats/html/t.test.html<br>
+ *  </p>@see Alternative, hypothesis_test_table()
  */
 public class HypothesisTestResult {
   private transient long swigCPtr;
@@ -135,10 +144,16 @@ public class HypothesisTestResult {
     return Alternative.swigToEnum(datamungeJNI.HypothesisTestResult_alternative_get(swigCPtr, this));
   }
 
+  /**
+   *  Owned human-readable method, including relevant approximation labels.
+   */
   public void setMethod(String value) {
     datamungeJNI.HypothesisTestResult_method_set(swigCPtr, this, value);
   }
 
+  /**
+   *  Owned human-readable method, including relevant approximation labels.
+   */
   public String getMethod() {
     return datamungeJNI.HypothesisTestResult_method_get(swigCPtr, this);
   }

@@ -9,6 +9,14 @@
 //------------------------------------------------------------------------------
 
 
+/// <summary>Configuration for AdaGrad; fields retain their documented native defaults. Supply finite values in the supported ranges. Controls are copied at construction; validation, stopping and loss scaling belong to optimize().</summary>
+/// Title: Example
+/// <code>      dm::optim::AdaGradOptions o;
+///      std::print("{}\n",o.max_iterations); // 10000</code>
+///
+///
+///
+/// <seealso cref="AdaGrad"/>
 public class AdaGradOptions : global::System.IDisposable {
   private global::System.Runtime.InteropServices.HandleRef swigCPtr;
   protected bool swigCMemOwn;
@@ -66,7 +74,6 @@ public class AdaGradOptions : global::System.IDisposable {
     } 
   }
 
-  /// <summary>Added inside the square root to keep early and zero-gradient updates finite.</summary>
   public double epsilon {
     set {
       datamungePINVOKE.AdaGradOptions_epsilon_set(swigCPtr, value);

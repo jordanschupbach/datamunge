@@ -9,7 +9,17 @@
 //------------------------------------------------------------------------------
 
 
-/// <summary>A generic hypothesis-test result, reused across every test in this module the way        R's `htest` S3 class is reused across t.test/wilcox.test/chisq.test/ks.test/etc.        Not every field is meaningful for every test -- e.g. chi-squared and KS tests        don't report a confidence interval, so conf_int_lower/upper are left at 0; see        each test function's doc comment for which fields it actually fills in.</summary>
+/// <summary>Owned hypothesis-test result, analogous to R's htest list. Each test documents which fields it populates and what its interval estimates. Unused numeric fields retain zero; this default is storage, not a claim of zero effect. Read bounds only when has_conf_int is true; one-sided intervals may be unbounded. p_value is a null-model tail probability, not a posterior probability of the null. Objects own their method string and contain no borrowed references or shared state.</summary>
+/// Title: Example
+/// <code>      const auto t=dm::stats::t_test_one_sample({1,2,3,4});
+///      std::print("{}\n",t.has_conf_int); // true</code>
+///
+///
+///
+/// Title: References
+///  - https://stat.ethz.ch/R-manual/R-devel/library/stats/html/t.test.html
+///
+/// <seealso cref="Alternative, hypothesis_test_table"/>
 public class HypothesisTestResult : global::System.IDisposable {
   private global::System.Runtime.InteropServices.HandleRef swigCPtr;
   protected bool swigCMemOwn;
@@ -157,6 +167,7 @@ public class HypothesisTestResult : global::System.IDisposable {
     } 
   }
 
+  ///  Owned human-readable method, including relevant approximation labels.
   public string method {
     set {
       datamungePINVOKE.HypothesisTestResult_method_set(swigCPtr, value);

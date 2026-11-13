@@ -1,3 +1,5 @@
+-- CMD: just TARGET=ode_ex run-lua
+
 local dm = require("datamunge")
 
 local function dv(t)

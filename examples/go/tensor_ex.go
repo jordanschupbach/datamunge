@@ -1,3 +1,5 @@
+// CMD: just TARGET=tensor_ex run-go
+
 package main
 
 import (
@@ -82,7 +84,7 @@ func main() {
 	fmt.Printf("count(r >= 6) = %g\n", mask.Sum())
 
 	fmt.Println("\n=================== A real dataset as a Tensor ===================")
-	iris := datamunge.DataFrameIris()
+	iris := datamunge.DataIris()
 	n := iris.Nrows()
 	flat := make([]float64, 0, n*4)
 	for i := int64(0); i < n; i++ {

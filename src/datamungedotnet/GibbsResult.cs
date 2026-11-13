@@ -9,6 +9,7 @@
 //------------------------------------------------------------------------------
 
 
+///  Output of GibbsSampler::sample().
 public class GibbsResult : global::System.IDisposable {
   private global::System.Runtime.InteropServices.HandleRef swigCPtr;
   protected bool swigCMemOwn;
@@ -80,6 +81,7 @@ public class GibbsResult : global::System.IDisposable {
     } 
   }
 
+  /// <summary>Per-coordinate step sizes after warmup.</summary>
   public DVector final_step_sizes {
     set {
       datamungePINVOKE.GibbsResult_final_step_sizes_set(swigCPtr, DVector.getCPtr(value));

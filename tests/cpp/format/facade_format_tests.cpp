@@ -58,7 +58,7 @@ static_assert(std::formattable<dm::BSplineRegression, char>);
 static_assert(std::formattable<dm::PSplineRegression, char>);
 
 TEST(FacadeFormat, LmPrintsItsSummary) {
-    const std::unique_ptr<dm::DataFrame> iris(dm::DataFrame::iris());
+    const std::unique_ptr<dm::DataFrame> iris(dm::data::iris());
     const dm::LM model(*iris, "Sepal.Length ~ Petal.Length");
     const std::string text = std::format("{}", model);
     EXPECT_EQ(text, model.summary());
@@ -67,7 +67,7 @@ TEST(FacadeFormat, LmPrintsItsSummary) {
 }
 
 TEST(FacadeFormat, OtherModelsPrintTheirSummary) {
-    const std::unique_ptr<dm::DataFrame> iris(dm::DataFrame::iris());
+    const std::unique_ptr<dm::DataFrame> iris(dm::data::iris());
     const dm::GLM glm(*iris, "Sepal.Length ~ Petal.Length");
     EXPECT_EQ(std::format("{}", glm), glm.summary());
     const dm::LDA lda(*iris, "Species ~ Sepal.Length + Petal.Length");
@@ -84,7 +84,7 @@ TEST(FacadeFormat, OtherModelsPrintTheirSummary) {
 }
 
 TEST(FacadeFormat, DataAndAutodiff) {
-    const std::unique_ptr<dm::DataFrame> iris(dm::DataFrame::iris());
+    const std::unique_ptr<dm::DataFrame> iris(dm::data::iris());
     EXPECT_EQ(std::format("{}", *iris), iris->to_string());
     const std::unique_ptr<dm::Tensor> t(dm::Tensor::from_values({2, 2}, {1, 2, 3, 4}));
     EXPECT_EQ(std::format("{}", *t), t->to_string());
@@ -98,7 +98,7 @@ TEST(FacadeFormat, DataAndAutodiff) {
 }
 
 TEST(FacadeFormat, PlotFacadesAndSplines) {
-    const std::unique_ptr<dm::DataFrame> iris(dm::DataFrame::iris());
+    const std::unique_ptr<dm::DataFrame> iris(dm::data::iris());
     EXPECT_EQ(std::format("{}", dm::GGPlot(*iris, "Sepal.Length", "Sepal.Width")),
               "GGPlot rows=150 x=\"Sepal.Length\" y=\"Sepal.Width\" layers=[] theme=gray");
     dm::GGPlot gg(*iris, "Sepal.Length", "Sepal.Width", "Species");

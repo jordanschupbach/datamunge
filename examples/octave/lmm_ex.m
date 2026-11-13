@@ -1,3 +1,5 @@
+% CMD: just TARGET=lmm_ex run-octave
+
 1;
 
 datamunge;
@@ -11,7 +13,7 @@ function v = dv(t)
 endfunction
 
 printf("=================== Random intercept on a real dataset (penguins) ===================\n");
-penguins = DataFrame_penguins();
+penguins = data_penguins();
 species_model = LMM(penguins, "body_mass_g ~ flipper_length_mm + bill_length_mm + (1 | species)");
 LMM_print_summary(species_model);
 

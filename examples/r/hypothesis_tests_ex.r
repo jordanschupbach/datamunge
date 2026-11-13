@@ -1,5 +1,5 @@
-# CMD: nix develop .#r --command Rscript examples/r/hypothesis_tests_ex.r
-# REPL: nix develop .#r --command R --no-save --quiet
+# CMD: nix develop .#r --command env R_LIBS_USER=build/r/library Rscript examples/r/hypothesis_tests_ex.r
+# REPL: nix develop .#r --command env R_LIBS_USER=build/r/library R --no-save --quiet
 # Hypothesis-test functions are free functions: t_test_two_sample(x, y), etc. Enums such as
 # Alternative cross as their enumerator names ("TwoSided"/"Less"/"Greater", or Alternative$Less).
 library(datamunger)
@@ -33,7 +33,7 @@ column_for_species <- function(df, column, species) {
   vals
 }
 
-iris <- DataFrame$iris()
+iris <- data$iris()
 
 setosa_petal <- column_for_species(iris, "Petal.Length", "setosa")
 versicolor_petal <- column_for_species(iris, "Petal.Length", "versicolor")

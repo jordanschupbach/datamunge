@@ -9,9 +9,23 @@
 //------------------------------------------------------------------------------
 
 
-/// <summary>Which tail(s) of the null distribution the alternative hypothesis covers,        matching R's `alternative` argument across t.test/wilcox.test/cor.test/etc.</summary>
+/// <summary>Prespecified tail of a test's null reference, like R's alternative argument. Location/proportion alternatives refer to the signed effect; KS alternatives refer to empirical CDF ordering and consequently reverse the stochastic-location direction.</summary>
+/// Title: Example
+/// <code>      const auto a=dm::stats::Alternative::Less;
+///      const auto t=dm::stats::t_test_one_sample({1,2,3,4},0,a);
+///      std::print("{}\n",t.alternative==a); // true</code>
+///
+///
+///
+/// Title: References
+///  - https://stat.ethz.ch/R-manual/R-devel/library/stats/html/t.test.html
+///
+/// <seealso cref="HypothesisTestResult"/>
 public enum Alternative {
+  ///  Both directions, using each test's stated two-sided ordering.
   TwoSided,
+  ///  Lower signed-effect tail (KS: empirical CDF below reference).
   Less,
+  ///  Upper signed-effect tail (KS: empirical CDF above reference).
   Greater
 }

@@ -1,3 +1,5 @@
+# CMD: nix develop .#python --command env -u PYTHONPATH build/venv/pydatamunge-run/bin/python examples/python/nn/6_deep_reinforcement_learning/6.1_environments/vsim_envs.py
+
 """Native CPU pendulum/hopper rollouts through datamunge's generated binding.
 
 Uses datamunge's own articulated task definitions. Reference Jolt returns and

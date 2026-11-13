@@ -1,6 +1,8 @@
+# CMD: just TARGET=naive_bayes_penguins_ex run-tcl
+
 package require Datamunge 0.0.1
 
-set penguins [datamunge::DataFrame_penguins]
+set penguins [datamunge::data_penguins]
 puts "penguins: [datamunge::DataFrame_nrows $penguins] rows x [datamunge::DataFrame_ncols $penguins] cols\n"
 
 set model [datamunge::new_NaiveBayesClassifier $penguins "species ~ bill_length_mm + bill_depth_mm + island + sex"]

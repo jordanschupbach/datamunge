@@ -1,4 +1,6 @@
 <?php
+// CMD: just TARGET=hypothesis_tests_ex run-php
+
 
 function dvector($values) {
     $out = new DVector(count($values));
@@ -32,7 +34,7 @@ function column_for_species($df, $column, $species) {
     return $out;
 }
 
-$iris = DataFrame::iris();
+$iris = data_iris();
 
 $setosa_petal = column_for_species($iris, "Petal.Length", "setosa");
 $versicolor_petal = column_for_species($iris, "Petal.Length", "versicolor");

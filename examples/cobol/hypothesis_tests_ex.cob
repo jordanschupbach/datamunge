@@ -1,6 +1,6 @@
 *> Classical hypothesis tests (t, rank, ANOVA, correlation, variance, normality,
 *> contingency and proportion tests) on the iris measurements.
-*> Run with `just run-cobol TARGET=hypothesis_tests_ex`.
+*> CMD: just TARGET=hypothesis_tests_ex run-cobol
 IDENTIFICATION DIVISION.
 PROGRAM-ID. HYPOTHESIS-TESTS-EX.
 DATA DIVISION.
@@ -60,9 +60,9 @@ COPY "datamunge.cpy".
 01 NUM-EDIT-4  PIC Z(8)9.
 
 PROCEDURE DIVISION.
-    CALL "dm_data_frame_iris" USING DM-DATA-FRAME-IRIS DM-STATUS
+    CALL "dm_data_iris" USING DM-DATA-IRIS DM-STATUS
     PERFORM CHECK
-    MOVE DM-DATA-FRAME-IRIS-RESULT TO IRIS
+    MOVE DM-DATA-IRIS-RESULT TO IRIS
     MOVE IRIS TO DM-DATA-FRAME-NROWS-SELF
     CALL "dm_data_frame_nrows" USING DM-DATA-FRAME-NROWS DM-STATUS
     PERFORM CHECK

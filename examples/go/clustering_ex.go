@@ -1,3 +1,5 @@
+// CMD: just TARGET=clustering_ex run-go
+
 package main
 
 import (
@@ -61,7 +63,7 @@ func ivVecToInt64(v datamunge.IVector) []int64 {
 }
 
 func main() {
-	iris := datamunge.DataFrameIris()
+	iris := datamunge.DataIris()
 	n := iris.Nrows()
 	species := make([]string, 0, n)
 	for i := int64(0); i < n; i++ {

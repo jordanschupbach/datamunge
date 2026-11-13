@@ -70,4 +70,11 @@ public class ParallelTempering : global::System.IDisposable {
     return ret;
   }
 
+  /// <summary>The options this ParallelTempering was configured with.</summary>
+  /// <returns>The stored options.</returns>
+  public ParallelTemperingOptions options() {
+    ParallelTemperingOptions ret = new ParallelTemperingOptions(datamungePINVOKE.ParallelTempering_options(swigCPtr), false);
+    return ret;
+  }
+
 }

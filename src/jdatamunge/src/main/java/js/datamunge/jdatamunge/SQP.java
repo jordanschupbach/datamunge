@@ -8,6 +8,23 @@
 
 package js.datamunge.jdatamunge;
 
+/**
+ *  SQP on the EqualityConstrainedFunction callback interface.<br>
+ *  Restricted projection-like implementation, not a general SQP QP solver: takes an objective-gradient step, then sequential linearised row corrections using squared Jacobian-row norms plus regularization. Its stopping condition compares constraint norm and the constant absolute step_size to tolerance, not the actual displacement or Lagrangian gradient.<br>
+ *  The caller supplies finite, dimensionally consistent callbacks. Inputs are borrowed;<br>
+ *  coordinates mutate in place and can retain a partial state if a callback throws.<br>
+ *  Calls use local optimizer state and propagate callback exceptions; sharing a mutable<br>
+ *  objective across threads requires external synchronisation. Normal return alone<br>
+ *  is not a uniform convergence certificate.<br>
+ *  <p alt="Example"><br>
+ *  {@code 
+ const dm::optim::SQP optimizer;
+ std::print("{}\n",optimizer.options().max_iterations); // 200
+ }</p><br>
+ *  <p alt="References"><br>
+ *  - J. Nocedal and S. J. Wright (2006), Numerical Optimization, second edition, https://doi.org/10.1007/978-0-387-40065-5. The implemented variant and stopping rules are specified above.<br>
+ *  </p>@see SQPOptions, trace_optimize()
+ */
 public class SQP {
   private transient long swigCPtr;
   protected transient boolean swigCMemOwn;
@@ -48,16 +65,60 @@ public class SQP {
     }
   }
 
+  /**
+   *  Store a copy of the controls without running the objective.<br>
+   *  @param options Method-specific controls; defaults are listed by SQPOptions.<br>
+   *  <p alt="Example"><br>
+   *  {@code 
+   const dm::optim::SQP optimizer;
+   std::print("{}\n",optimizer.options().max_iterations); // 200
+   }</p><br>
+   *  @see optimize()
+   */
   public SQP(SQPOptions options) {
     this(datamungeJNI.new_SQP__SWIG_0(SQPOptions.getCPtr(options), options), true);
   }
 
+  /**
+   *  Store a copy of the controls without running the objective.<br>
+   *  <p alt="Example"><br>
+   *  {@code 
+   const dm::optim::SQP optimizer;
+   std::print("{}\n",optimizer.options().max_iterations); // 200
+   }</p><br>
+   *  @see optimize()
+   */
   public SQP() {
     this(datamungeJNI.new_SQP__SWIG_1(), true);
   }
 
+  /**
+   *  Run SQP from the supplied point using the configured finite budget.<br>
+   *  Restricted projection-like implementation, not a general SQP QP solver: takes an objective-gradient step, then sequential linearised row corrections using squared Jacobian-row norms plus regularization. Its stopping condition compares constraint norm and the constant absolute step_size to tolerance, not the actual displacement or Lagrangian gradient.<br>
+   *  @param function Borrowed EqualityConstrainedFunction with matching finite output shapes.<br>
+   *  @param coordinates Owned-by-caller finite start; overwritten with the native returned point.<br>
+   *  @return Objective at the native returned coordinates; not a stop-status code.<br>
+   *  @throws std::exception Exceptions from supplied callbacks propagate. Raw solvers do not uniformly reject nonfinite inputs.<br>
+   *  <p alt="Example"><br>
+   *  {@code 
+   dm::optim::EqualityQuadratic f({2,0},1);
+   dm::optim::SQPOptions controls;controls.max_iterations=5;
+   std::vector<double> x{0,0};
+   const auto value=dm::optim::SQP(controls).optimize(f,x);
+   std::print("{}\n",std::isfinite(value)); // true
+   }</p><br>
+   *  @see trace_optimize(), SQPOptions
+   */
   public double optimize(EqualityConstrainedFunction function, DVector coordinates) {
     return datamungeJNI.SQP_optimize(swigCPtr, this, EqualityConstrainedFunction.getCPtr(function), function, DVector.getCPtr(coordinates), coordinates);
+  }
+
+  /**
+   *  Borrow this optimizer's stored configuration.<br>
+   *  @return Const option reference, valid during this object's lifetime; no mutation.
+   */
+  public SQPOptions options() {
+    return new SQPOptions(datamungeJNI.SQP_options(swigCPtr, this), false);
   }
 
 }

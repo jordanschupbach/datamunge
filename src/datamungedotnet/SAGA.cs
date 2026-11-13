@@ -9,7 +9,17 @@
 //------------------------------------------------------------------------------
 
 
-/// <summary>SAGA (Defazio, Bach, Lacoste-Julien 2014) on a DifferentiableSeparableFunction.        SAGA maintains one stored gradient per component and updates from a variance-reduced        estimator formed from the sampled gradient, its stored value, and their running mean.</summary>
+/// <summary>SAGA on the DifferentiableSeparableFunction callback interface. Uses current_i-table_i+mean(table), then refreshes one stored component gradient and its running mean. The estimator targets mean component loss while evaluate() returns their sum. Stops on epoch-boundary objective change or the last estimator norm; the latter is not the full gradient norm. O(n*p) gradient table. The caller supplies finite, dimensionally consistent callbacks. Inputs are borrowed; coordinates mutate in place and can retain a partial state if a callback throws. Calls use local optimizer state and propagate callback exceptions; sharing a mutable objective across threads requires external synchronisation. Normal return alone is not a uniform convergence certificate.</summary>
+/// Title: Example
+/// <code>      const dm::optim::SAGA optimizer;
+///      std::print("{}\n",optimizer.options().max_iterations); // 10000</code>
+///
+///
+///
+/// Title: References
+///  - A. Defazio, F. Bach and S. Lacoste-Julien (2014), SAGA: A Fast Incremental Gradient Method With Support for Non-Strongly Convex Composite Objectives, https://arxiv.org/abs/1407.0202
+///
+/// <seealso cref="SAGAOptions, trace_optimize"/>
 public class SAGA : global::System.IDisposable {
   private global::System.Runtime.InteropServices.HandleRef swigCPtr;
   protected bool swigCMemOwn;
@@ -57,16 +67,56 @@ public class SAGA : global::System.IDisposable {
     }
   }
 
+  /// <summary>Store a copy of the controls without running the objective.</summary>
+  /// <param name="options"> Method-specific controls; defaults are listed by SAGAOptions.</param> 
+  /// Title: Example
+  /// <code>      const dm::optim::SAGA optimizer;
+  ///      std::print("{}\n",optimizer.options().max_iterations); // 10000</code>
+  ///
+  ///
+  ///
+  /// <seealso cref="optimize"/>
   public SAGA(SAGAOptions options) : this(datamungePINVOKE.new_SAGA__SWIG_0(SAGAOptions.getCPtr(options)), true) {
     if (datamungePINVOKE.SWIGPendingException.Pending) throw datamungePINVOKE.SWIGPendingException.Retrieve();
   }
 
+  /// <summary>Store a copy of the controls without running the objective.</summary>
+  /// Title: Example
+  /// <code>      const dm::optim::SAGA optimizer;
+  ///      std::print("{}\n",optimizer.options().max_iterations); // 10000</code>
+  ///
+  ///
+  ///
+  /// <seealso cref="optimize"/>
   public SAGA() : this(datamungePINVOKE.new_SAGA__SWIG_1(), true) {
   }
 
+  /// <summary>Run SAGA from the supplied point using the configured finite budget. Uses current_i-table_i+mean(table), then refreshes one stored component gradient and its running mean. The estimator targets mean component loss while evaluate() returns their sum. Stops on epoch-boundary objective change or the last estimator norm; the latter is not the full gradient norm. O(n*p) gradient table.</summary>
+  /// <param name="function"> Borrowed DifferentiableSeparableFunction with matching finite output shapes.</param> 
+  /// <param name="coordinates"> Owned-by-caller finite start; overwritten with the native returned point.</param> 
+  /// <returns>Objective at the native returned coordinates; not a stop-status code.</returns> 
+  /// <exception cref="std::invalid_argument"> SAGA: step_size must be positive; SAGA: tolerance must be non-negative; SAGA: function has zero terms.</exception> 
+  /// <exception cref="std::exception"> Exceptions from supplied callbacks propagate. Raw solvers do not uniformly reject nonfinite inputs.</exception> 
+  /// Title: Example
+  /// <code>      dm::optim::LeastSquaresObjective f({{1},{1}},{1,3});
+  ///      dm::optim::SAGAOptions controls;controls.max_iterations=5;
+  ///      std::vector&lt;double&gt; x{0};
+  ///      const auto value=dm::optim::SAGA(controls).optimize(f,x);
+  ///      std::print("{}\n",std::isfinite(value)); // true</code>
+  ///
+  ///
+  ///
+  /// <seealso cref="trace_optimize"/>
   public double optimize(DifferentiableSeparableFunction function, DVector coordinates) {
     double ret = datamungePINVOKE.SAGA_optimize(swigCPtr, DifferentiableSeparableFunction.getCPtr(function), DVector.getCPtr(coordinates));
     if (datamungePINVOKE.SWIGPendingException.Pending) throw datamungePINVOKE.SWIGPendingException.Retrieve();
+    return ret;
+  }
+
+  /// <summary>Borrow this optimizer's stored configuration.</summary>
+  /// <returns>Const option reference, valid during this object's lifetime; no mutation.</returns>
+  public SAGAOptions options() {
+    SAGAOptions ret = new SAGAOptions(datamungePINVOKE.SAGA_options(swigCPtr), false);
     return ret;
   }
 

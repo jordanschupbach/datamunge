@@ -1,3 +1,5 @@
+-- CMD: just TARGET=clustering_ex run-lua
+
 local dm = require("datamunge")
 
 local function sv(t)
@@ -28,7 +30,7 @@ local function report_purity(cluster_labels, species, n_clusters)
   end
 end
 
-local iris = dm.DataFrame.iris()
+local iris = dm.data.iris()
 local species = {}
 for i = 0, iris:nrows() - 1 do species[i] = iris:string_at("Species", i) end
 local features = sv({"Sepal.Length", "Sepal.Width", "Petal.Length", "Petal.Width"})

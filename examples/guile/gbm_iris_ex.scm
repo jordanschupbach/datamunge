@@ -1,6 +1,8 @@
+;; CMD: just TARGET=gbm_iris_ex run-guile
+
 (use-modules (datamunge))
 
-(define iris (DataFrame-iris))
+(define iris (data_iris))
 (format #t "iris: ~a rows x ~a cols\n\n" (DataFrame-nrows iris) (DataFrame-ncols iris))
 
 (define model (new-GBMClassifier iris "Species ~ Petal.Length + Petal.Width"))

@@ -1,3 +1,5 @@
+# CMD: just TARGET=naive_bayes_penguins_ex run-perl
+
 use strict;
 use warnings;
 
@@ -7,7 +9,7 @@ use Datamunge;
 # exposed on the SWIG-bound DataFrame facade) -- NaiveBayesClassifier drops incomplete rows
 # for its own formula columns internally when fitting, matching every other formula-based
 # model in this library.
-my $penguins = Datamunge::DataFrame::penguins();
+my $penguins = Datamunge::data_penguins();
 print "penguins: " . $penguins->nrows() . " rows x " . $penguins->ncols() . " cols\n\n";
 
 # A mix of numeric (Gaussian likelihood) and categorical (frequency-table likelihood)

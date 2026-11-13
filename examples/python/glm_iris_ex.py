@@ -2,7 +2,7 @@
 # REPL: nix develop .#python --command env -u PYTHONPATH build/venv/pydatamunge-run/bin/python
 from pydatamunge import datamunge as dm
 
-iris = dm.DataFrame.iris()
+iris = dm.data.iris()
 
 # Logistic regression: versicolor vs virginica only -- setosa is perfectly separable from
 # the other two on these predictors, which sends logistic regression's coefficients toward

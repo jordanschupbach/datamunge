@@ -1,3 +1,5 @@
+;; CMD: just TARGET=rplot_ex run-lisp
+
 ;;;; R base-graphics-style plotting with dm:r-plot / dm:r-layout: plot, hist, barplot, boxplot, pie, qqnorm, layouts.
 (require "asdf")
 (asdf:load-system "datamunge")

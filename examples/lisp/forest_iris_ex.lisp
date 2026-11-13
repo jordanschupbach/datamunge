@@ -1,9 +1,11 @@
+;; CMD: just TARGET=forest_iris_ex run-lisp
+
 ;;;; Random forest classifier on iris: summary, confusion matrix, misclassifications, OOB accuracy.
 (require "asdf")
 (asdf:load-system "datamunge")
 (setf *read-default-float-format* (quote double-float)) ; print doubles without a d0 suffix
 
-(defparameter *iris* (dm:data-frame-iris))
+(defparameter *iris* (dm.data:iris))
 (format t "iris: ~a rows x ~a cols~%~%" (dm:nrows *iris*) (dm:ncols *iris*))
 
 (defparameter *model* (dm:make-random-forest-classifier *iris* "Species ~ Petal.Length + Petal.Width"))

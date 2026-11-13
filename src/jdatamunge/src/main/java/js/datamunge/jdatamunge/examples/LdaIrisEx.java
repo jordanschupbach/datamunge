@@ -10,7 +10,7 @@ public class LdaIrisEx {
   }
 
   public static void run() {
-    var iris = DataFrame.iris();
+    var iris = datamunge.data_iris();
     System.out.println("iris: " + iris.nrows() + " rows x " + iris.ncols() + " cols\n");
 
     var model = new LDA(iris, "Species ~ Sepal.Length + Sepal.Width + Petal.Length + Petal.Width");

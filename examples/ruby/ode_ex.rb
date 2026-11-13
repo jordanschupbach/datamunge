@@ -1,3 +1,5 @@
+# CMD: just TARGET=ode_ex run-ruby
+
 require "octruby"
 
 # NOTE: the Python ode example also demonstrates a live, user-supplied RHS by subclassing

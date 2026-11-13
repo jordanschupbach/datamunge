@@ -1,3 +1,5 @@
+// CMD: just TARGET=autodiff_ex run-cpp
+
 #include <datamunge/autodiff/autodiff.hpp>
 
 #include <iomanip>

@@ -8,6 +8,17 @@
 
 package js.datamunge.jdatamunge;
 
+/**
+ *  Configuration for Newton; fields retain their documented native defaults.<br>
+ *  Supply finite values in the supported ranges. Controls are copied at construction;<br>
+ *  validation, stopping and loss scaling belong to optimize().<br>
+ *  <p alt="Example"><br>
+ *  {@code 
+ dm::optim::NewtonOptions o;
+ std::print("{}\n",o.max_iterations); // 100
+ }</p><br>
+ *  @see Newton
+ */
 public class NewtonOptions {
   private transient long swigCPtr;
   protected transient boolean swigCMemOwn;

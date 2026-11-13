@@ -1,3 +1,5 @@
+# CMD: just TARGET=clustering_ex run-perl
+
 use strict;
 use warnings;
 
@@ -21,7 +23,7 @@ sub report_purity {
   }
 }
 
-my $iris = Datamunge::DataFrame::iris();
+my $iris = Datamunge::data_iris();
 my @species = map { $iris->string_at("Species", $_) } (0 .. $iris->nrows() - 1);
 my @features = ("Sepal.Length", "Sepal.Width", "Petal.Length", "Petal.Width");
 

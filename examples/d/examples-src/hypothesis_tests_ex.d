@@ -1,3 +1,5 @@
+// CMD: just TARGET=hypothesis_tests_ex run-d
+
 module app;
 
 import std.stdio : writeln;
@@ -45,7 +47,7 @@ double[] column_for_species(DataFrame df, string column, string species) {
 }
 
 void main() {
-  auto iris = DataFrame.iris();
+  auto iris = data_iris();
 
   auto setosa_petal = column_for_species(iris, "Petal.Length", "setosa");
   auto versicolor_petal = column_for_species(iris, "Petal.Length", "versicolor");

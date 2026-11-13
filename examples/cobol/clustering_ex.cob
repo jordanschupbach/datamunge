@@ -1,5 +1,5 @@
 *> K-means, agglomerative and DBSCAN clustering of iris, scored by species purity.
-*> Run with `just run-cobol TARGET=clustering_ex`.
+*> CMD: just TARGET=clustering_ex run-cobol
 IDENTIFICATION DIVISION.
 PROGRAM-ID. CLUSTERING-EX.
 DATA DIVISION.
@@ -55,9 +55,9 @@ COPY "datamunge.cpy".
 01 NUM-LEN   USAGE BINARY-LONG.
 
 PROCEDURE DIVISION.
-    CALL "dm_data_frame_iris" USING DM-DATA-FRAME-IRIS DM-STATUS
+    CALL "dm_data_iris" USING DM-DATA-IRIS DM-STATUS
     PERFORM CHECK
-    MOVE DM-DATA-FRAME-IRIS-RESULT TO IRIS
+    MOVE DM-DATA-IRIS-RESULT TO IRIS
     PERFORM READ-SPECIES
 
     MOVE 4 TO DM-VECTOR-STRING-TABLE-COUNT

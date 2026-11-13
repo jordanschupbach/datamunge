@@ -1,3 +1,5 @@
+// CMD: just TARGET=ode_ex run-cpp
+
 #include <datamunge/ode/ode.hpp>
 #include <datamunge/plot/plot.hpp>
 

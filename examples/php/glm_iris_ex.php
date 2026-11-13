@@ -1,4 +1,6 @@
 <?php
+// CMD: just TARGET=glm_iris_ex run-php
+
 
 function dvector($values) {
     $out = new DVector(count($values));
@@ -6,7 +8,7 @@ function dvector($values) {
     return $out;
 }
 
-$iris = DataFrame::iris();
+$iris = data_iris();
 
 $is_virginica = array();
 $petal_length = array();

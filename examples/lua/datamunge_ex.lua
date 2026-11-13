@@ -1,3 +1,5 @@
+-- CMD: just TARGET=datamunge_ex run-lua
+
 local datamunge = require("datamunge")
 datamunge.hello()
 

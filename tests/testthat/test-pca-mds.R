@@ -1,6 +1,6 @@
 
 test_that("PCA matches known iris variance-explained values and supports the full API", {
-  iris_df <- DataFrame$iris()
+  iris_df <- data$iris()
   features <- c("Sepal.Length", "Sepal.Width", "Petal.Length", "Petal.Width")
 
   pca <- PCA$new(iris_df, features, TRUE, TRUE)
@@ -32,7 +32,7 @@ test_that("PCA matches known iris variance-explained values and supports the ful
 })
 
 test_that("MDS embeds iris in 2D with high goodness of fit and supports the full API", {
-  iris_df <- DataFrame$iris()
+  iris_df <- data$iris()
   features <- c("Sepal.Length", "Sepal.Width", "Petal.Length", "Petal.Width")
 
   mds <- MDS$new(iris_df, features, 2L, "euclidean")
@@ -52,7 +52,7 @@ test_that("MDS embeds iris in 2D with high goodness of fit and supports the full
 })
 
 test_that("PCA and MDS objects support $ method dispatch", {
-  iris_df <- DataFrame$iris()
+  iris_df <- data$iris()
   features <- c("Sepal.Length", "Sepal.Width", "Petal.Length", "Petal.Width")
 
   pca <- PCA$new(iris_df, features, TRUE, TRUE)

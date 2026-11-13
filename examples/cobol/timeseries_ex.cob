@@ -2,7 +2,7 @@
 *> smoothing (Holt-Winters, simple, and Holt's linear trend).
 *> The simulated noise comes from COBOL's FUNCTION RANDOM, so the numbers differ from
 *> the Lua example's (Lua's math.random), though the fits behave the same way.
-*> Run with `just run-cobol TARGET=timeseries_ex`.
+*> CMD: just TARGET=timeseries_ex run-cobol
 IDENTIFICATION DIVISION.
 PROGRAM-ID. TIMESERIES-EX.
 DATA DIVISION.

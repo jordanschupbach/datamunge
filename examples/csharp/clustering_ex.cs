@@ -1,3 +1,5 @@
+// CMD: just TARGET=clustering_ex run-csharp
+
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -33,7 +35,7 @@ class Program {
   }
 
   static void Main() {
-    var iris = DataFrame.iris();
+    var iris = datamunge.data_iris();
     uint n = iris.nrows();
     var species = new List<string>();
     for (uint i = 0; i < n; i++) species.Add(iris.string_at("Species", i));

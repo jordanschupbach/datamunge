@@ -1,3 +1,5 @@
+# CMD: just TARGET=tensor_ex run-ruby
+
 require "octruby"
 
 # Unlike Python, plain Ruby arrays are accepted directly for std::vector<size_t> (shape/index)
@@ -46,7 +48,7 @@ puts "r >= 6 -> #{mask.to_string}"
 puts "count(r >= 6) = #{mask.sum}"
 
 puts "\n=================== A real dataset as a Tensor ==================="
-iris = Datamunge::DataFrame.iris
+iris = Datamunge.data_iris
 flat = []
 iris.nrows.times do |i|
   flat << iris.numeric_at("Sepal.Length", i)

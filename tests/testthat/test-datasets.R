@@ -15,14 +15,14 @@ test_that("built-in datasets load with their documented shapes", {
                  faithful = c(272, 2), mtcars = c(32, 12), airquality = c(153, 6),
                  breast_cancer = c(569, 31), diabetes = c(442, 11), digits = c(1797, 65))
   for (name in names(shapes)) {
-    frame <- DataFrame$dataset(name)
+    frame <- data$load(name)
     expect_equal(c(frame$nrows(), frame$ncols()), shapes[[name]], info = name)
   }
-  expect_equal(DataFrame$faithful()$numeric_at("waiting", 0), 79)
-  expect_true(DataFrame$airquality()$is_null("Ozone", 4))
-  expect_equal(DataFrame$dataset_catalog()$nrows(), 24)
+  expect_equal(data$faithful()$numeric_at("waiting", 0), 79)
+  expect_true(data$airquality()$is_null("Ozone", 4))
+  expect_equal(data$catalog()$nrows(), 24)
   expect_true("rebot_devarm" %in% downloadable())
-  expect_error(DataFrame$dataset("no_such_dataset"))
+  expect_error(data$load("no_such_dataset"))
 })
 
 test_that("CSV files can be read whole or streamed in chunks", {

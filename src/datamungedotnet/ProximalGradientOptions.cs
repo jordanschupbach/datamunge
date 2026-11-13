@@ -9,6 +9,14 @@
 //------------------------------------------------------------------------------
 
 
+/// <summary>Configuration for ProximalGradient; fields retain their documented native defaults. Supply finite values in the supported ranges. Controls are copied at construction; validation, stopping and loss scaling belong to optimize().</summary>
+/// Title: Example
+/// <code>      dm::optim::ProximalGradientOptions o;
+///      std::print("{}\n",o.max_iterations); // 10000</code>
+///
+///
+///
+/// <seealso cref="ProximalGradient"/>
 public class ProximalGradientOptions : global::System.IDisposable {
   private global::System.Runtime.InteropServices.HandleRef swigCPtr;
   protected bool swigCMemOwn;

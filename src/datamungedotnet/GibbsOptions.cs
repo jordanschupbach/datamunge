@@ -9,6 +9,7 @@
 //------------------------------------------------------------------------------
 
 
+///  Settings for GibbsSampler.
 public class GibbsOptions : global::System.IDisposable {
   private global::System.Runtime.InteropServices.HandleRef swigCPtr;
   protected bool swigCMemOwn;
@@ -56,6 +57,7 @@ public class GibbsOptions : global::System.IDisposable {
     }
   }
 
+  /// <summary>Number of post-warmup sweeps kept.</summary>
   public uint num_samples {
     set {
       datamungePINVOKE.GibbsOptions_num_samples_set(swigCPtr, value);
@@ -66,6 +68,7 @@ public class GibbsOptions : global::System.IDisposable {
     } 
   }
 
+  /// <summary>Number of warmup sweeps (per-coordinate step adaptation).</summary>
   public uint num_warmup {
     set {
       datamungePINVOKE.GibbsOptions_num_warmup_set(swigCPtr, value);
@@ -99,6 +102,7 @@ public class GibbsOptions : global::System.IDisposable {
     } 
   }
 
+  /// <summary>Random seed.</summary>
   public ulong seed {
     set {
       datamungePINVOKE.GibbsOptions_seed_set(swigCPtr, value);

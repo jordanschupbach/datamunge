@@ -1,8 +1,10 @@
 <?php
+// CMD: just TARGET=elastic_net_iris_ex run-php
+
 
 $FORMULA = "Petal.Length ~ Sepal.Length + Sepal.Width + Petal.Width + Sepal.Length:Petal.Width";
 
-$iris = DataFrame::iris();
+$iris = data_iris();
 print("iris: " . $iris->nrows() . " rows x " . $iris->ncols() . " cols\n");
 print("formula: $FORMULA\n\n");
 

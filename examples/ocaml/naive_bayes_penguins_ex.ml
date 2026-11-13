@@ -1,8 +1,10 @@
+(* CMD: just TARGET=naive_bayes_penguins_ex run-ocaml *)
+
 open Swig
 open Datamunge
 
 let () =
-  let penguins = _DataFrame_penguins C_void in
+  let penguins = _data_penguins C_void in
   Printf.printf "penguins: %d rows x %d cols\n\n"
     (get_int (invoke penguins "nrows" C_void)) (get_int (invoke penguins "ncols" C_void));
 

@@ -1,9 +1,11 @@
+# CMD: just TARGET=lda_iris_ex run-perl
+
 use strict;
 use warnings;
 
 use Datamunge;
 
-my $iris = Datamunge::DataFrame::iris();
+my $iris = Datamunge::data_iris();
 print "iris: " . $iris->nrows() . " rows x " . $iris->ncols() . " cols\n\n";
 
 my $model = Datamunge::LDA->new($iris, "Species ~ Sepal.Length + Sepal.Width + Petal.Length + Petal.Width");

@@ -72,4 +72,12 @@ public class ACOR {
     return datamungeJNI.ACOR_optimize(swigCPtr, this, ArbitraryFunction.getCPtr(function), function, DVector.getCPtr(coordinates), coordinates, DVector.getCPtr(lower_bound), lower_bound, DVector.getCPtr(upper_bound), upper_bound);
   }
 
+  /**
+   *  The options this ACOR was configured with.<br>
+   *  @return The stored options.
+   */
+  public ACOROptions options() {
+    return new ACOROptions(datamungeJNI.ACOR_options(swigCPtr, this), false);
+  }
+
 }

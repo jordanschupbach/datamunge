@@ -1,4 +1,6 @@
 <?php
+// CMD: just TARGET=gaussian_process_regression_iris_ex run-php
+
 
 function dvector($values) {
     $out = new DVector(count($values));
@@ -8,7 +10,7 @@ function dvector($values) {
 
 $FORMULA = "Petal.Length ~ Petal.Width";
 
-$iris = DataFrame::iris();
+$iris = data_iris();
 print("iris: " . $iris->nrows() . " rows x " . $iris->ncols() . " cols\n");
 print("formula: $FORMULA\n\n");
 

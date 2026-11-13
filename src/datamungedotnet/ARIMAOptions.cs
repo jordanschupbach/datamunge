@@ -9,6 +9,9 @@
 //------------------------------------------------------------------------------
 
 
+/// <summary>Model orders and optimizer settings for an ARIMA fit.</summary>
+///  The regular orders are (p, d, q) and the seasonal orders are (P, D, Q) with period s.
+///  Leave every seasonal field at zero for a plain ARIMA(p, d, q) model.
 public class ARIMAOptions : global::System.IDisposable {
   private global::System.Runtime.InteropServices.HandleRef swigCPtr;
   protected bool swigCMemOwn;
@@ -157,7 +160,6 @@ public class ARIMAOptions : global::System.IDisposable {
     } 
   }
 
-  /// <summary>Box constraint applied to every AR/MA coefficient during optimization.</summary>
   public double coefficient_bound {
     set {
       datamungePINVOKE.ARIMAOptions_coefficient_bound_set(swigCPtr, value);

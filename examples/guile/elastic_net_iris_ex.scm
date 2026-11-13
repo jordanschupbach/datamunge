@@ -1,8 +1,10 @@
+;; CMD: just TARGET=elastic_net_iris_ex run-guile
+
 (use-modules (datamunge))
 
 (define FORMULA "Petal.Length ~ Sepal.Length + Sepal.Width + Petal.Width + Sepal.Length:Petal.Width")
 
-(define iris (DataFrame-iris))
+(define iris (data_iris))
 (format #t "iris: ~a rows x ~a cols\n" (DataFrame-nrows iris) (DataFrame-ncols iris))
 (format #t "formula: ~a\n\n" FORMULA)
 

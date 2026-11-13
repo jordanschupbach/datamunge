@@ -1,3 +1,5 @@
+% CMD: just TARGET=pca_ex run-octave
+
 1;
 
 datamunge;
@@ -13,7 +15,7 @@ function v = sv(t)
   end
 endfunction
 
-iris = DataFrame_iris();
+iris = data_iris();
 features = sv({"Sepal.Length", "Sepal.Width", "Petal.Length", "Petal.Width"});
 
 % species labels as an SVector, for the grouped (colored-by-species) scores plot

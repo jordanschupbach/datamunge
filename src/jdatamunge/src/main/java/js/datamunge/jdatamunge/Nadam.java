@@ -9,8 +9,21 @@
 package js.datamunge.jdatamunge;
 
 /**
- *  Full-batch Nadam (Dozat 2016) on a DifferentiableFunction: Adam's adaptive second<br>
- *         moment combined with a Nesterov-style, bias-corrected first-moment direction.
+ *  Nadam on the DifferentiableFunction callback interface.<br>
+ *  Fixed-beta Nadam variant: direction beta1*m/(1-beta1^t)+(1-beta1)*g/(1-beta1^t), divided by sqrt(v/(1-beta2^t))+epsilon. Does not implement scheduled momentum products. Tests the gradient used after updating; O(p) reset state.<br>
+ *  The caller supplies finite, dimensionally consistent callbacks. Inputs are borrowed;<br>
+ *  coordinates mutate in place and can retain a partial state if a callback throws.<br>
+ *  Calls use local optimizer state and propagate callback exceptions; sharing a mutable<br>
+ *  objective across threads requires external synchronisation. Normal return alone<br>
+ *  is not a uniform convergence certificate.<br>
+ *  <p alt="Example"><br>
+ *  {@code 
+ const dm::optim::Nadam optimizer;
+ std::print("{}\n",optimizer.options().max_iterations); // 10000
+ }</p><br>
+ *  <p alt="References"><br>
+ *  - T. Dozat (2016), Incorporating Nesterov Momentum into Adam, https://openreview.net/pdf?id=OM0jvwB8jIp57ZJjtNEZ<br>
+ *  </p>@see NadamOptions, trace_optimize()
  */
 public class Nadam {
   private transient long swigCPtr;
@@ -52,16 +65,61 @@ public class Nadam {
     }
   }
 
+  /**
+   *  Store a copy of the controls without running the objective.<br>
+   *  @param options Method-specific controls; defaults are listed by NadamOptions.<br>
+   *  <p alt="Example"><br>
+   *  {@code 
+   const dm::optim::Nadam optimizer;
+   std::print("{}\n",optimizer.options().max_iterations); // 10000
+   }</p><br>
+   *  @see optimize()
+   */
   public Nadam(NadamOptions options) {
     this(datamungeJNI.new_Nadam__SWIG_0(NadamOptions.getCPtr(options), options), true);
   }
 
+  /**
+   *  Store a copy of the controls without running the objective.<br>
+   *  <p alt="Example"><br>
+   *  {@code 
+   const dm::optim::Nadam optimizer;
+   std::print("{}\n",optimizer.options().max_iterations); // 10000
+   }</p><br>
+   *  @see optimize()
+   */
   public Nadam() {
     this(datamungeJNI.new_Nadam__SWIG_1(), true);
   }
 
+  /**
+   *  Run Nadam from the supplied point using the configured finite budget.<br>
+   *  Fixed-beta Nadam variant: direction beta1*m/(1-beta1^t)+(1-beta1)*g/(1-beta1^t), divided by sqrt(v/(1-beta2^t))+epsilon. Does not implement scheduled momentum products. Tests the gradient used after updating; O(p) reset state.<br>
+   *  @param function Borrowed DifferentiableFunction with matching finite output shapes.<br>
+   *  @param coordinates Owned-by-caller finite start; overwritten with the native returned point.<br>
+   *  @return Objective at the native returned coordinates; not a stop-status code.<br>
+   *  @throws std::invalid_argument Nadam: step_size must be positive; Nadam: beta1 must be in [0, 1); Nadam: beta2 must be in [0, 1); Nadam: epsilon must be positive; Nadam: tolerance must be non-negative.<br>
+   *  @throws std::exception Exceptions from supplied callbacks propagate. Raw solvers do not uniformly reject nonfinite inputs.<br>
+   *  <p alt="Example"><br>
+   *  {@code 
+   dm::optim::QuadraticObjective f({2,8},{1,-2});
+   dm::optim::NadamOptions controls;controls.max_iterations=5;
+   std::vector<double> x{0,0};
+   const auto value=dm::optim::Nadam(controls).optimize(f,x);
+   std::print("{}\n",std::isfinite(value)); // true
+   }</p><br>
+   *  @see trace_optimize(), NadamOptions
+   */
   public double optimize(DifferentiableFunction function, DVector coordinates) {
     return datamungeJNI.Nadam_optimize(swigCPtr, this, DifferentiableFunction.getCPtr(function), function, DVector.getCPtr(coordinates), coordinates);
+  }
+
+  /**
+   *  Borrow this optimizer's stored configuration.<br>
+   *  @return Const option reference, valid during this object's lifetime; no mutation.
+   */
+  public NadamOptions options() {
+    return new NadamOptions(datamungeJNI.Nadam_options(swigCPtr, this), false);
   }
 
 }

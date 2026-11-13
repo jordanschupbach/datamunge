@@ -1,6 +1,8 @@
+# CMD: just TARGET=tree_iris_ex run-ruby
+
 require "octruby"
 
-iris = Datamunge::DataFrame.iris
+iris = Datamunge.data_iris
 puts "iris: #{iris.nrows} rows x #{iris.ncols} cols\n\n"
 
 model = Datamunge::DecisionTreeClassifier.new(iris, "Species ~ Petal.Length + Petal.Width")

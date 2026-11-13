@@ -1,12 +1,12 @@
-# CMD: nix develop .#r --command Rscript examples/r/naive_bayes_penguins_ex.r
-# REPL: nix develop .#r --command R --no-save --quiet
+# CMD: nix develop .#r --command env R_LIBS_USER=build/r/library Rscript examples/r/naive_bayes_penguins_ex.r
+# REPL: nix develop .#r --command env R_LIBS_USER=build/r/library R --no-save --quiet
 # Note: unlike the C++ example, this doesn't call drop_nulls() first (that method isn't
 # exposed on the bound DataFrame facade) -- NaiveBayesClassifier drops incomplete rows
 # for its own formula columns internally when fitting, matching every other formula-based
 # model in this library.
 library(datamunger)
 
-penguins <- DataFrame$penguins()
+penguins <- data$penguins()
 n <- penguins$nrows()
 cat(n, "rows x", penguins$ncols(), "cols\n\n")
 

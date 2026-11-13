@@ -1,3 +1,5 @@
+// CMD: just TARGET=stl_ex run-java
+
 import js.datamunge.jdatamunge.DPair;
 import js.datamunge.jdatamunge.DVector;
 import js.datamunge.jdatamunge.IPair;

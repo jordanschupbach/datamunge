@@ -9,6 +9,14 @@
 //------------------------------------------------------------------------------
 
 
+/// <summary>Configuration for AugmentedLagrangian; fields retain their documented native defaults. Supply finite values in the supported ranges. Controls are copied at construction; validation, stopping and loss scaling belong to optimize().</summary>
+/// Title: Example
+/// <code>      dm::optim::AugmentedLagrangianOptions o;
+///      std::print("{}\n",o.max_outer_iterations); // 50</code>
+///
+///
+///
+/// <seealso cref="AugmentedLagrangian"/>
 public class AugmentedLagrangianOptions : global::System.IDisposable {
   private global::System.Runtime.InteropServices.HandleRef swigCPtr;
   protected bool swigCMemOwn;

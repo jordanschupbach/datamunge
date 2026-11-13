@@ -1,7 +1,7 @@
 *> ODEs: a live COBOL right-hand side under every step method, the built-in named systems,
 *> a harmonic-oscillator energy check and a Lorenz phase plot.
 *> Unlike Lua, COBOL can subclass datamunge::ode::RHS: DECAY-RHS below is its evaluate().
-*> Run with `just run-cobol TARGET=ode_ex`.
+*> CMD: just TARGET=ode_ex run-cobol
 IDENTIFICATION DIVISION.
 PROGRAM-ID. ODE-EX.
 DATA DIVISION.

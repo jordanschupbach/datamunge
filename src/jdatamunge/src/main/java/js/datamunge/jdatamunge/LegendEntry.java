@@ -9,8 +9,22 @@
 package js.datamunge.jdatamunge;
 
 /**
- *  One manually-specified legend row, as drawn by R's `legend()`. When a plot has any manual<br>
- *  entries, they replace the default auto-generated (one-row-per-labeled-series) legend.
+ *  One manually specified legend row, as drawn by R's `legend()`.<br>
+ * <br>
+ *  When a plot has any manual entries, they replace the default auto-generated<br>
+ *  (one-row-per-labeled-series) legend. Each row is a color swatch followed by the label,<br>
+ *  stacked from the top-right corner of the plotting area in insertion order.<br>
+ * <br>
+ *  <p alt="Example"><br>
+ *  {@code 
+ auto plt = dm::Plot(dm::c(1.0, 2.0), dm::c(1.0, 2.0)).legend({"data"}, {dm::RGB{0, 0, 255}});
+ std::print("{} {}\n", plt.legend_entries()[0].label, plt.legend_entries()[0].color.b);  // data 255
+ }</p><br>
+ * <br>
+ *  <p alt="References"><br>
+ *  - R `legend()`: https://stat.ethz.ch/R-manual/R-devel/library/graphics/html/legend.html</p><br>
+ * <br>
+ *  @see RPlot#legend(), dm::legend(), Plot::legend_entries()
  */
 public class LegendEntry {
   private transient long swigCPtr;
@@ -52,10 +66,16 @@ public class LegendEntry {
     }
   }
 
+  /**
+   *  Row text.
+   */
   public void setLabel(String value) {
     datamungeJNI.LegendEntry_label_set(swigCPtr, this, value);
   }
 
+  /**
+   *  Row text.
+   */
   public String getLabel() {
     return datamungeJNI.LegendEntry_label_get(swigCPtr, this);
   }

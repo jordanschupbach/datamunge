@@ -22,7 +22,7 @@ def column_for_species(df, column, species):
     return [df.numeric_at(column, i) for i in range(df.nrows()) if df.string_at("Species", i) == species]
 
 
-iris = dm.DataFrame.iris()
+iris = dm.data.iris()
 
 setosa_petal = column_for_species(iris, "Petal.Length", "setosa")
 versicolor_petal = column_for_species(iris, "Petal.Length", "versicolor")

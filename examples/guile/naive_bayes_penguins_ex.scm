@@ -1,6 +1,8 @@
+;; CMD: just TARGET=naive_bayes_penguins_ex run-guile
+
 (use-modules (datamunge))
 
-(define penguins (DataFrame-penguins))
+(define penguins (data_penguins))
 (format #t "penguins: ~a rows x ~a cols\n\n" (DataFrame-nrows penguins) (DataFrame-ncols penguins))
 
 (define model (new-NaiveBayesClassifier penguins "species ~ bill_length_mm + bill_depth_mm + island + sex"))

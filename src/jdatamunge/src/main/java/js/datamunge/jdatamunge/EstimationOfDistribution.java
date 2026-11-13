@@ -74,4 +74,12 @@ public class EstimationOfDistribution {
     return datamungeJNI.EstimationOfDistribution_optimize(swigCPtr, this, ArbitraryFunction.getCPtr(function), function, DVector.getCPtr(coordinates), coordinates, DVector.getCPtr(lower_bound), lower_bound, DVector.getCPtr(upper_bound), upper_bound);
   }
 
+  /**
+   *  The options this EstimationOfDistribution was configured with.<br>
+   *  @return The stored options.
+   */
+  public EstimationOfDistributionOptions options() {
+    return new EstimationOfDistributionOptions(datamungeJNI.EstimationOfDistribution_options(swigCPtr, this), false);
+  }
+
 }

@@ -17,7 +17,7 @@ def report_purity(cluster_labels, species, n_clusters):
         print(f"  cluster {c}: {total} points, majority {best_species} ({best}/{total})")
 
 
-iris = dm.DataFrame.iris()
+iris = dm.data.iris()
 species = [iris.string_at("Species", i) for i in range(iris.nrows())]
 features = ["Sepal.Length", "Sepal.Width", "Petal.Length", "Petal.Width"]
 

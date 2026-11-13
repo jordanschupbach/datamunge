@@ -9,10 +9,21 @@
 package js.datamunge.jdatamunge;
 
 /**
- *  Differential evolution on an ArbitraryFunction within a box constraint: each<br>
- *         generation, every individual is challenged by a "trial" vector built from a<br>
- *         mutated combination of other population members, greedily replacing it only if<br>
- *         the trial is at least as good. Derivative-free.
+ *  DifferentialEvolution on the ArbitraryFunction callback interface.<br>
+ *  Box-constrained differential mutation/crossover with greedy trial replacement. Supports the declared rand1/best1/current_to_best1/rand2 and binomial/exponential strategies. Coordinates seed one clamped member; more than twenty small-best-improvement generations can stop the run. O(population_size*p) storage; no global certificate.<br>
+ *  The caller supplies finite, dimensionally consistent callbacks. Inputs are borrowed;<br>
+ *  coordinates mutate in place and can retain a partial state if a callback throws.<br>
+ *  Calls use local optimizer state and propagate callback exceptions; sharing a mutable<br>
+ *  objective across threads requires external synchronisation. Normal return alone<br>
+ *  is not a uniform convergence certificate.<br>
+ *  <p alt="Example"><br>
+ *  {@code 
+ const dm::optim::DifferentialEvolution optimizer;
+ std::print("{}\n",optimizer.options().max_generations); // 500
+ }</p><br>
+ *  <p alt="References"><br>
+ *  - R. Storn and K. Price (1997), Differential Evolution - A Simple and Efficient Heuristic for global Optimization over Continuous Spaces, https://doi.org/10.1023/A:1008202821328<br>
+ *  </p>@see DEOptions, trace_optimize()
  */
 public class DifferentialEvolution {
   private transient long swigCPtr;
@@ -54,21 +65,63 @@ public class DifferentialEvolution {
     }
   }
 
+  /**
+   *  Store a copy of the controls without running the objective.<br>
+   *  @param options Method-specific controls; defaults are listed by DEOptions.<br>
+   *  <p alt="Example"><br>
+   *  {@code 
+   const dm::optim::DifferentialEvolution optimizer;
+   std::print("{}\n",optimizer.options().max_generations); // 500
+   }</p><br>
+   *  @see optimize()
+   */
   public DifferentialEvolution(DEOptions options) {
     this(datamungeJNI.new_DifferentialEvolution__SWIG_0(DEOptions.getCPtr(options), options), true);
   }
 
+  /**
+   *  Store a copy of the controls without running the objective.<br>
+   *  <p alt="Example"><br>
+   *  {@code 
+   const dm::optim::DifferentialEvolution optimizer;
+   std::print("{}\n",optimizer.options().max_generations); // 500
+   }</p><br>
+   *  @see optimize()
+   */
   public DifferentialEvolution() {
     this(datamungeJNI.new_DifferentialEvolution__SWIG_1(), true);
   }
 
   /**
-   *  Minimizes <code>function</code> within [<code>lower_bound</code>, <code>upper_bound]</code>, updating<br>
-   *         <code>coordinates</code> in place to the best point found, and returns its value. The<br>
-   *         initial <code>coordinates</code> (clamped into bounds) seed one member of the population.
+   *  Run DifferentialEvolution from the supplied point using the configured finite budget.<br>
+   *  Box-constrained differential mutation/crossover with greedy trial replacement. Supports the declared rand1/best1/current_to_best1/rand2 and binomial/exponential strategies. Coordinates seed one clamped member; more than twenty small-best-improvement generations can stop the run. O(population_size*p) storage; no global certificate.<br>
+   *  @param function Borrowed ArbitraryFunction with matching finite output shapes.<br>
+   *  @param coordinates Owned-by-caller finite start; overwritten with the native returned point.<br>
+   *  @param lower_bound Matching finite inclusive lower box limits.<br>
+   *  @param upper_bound Matching finite inclusive upper limits, greater than lower limits.<br>
+   *  @return Objective at the native returned coordinates; not a stop-status code.<br>
+   *  @throws std::invalid_argument DifferentialEvolution::optimize: crossover_strategy must be 'binomial' or 'exponential'.<br>
+   *  @throws std::exception Exceptions from supplied callbacks propagate. Raw solvers do not uniformly reject nonfinite inputs.<br>
+   *  <p alt="Example"><br>
+   *  {@code 
+   dm::optim::QuadraticObjective f({2,8},{1,-2});
+   dm::optim::DEOptions controls;controls.max_generations=5;
+   std::vector<double> x{0,0};
+   const auto value=dm::optim::DifferentialEvolution(controls).optimize(f,x,std::vector<double>{-3,-3},std::vector<double>{3,3});
+   std::print("{}\n",std::isfinite(value)); // true
+   }</p><br>
+   *  @see trace_optimize(), DEOptions
    */
   public double optimize(ArbitraryFunction function, DVector coordinates, DVector lower_bound, DVector upper_bound) {
     return datamungeJNI.DifferentialEvolution_optimize(swigCPtr, this, ArbitraryFunction.getCPtr(function), function, DVector.getCPtr(coordinates), coordinates, DVector.getCPtr(lower_bound), lower_bound, DVector.getCPtr(upper_bound), upper_bound);
+  }
+
+  /**
+   *  Borrow this optimizer's stored configuration.<br>
+   *  @return Const option reference, valid during this object's lifetime; no mutation.
+   */
+  public DEOptions options() {
+    return new DEOptions(datamungeJNI.DifferentialEvolution_options(swigCPtr, this), false);
   }
 
 }

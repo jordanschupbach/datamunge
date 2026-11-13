@@ -8,6 +8,17 @@
 
 package js.datamunge.jdatamunge;
 
+/**
+ *  Configuration for CMAES; fields retain their documented native defaults.<br>
+ *  Supply finite values in the supported ranges. Controls are copied at construction;<br>
+ *  validation, stopping and loss scaling belong to optimize().<br>
+ *  <p alt="Example"><br>
+ *  {@code 
+ dm::optim::CMAESOptions o;
+ std::print("{}\n",o.max_generations); // 500
+ }</p><br>
+ *  @see CMAES
+ */
 public class CMAESOptions {
   private transient long swigCPtr;
   protected transient boolean swigCMemOwn;
@@ -48,30 +59,18 @@ public class CMAESOptions {
     }
   }
 
-  /**
-   *  Offspring sampled per generation; zero selects the standard 4 + floor(3 log(n)).
-   */
   public void setPopulation_size(long value) {
     datamungeJNI.CMAESOptions_population_size_set(swigCPtr, this, value);
   }
 
-  /**
-   *  Offspring sampled per generation; zero selects the standard 4 + floor(3 log(n)).
-   */
   public long getPopulation_size() {
     return datamungeJNI.CMAESOptions_population_size_get(swigCPtr, this);
   }
 
-  /**
-   *  Initial global search standard deviation.
-   */
   public void setInitial_step_size(double value) {
     datamungeJNI.CMAESOptions_initial_step_size_set(swigCPtr, this, value);
   }
 
-  /**
-   *  Initial global search standard deviation.
-   */
   public double getInitial_step_size() {
     return datamungeJNI.CMAESOptions_initial_step_size_get(swigCPtr, this);
   }
@@ -84,16 +83,10 @@ public class CMAESOptions {
     return datamungeJNI.CMAESOptions_max_generations_get(swigCPtr, this);
   }
 
-  /**
-   *  Stops when the global step size times the largest covariance axis is below this.
-   */
   public void setTolerance(double value) {
     datamungeJNI.CMAESOptions_tolerance_set(swigCPtr, this, value);
   }
 
-  /**
-   *  Stops when the global step size times the largest covariance axis is below this.
-   */
   public double getTolerance() {
     return datamungeJNI.CMAESOptions_tolerance_get(swigCPtr, this);
   }

@@ -9,10 +9,21 @@
 package js.datamunge.jdatamunge;
 
 /**
- *  A real-valued genetic algorithm on an ArbitraryFunction within a box constraint: a<br>
- *         population evolves across generations via selection, crossover, and mutation.<br>
- *         Independently configurable selection/crossover strategies and elitism give a<br>
- *         combinatorial family of GA variants under one interface. Derivative-free.
+ *  GeneticAlgorithm on the ArbitraryFunction callback interface.<br>
+ *  Real-valued box-constrained selection, crossover, Gaussian mutation and optional elitism. Initial coordinates seed a clamped population member. Returns the best visited point and can stop after more than twenty small-best-improvement generations. O(population_size*p) storage; strategy/rate choices affect results, with no global certificate.<br>
+ *  The caller supplies finite, dimensionally consistent callbacks. Inputs are borrowed;<br>
+ *  coordinates mutate in place and can retain a partial state if a callback throws.<br>
+ *  Calls use local optimizer state and propagate callback exceptions; sharing a mutable<br>
+ *  objective across threads requires external synchronisation. Normal return alone<br>
+ *  is not a uniform convergence certificate.<br>
+ *  <p alt="Example"><br>
+ *  {@code 
+ const dm::optim::GeneticAlgorithm optimizer;
+ std::print("{}\n",optimizer.options().max_generations); // 500
+ }</p><br>
+ *  <p alt="References"><br>
+ *  - J. H. Holland (1992 reprint), Adaptation in Natural and Artificial Systems, MIT Press, https://mitpress.mit.edu/9780262581110/adaptation-in-natural-and-artificial-systems/. This implementation uses real-valued operators, as specified above, rather than binary chromosomes.<br>
+ *  </p>@see GAOptions, trace_optimize()
  */
 public class GeneticAlgorithm {
   private transient long swigCPtr;
@@ -54,21 +65,63 @@ public class GeneticAlgorithm {
     }
   }
 
+  /**
+   *  Store a copy of the controls without running the objective.<br>
+   *  @param options Method-specific controls; defaults are listed by GAOptions.<br>
+   *  <p alt="Example"><br>
+   *  {@code 
+   const dm::optim::GeneticAlgorithm optimizer;
+   std::print("{}\n",optimizer.options().max_generations); // 500
+   }</p><br>
+   *  @see optimize()
+   */
   public GeneticAlgorithm(GAOptions options) {
     this(datamungeJNI.new_GeneticAlgorithm__SWIG_0(GAOptions.getCPtr(options), options), true);
   }
 
+  /**
+   *  Store a copy of the controls without running the objective.<br>
+   *  <p alt="Example"><br>
+   *  {@code 
+   const dm::optim::GeneticAlgorithm optimizer;
+   std::print("{}\n",optimizer.options().max_generations); // 500
+   }</p><br>
+   *  @see optimize()
+   */
   public GeneticAlgorithm() {
     this(datamungeJNI.new_GeneticAlgorithm__SWIG_1(), true);
   }
 
   /**
-   *  Minimizes <code>function</code> within [<code>lower_bound</code>, <code>upper_bound]</code>, updating<br>
-   *         <code>coordinates</code> in place to the best point found, and returns its value. The<br>
-   *         initial <code>coordinates</code> (clamped into bounds) seed one member of the population.
+   *  Run GeneticAlgorithm from the supplied point using the configured finite budget.<br>
+   *  Real-valued box-constrained selection, crossover, Gaussian mutation and optional elitism. Initial coordinates seed a clamped population member. Returns the best visited point and can stop after more than twenty small-best-improvement generations. O(population_size*p) storage; strategy/rate choices affect results, with no global certificate.<br>
+   *  @param function Borrowed ArbitraryFunction with matching finite output shapes.<br>
+   *  @param coordinates Owned-by-caller finite start; overwritten with the native returned point.<br>
+   *  @param lower_bound Matching finite inclusive lower box limits.<br>
+   *  @param upper_bound Matching finite inclusive upper limits, greater than lower limits.<br>
+   *  @return Objective at the native returned coordinates; not a stop-status code.<br>
+   *  @throws std::invalid_argument GeneticAlgorithm::optimize: population_size must be at least 2.<br>
+   *  @throws std::exception Exceptions from supplied callbacks propagate. Raw solvers do not uniformly reject nonfinite inputs.<br>
+   *  <p alt="Example"><br>
+   *  {@code 
+   dm::optim::QuadraticObjective f({2,8},{1,-2});
+   dm::optim::GAOptions controls;controls.max_generations=5;
+   std::vector<double> x{0,0};
+   const auto value=dm::optim::GeneticAlgorithm(controls).optimize(f,x,std::vector<double>{-3,-3},std::vector<double>{3,3});
+   std::print("{}\n",std::isfinite(value)); // true
+   }</p><br>
+   *  @see trace_optimize(), GAOptions
    */
   public double optimize(ArbitraryFunction function, DVector coordinates, DVector lower_bound, DVector upper_bound) {
     return datamungeJNI.GeneticAlgorithm_optimize(swigCPtr, this, ArbitraryFunction.getCPtr(function), function, DVector.getCPtr(coordinates), coordinates, DVector.getCPtr(lower_bound), lower_bound, DVector.getCPtr(upper_bound), upper_bound);
+  }
+
+  /**
+   *  Borrow this optimizer's stored configuration.<br>
+   *  @return Const option reference, valid during this object's lifetime; no mutation.
+   */
+  public GAOptions options() {
+    return new GAOptions(datamungeJNI.GeneticAlgorithm_options(swigCPtr, this), false);
   }
 
 }

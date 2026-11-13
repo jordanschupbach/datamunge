@@ -1,3 +1,5 @@
+// CMD: just TARGET=kernel_regression_iris_ex run-go
+
 package main
 
 import (
@@ -8,7 +10,7 @@ import (
 func main() {
 	FORMULA := "Petal.Length ~ Petal.Width"
 
-	iris := datamunge.DataFrameIris()
+	iris := datamunge.DataIris()
 	fmt.Printf("iris: %d rows x %d cols\n", iris.Nrows(), iris.Ncols())
 	fmt.Printf("formula: %s\n\n", FORMULA)
 

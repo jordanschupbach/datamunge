@@ -1,3 +1,5 @@
+// CMD: just TARGET=svm_iris_ex run-go
+
 package main
 
 import (
@@ -14,7 +16,7 @@ func dvector(values []float64) datamunge.DVector {
 }
 
 func main() {
-	iris := datamunge.DataFrameIris()
+	iris := datamunge.DataIris()
 	fmt.Printf("iris: %d rows x %d cols\n\n", iris.Nrows(), iris.Ncols())
 
 	fmt.Println("=== RBF kernel (default) ===")

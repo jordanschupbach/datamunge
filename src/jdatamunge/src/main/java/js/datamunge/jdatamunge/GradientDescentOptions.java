@@ -8,6 +8,17 @@
 
 package js.datamunge.jdatamunge;
 
+/**
+ *  Configuration for GradientDescent; fields retain their documented native defaults.<br>
+ *  Supply finite values in the supported ranges. Controls are copied at construction;<br>
+ *  validation, stopping and loss scaling belong to optimize().<br>
+ *  <p alt="Example"><br>
+ *  {@code 
+ dm::optim::GradientDescentOptions o;
+ std::print("{}\n",o.max_iterations); // 10000
+ }</p><br>
+ *  @see GradientDescent
+ */
 public class GradientDescentOptions {
   private transient long swigCPtr;
   protected transient boolean swigCMemOwn;
@@ -56,16 +67,10 @@ public class GradientDescentOptions {
     return datamungeJNI.GradientDescentOptions_step_size_get(swigCPtr, this);
   }
 
-  /**
-   *  Classical momentum coefficient in [0, 1); 0 disables momentum (plain gradient descent).
-   */
   public void setMomentum(double value) {
     datamungeJNI.GradientDescentOptions_momentum_set(swigCPtr, this, value);
   }
 
-  /**
-   *  Classical momentum coefficient in [0, 1); 0 disables momentum (plain gradient descent).
-   */
   public double getMomentum() {
     return datamungeJNI.GradientDescentOptions_momentum_get(swigCPtr, this);
   }
@@ -78,16 +83,10 @@ public class GradientDescentOptions {
     return datamungeJNI.GradientDescentOptions_max_iterations_get(swigCPtr, this);
   }
 
-  /**
-   *  Stops when the gradient norm or the objective's per-iteration change drops below this.
-   */
   public void setTolerance(double value) {
     datamungeJNI.GradientDescentOptions_tolerance_set(swigCPtr, this, value);
   }
 
-  /**
-   *  Stops when the gradient norm or the objective's per-iteration change drops below this.
-   */
   public double getTolerance() {
     return datamungeJNI.GradientDescentOptions_tolerance_get(swigCPtr, this);
   }

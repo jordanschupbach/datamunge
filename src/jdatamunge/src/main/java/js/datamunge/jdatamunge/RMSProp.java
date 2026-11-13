@@ -9,9 +9,21 @@
 package js.datamunge.jdatamunge;
 
 /**
- *  Full-batch RMSProp on a DifferentiableFunction.  RMSProp normalizes every coordinate<br>
- *         by a moving average of its recent squared gradients, unlike AdaGrad whose accumulator<br>
- *         grows indefinitely.
+ *  RMSProp on the DifferentiableFunction callback interface.<br>
+ *  Uses an exponential squared-gradient average with decay_rate, dividing by sqrt(average)+epsilon. Tests the pre-update gradient norm after updating. Fixed rates can oscillate. O(p) local state, reset on every call.<br>
+ *  The caller supplies finite, dimensionally consistent callbacks. Inputs are borrowed;<br>
+ *  coordinates mutate in place and can retain a partial state if a callback throws.<br>
+ *  Calls use local optimizer state and propagate callback exceptions; sharing a mutable<br>
+ *  objective across threads requires external synchronisation. Normal return alone<br>
+ *  is not a uniform convergence certificate.<br>
+ *  <p alt="Example"><br>
+ *  {@code 
+ const dm::optim::RMSProp optimizer;
+ std::print("{}\n",optimizer.options().max_iterations); // 10000
+ }</p><br>
+ *  <p alt="References"><br>
+ *  - G. Hinton (2012), lecture 6e, https://www.cs.utoronto.ca/~hinton/coursera_lectures.html<br>
+ *  </p>@see RMSPropOptions, trace_optimize()
  */
 public class RMSProp {
   private transient long swigCPtr;
@@ -53,16 +65,61 @@ public class RMSProp {
     }
   }
 
+  /**
+   *  Store a copy of the controls without running the objective.<br>
+   *  @param options Method-specific controls; defaults are listed by RMSPropOptions.<br>
+   *  <p alt="Example"><br>
+   *  {@code 
+   const dm::optim::RMSProp optimizer;
+   std::print("{}\n",optimizer.options().max_iterations); // 10000
+   }</p><br>
+   *  @see optimize()
+   */
   public RMSProp(RMSPropOptions options) {
     this(datamungeJNI.new_RMSProp__SWIG_0(RMSPropOptions.getCPtr(options), options), true);
   }
 
+  /**
+   *  Store a copy of the controls without running the objective.<br>
+   *  <p alt="Example"><br>
+   *  {@code 
+   const dm::optim::RMSProp optimizer;
+   std::print("{}\n",optimizer.options().max_iterations); // 10000
+   }</p><br>
+   *  @see optimize()
+   */
   public RMSProp() {
     this(datamungeJNI.new_RMSProp__SWIG_1(), true);
   }
 
+  /**
+   *  Run RMSProp from the supplied point using the configured finite budget.<br>
+   *  Uses an exponential squared-gradient average with decay_rate, dividing by sqrt(average)+epsilon. Tests the pre-update gradient norm after updating. Fixed rates can oscillate. O(p) local state, reset on every call.<br>
+   *  @param function Borrowed DifferentiableFunction with matching finite output shapes.<br>
+   *  @param coordinates Owned-by-caller finite start; overwritten with the native returned point.<br>
+   *  @return Objective at the native returned coordinates; not a stop-status code.<br>
+   *  @throws std::invalid_argument RMSProp: step_size must be positive; RMSProp: decay_rate must be in [0, 1); RMSProp: epsilon must be positive; RMSProp: tolerance must be non-negative.<br>
+   *  @throws std::exception Exceptions from supplied callbacks propagate. Raw solvers do not uniformly reject nonfinite inputs.<br>
+   *  <p alt="Example"><br>
+   *  {@code 
+   dm::optim::QuadraticObjective f({2,8},{1,-2});
+   dm::optim::RMSPropOptions controls;controls.max_iterations=5;
+   std::vector<double> x{0,0};
+   const auto value=dm::optim::RMSProp(controls).optimize(f,x);
+   std::print("{}\n",std::isfinite(value)); // true
+   }</p><br>
+   *  @see trace_optimize(), RMSPropOptions
+   */
   public double optimize(DifferentiableFunction function, DVector coordinates) {
     return datamungeJNI.RMSProp_optimize(swigCPtr, this, DifferentiableFunction.getCPtr(function), function, DVector.getCPtr(coordinates), coordinates);
+  }
+
+  /**
+   *  Borrow this optimizer's stored configuration.<br>
+   *  @return Const option reference, valid during this object's lifetime; no mutation.
+   */
+  public RMSPropOptions options() {
+    return new RMSPropOptions(datamungeJNI.RMSProp_options(swigCPtr, this), false);
   }
 
 }

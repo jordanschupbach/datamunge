@@ -2,7 +2,7 @@
 # REPL: nix develop .#python --command env -u PYTHONPATH build/venv/pydatamunge-run/bin/python
 from pydatamunge import datamunge as dm
 
-iris = dm.DataFrame.iris()
+iris = dm.data.iris()
 print(f"iris: {iris.nrows()} rows x {iris.ncols()} cols\n")
 
 model = dm.LDA(iris, "Species ~ Sepal.Length + Sepal.Width + Petal.Length + Petal.Width")

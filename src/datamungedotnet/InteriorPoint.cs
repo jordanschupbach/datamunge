@@ -9,6 +9,17 @@
 //------------------------------------------------------------------------------
 
 
+/// <summary>InteriorPoint on the InequalityConstrainedFunction callback interface. Gradient steps on f-mu*sum(log(-c)) with c&lt;0. Backtracks only for strict feasibility, not barrier-objective decrease, then decays mu after each fixed inner budget. Requires a strictly feasible start and can fail later when feasible steps underflow. No KKT or barrier-stationarity stop test; no phase-I feasibility search. The caller supplies finite, dimensionally consistent callbacks. Inputs are borrowed; coordinates mutate in place and can retain a partial state if a callback throws. Calls use local optimizer state and propagate callback exceptions; sharing a mutable objective across threads requires external synchronisation. Normal return alone is not a uniform convergence certificate.</summary>
+/// Title: Example
+/// <code>      const dm::optim::InteriorPoint optimizer;
+///      std::print("{}\n",optimizer.options().max_outer_iterations); // 20</code>
+///
+///
+///
+/// Title: References
+///  - J. Nocedal and S. J. Wright (2006), Numerical Optimization, second edition, https://doi.org/10.1007/978-0-387-40065-5. The implemented variant and stopping rules are specified above.
+///
+/// <seealso cref="InteriorPointOptions, trace_optimize"/>
 public class InteriorPoint : global::System.IDisposable {
   private global::System.Runtime.InteropServices.HandleRef swigCPtr;
   protected bool swigCMemOwn;
@@ -56,16 +67,57 @@ public class InteriorPoint : global::System.IDisposable {
     }
   }
 
+  /// <summary>Store a copy of the controls without running the objective.</summary>
+  /// <param name="options"> Method-specific controls; defaults are listed by InteriorPointOptions.</param> 
+  /// Title: Example
+  /// <code>      const dm::optim::InteriorPoint optimizer;
+  ///      std::print("{}\n",optimizer.options().max_outer_iterations); // 20</code>
+  ///
+  ///
+  ///
+  /// <seealso cref="optimize"/>
   public InteriorPoint(InteriorPointOptions options) : this(datamungePINVOKE.new_InteriorPoint__SWIG_0(InteriorPointOptions.getCPtr(options)), true) {
     if (datamungePINVOKE.SWIGPendingException.Pending) throw datamungePINVOKE.SWIGPendingException.Retrieve();
   }
 
+  /// <summary>Store a copy of the controls without running the objective.</summary>
+  /// Title: Example
+  /// <code>      const dm::optim::InteriorPoint optimizer;
+  ///      std::print("{}\n",optimizer.options().max_outer_iterations); // 20</code>
+  ///
+  ///
+  ///
+  /// <seealso cref="optimize"/>
   public InteriorPoint() : this(datamungePINVOKE.new_InteriorPoint__SWIG_1(), true) {
   }
 
+  /// <summary>Run InteriorPoint from the supplied point using the configured finite budget. Gradient steps on f-mu*sum(log(-c)) with c&lt;0. Backtracks only for strict feasibility, not barrier-objective decrease, then decays mu after each fixed inner budget. Requires a strictly feasible start and can fail later when feasible steps underflow. No KKT or barrier-stationarity stop test; no phase-I feasibility search.</summary>
+  /// <param name="function"> Borrowed InequalityConstrainedFunction with matching finite output shapes.</param> 
+  /// <param name="coordinates"> Owned-by-caller finite start; overwritten with the native returned point.</param> 
+  /// <returns>Objective at the native returned coordinates; not a stop-status code.</returns> 
+  /// <exception cref="std::invalid_argument"> InteriorPoint: starting point must be strictly feasible.</exception> 
+  /// <exception cref="std::runtime_error"> InteriorPoint: unable to find feasible step.</exception> 
+  /// <exception cref="std::exception"> Exceptions from supplied callbacks propagate. Raw solvers do not uniformly reject nonfinite inputs.</exception> 
+  /// Title: Example
+  /// <code>      dm::optim::NonnegativeQuadratic f({-1,2});
+  ///      dm::optim::InteriorPointOptions controls;controls.max_outer_iterations=1;
+  ///      std::vector&lt;double&gt; x{.5,.5};
+  ///      const auto value=dm::optim::InteriorPoint(controls).optimize(f,x);
+  ///      std::print("{}\n",std::isfinite(value)); // true</code>
+  ///
+  ///
+  ///
+  /// <seealso cref="trace_optimize"/>
   public double optimize(InequalityConstrainedFunction function, DVector coordinates) {
     double ret = datamungePINVOKE.InteriorPoint_optimize(swigCPtr, InequalityConstrainedFunction.getCPtr(function), DVector.getCPtr(coordinates));
     if (datamungePINVOKE.SWIGPendingException.Pending) throw datamungePINVOKE.SWIGPendingException.Retrieve();
+    return ret;
+  }
+
+  /// <summary>Borrow this optimizer's stored configuration.</summary>
+  /// <returns>Const option reference, valid during this object's lifetime; no mutation.</returns>
+  public InteriorPointOptions options() {
+    InteriorPointOptions ret = new InteriorPointOptions(datamungePINVOKE.InteriorPoint_options(swigCPtr), false);
     return ret;
   }
 

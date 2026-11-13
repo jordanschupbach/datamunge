@@ -14,7 +14,7 @@ def rgb(r, g, b):
     return color
 
 
-iris = dm.DataFrame.iris()
+iris = dm.data.iris()
 
 # ggplot(iris, aes(x = Sepal.Length, y = Sepal.Width, color = Species)) + geom_point()
 scatter = dm.GGPlot(iris, "Sepal.Length", "Sepal.Width", "Species")

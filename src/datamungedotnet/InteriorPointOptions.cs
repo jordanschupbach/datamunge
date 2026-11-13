@@ -9,6 +9,14 @@
 //------------------------------------------------------------------------------
 
 
+/// <summary>Configuration for InteriorPoint; fields retain their documented native defaults. Supply finite values in the supported ranges. Controls are copied at construction; validation, stopping and loss scaling belong to optimize().</summary>
+/// Title: Example
+/// <code>      dm::optim::InteriorPointOptions o;
+///      std::print("{}\n",o.max_outer_iterations); // 20</code>
+///
+///
+///
+/// <seealso cref="InteriorPoint"/>
 public class InteriorPointOptions : global::System.IDisposable {
   private global::System.Runtime.InteropServices.HandleRef swigCPtr;
   protected bool swigCMemOwn;

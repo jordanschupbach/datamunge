@@ -1,3 +1,5 @@
+# CMD: just TARGET=mds_ex run-tcl
+
 package require Datamunge 0.0.1
 
 # See pca_ex.tcl / clustering_ex.tcl: pass the feature columns as a \x1f-joined encoded string so
@@ -6,7 +8,7 @@ proc encode_cols {names} {
   return [join $names [format %c 31]]
 }
 
-set iris [datamunge::DataFrame_iris]
+set iris [datamunge::data_iris]
 set features [encode_cols {Sepal.Length Sepal.Width Petal.Length Petal.Width}]
 
 set n [datamunge::DataFrame_nrows $iris]

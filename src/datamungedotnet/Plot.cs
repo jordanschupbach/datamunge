@@ -9,6 +9,24 @@
 //------------------------------------------------------------------------------
 
 
+/// <summary>Renderer-facing state shared by every 2-D plot: canvas, labels, axes, and series.</summary>
+///  User code works with the derived RPlot (spelled `dm::Plot`), whose setters return `RPlot&amp;`;
+///  this base holds the data, the read-only accessors, and the output functions to_svg(),
+///  save(), and show(). The base-class setters below return `Plot&amp;` and are what RPlot's
+///  same-named setters forward to; call the RPlot forms in user code so chains keep the RPlot
+///  type. A `const Plot&amp;` is also what RLayout::add() accepts and RLayout::panel() returns.
+///  Every output function renders from the stored state, so it throws std::runtime_error for a
+///  plot with no data series (reference lines and legend rows alone are not enough) or a canvas
+///  too small for its margins. Plots are copyable values with no shared state; distinct plots may
+///  be used from different threads, but one plot must not be mutated while it is rendered.
+///
+/// Title: Example
+/// <code>      const dm::graphics::Plot&amp; base = dm::Plot(dm::c(1.0, 2.0), dm::c(1.0, 4.0)).set_title("Base");
+///      std::print("{} {}x{}\n", base.title_text(), base.width(), base.height());  // Base 960x640</code>
+///
+///
+///
+/// <seealso cref="RPlot, RLayout"/>
 public class Plot : global::System.IDisposable {
   private global::System.Runtime.InteropServices.HandleRef swigCPtr;
   protected bool swigCMemOwn;
@@ -56,213 +74,603 @@ public class Plot : global::System.IDisposable {
     }
   }
 
+  /// <summary>Base-class form of RPlot::size(): sets the canvas size in pixels (default 960x640).</summary>
+  /// <param name="width">  Canvas width in pixels.</param> 
+  /// <param name="height">  Canvas height in pixels.</param> 
+  /// <returns>This plot, for chaining.</returns> 
+  /// <seealso cref="RPlot.size"/>
   public Plot size(uint width, uint height) {
     Plot ret = new Plot(datamungePINVOKE.Plot_size(swigCPtr, width, height), false);
     return ret;
   }
 
+  /// <summary>Base-class form of RPlot::title(): sets the main heading; empty removes it.</summary>
+  /// <param name="value">  Heading text (moved into the plot).</param> 
+  /// <returns>This plot, for chaining.</returns> 
+  /// <seealso cref="RPlot.set_title"/>
   public Plot title(string value) {
     Plot ret = new Plot(datamungePINVOKE.Plot_title(swigCPtr, value), false);
     if (datamungePINVOKE.SWIGPendingException.Pending) throw datamungePINVOKE.SWIGPendingException.Retrieve();
     return ret;
   }
 
+  /// <summary>Sets an optional subtitle displayed beneath the title; owns the supplied text.</summary>
+  /// <param name="value">  Subtitle text; empty removes it.</param> 
+  /// <returns>This plot, for chaining.</returns> 
+  /// <seealso cref="RPlot.set_subtitle"/>
+  public Plot subtitle(string value) {
+    Plot ret = new Plot(datamungePINVOKE.Plot_subtitle(swigCPtr, value), false);
+    if (datamungePINVOKE.SWIGPendingException.Pending) throw datamungePINVOKE.SWIGPendingException.Retrieve();
+    return ret;
+  }
+
+  /// <summary>Base-class form of RPlot::x_label(): sets the horizontal-axis label.</summary>
+  /// <param name="value">  Label text (moved into the plot).</param> 
+  /// <returns>This plot, for chaining.</returns> 
+  /// <seealso cref="RPlot.set_xlab"/>
   public Plot x_label(string value) {
     Plot ret = new Plot(datamungePINVOKE.Plot_x_label(swigCPtr, value), false);
     if (datamungePINVOKE.SWIGPendingException.Pending) throw datamungePINVOKE.SWIGPendingException.Retrieve();
     return ret;
   }
 
+  /// <summary>Base-class form of RPlot::y_label(): sets the vertical-axis label.</summary>
+  /// <param name="value">  Label text (moved into the plot).</param> 
+  /// <returns>This plot, for chaining.</returns> 
+  /// <seealso cref="RPlot.set_ylab"/>
   public Plot y_label(string value) {
     Plot ret = new Plot(datamungePINVOKE.Plot_y_label(swigCPtr, value), false);
     if (datamungePINVOKE.SWIGPendingException.Pending) throw datamungePINVOKE.SWIGPendingException.Retrieve();
     return ret;
   }
 
+  /// <summary>Base-class form of RPlot::background(): sets the canvas fill color.</summary>
+  /// <param name="color">  Fill for the whole canvas (default white).</param> 
+  /// <returns>This plot, for chaining.</returns> 
+  /// <seealso cref="RPlot.background"/>
   public Plot background(RGB color) {
     Plot ret = new Plot(datamungePINVOKE.Plot_background(swigCPtr, RGB.getCPtr(color)), false);
     if (datamungePINVOKE.SWIGPendingException.Pending) throw datamungePINVOKE.SWIGPendingException.Retrieve();
     return ret;
   }
 
+  /// <summary>Base-class form of RPlot::axis_color(): sets the axis-line and text color.</summary>
+  /// <param name="color">  Color for axis lines, ticks, axis labels, title, and subtitle.</param> 
+  /// <returns>This plot, for chaining.</returns> 
+  /// <seealso cref="RPlot.axis_color"/>
   public Plot axis_color(RGB color) {
     Plot ret = new Plot(datamungePINVOKE.Plot_axis_color(swigCPtr, RGB.getCPtr(color)), false);
     if (datamungePINVOKE.SWIGPendingException.Pending) throw datamungePINVOKE.SWIGPendingException.Retrieve();
     return ret;
   }
 
+  /// <summary>Base-class form of RPlot::grid_color(): sets the grid-line color.</summary>
+  /// <param name="color">  Grid-line color (default light gray `{229, 231, 235}`).</param> 
+  /// <returns>This plot, for chaining.</returns> 
+  /// <seealso cref="RPlot.grid_color"/>
   public Plot grid_color(RGB color) {
     Plot ret = new Plot(datamungePINVOKE.Plot_grid_color(swigCPtr, RGB.getCPtr(color)), false);
     if (datamungePINVOKE.SWIGPendingException.Pending) throw datamungePINVOKE.SWIGPendingException.Retrieve();
     return ret;
   }
 
+  /// <summary>Base-class form of RPlot::show_grid(): turns the background grid on or off.</summary>
+  /// <param name="enabled">  True (the default) draws the grid.</param> 
+  /// <returns>This plot, for chaining.</returns> 
+  /// <seealso cref="RPlot.show_grid"/>
   public Plot show_grid(bool enabled) {
     Plot ret = new Plot(datamungePINVOKE.Plot_show_grid__SWIG_0(swigCPtr, enabled), false);
     return ret;
   }
 
+  /// <summary>Base-class form of RPlot::show_grid(): turns the background grid on or off.</summary>
+  /// <returns>This plot, for chaining.</returns> 
+  /// <seealso cref="RPlot.show_grid"/>
   public Plot show_grid() {
     Plot ret = new Plot(datamungePINVOKE.Plot_show_grid__SWIG_1(swigCPtr), false);
     return ret;
   }
 
+  /// <summary>Base-class form of RPlot::x_limits(): fixes the visible x range.</summary>
+  /// <param name="min_x">  Left edge of the plotting area, in data units.</param> 
+  /// <param name="max_x">  Right edge; must be greater than ``min_x``.</param> 
+  /// <returns>This plot, for chaining.</returns> 
+  /// <exception cref="std::invalid_argument">  Unless `max_x > min_x` (NaN fails); the plot is unchanged.</exception> 
+  /// <seealso cref="RPlot.x_limits"/>
   public Plot x_limits(double min_x, double max_x) {
     Plot ret = new Plot(datamungePINVOKE.Plot_x_limits(swigCPtr, min_x, max_x), false);
     return ret;
   }
 
+  /// <summary>Base-class form of RPlot::y_limits(): fixes the visible y range.</summary>
+  /// <param name="min_y">  Bottom edge of the plotting area, in data units.</param> 
+  /// <param name="max_y">  Top edge; must be greater than ``min_y``.</param> 
+  /// <returns>This plot, for chaining.</returns> 
+  /// <exception cref="std::invalid_argument">  Unless `max_y > min_y` (NaN fails); the plot is unchanged.</exception> 
+  /// <seealso cref="RPlot.y_limits"/>
   public Plot y_limits(double min_y, double max_y) {
     Plot ret = new Plot(datamungePINVOKE.Plot_y_limits(swigCPtr, min_y, max_y), false);
     return ret;
   }
 
+  /// <summary>Base-class form of RPlot::hide_axes(): hides or restores axes, ticks, grid, and axis labels.</summary>
+  /// <param name="enabled">  True (the default) hides them.</param> 
+  /// <returns>This plot, for chaining.</returns> 
+  /// <seealso cref="RPlot.hide_axes"/>
   public Plot hide_axes(bool enabled) {
     Plot ret = new Plot(datamungePINVOKE.Plot_hide_axes__SWIG_0(swigCPtr, enabled), false);
     return ret;
   }
 
+  /// <summary>Base-class form of RPlot::hide_axes(): hides or restores axes, ticks, grid, and axis labels.</summary>
+  /// <returns>This plot, for chaining.</returns> 
+  /// <seealso cref="RPlot.hide_axes"/>
   public Plot hide_axes() {
     Plot ret = new Plot(datamungePINVOKE.Plot_hide_axes__SWIG_1(swigCPtr), false);
     return ret;
   }
 
+  /// <summary>Base-class form of RPlot::x_tick_labels(): labels the x axis at 0, 1, 2, ...</summary>
+  /// <param name="labels">  Tick texts; empty restores the numeric ticks.</param> 
+  /// <returns>This plot, for chaining.</returns> 
+  /// <seealso cref="RPlot.x_tick_labels"/>
   public Plot x_tick_labels(SVector labels) {
     Plot ret = new Plot(datamungePINVOKE.Plot_x_tick_labels(swigCPtr, SVector.getCPtr(labels)), false);
     if (datamungePINVOKE.SWIGPendingException.Pending) throw datamungePINVOKE.SWIGPendingException.Retrieve();
     return ret;
   }
 
+  /// <summary>Replaces the numeric x ticks with ``labels`` drawn at data positions ``positions``.</summary>
+  /// <param name="positions">  x data coordinates of the ticks.</param> 
+  /// <param name="labels">  Tick texts, one per position.</param> 
+  /// <returns>This plot, for chaining.</returns> 
+  /// <exception cref="std::invalid_argument"> If the two vectors differ in length.</exception> 
+  /// <seealso cref="RPlot.x_ticks"/>
+  public Plot x_ticks(DVector positions, SVector labels) {
+    Plot ret = new Plot(datamungePINVOKE.Plot_x_ticks(swigCPtr, DVector.getCPtr(positions), SVector.getCPtr(labels)), false);
+    if (datamungePINVOKE.SWIGPendingException.Pending) throw datamungePINVOKE.SWIGPendingException.Retrieve();
+    return ret;
+  }
+
+  /// <summary>Replaces the numeric y ticks with ``labels`` drawn at y = 0, 1, 2, ...</summary>
+  /// <param name="labels">  Tick texts; empty restores the numeric ticks.</param> 
+  /// <returns>This plot, for chaining.</returns> 
+  /// <seealso cref="RPlot.y_tick_labels"/>
+  public Plot y_tick_labels(SVector labels) {
+    Plot ret = new Plot(datamungePINVOKE.Plot_y_tick_labels(swigCPtr, SVector.getCPtr(labels)), false);
+    if (datamungePINVOKE.SWIGPendingException.Pending) throw datamungePINVOKE.SWIGPendingException.Retrieve();
+    return ret;
+  }
+
+  /// <summary>Replaces the numeric y ticks with ``labels`` drawn at data positions ``positions``.</summary>
+  /// <param name="positions">  y data coordinates of the ticks.</param> 
+  /// <param name="labels">  Tick texts, one per position.</param> 
+  /// <returns>This plot, for chaining.</returns> 
+  /// <exception cref="std::invalid_argument"> If the two vectors differ in length.</exception> 
+  /// <seealso cref="RPlot.y_ticks"/>
+  public Plot y_ticks(DVector positions, SVector labels) {
+    Plot ret = new Plot(datamungePINVOKE.Plot_y_ticks(swigCPtr, DVector.getCPtr(positions), SVector.getCPtr(labels)), false);
+    if (datamungePINVOKE.SWIGPendingException.Pending) throw datamungePINVOKE.SWIGPendingException.Retrieve();
+    return ret;
+  }
+
+  /// <summary>Overrides the automatic outer margins (in pixels) around the plotting area, e.g. for        small multi-panel tiles. The defaults leave room for a title, axis labels, and ticks;        tight margins suit panels whose title and axis labels are empty.</summary>
+  /// <param name="left">  Left margin in pixels (default 90).</param> 
+  /// <param name="right">  Right margin in pixels (default 24).</param> 
+  /// <param name="top">  Top margin in pixels (default 72, plus 24 when a subtitle is set).</param> 
+  /// <param name="bottom">  Bottom margin in pixels (default 84).</param> 
+  /// <returns>This plot, for chaining.</returns> 
+  /// <exception cref="std::invalid_argument"> If any margin is negative or non-finite.</exception> 
+  /// <seealso cref="RPlot.margins"/>
+  public Plot margins(double left, double right, double top, double bottom) {
+    Plot ret = new Plot(datamungePINVOKE.Plot_margins(swigCPtr, left, right, top, bottom), false);
+    return ret;
+  }
+
+  /// <summary>Sets the tick-label font size in pixels (default 12); the raster viewer draws ticks        at half-size glyphs when this is below 12.</summary>
+  /// <param name="pixels">  Font size in pixels.</param> 
+  /// <returns>This plot, for chaining.</returns> 
+  /// <exception cref="std::invalid_argument"> If ``pixels`` is not positive and finite.</exception> 
+  /// <seealso cref="RPlot.tick_font_size"/>
+  public Plot tick_font_size(double pixels) {
+    Plot ret = new Plot(datamungePINVOKE.Plot_tick_font_size(swigCPtr, pixels), false);
+    return ret;
+  }
+
+  /// <summary>Places numeric ticks at round values (steps of 1, 2 or 5 times a power of ten, like        R's `pretty()`) instead of six evenly spaced ticks across the range (default on).</summary>
+  /// <param name="enabled">  True turns round ticks on; false restores six even ticks.</param> 
+  /// <returns>This plot, for chaining.</returns> 
+  /// <seealso cref="RPlot.pretty_ticks"/>
+  public Plot pretty_ticks(bool enabled) {
+    Plot ret = new Plot(datamungePINVOKE.Plot_pretty_ticks__SWIG_0(swigCPtr, enabled), false);
+    return ret;
+  }
+
+  /// <summary>Places numeric ticks at round values (steps of 1, 2 or 5 times a power of ten, like        R's `pretty()`) instead of six evenly spaced ticks across the range (default on).</summary>
+  /// <returns>This plot, for chaining.</returns> 
+  /// <seealso cref="RPlot.pretty_ticks"/>
+  public Plot pretty_ticks() {
+    Plot ret = new Plot(datamungePINVOKE.Plot_pretty_ticks__SWIG_1(swigCPtr), false);
+    return ret;
+  }
+
+  /// <summary>Returns the canvas width in pixels (default 960).</summary>
+  /// <returns>Width set by size().</returns>
   public uint width() {
     uint ret = datamungePINVOKE.Plot_width(swigCPtr);
     return ret;
   }
 
+  /// <summary>Returns the canvas height in pixels (default 640).</summary>
+  /// <returns>Height set by size().</returns>
   public uint height() {
     uint ret = datamungePINVOKE.Plot_height(swigCPtr);
     return ret;
   }
 
+  /// <summary>Borrows the main heading ("datamunge plot" until set) for the lifetime of this plot.</summary>
+  /// <returns>The current title; empty when the heading was cleared.</returns>
   public string title_text() {
     string ret = datamungePINVOKE.Plot_title_text(swigCPtr);
     return ret;
   }
 
+  /// <summary>Borrows the subtitle for the lifetime of this plot.</summary>
+  /// <returns>The current subtitle; empty (the default) when none is drawn.</returns>
+  public string subtitle_text() {
+    string ret = datamungePINVOKE.Plot_subtitle_text(swigCPtr);
+    return ret;
+  }
+
+  /// <summary>Borrows the horizontal-axis label ("x" until set) for the lifetime of this plot.</summary>
+  /// <returns>The current x-axis label.</returns>
   public string x_label_text() {
     string ret = datamungePINVOKE.Plot_x_label_text(swigCPtr);
     return ret;
   }
 
+  /// <summary>Borrows the vertical-axis label ("y" until set) for the lifetime of this plot.</summary>
+  /// <returns>The current y-axis label.</returns>
   public string y_label_text() {
     string ret = datamungePINVOKE.Plot_y_label_text(swigCPtr);
     return ret;
   }
 
-  public SWIGTYPE_p_std__vectorT_datamunge__plot__DataSeries_t series() {
-    SWIGTYPE_p_std__vectorT_datamunge__plot__DataSeries_t ret = new SWIGTYPE_p_std__vectorT_datamunge__plot__DataSeries_t(datamungePINVOKE.Plot_series(swigCPtr), false);
+  /// <summary>Borrows the drawn layers (points, lines, bars, ...) in the order they were added.</summary>
+  /// <returns>The series list; references are invalidated by adding another layer.</returns>
+  public SWIGTYPE_p_std__vectorT_datamunge__graphics__DataSeries_t series() {
+    SWIGTYPE_p_std__vectorT_datamunge__graphics__DataSeries_t ret = new SWIGTYPE_p_std__vectorT_datamunge__graphics__DataSeries_t(datamungePINVOKE.Plot_series(swigCPtr), false);
     return ret;
   }
 
+  /// <summary>Returns the canvas fill color set by background().</summary>
+  /// <returns>The background color (default white `{255, 255, 255}`).</returns>
   public RGB background_color() {
     RGB ret = new RGB(datamungePINVOKE.Plot_background_color(swigCPtr), true);
     return ret;
   }
 
+  /// <summary>Returns the axis and text color set by axis_color().</summary>
+  /// <returns>The axis color (default gray `{55, 65, 81}`).</returns>
   public RGB axes_color() {
     RGB ret = new RGB(datamungePINVOKE.Plot_axes_color(swigCPtr), true);
     return ret;
   }
 
+  /// <summary>Returns the grid-line color set by grid_color().</summary>
+  /// <returns>The grid color (default light gray `{229, 231, 235}`).</returns>
   public RGB major_grid_color() {
     RGB ret = new RGB(datamungePINVOKE.Plot_major_grid_color(swigCPtr), true);
     return ret;
   }
 
+  /// <summary>Reports whether the background grid is drawn (see show_grid()).</summary>
+  /// <returns>True (the default) when the grid is drawn.</returns>
   public bool grid_visible() {
     bool ret = datamungePINVOKE.Plot_grid_visible(swigCPtr);
     return ret;
   }
 
+  /// <summary>Reports whether x_limits() fixed the x range.</summary>
+  /// <returns>False (the default) while the x range is fitted to the data.</returns>
   public bool has_x_limits() {
     bool ret = datamungePINVOKE.Plot_has_x_limits(swigCPtr);
     return ret;
   }
 
+  /// <summary>Reports whether y_limits() fixed the y range.</summary>
+  /// <returns>False (the default) while the y range is fitted to the data.</returns>
   public bool has_y_limits() {
     bool ret = datamungePINVOKE.Plot_has_y_limits(swigCPtr);
     return ret;
   }
 
+  /// <summary>Returns the fixed left x limit; meaningful only when has_x_limits() is true.</summary>
+  /// <returns>The stored lower x limit (0 until x_limits() is called).</returns>
   public double x_min() {
     double ret = datamungePINVOKE.Plot_x_min(swigCPtr);
     return ret;
   }
 
+  /// <summary>Returns the fixed right x limit; meaningful only when has_x_limits() is true.</summary>
+  /// <returns>The stored upper x limit (1 until x_limits() is called).</returns>
   public double x_max() {
     double ret = datamungePINVOKE.Plot_x_max(swigCPtr);
     return ret;
   }
 
+  /// <summary>Returns the fixed bottom y limit; meaningful only when has_y_limits() is true.</summary>
+  /// <returns>The stored lower y limit (0 until y_limits() is called).</returns>
   public double y_min() {
     double ret = datamungePINVOKE.Plot_y_min(swigCPtr);
     return ret;
   }
 
+  /// <summary>Returns the fixed top y limit; meaningful only when has_y_limits() is true.</summary>
+  /// <returns>The stored upper y limit (1 until y_limits() is called).</returns>
   public double y_max() {
     double ret = datamungePINVOKE.Plot_y_max(swigCPtr);
     return ret;
   }
 
+  /// <summary>Reports whether hide_axes() suppressed axes, ticks, grid, and axis labels.</summary>
+  /// <returns>False (the default) when axes are drawn.</returns>
   public bool axes_hidden() {
     bool ret = datamungePINVOKE.Plot_axes_hidden(swigCPtr);
     return ret;
   }
 
+  /// <summary>Borrows the custom x tick texts; empty means numeric ticks.</summary>
+  /// <returns>Labels set by x_tick_labels() or x_ticks().</returns>
   public SVector x_tick_label_list() {
     SVector ret = new SVector(datamungePINVOKE.Plot_x_tick_label_list(swigCPtr), false);
     return ret;
   }
 
-  public SWIGTYPE_p_std__vectorT_datamunge__plot__ABLine_t reference_lines() {
-    SWIGTYPE_p_std__vectorT_datamunge__plot__ABLine_t ret = new SWIGTYPE_p_std__vectorT_datamunge__plot__ABLine_t(datamungePINVOKE.Plot_reference_lines(swigCPtr), false);
+  /// <summary>Data positions of x_tick_label_list(); empty means 0, 1, 2, ...</summary>
+  /// <returns>Positions set by x_ticks(); cleared by x_tick_labels().</returns>
+  public DVector x_tick_position_list() {
+    DVector ret = new DVector(datamungePINVOKE.Plot_x_tick_position_list(swigCPtr), false);
     return ret;
   }
 
-  public SWIGTYPE_p_std__vectorT_datamunge__plot__LegendEntry_t legend_entries() {
-    SWIGTYPE_p_std__vectorT_datamunge__plot__LegendEntry_t ret = new SWIGTYPE_p_std__vectorT_datamunge__plot__LegendEntry_t(datamungePINVOKE.Plot_legend_entries(swigCPtr), false);
+  /// <summary>Borrows the custom y tick texts; empty means numeric ticks.</summary>
+  /// <returns>Labels set by y_tick_labels() or y_ticks().</returns>
+  public SVector y_tick_label_list() {
+    SVector ret = new SVector(datamungePINVOKE.Plot_y_tick_label_list(swigCPtr), false);
     return ret;
   }
 
-  ///  Renders the plot as a standalone SVG document and returns it as a string.
+  /// <summary>Data positions of y_tick_label_list(); empty means 0, 1, 2, ...</summary>
+  /// <returns>Positions set by y_ticks(); cleared by y_tick_labels().</returns>
+  public DVector y_tick_position_list() {
+    DVector ret = new DVector(datamungePINVOKE.Plot_y_tick_position_list(swigCPtr), false);
+    return ret;
+  }
+
+  /// <summary>Borrows the reference lines added by abline(), abline_h(), abline_v(), and qqline().</summary>
+  /// <returns>Lines in insertion order; references are invalidated by adding another line.</returns>
+  public SWIGTYPE_p_std__vectorT_datamunge__graphics__ABLine_t reference_lines() {
+    SWIGTYPE_p_std__vectorT_datamunge__graphics__ABLine_t ret = new SWIGTYPE_p_std__vectorT_datamunge__graphics__ABLine_t(datamungePINVOKE.Plot_reference_lines(swigCPtr), false);
+    return ret;
+  }
+
+  /// <summary>Borrows the manual legend rows added by legend(); empty means an automatic legend.</summary>
+  /// <returns>Manual entries in insertion order.</returns>
+  public SWIGTYPE_p_std__vectorT_datamunge__graphics__LegendEntry_t legend_entries() {
+    SWIGTYPE_p_std__vectorT_datamunge__graphics__LegendEntry_t ret = new SWIGTYPE_p_std__vectorT_datamunge__graphics__LegendEntry_t(datamungePINVOKE.Plot_legend_entries(swigCPtr), false);
+    return ret;
+  }
+
+  /// <summary>True once margins() has been called; the renderer then uses the explicit margins.</summary>
+  /// <returns>False (the default) while the automatic margins apply.</returns>
+  public bool has_custom_margins() {
+    bool ret = datamungePINVOKE.Plot_has_custom_margins(swigCPtr);
+    return ret;
+  }
+
+  /// <summary>Returns the left margin in pixels; used only when has_custom_margins() is true.</summary>
+  /// <returns>The stored left margin (default 90).</returns>
+  public double margin_left() {
+    double ret = datamungePINVOKE.Plot_margin_left(swigCPtr);
+    return ret;
+  }
+
+  /// <summary>Returns the right margin in pixels; used only when has_custom_margins() is true.</summary>
+  /// <returns>The stored right margin (default 24).</returns>
+  public double margin_right() {
+    double ret = datamungePINVOKE.Plot_margin_right(swigCPtr);
+    return ret;
+  }
+
+  /// <summary>Returns the top margin in pixels; used only when has_custom_margins() is true.</summary>
+  /// <returns>The stored top margin (default 72).</returns>
+  public double margin_top() {
+    double ret = datamungePINVOKE.Plot_margin_top(swigCPtr);
+    return ret;
+  }
+
+  /// <summary>Returns the bottom margin in pixels; used only when has_custom_margins() is true.</summary>
+  /// <returns>The stored bottom margin (default 84).</returns>
+  public double margin_bottom() {
+    double ret = datamungePINVOKE.Plot_margin_bottom(swigCPtr);
+    return ret;
+  }
+
+  /// <summary>Returns the tick-label font size set by tick_font_size().</summary>
+  /// <returns>Font size in pixels (default 12).</returns>
+  public double tick_font_px() {
+    double ret = datamungePINVOKE.Plot_tick_font_px(swigCPtr);
+    return ret;
+  }
+
+  /// <summary>Reports whether pretty_ticks() is on.</summary>
+  /// <returns>False (the default) for six evenly spaced numeric ticks.</returns>
+  public bool pretty_ticks_enabled() {
+    bool ret = datamungePINVOKE.Plot_pretty_ticks_enabled(swigCPtr);
+    return ret;
+  }
+
+  /// <summary>Renders the plot as a standalone SVG document and returns it as a string.</summary>
+  ///  The document starts with an XML declaration and draws text as embedded Computer Modern
+  ///  glyph outlines, so it displays identically in any SVG viewer, with or without web fonts. The plot is not modified, and no file or display is used.
+  ///
+  /// <returns>The complete SVG text.</returns> 
+  /// <exception cref="std::runtime_error">  If the plot has no data series, or the canvas is smaller than
+  ///              its margins.</exception> 
+  ///
+  /// Title: Example
+  /// <code>      const auto svg = dm::Plot(dm::c(1.0, 2.0), dm::c(2.0, 1.0)).set_title("Tiny").to_svg();
+  ///      std::print("{}\n", svg.starts_with("&lt;?xml"));  // true
+  ///      std::print("{}\n", svg.contains("Tiny"));      // true</code>
+  ///
+  ///
+  ///
+  /// <seealso cref="save"/>
   public string to_svg() {
     string ret = datamungePINVOKE.Plot_to_svg(swigCPtr);
     return ret;
   }
 
+  /// <summary>Writes the plot to ``path``, choosing the format from the file extension        (R's `svg()`/`png()`/`pdf()` devices followed by `dev.off()`, in one call).</summary>
+  ///  `.svg` or no extension writes the same text as to_svg(); `.png` writes the raster image
+  ///  the X11 viewer displays; `.pdf` wraps that raster in a single-page PDF. The extension is
+  ///  case-sensitive. An existing file is overwritten. Needs no display.
+  ///
+  /// <param name="path">  Destination file; relative paths resolve against the working directory.</param> 
+  /// <exception cref="std::invalid_argument">  For any other extension (e.g. `.jpg`).</exception> 
+  /// <exception cref="std::runtime_error">  If the file cannot be opened for writing, the plot has no data
+  ///              series, or the canvas is smaller than its margins.</exception> 
+  ///
+  /// Title: Example
+  /// <code>      auto plt = dm::Plot(dm::c(1.0, 2.0, 3.0), dm::c(1.0, 4.0, 9.0)).set_title("Squares");
+  ///      plt.save("squares.svg");  // vector
+  ///      plt.save("squares.png");  // raster
+  ///      plt.save("squares.pdf");  // raster in a one-page PDF</code>
+  ///
+  ///
+  ///
+  /// <seealso cref="save_svg"/>
   public void save(string path) {
     datamungePINVOKE.Plot_save(swigCPtr, path);
     if (datamungePINVOKE.SWIGPendingException.Pending) throw datamungePINVOKE.SWIGPendingException.Retrieve();
   }
 
+  /// <summary>Writes to_svg() to ``path`` regardless of its extension.</summary>
+  /// <param name="path">  Destination file; an existing file is overwritten.</param> 
+  /// <exception cref="std::runtime_error">  If the file cannot be opened for writing, or rendering fails
+  ///              as described for to_svg().</exception> 
+  ///
+  /// Title: Example
+  /// <code>      dm::Plot(dm::c(1.0, 2.0), dm::c(1.0, 2.0)).save_svg("diagonal.txt");  // SVG text</code>
+  ///
+  ///
+  ///
+  /// <seealso cref="save"/>
   public void save_svg(string path) {
     datamungePINVOKE.Plot_save_svg(swigCPtr, path);
     if (datamungePINVOKE.SWIGPendingException.Pending) throw datamungePINVOKE.SWIGPendingException.Retrieve();
   }
 
+  /// <summary>Renders the plot as PNG image bytes (the same raster save() writes for `.png`).</summary>
+  /// <returns>The complete PNG file contents.</returns> 
+  /// <exception cref="std::runtime_error">  If rendering fails as described for to_svg().</exception> 
+  ///
+  /// Title: Example
+  /// <code>      const auto png = dm::Plot(dm::c(1.0, 2.0), dm::c(2.0, 1.0)).to_png();
+  ///      std::print("{}\n", png[1] == 'P');  // true: PNG signature</code>
+  ///
+  ///
+  ///
+  /// <seealso cref="save_png"/>
+  public SWIGTYPE_p_std__vectorT_unsigned_char_t to_png() {
+    SWIGTYPE_p_std__vectorT_unsigned_char_t ret = new SWIGTYPE_p_std__vectorT_unsigned_char_t(datamungePINVOKE.Plot_to_png(swigCPtr), true);
+    return ret;
+  }
+
+  /// <summary>Renders the plot as a one-page PDF holding the raster image.</summary>
+  /// <returns>The complete PDF file contents.</returns> 
+  /// <exception cref="std::runtime_error">  If rendering fails as described for to_svg().</exception> 
+  /// <seealso cref="save_pdf"/>
+  public SWIGTYPE_p_std__vectorT_unsigned_char_t to_pdf() {
+    SWIGTYPE_p_std__vectorT_unsigned_char_t ret = new SWIGTYPE_p_std__vectorT_unsigned_char_t(datamungePINVOKE.Plot_to_pdf(swigCPtr), true);
+    return ret;
+  }
+
+  /// <summary>Writes to_png() to ``path`` regardless of its extension.</summary>
+  /// <param name="path">  Destination file; an existing file is overwritten.</param> 
+  /// <exception cref="std::runtime_error">  If the file cannot be written or rendering fails.</exception> 
+  /// <seealso cref="save"/>
+  public void save_png(string path) {
+    datamungePINVOKE.Plot_save_png(swigCPtr, path);
+    if (datamungePINVOKE.SWIGPendingException.Pending) throw datamungePINVOKE.SWIGPendingException.Retrieve();
+  }
+
+  /// <summary>Writes to_pdf() to ``path`` regardless of its extension.</summary>
+  /// <param name="path">  Destination file; an existing file is overwritten.</param> 
+  /// <exception cref="std::runtime_error">  If the file cannot be written or rendering fails.</exception> 
+  /// <seealso cref="save"/>
+  public void save_pdf(string path) {
+    datamungePINVOKE.Plot_save_pdf(swigCPtr, path);
+    if (datamungePINVOKE.SWIGPendingException.Pending) throw datamungePINVOKE.SWIGPendingException.Retrieve();
+  }
+
+  /// <summary>Same as show(); kept as an alias for older code.</summary>
+  /// <param name="title_hint">  Window title; empty uses the plot's title.</param> 
+  /// <exception cref="std::runtime_error">  As for show().</exception> 
+  /// <seealso cref="show"/>
   public void view(string title_hint) {
     datamungePINVOKE.Plot_view__SWIG_0(swigCPtr, title_hint);
     if (datamungePINVOKE.SWIGPendingException.Pending) throw datamungePINVOKE.SWIGPendingException.Retrieve();
   }
 
+  /// <summary>Same as show(); kept as an alias for older code.</summary>
+  /// <exception cref="std::runtime_error">  As for show().</exception> 
+  /// <seealso cref="show"/>
   public void view() {
     datamungePINVOKE.Plot_view__SWIG_1(swigCPtr);
   }
 
+  /// <summary>Opens the plot in an interactive X11 window and blocks until it is closed        (like printing a plot in an interactive R session).</summary>
+  ///  The window has toolbar and keyboard zoom/pan (it re-renders from data bounds) and closes
+  ///  on q or Escape; the function returns only then. The window title is ``title_hint``, or
+  ///  the plot's title (title_text()) when the hint is empty. Requires a build with X11 support and a reachable `DISPLAY`; use save()
+  ///  in headless code such as tests and CI.
+  ///
+  /// <param name="title_hint">  Window title; empty (the default) uses the plot's title.</param> 
+  /// <exception cref="std::runtime_error">  If X11 support was not compiled in, the display cannot be
+  ///              opened, its visual is unsupported, or the plot has no data series.</exception> 
+  ///
+  /// Title: Example
+  /// <code>      const auto x = dm::runif(0, 1, 1000);
+  ///      const auto y = dm::sin(20 / (x + 0.25)) + dm::rnorm(0, 0.2, 1000);
+  ///      dm::Plot(x, y).set_title("Doppler").set_col("blue").show("Doppler signal");</code>
+  ///
+  ///
+  ///
+  /// <seealso cref="save"/>
   public void show(string title_hint) {
     datamungePINVOKE.Plot_show__SWIG_0(swigCPtr, title_hint);
     if (datamungePINVOKE.SWIGPendingException.Pending) throw datamungePINVOKE.SWIGPendingException.Retrieve();
   }
 
+  /// <summary>Opens the plot in an interactive X11 window and blocks until it is closed        (like printing a plot in an interactive R session).</summary>
+  ///  The window has toolbar and keyboard zoom/pan (it re-renders from data bounds) and closes
+  ///  on q or Escape; the function returns only then. The window title is ``title_hint``, or
+  ///  the plot's title (title_text()) when the hint is empty. Requires a build with X11 support and a reachable `DISPLAY`; use save()
+  ///  in headless code such as tests and CI.
+  ///
+  /// <exception cref="std::runtime_error">  If X11 support was not compiled in, the display cannot be
+  ///              opened, its visual is unsupported, or the plot has no data series.</exception> 
+  ///
+  /// Title: Example
+  /// <code>      const auto x = dm::runif(0, 1, 1000);
+  ///      const auto y = dm::sin(20 / (x + 0.25)) + dm::rnorm(0, 0.2, 1000);
+  ///      dm::Plot(x, y).set_title("Doppler").set_col("blue").show("Doppler signal");</code>
+  ///
+  ///
+  ///
+  /// <seealso cref="save"/>
   public void show() {
     datamungePINVOKE.Plot_show__SWIG_1(swigCPtr);
   }

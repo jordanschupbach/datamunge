@@ -1,3 +1,5 @@
+// CMD: just TARGET=hypothesis_tests_ex run-csharp
+
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -24,7 +26,7 @@ class Program {
   }
 
   static void Main() {
-    var iris = DataFrame.iris();
+    var iris = datamunge.data_iris();
 
     var setosaPetal = ColumnForSpecies(iris, "Petal.Length", "setosa");
     var versicolorPetal = ColumnForSpecies(iris, "Petal.Length", "versicolor");

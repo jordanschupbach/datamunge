@@ -9,7 +9,17 @@
 //------------------------------------------------------------------------------
 
 
-/// <summary>Nonlinear conjugate gradient with the Polak-Ribiere+ update and an Armijo line search.</summary>
+/// <summary>ConjugateGradient on the DifferentiableFunction callback interface. Nonlinear Polak-Ribiere-plus directions with negative beta truncated to zero, periodic/descent restarts and an Armijo line search. It is not linear CG with exact line minimisation and does not imply termination in p steps. Returns when gradient/change/search conditions stop progress. The caller supplies finite, dimensionally consistent callbacks. Inputs are borrowed; coordinates mutate in place and can retain a partial state if a callback throws. Calls use local optimizer state and propagate callback exceptions; sharing a mutable objective across threads requires external synchronisation. Normal return alone is not a uniform convergence certificate.</summary>
+/// Title: Example
+/// <code>      const dm::optim::ConjugateGradient optimizer;
+///      std::print("{}\n",optimizer.options().max_iterations); // 1000</code>
+///
+///
+///
+/// Title: References
+///  - J. Nocedal and S. J. Wright (2006), Numerical Optimization, second edition, https://doi.org/10.1007/978-0-387-40065-5. The implemented variant and stopping rules are specified above.
+///
+/// <seealso cref="ConjugateGradientOptions, trace_optimize"/>
 public class ConjugateGradient : global::System.IDisposable {
   private global::System.Runtime.InteropServices.HandleRef swigCPtr;
   protected bool swigCMemOwn;
@@ -57,16 +67,56 @@ public class ConjugateGradient : global::System.IDisposable {
     }
   }
 
+  /// <summary>Store a copy of the controls without running the objective.</summary>
+  /// <param name="options"> Method-specific controls; defaults are listed by ConjugateGradientOptions.</param> 
+  /// Title: Example
+  /// <code>      const dm::optim::ConjugateGradient optimizer;
+  ///      std::print("{}\n",optimizer.options().max_iterations); // 1000</code>
+  ///
+  ///
+  ///
+  /// <seealso cref="optimize"/>
   public ConjugateGradient(ConjugateGradientOptions options) : this(datamungePINVOKE.new_ConjugateGradient__SWIG_0(ConjugateGradientOptions.getCPtr(options)), true) {
     if (datamungePINVOKE.SWIGPendingException.Pending) throw datamungePINVOKE.SWIGPendingException.Retrieve();
   }
 
+  /// <summary>Store a copy of the controls without running the objective.</summary>
+  /// Title: Example
+  /// <code>      const dm::optim::ConjugateGradient optimizer;
+  ///      std::print("{}\n",optimizer.options().max_iterations); // 1000</code>
+  ///
+  ///
+  ///
+  /// <seealso cref="optimize"/>
   public ConjugateGradient() : this(datamungePINVOKE.new_ConjugateGradient__SWIG_1(), true) {
   }
 
+  /// <summary>Run ConjugateGradient from the supplied point using the configured finite budget. Nonlinear Polak-Ribiere-plus directions with negative beta truncated to zero, periodic/descent restarts and an Armijo line search. It is not linear CG with exact line minimisation and does not imply termination in p steps. Returns when gradient/change/search conditions stop progress.</summary>
+  /// <param name="function"> Borrowed DifferentiableFunction with matching finite output shapes.</param> 
+  /// <param name="coordinates"> Owned-by-caller finite start; overwritten with the native returned point.</param> 
+  /// <returns>Objective at the native returned coordinates; not a stop-status code.</returns> 
+  /// <exception cref="std::invalid_argument"> ConjugateGradient: tolerance must be non-negative; ConjugateGradient: armijo_c1 must be in (0, 1); ConjugateGradient: backtracking_factor must be in (0, 1).</exception> 
+  /// <exception cref="std::exception"> Exceptions from supplied callbacks propagate. Raw solvers do not uniformly reject nonfinite inputs.</exception> 
+  /// Title: Example
+  /// <code>      dm::optim::QuadraticObjective f({2,8},{1,-2});
+  ///      dm::optim::ConjugateGradientOptions controls;controls.max_iterations=5;
+  ///      std::vector&lt;double&gt; x{0,0};
+  ///      const auto value=dm::optim::ConjugateGradient(controls).optimize(f,x);
+  ///      std::print("{}\n",std::isfinite(value)); // true</code>
+  ///
+  ///
+  ///
+  /// <seealso cref="trace_optimize"/>
   public double optimize(DifferentiableFunction function, DVector coordinates) {
     double ret = datamungePINVOKE.ConjugateGradient_optimize(swigCPtr, DifferentiableFunction.getCPtr(function), DVector.getCPtr(coordinates));
     if (datamungePINVOKE.SWIGPendingException.Pending) throw datamungePINVOKE.SWIGPendingException.Retrieve();
+    return ret;
+  }
+
+  /// <summary>Borrow this optimizer's stored configuration.</summary>
+  /// <returns>Const option reference, valid during this object's lifetime; no mutation.</returns>
+  public ConjugateGradientOptions options() {
+    ConjugateGradientOptions ret = new ConjugateGradientOptions(datamungePINVOKE.ConjugateGradient_options(swigCPtr), false);
     return ret;
   }
 

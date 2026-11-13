@@ -1,3 +1,5 @@
+;; CMD: just TARGET=stl_ex run-guile
+
 (use-modules (datamunge))
 
 (define n 100)

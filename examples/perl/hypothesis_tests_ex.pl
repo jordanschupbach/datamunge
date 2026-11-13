@@ -1,3 +1,5 @@
+# CMD: just TARGET=hypothesis_tests_ex run-perl
+
 use strict;
 use warnings;
 
@@ -29,7 +31,7 @@ sub column_for_species {
   return \@out;
 }
 
-my $iris = Datamunge::DataFrame::iris();
+my $iris = Datamunge::data_iris();
 
 my $setosa_petal = column_for_species($iris, "Petal.Length", "setosa");
 my $versicolor_petal = column_for_species($iris, "Petal.Length", "versicolor");

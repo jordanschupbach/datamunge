@@ -113,7 +113,7 @@ value = dm.LBFGS().optimize(f, x)
 print(f"f={value} x={list(x)} (true minimum: f=0 at [1, 1])")
 
 print("\n=================== DifferentiableSeparableFunction: SGD vs. closed-form LM ===================")
-iris = dm.DataFrame.iris()
+iris = dm.data.iris()
 sepal_length = [iris.numeric_at("Sepal.Length", i) for i in range(iris.nrows())]
 sepal_width = [iris.numeric_at("Sepal.Width", i) for i in range(iris.nrows())]
 petal_length = [iris.numeric_at("Petal.Length", i) for i in range(iris.nrows())]

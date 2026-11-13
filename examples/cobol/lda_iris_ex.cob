@@ -1,6 +1,6 @@
 *> Linear discriminant analysis of iris species from all four measurements, with
 *> predictions for new flowers and a discriminant plot.
-*> Run with `just run-cobol TARGET=lda_iris_ex`.
+*> CMD: just TARGET=lda_iris_ex run-cobol
 IDENTIFICATION DIVISION.
 PROGRAM-ID. LDA-IRIS-EX.
 DATA DIVISION.
@@ -38,9 +38,9 @@ COPY "datamunge.cpy".
 01 NUM-EDIT-2 PIC Z(8)9.
 
 PROCEDURE DIVISION.
-    CALL "dm_data_frame_iris" USING DM-DATA-FRAME-IRIS DM-STATUS
+    CALL "dm_data_iris" USING DM-DATA-IRIS DM-STATUS
     PERFORM CHECK
-    MOVE DM-DATA-FRAME-IRIS-RESULT TO IRIS
+    MOVE DM-DATA-IRIS-RESULT TO IRIS
     MOVE IRIS TO DM-DATA-FRAME-NROWS-SELF
     CALL "dm_data_frame_nrows" USING DM-DATA-FRAME-NROWS DM-STATUS
     PERFORM CHECK

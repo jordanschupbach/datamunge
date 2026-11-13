@@ -8,8 +8,12 @@ NN_JOBS := env_var_or_default("DATAMUNGE_EXAMPLE_BUILD_JOBS", "4")
 SWIG_SRC := env_var_or_default("DATAMUNGE_SWIG_SRC", "")
 SWIG_OVERRIDE := if SWIG_SRC == "" { "" } else { " --override-input swig git+file://" + SWIG_SRC }
 # Likewise DATAMUNGE_ROSETTA_SRC: a Rosetta checkout to generate the Python bindings with,
-# instead of the revision in flake.lock (no relock needed after editing that checkout).
-ROSETTA_SRC := env_var_or_default("DATAMUNGE_ROSETTA_SRC", "")
+# instead of the github:jordanschupbach/rosetta revision in flake.lock (no relock needed after
+# editing that checkout). Unset, a checkout next to this one (../rosetta) is used when there is
+# one; "none" forces the pinned revision.
+ROSETTA_SIBLING := clean(justfile_directory() / ".." / "rosetta")
+ROSETTA_SRC_ENV := env_var_or_default("DATAMUNGE_ROSETTA_SRC", "")
+ROSETTA_SRC := if ROSETTA_SRC_ENV == "none" { "" } else if ROSETTA_SRC_ENV != "" { ROSETTA_SRC_ENV } else if path_exists(ROSETTA_SIBLING / "flake.nix") == "true" { ROSETTA_SIBLING } else { "" }
 ROSETTA_OVERRIDE := if ROSETTA_SRC == "" { "" } else { " --override-input rosetta git+file://" + ROSETTA_SRC }
 NIX_DEVELOP := "nix develop --accept-flake-config --option eval-cache false" + SWIG_OVERRIDE + ROSETTA_OVERRIDE
 # PKG_CONFIG_PATH the docs' mepml report blocks build against (empty: the shell's own;
@@ -57,7 +61,7 @@ run-java: build-java
   {{ NIX_DEVELOP }} .#java --command bash -c "gradle run --no-configuration-cache --args='{{ TARGET }}'"
 
 run-go: build-go
-  {{ NIX_DEVELOP }} .#go --command bash -c 'cd {{ BINDINGS_DIR }}/godatamunge && LD_LIBRARY_PATH="$(pwd)/../../build:$LD_LIBRARY_PATH" DYLD_LIBRARY_PATH="$(pwd)/../../build:$DYLD_LIBRARY_PATH" CGO_CPPFLAGS="-I$(pwd)/../../include" CGO_LDFLAGS="-L$(pwd)/../../build -ldatamunge" go run ../../examples/go/{{ TARGET }}.go'
+  {{ NIX_DEVELOP }} .#go --command bash -c 'cd {{ BINDINGS_DIR }}/godatamunge && LD_LIBRARY_PATH="$(pwd)/../../build:$LD_LIBRARY_PATH" DYLD_LIBRARY_PATH="$(pwd)/../../build:$DYLD_LIBRARY_PATH" CGO_CXXFLAGS="-std=c++23" CGO_CPPFLAGS="-I$(pwd)/../../include" CGO_LDFLAGS="-L$(pwd)/../../build -ldatamunge" go run ../../examples/go/{{ TARGET }}.go'
 
 run-rust: build-rust
   {{ NIX_DEVELOP }} .#rust --command bash -c 'export LD_LIBRARY_PATH="$(pkg-config --variable=libdir datamunge)${LD_LIBRARY_PATH:+:}$LD_LIBRARY_PATH" && cargo run --manifest-path {{ BINDINGS_DIR }}/rustdatamunge/Cargo.toml --example {{ TARGET }}'
@@ -101,7 +105,7 @@ run-r: build-r
    {{ NIX_DEVELOP }} .#r --command bash -c 'R_LIBS_USER="$(pwd)/build/r/library${R_LIBS_USER:+:}$R_LIBS_USER" Rscript examples/r/{{ TARGET }}.r'
 
 run-guile: build-guile
-  {{ NIX_DEVELOP }} .#guile --command bash -c 'cmake --install build/datamungeguile --prefix build/guile/prefix >/dev/null && guile_effective="$(pkg-config --variable=effective-version guile-3.0 2>/dev/null || echo 3.0)" && export GUILE_LOAD_PATH="$(pwd)/build/guile/prefix/share/guile/site/$guile_effective${GUILE_LOAD_PATH:+:}$GUILE_LOAD_PATH" && export LD_LIBRARY_PATH="$(pwd)/build/guile/prefix/lib/guile/$guile_effective/extensions:$(pwd)/build${LD_LIBRARY_PATH:+:}$LD_LIBRARY_PATH" && export DYLD_LIBRARY_PATH="$(pkg-config --variable=libdir datamunge)${DYLD_LIBRARY_PATH:+:}$DYLD_LIBRARY_PATH" && guile --no-auto-compile -s examples/guile/{{ TARGET }}.scm'
+  {{ NIX_DEVELOP }} .#guile --command bash -c 'cmake --install build/datamungeguile --prefix build/guile/prefix >/dev/null && guile_effective="$(guile -c "(display (effective-version))" 2>/dev/null || echo 3.0)" && export GUILE_LOAD_PATH="$(pwd)/build/guile/prefix/share/guile/site/$guile_effective${GUILE_LOAD_PATH:+:}$GUILE_LOAD_PATH" && export LD_LIBRARY_PATH="$(pwd)/build/guile/prefix/lib/guile/$guile_effective/extensions:$(pwd)/build/guile/prefix/lib64/guile/$guile_effective/extensions:$(pwd)/build${LD_LIBRARY_PATH:+:}$LD_LIBRARY_PATH" && export DYLD_LIBRARY_PATH="$(pkg-config --variable=libdir datamunge)${DYLD_LIBRARY_PATH:+:}$DYLD_LIBRARY_PATH" && guile --no-auto-compile -s examples/guile/{{ TARGET }}.scm'
 
 run-javascript: build-javascript
    {{ NIX_DEVELOP }} .#javascript --command bash -c 'node ./examples/javascript/{{ TARGET }}.js'
@@ -143,9 +147,9 @@ run-all-cobol: build-cobol
 
 run-all-guile: build-guile
   {{ NIX_DEVELOP }} .#guile --command bash -c 'cmake --install build/datamungeguile --prefix build/guile/prefix >/dev/null && \
-    guile_effective="$(pkg-config --variable=effective-version guile-3.0 2>/dev/null || echo 3.0)" && \
+    guile_effective="$(guile -c "(display (effective-version))" 2>/dev/null || echo 3.0)" && \
     export GUILE_LOAD_PATH="$(pwd)/build/guile/prefix/share/guile/site/$guile_effective${GUILE_LOAD_PATH:+:}$GUILE_LOAD_PATH" && \
-    export LD_LIBRARY_PATH="$(pwd)/build/guile/prefix/lib/guile/$guile_effective/extensions:$(pwd)/build${LD_LIBRARY_PATH:+:}$LD_LIBRARY_PATH" && \
+    export LD_LIBRARY_PATH="$(pwd)/build/guile/prefix/lib/guile/$guile_effective/extensions:$(pwd)/build/guile/prefix/lib64/guile/$guile_effective/extensions:$(pwd)/build${LD_LIBRARY_PATH:+:}$LD_LIBRARY_PATH" && \
     export DYLD_LIBRARY_PATH="$(pkg-config --variable=libdir datamunge)${DYLD_LIBRARY_PATH:+:}$DYLD_LIBRARY_PATH" && \
     pass=0; fail=0; failed=""; \
     for f in examples/guile/*.scm; do n="$(basename "$f")"; printf "\n========== %s ==========\n" "$n"; \
@@ -193,7 +197,7 @@ run-all-perl: build-perl
 run-all-go: build-go
   {{ NIX_DEVELOP }} .#go --command bash -c 'root="$(pwd)"; cd {{ BINDINGS_DIR }}/godatamunge && \
     export LD_LIBRARY_PATH="$root/build:$LD_LIBRARY_PATH" && export DYLD_LIBRARY_PATH="$root/build:$DYLD_LIBRARY_PATH" && \
-    export CGO_CPPFLAGS="-I$root/include" && export CGO_LDFLAGS="-L$root/build -ldatamunge" && \
+    export CGO_CXXFLAGS="-std=c++23" && export CGO_CPPFLAGS="-I$root/include" && export CGO_LDFLAGS="-L$root/build -ldatamunge" && \
     pass=0; fail=0; failed=""; \
     for f in "$root"/examples/go/*.go; do case "$f" in *_test.go) continue;; esac; n="$(basename "$f")"; printf "\n========== %s ==========\n" "$n"; \
       if go run "$f"; then pass=$((pass+1)); else fail=$((fail+1)); failed="$failed $n"; fi; done; \
@@ -291,11 +295,10 @@ prebuild-swig: prebuild-python prebuild-javascript prebuild-csharp prebuild-r pr
 prebuild-python:
   {{ NIX_DEVELOP }} .#python --command python scripts/prebuild_bindings.py python
 
+# JavaScript (Rosetta): src/datamunge_js_wrap*.cpp (the Node-API addon) and index.d.ts, whose JSDoc
+# carries the C++ documentation for editors (tsserver, mep's K).
 prebuild-javascript:
-  {{ NIX_DEVELOP }} .#cpp --command bash -c "cd ./include && swig -javascript -napi -c++ -o ../src/datamunge_js_wrap.cpp -oh ../src/datamunge_js_wrap.h ../src/datamungejs/src/datamungejs.i"
-  # Inject deterministic JS->C callback bridge helpers (SWIG Node backend doesn't support directors here).
-  perl -0777 -pi -e 's/#include <napi.h>\n/#include <napi.h>\n#include \"datamunge_js_callbacks.inl\"\n/s' src/datamunge_js_wrap.cpp
-  perl -0777 -pi -e 's/SWIG_InitializeModule\(env\);\n/SWIG_InitializeModule(env);\n  DatamungeJS_RegisterCallbackBridge(env, exports);\n/s' src/datamunge_js_wrap.cpp
+  {{ NIX_DEVELOP }} .#javascript --command python3 scripts/prebuild_bindings.py javascript
 
 prebuild-csharp:
   {{ NIX_DEVELOP }} .#cpp --command bash -c "find ./{{ BINDINGS_DIR }}/datamungedotnet -type f -name '*.cs' ! -name 'Program.cs' -exec rm {} +"
@@ -411,8 +414,9 @@ build-csharp: prebuild-csharp
   {{ NIX_DEVELOP }} .#csharp --command bash -c "cd ./{{ BINDINGS_DIR }}/datamungedotnet && dotnet build"
 
 
+# Links the shell's datamunge library rather than recompiling the core into the addon.
 build-javascript: prebuild-javascript
-    {{ NIX_DEVELOP }} .#jsbuild --command bash -c "npm --prefix . run build"
+    {{ NIX_DEVELOP }} .#javascript --command bash -c 'export npm_config_nodedir="$(dirname "$(dirname "$(command -v node)")")" && DATAMUNGE_USE_SYSTEM_LIB=1 npm --prefix . run build'
 
 build-python: prebuild-python
   # Recreate the venv when its interpreter is gone (a nix garbage collection removes the shell's python).
@@ -437,11 +441,11 @@ build-dotnet:
 build-go: prebuild-go build-cpp
   # For Go bindings, we need to run go build on the generated files
   # Note: This assumes the SWIG-generated files are already in place from prebuild-go
-  {{ NIX_DEVELOP }} .#go --command bash -c 'cd {{ BINDINGS_DIR }}/godatamunge && CGO_CPPFLAGS="-I$(pwd)/../../include" CGO_LDFLAGS="-L$(pwd)/../../build -ldatamunge" go build'
+  {{ NIX_DEVELOP }} .#go --command bash -c 'cd {{ BINDINGS_DIR }}/godatamunge && CGO_CXXFLAGS="-std=c++23" CGO_CPPFLAGS="-I$(pwd)/../../include" CGO_LDFLAGS="-L$(pwd)/../../build -ldatamunge" go build'
 
 build-d: prebuild-d
   # The native wrapper the generated module dlopens at startup (found via the dev shells' library path).
-  {{ NIX_DEVELOP }} .#d --command bash -c 'mkdir -p build/d && ext="$(case "$(uname -s)" in Darwin) echo dylib;; *) echo so;; esac)" && c++ -std=c++17 -shared -fPIC -O1 $(pkg-config --cflags datamunge) -o "build/d/libdatamunge_wrap.$ext" {{ BINDINGS_DIR }}/datamunged/source/datamunged_wrap.cpp $(pkg-config --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)'
+  {{ NIX_DEVELOP }} .#d --command bash -c 'mkdir -p build/d && ext="$(case "$(uname -s)" in Darwin) echo dylib;; *) echo so;; esac)" && c++ -std=c++23 -shared -fPIC -O1 $(pkg-config --cflags datamunge) -o "build/d/libdatamunge_wrap.$ext" {{ BINDINGS_DIR }}/datamunged/source/datamunged_wrap.cpp $(pkg-config --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)'
   bash -c 'set -euo pipefail; \
     compiler=""; \
     if command -v ldc2 >/dev/null 2>&1; then compiler="--compiler=ldc2"; elif command -v dmd >/dev/null 2>&1; then compiler="--compiler=dmd"; fi; \
@@ -474,14 +478,14 @@ build-tcl: prebuild-tcl
   {{ NIX_DEVELOP }} .#tcl --command bash -c 'ext="$(tclsh <<< "puts [info sharedlibextension]")" && if [ "$ext" != ".so" ]; then cp -f build/datamungetcl/Datamunge.so "build/datamungetcl/Datamunge$ext"; fi'
 
 build-lua: prebuild-lua
-  {{ NIX_DEVELOP }} .#lua --command bash -c 'datamunge_prefix="$(pkg-config --variable=prefix datamunge)" && cmake -S src/datamungelua -B build/datamungelua -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_RPATH_USE_LINK_PATH=ON -DCMAKE_PREFIX_PATH="$datamunge_prefix${CMAKE_PREFIX_PATH:+;$CMAKE_PREFIX_PATH}"'
+  {{ NIX_DEVELOP }} .#lua --command bash -c 'datamunge_prefix="$(pkg-config --variable=prefix datamunge)" && cmake -S src/datamungelua -B build/datamungelua -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_RPATH_USE_LINK_PATH=ON -U datamunge_DIR -DCMAKE_PREFIX_PATH="$datamunge_prefix${CMAKE_PREFIX_PATH:+;$CMAKE_PREFIX_PATH}"'
   {{ NIX_DEVELOP }} .#lua --command bash -c 'cmake --build build/datamungelua -j{{ JOBS }} --verbose'
   {{ NIX_DEVELOP }} .#lua --command bash -c 'rm -rf build/lua/prefix && cmake --install build/datamungelua --prefix build/lua/prefix'
 
 # Installs datamunge.asd, datamunge.lisp and datamunge.so into build/lisp/prefix, which the
 # dev shells put on CL_SOURCE_REGISTRY: (asdf:load-system "datamunge"), package nickname dm.
 build-lisp: prebuild-lisp
-  {{ NIX_DEVELOP }} .#lisp --command bash -c 'datamunge_prefix="$(pkg-config --variable=prefix datamunge)" && cmake -S src/datamungelisp -B build/datamungelisp -G Ninja -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_RPATH_USE_LINK_PATH=ON -DCMAKE_PREFIX_PATH="$datamunge_prefix${CMAKE_PREFIX_PATH:+;$CMAKE_PREFIX_PATH}"'
+  {{ NIX_DEVELOP }} .#lisp --command bash -c 'datamunge_prefix="$(pkg-config --variable=prefix datamunge)" && cmake -S src/datamungelisp -B build/datamungelisp -G Ninja -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_RPATH_USE_LINK_PATH=ON -U datamunge_DIR -DCMAKE_PREFIX_PATH="$datamunge_prefix${CMAKE_PREFIX_PATH:+;$CMAKE_PREFIX_PATH}"'
   {{ NIX_DEVELOP }} .#lisp --command bash -c 'cmake --build build/datamungelisp -j{{ JOBS }}'
   {{ NIX_DEVELOP }} .#lisp --command bash -c 'rm -rf build/lisp/prefix && cmake --install build/datamungelisp --prefix build/lisp/prefix'
 
@@ -491,7 +495,7 @@ test-lisp: build-lisp
 # Installs libdatamungecobol and the copybooks into build/cobol/prefix (lib/ and
 # share/cobol/copy/, which the dev shells put on COBCPY).
 build-cobol: prebuild-cobol
-  {{ NIX_DEVELOP }} .#cobol --command bash -c 'datamunge_prefix="$(pkg-config --variable=prefix datamunge)" && cmake -S src/datamungecobol -B build/datamungecobol -G Ninja -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_RPATH_USE_LINK_PATH=ON -DCMAKE_PREFIX_PATH="$datamunge_prefix${CMAKE_PREFIX_PATH:+;$CMAKE_PREFIX_PATH}"'
+  {{ NIX_DEVELOP }} .#cobol --command bash -c 'datamunge_prefix="$(pkg-config --variable=prefix datamunge)" && cmake -S src/datamungecobol -B build/datamungecobol -G Ninja -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_RPATH_USE_LINK_PATH=ON -U datamunge_DIR -DCMAKE_PREFIX_PATH="$datamunge_prefix${CMAKE_PREFIX_PATH:+;$CMAKE_PREFIX_PATH}"'
   {{ NIX_DEVELOP }} .#cobol --command bash -c 'cmake --build build/datamungecobol -j{{ JOBS }}'
   {{ NIX_DEVELOP }} .#cobol --command bash -c 'rm -rf build/cobol/prefix && cmake --install build/datamungecobol --prefix build/cobol/prefix'
 
@@ -648,7 +652,7 @@ test-d: prebuild-d
 
 
 test-go: build-go
-    {{ NIX_DEVELOP }} .#go --command bash -c 'cd {{ BINDINGS_DIR }}/godatamunge && LD_LIBRARY_PATH="$(pwd)/../../build:$LD_LIBRARY_PATH" CGO_CPPFLAGS="-I$(pwd)/../../include" CGO_LDFLAGS="-L$(pwd)/../../build -ldatamunge" go test ./...'
+    {{ NIX_DEVELOP }} .#go --command bash -c 'cd {{ BINDINGS_DIR }}/godatamunge && LD_LIBRARY_PATH="$(pwd)/../../build:$LD_LIBRARY_PATH" CGO_CXXFLAGS="-std=c++23" CGO_CPPFLAGS="-I$(pwd)/../../include" CGO_LDFLAGS="-L$(pwd)/../../build -ldatamunge" go test ./...'
 
 
 test-javascript: build-javascript

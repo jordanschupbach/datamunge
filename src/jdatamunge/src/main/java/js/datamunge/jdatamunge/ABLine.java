@@ -9,7 +9,26 @@
 package js.datamunge.jdatamunge;
 
 /**
- *  A straight reference line spanning the full plotting area, as drawn by R's `abline()`.
+ *  A straight reference line across the whole plotting area, as drawn by R's<br>
+ *         `abline(a, b)`, `abline(h =)` and `abline(v =)`.<br>
+ * <br>
+ *  A sloped or horizontal line is y = value + slope * x evaluated at both ends of the visible<br>
+ *  x range; a vertical line sits at x = value and ignores slope. Reference lines are drawn<br>
+ *  beneath every DataSeries. Vertical lines widen the automatic x range to include them;<br>
+ *  sloped and horizontal lines never change the axis ranges. Created by RPlot::abline(),<br>
+ *  abline_h(), abline_v(), and qqline(); read back through Plot::reference_lines().<br>
+ * <br>
+ *  <p alt="Example"><br>
+ *  {@code 
+ auto plt = dm::Plot(dm::c(0.0, 1.0), dm::c(0.0, 2.0)).abline(0.5, 2.0).abline_v(0.25);
+ const auto& lines = plt.reference_lines();
+ std::print("{} {} {}\n", lines[0].slope, lines[1].vertical, lines[1].value);  // 2 true 0.25
+ }</p><br>
+ * <br>
+ *  <p alt="References"><br>
+ *  - R `abline()`: https://stat.ethz.ch/R-manual/R-devel/library/graphics/html/abline.html</p><br>
+ * <br>
+ *  @see RPlot#abline(), Plot::reference_lines()
  */
 public class ABLine {
   private transient long swigCPtr;

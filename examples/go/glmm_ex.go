@@ -1,3 +1,5 @@
+// CMD: just TARGET=glmm_ex run-go
+
 package main
 
 import (
@@ -31,7 +33,7 @@ func randn() float64 {
 
 func main() {
 	fmt.Println("=================== Binomial (logistic) mixed model on a real dataset (penguins) ===================")
-	penguins := datamunge.DataFramePenguins()
+	penguins := datamunge.DataPenguins()
 	isMale := []float64{}
 	bodyMass := []float64{}
 	island := []string{}

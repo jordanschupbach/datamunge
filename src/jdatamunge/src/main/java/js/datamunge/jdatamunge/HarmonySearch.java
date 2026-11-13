@@ -71,4 +71,12 @@ public class HarmonySearch {
     return datamungeJNI.HarmonySearch_optimize(swigCPtr, this, ArbitraryFunction.getCPtr(function), function, DVector.getCPtr(coordinates), coordinates, DVector.getCPtr(lower_bound), lower_bound, DVector.getCPtr(upper_bound), upper_bound);
   }
 
+  /**
+   *  The options this HarmonySearch was configured with.<br>
+   *  @return The stored options.
+   */
+  public HarmonySearchOptions options() {
+    return new HarmonySearchOptions(datamungeJNI.HarmonySearch_options(swigCPtr, this), false);
+  }
+
 }

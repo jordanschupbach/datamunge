@@ -1,3 +1,5 @@
+# CMD: just TARGET=ggplot_ex run-tcl
+
 package require Datamunge 0.0.1
 
 # Demonstrates datamunge::GGPlot -- the ggplot2-style grammar-of-graphics library.
@@ -10,7 +12,7 @@ proc rgb {r g b} {
   return $c
 }
 
-set iris [datamunge::DataFrame_iris]
+set iris [datamunge::data_iris]
 
 # ggplot(iris, aes(x = Sepal.Length, y = Sepal.Width, color = Species)) + geom_point()
 set scatter [datamunge::new_GGPlot $iris "Sepal.Length" "Sepal.Width" "Species"]

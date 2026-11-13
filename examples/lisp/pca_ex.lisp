@@ -1,8 +1,10 @@
+;; CMD: just TARGET=pca_ex run-lisp
+
 ;;;; PCA on iris: summary, PC1 loadings, scores frame, score/scree plots, scaled vs unscaled.
 (require "asdf")
 (asdf:load-system "datamunge")
 
-(defparameter *iris* (dm:data-frame-iris))
+(defparameter *iris* (dm.data:iris))
 (defparameter *feature-columns* #("Sepal.Length" "Sepal.Width" "Petal.Length" "Petal.Width"))
 
 ;; species labels, for the grouped (colored-by-species) scores plot

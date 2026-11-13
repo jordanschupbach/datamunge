@@ -117,7 +117,7 @@ print(f"NUTS: mu ~ N({m}, {s}^2), accept rate = {result.accept_rate}, step size 
       f"divergences = {result.num_divergences}")
 
 print("\n=================== Bayesian logistic regression vs. GLM's MLE (iris) ===================")
-iris = dm.DataFrame.iris()
+iris = dm.data.iris()
 is_virginica, petal_length = [], []
 for i in range(iris.nrows()):
     species = iris.string_at("Species", i)

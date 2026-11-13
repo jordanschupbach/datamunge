@@ -1,3 +1,5 @@
+;; CMD: just TARGET=elastic_net_iris_ex run-lisp
+
 ;;;; Ridge, Lasso and Elastic Net on iris, with coefficient-path and CV-curve figures.
 (require "asdf")
 (asdf:load-system "datamunge")
@@ -5,7 +7,7 @@
 (defparameter *formula*
   "Petal.Length ~ Sepal.Length + Sepal.Width + Petal.Width + Sepal.Length:Petal.Width")
 
-(defparameter *iris* (dm:data-frame-iris))
+(defparameter *iris* (dm.data:iris))
 (format t "iris: ~d rows x ~d cols~%" (dm:nrows *iris*) (dm:ncols *iris*))
 (format t "formula: ~a~%~%" *formula*)
 

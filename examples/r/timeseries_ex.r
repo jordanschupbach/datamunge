@@ -1,5 +1,5 @@
-# CMD: nix develop .#r --command Rscript examples/r/timeseries_ex.r
-# REPL: nix develop .#r --command R --no-save --quiet
+# CMD: nix develop .#r --command env R_LIBS_USER=build/r/library Rscript examples/r/timeseries_ex.r
+# REPL: nix develop .#r --command env R_LIBS_USER=build/r/library R --no-save --quiet
 # Enum-valued options fields (TrendType, SeasonalType) take the enumerator name,
 # e.g. options$trend <- "Additive" (or TrendType$Additive).
 library(datamunger)

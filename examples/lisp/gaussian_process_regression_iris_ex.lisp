@@ -1,10 +1,12 @@
+;; CMD: just TARGET=gaussian_process_regression_iris_ex run-lisp
+
 ;;;; Gaussian process regression of Petal.Length on Petal.Width (iris), with confidence intervals.
 (require "asdf")
 (asdf:load-system "datamunge")
 
 (defparameter +formula+ "Petal.Length ~ Petal.Width")
 
-(defparameter *iris* (dm:data-frame-iris))
+(defparameter *iris* (dm.data:iris))
 (format t "iris: ~a rows x ~a cols~%" (dm:nrows *iris*) (dm:ncols *iris*))
 (format t "formula: ~a~%~%" +formula+)
 

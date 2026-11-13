@@ -9,6 +9,7 @@
 //------------------------------------------------------------------------------
 
 
+///  Output of ImportanceSampling::sample().
 public class ImportanceSamplingResult : global::System.IDisposable {
   private global::System.Runtime.InteropServices.HandleRef swigCPtr;
   protected bool swigCMemOwn;

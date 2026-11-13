@@ -8,6 +8,23 @@
 
 package js.datamunge.jdatamunge;
 
+/**
+ *  FISTA on the ProximalFunction callback interface.<br>
+ *  Classical t recurrence (1+sqrt(1+4*t^2))/2 and extrapolated gradient points, followed by the supplied proximal map. Stops on successive accepted-coordinate displacement. No adaptive restart, backtracking or monotonicity safeguard. Supply the correct proximal dimensions and a rate at most 1/L for the standard convex bound.<br>
+ *  The caller supplies finite, dimensionally consistent callbacks. Inputs are borrowed;<br>
+ *  coordinates mutate in place and can retain a partial state if a callback throws.<br>
+ *  Calls use local optimizer state and propagate callback exceptions; sharing a mutable<br>
+ *  objective across threads requires external synchronisation. Normal return alone<br>
+ *  is not a uniform convergence certificate.<br>
+ *  <p alt="Example"><br>
+ *  {@code 
+ const dm::optim::FISTA optimizer;
+ std::print("{}\n",optimizer.options().max_iterations); // 10000
+ }</p><br>
+ *  <p alt="References"><br>
+ *  - A. Beck and M. Teboulle (2009), A Fast Iterative Shrinkage-Thresholding Algorithm for Linear Inverse Problems, https://doi.org/10.1137/080716542<br>
+ *  </p>@see FISTAOptions, trace_optimize()
+ */
 public class FISTA {
   private transient long swigCPtr;
   protected transient boolean swigCMemOwn;
@@ -48,16 +65,61 @@ public class FISTA {
     }
   }
 
+  /**
+   *  Store a copy of the controls without running the objective.<br>
+   *  @param options Method-specific controls; defaults are listed by FISTAOptions.<br>
+   *  <p alt="Example"><br>
+   *  {@code 
+   const dm::optim::FISTA optimizer;
+   std::print("{}\n",optimizer.options().max_iterations); // 10000
+   }</p><br>
+   *  @see optimize()
+   */
   public FISTA(FISTAOptions options) {
     this(datamungeJNI.new_FISTA__SWIG_0(FISTAOptions.getCPtr(options), options), true);
   }
 
+  /**
+   *  Store a copy of the controls without running the objective.<br>
+   *  <p alt="Example"><br>
+   *  {@code 
+   const dm::optim::FISTA optimizer;
+   std::print("{}\n",optimizer.options().max_iterations); // 10000
+   }</p><br>
+   *  @see optimize()
+   */
   public FISTA() {
     this(datamungeJNI.new_FISTA__SWIG_1(), true);
   }
 
+  /**
+   *  Run FISTA from the supplied point using the configured finite budget.<br>
+   *  Classical t recurrence (1+sqrt(1+4*t^2))/2 and extrapolated gradient points, followed by the supplied proximal map. Stops on successive accepted-coordinate displacement. No adaptive restart, backtracking or monotonicity safeguard. Supply the correct proximal dimensions and a rate at most 1/L for the standard convex bound.<br>
+   *  @param function Borrowed ProximalFunction with matching finite output shapes.<br>
+   *  @param coordinates Owned-by-caller finite start; overwritten with the native returned point.<br>
+   *  @return Objective at the native returned coordinates; not a stop-status code.<br>
+   *  @throws std::invalid_argument FISTA: step_size must be positive.<br>
+   *  @throws std::exception Exceptions from supplied callbacks propagate. Raw solvers do not uniformly reject nonfinite inputs.<br>
+   *  <p alt="Example"><br>
+   *  {@code 
+   dm::optim::L1LeastSquaresObjective f({{1}},{3},1);
+   dm::optim::FISTAOptions controls;controls.max_iterations=5;
+   std::vector<double> x{0};
+   const auto value=dm::optim::FISTA(controls).optimize(f,x);
+   std::print("{}\n",std::isfinite(value)); // true
+   }</p><br>
+   *  @see trace_optimize(), FISTAOptions
+   */
   public double optimize(ProximalFunction function, DVector coordinates) {
     return datamungeJNI.FISTA_optimize(swigCPtr, this, ProximalFunction.getCPtr(function), function, DVector.getCPtr(coordinates), coordinates);
+  }
+
+  /**
+   *  Borrow this optimizer's stored configuration.<br>
+   *  @return Const option reference, valid during this object's lifetime; no mutation.
+   */
+  public FISTAOptions options() {
+    return new FISTAOptions(datamungeJNI.FISTA_options(swigCPtr, this), false);
   }
 
 }

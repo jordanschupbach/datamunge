@@ -1,4 +1,6 @@
 <?php
+// CMD: just TARGET=datamunge_ex run-php
+
 
 hello();
 

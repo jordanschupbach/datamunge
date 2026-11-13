@@ -8,6 +8,9 @@
 
 package js.datamunge.jdatamunge;
 
+/**
+ *  Output of ImportanceSampling::sample().
+ */
 public class ImportanceSamplingResult {
   private transient long swigCPtr;
   protected transient boolean swigCMemOwn;

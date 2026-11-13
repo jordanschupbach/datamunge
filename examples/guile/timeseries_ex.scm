@@ -1,3 +1,5 @@
+;; CMD: just TARGET=timeseries_ex run-guile
+
 (use-modules (datamunge) (srfi srfi-1))
 
 (define (my-rand) (random 1.0))

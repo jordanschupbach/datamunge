@@ -1,3 +1,5 @@
+// CMD: just TARGET=bspline_ex run-d
+
 module app;
 
 import std.stdio : writeln, writefln;

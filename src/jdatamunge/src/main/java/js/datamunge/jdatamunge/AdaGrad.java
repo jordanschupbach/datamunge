@@ -9,9 +9,21 @@
 package js.datamunge.jdatamunge;
 
 /**
- *  Full-batch AdaGrad (Duchi, Hazan, Singer 2011) on a DifferentiableFunction.  AdaGrad<br>
- *         scales each coordinate's step by the inverse root of its accumulated squared gradient,<br>
- *         making it useful when gradient magnitudes differ substantially by coordinate.
+ *  AdaGrad on the DifferentiableFunction callback interface.<br>
+ *  Accumulates squared full gradients; divides each update by sqrt(sum+epsilon). Tests the pre-update gradient norm after applying the update. Every optimize call resets the accumulator. O(p) local storage.<br>
+ *  The caller supplies finite, dimensionally consistent callbacks. Inputs are borrowed;<br>
+ *  coordinates mutate in place and can retain a partial state if a callback throws.<br>
+ *  Calls use local optimizer state and propagate callback exceptions; sharing a mutable<br>
+ *  objective across threads requires external synchronisation. Normal return alone<br>
+ *  is not a uniform convergence certificate.<br>
+ *  <p alt="Example"><br>
+ *  {@code 
+ const dm::optim::AdaGrad optimizer;
+ std::print("{}\n",optimizer.options().max_iterations); // 10000
+ }</p><br>
+ *  <p alt="References"><br>
+ *  - J. Duchi, E. Hazan and Y. Singer (2011), Adaptive Subgradient Methods for Online Learning and Stochastic Optimization, https://jmlr.org/papers/v12/duchi11a.html<br>
+ *  </p>@see AdaGradOptions, trace_optimize()
  */
 public class AdaGrad {
   private transient long swigCPtr;
@@ -53,16 +65,61 @@ public class AdaGrad {
     }
   }
 
+  /**
+   *  Store a copy of the controls without running the objective.<br>
+   *  @param options Method-specific controls; defaults are listed by AdaGradOptions.<br>
+   *  <p alt="Example"><br>
+   *  {@code 
+   const dm::optim::AdaGrad optimizer;
+   std::print("{}\n",optimizer.options().max_iterations); // 10000
+   }</p><br>
+   *  @see optimize()
+   */
   public AdaGrad(AdaGradOptions options) {
     this(datamungeJNI.new_AdaGrad__SWIG_0(AdaGradOptions.getCPtr(options), options), true);
   }
 
+  /**
+   *  Store a copy of the controls without running the objective.<br>
+   *  <p alt="Example"><br>
+   *  {@code 
+   const dm::optim::AdaGrad optimizer;
+   std::print("{}\n",optimizer.options().max_iterations); // 10000
+   }</p><br>
+   *  @see optimize()
+   */
   public AdaGrad() {
     this(datamungeJNI.new_AdaGrad__SWIG_1(), true);
   }
 
+  /**
+   *  Run AdaGrad from the supplied point using the configured finite budget.<br>
+   *  Accumulates squared full gradients; divides each update by sqrt(sum+epsilon). Tests the pre-update gradient norm after applying the update. Every optimize call resets the accumulator. O(p) local storage.<br>
+   *  @param function Borrowed DifferentiableFunction with matching finite output shapes.<br>
+   *  @param coordinates Owned-by-caller finite start; overwritten with the native returned point.<br>
+   *  @return Objective at the native returned coordinates; not a stop-status code.<br>
+   *  @throws std::invalid_argument AdaGrad: step_size must be positive; AdaGrad: epsilon must be positive; AdaGrad: tolerance must be non-negative.<br>
+   *  @throws std::exception Exceptions from supplied callbacks propagate. Raw solvers do not uniformly reject nonfinite inputs.<br>
+   *  <p alt="Example"><br>
+   *  {@code 
+   dm::optim::QuadraticObjective f({2,8},{1,-2});
+   dm::optim::AdaGradOptions controls;controls.max_iterations=5;
+   std::vector<double> x{0,0};
+   const auto value=dm::optim::AdaGrad(controls).optimize(f,x);
+   std::print("{}\n",std::isfinite(value)); // true
+   }</p><br>
+   *  @see trace_optimize(), AdaGradOptions
+   */
   public double optimize(DifferentiableFunction function, DVector coordinates) {
     return datamungeJNI.AdaGrad_optimize(swigCPtr, this, DifferentiableFunction.getCPtr(function), function, DVector.getCPtr(coordinates), coordinates);
+  }
+
+  /**
+   *  Borrow this optimizer's stored configuration.<br>
+   *  @return Const option reference, valid during this object's lifetime; no mutation.
+   */
+  public AdaGradOptions options() {
+    return new AdaGradOptions(datamungeJNI.AdaGrad_options(swigCPtr, this), false);
   }
 
 }

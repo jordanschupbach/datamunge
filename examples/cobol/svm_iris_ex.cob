@@ -1,5 +1,5 @@
 *> Support vector machine on iris: RBF and linear kernels, confusion matrix and predictions.
-*> Run with `just run-cobol TARGET=svm_iris_ex`.
+*> CMD: just TARGET=svm_iris_ex run-cobol
 IDENTIFICATION DIVISION.
 PROGRAM-ID. SVM-IRIS-EX.
 DATA DIVISION.
@@ -50,9 +50,9 @@ COPY "datamunge.cpy".
 01 J            USAGE BINARY-LONG.
 
 PROCEDURE DIVISION.
-    CALL "dm_data_frame_iris" USING DM-DATA-FRAME-IRIS DM-STATUS
+    CALL "dm_data_iris" USING DM-DATA-IRIS DM-STATUS
     PERFORM CHECK
-    MOVE DM-DATA-FRAME-IRIS-RESULT TO IRIS
+    MOVE DM-DATA-IRIS-RESULT TO IRIS
     MOVE IRIS TO DM-DATA-FRAME-NROWS-SELF DM-DATA-FRAME-NCOLS-SELF
     CALL "dm_data_frame_nrows" USING DM-DATA-FRAME-NROWS DM-STATUS
     CALL "dm_data_frame_ncols" USING DM-DATA-FRAME-NCOLS DM-STATUS

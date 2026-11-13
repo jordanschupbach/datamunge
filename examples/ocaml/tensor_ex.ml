@@ -1,3 +1,5 @@
+(* CMD: just TARGET=tensor_ex run-ocaml *)
+
 open Swig
 open Datamunge
 
@@ -65,7 +67,7 @@ let () =
   Printf.printf "count(r >= 6) = %g\n" (get_float (invoke mask "sum" C_void));
 
   print_endline "\n=================== A real dataset as a Tensor ===================";
-  let iris = _DataFrame_iris C_void in
+  let iris = _data_iris C_void in
   let n = get_int (invoke iris "nrows" C_void) in
   let flat = ref [] in
   for i = 0 to n - 1 do

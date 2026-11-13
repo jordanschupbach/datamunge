@@ -1,3 +1,5 @@
+% CMD: just TARGET=tensor_ex run-octave
+
 1;
 
 datamunge;
@@ -77,7 +79,7 @@ printf("r >= 6 -> %s\n", Tensor_to_string(mask));
 printf("count(r >= 6) = %g\n", Tensor_sum(mask));
 
 printf("\n=================== A real dataset as a Tensor ===================\n");
-iris = DataFrame_iris();
+iris = data_iris();
 n = DataFrame_nrows(iris);
 flat = [];
 for i = 0:(n - 1)

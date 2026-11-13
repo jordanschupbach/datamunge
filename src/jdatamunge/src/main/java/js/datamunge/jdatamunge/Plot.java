@@ -8,6 +8,27 @@
 
 package js.datamunge.jdatamunge;
 
+/**
+ *  Renderer-facing state shared by every 2-D plot: canvas, labels, axes, and series.<br>
+ * <br>
+ *  User code works with the derived RPlot (spelled `dm::Plot`), whose setters return `RPlot&amp;`;<br>
+ *  this base holds the data, the read-only accessors, and the output functions to_svg(),<br>
+ *  save(), and show(). The base-class setters below return `Plot&amp;` and are what RPlot's<br>
+ *  same-named setters forward to; call the RPlot forms in user code so chains keep the RPlot<br>
+ *  type. A `const Plot&amp;` is also what RLayout::add() accepts and RLayout::panel() returns.<br>
+ * <br>
+ *  Every output function renders from the stored state, so it throws std::runtime_error for a<br>
+ *  plot with no data series (reference lines and legend rows alone are not enough) or a canvas<br>
+ *  too small for its margins. Plots are copyable values with no shared state; distinct plots may<br>
+ *  be used from different threads, but one plot must not be mutated while it is rendered.<br>
+ * <br>
+ *  <p alt="Example"><br>
+ *  {@code 
+ const dm::graphics::Plot& base = dm::Plot(dm::c(1.0, 2.0), dm::c(1.0, 4.0)).set_title("Base");
+ std::print("{} {}x{}\n", base.title_text(), base.width(), base.height());  // Base 960x640
+ }</p><br>
+ *  @see RPlot, RLayout
+ */
 public class Plot {
   private transient long swigCPtr;
   protected transient boolean swigCMemOwn;
@@ -48,169 +69,664 @@ public class Plot {
     }
   }
 
+  /**
+   *  Base-class form of RPlot::size(): sets the canvas size in pixels (default 960x640).<br>
+   *  @param width  Canvas width in pixels.<br>
+   *  @param height  Canvas height in pixels.<br>
+   *  @return This plot, for chaining.<br>
+   *  @see RPlot#size()
+   */
   public Plot size(long width, long height) {
     return new Plot(datamungeJNI.Plot_size(swigCPtr, this, width, height), false);
   }
 
+  /**
+   *  Base-class form of RPlot::title(): sets the main heading; empty removes it.<br>
+   *  @param value  Heading text (moved into the plot).<br>
+   *  @return This plot, for chaining.<br>
+   *  @see RPlot#set_title()
+   */
   public Plot title(String value) {
     return new Plot(datamungeJNI.Plot_title(swigCPtr, this, value), false);
   }
 
+  /**
+   *  Sets an optional subtitle displayed beneath the title; owns the supplied text.<br>
+   *  @param value  Subtitle text; empty removes it.<br>
+   *  @return This plot, for chaining.<br>
+   *  @see RPlot#set_subtitle()
+   */
+  public Plot subtitle(String value) {
+    return new Plot(datamungeJNI.Plot_subtitle(swigCPtr, this, value), false);
+  }
+
+  /**
+   *  Base-class form of RPlot::x_label(): sets the horizontal-axis label.<br>
+   *  @param value  Label text (moved into the plot).<br>
+   *  @return This plot, for chaining.<br>
+   *  @see RPlot#set_xlab()
+   */
   public Plot x_label(String value) {
     return new Plot(datamungeJNI.Plot_x_label(swigCPtr, this, value), false);
   }
 
+  /**
+   *  Base-class form of RPlot::y_label(): sets the vertical-axis label.<br>
+   *  @param value  Label text (moved into the plot).<br>
+   *  @return This plot, for chaining.<br>
+   *  @see RPlot#set_ylab()
+   */
   public Plot y_label(String value) {
     return new Plot(datamungeJNI.Plot_y_label(swigCPtr, this, value), false);
   }
 
+  /**
+   *  Base-class form of RPlot::background(): sets the canvas fill color.<br>
+   *  @param color  Fill for the whole canvas (default white).<br>
+   *  @return This plot, for chaining.<br>
+   *  @see RPlot#background()
+   */
   public Plot background(RGB color) {
     return new Plot(datamungeJNI.Plot_background(swigCPtr, this, RGB.getCPtr(color), color), false);
   }
 
+  /**
+   *  Base-class form of RPlot::axis_color(): sets the axis-line and text color.<br>
+   *  @param color  Color for axis lines, ticks, axis labels, title, and subtitle.<br>
+   *  @return This plot, for chaining.<br>
+   *  @see RPlot#axis_color()
+   */
   public Plot axis_color(RGB color) {
     return new Plot(datamungeJNI.Plot_axis_color(swigCPtr, this, RGB.getCPtr(color), color), false);
   }
 
+  /**
+   *  Base-class form of RPlot::grid_color(): sets the grid-line color.<br>
+   *  @param color  Grid-line color (default light gray `{229, 231, 235}`).<br>
+   *  @return This plot, for chaining.<br>
+   *  @see RPlot#grid_color()
+   */
   public Plot grid_color(RGB color) {
     return new Plot(datamungeJNI.Plot_grid_color(swigCPtr, this, RGB.getCPtr(color), color), false);
   }
 
+  /**
+   *  Base-class form of RPlot::show_grid(): turns the background grid on or off.<br>
+   *  @param enabled  True (the default) draws the grid.<br>
+   *  @return This plot, for chaining.<br>
+   *  @see RPlot#show_grid()
+   */
   public Plot show_grid(boolean enabled) {
     return new Plot(datamungeJNI.Plot_show_grid__SWIG_0(swigCPtr, this, enabled), false);
   }
 
+  /**
+   *  Base-class form of RPlot::show_grid(): turns the background grid on or off.<br>
+   *  @return This plot, for chaining.<br>
+   *  @see RPlot#show_grid()
+   */
   public Plot show_grid() {
     return new Plot(datamungeJNI.Plot_show_grid__SWIG_1(swigCPtr, this), false);
   }
 
+  /**
+   *  Base-class form of RPlot::x_limits(): fixes the visible x range.<br>
+   *  @param min_x  Left edge of the plotting area, in data units.<br>
+   *  @param max_x  Right edge; must be greater than <code>min_x</code>.<br>
+   *  @return This plot, for chaining.<br>
+   *  @throws std::invalid_argument  Unless `max_x &gt; min_x` (NaN fails); the plot is unchanged.<br>
+   *  @see RPlot#x_limits()
+   */
   public Plot x_limits(double min_x, double max_x) {
     return new Plot(datamungeJNI.Plot_x_limits(swigCPtr, this, min_x, max_x), false);
   }
 
+  /**
+   *  Base-class form of RPlot::y_limits(): fixes the visible y range.<br>
+   *  @param min_y  Bottom edge of the plotting area, in data units.<br>
+   *  @param max_y  Top edge; must be greater than <code>min_y</code>.<br>
+   *  @return This plot, for chaining.<br>
+   *  @throws std::invalid_argument  Unless `max_y &gt; min_y` (NaN fails); the plot is unchanged.<br>
+   *  @see RPlot#y_limits()
+   */
   public Plot y_limits(double min_y, double max_y) {
     return new Plot(datamungeJNI.Plot_y_limits(swigCPtr, this, min_y, max_y), false);
   }
 
+  /**
+   *  Base-class form of RPlot::hide_axes(): hides or restores axes, ticks, grid, and axis labels.<br>
+   *  @param enabled  True (the default) hides them.<br>
+   *  @return This plot, for chaining.<br>
+   *  @see RPlot#hide_axes()
+   */
   public Plot hide_axes(boolean enabled) {
     return new Plot(datamungeJNI.Plot_hide_axes__SWIG_0(swigCPtr, this, enabled), false);
   }
 
+  /**
+   *  Base-class form of RPlot::hide_axes(): hides or restores axes, ticks, grid, and axis labels.<br>
+   *  @return This plot, for chaining.<br>
+   *  @see RPlot#hide_axes()
+   */
   public Plot hide_axes() {
     return new Plot(datamungeJNI.Plot_hide_axes__SWIG_1(swigCPtr, this), false);
   }
 
+  /**
+   *  Base-class form of RPlot::x_tick_labels(): labels the x axis at 0, 1, 2, ...<br>
+   *  @param labels  Tick texts; empty restores the numeric ticks.<br>
+   *  @return This plot, for chaining.<br>
+   *  @see RPlot#x_tick_labels()
+   */
   public Plot x_tick_labels(SVector labels) {
     return new Plot(datamungeJNI.Plot_x_tick_labels(swigCPtr, this, SVector.getCPtr(labels), labels), false);
   }
 
+  /**
+   *  Replaces the numeric x ticks with <code>labels</code> drawn at data positions <code>positions</code>.<br>
+   *  @param positions  x data coordinates of the ticks.<br>
+   *  @param labels  Tick texts, one per position.<br>
+   *  @return This plot, for chaining.<br>
+   *  @throws std::invalid_argument If the two vectors differ in length.<br>
+   *  @see RPlot#x_ticks()
+   */
+  public Plot x_ticks(DVector positions, SVector labels) {
+    return new Plot(datamungeJNI.Plot_x_ticks(swigCPtr, this, DVector.getCPtr(positions), positions, SVector.getCPtr(labels), labels), false);
+  }
+
+  /**
+   *  Replaces the numeric y ticks with <code>labels</code> drawn at y = 0, 1, 2, ...<br>
+   *  @param labels  Tick texts; empty restores the numeric ticks.<br>
+   *  @return This plot, for chaining.<br>
+   *  @see RPlot#y_tick_labels()
+   */
+  public Plot y_tick_labels(SVector labels) {
+    return new Plot(datamungeJNI.Plot_y_tick_labels(swigCPtr, this, SVector.getCPtr(labels), labels), false);
+  }
+
+  /**
+   *  Replaces the numeric y ticks with <code>labels</code> drawn at data positions <code>positions</code>.<br>
+   *  @param positions  y data coordinates of the ticks.<br>
+   *  @param labels  Tick texts, one per position.<br>
+   *  @return This plot, for chaining.<br>
+   *  @throws std::invalid_argument If the two vectors differ in length.<br>
+   *  @see RPlot#y_ticks()
+   */
+  public Plot y_ticks(DVector positions, SVector labels) {
+    return new Plot(datamungeJNI.Plot_y_ticks(swigCPtr, this, DVector.getCPtr(positions), positions, SVector.getCPtr(labels), labels), false);
+  }
+
+  /**
+   *  Overrides the automatic outer margins (in pixels) around the plotting area, e.g. for<br>
+   *         small multi-panel tiles. The defaults leave room for a title, axis labels, and ticks;<br>
+   *         tight margins suit panels whose title and axis labels are empty.<br>
+   *  @param left  Left margin in pixels (default 90).<br>
+   *  @param right  Right margin in pixels (default 24).<br>
+   *  @param top  Top margin in pixels (default 72, plus 24 when a subtitle is set).<br>
+   *  @param bottom  Bottom margin in pixels (default 84).<br>
+   *  @return This plot, for chaining.<br>
+   *  @throws std::invalid_argument If any margin is negative or non-finite.<br>
+   *  @see RPlot#margins()
+   */
+  public Plot margins(double left, double right, double top, double bottom) {
+    return new Plot(datamungeJNI.Plot_margins(swigCPtr, this, left, right, top, bottom), false);
+  }
+
+  /**
+   *  Sets the tick-label font size in pixels (default 12); the raster viewer draws ticks<br>
+   *         at half-size glyphs when this is below 12.<br>
+   *  @param pixels  Font size in pixels.<br>
+   *  @return This plot, for chaining.<br>
+   *  @throws std::invalid_argument If <code>pixels</code> is not positive and finite.<br>
+   *  @see RPlot#tick_font_size()
+   */
+  public Plot tick_font_size(double pixels) {
+    return new Plot(datamungeJNI.Plot_tick_font_size(swigCPtr, this, pixels), false);
+  }
+
+  /**
+   *  Places numeric ticks at round values (steps of 1, 2 or 5 times a power of ten, like<br>
+   *         R's `pretty()`) instead of six evenly spaced ticks across the range (default on).<br>
+   *  @param enabled  True turns round ticks on; false restores six even ticks.<br>
+   *  @return This plot, for chaining.<br>
+   *  @see RPlot#pretty_ticks()
+   */
+  public Plot pretty_ticks(boolean enabled) {
+    return new Plot(datamungeJNI.Plot_pretty_ticks__SWIG_0(swigCPtr, this, enabled), false);
+  }
+
+  /**
+   *  Places numeric ticks at round values (steps of 1, 2 or 5 times a power of ten, like<br>
+   *         R's `pretty()`) instead of six evenly spaced ticks across the range (default on).<br>
+   *  @return This plot, for chaining.<br>
+   *  @see RPlot#pretty_ticks()
+   */
+  public Plot pretty_ticks() {
+    return new Plot(datamungeJNI.Plot_pretty_ticks__SWIG_1(swigCPtr, this), false);
+  }
+
+  /**
+   *  Returns the canvas width in pixels (default 960).<br>
+   *  @return Width set by size().
+   */
   public long width() {
     return datamungeJNI.Plot_width(swigCPtr, this);
   }
 
+  /**
+   *  Returns the canvas height in pixels (default 640).<br>
+   *  @return Height set by size().
+   */
   public long height() {
     return datamungeJNI.Plot_height(swigCPtr, this);
   }
 
+  /**
+   *  Borrows the main heading ("datamunge plot" until set) for the lifetime of this plot.<br>
+   *  @return The current title; empty when the heading was cleared.
+   */
   public String title_text() {
     return datamungeJNI.Plot_title_text(swigCPtr, this);
   }
 
+  /**
+   *  Borrows the subtitle for the lifetime of this plot.<br>
+   *  @return The current subtitle; empty (the default) when none is drawn.
+   */
+  public String subtitle_text() {
+    return datamungeJNI.Plot_subtitle_text(swigCPtr, this);
+  }
+
+  /**
+   *  Borrows the horizontal-axis label ("x" until set) for the lifetime of this plot.<br>
+   *  @return The current x-axis label.
+   */
   public String x_label_text() {
     return datamungeJNI.Plot_x_label_text(swigCPtr, this);
   }
 
+  /**
+   *  Borrows the vertical-axis label ("y" until set) for the lifetime of this plot.<br>
+   *  @return The current y-axis label.
+   */
   public String y_label_text() {
     return datamungeJNI.Plot_y_label_text(swigCPtr, this);
   }
 
-  public SWIGTYPE_p_std__vectorT_datamunge__plot__DataSeries_t series() {
-    return new SWIGTYPE_p_std__vectorT_datamunge__plot__DataSeries_t(datamungeJNI.Plot_series(swigCPtr, this), false);
+  /**
+   *  Borrows the drawn layers (points, lines, bars, ...) in the order they were added.<br>
+   *  @return The series list; references are invalidated by adding another layer.
+   */
+  public SWIGTYPE_p_std__vectorT_datamunge__graphics__DataSeries_t series() {
+    return new SWIGTYPE_p_std__vectorT_datamunge__graphics__DataSeries_t(datamungeJNI.Plot_series(swigCPtr, this), false);
   }
 
+  /**
+   *  Returns the canvas fill color set by background().<br>
+   *  @return The background color (default white `{255, 255, 255}`).
+   */
   public RGB background_color() {
     return new RGB(datamungeJNI.Plot_background_color(swigCPtr, this), true);
   }
 
+  /**
+   *  Returns the axis and text color set by axis_color().<br>
+   *  @return The axis color (default gray `{55, 65, 81}`).
+   */
   public RGB axes_color() {
     return new RGB(datamungeJNI.Plot_axes_color(swigCPtr, this), true);
   }
 
+  /**
+   *  Returns the grid-line color set by grid_color().<br>
+   *  @return The grid color (default light gray `{229, 231, 235}`).
+   */
   public RGB major_grid_color() {
     return new RGB(datamungeJNI.Plot_major_grid_color(swigCPtr, this), true);
   }
 
+  /**
+   *  Reports whether the background grid is drawn (see show_grid()).<br>
+   *  @return True (the default) when the grid is drawn.
+   */
   public boolean grid_visible() {
     return datamungeJNI.Plot_grid_visible(swigCPtr, this);
   }
 
+  /**
+   *  Reports whether x_limits() fixed the x range.<br>
+   *  @return False (the default) while the x range is fitted to the data.
+   */
   public boolean has_x_limits() {
     return datamungeJNI.Plot_has_x_limits(swigCPtr, this);
   }
 
+  /**
+   *  Reports whether y_limits() fixed the y range.<br>
+   *  @return False (the default) while the y range is fitted to the data.
+   */
   public boolean has_y_limits() {
     return datamungeJNI.Plot_has_y_limits(swigCPtr, this);
   }
 
+  /**
+   *  Returns the fixed left x limit; meaningful only when has_x_limits() is true.<br>
+   *  @return The stored lower x limit (0 until x_limits() is called).
+   */
   public double x_min() {
     return datamungeJNI.Plot_x_min(swigCPtr, this);
   }
 
+  /**
+   *  Returns the fixed right x limit; meaningful only when has_x_limits() is true.<br>
+   *  @return The stored upper x limit (1 until x_limits() is called).
+   */
   public double x_max() {
     return datamungeJNI.Plot_x_max(swigCPtr, this);
   }
 
+  /**
+   *  Returns the fixed bottom y limit; meaningful only when has_y_limits() is true.<br>
+   *  @return The stored lower y limit (0 until y_limits() is called).
+   */
   public double y_min() {
     return datamungeJNI.Plot_y_min(swigCPtr, this);
   }
 
+  /**
+   *  Returns the fixed top y limit; meaningful only when has_y_limits() is true.<br>
+   *  @return The stored upper y limit (1 until y_limits() is called).
+   */
   public double y_max() {
     return datamungeJNI.Plot_y_max(swigCPtr, this);
   }
 
+  /**
+   *  Reports whether hide_axes() suppressed axes, ticks, grid, and axis labels.<br>
+   *  @return False (the default) when axes are drawn.
+   */
   public boolean axes_hidden() {
     return datamungeJNI.Plot_axes_hidden(swigCPtr, this);
   }
 
+  /**
+   *  Borrows the custom x tick texts; empty means numeric ticks.<br>
+   *  @return Labels set by x_tick_labels() or x_ticks().
+   */
   public SVector x_tick_label_list() {
     return new SVector(datamungeJNI.Plot_x_tick_label_list(swigCPtr, this), false);
   }
 
-  public SWIGTYPE_p_std__vectorT_datamunge__plot__ABLine_t reference_lines() {
-    return new SWIGTYPE_p_std__vectorT_datamunge__plot__ABLine_t(datamungeJNI.Plot_reference_lines(swigCPtr, this), false);
-  }
-
-  public SWIGTYPE_p_std__vectorT_datamunge__plot__LegendEntry_t legend_entries() {
-    return new SWIGTYPE_p_std__vectorT_datamunge__plot__LegendEntry_t(datamungeJNI.Plot_legend_entries(swigCPtr, this), false);
+  /**
+   *  Data positions of x_tick_label_list(); empty means 0, 1, 2, ...<br>
+   *  @return Positions set by x_ticks(); cleared by x_tick_labels().
+   */
+  public DVector x_tick_position_list() {
+    return new DVector(datamungeJNI.Plot_x_tick_position_list(swigCPtr, this), false);
   }
 
   /**
-   *  Renders the plot as a standalone SVG document and returns it as a string.
+   *  Borrows the custom y tick texts; empty means numeric ticks.<br>
+   *  @return Labels set by y_tick_labels() or y_ticks().
+   */
+  public SVector y_tick_label_list() {
+    return new SVector(datamungeJNI.Plot_y_tick_label_list(swigCPtr, this), false);
+  }
+
+  /**
+   *  Data positions of y_tick_label_list(); empty means 0, 1, 2, ...<br>
+   *  @return Positions set by y_ticks(); cleared by y_tick_labels().
+   */
+  public DVector y_tick_position_list() {
+    return new DVector(datamungeJNI.Plot_y_tick_position_list(swigCPtr, this), false);
+  }
+
+  /**
+   *  Borrows the reference lines added by abline(), abline_h(), abline_v(), and qqline().<br>
+   *  @return Lines in insertion order; references are invalidated by adding another line.
+   */
+  public SWIGTYPE_p_std__vectorT_datamunge__graphics__ABLine_t reference_lines() {
+    return new SWIGTYPE_p_std__vectorT_datamunge__graphics__ABLine_t(datamungeJNI.Plot_reference_lines(swigCPtr, this), false);
+  }
+
+  /**
+   *  Borrows the manual legend rows added by legend(); empty means an automatic legend.<br>
+   *  @return Manual entries in insertion order.
+   */
+  public SWIGTYPE_p_std__vectorT_datamunge__graphics__LegendEntry_t legend_entries() {
+    return new SWIGTYPE_p_std__vectorT_datamunge__graphics__LegendEntry_t(datamungeJNI.Plot_legend_entries(swigCPtr, this), false);
+  }
+
+  /**
+   *  True once margins() has been called; the renderer then uses the explicit margins.<br>
+   *  @return False (the default) while the automatic margins apply.
+   */
+  public boolean has_custom_margins() {
+    return datamungeJNI.Plot_has_custom_margins(swigCPtr, this);
+  }
+
+  /**
+   *  Returns the left margin in pixels; used only when has_custom_margins() is true.<br>
+   *  @return The stored left margin (default 90).
+   */
+  public double margin_left() {
+    return datamungeJNI.Plot_margin_left(swigCPtr, this);
+  }
+
+  /**
+   *  Returns the right margin in pixels; used only when has_custom_margins() is true.<br>
+   *  @return The stored right margin (default 24).
+   */
+  public double margin_right() {
+    return datamungeJNI.Plot_margin_right(swigCPtr, this);
+  }
+
+  /**
+   *  Returns the top margin in pixels; used only when has_custom_margins() is true.<br>
+   *  @return The stored top margin (default 72).
+   */
+  public double margin_top() {
+    return datamungeJNI.Plot_margin_top(swigCPtr, this);
+  }
+
+  /**
+   *  Returns the bottom margin in pixels; used only when has_custom_margins() is true.<br>
+   *  @return The stored bottom margin (default 84).
+   */
+  public double margin_bottom() {
+    return datamungeJNI.Plot_margin_bottom(swigCPtr, this);
+  }
+
+  /**
+   *  Returns the tick-label font size set by tick_font_size().<br>
+   *  @return Font size in pixels (default 12).
+   */
+  public double tick_font_px() {
+    return datamungeJNI.Plot_tick_font_px(swigCPtr, this);
+  }
+
+  /**
+   *  Reports whether pretty_ticks() is on.<br>
+   *  @return False (the default) for six evenly spaced numeric ticks.
+   */
+  public boolean pretty_ticks_enabled() {
+    return datamungeJNI.Plot_pretty_ticks_enabled(swigCPtr, this);
+  }
+
+  /**
+   *  Renders the plot as a standalone SVG document and returns it as a string.<br>
+   * <br>
+   *  The document starts with an XML declaration and draws text as embedded Computer Modern<br>
+   *  glyph outlines, so it displays identically in any SVG viewer, with or without web fonts. The plot is not modified, and no file or display is used.<br>
+   * <br>
+   *  @return The complete SVG text.<br>
+   *  @throws std::runtime_error  If the plot has no data series, or the canvas is smaller than<br>
+   *          its margins.<br>
+   * <br>
+   *  <p alt="Example"><br>
+   *  {@code 
+   const auto svg = dm::Plot(dm::c(1.0, 2.0), dm::c(2.0, 1.0)).set_title("Tiny").to_svg();
+   std::print("{}\n", svg.starts_with("<?xml"));  // true
+   std::print("{}\n", svg.contains("Tiny"));      // true
+   }</p><br>
+   *  @see save(), show()
    */
   public String to_svg() {
     return datamungeJNI.Plot_to_svg(swigCPtr, this);
   }
 
+  /**
+   *  Writes the plot to <code>path</code>, choosing the format from the file extension<br>
+   *         (R's `svg()`/`png()`/`pdf()` devices followed by `dev.off()`, in one call).<br>
+   * <br>
+   *  `.svg` or no extension writes the same text as to_svg(); `.png` writes the raster image<br>
+   *  the X11 viewer displays; `.pdf` wraps that raster in a single-page PDF. The extension is<br>
+   *  case-sensitive. An existing file is overwritten. Needs no display.<br>
+   * <br>
+   *  @param path  Destination file; relative paths resolve against the working directory.<br>
+   *  @throws std::invalid_argument  For any other extension (e.g. `.jpg`).<br>
+   *  @throws std::runtime_error  If the file cannot be opened for writing, the plot has no data<br>
+   *          series, or the canvas is smaller than its margins.<br>
+   * <br>
+   *  <p alt="Example"><br>
+   *  {@code 
+   auto plt = dm::Plot(dm::c(1.0, 2.0, 3.0), dm::c(1.0, 4.0, 9.0)).set_title("Squares");
+   plt.save("squares.svg");  // vector
+   plt.save("squares.png");  // raster
+   plt.save("squares.pdf");  // raster in a one-page PDF
+   }</p><br>
+   *  @see save_svg(), to_svg(), show()
+   */
   public void save(String path) {
     datamungeJNI.Plot_save(swigCPtr, this, path);
   }
 
+  /**
+   *  Writes to_svg() to <code>path</code> regardless of its extension.<br>
+   *  @param path  Destination file; an existing file is overwritten.<br>
+   *  @throws std::runtime_error  If the file cannot be opened for writing, or rendering fails<br>
+   *          as described for to_svg().<br>
+   * <br>
+   *  <p alt="Example"><br>
+   *  {@code 
+   dm::Plot(dm::c(1.0, 2.0), dm::c(1.0, 2.0)).save_svg("diagonal.txt");  // SVG text
+   }</p><br>
+   *  @see save()
+   */
   public void save_svg(String path) {
     datamungeJNI.Plot_save_svg(swigCPtr, this, path);
   }
 
+  /**
+   *  Renders the plot as PNG image bytes (the same raster save() writes for `.png`).<br>
+   *  @return The complete PNG file contents.<br>
+   *  @throws std::runtime_error  If rendering fails as described for to_svg().<br>
+   * <br>
+   *  <p alt="Example"><br>
+   *  {@code 
+   const auto png = dm::Plot(dm::c(1.0, 2.0), dm::c(2.0, 1.0)).to_png();
+   std::print("{}\n", png[1] == 'P');  // true: PNG signature
+   }</p><br>
+   *  @see save_png(), to_pdf(), to_svg()
+   */
+  public SWIGTYPE_p_std__vectorT_unsigned_char_t to_png() {
+    return new SWIGTYPE_p_std__vectorT_unsigned_char_t(datamungeJNI.Plot_to_png(swigCPtr, this), true);
+  }
+
+  /**
+   *  Renders the plot as a one-page PDF holding the raster image.<br>
+   *  @return The complete PDF file contents.<br>
+   *  @throws std::runtime_error  If rendering fails as described for to_svg().<br>
+   *  @see save_pdf(), to_png()
+   */
+  public SWIGTYPE_p_std__vectorT_unsigned_char_t to_pdf() {
+    return new SWIGTYPE_p_std__vectorT_unsigned_char_t(datamungeJNI.Plot_to_pdf(swigCPtr, this), true);
+  }
+
+  /**
+   *  Writes to_png() to <code>path</code> regardless of its extension.<br>
+   *  @param path  Destination file; an existing file is overwritten.<br>
+   *  @throws std::runtime_error  If the file cannot be written or rendering fails.<br>
+   *  @see save(), to_png()
+   */
+  public void save_png(String path) {
+    datamungeJNI.Plot_save_png(swigCPtr, this, path);
+  }
+
+  /**
+   *  Writes to_pdf() to <code>path</code> regardless of its extension.<br>
+   *  @param path  Destination file; an existing file is overwritten.<br>
+   *  @throws std::runtime_error  If the file cannot be written or rendering fails.<br>
+   *  @see save(), to_pdf()
+   */
+  public void save_pdf(String path) {
+    datamungeJNI.Plot_save_pdf(swigCPtr, this, path);
+  }
+
+  /**
+   *  Same as show(); kept as an alias for older code.<br>
+   *  @param title_hint  Window title; empty uses the plot's title.<br>
+   *  @throws std::runtime_error  As for show().<br>
+   *  @see show()
+   */
   public void view(String title_hint) {
     datamungeJNI.Plot_view__SWIG_0(swigCPtr, this, title_hint);
   }
 
+  /**
+   *  Same as show(); kept as an alias for older code.<br>
+   *  @throws std::runtime_error  As for show().<br>
+   *  @see show()
+   */
   public void view() {
     datamungeJNI.Plot_view__SWIG_1(swigCPtr, this);
   }
 
+  /**
+   *  Opens the plot in an interactive X11 window and blocks until it is closed<br>
+   *         (like printing a plot in an interactive R session).<br>
+   * <br>
+   *  The window has toolbar and keyboard zoom/pan (it re-renders from data bounds) and closes<br>
+   *  on q or Escape; the function returns only then. The window title is <code>title_hint</code>, or<br>
+   *  the plot's title (title_text()) when the hint is empty. Requires a build with X11 support and a reachable `DISPLAY`; use save()<br>
+   *  in headless code such as tests and CI.<br>
+   * <br>
+   *  @param title_hint  Window title; empty (the default) uses the plot's title.<br>
+   *  @throws std::runtime_error  If X11 support was not compiled in, the display cannot be<br>
+   *          opened, its visual is unsupported, or the plot has no data series.<br>
+   * <br>
+   *  <p alt="Example"><br>
+   *  {@code 
+   const auto x = dm::runif(0, 1, 1000);
+   const auto y = dm::sin(20 / (x + 0.25)) + dm::rnorm(0, 0.2, 1000);
+   dm::Plot(x, y).set_title("Doppler").set_col("blue").show("Doppler signal");
+   }</p><br>
+   *  @see save(), to_svg()
+   */
   public void show(String title_hint) {
     datamungeJNI.Plot_show__SWIG_0(swigCPtr, this, title_hint);
   }
 
+  /**
+   *  Opens the plot in an interactive X11 window and blocks until it is closed<br>
+   *         (like printing a plot in an interactive R session).<br>
+   * <br>
+   *  The window has toolbar and keyboard zoom/pan (it re-renders from data bounds) and closes<br>
+   *  on q or Escape; the function returns only then. The window title is <code>title_hint</code>, or<br>
+   *  the plot's title (title_text()) when the hint is empty. Requires a build with X11 support and a reachable `DISPLAY`; use save()<br>
+   *  in headless code such as tests and CI.<br>
+   * <br>
+   *  @throws std::runtime_error  If X11 support was not compiled in, the display cannot be<br>
+   *          opened, its visual is unsupported, or the plot has no data series.<br>
+   * <br>
+   *  <p alt="Example"><br>
+   *  {@code 
+   const auto x = dm::runif(0, 1, 1000);
+   const auto y = dm::sin(20 / (x + 0.25)) + dm::rnorm(0, 0.2, 1000);
+   dm::Plot(x, y).set_title("Doppler").set_col("blue").show("Doppler signal");
+   }</p><br>
+   *  @see save(), to_svg()
+   */
   public void show() {
     datamungeJNI.Plot_show__SWIG_1(swigCPtr, this);
   }

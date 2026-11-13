@@ -1,5 +1,5 @@
-# CMD: nix develop .#r --command Rscript examples/r/tensor_ex.r
-# REPL: nix develop .#r --command R --no-save --quiet
+# CMD: nix develop .#r --command env R_LIBS_USER=build/r/library Rscript examples/r/tensor_ex.r
+# REPL: nix develop .#r --command env R_LIBS_USER=build/r/library R --no-save --quiet
 # Dimensions are reported via ndim()/individual known values where the shape matters for the
 # narrative.
 library(datamunger)
@@ -47,7 +47,7 @@ cat("r >= 6 ->", mask$to_string(), "\n")
 cat("count(r >= 6) =", mask$sum(), "\n")
 
 cat("\n=================== A real dataset as a Tensor ===================\n")
-iris <- DataFrame$iris()
+iris <- data$iris()
 n <- iris$nrows()
 flat <- c()
 for (i in 0:(n - 1)) {

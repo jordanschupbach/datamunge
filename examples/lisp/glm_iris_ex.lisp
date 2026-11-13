@@ -1,9 +1,11 @@
+;; CMD: just TARGET=glm_iris_ex run-lisp
+
 ;;;; Generalized linear models on iris: logistic regression (binomial) and Poisson regression.
 (require "asdf")
 (asdf:load-system "datamunge")
 (setf *read-default-float-format* (quote double-float)) ; print doubles without a d0 suffix
 
-(defparameter *iris* (dm:data-frame-iris))
+(defparameter *iris* (dm.data:iris))
 
 ;;; Logistic regression: versicolor vs virginica only -- setosa is perfectly separable from
 ;;; the other two on these predictors, which sends logistic regression's coefficients toward

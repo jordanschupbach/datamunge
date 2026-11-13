@@ -1,16 +1,6 @@
+// CMD: just TARGET=glmm_ex run-javascript
+
 const datamunge = require("../../index.js");
-
-function dvector(values) {
-  const out = new datamunge.DVector(values.length);
-  for (let i = 0; i < values.length; i++) out.set(i, values[i]);
-  return out;
-}
-
-function svector(values) {
-  const out = new datamunge.SVector(values.length);
-  for (let i = 0; i < values.length; i++) out.set(i, values[i]);
-  return out;
-}
 
 function randn() {
   const u1 = Math.random();
@@ -19,7 +9,7 @@ function randn() {
 }
 
 console.log("=================== Binomial (logistic) mixed model on a real dataset (penguins) ===================");
-const penguins = datamunge.DataFrame.penguins();
+const penguins = datamunge.data.penguins();
 const isMale = [];
 const bodyMass = [];
 const island = [];
@@ -33,9 +23,9 @@ for (let i = 0; i < n; i++) {
 }
 
 const sexDf = new datamunge.DataFrame();
-sexDf.add_numeric_column("is_male", dvector(isMale));
-sexDf.add_numeric_column("body_mass_g", dvector(bodyMass));
-sexDf.add_string_column("island", svector(island));
+sexDf.add_numeric_column("is_male", isMale);
+sexDf.add_numeric_column("body_mass_g", bodyMass);
+sexDf.add_string_column("island", island);
 
 const sexModel = new datamunge.GLMM(sexDf, "is_male ~ body_mass_g + (1 | island)", "binomial");
 sexModel.print_summary();
@@ -68,9 +58,9 @@ for (let s = 0; s < nStores; s++) {
 }
 
 const df = new datamunge.DataFrame();
-df.add_numeric_column("store", dvector(store));
-df.add_numeric_column("promo", dvector(promo));
-df.add_numeric_column("visits", dvector(visits));
+df.add_numeric_column("store", store);
+df.add_numeric_column("promo", promo);
+df.add_numeric_column("visits", visits);
 
 const storeModel = new datamunge.GLMM(df, "visits ~ promo + (1 | store)", "poisson");
 storeModel.print_summary();
@@ -81,16 +71,16 @@ console.log("\n--- BLUPs for a few stores ---");
 const groupLabels = storeModel.group_labels();
 for (let idx = 0; idx < 3; idx++) {
   const re = storeModel.random_effects_for_group(idx);
-  console.log(`store ${groupLabels.get(idx)}: intercept shift=${re.get(0)}`);
+  console.log(`store ${groupLabels[idx]}: intercept shift=${re[0]}`);
 }
 
 console.log("\n--- Prediction: population-level vs. store-adjusted ---");
 const newdataPopulation = new datamunge.DataFrame();
-newdataPopulation.add_numeric_column("promo", dvector([1.5]));
+newdataPopulation.add_numeric_column("promo", [1.5]);
 const newdataStore0 = new datamunge.DataFrame();
-newdataStore0.add_numeric_column("promo", dvector([1.5]));
-newdataStore0.add_numeric_column("store", dvector([0.0]));
+newdataStore0.add_numeric_column("promo", [1.5]);
+newdataStore0.add_numeric_column("store", [0.0]);
 const predPop = storeModel.predict(newdataPopulation);
 const predS0 = storeModel.predict(newdataStore0);
-console.log(`promo=1.5, unseen store:   ${predPop.get(0)} expected visits (fixed effects only)`);
-console.log(`promo=1.5, store 0 (known): ${predS0.get(0)} expected visits (fixed effects + store 0's BLUP)`);
+console.log(`promo=1.5, unseen store:   ${predPop[0]} expected visits (fixed effects only)`);
+console.log(`promo=1.5, store 0 (known): ${predS0[0]} expected visits (fixed effects + store 0's BLUP)`);

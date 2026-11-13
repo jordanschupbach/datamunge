@@ -1,3 +1,5 @@
+;; CMD: just TARGET=hypothesis_tests_ex run-guile
+
 (use-modules (datamunge))
 
 (define (print-result label r)
@@ -22,7 +24,7 @@
         (set! out (cons (DataFrame-numeric-at df column i) out))))
     (reverse out)))
 
-(define iris (DataFrame-iris))
+(define iris (data_iris))
 
 (define setosa-petal (column-for-species iris "Petal.Length" "setosa"))
 (define versicolor-petal (column-for-species iris "Petal.Length" "versicolor"))

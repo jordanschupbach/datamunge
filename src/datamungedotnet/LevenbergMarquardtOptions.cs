@@ -9,6 +9,14 @@
 //------------------------------------------------------------------------------
 
 
+/// <summary>Configuration for LevenbergMarquardt; fields retain their documented native defaults. Supply finite values in the supported ranges. Controls are copied at construction; validation, stopping and loss scaling belong to optimize().</summary>
+/// Title: Example
+/// <code>      dm::optim::LevenbergMarquardtOptions o;
+///      std::print("{}\n",o.max_iterations); // 200</code>
+///
+///
+///
+/// <seealso cref="LevenbergMarquardt"/>
 public class LevenbergMarquardtOptions : global::System.IDisposable {
   private global::System.Runtime.InteropServices.HandleRef swigCPtr;
   protected bool swigCMemOwn;

@@ -78,6 +78,533 @@ public class datamunge {
   }
 
   /**
+   *  Edgar Anderson's iris measurements, 150 x 5, as R's `datasets::iris`.<br>
+   * <br>
+   *  Bundled with the library, so it needs no file or network access. Columns are documented at<br>
+   *  datasets::iris().<br>
+   * <br>
+   *  @return A new 150 x 5 DataFrame owned by the caller.<br>
+   * <br>
+   *  <p alt="Example"><br>
+   *  {@code 
+   const std::unique_ptr<dm::DataFrame> frame(dm::data::iris());
+   std::print("{} x {}\n", frame->nrows(), frame->ncols());   // 150 x 5
+   }</p><br>
+   *  @see datasets#iris()
+   */
+  public static DataFrame data_iris() {
+    long cPtr = datamungeJNI.data_iris();
+    return (cPtr == 0) ? null : new DataFrame(cPtr, false);
+  }
+
+  /**
+   *  The Palmer penguins, 344 x 8 with missing values, as `palmerpenguins::penguins`.<br>
+   * <br>
+   *  Bundled with the library, so it needs no file or network access. Columns are documented at<br>
+   *  datasets::penguins().<br>
+   * <br>
+   *  @return A new 344 x 8 DataFrame owned by the caller.<br>
+   * <br>
+   *  <p alt="Example"><br>
+   *  {@code 
+   const std::unique_ptr<dm::DataFrame> frame(dm::data::penguins());
+   std::print("{} x {}\n", frame->nrows(), frame->ncols());   // 344 x 8
+   }</p><br>
+   *  @see datasets#penguins()
+   */
+  public static DataFrame data_penguins() {
+    long cPtr = datamungeJNI.data_penguins();
+    return (cPtr == 0) ? null : new DataFrame(cPtr, false);
+  }
+
+  /**
+   *  Crampton's guinea pig tooth growth data, 60 x 3, as R's `datasets::ToothGrowth`.<br>
+   * <br>
+   *  Bundled with the library, so it needs no file or network access. Columns are documented at<br>
+   *  datasets::tooth_growth().<br>
+   * <br>
+   *  @return A new 60 x 3 DataFrame owned by the caller.<br>
+   * <br>
+   *  <p alt="Example"><br>
+   *  {@code 
+   const std::unique_ptr<dm::DataFrame> frame(dm::data::tooth_growth());
+   std::print("{} x {}\n", frame->nrows(), frame->ncols());   // 60 x 3
+   }</p><br>
+   *  @see datasets#tooth_growth()
+   */
+  public static DataFrame data_tooth_growth() {
+    long cPtr = datamungeJNI.data_tooth_growth();
+    return (cPtr == 0) ? null : new DataFrame(cPtr, false);
+  }
+
+  /**
+   *  The UCI wine recognition data, 178 x 14, as scikit-learn's `load_wine()`.<br>
+   * <br>
+   *  Bundled with the library, so it needs no file or network access. Columns are documented at<br>
+   *  datasets::wine().<br>
+   * <br>
+   *  @return A new 178 x 14 DataFrame owned by the caller.<br>
+   * <br>
+   *  <p alt="Example"><br>
+   *  {@code 
+   const std::unique_ptr<dm::DataFrame> frame(dm::data::wine());
+   std::print("{} x {}\n", frame->nrows(), frame->ncols());   // 178 x 14
+   }</p><br>
+   *  @see datasets#wine()
+   */
+  public static DataFrame data_wine() {
+    long cPtr = datamungeJNI.data_wine();
+    return (cPtr == 0) ? null : new DataFrame(cPtr, false);
+  }
+
+  /**
+   *  The Kaggle Titanic training set, 891 x 12 with missing values.<br>
+   * <br>
+   *  Bundled with the library, so it needs no file or network access. Columns are documented at<br>
+   *  datasets::titanic().<br>
+   * <br>
+   *  @return A new 891 x 12 DataFrame owned by the caller.<br>
+   * <br>
+   *  <p alt="Example"><br>
+   *  {@code 
+   const std::unique_ptr<dm::DataFrame> frame(dm::data::titanic());
+   std::print("{} x {}\n", frame->nrows(), frame->ncols());   // 891 x 12
+   }</p><br>
+   *  @see datasets#titanic()
+   */
+  public static DataFrame data_titanic() {
+    long cPtr = datamungeJNI.data_titanic();
+    return (cPtr == 0) ? null : new DataFrame(cPtr, false);
+  }
+
+  /**
+   *  Rubin's eight schools coaching experiment, 8 x 3.<br>
+   * <br>
+   *  Bundled with the library, so it needs no file or network access. Columns are documented at<br>
+   *  datasets::eight_schools().<br>
+   * <br>
+   *  @return A new 8 x 3 DataFrame owned by the caller.<br>
+   * <br>
+   *  <p alt="Example"><br>
+   *  {@code 
+   const std::unique_ptr<dm::DataFrame> frame(dm::data::eight_schools());
+   std::print("{} x {}\n", frame->nrows(), frame->ncols());   // 8 x 3
+   }</p><br>
+   *  @see datasets#eight_schools()
+   */
+  public static DataFrame data_eight_schools() {
+    long cPtr = datamungeJNI.data_eight_schools();
+    return (cPtr == 0) ? null : new DataFrame(cPtr, false);
+  }
+
+  /**
+   *  Monthly airline passengers 1949-1960, 144 x 3, as R's `datasets::AirPassengers`.<br>
+   * <br>
+   *  Bundled with the library, so it needs no file or network access. Columns are documented at<br>
+   *  datasets::air_passengers().<br>
+   * <br>
+   *  @return A new 144 x 3 DataFrame owned by the caller.<br>
+   * <br>
+   *  <p alt="Example"><br>
+   *  {@code 
+   const std::unique_ptr<dm::DataFrame> frame(dm::data::air_passengers());
+   std::print("{} x {}\n", frame->nrows(), frame->ncols());   // 144 x 3
+   }</p><br>
+   *  @see datasets#air_passengers()
+   */
+  public static DataFrame data_air_passengers() {
+    long cPtr = datamungeJNI.data_air_passengers();
+    return (cPtr == 0) ? null : new DataFrame(cPtr, false);
+  }
+
+  /**
+   *  Maunga Whau (Mt Eden) elevations on a 10 m grid, 5307 x 3, as R's `datasets::volcano` in long form.<br>
+   * <br>
+   *  Bundled with the library, so it needs no file or network access. Columns are documented at<br>
+   *  datasets::volcano().<br>
+   * <br>
+   *  @return A new 5307 x 3 DataFrame owned by the caller.<br>
+   * <br>
+   *  <p alt="Example"><br>
+   *  {@code 
+   const std::unique_ptr<dm::DataFrame> frame(dm::data::volcano());
+   std::print("{} x {}\n", frame->nrows(), frame->ncols());   // 5307 x 3
+   }</p><br>
+   *  @see datasets#volcano()
+   */
+  public static DataFrame data_volcano() {
+    long cPtr = datamungeJNI.data_volcano();
+    return (cPtr == 0) ? null : new DataFrame(cPtr, false);
+  }
+
+  /**
+   *  Old Faithful geyser eruptions, 272 x 2, as R's `datasets::faithful`.<br>
+   * <br>
+   *  Bundled with the library, so it needs no file or network access. Columns are documented at<br>
+   *  datasets::faithful().<br>
+   * <br>
+   *  @return A new 272 x 2 DataFrame owned by the caller.<br>
+   * <br>
+   *  <p alt="Example"><br>
+   *  {@code 
+   const std::unique_ptr<dm::DataFrame> frame(dm::data::faithful());
+   std::print("{} x {}\n", frame->nrows(), frame->ncols());   // 272 x 2
+   }</p><br>
+   *  @see datasets#faithful()
+   */
+  public static DataFrame data_faithful() {
+    long cPtr = datamungeJNI.data_faithful();
+    return (cPtr == 0) ? null : new DataFrame(cPtr, false);
+  }
+
+  /**
+   *  Motor Trend cars, 32 x 12 with the row names as column `model`, as R's `datasets::mtcars`.<br>
+   * <br>
+   *  Bundled with the library, so it needs no file or network access. Columns are documented at<br>
+   *  datasets::mtcars().<br>
+   * <br>
+   *  @return A new 32 x 12 DataFrame owned by the caller.<br>
+   * <br>
+   *  <p alt="Example"><br>
+   *  {@code 
+   const std::unique_ptr<dm::DataFrame> frame(dm::data::mtcars());
+   std::print("{} x {}\n", frame->nrows(), frame->ncols());   // 32 x 12
+   }</p><br>
+   *  @see datasets#mtcars()
+   */
+  public static DataFrame data_mtcars() {
+    long cPtr = datamungeJNI.data_mtcars();
+    return (cPtr == 0) ? null : new DataFrame(cPtr, false);
+  }
+
+  /**
+   *  New York air quality measurements in 1973, 153 x 6 with missing values, as R's `datasets::airquality`.<br>
+   * <br>
+   *  Bundled with the library, so it needs no file or network access. Columns are documented at<br>
+   *  datasets::airquality().<br>
+   * <br>
+   *  @return A new 153 x 6 DataFrame owned by the caller.<br>
+   * <br>
+   *  <p alt="Example"><br>
+   *  {@code 
+   const std::unique_ptr<dm::DataFrame> frame(dm::data::airquality());
+   std::print("{} x {}\n", frame->nrows(), frame->ncols());   // 153 x 6
+   }</p><br>
+   *  @see datasets#airquality()
+   */
+  public static DataFrame data_airquality() {
+    long cPtr = datamungeJNI.data_airquality();
+    return (cPtr == 0) ? null : new DataFrame(cPtr, false);
+  }
+
+  /**
+   *  Wisconsin diagnostic breast cancer data, 569 x 31, as scikit-learn's `load_breast_cancer()`.<br>
+   * <br>
+   *  Bundled with the library, so it needs no file or network access. Columns are documented at<br>
+   *  datasets::breast_cancer().<br>
+   * <br>
+   *  @return A new 569 x 31 DataFrame owned by the caller.<br>
+   * <br>
+   *  <p alt="Example"><br>
+   *  {@code 
+   const std::unique_ptr<dm::DataFrame> frame(dm::data::breast_cancer());
+   std::print("{} x {}\n", frame->nrows(), frame->ncols());   // 569 x 31
+   }</p><br>
+   *  @see datasets#breast_cancer()
+   */
+  public static DataFrame data_breast_cancer() {
+    long cPtr = datamungeJNI.data_breast_cancer();
+    return (cPtr == 0) ? null : new DataFrame(cPtr, false);
+  }
+
+  /**
+   *  Efron et al.'s diabetes progression data, 442 x 11, as scikit-learn's `load_diabetes()`.<br>
+   * <br>
+   *  Bundled with the library, so it needs no file or network access. Columns are documented at<br>
+   *  datasets::diabetes().<br>
+   * <br>
+   *  @return A new 442 x 11 DataFrame owned by the caller.<br>
+   * <br>
+   *  <p alt="Example"><br>
+   *  {@code 
+   const std::unique_ptr<dm::DataFrame> frame(dm::data::diabetes());
+   std::print("{} x {}\n", frame->nrows(), frame->ncols());   // 442 x 11
+   }</p><br>
+   *  @see datasets#diabetes()
+   */
+  public static DataFrame data_diabetes() {
+    long cPtr = datamungeJNI.data_diabetes();
+    return (cPtr == 0) ? null : new DataFrame(cPtr, false);
+  }
+
+  /**
+   *  8x8 handwritten digits, 1797 x 65, as scikit-learn's `load_digits()`.<br>
+   * <br>
+   *  Bundled with the library, so it needs no file or network access. Columns are documented at<br>
+   *  datasets::digits().<br>
+   * <br>
+   *  @return A new 1797 x 65 DataFrame owned by the caller.<br>
+   * <br>
+   *  <p alt="Example"><br>
+   *  {@code 
+   const std::unique_ptr<dm::DataFrame> frame(dm::data::digits());
+   std::print("{} x {}\n", frame->nrows(), frame->ncols());   // 1797 x 65
+   }</p><br>
+   *  @see datasets#digits()
+   */
+  public static DataFrame data_digits() {
+    long cPtr = datamungeJNI.data_digits();
+    return (cPtr == 0) ? null : new DataFrame(cPtr, false);
+  }
+
+  /**
+   *  ggplot2's diamonds, 53940 x 10, downloaded on first use and cached.<br>
+   * <br>
+   *  The first call downloads the file into the dataset cache (see datasets::fetch()); later<br>
+   *  calls read the cached copy. Columns are documented at datasets::diamonds().<br>
+   * <br>
+   *  @return A new 53940 x 10 DataFrame owned by the caller.<br>
+   *  @throws std::runtime_error if the file is not cached and cannot be downloaded or read.<br>
+   * <br>
+   *  <p alt="Example"><br>
+   *  {@code 
+   const std::unique_ptr<dm::DataFrame> frame(dm::data::diamonds());
+   std::print("{} x {}\n", frame->nrows(), frame->ncols());   // 53940 x 10
+   }</p><br>
+   *  @see datasets#diamonds()
+   */
+  public static DataFrame data_diamonds() {
+    long cPtr = datamungeJNI.data_diamonds();
+    return (cPtr == 0) ? null : new DataFrame(cPtr, false);
+  }
+
+  /**
+   *  California housing, 20640 x 10, downloaded on first use and cached, as scikit-learn's `fetch_california_housing()`.<br>
+   * <br>
+   *  The first call downloads the file into the dataset cache (see datasets::fetch()); later<br>
+   *  calls read the cached copy. Columns are documented at datasets::california_housing().<br>
+   * <br>
+   *  @return A new 20640 x 10 DataFrame owned by the caller.<br>
+   *  @throws std::runtime_error if the file is not cached and cannot be downloaded or read.<br>
+   * <br>
+   *  <p alt="Example"><br>
+   *  {@code 
+   const std::unique_ptr<dm::DataFrame> frame(dm::data::california_housing());
+   std::print("{} x {}\n", frame->nrows(), frame->ncols());   // 20640 x 10
+   }</p><br>
+   *  @see datasets#california_housing()
+   */
+  public static DataFrame data_california_housing() {
+    long cPtr = datamungeJNI.data_california_housing();
+    return (cPtr == 0) ? null : new DataFrame(cPtr, false);
+  }
+
+  /**
+   *  Any table-shaped dataset by name, e.g. "wine", like scikit-learn's `fetch_openml()`<br>
+   *         lookup by name.<br>
+   * <br>
+   *  Accepts every name listed by catalog() whose storage is a table, bundled or downloaded<br>
+   *  (a downloaded dataset is cached as described at datasets::load()).<br>
+   * <br>
+   *  @param name A dataset name from catalog(), e.g. "iris" or "diamonds".<br>
+   *  @return A new DataFrame owned by the caller.<br>
+   *  @throws std::invalid_argument for an unknown name, an image dataset's name or karate_club.<br>
+   *  @throws std::runtime_error if a downloaded dataset is not cached and cannot be fetched.<br>
+   * <br>
+   *  <p alt="Example"><br>
+   *  {@code 
+   const std::unique_ptr<dm::DataFrame> wine(dm::data::load("wine"));
+   std::print("{} x {}\n", wine->nrows(), wine->ncols());   // 178 x 14
+   }</p><br>
+   *  @see catalog(), datasets::load()
+   */
+  public static DataFrame data_load(String name) {
+    long cPtr = datamungeJNI.data_load(name);
+    return (cPtr == 0) ? null : new DataFrame(cPtr, false);
+  }
+
+  /**
+   *  One row per available dataset: `name`, `rows`, `columns`, `storage`, `size_mb` and<br>
+   *         `description`, like R's `data()` listing.<br>
+   * <br>
+   *  @return A new DataFrame owned by the caller.<br>
+   * <br>
+   *  <p alt="Example"><br>
+   *  {@code 
+   const std::unique_ptr<dm::DataFrame> all(dm::data::catalog());
+   std::print("{}\n", all->columns());   // ["name", "rows", "columns", "storage", "size_mb", "description"]
+   }</p><br>
+   *  @see load(), datasets::catalog()
+   */
+  public static DataFrame data_catalog() {
+    long cPtr = datamungeJNI.data_catalog();
+    return (cPtr == 0) ? null : new DataFrame(cPtr, false);
+  }
+
+  /**
+   *  <code>n</code> colours from green through yellow and brown to near-white, as R's `terrain.colors(n)`.<br>
+   *  @param n  Number of colours (at least 1).<br>
+   *  @return The palette, low to high.<br>
+   *  @throws std::invalid_argument  If <code>n</code> is 0.
+   */
+  public static SWIGTYPE_p_std__vectorT_datamunge__graphics__RGB_t terrain_colors(long n) {
+    return new SWIGTYPE_p_std__vectorT_datamunge__graphics__RGB_t(datamungeJNI.terrain_colors(n), true);
+  }
+
+  /**
+   *  <code>n</code> colours from dark blue through white to dark red, a diverging palette for signed<br>
+   *         values such as correlations (ColorBrewer's RdBu, reversed so that low is blue).<br>
+   * <br>
+   *  Interpolates linearly between the seven RdBu anchor colours; an odd <code>n</code> puts pure<br>
+   *  near-white (247, 247, 247) in the middle, so with `z_min = -z_max` in RPlot::image() zero<br>
+   *  maps to white.<br>
+   * <br>
+   *  @param n  Number of colours (at least 1; 1 gives the white midpoint).<br>
+   *  @return The palette, low (blue) to high (red).<br>
+   *  @throws std::invalid_argument  If <code>n</code> is 0.<br>
+   * <br>
+   *  <p alt="Example"><br>
+   *  {@code 
+   const auto pal = dm::graphics::diverging_colors(3);
+   std::print("{} {} {}\n", pal[0].r, pal[1].g, pal[2].r);  // 33 247 178
+   }</p><br>
+   * <br>
+   *  <p alt="References"><br>
+   *  - C. Brewer, ColorBrewer 2.0 (RdBu scheme): https://colorbrewer2.org</p><br>
+   * <br>
+   *  @see terrain_colors(), RPlot::image()
+   */
+  public static SWIGTYPE_p_std__vectorT_datamunge__graphics__RGB_t diverging_colors(long n) {
+    return new SWIGTYPE_p_std__vectorT_datamunge__graphics__RGB_t(datamungeJNI.diverging_colors(n), true);
+  }
+
+  /**
+   *  <code>n</code> colours of the viridis scale, from dark purple through blue and green to yellow,<br>
+   *         matching R's `viridisLite::viridis(n)` at n = 10.<br>
+   * <br>
+   *  Viridis is perceptually uniform, so equal steps in value look like equal steps in colour,<br>
+   *  and it stays readable in greyscale and for the common forms of colour blindness. Colours are<br>
+   *  interpolated linearly between viridis(10)'s ten anchors.<br>
+   * <br>
+   *  @param n  Number of colours (at least 1).<br>
+   *  @return The palette, low (purple) to high (yellow).<br>
+   *  @throws std::invalid_argument  If <code>n</code> is 0.<br>
+   * <br>
+   *  <p alt="Example"><br>
+   *  {@code 
+   const auto pal = dm::graphics::viridis_colors(10);
+   std::print("{} {} {}\n", pal[0].r, pal[5].g, pal[9].b);  // 68 158 37
+   }</p><br>
+   * <br>
+   *  <p alt="References"><br>
+   *  - S. van der Walt and N. Smith (2015). "mpl colourmaps" (viridis): https://bids.github.io/colormap/<br>
+   *  - viridisLite: https://sjmgarnier.github.io/viridisLite/</p><br>
+   * <br>
+   *  @see value_colors(), terrain_colors()
+   */
+  public static SWIGTYPE_p_std__vectorT_datamunge__graphics__RGB_t viridis_colors(long n) {
+    return new SWIGTYPE_p_std__vectorT_datamunge__graphics__RGB_t(datamungeJNI.viridis_colors(n), true);
+  }
+
+  /**
+   *  One colour per value on a continuous scale, for colouring scatter points by a<br>
+   *         numeric variable (ggplot2's `scale_colour_viridis_c()`).<br>
+   * <br>
+   *  Each value is mapped linearly from [<code>z_min</code>, <code>z_max]</code> to the palette and rounded to the<br>
+   *  nearest entry; values outside are clamped, NaN values get grey (190, 190, 190), and a zero<br>
+   *  range maps everything to the middle colour. Pass the result to RPlot::points_colored().<br>
+   * <br>
+   *  @param values  Values to colour.<br>
+   *  @param palette  Colours from low to high (default viridis_colors(256)).<br>
+   *  @param z_min  Value of the first colour; NaN (the default) uses the smallest value.<br>
+   *  @param z_max  Value of the last colour; NaN (the default) uses the largest value.<br>
+   *  @return One colour per value.<br>
+   * <br>
+   *  <p alt="Example"><br>
+   *  {@code 
+   const auto cols = dm::graphics::value_colors({0.0, 0.5, 1.0}, dm::graphics::viridis_colors(3));
+   std::print("{} {} {}\n", cols[0].r, cols[1].r, cols[2].r);  // 68 35 253
+   }</p><br>
+   * <br>
+   *  @see viridis_colors(), RPlot::points_colored()
+   */
+  public static SWIGTYPE_p_std__vectorT_datamunge__graphics__RGB_t value_colors(DVector values, SWIGTYPE_p_std__vectorT_datamunge__graphics__RGB_t palette, double z_min, double z_max) {
+    return new SWIGTYPE_p_std__vectorT_datamunge__graphics__RGB_t(datamungeJNI.value_colors__SWIG_0(DVector.getCPtr(values), values, SWIGTYPE_p_std__vectorT_datamunge__graphics__RGB_t.getCPtr(palette), z_min, z_max), true);
+  }
+
+  /**
+   *  One colour per value on a continuous scale, for colouring scatter points by a<br>
+   *         numeric variable (ggplot2's `scale_colour_viridis_c()`).<br>
+   * <br>
+   *  Each value is mapped linearly from [<code>z_min</code>, <code>z_max]</code> to the palette and rounded to the<br>
+   *  nearest entry; values outside are clamped, NaN values get grey (190, 190, 190), and a zero<br>
+   *  range maps everything to the middle colour. Pass the result to RPlot::points_colored().<br>
+   * <br>
+   *  @param values  Values to colour.<br>
+   *  @param palette  Colours from low to high (default viridis_colors(256)).<br>
+   *  @param z_min  Value of the first colour; NaN (the default) uses the smallest value.<br>
+   *  @return One colour per value.<br>
+   * <br>
+   *  <p alt="Example"><br>
+   *  {@code 
+   const auto cols = dm::graphics::value_colors({0.0, 0.5, 1.0}, dm::graphics::viridis_colors(3));
+   std::print("{} {} {}\n", cols[0].r, cols[1].r, cols[2].r);  // 68 35 253
+   }</p><br>
+   * <br>
+   *  @see viridis_colors(), RPlot::points_colored()
+   */
+  public static SWIGTYPE_p_std__vectorT_datamunge__graphics__RGB_t value_colors(DVector values, SWIGTYPE_p_std__vectorT_datamunge__graphics__RGB_t palette, double z_min) {
+    return new SWIGTYPE_p_std__vectorT_datamunge__graphics__RGB_t(datamungeJNI.value_colors__SWIG_1(DVector.getCPtr(values), values, SWIGTYPE_p_std__vectorT_datamunge__graphics__RGB_t.getCPtr(palette), z_min), true);
+  }
+
+  /**
+   *  One colour per value on a continuous scale, for colouring scatter points by a<br>
+   *         numeric variable (ggplot2's `scale_colour_viridis_c()`).<br>
+   * <br>
+   *  Each value is mapped linearly from [<code>z_min</code>, <code>z_max]</code> to the palette and rounded to the<br>
+   *  nearest entry; values outside are clamped, NaN values get grey (190, 190, 190), and a zero<br>
+   *  range maps everything to the middle colour. Pass the result to RPlot::points_colored().<br>
+   * <br>
+   *  @param values  Values to colour.<br>
+   *  @param palette  Colours from low to high (default viridis_colors(256)).<br>
+   *  @return One colour per value.<br>
+   * <br>
+   *  <p alt="Example"><br>
+   *  {@code 
+   const auto cols = dm::graphics::value_colors({0.0, 0.5, 1.0}, dm::graphics::viridis_colors(3));
+   std::print("{} {} {}\n", cols[0].r, cols[1].r, cols[2].r);  // 68 35 253
+   }</p><br>
+   * <br>
+   *  @see viridis_colors(), RPlot::points_colored()
+   */
+  public static SWIGTYPE_p_std__vectorT_datamunge__graphics__RGB_t value_colors(DVector values, SWIGTYPE_p_std__vectorT_datamunge__graphics__RGB_t palette) {
+    return new SWIGTYPE_p_std__vectorT_datamunge__graphics__RGB_t(datamungeJNI.value_colors__SWIG_2(DVector.getCPtr(values), values, SWIGTYPE_p_std__vectorT_datamunge__graphics__RGB_t.getCPtr(palette)), true);
+  }
+
+  /**
+   *  One colour per value on a continuous scale, for colouring scatter points by a<br>
+   *         numeric variable (ggplot2's `scale_colour_viridis_c()`).<br>
+   * <br>
+   *  Each value is mapped linearly from [<code>z_min</code>, <code>z_max]</code> to the palette and rounded to the<br>
+   *  nearest entry; values outside are clamped, NaN values get grey (190, 190, 190), and a zero<br>
+   *  range maps everything to the middle colour. Pass the result to RPlot::points_colored().<br>
+   * <br>
+   *  @param values  Values to colour.<br>
+   *  @return One colour per value.<br>
+   * <br>
+   *  <p alt="Example"><br>
+   *  {@code 
+   const auto cols = dm::graphics::value_colors({0.0, 0.5, 1.0}, dm::graphics::viridis_colors(3));
+   std::print("{} {} {}\n", cols[0].r, cols[1].r, cols[2].r);  // 68 35 253
+   }</p><br>
+   * <br>
+   *  @see viridis_colors(), RPlot::points_colored()
+   */
+  public static SWIGTYPE_p_std__vectorT_datamunge__graphics__RGB_t value_colors(DVector values) {
+    return new SWIGTYPE_p_std__vectorT_datamunge__graphics__RGB_t(datamungeJNI.value_colors__SWIG_3(DVector.getCPtr(values), values), true);
+  }
+
+  /**
    *  Reseeds the generator shared by unif() and rnorm(), like R's set.seed().
    */
   public static void set_seed(java.math.BigInteger seed) {
@@ -89,6 +616,13 @@ public class datamunge {
    */
   public static DVector unif(double lower, double upper, long n) {
     return new DVector(datamungeJNI.unif(lower, upper, n), true);
+  }
+
+  /**
+   *  Alias for unif(lower, upper, n), sharing its generator and validation.
+   */
+  public static DVector runif(double lower, double upper, long n) {
+    return new DVector(datamungeJNI.runif(lower, upper, n), true);
   }
 
   /**
@@ -106,545 +640,1511 @@ public class datamunge {
   }
 
   /**
-   *  One-sample t-test of whether the mean of <code>x</code> differs from <code>mu</code>.
+   *  One-sample Student t-test of a population mean, like R t.test().<br>
+   * <br>
+   *  Independent normal observations give t=(mean-mu)/SE with n-1 df. The CI estimates the<br>
+   *  population mean, not mean-mu. Inputs are copied only for paired differences; all routines<br>
+   *  leave inputs unchanged and use no shared mutable state. O(n) work; no null/nonfinite omission.<br>
+   *  @param x At least two finite observations with positive representable sample variance.<br>
+   *  @param mu Finite null mean, default zero, in observation units.<br>
+   *  @param alternative TwoSided (default), Less or Greater, relative to mu.<br>
+   *  @param conf_level Finite confidence level strictly in (0,1), default .95.<br>
+   *  @return statistic=t, parameter1=df, estimate1=sample mean, p_value and mean confidence bounds;<br>
+   *  remaining scalars retain defaults. One-sided intervals have one infinite endpoint.<br>
+   *  @throws std::invalid_argument Too few/nonfinite values, invalid mu/alternative/confidence or<br>
+   *  zero/nonfinite standard error.<br>
+   *  <p alt="Example"><br>
+   *  {@code 
+   const auto t=dm::stats::t_test_one_sample({1,2,3,4});
+   std::print("{:.0f}\n",t.parameter1); // 3
+   }</p><br>
+   *  <p alt="References"><br>
+   *  - https://stat.ethz.ch/R-manual/R-devel/library/stats/html/t.test.html<br>
+   *  </p>@see HypothesisTestResult
    */
   public static HypothesisTestResult t_test_one_sample(DVector x, double mu, Alternative alternative, double conf_level) {
     return new HypothesisTestResult(datamungeJNI.t_test_one_sample__SWIG_0(DVector.getCPtr(x), x, mu, alternative.swigValue(), conf_level), true);
   }
 
   /**
-   *  One-sample t-test of whether the mean of <code>x</code> differs from <code>mu</code>.
+   *  One-sample Student t-test of a population mean, like R t.test().<br>
+   * <br>
+   *  Independent normal observations give t=(mean-mu)/SE with n-1 df. The CI estimates the<br>
+   *  population mean, not mean-mu. Inputs are copied only for paired differences; all routines<br>
+   *  leave inputs unchanged and use no shared mutable state. O(n) work; no null/nonfinite omission.<br>
+   *  @param x At least two finite observations with positive representable sample variance.<br>
+   *  @param mu Finite null mean, default zero, in observation units.<br>
+   *  @param alternative TwoSided (default), Less or Greater, relative to mu.<br>
+   *  @return statistic=t, parameter1=df, estimate1=sample mean, p_value and mean confidence bounds;<br>
+   *  remaining scalars retain defaults. One-sided intervals have one infinite endpoint.<br>
+   *  @throws std::invalid_argument Too few/nonfinite values, invalid mu/alternative/confidence or<br>
+   *  zero/nonfinite standard error.<br>
+   *  <p alt="Example"><br>
+   *  {@code 
+   const auto t=dm::stats::t_test_one_sample({1,2,3,4});
+   std::print("{:.0f}\n",t.parameter1); // 3
+   }</p><br>
+   *  <p alt="References"><br>
+   *  - https://stat.ethz.ch/R-manual/R-devel/library/stats/html/t.test.html<br>
+   *  </p>@see HypothesisTestResult
    */
   public static HypothesisTestResult t_test_one_sample(DVector x, double mu, Alternative alternative) {
     return new HypothesisTestResult(datamungeJNI.t_test_one_sample__SWIG_1(DVector.getCPtr(x), x, mu, alternative.swigValue()), true);
   }
 
   /**
-   *  One-sample t-test of whether the mean of <code>x</code> differs from <code>mu</code>.
+   *  One-sample Student t-test of a population mean, like R t.test().<br>
+   * <br>
+   *  Independent normal observations give t=(mean-mu)/SE with n-1 df. The CI estimates the<br>
+   *  population mean, not mean-mu. Inputs are copied only for paired differences; all routines<br>
+   *  leave inputs unchanged and use no shared mutable state. O(n) work; no null/nonfinite omission.<br>
+   *  @param x At least two finite observations with positive representable sample variance.<br>
+   *  @param mu Finite null mean, default zero, in observation units.<br>
+   *  @return statistic=t, parameter1=df, estimate1=sample mean, p_value and mean confidence bounds;<br>
+   *  remaining scalars retain defaults. One-sided intervals have one infinite endpoint.<br>
+   *  @throws std::invalid_argument Too few/nonfinite values, invalid mu/alternative/confidence or<br>
+   *  zero/nonfinite standard error.<br>
+   *  <p alt="Example"><br>
+   *  {@code 
+   const auto t=dm::stats::t_test_one_sample({1,2,3,4});
+   std::print("{:.0f}\n",t.parameter1); // 3
+   }</p><br>
+   *  <p alt="References"><br>
+   *  - https://stat.ethz.ch/R-manual/R-devel/library/stats/html/t.test.html<br>
+   *  </p>@see HypothesisTestResult
    */
   public static HypothesisTestResult t_test_one_sample(DVector x, double mu) {
     return new HypothesisTestResult(datamungeJNI.t_test_one_sample__SWIG_2(DVector.getCPtr(x), x, mu), true);
   }
 
   /**
-   *  One-sample t-test of whether the mean of <code>x</code> differs from <code>mu</code>.
+   *  One-sample Student t-test of a population mean, like R t.test().<br>
+   * <br>
+   *  Independent normal observations give t=(mean-mu)/SE with n-1 df. The CI estimates the<br>
+   *  population mean, not mean-mu. Inputs are copied only for paired differences; all routines<br>
+   *  leave inputs unchanged and use no shared mutable state. O(n) work; no null/nonfinite omission.<br>
+   *  @param x At least two finite observations with positive representable sample variance.<br>
+   *  @return statistic=t, parameter1=df, estimate1=sample mean, p_value and mean confidence bounds;<br>
+   *  remaining scalars retain defaults. One-sided intervals have one infinite endpoint.<br>
+   *  @throws std::invalid_argument Too few/nonfinite values, invalid mu/alternative/confidence or<br>
+   *  zero/nonfinite standard error.<br>
+   *  <p alt="Example"><br>
+   *  {@code 
+   const auto t=dm::stats::t_test_one_sample({1,2,3,4});
+   std::print("{:.0f}\n",t.parameter1); // 3
+   }</p><br>
+   *  <p alt="References"><br>
+   *  - https://stat.ethz.ch/R-manual/R-devel/library/stats/html/t.test.html<br>
+   *  </p>@see HypothesisTestResult
    */
   public static HypothesisTestResult t_test_one_sample(DVector x) {
     return new HypothesisTestResult(datamungeJNI.t_test_one_sample__SWIG_3(DVector.getCPtr(x), x), true);
   }
 
   /**
-   *  Two-sample t-test of whether <code>x</code> and <code>y</code> have the same mean. Uses Welch's<br>
-   *         unequal-variance approximation (Satterthwaite degrees of freedom) by default,<br>
-   *         matching R's t.test() default; set <code>equal_variance</code> to use the classic pooled-<br>
-   *         variance Student's t-test instead.
+   *  Independent two-sample Welch or pooled Student mean test, like R t.test().<br>
+   * <br>
+   *  Welch uses unequal sample variances and Satterthwaite approximate df; normality alone does not<br>
+   *  make its reference exact. Pooled Student requires equal population variances and independent<br>
+   *  normal observations for its exact reference. CI estimates mean(x)-mean(y). O(n_x+n_y) work,<br>
+   *  inputs unchanged, no shared mutable state or omission.<br>
+   *  @param x At least two finite observations in the first group.<br>
+   *  @param y At least two finite independent observations in the second group.<br>
+   *  @param equal_variance False (default) uses Welch; true uses pooled variance.<br>
+   *  @param alternative TwoSided (default), Less or Greater for mean(x)-mean(y).<br>
+   *  @param conf_level Finite confidence level in (0,1), default .95.<br>
+   *  @return statistic=t, parameter1=df, estimate1/2=group means, p_value and confidence bounds for<br>
+   *  their difference. One-sided bounds can be infinite.<br>
+   *  @throws std::invalid_argument Invalid sample sizes/values, alternative/confidence,<br>
+   *  unrepresentable mean difference or zero/nonfinite combined standard error.<br>
+   *  <p alt="Example"><br>
+   *  {@code 
+   const auto t=dm::stats::t_test_two_sample({1,2,3},{4,5,6});
+   std::print("{:.0f}\n",t.estimate1); // 2
+   }</p><br>
+   *  <p alt="References"><br>
+   *  - https://stat.ethz.ch/R-manual/R-devel/library/stats/html/t.test.html<br>
+   *  </p>@see HypothesisTestResult
    */
   public static HypothesisTestResult t_test_two_sample(DVector x, DVector y, boolean equal_variance, Alternative alternative, double conf_level) {
     return new HypothesisTestResult(datamungeJNI.t_test_two_sample__SWIG_0(DVector.getCPtr(x), x, DVector.getCPtr(y), y, equal_variance, alternative.swigValue(), conf_level), true);
   }
 
   /**
-   *  Two-sample t-test of whether <code>x</code> and <code>y</code> have the same mean. Uses Welch's<br>
-   *         unequal-variance approximation (Satterthwaite degrees of freedom) by default,<br>
-   *         matching R's t.test() default; set <code>equal_variance</code> to use the classic pooled-<br>
-   *         variance Student's t-test instead.
+   *  Independent two-sample Welch or pooled Student mean test, like R t.test().<br>
+   * <br>
+   *  Welch uses unequal sample variances and Satterthwaite approximate df; normality alone does not<br>
+   *  make its reference exact. Pooled Student requires equal population variances and independent<br>
+   *  normal observations for its exact reference. CI estimates mean(x)-mean(y). O(n_x+n_y) work,<br>
+   *  inputs unchanged, no shared mutable state or omission.<br>
+   *  @param x At least two finite observations in the first group.<br>
+   *  @param y At least two finite independent observations in the second group.<br>
+   *  @param equal_variance False (default) uses Welch; true uses pooled variance.<br>
+   *  @param alternative TwoSided (default), Less or Greater for mean(x)-mean(y).<br>
+   *  @return statistic=t, parameter1=df, estimate1/2=group means, p_value and confidence bounds for<br>
+   *  their difference. One-sided bounds can be infinite.<br>
+   *  @throws std::invalid_argument Invalid sample sizes/values, alternative/confidence,<br>
+   *  unrepresentable mean difference or zero/nonfinite combined standard error.<br>
+   *  <p alt="Example"><br>
+   *  {@code 
+   const auto t=dm::stats::t_test_two_sample({1,2,3},{4,5,6});
+   std::print("{:.0f}\n",t.estimate1); // 2
+   }</p><br>
+   *  <p alt="References"><br>
+   *  - https://stat.ethz.ch/R-manual/R-devel/library/stats/html/t.test.html<br>
+   *  </p>@see HypothesisTestResult
    */
   public static HypothesisTestResult t_test_two_sample(DVector x, DVector y, boolean equal_variance, Alternative alternative) {
     return new HypothesisTestResult(datamungeJNI.t_test_two_sample__SWIG_1(DVector.getCPtr(x), x, DVector.getCPtr(y), y, equal_variance, alternative.swigValue()), true);
   }
 
   /**
-   *  Two-sample t-test of whether <code>x</code> and <code>y</code> have the same mean. Uses Welch's<br>
-   *         unequal-variance approximation (Satterthwaite degrees of freedom) by default,<br>
-   *         matching R's t.test() default; set <code>equal_variance</code> to use the classic pooled-<br>
-   *         variance Student's t-test instead.
+   *  Independent two-sample Welch or pooled Student mean test, like R t.test().<br>
+   * <br>
+   *  Welch uses unequal sample variances and Satterthwaite approximate df; normality alone does not<br>
+   *  make its reference exact. Pooled Student requires equal population variances and independent<br>
+   *  normal observations for its exact reference. CI estimates mean(x)-mean(y). O(n_x+n_y) work,<br>
+   *  inputs unchanged, no shared mutable state or omission.<br>
+   *  @param x At least two finite observations in the first group.<br>
+   *  @param y At least two finite independent observations in the second group.<br>
+   *  @param equal_variance False (default) uses Welch; true uses pooled variance.<br>
+   *  @return statistic=t, parameter1=df, estimate1/2=group means, p_value and confidence bounds for<br>
+   *  their difference. One-sided bounds can be infinite.<br>
+   *  @throws std::invalid_argument Invalid sample sizes/values, alternative/confidence,<br>
+   *  unrepresentable mean difference or zero/nonfinite combined standard error.<br>
+   *  <p alt="Example"><br>
+   *  {@code 
+   const auto t=dm::stats::t_test_two_sample({1,2,3},{4,5,6});
+   std::print("{:.0f}\n",t.estimate1); // 2
+   }</p><br>
+   *  <p alt="References"><br>
+   *  - https://stat.ethz.ch/R-manual/R-devel/library/stats/html/t.test.html<br>
+   *  </p>@see HypothesisTestResult
    */
   public static HypothesisTestResult t_test_two_sample(DVector x, DVector y, boolean equal_variance) {
     return new HypothesisTestResult(datamungeJNI.t_test_two_sample__SWIG_2(DVector.getCPtr(x), x, DVector.getCPtr(y), y, equal_variance), true);
   }
 
   /**
-   *  Two-sample t-test of whether <code>x</code> and <code>y</code> have the same mean. Uses Welch's<br>
-   *         unequal-variance approximation (Satterthwaite degrees of freedom) by default,<br>
-   *         matching R's t.test() default; set <code>equal_variance</code> to use the classic pooled-<br>
-   *         variance Student's t-test instead.
+   *  Independent two-sample Welch or pooled Student mean test, like R t.test().<br>
+   * <br>
+   *  Welch uses unequal sample variances and Satterthwaite approximate df; normality alone does not<br>
+   *  make its reference exact. Pooled Student requires equal population variances and independent<br>
+   *  normal observations for its exact reference. CI estimates mean(x)-mean(y). O(n_x+n_y) work,<br>
+   *  inputs unchanged, no shared mutable state or omission.<br>
+   *  @param x At least two finite observations in the first group.<br>
+   *  @param y At least two finite independent observations in the second group.<br>
+   *  @return statistic=t, parameter1=df, estimate1/2=group means, p_value and confidence bounds for<br>
+   *  their difference. One-sided bounds can be infinite.<br>
+   *  @throws std::invalid_argument Invalid sample sizes/values, alternative/confidence,<br>
+   *  unrepresentable mean difference or zero/nonfinite combined standard error.<br>
+   *  <p alt="Example"><br>
+   *  {@code 
+   const auto t=dm::stats::t_test_two_sample({1,2,3},{4,5,6});
+   std::print("{:.0f}\n",t.estimate1); // 2
+   }</p><br>
+   *  <p alt="References"><br>
+   *  - https://stat.ethz.ch/R-manual/R-devel/library/stats/html/t.test.html<br>
+   *  </p>@see HypothesisTestResult
    */
   public static HypothesisTestResult t_test_two_sample(DVector x, DVector y) {
     return new HypothesisTestResult(datamungeJNI.t_test_two_sample__SWIG_3(DVector.getCPtr(x), x, DVector.getCPtr(y), y), true);
   }
 
   /**
-   *  Paired t-test: a one-sample t-test on the elementwise differences x[i] - y[i].<br>
-   *         Requires x and y to have the same length.
+   *  Paired Student t-test on aligned differences, like R t.test(paired=TRUE).<br>
+   * <br>
+   *  Runs the one-sample test on x[i]-y[i]. Differences, rather than the two marginal samples, need<br>
+   *  independent normal sampling for the exact t reference. Row order defines pairing; no values<br>
+   *  are omitted. O(n) work/storage; inputs unchanged, no shared mutable state.<br>
+   *  @param x At least two finite first measurements.<br>
+   *  @param y Equal-length finite second measurements paired by index.<br>
+   *  @param alternative TwoSided (default), Less or Greater for the population mean difference.<br>
+   *  @param conf_level Finite confidence level in (0,1), default .95.<br>
+   *  @return One-sample difference result with method Paired t-test; estimate1 is mean difference,<br>
+   *  CI targets the same difference.<br>
+   *  @throws std::invalid_argument Length mismatch, nonfinite data/differences, invalid controls or<br>
+   *  zero/nonfinite difference standard error.<br>
+   *  <p alt="Example"><br>
+   *  {@code 
+   const auto t=dm::stats::t_test_paired({2,4,7},{1,2,4});
+   std::print("{:.0f}\n",t.parameter1); // 2
+   }</p><br>
+   *  <p alt="References"><br>
+   *  - https://stat.ethz.ch/R-manual/R-devel/library/stats/html/t.test.html<br>
+   *  </p>@see HypothesisTestResult
    */
   public static HypothesisTestResult t_test_paired(DVector x, DVector y, Alternative alternative, double conf_level) {
     return new HypothesisTestResult(datamungeJNI.t_test_paired__SWIG_0(DVector.getCPtr(x), x, DVector.getCPtr(y), y, alternative.swigValue(), conf_level), true);
   }
 
   /**
-   *  Paired t-test: a one-sample t-test on the elementwise differences x[i] - y[i].<br>
-   *         Requires x and y to have the same length.
+   *  Paired Student t-test on aligned differences, like R t.test(paired=TRUE).<br>
+   * <br>
+   *  Runs the one-sample test on x[i]-y[i]. Differences, rather than the two marginal samples, need<br>
+   *  independent normal sampling for the exact t reference. Row order defines pairing; no values<br>
+   *  are omitted. O(n) work/storage; inputs unchanged, no shared mutable state.<br>
+   *  @param x At least two finite first measurements.<br>
+   *  @param y Equal-length finite second measurements paired by index.<br>
+   *  @param alternative TwoSided (default), Less or Greater for the population mean difference.<br>
+   *  @return One-sample difference result with method Paired t-test; estimate1 is mean difference,<br>
+   *  CI targets the same difference.<br>
+   *  @throws std::invalid_argument Length mismatch, nonfinite data/differences, invalid controls or<br>
+   *  zero/nonfinite difference standard error.<br>
+   *  <p alt="Example"><br>
+   *  {@code 
+   const auto t=dm::stats::t_test_paired({2,4,7},{1,2,4});
+   std::print("{:.0f}\n",t.parameter1); // 2
+   }</p><br>
+   *  <p alt="References"><br>
+   *  - https://stat.ethz.ch/R-manual/R-devel/library/stats/html/t.test.html<br>
+   *  </p>@see HypothesisTestResult
    */
   public static HypothesisTestResult t_test_paired(DVector x, DVector y, Alternative alternative) {
     return new HypothesisTestResult(datamungeJNI.t_test_paired__SWIG_1(DVector.getCPtr(x), x, DVector.getCPtr(y), y, alternative.swigValue()), true);
   }
 
   /**
-   *  Paired t-test: a one-sample t-test on the elementwise differences x[i] - y[i].<br>
-   *         Requires x and y to have the same length.
+   *  Paired Student t-test on aligned differences, like R t.test(paired=TRUE).<br>
+   * <br>
+   *  Runs the one-sample test on x[i]-y[i]. Differences, rather than the two marginal samples, need<br>
+   *  independent normal sampling for the exact t reference. Row order defines pairing; no values<br>
+   *  are omitted. O(n) work/storage; inputs unchanged, no shared mutable state.<br>
+   *  @param x At least two finite first measurements.<br>
+   *  @param y Equal-length finite second measurements paired by index.<br>
+   *  @return One-sample difference result with method Paired t-test; estimate1 is mean difference,<br>
+   *  CI targets the same difference.<br>
+   *  @throws std::invalid_argument Length mismatch, nonfinite data/differences, invalid controls or<br>
+   *  zero/nonfinite difference standard error.<br>
+   *  <p alt="Example"><br>
+   *  {@code 
+   const auto t=dm::stats::t_test_paired({2,4,7},{1,2,4});
+   std::print("{:.0f}\n",t.parameter1); // 2
+   }</p><br>
+   *  <p alt="References"><br>
+   *  - https://stat.ethz.ch/R-manual/R-devel/library/stats/html/t.test.html<br>
+   *  </p>@see HypothesisTestResult
    */
   public static HypothesisTestResult t_test_paired(DVector x, DVector y) {
     return new HypothesisTestResult(datamungeJNI.t_test_paired__SWIG_2(DVector.getCPtr(x), x, DVector.getCPtr(y), y), true);
   }
 
   /**
-   *  Wilcoxon signed-rank test: a non-parametric analog of the one-sample/paired<br>
-   *         t-test, testing whether the distribution of <code>x</code> - <code>mu</code> is symmetric about zero.<br>
-   *         For a paired test, pass the elementwise differences as <code>x</code>. Differences exactly<br>
-   *         equal to <code>mu</code> are dropped (matching R's wilcox.test() default). Uses the normal<br>
-   *         approximation with a continuity correction and a tie correction to the variance<br>
-   *         (matching R's behavior once ties are present, which is the common case for real<br>
-   *         data); no confidence interval is reported (has_conf_int stays false), matching the<br>
-   *         default `conf.int = FALSE` behavior in R.
+   *  Normal-approximation Wilcoxon signed-rank test with tie/continuity corrections.<br>
+   * <br>
+   *  Tests symmetry of x-mu about zero under independent observations, not an arbitrary-population<br>
+   *  mean or median null. For paired data pass aligned differences. Exact-zero differences are<br>
+   *  removed; absolute differences receive average ranks. Always uses a normal approximation, even<br>
+   *  for small tie-free samples; no exact option or CI. O(n log n) work/O(n) storage; input<br>
+   *  unchanged, no shared state.<br>
+   *  @param x Finite values; at least one nonzero difference from mu must remain.<br>
+   *  @param mu Finite symmetry centre, default zero.<br>
+   *  @param alternative TwoSided (default), Less or Greater for the signed location shift.<br>
+   *  @return statistic=positive rank sum V, estimate1=mu (not an estimated pseudomedian),<br>
+   *  approximate p_value; no CI.<br>
+   *  @throws std::invalid_argument Nonfinite input/mu, invalid alternative, no nonzero differences<br>
+   *  or zero rank variance.<br>
+   *  <p alt="Example"><br>
+   *  {@code 
+   const auto w=dm::stats::wilcoxon_signed_rank_test({1,2,3,4});
+   std::print("{:.0f}\n",w.statistic); // 10
+   }</p><br>
+   *  <p alt="References"><br>
+   *  - https://stat.ethz.ch/R-manual/R-devel/library/stats/html/wilcox.test.html<br>
+   *  </p>@see HypothesisTestResult
    */
   public static HypothesisTestResult wilcoxon_signed_rank_test(DVector x, double mu, Alternative alternative) {
     return new HypothesisTestResult(datamungeJNI.wilcoxon_signed_rank_test__SWIG_0(DVector.getCPtr(x), x, mu, alternative.swigValue()), true);
   }
 
   /**
-   *  Wilcoxon signed-rank test: a non-parametric analog of the one-sample/paired<br>
-   *         t-test, testing whether the distribution of <code>x</code> - <code>mu</code> is symmetric about zero.<br>
-   *         For a paired test, pass the elementwise differences as <code>x</code>. Differences exactly<br>
-   *         equal to <code>mu</code> are dropped (matching R's wilcox.test() default). Uses the normal<br>
-   *         approximation with a continuity correction and a tie correction to the variance<br>
-   *         (matching R's behavior once ties are present, which is the common case for real<br>
-   *         data); no confidence interval is reported (has_conf_int stays false), matching the<br>
-   *         default `conf.int = FALSE` behavior in R.
+   *  Normal-approximation Wilcoxon signed-rank test with tie/continuity corrections.<br>
+   * <br>
+   *  Tests symmetry of x-mu about zero under independent observations, not an arbitrary-population<br>
+   *  mean or median null. For paired data pass aligned differences. Exact-zero differences are<br>
+   *  removed; absolute differences receive average ranks. Always uses a normal approximation, even<br>
+   *  for small tie-free samples; no exact option or CI. O(n log n) work/O(n) storage; input<br>
+   *  unchanged, no shared state.<br>
+   *  @param x Finite values; at least one nonzero difference from mu must remain.<br>
+   *  @param mu Finite symmetry centre, default zero.<br>
+   *  @return statistic=positive rank sum V, estimate1=mu (not an estimated pseudomedian),<br>
+   *  approximate p_value; no CI.<br>
+   *  @throws std::invalid_argument Nonfinite input/mu, invalid alternative, no nonzero differences<br>
+   *  or zero rank variance.<br>
+   *  <p alt="Example"><br>
+   *  {@code 
+   const auto w=dm::stats::wilcoxon_signed_rank_test({1,2,3,4});
+   std::print("{:.0f}\n",w.statistic); // 10
+   }</p><br>
+   *  <p alt="References"><br>
+   *  - https://stat.ethz.ch/R-manual/R-devel/library/stats/html/wilcox.test.html<br>
+   *  </p>@see HypothesisTestResult
    */
   public static HypothesisTestResult wilcoxon_signed_rank_test(DVector x, double mu) {
     return new HypothesisTestResult(datamungeJNI.wilcoxon_signed_rank_test__SWIG_1(DVector.getCPtr(x), x, mu), true);
   }
 
   /**
-   *  Wilcoxon signed-rank test: a non-parametric analog of the one-sample/paired<br>
-   *         t-test, testing whether the distribution of <code>x</code> - <code>mu</code> is symmetric about zero.<br>
-   *         For a paired test, pass the elementwise differences as <code>x</code>. Differences exactly<br>
-   *         equal to <code>mu</code> are dropped (matching R's wilcox.test() default). Uses the normal<br>
-   *         approximation with a continuity correction and a tie correction to the variance<br>
-   *         (matching R's behavior once ties are present, which is the common case for real<br>
-   *         data); no confidence interval is reported (has_conf_int stays false), matching the<br>
-   *         default `conf.int = FALSE` behavior in R.
+   *  Normal-approximation Wilcoxon signed-rank test with tie/continuity corrections.<br>
+   * <br>
+   *  Tests symmetry of x-mu about zero under independent observations, not an arbitrary-population<br>
+   *  mean or median null. For paired data pass aligned differences. Exact-zero differences are<br>
+   *  removed; absolute differences receive average ranks. Always uses a normal approximation, even<br>
+   *  for small tie-free samples; no exact option or CI. O(n log n) work/O(n) storage; input<br>
+   *  unchanged, no shared state.<br>
+   *  @param x Finite values; at least one nonzero difference from mu must remain.<br>
+   *  @return statistic=positive rank sum V, estimate1=mu (not an estimated pseudomedian),<br>
+   *  approximate p_value; no CI.<br>
+   *  @throws std::invalid_argument Nonfinite input/mu, invalid alternative, no nonzero differences<br>
+   *  or zero rank variance.<br>
+   *  <p alt="Example"><br>
+   *  {@code 
+   const auto w=dm::stats::wilcoxon_signed_rank_test({1,2,3,4});
+   std::print("{:.0f}\n",w.statistic); // 10
+   }</p><br>
+   *  <p alt="References"><br>
+   *  - https://stat.ethz.ch/R-manual/R-devel/library/stats/html/wilcox.test.html<br>
+   *  </p>@see HypothesisTestResult
    */
   public static HypothesisTestResult wilcoxon_signed_rank_test(DVector x) {
     return new HypothesisTestResult(datamungeJNI.wilcoxon_signed_rank_test__SWIG_2(DVector.getCPtr(x), x), true);
   }
 
   /**
-   *  Wilcoxon rank-sum test (equivalently, the Mann-Whitney U test): a non-parametric<br>
-   *         analog of the two-sample t-test, testing whether <code>x</code> and <code>y</code> are drawn from<br>
-   *         distributions with the same location. Uses the normal approximation with a<br>
-   *         continuity correction and a tie correction to the variance.
+   *  Tie/continuity-corrected Mann-Whitney U test using a normal approximation.<br>
+   * <br>
+   *  Pools ranks, giving average ranks to ties, and reports U for the first sample. Its identical-<br>
+   *  distribution null requires independent exchangeable samples. A common-shape shift model<br>
+   *  supports a location interpretation; equal medians alone is insufficient. U/(n_x*n_y) estimates<br>
+   *  P(X&gt;Y)+P(X=Y)/2, not a mean difference. Approximation is used at every size. O(N log N)<br>
+   *  work/O(N) storage, inputs unchanged, no shared state.<br>
+   *  @param x Nonempty finite first sample.<br>
+   *  @param y Nonempty finite independent second sample.<br>
+   *  @param alternative TwoSided (default), Less or Greater for first-versus-second stochastic<br>
+   *  location.<br>
+   *  @return statistic=U=rank_sum(x)-n_x(n_x+1)/2 and approximate p_value; no CI or location<br>
+   *  estimate.<br>
+   *  @throws std::invalid_argument Empty/nonfinite samples, invalid alternative or zero rank<br>
+   *  variance (all pooled observations tied).<br>
+   *  <p alt="Example"><br>
+   *  {@code 
+   const auto w=dm::stats::wilcoxon_rank_sum_test({1,2,3},{4,5,6});
+   std::print("{:.0f}\n",w.statistic); // 0
+   }</p><br>
+   *  <p alt="References"><br>
+   *  - https://stat.ethz.ch/R-manual/R-devel/library/stats/html/wilcox.test.html<br>
+   *  </p>@see HypothesisTestResult
    */
   public static HypothesisTestResult wilcoxon_rank_sum_test(DVector x, DVector y, Alternative alternative) {
     return new HypothesisTestResult(datamungeJNI.wilcoxon_rank_sum_test__SWIG_0(DVector.getCPtr(x), x, DVector.getCPtr(y), y, alternative.swigValue()), true);
   }
 
   /**
-   *  Wilcoxon rank-sum test (equivalently, the Mann-Whitney U test): a non-parametric<br>
-   *         analog of the two-sample t-test, testing whether <code>x</code> and <code>y</code> are drawn from<br>
-   *         distributions with the same location. Uses the normal approximation with a<br>
-   *         continuity correction and a tie correction to the variance.
+   *  Tie/continuity-corrected Mann-Whitney U test using a normal approximation.<br>
+   * <br>
+   *  Pools ranks, giving average ranks to ties, and reports U for the first sample. Its identical-<br>
+   *  distribution null requires independent exchangeable samples. A common-shape shift model<br>
+   *  supports a location interpretation; equal medians alone is insufficient. U/(n_x*n_y) estimates<br>
+   *  P(X&gt;Y)+P(X=Y)/2, not a mean difference. Approximation is used at every size. O(N log N)<br>
+   *  work/O(N) storage, inputs unchanged, no shared state.<br>
+   *  @param x Nonempty finite first sample.<br>
+   *  @param y Nonempty finite independent second sample.<br>
+   *  @return statistic=U=rank_sum(x)-n_x(n_x+1)/2 and approximate p_value; no CI or location<br>
+   *  estimate.<br>
+   *  @throws std::invalid_argument Empty/nonfinite samples, invalid alternative or zero rank<br>
+   *  variance (all pooled observations tied).<br>
+   *  <p alt="Example"><br>
+   *  {@code 
+   const auto w=dm::stats::wilcoxon_rank_sum_test({1,2,3},{4,5,6});
+   std::print("{:.0f}\n",w.statistic); // 0
+   }</p><br>
+   *  <p alt="References"><br>
+   *  - https://stat.ethz.ch/R-manual/R-devel/library/stats/html/wilcox.test.html<br>
+   *  </p>@see HypothesisTestResult
    */
   public static HypothesisTestResult wilcoxon_rank_sum_test(DVector x, DVector y) {
     return new HypothesisTestResult(datamungeJNI.wilcoxon_rank_sum_test__SWIG_1(DVector.getCPtr(x), x, DVector.getCPtr(y), y), true);
   }
 
   /**
-   *  One-sample Kolmogorov-Smirnov test of whether <code>x</code> is drawn from a<br>
-   *         Normal(<code>mean</code>, <code>sd)</code> distribution, comparing the empirical CDF of <code>x</code> against<br>
-   *         that normal CDF. Uses the asymptotic Kolmogorov distribution for the two-sided<br>
-   *         p-value (Stephens' 1970 correction to the sample size) and the classic Smirnov<br>
-   *         one-sided asymptotic formula for "less"/"greater"; this will differ slightly from<br>
-   *         software that computes the exact finite-sample null distribution for small,<br>
-   *         tie-free samples (e.g. R's ks.test() default), but agrees closely once n is more<br>
-   *         than a few dozen.
+   *  One-sample KS test against a fully specified continuous normal CDF.<br>
+   * <br>
+   *  Two-sided p-values use the Stephens corrected asymptotic Kolmogorov reference; one-sided<br>
+   *  values use exp(-2*n*D^2). Mean and sd must be fixed independently of this sample: fitting them<br>
+   *  here invalidates the stated calibration. This is not a Lilliefors test. Ties are accepted, but<br>
+   *  continuous-null calibration is affected by rounding. O(n log n) work/O(n) storage, input<br>
+   *  unchanged, no omission/shared state.<br>
+   *  @param x At least two finite observations.<br>
+   *  @param mean Finite prespecified normal mean, default zero.<br>
+   *  @param sd Positive finite prespecified normal SD, default one.<br>
+   *  @param alternative TwoSided (default); Greater tests empirical CDF above reference, Less below<br>
+   *  (opposite to a location alternative).<br>
+   *  @return statistic=D or D+/D-, parameter1=n and approximate p_value; no CI.<br>
+   *  @throws std::invalid_argument Too few/nonfinite values, invalid mean/sd or alternative.<br>
+   *  <p alt="Example"><br>
+   *  {@code 
+   const auto k=dm::stats::ks_test_one_sample_normal({-1,0,1});
+   std::print("{:.0f}\n",k.parameter1); // 3
+   }</p><br>
+   *  <p alt="References"><br>
+   *  - https://stat.ethz.ch/R-manual/R-devel/library/stats/html/ks.test.html<br>
+   *  </p>@see HypothesisTestResult
    */
   public static HypothesisTestResult ks_test_one_sample_normal(DVector x, double mean, double sd, Alternative alternative) {
     return new HypothesisTestResult(datamungeJNI.ks_test_one_sample_normal__SWIG_0(DVector.getCPtr(x), x, mean, sd, alternative.swigValue()), true);
   }
 
   /**
-   *  One-sample Kolmogorov-Smirnov test of whether <code>x</code> is drawn from a<br>
-   *         Normal(<code>mean</code>, <code>sd)</code> distribution, comparing the empirical CDF of <code>x</code> against<br>
-   *         that normal CDF. Uses the asymptotic Kolmogorov distribution for the two-sided<br>
-   *         p-value (Stephens' 1970 correction to the sample size) and the classic Smirnov<br>
-   *         one-sided asymptotic formula for "less"/"greater"; this will differ slightly from<br>
-   *         software that computes the exact finite-sample null distribution for small,<br>
-   *         tie-free samples (e.g. R's ks.test() default), but agrees closely once n is more<br>
-   *         than a few dozen.
+   *  One-sample KS test against a fully specified continuous normal CDF.<br>
+   * <br>
+   *  Two-sided p-values use the Stephens corrected asymptotic Kolmogorov reference; one-sided<br>
+   *  values use exp(-2*n*D^2). Mean and sd must be fixed independently of this sample: fitting them<br>
+   *  here invalidates the stated calibration. This is not a Lilliefors test. Ties are accepted, but<br>
+   *  continuous-null calibration is affected by rounding. O(n log n) work/O(n) storage, input<br>
+   *  unchanged, no omission/shared state.<br>
+   *  @param x At least two finite observations.<br>
+   *  @param mean Finite prespecified normal mean, default zero.<br>
+   *  @param sd Positive finite prespecified normal SD, default one.<br>
+   *  @return statistic=D or D+/D-, parameter1=n and approximate p_value; no CI.<br>
+   *  @throws std::invalid_argument Too few/nonfinite values, invalid mean/sd or alternative.<br>
+   *  <p alt="Example"><br>
+   *  {@code 
+   const auto k=dm::stats::ks_test_one_sample_normal({-1,0,1});
+   std::print("{:.0f}\n",k.parameter1); // 3
+   }</p><br>
+   *  <p alt="References"><br>
+   *  - https://stat.ethz.ch/R-manual/R-devel/library/stats/html/ks.test.html<br>
+   *  </p>@see HypothesisTestResult
    */
   public static HypothesisTestResult ks_test_one_sample_normal(DVector x, double mean, double sd) {
     return new HypothesisTestResult(datamungeJNI.ks_test_one_sample_normal__SWIG_1(DVector.getCPtr(x), x, mean, sd), true);
   }
 
   /**
-   *  One-sample Kolmogorov-Smirnov test of whether <code>x</code> is drawn from a<br>
-   *         Normal(<code>mean</code>, <code>sd)</code> distribution, comparing the empirical CDF of <code>x</code> against<br>
-   *         that normal CDF. Uses the asymptotic Kolmogorov distribution for the two-sided<br>
-   *         p-value (Stephens' 1970 correction to the sample size) and the classic Smirnov<br>
-   *         one-sided asymptotic formula for "less"/"greater"; this will differ slightly from<br>
-   *         software that computes the exact finite-sample null distribution for small,<br>
-   *         tie-free samples (e.g. R's ks.test() default), but agrees closely once n is more<br>
-   *         than a few dozen.
+   *  One-sample KS test against a fully specified continuous normal CDF.<br>
+   * <br>
+   *  Two-sided p-values use the Stephens corrected asymptotic Kolmogorov reference; one-sided<br>
+   *  values use exp(-2*n*D^2). Mean and sd must be fixed independently of this sample: fitting them<br>
+   *  here invalidates the stated calibration. This is not a Lilliefors test. Ties are accepted, but<br>
+   *  continuous-null calibration is affected by rounding. O(n log n) work/O(n) storage, input<br>
+   *  unchanged, no omission/shared state.<br>
+   *  @param x At least two finite observations.<br>
+   *  @param mean Finite prespecified normal mean, default zero.<br>
+   *  @return statistic=D or D+/D-, parameter1=n and approximate p_value; no CI.<br>
+   *  @throws std::invalid_argument Too few/nonfinite values, invalid mean/sd or alternative.<br>
+   *  <p alt="Example"><br>
+   *  {@code 
+   const auto k=dm::stats::ks_test_one_sample_normal({-1,0,1});
+   std::print("{:.0f}\n",k.parameter1); // 3
+   }</p><br>
+   *  <p alt="References"><br>
+   *  - https://stat.ethz.ch/R-manual/R-devel/library/stats/html/ks.test.html<br>
+   *  </p>@see HypothesisTestResult
    */
   public static HypothesisTestResult ks_test_one_sample_normal(DVector x, double mean) {
     return new HypothesisTestResult(datamungeJNI.ks_test_one_sample_normal__SWIG_2(DVector.getCPtr(x), x, mean), true);
   }
 
   /**
-   *  One-sample Kolmogorov-Smirnov test of whether <code>x</code> is drawn from a<br>
-   *         Normal(<code>mean</code>, <code>sd)</code> distribution, comparing the empirical CDF of <code>x</code> against<br>
-   *         that normal CDF. Uses the asymptotic Kolmogorov distribution for the two-sided<br>
-   *         p-value (Stephens' 1970 correction to the sample size) and the classic Smirnov<br>
-   *         one-sided asymptotic formula for "less"/"greater"; this will differ slightly from<br>
-   *         software that computes the exact finite-sample null distribution for small,<br>
-   *         tie-free samples (e.g. R's ks.test() default), but agrees closely once n is more<br>
-   *         than a few dozen.
+   *  One-sample KS test against a fully specified continuous normal CDF.<br>
+   * <br>
+   *  Two-sided p-values use the Stephens corrected asymptotic Kolmogorov reference; one-sided<br>
+   *  values use exp(-2*n*D^2). Mean and sd must be fixed independently of this sample: fitting them<br>
+   *  here invalidates the stated calibration. This is not a Lilliefors test. Ties are accepted, but<br>
+   *  continuous-null calibration is affected by rounding. O(n log n) work/O(n) storage, input<br>
+   *  unchanged, no omission/shared state.<br>
+   *  @param x At least two finite observations.<br>
+   *  @return statistic=D or D+/D-, parameter1=n and approximate p_value; no CI.<br>
+   *  @throws std::invalid_argument Too few/nonfinite values, invalid mean/sd or alternative.<br>
+   *  <p alt="Example"><br>
+   *  {@code 
+   const auto k=dm::stats::ks_test_one_sample_normal({-1,0,1});
+   std::print("{:.0f}\n",k.parameter1); // 3
+   }</p><br>
+   *  <p alt="References"><br>
+   *  - https://stat.ethz.ch/R-manual/R-devel/library/stats/html/ks.test.html<br>
+   *  </p>@see HypothesisTestResult
    */
   public static HypothesisTestResult ks_test_one_sample_normal(DVector x) {
     return new HypothesisTestResult(datamungeJNI.ks_test_one_sample_normal__SWIG_3(DVector.getCPtr(x), x), true);
   }
 
   /**
-   *  Two-sample Kolmogorov-Smirnov test of whether <code>x</code> and <code>y</code> are drawn from the<br>
-   *         same continuous distribution, comparing their empirical CDFs. Same asymptotic<br>
-   *         p-value approach as ks_test_one_sample_normal.
+   *  One-sample KS test against a specified continuous uniform CDF.<br>
+   * <br>
+   *  Same asymptotic p-value and tie caveats as ks_test_one_sample_normal(); limits must be<br>
+   *  prespecified rather than estimated from x. O(n log n) work/O(n) storage; no mutation, omission<br>
+   *  or shared state.<br>
+   *  @param x At least two finite observations.<br>
+   *  @param lower Finite prespecified lower bound, default zero.<br>
+   *  @param upper Finite upper bound greater than lower, default one.<br>
+   *  @param alternative TwoSided (default), Greater for empirical CDF above reference or Less below.<br>
+   *  @return statistic=D or D+/D-, parameter1=n, approximate p_value; no CI.<br>
+   *  @throws std::invalid_argument Invalid sample, limits or alternative.<br>
+   *  <p alt="Example"><br>
+   *  {@code 
+   const auto k=dm::stats::ks_test_one_sample_uniform({.2,.4,.6,.8});
+   std::print("{:.1f}\n",k.statistic); // 0.2
+   }</p><br>
+   *  <p alt="References"><br>
+   *  - https://stat.ethz.ch/R-manual/R-devel/library/stats/html/ks.test.html<br>
+   *  </p>@see HypothesisTestResult
+   */
+  public static HypothesisTestResult ks_test_one_sample_uniform(DVector x, double lower, double upper, Alternative alternative) {
+    return new HypothesisTestResult(datamungeJNI.ks_test_one_sample_uniform__SWIG_0(DVector.getCPtr(x), x, lower, upper, alternative.swigValue()), true);
+  }
+
+  /**
+   *  One-sample KS test against a specified continuous uniform CDF.<br>
+   * <br>
+   *  Same asymptotic p-value and tie caveats as ks_test_one_sample_normal(); limits must be<br>
+   *  prespecified rather than estimated from x. O(n log n) work/O(n) storage; no mutation, omission<br>
+   *  or shared state.<br>
+   *  @param x At least two finite observations.<br>
+   *  @param lower Finite prespecified lower bound, default zero.<br>
+   *  @param upper Finite upper bound greater than lower, default one.<br>
+   *  @return statistic=D or D+/D-, parameter1=n, approximate p_value; no CI.<br>
+   *  @throws std::invalid_argument Invalid sample, limits or alternative.<br>
+   *  <p alt="Example"><br>
+   *  {@code 
+   const auto k=dm::stats::ks_test_one_sample_uniform({.2,.4,.6,.8});
+   std::print("{:.1f}\n",k.statistic); // 0.2
+   }</p><br>
+   *  <p alt="References"><br>
+   *  - https://stat.ethz.ch/R-manual/R-devel/library/stats/html/ks.test.html<br>
+   *  </p>@see HypothesisTestResult
+   */
+  public static HypothesisTestResult ks_test_one_sample_uniform(DVector x, double lower, double upper) {
+    return new HypothesisTestResult(datamungeJNI.ks_test_one_sample_uniform__SWIG_1(DVector.getCPtr(x), x, lower, upper), true);
+  }
+
+  /**
+   *  One-sample KS test against a specified continuous uniform CDF.<br>
+   * <br>
+   *  Same asymptotic p-value and tie caveats as ks_test_one_sample_normal(); limits must be<br>
+   *  prespecified rather than estimated from x. O(n log n) work/O(n) storage; no mutation, omission<br>
+   *  or shared state.<br>
+   *  @param x At least two finite observations.<br>
+   *  @param lower Finite prespecified lower bound, default zero.<br>
+   *  @return statistic=D or D+/D-, parameter1=n, approximate p_value; no CI.<br>
+   *  @throws std::invalid_argument Invalid sample, limits or alternative.<br>
+   *  <p alt="Example"><br>
+   *  {@code 
+   const auto k=dm::stats::ks_test_one_sample_uniform({.2,.4,.6,.8});
+   std::print("{:.1f}\n",k.statistic); // 0.2
+   }</p><br>
+   *  <p alt="References"><br>
+   *  - https://stat.ethz.ch/R-manual/R-devel/library/stats/html/ks.test.html<br>
+   *  </p>@see HypothesisTestResult
+   */
+  public static HypothesisTestResult ks_test_one_sample_uniform(DVector x, double lower) {
+    return new HypothesisTestResult(datamungeJNI.ks_test_one_sample_uniform__SWIG_2(DVector.getCPtr(x), x, lower), true);
+  }
+
+  /**
+   *  One-sample KS test against a specified continuous uniform CDF.<br>
+   * <br>
+   *  Same asymptotic p-value and tie caveats as ks_test_one_sample_normal(); limits must be<br>
+   *  prespecified rather than estimated from x. O(n log n) work/O(n) storage; no mutation, omission<br>
+   *  or shared state.<br>
+   *  @param x At least two finite observations.<br>
+   *  @return statistic=D or D+/D-, parameter1=n, approximate p_value; no CI.<br>
+   *  @throws std::invalid_argument Invalid sample, limits or alternative.<br>
+   *  <p alt="Example"><br>
+   *  {@code 
+   const auto k=dm::stats::ks_test_one_sample_uniform({.2,.4,.6,.8});
+   std::print("{:.1f}\n",k.statistic); // 0.2
+   }</p><br>
+   *  <p alt="References"><br>
+   *  - https://stat.ethz.ch/R-manual/R-devel/library/stats/html/ks.test.html<br>
+   *  </p>@see HypothesisTestResult
+   */
+  public static HypothesisTestResult ks_test_one_sample_uniform(DVector x) {
+    return new HypothesisTestResult(datamungeJNI.ks_test_one_sample_uniform__SWIG_3(DVector.getCPtr(x), x), true);
+  }
+
+  /**
+   *  Two-sample KS comparison of empirical CDFs with asymptotic p-values.<br>
+   * <br>
+   *  Uses effective n=n_x*n_y/(n_x+n_y) in the asymptotic reference. This is not an exact finite-<br>
+   *  sample calculation; ties/rounding and very small groups affect calibration. O(N log N)<br>
+   *  work/O(N) storage; inputs unchanged, no omission/shared state.<br>
+   *  @param x Nonempty finite first sample.<br>
+   *  @param y Nonempty finite independent second sample.<br>
+   *  @param alternative TwoSided (default); Greater tests F_x above F_y, Less below, so Greater<br>
+   *  corresponds to stochastically smaller x.<br>
+   *  @return statistic=D or D+/D-, parameter1=n_x, parameter2=n_y and approximate p_value; no CI.<br>
+   *  @throws std::invalid_argument Empty/nonfinite samples or invalid alternative.<br>
+   *  <p alt="Example"><br>
+   *  {@code 
+   const auto k=dm::stats::ks_test_two_sample({1,2,3},{1,2,3});
+   std::print("{:.0f}\n",k.statistic); // 0
+   }</p><br>
+   *  <p alt="References"><br>
+   *  - https://stat.ethz.ch/R-manual/R-devel/library/stats/html/ks.test.html<br>
+   *  </p>@see HypothesisTestResult
    */
   public static HypothesisTestResult ks_test_two_sample(DVector x, DVector y, Alternative alternative) {
     return new HypothesisTestResult(datamungeJNI.ks_test_two_sample__SWIG_0(DVector.getCPtr(x), x, DVector.getCPtr(y), y, alternative.swigValue()), true);
   }
 
   /**
-   *  Two-sample Kolmogorov-Smirnov test of whether <code>x</code> and <code>y</code> are drawn from the<br>
-   *         same continuous distribution, comparing their empirical CDFs. Same asymptotic<br>
-   *         p-value approach as ks_test_one_sample_normal.
+   *  Two-sample KS comparison of empirical CDFs with asymptotic p-values.<br>
+   * <br>
+   *  Uses effective n=n_x*n_y/(n_x+n_y) in the asymptotic reference. This is not an exact finite-<br>
+   *  sample calculation; ties/rounding and very small groups affect calibration. O(N log N)<br>
+   *  work/O(N) storage; inputs unchanged, no omission/shared state.<br>
+   *  @param x Nonempty finite first sample.<br>
+   *  @param y Nonempty finite independent second sample.<br>
+   *  @return statistic=D or D+/D-, parameter1=n_x, parameter2=n_y and approximate p_value; no CI.<br>
+   *  @throws std::invalid_argument Empty/nonfinite samples or invalid alternative.<br>
+   *  <p alt="Example"><br>
+   *  {@code 
+   const auto k=dm::stats::ks_test_two_sample({1,2,3},{1,2,3});
+   std::print("{:.0f}\n",k.statistic); // 0
+   }</p><br>
+   *  <p alt="References"><br>
+   *  - https://stat.ethz.ch/R-manual/R-devel/library/stats/html/ks.test.html<br>
+   *  </p>@see HypothesisTestResult
    */
   public static HypothesisTestResult ks_test_two_sample(DVector x, DVector y) {
     return new HypothesisTestResult(datamungeJNI.ks_test_two_sample__SWIG_1(DVector.getCPtr(x), x, DVector.getCPtr(y), y), true);
   }
 
   /**
-   *  Chi-squared goodness-of-fit test: whether the counts in <code>observed</code> match the<br>
-   *         given <code>expected_probabilities</code> (which must sum to 1). If <code>expected_probabilities</code><br>
-   *         is empty, a uniform distribution across categories is assumed, matching R's<br>
-   *         chisq.test() default.
+   *  Pearson chi-square test of specified category probabilities, like R chisq.test().<br>
+   * <br>
+   *  Uses sum((observed-expected)^2/expected) and chi-square(k-1); the probabilities are fixed, not<br>
+   *  estimated here. Expected counts must be sufficiently large for the approximation. Nonnegative<br>
+   *  fractional counts are accepted algebraically but do not automatically define a sampling model.<br>
+   *  O(k) work/storage, inputs unchanged, no shared state or omission.<br>
+   *  @param observed At least two finite nonnegative counts with positive finite total.<br>
+   *  @param expected_probabilities Empty (default) means uniform; otherwise positive finite<br>
+   *  probabilities matching counts and summing to one within 1e-10.<br>
+   *  @return statistic=X-squared, parameter1=k-1 and approximate upper-tail p_value; no CI.<br>
+   *  @throws std::invalid_argument Invalid counts/probabilities, sizes or zero/nonfinite total.<br>
+   *  <p alt="Example"><br>
+   *  {@code 
+   const auto q=dm::stats::chi_squared_goodness_of_fit({10,10});
+   std::print("{:.0f}\n",q.statistic); // 0
+   }</p><br>
+   *  <p alt="References"><br>
+   *  - https://stat.ethz.ch/R-manual/R-devel/library/stats/html/chisq.test.html<br>
+   *  </p>@see HypothesisTestResult
    */
   public static HypothesisTestResult chi_squared_goodness_of_fit(DVector observed, DVector expected_probabilities) {
     return new HypothesisTestResult(datamungeJNI.chi_squared_goodness_of_fit__SWIG_0(DVector.getCPtr(observed), observed, DVector.getCPtr(expected_probabilities), expected_probabilities), true);
   }
 
   /**
-   *  Chi-squared goodness-of-fit test: whether the counts in <code>observed</code> match the<br>
-   *         given <code>expected_probabilities</code> (which must sum to 1). If <code>expected_probabilities</code><br>
-   *         is empty, a uniform distribution across categories is assumed, matching R's<br>
-   *         chisq.test() default.
+   *  Pearson chi-square test of specified category probabilities, like R chisq.test().<br>
+   * <br>
+   *  Uses sum((observed-expected)^2/expected) and chi-square(k-1); the probabilities are fixed, not<br>
+   *  estimated here. Expected counts must be sufficiently large for the approximation. Nonnegative<br>
+   *  fractional counts are accepted algebraically but do not automatically define a sampling model.<br>
+   *  O(k) work/storage, inputs unchanged, no shared state or omission.<br>
+   *  @param observed At least two finite nonnegative counts with positive finite total.<br>
+   *  @return statistic=X-squared, parameter1=k-1 and approximate upper-tail p_value; no CI.<br>
+   *  @throws std::invalid_argument Invalid counts/probabilities, sizes or zero/nonfinite total.<br>
+   *  <p alt="Example"><br>
+   *  {@code 
+   const auto q=dm::stats::chi_squared_goodness_of_fit({10,10});
+   std::print("{:.0f}\n",q.statistic); // 0
+   }</p><br>
+   *  <p alt="References"><br>
+   *  - https://stat.ethz.ch/R-manual/R-devel/library/stats/html/chisq.test.html<br>
+   *  </p>@see HypothesisTestResult
    */
   public static HypothesisTestResult chi_squared_goodness_of_fit(DVector observed) {
     return new HypothesisTestResult(datamungeJNI.chi_squared_goodness_of_fit__SWIG_1(DVector.getCPtr(observed), observed), true);
   }
 
   /**
-   *  Chi-squared test of independence on a two-way contingency table given as a<br>
-   *         row-major flattened vector of counts (length <code>nrows</code> * <code>ncols)</code>. Applies Yates'<br>
-   *         continuity correction when the table is 2x2 and <code>correct</code> is true (the default,<br>
-   *         matching R's chisq.test()).
+   *  Pearson chi-square test for a contingency table, like R chisq.test().<br>
+   * <br>
+   *  Expected counts are row_sum*column_sum/total; df=(rows-1)(columns-1). The asymptotic reference<br>
+   *  assumes independent multinomial/product-multinomial observations and adequately populated<br>
+   *  expected cells. O(rows*columns) work and O(rows+columns) space; inputs unchanged, no shared<br>
+   *  state.<br>
+   *  @param table Finite nonnegative row-major counts with strictly positive margins; integer counts<br>
+   *  are the usual sampling model.<br>
+   *  @param nrows At least two rows.<br>
+   *  @param ncols At least two columns; table length must equal nrows*ncols.<br>
+   *  @param correct True (default) subtracts min(.5,abs(O-E)) from each absolute residual only for<br>
+   *  2x2 tables.<br>
+   *  @return statistic=X-squared, parameter1=df, approximate upper-tail p_value; no CI.<br>
+   *  @throws std::invalid_argument Invalid shape, counts/margins or nonfinite total.<br>
+   *  <p alt="Example"><br>
+   *  {@code 
+   const auto q=dm::stats::chi_squared_test_independence({10,10,10,10},2,2);
+   std::print("{:.0f}\n",q.statistic); // 0
+   }</p><br>
+   *  <p alt="References"><br>
+   *  - https://stat.ethz.ch/R-manual/R-devel/library/stats/html/chisq.test.html<br>
+   *  </p>@see HypothesisTestResult
    */
   public static HypothesisTestResult chi_squared_test_independence(DVector table, long nrows, long ncols, boolean correct) {
     return new HypothesisTestResult(datamungeJNI.chi_squared_test_independence__SWIG_0(DVector.getCPtr(table), table, nrows, ncols, correct), true);
   }
 
   /**
-   *  Chi-squared test of independence on a two-way contingency table given as a<br>
-   *         row-major flattened vector of counts (length <code>nrows</code> * <code>ncols)</code>. Applies Yates'<br>
-   *         continuity correction when the table is 2x2 and <code>correct</code> is true (the default,<br>
-   *         matching R's chisq.test()).
+   *  Pearson chi-square test for a contingency table, like R chisq.test().<br>
+   * <br>
+   *  Expected counts are row_sum*column_sum/total; df=(rows-1)(columns-1). The asymptotic reference<br>
+   *  assumes independent multinomial/product-multinomial observations and adequately populated<br>
+   *  expected cells. O(rows*columns) work and O(rows+columns) space; inputs unchanged, no shared<br>
+   *  state.<br>
+   *  @param table Finite nonnegative row-major counts with strictly positive margins; integer counts<br>
+   *  are the usual sampling model.<br>
+   *  @param nrows At least two rows.<br>
+   *  @param ncols At least two columns; table length must equal nrows*ncols.<br>
+   *  @return statistic=X-squared, parameter1=df, approximate upper-tail p_value; no CI.<br>
+   *  @throws std::invalid_argument Invalid shape, counts/margins or nonfinite total.<br>
+   *  <p alt="Example"><br>
+   *  {@code 
+   const auto q=dm::stats::chi_squared_test_independence({10,10,10,10},2,2);
+   std::print("{:.0f}\n",q.statistic); // 0
+   }</p><br>
+   *  <p alt="References"><br>
+   *  - https://stat.ethz.ch/R-manual/R-devel/library/stats/html/chisq.test.html<br>
+   *  </p>@see HypothesisTestResult
    */
   public static HypothesisTestResult chi_squared_test_independence(DVector table, long nrows, long ncols) {
     return new HypothesisTestResult(datamungeJNI.chi_squared_test_independence__SWIG_1(DVector.getCPtr(table), table, nrows, ncols), true);
   }
 
   /**
-   *  One-way ANOVA F-test across k &gt;= 2 independent groups, testing whether all groups<br>
-   *         share the same mean. <code>values</code> is every group's observations concatenated in<br>
-   *         order, and <code>group_sizes</code> gives each group's length (must sum to values.size()).<br>
-   *         statistic = F, parameter1 = between-groups df, parameter2 = within-groups df.
+   *  Classical equal-variance one-way ANOVA, like R oneway.test(var.equal=TRUE).<br>
+   * <br>
+   *  Tests equality of group means with between/within mean-square ratio. Independent normal<br>
+   *  observations and a common within-group population variance give the exact F reference. This is<br>
+   *  not Welch ANOVA. O(N) work, O(1) auxiliary storage; input unchanged, no omission or shared<br>
+   *  mutable state.<br>
+   *  @param values Finite observations concatenated group by group.<br>
+   *  @param group_sizes At least two positive sizes summing exactly to values.size(); N must exceed<br>
+   *  the group count.<br>
+   *  @return statistic=F, parameter1=k-1, parameter2=N-k and upper-tail p_value; no CI or group<br>
+   *  estimates.<br>
+   *  @throws std::invalid_argument Invalid grouping/nonfinite input, no residual df, zero within-<br>
+   *  group variation or arithmetic overflow.<br>
+   *  <p alt="Example"><br>
+   *  {@code 
+   const auto a=dm::stats::one_way_anova({1,2,3,4,5,6,7,8,9},{3,3,3});
+   std::print("{:.0f}\n",a.statistic); // 27
+   }</p><br>
+   *  <p alt="References"><br>
+   *  - https://stat.ethz.ch/R-manual/R-devel/library/stats/html/oneway.test.html<br>
+   *  </p>@see HypothesisTestResult
    */
   public static HypothesisTestResult one_way_anova(DVector values, SizeVector group_sizes) {
     return new HypothesisTestResult(datamungeJNI.one_way_anova(DVector.getCPtr(values), values, SizeVector.getCPtr(group_sizes), group_sizes), true);
   }
 
   /**
-   *  Kruskal-Wallis rank-sum test: a non-parametric analog of one-way ANOVA across<br>
-   *         k &gt;= 2 independent groups, testing whether they share the same distribution.<br>
-   *         Same (values, group_sizes) layout as one_way_anova(). Uses the chi-squared<br>
-   *         approximation to the H statistic with a tie correction; statistic = H,<br>
-   *         parameter1 = df = k - 1.
+   *  Tie-corrected Kruskal-Wallis rank test, like R kruskal.test().<br>
+   * <br>
+   *  Ranks the pooled observations with average ties and uses the chi-square(k-1) approximation.<br>
+   *  The usual exchangeability null is identical independent group distributions; a common-shape<br>
+   *  shift model permits a location interpretation. It is not an omnibus test for every possible<br>
+   *  distributional difference. Small groups can invalidate the approximation. O(N log N) work/O(N)<br>
+   *  space, no mutation, omission or shared state.<br>
+   *  @param values Finite observations concatenated by group.<br>
+   *  @param group_sizes At least two positive group sizes summing to values.size().<br>
+   *  @return statistic=H, parameter1=k-1 and upper-tail approximate p_value; no CI.<br>
+   *  @throws std::invalid_argument Invalid groups, nonfinite input or all observations tied.<br>
+   *  <p alt="Example"><br>
+   *  {@code 
+   const auto h=dm::stats::kruskal_wallis_test({1,2,3,4,5,6,7,8,9},{3,3,3});
+   std::print("{:.1f}\n",h.statistic); // 7.2
+   }</p><br>
+   *  <p alt="References"><br>
+   *  - https://stat.ethz.ch/R-manual/R-devel/library/stats/html/kruskal.test.html<br>
+   *  </p>@see HypothesisTestResult
    */
   public static HypothesisTestResult kruskal_wallis_test(DVector values, SizeVector group_sizes) {
     return new HypothesisTestResult(datamungeJNI.kruskal_wallis_test(DVector.getCPtr(values), values, SizeVector.getCPtr(group_sizes), group_sizes), true);
   }
 
   /**
-   *  Pearson product-moment correlation test between <code>x</code> and <code>y</code>. estimate1 is the<br>
-   *         correlation coefficient r; the confidence interval is computed via the Fisher<br>
-   *         z-transform.
+   *  Pearson product-moment correlation test with Fisher-z confidence bounds.<br>
+   * <br>
+   *  Uses t=r*sqrt((n-2)/(1-r^2)). The exact zero-correlation null reference requires independent<br>
+   *  bivariate-normal pairs; Fisher-z intervals are approximate. At n=3 no confidence interval is<br>
+   *  reported; n&gt;=4 gets one. Perfect correlations use infinite-statistic limits. O(n) work, no<br>
+   *  input mutation/omission or shared state.<br>
+   *  @param x At least three finite nonconstant first measurements.<br>
+   *  @param y Same-length finite nonconstant second measurements, paired by index.<br>
+   *  @param alternative TwoSided (default), Less or Greater for population correlation.<br>
+   *  @param conf_level Finite confidence level in (0,1), default .95.<br>
+   *  @return statistic=t, parameter1=n-2, estimate1=r and p_value; has_conf_int only for n&gt;=4.<br>
+   *  @throws std::invalid_argument Invalid lengths, nonfinite/constant samples or invalid controls.<br>
+   *  <p alt="Example"><br>
+   *  {@code 
+   const auto r=dm::stats::pearson_correlation_test({1,2,3,4},{2,4,6,8});
+   std::print("{:.1f}\n",r.estimate1); // 1.0
+   }</p><br>
+   *  <p alt="References"><br>
+   *  - https://stat.ethz.ch/R-manual/R-devel/library/stats/html/cor.test.html<br>
+   *  </p>@see HypothesisTestResult
    */
   public static HypothesisTestResult pearson_correlation_test(DVector x, DVector y, Alternative alternative, double conf_level) {
     return new HypothesisTestResult(datamungeJNI.pearson_correlation_test__SWIG_0(DVector.getCPtr(x), x, DVector.getCPtr(y), y, alternative.swigValue(), conf_level), true);
   }
 
   /**
-   *  Pearson product-moment correlation test between <code>x</code> and <code>y</code>. estimate1 is the<br>
-   *         correlation coefficient r; the confidence interval is computed via the Fisher<br>
-   *         z-transform.
+   *  Pearson product-moment correlation test with Fisher-z confidence bounds.<br>
+   * <br>
+   *  Uses t=r*sqrt((n-2)/(1-r^2)). The exact zero-correlation null reference requires independent<br>
+   *  bivariate-normal pairs; Fisher-z intervals are approximate. At n=3 no confidence interval is<br>
+   *  reported; n&gt;=4 gets one. Perfect correlations use infinite-statistic limits. O(n) work, no<br>
+   *  input mutation/omission or shared state.<br>
+   *  @param x At least three finite nonconstant first measurements.<br>
+   *  @param y Same-length finite nonconstant second measurements, paired by index.<br>
+   *  @param alternative TwoSided (default), Less or Greater for population correlation.<br>
+   *  @return statistic=t, parameter1=n-2, estimate1=r and p_value; has_conf_int only for n&gt;=4.<br>
+   *  @throws std::invalid_argument Invalid lengths, nonfinite/constant samples or invalid controls.<br>
+   *  <p alt="Example"><br>
+   *  {@code 
+   const auto r=dm::stats::pearson_correlation_test({1,2,3,4},{2,4,6,8});
+   std::print("{:.1f}\n",r.estimate1); // 1.0
+   }</p><br>
+   *  <p alt="References"><br>
+   *  - https://stat.ethz.ch/R-manual/R-devel/library/stats/html/cor.test.html<br>
+   *  </p>@see HypothesisTestResult
    */
   public static HypothesisTestResult pearson_correlation_test(DVector x, DVector y, Alternative alternative) {
     return new HypothesisTestResult(datamungeJNI.pearson_correlation_test__SWIG_1(DVector.getCPtr(x), x, DVector.getCPtr(y), y, alternative.swigValue()), true);
   }
 
   /**
-   *  Pearson product-moment correlation test between <code>x</code> and <code>y</code>. estimate1 is the<br>
-   *         correlation coefficient r; the confidence interval is computed via the Fisher<br>
-   *         z-transform.
+   *  Pearson product-moment correlation test with Fisher-z confidence bounds.<br>
+   * <br>
+   *  Uses t=r*sqrt((n-2)/(1-r^2)). The exact zero-correlation null reference requires independent<br>
+   *  bivariate-normal pairs; Fisher-z intervals are approximate. At n=3 no confidence interval is<br>
+   *  reported; n&gt;=4 gets one. Perfect correlations use infinite-statistic limits. O(n) work, no<br>
+   *  input mutation/omission or shared state.<br>
+   *  @param x At least three finite nonconstant first measurements.<br>
+   *  @param y Same-length finite nonconstant second measurements, paired by index.<br>
+   *  @return statistic=t, parameter1=n-2, estimate1=r and p_value; has_conf_int only for n&gt;=4.<br>
+   *  @throws std::invalid_argument Invalid lengths, nonfinite/constant samples or invalid controls.<br>
+   *  <p alt="Example"><br>
+   *  {@code 
+   const auto r=dm::stats::pearson_correlation_test({1,2,3,4},{2,4,6,8});
+   std::print("{:.1f}\n",r.estimate1); // 1.0
+   }</p><br>
+   *  <p alt="References"><br>
+   *  - https://stat.ethz.ch/R-manual/R-devel/library/stats/html/cor.test.html<br>
+   *  </p>@see HypothesisTestResult
    */
   public static HypothesisTestResult pearson_correlation_test(DVector x, DVector y) {
     return new HypothesisTestResult(datamungeJNI.pearson_correlation_test__SWIG_2(DVector.getCPtr(x), x, DVector.getCPtr(y), y), true);
   }
 
   /**
-   *  Spearman's rank correlation test between <code>x</code> and <code>y</code>: the Pearson correlation<br>
-   *         of their ranks, with a p-value from the same t-approximation used for Pearson's<br>
-   *         test (matching R's asymptotic method, used whenever ties are present). estimate1<br>
-   *         is rho; no confidence interval is reported (has_conf_int stays false), matching R.
+   *  Spearman correlation with average ranks and a t-approximation p-value.<br>
+   * <br>
+   *  Computes Pearson correlation on ranks. The reference is always t(n-2), not a small-sample<br>
+   *  exact permutation distribution; ties receive average ranks. Tests zero rank correlation under<br>
+   *  the approximation, not arbitrary independence. O(n log n) work/O(n) storage, no<br>
+   *  mutation/omission or shared state.<br>
+   *  @param x At least three finite nonconstant first measurements.<br>
+   *  @param y Same-length finite nonconstant paired second measurements.<br>
+   *  @param alternative TwoSided (default), Less or Greater for population rank correlation.<br>
+   *  @return statistic=rank-correlation t, parameter1=n-2, estimate1=rho, approximate p_value; no<br>
+   *  CI.<br>
+   *  @throws std::invalid_argument Invalid lengths, nonfinite/constant samples or alternative.<br>
+   *  <p alt="Example"><br>
+   *  {@code 
+   const auto r=dm::stats::spearman_correlation_test({1,2,3,4},{10,20,30,40});
+   std::print("{:.1f}\n",r.estimate1); // 1.0
+   }</p><br>
+   *  <p alt="References"><br>
+   *  - https://stat.ethz.ch/R-manual/R-devel/library/stats/html/cor.test.html<br>
+   *  </p>@see HypothesisTestResult
    */
   public static HypothesisTestResult spearman_correlation_test(DVector x, DVector y, Alternative alternative) {
     return new HypothesisTestResult(datamungeJNI.spearman_correlation_test__SWIG_0(DVector.getCPtr(x), x, DVector.getCPtr(y), y, alternative.swigValue()), true);
   }
 
   /**
-   *  Spearman's rank correlation test between <code>x</code> and <code>y</code>: the Pearson correlation<br>
-   *         of their ranks, with a p-value from the same t-approximation used for Pearson's<br>
-   *         test (matching R's asymptotic method, used whenever ties are present). estimate1<br>
-   *         is rho; no confidence interval is reported (has_conf_int stays false), matching R.
+   *  Spearman correlation with average ranks and a t-approximation p-value.<br>
+   * <br>
+   *  Computes Pearson correlation on ranks. The reference is always t(n-2), not a small-sample<br>
+   *  exact permutation distribution; ties receive average ranks. Tests zero rank correlation under<br>
+   *  the approximation, not arbitrary independence. O(n log n) work/O(n) storage, no<br>
+   *  mutation/omission or shared state.<br>
+   *  @param x At least three finite nonconstant first measurements.<br>
+   *  @param y Same-length finite nonconstant paired second measurements.<br>
+   *  @return statistic=rank-correlation t, parameter1=n-2, estimate1=rho, approximate p_value; no<br>
+   *  CI.<br>
+   *  @throws std::invalid_argument Invalid lengths, nonfinite/constant samples or alternative.<br>
+   *  <p alt="Example"><br>
+   *  {@code 
+   const auto r=dm::stats::spearman_correlation_test({1,2,3,4},{10,20,30,40});
+   std::print("{:.1f}\n",r.estimate1); // 1.0
+   }</p><br>
+   *  <p alt="References"><br>
+   *  - https://stat.ethz.ch/R-manual/R-devel/library/stats/html/cor.test.html<br>
+   *  </p>@see HypothesisTestResult
    */
   public static HypothesisTestResult spearman_correlation_test(DVector x, DVector y) {
     return new HypothesisTestResult(datamungeJNI.spearman_correlation_test__SWIG_1(DVector.getCPtr(x), x, DVector.getCPtr(y), y), true);
   }
 
   /**
-   *  F-test comparing the variances of <code>x</code> and <code>y</code> (H0: equal variances). estimate1<br>
-   *         is the ratio var(x) / var(y); statistic is the same F ratio; parameter1/2 are the<br>
-   *         two groups' degrees of freedom.
+   *  Kendall rank coefficients by Knight inversion counting.<br>
+   * <br>
+   *  Sorts paired values and counts concordant, discordant and tied pairs in O(n log n) work/O(n)<br>
+   *  storage. Inputs are unchanged and calls share no mutable state. This is a coefficient<br>
+   *  calculation, not a hypothesis test; tau_b is zero when its denominator vanishes.<br>
+   *  @param x At least two finite first coordinates.<br>
+   *  @param y Equal-length finite second coordinates, paired by index.<br>
+   *  @return Owned pair counts, tau_a and tie-adjusted tau_b.<br>
+   *  @throws std::invalid_argument Lengths differ, fewer than two values, or nonfinite<br>
+   *  observations.<br>
+   *  <p alt="Example"><br>
+   *  {@code 
+   const auto k=dm::stats::kendall_tau({1,2,3,4},{1,2,3,4});
+   std::print("{}\n",k.concordant); // 6
+   }</p><br>
+   *  <p alt="References"><br>
+   *  - https://stat.ethz.ch/R-manual/R-devel/library/stats/html/cor.html<br>
+   *  </p>@see HypothesisTestResult
+   */
+  public static KendallTau kendall_tau(DVector x, DVector y) {
+    return new KendallTau(datamungeJNI.kendall_tau(DVector.getCPtr(x), x, DVector.getCPtr(y), y), true);
+  }
+
+  /**
+   *  F-test and interval for a ratio of variances, like R var.test().<br>
+   * <br>
+   *  Uses sample variance(x)/sample variance(y). Independent normal populations give the<br>
+   *  F(df_x,df_y) reference; it is sensitive to nonnormality and is not a gatekeeper for choosing<br>
+   *  Welch versus pooled t tests. O(n_x+n_y) work/O(1) auxiliary storage; inputs unchanged, no<br>
+   *  omission/shared state.<br>
+   *  @param x At least two finite first-sample values with positive finite sample variance.<br>
+   *  @param y At least two finite independent second-sample values with positive finite sample<br>
+   *  variance.<br>
+   *  @param alternative TwoSided (default), Less or Greater for population variance ratio relative to<br>
+   *  one.<br>
+   *  @param conf_level Finite confidence level in (0,1), default .95.<br>
+   *  @return statistic=estimate1=variance ratio, parameter1/2=sample sizes minus one, p_value and<br>
+   *  ratio confidence bounds; one-sided interval ends at zero or infinity.<br>
+   *  @throws std::invalid_argument Too few/nonfinite observations, nonpositive/nonfinite variances<br>
+   *  or invalid controls.<br>
+   *  <p alt="Example"><br>
+   *  {@code 
+   const auto f=dm::stats::f_test_variance({1,2,3},{2,4,6});
+   std::print("{:.2f}\n",f.estimate1); // 0.25
+   }</p><br>
+   *  <p alt="References"><br>
+   *  - https://stat.ethz.ch/R-manual/R-devel/library/stats/html/var.test.html<br>
+   *  </p>@see HypothesisTestResult
    */
   public static HypothesisTestResult f_test_variance(DVector x, DVector y, Alternative alternative, double conf_level) {
     return new HypothesisTestResult(datamungeJNI.f_test_variance__SWIG_0(DVector.getCPtr(x), x, DVector.getCPtr(y), y, alternative.swigValue(), conf_level), true);
   }
 
   /**
-   *  F-test comparing the variances of <code>x</code> and <code>y</code> (H0: equal variances). estimate1<br>
-   *         is the ratio var(x) / var(y); statistic is the same F ratio; parameter1/2 are the<br>
-   *         two groups' degrees of freedom.
+   *  F-test and interval for a ratio of variances, like R var.test().<br>
+   * <br>
+   *  Uses sample variance(x)/sample variance(y). Independent normal populations give the<br>
+   *  F(df_x,df_y) reference; it is sensitive to nonnormality and is not a gatekeeper for choosing<br>
+   *  Welch versus pooled t tests. O(n_x+n_y) work/O(1) auxiliary storage; inputs unchanged, no<br>
+   *  omission/shared state.<br>
+   *  @param x At least two finite first-sample values with positive finite sample variance.<br>
+   *  @param y At least two finite independent second-sample values with positive finite sample<br>
+   *  variance.<br>
+   *  @param alternative TwoSided (default), Less or Greater for population variance ratio relative to<br>
+   *  one.<br>
+   *  @return statistic=estimate1=variance ratio, parameter1/2=sample sizes minus one, p_value and<br>
+   *  ratio confidence bounds; one-sided interval ends at zero or infinity.<br>
+   *  @throws std::invalid_argument Too few/nonfinite observations, nonpositive/nonfinite variances<br>
+   *  or invalid controls.<br>
+   *  <p alt="Example"><br>
+   *  {@code 
+   const auto f=dm::stats::f_test_variance({1,2,3},{2,4,6});
+   std::print("{:.2f}\n",f.estimate1); // 0.25
+   }</p><br>
+   *  <p alt="References"><br>
+   *  - https://stat.ethz.ch/R-manual/R-devel/library/stats/html/var.test.html<br>
+   *  </p>@see HypothesisTestResult
    */
   public static HypothesisTestResult f_test_variance(DVector x, DVector y, Alternative alternative) {
     return new HypothesisTestResult(datamungeJNI.f_test_variance__SWIG_1(DVector.getCPtr(x), x, DVector.getCPtr(y), y, alternative.swigValue()), true);
   }
 
   /**
-   *  F-test comparing the variances of <code>x</code> and <code>y</code> (H0: equal variances). estimate1<br>
-   *         is the ratio var(x) / var(y); statistic is the same F ratio; parameter1/2 are the<br>
-   *         two groups' degrees of freedom.
+   *  F-test and interval for a ratio of variances, like R var.test().<br>
+   * <br>
+   *  Uses sample variance(x)/sample variance(y). Independent normal populations give the<br>
+   *  F(df_x,df_y) reference; it is sensitive to nonnormality and is not a gatekeeper for choosing<br>
+   *  Welch versus pooled t tests. O(n_x+n_y) work/O(1) auxiliary storage; inputs unchanged, no<br>
+   *  omission/shared state.<br>
+   *  @param x At least two finite first-sample values with positive finite sample variance.<br>
+   *  @param y At least two finite independent second-sample values with positive finite sample<br>
+   *  variance.<br>
+   *  @return statistic=estimate1=variance ratio, parameter1/2=sample sizes minus one, p_value and<br>
+   *  ratio confidence bounds; one-sided interval ends at zero or infinity.<br>
+   *  @throws std::invalid_argument Too few/nonfinite observations, nonpositive/nonfinite variances<br>
+   *  or invalid controls.<br>
+   *  <p alt="Example"><br>
+   *  {@code 
+   const auto f=dm::stats::f_test_variance({1,2,3},{2,4,6});
+   std::print("{:.2f}\n",f.estimate1); // 0.25
+   }</p><br>
+   *  <p alt="References"><br>
+   *  - https://stat.ethz.ch/R-manual/R-devel/library/stats/html/var.test.html<br>
+   *  </p>@see HypothesisTestResult
    */
   public static HypothesisTestResult f_test_variance(DVector x, DVector y) {
     return new HypothesisTestResult(datamungeJNI.f_test_variance__SWIG_2(DVector.getCPtr(x), x, DVector.getCPtr(y), y), true);
   }
 
   /**
-   *  One-sample test of the proportion <code>successes</code> / <code>n</code> against a null value <code>p</code><br>
-   *         (default 0.5), via the chi-squared/normal approximation with a continuity<br>
-   *         correction (matching R's prop.test()). estimate1 is the sample proportion; the<br>
-   *         confidence interval uses the Wilson score interval (without continuity<br>
-   *         correction, a close approximation to R's corrected version).
+   *  One-proportion score test with an uncorrected Wilson confidence interval.<br>
+   * <br>
+   *  Tests a fixed Bernoulli success probability using the signed null-standard-error z statistic;<br>
+   *  statistic stores z^2 but the chosen tail uses its sign. The optional continuity correction<br>
+   *  affects the test only: its Wilson interval is uncorrected and need not invert that test.<br>
+   *  Approximation requires sufficiently populated success/failure counts. O(1) work/storage, no<br>
+   *  shared state.<br>
+   *  @param successes Integer successes in [0,n].<br>
+   *  @param n Positive independent-trial count.<br>
+   *  @param p Finite null probability strictly in (0,1), default .5.<br>
+   *  @param alternative TwoSided (default), Less or Greater for true probability relative to p.<br>
+   *  @param correct True (default) applies the capped half-count correction to z.<br>
+   *  @param conf_level Finite confidence level in (0,1), default .95.<br>
+   *  @return statistic=z^2, parameter1=1, estimate1=successes/n, p_value and uncorrected Wilson<br>
+   *  confidence bounds.<br>
+   *  @throws std::invalid_argument Invalid counts, null probability, alternative or confidence<br>
+   *  level.<br>
+   *  <p alt="Example"><br>
+   *  {@code 
+   const auto p=dm::stats::proportion_test_one_sample(45,100);
+   std::print("{:.2f}\n",p.estimate1); // 0.45
+   }</p><br>
+   *  <p alt="References"><br>
+   *  - https://stat.ethz.ch/R-manual/R-devel/library/stats/html/prop.test.html<br>
+   *  </p>@see HypothesisTestResult
    */
   public static HypothesisTestResult proportion_test_one_sample(long successes, long n, double p, Alternative alternative, boolean correct, double conf_level) {
     return new HypothesisTestResult(datamungeJNI.proportion_test_one_sample__SWIG_0(successes, n, p, alternative.swigValue(), correct, conf_level), true);
   }
 
   /**
-   *  One-sample test of the proportion <code>successes</code> / <code>n</code> against a null value <code>p</code><br>
-   *         (default 0.5), via the chi-squared/normal approximation with a continuity<br>
-   *         correction (matching R's prop.test()). estimate1 is the sample proportion; the<br>
-   *         confidence interval uses the Wilson score interval (without continuity<br>
-   *         correction, a close approximation to R's corrected version).
+   *  One-proportion score test with an uncorrected Wilson confidence interval.<br>
+   * <br>
+   *  Tests a fixed Bernoulli success probability using the signed null-standard-error z statistic;<br>
+   *  statistic stores z^2 but the chosen tail uses its sign. The optional continuity correction<br>
+   *  affects the test only: its Wilson interval is uncorrected and need not invert that test.<br>
+   *  Approximation requires sufficiently populated success/failure counts. O(1) work/storage, no<br>
+   *  shared state.<br>
+   *  @param successes Integer successes in [0,n].<br>
+   *  @param n Positive independent-trial count.<br>
+   *  @param p Finite null probability strictly in (0,1), default .5.<br>
+   *  @param alternative TwoSided (default), Less or Greater for true probability relative to p.<br>
+   *  @param correct True (default) applies the capped half-count correction to z.<br>
+   *  @return statistic=z^2, parameter1=1, estimate1=successes/n, p_value and uncorrected Wilson<br>
+   *  confidence bounds.<br>
+   *  @throws std::invalid_argument Invalid counts, null probability, alternative or confidence<br>
+   *  level.<br>
+   *  <p alt="Example"><br>
+   *  {@code 
+   const auto p=dm::stats::proportion_test_one_sample(45,100);
+   std::print("{:.2f}\n",p.estimate1); // 0.45
+   }</p><br>
+   *  <p alt="References"><br>
+   *  - https://stat.ethz.ch/R-manual/R-devel/library/stats/html/prop.test.html<br>
+   *  </p>@see HypothesisTestResult
    */
   public static HypothesisTestResult proportion_test_one_sample(long successes, long n, double p, Alternative alternative, boolean correct) {
     return new HypothesisTestResult(datamungeJNI.proportion_test_one_sample__SWIG_1(successes, n, p, alternative.swigValue(), correct), true);
   }
 
   /**
-   *  One-sample test of the proportion <code>successes</code> / <code>n</code> against a null value <code>p</code><br>
-   *         (default 0.5), via the chi-squared/normal approximation with a continuity<br>
-   *         correction (matching R's prop.test()). estimate1 is the sample proportion; the<br>
-   *         confidence interval uses the Wilson score interval (without continuity<br>
-   *         correction, a close approximation to R's corrected version).
+   *  One-proportion score test with an uncorrected Wilson confidence interval.<br>
+   * <br>
+   *  Tests a fixed Bernoulli success probability using the signed null-standard-error z statistic;<br>
+   *  statistic stores z^2 but the chosen tail uses its sign. The optional continuity correction<br>
+   *  affects the test only: its Wilson interval is uncorrected and need not invert that test.<br>
+   *  Approximation requires sufficiently populated success/failure counts. O(1) work/storage, no<br>
+   *  shared state.<br>
+   *  @param successes Integer successes in [0,n].<br>
+   *  @param n Positive independent-trial count.<br>
+   *  @param p Finite null probability strictly in (0,1), default .5.<br>
+   *  @param alternative TwoSided (default), Less or Greater for true probability relative to p.<br>
+   *  @return statistic=z^2, parameter1=1, estimate1=successes/n, p_value and uncorrected Wilson<br>
+   *  confidence bounds.<br>
+   *  @throws std::invalid_argument Invalid counts, null probability, alternative or confidence<br>
+   *  level.<br>
+   *  <p alt="Example"><br>
+   *  {@code 
+   const auto p=dm::stats::proportion_test_one_sample(45,100);
+   std::print("{:.2f}\n",p.estimate1); // 0.45
+   }</p><br>
+   *  <p alt="References"><br>
+   *  - https://stat.ethz.ch/R-manual/R-devel/library/stats/html/prop.test.html<br>
+   *  </p>@see HypothesisTestResult
    */
   public static HypothesisTestResult proportion_test_one_sample(long successes, long n, double p, Alternative alternative) {
     return new HypothesisTestResult(datamungeJNI.proportion_test_one_sample__SWIG_2(successes, n, p, alternative.swigValue()), true);
   }
 
   /**
-   *  One-sample test of the proportion <code>successes</code> / <code>n</code> against a null value <code>p</code><br>
-   *         (default 0.5), via the chi-squared/normal approximation with a continuity<br>
-   *         correction (matching R's prop.test()). estimate1 is the sample proportion; the<br>
-   *         confidence interval uses the Wilson score interval (without continuity<br>
-   *         correction, a close approximation to R's corrected version).
+   *  One-proportion score test with an uncorrected Wilson confidence interval.<br>
+   * <br>
+   *  Tests a fixed Bernoulli success probability using the signed null-standard-error z statistic;<br>
+   *  statistic stores z^2 but the chosen tail uses its sign. The optional continuity correction<br>
+   *  affects the test only: its Wilson interval is uncorrected and need not invert that test.<br>
+   *  Approximation requires sufficiently populated success/failure counts. O(1) work/storage, no<br>
+   *  shared state.<br>
+   *  @param successes Integer successes in [0,n].<br>
+   *  @param n Positive independent-trial count.<br>
+   *  @param p Finite null probability strictly in (0,1), default .5.<br>
+   *  @return statistic=z^2, parameter1=1, estimate1=successes/n, p_value and uncorrected Wilson<br>
+   *  confidence bounds.<br>
+   *  @throws std::invalid_argument Invalid counts, null probability, alternative or confidence<br>
+   *  level.<br>
+   *  <p alt="Example"><br>
+   *  {@code 
+   const auto p=dm::stats::proportion_test_one_sample(45,100);
+   std::print("{:.2f}\n",p.estimate1); // 0.45
+   }</p><br>
+   *  <p alt="References"><br>
+   *  - https://stat.ethz.ch/R-manual/R-devel/library/stats/html/prop.test.html<br>
+   *  </p>@see HypothesisTestResult
    */
   public static HypothesisTestResult proportion_test_one_sample(long successes, long n, double p) {
     return new HypothesisTestResult(datamungeJNI.proportion_test_one_sample__SWIG_3(successes, n, p), true);
   }
 
   /**
-   *  One-sample test of the proportion <code>successes</code> / <code>n</code> against a null value <code>p</code><br>
-   *         (default 0.5), via the chi-squared/normal approximation with a continuity<br>
-   *         correction (matching R's prop.test()). estimate1 is the sample proportion; the<br>
-   *         confidence interval uses the Wilson score interval (without continuity<br>
-   *         correction, a close approximation to R's corrected version).
+   *  One-proportion score test with an uncorrected Wilson confidence interval.<br>
+   * <br>
+   *  Tests a fixed Bernoulli success probability using the signed null-standard-error z statistic;<br>
+   *  statistic stores z^2 but the chosen tail uses its sign. The optional continuity correction<br>
+   *  affects the test only: its Wilson interval is uncorrected and need not invert that test.<br>
+   *  Approximation requires sufficiently populated success/failure counts. O(1) work/storage, no<br>
+   *  shared state.<br>
+   *  @param successes Integer successes in [0,n].<br>
+   *  @param n Positive independent-trial count.<br>
+   *  @return statistic=z^2, parameter1=1, estimate1=successes/n, p_value and uncorrected Wilson<br>
+   *  confidence bounds.<br>
+   *  @throws std::invalid_argument Invalid counts, null probability, alternative or confidence<br>
+   *  level.<br>
+   *  <p alt="Example"><br>
+   *  {@code 
+   const auto p=dm::stats::proportion_test_one_sample(45,100);
+   std::print("{:.2f}\n",p.estimate1); // 0.45
+   }</p><br>
+   *  <p alt="References"><br>
+   *  - https://stat.ethz.ch/R-manual/R-devel/library/stats/html/prop.test.html<br>
+   *  </p>@see HypothesisTestResult
    */
   public static HypothesisTestResult proportion_test_one_sample(long successes, long n) {
     return new HypothesisTestResult(datamungeJNI.proportion_test_one_sample__SWIG_4(successes, n), true);
   }
 
   /**
-   *  Two-sample test of whether two groups have the same success proportion, via the<br>
-   *         pooled chi-squared/normal approximation with a continuity correction (matching<br>
-   *         R's prop.test()). estimate1/estimate2 are the two sample proportions; the<br>
-   *         confidence interval is for their difference (estimate1 - estimate2).
+   *  Pooled score test for two proportions, with an unpooled difference interval.<br>
+   * <br>
+   *  Tests equality using the pooled null SE and optionally a capped continuity correction. The<br>
+   *  difference CI uses an unpooled Wald SE and an uncapped half-count width correction when<br>
+   *  requested; it is approximate and is not a Wilson/Newcombe interval. All-zero/all-one pooled<br>
+   *  samples return z=0,p=1. O(1) work/storage, no shared state.<br>
+   *  @param successes1 First success count in [0,n1].<br>
+   *  @param n1 Positive first independent-trial count.<br>
+   *  @param successes2 Second success count in [0,n2].<br>
+   *  @param n2 Positive independent second-trial count.<br>
+   *  @param alternative TwoSided (default), Less or Greater for p1-p2.<br>
+   *  @param correct True (default) corrects the score test and adds a half-count CI width.<br>
+   *  @param conf_level Finite confidence level in (0,1), default .95.<br>
+   *  @return statistic=z^2, parameter1=1, estimates=sample proportions, p_value and confidence<br>
+   *  bounds for p1-p2, clamped to [-1,1].<br>
+   *  @throws std::invalid_argument Invalid counts, alternative or confidence level.<br>
+   *  <p alt="Example"><br>
+   *  {@code 
+   const auto p=dm::stats::proportion_test_two_sample(2,10,3,10);
+   std::print("{:.1f}\n",p.estimate1); // 0.2
+   }</p><br>
+   *  <p alt="References"><br>
+   *  - https://stat.ethz.ch/R-manual/R-devel/library/stats/html/prop.test.html<br>
+   *  </p>@see HypothesisTestResult
    */
   public static HypothesisTestResult proportion_test_two_sample(long successes1, long n1, long successes2, long n2, Alternative alternative, boolean correct, double conf_level) {
     return new HypothesisTestResult(datamungeJNI.proportion_test_two_sample__SWIG_0(successes1, n1, successes2, n2, alternative.swigValue(), correct, conf_level), true);
   }
 
   /**
-   *  Two-sample test of whether two groups have the same success proportion, via the<br>
-   *         pooled chi-squared/normal approximation with a continuity correction (matching<br>
-   *         R's prop.test()). estimate1/estimate2 are the two sample proportions; the<br>
-   *         confidence interval is for their difference (estimate1 - estimate2).
+   *  Pooled score test for two proportions, with an unpooled difference interval.<br>
+   * <br>
+   *  Tests equality using the pooled null SE and optionally a capped continuity correction. The<br>
+   *  difference CI uses an unpooled Wald SE and an uncapped half-count width correction when<br>
+   *  requested; it is approximate and is not a Wilson/Newcombe interval. All-zero/all-one pooled<br>
+   *  samples return z=0,p=1. O(1) work/storage, no shared state.<br>
+   *  @param successes1 First success count in [0,n1].<br>
+   *  @param n1 Positive first independent-trial count.<br>
+   *  @param successes2 Second success count in [0,n2].<br>
+   *  @param n2 Positive independent second-trial count.<br>
+   *  @param alternative TwoSided (default), Less or Greater for p1-p2.<br>
+   *  @param correct True (default) corrects the score test and adds a half-count CI width.<br>
+   *  @return statistic=z^2, parameter1=1, estimates=sample proportions, p_value and confidence<br>
+   *  bounds for p1-p2, clamped to [-1,1].<br>
+   *  @throws std::invalid_argument Invalid counts, alternative or confidence level.<br>
+   *  <p alt="Example"><br>
+   *  {@code 
+   const auto p=dm::stats::proportion_test_two_sample(2,10,3,10);
+   std::print("{:.1f}\n",p.estimate1); // 0.2
+   }</p><br>
+   *  <p alt="References"><br>
+   *  - https://stat.ethz.ch/R-manual/R-devel/library/stats/html/prop.test.html<br>
+   *  </p>@see HypothesisTestResult
    */
   public static HypothesisTestResult proportion_test_two_sample(long successes1, long n1, long successes2, long n2, Alternative alternative, boolean correct) {
     return new HypothesisTestResult(datamungeJNI.proportion_test_two_sample__SWIG_1(successes1, n1, successes2, n2, alternative.swigValue(), correct), true);
   }
 
   /**
-   *  Two-sample test of whether two groups have the same success proportion, via the<br>
-   *         pooled chi-squared/normal approximation with a continuity correction (matching<br>
-   *         R's prop.test()). estimate1/estimate2 are the two sample proportions; the<br>
-   *         confidence interval is for their difference (estimate1 - estimate2).
+   *  Pooled score test for two proportions, with an unpooled difference interval.<br>
+   * <br>
+   *  Tests equality using the pooled null SE and optionally a capped continuity correction. The<br>
+   *  difference CI uses an unpooled Wald SE and an uncapped half-count width correction when<br>
+   *  requested; it is approximate and is not a Wilson/Newcombe interval. All-zero/all-one pooled<br>
+   *  samples return z=0,p=1. O(1) work/storage, no shared state.<br>
+   *  @param successes1 First success count in [0,n1].<br>
+   *  @param n1 Positive first independent-trial count.<br>
+   *  @param successes2 Second success count in [0,n2].<br>
+   *  @param n2 Positive independent second-trial count.<br>
+   *  @param alternative TwoSided (default), Less or Greater for p1-p2.<br>
+   *  @return statistic=z^2, parameter1=1, estimates=sample proportions, p_value and confidence<br>
+   *  bounds for p1-p2, clamped to [-1,1].<br>
+   *  @throws std::invalid_argument Invalid counts, alternative or confidence level.<br>
+   *  <p alt="Example"><br>
+   *  {@code 
+   const auto p=dm::stats::proportion_test_two_sample(2,10,3,10);
+   std::print("{:.1f}\n",p.estimate1); // 0.2
+   }</p><br>
+   *  <p alt="References"><br>
+   *  - https://stat.ethz.ch/R-manual/R-devel/library/stats/html/prop.test.html<br>
+   *  </p>@see HypothesisTestResult
    */
   public static HypothesisTestResult proportion_test_two_sample(long successes1, long n1, long successes2, long n2, Alternative alternative) {
     return new HypothesisTestResult(datamungeJNI.proportion_test_two_sample__SWIG_2(successes1, n1, successes2, n2, alternative.swigValue()), true);
   }
 
   /**
-   *  Two-sample test of whether two groups have the same success proportion, via the<br>
-   *         pooled chi-squared/normal approximation with a continuity correction (matching<br>
-   *         R's prop.test()). estimate1/estimate2 are the two sample proportions; the<br>
-   *         confidence interval is for their difference (estimate1 - estimate2).
+   *  Pooled score test for two proportions, with an unpooled difference interval.<br>
+   * <br>
+   *  Tests equality using the pooled null SE and optionally a capped continuity correction. The<br>
+   *  difference CI uses an unpooled Wald SE and an uncapped half-count width correction when<br>
+   *  requested; it is approximate and is not a Wilson/Newcombe interval. All-zero/all-one pooled<br>
+   *  samples return z=0,p=1. O(1) work/storage, no shared state.<br>
+   *  @param successes1 First success count in [0,n1].<br>
+   *  @param n1 Positive first independent-trial count.<br>
+   *  @param successes2 Second success count in [0,n2].<br>
+   *  @param n2 Positive independent second-trial count.<br>
+   *  @return statistic=z^2, parameter1=1, estimates=sample proportions, p_value and confidence<br>
+   *  bounds for p1-p2, clamped to [-1,1].<br>
+   *  @throws std::invalid_argument Invalid counts, alternative or confidence level.<br>
+   *  <p alt="Example"><br>
+   *  {@code 
+   const auto p=dm::stats::proportion_test_two_sample(2,10,3,10);
+   std::print("{:.1f}\n",p.estimate1); // 0.2
+   }</p><br>
+   *  <p alt="References"><br>
+   *  - https://stat.ethz.ch/R-manual/R-devel/library/stats/html/prop.test.html<br>
+   *  </p>@see HypothesisTestResult
    */
   public static HypothesisTestResult proportion_test_two_sample(long successes1, long n1, long successes2, long n2) {
     return new HypothesisTestResult(datamungeJNI.proportion_test_two_sample__SWIG_3(successes1, n1, successes2, n2), true);
   }
 
   /**
-   *  Exact binomial test of whether <code>successes</code> out of <code>n</code> trials is consistent with<br>
-   *         success probability <code>p</code> (default 0.5), summing exact binomial probabilities<br>
-   *         (matching R's binom.test()). estimate1 is the sample proportion; the confidence<br>
-   *         interval is the exact Clopper-Pearson interval.
+   *  Exact binomial test with Clopper-Pearson confidence bounds, like R binom.test().<br>
+   * <br>
+   *  One-sided p-values are inclusive tails. Two-sided p-values sum PMFs no larger than the<br>
+   *  observed PMF, using relative comparison tolerance 1e-7. The equal-tailed Clopper-Pearson<br>
+   *  interval has at-least-nominal coverage but need not invert the probability-ordered two-sided<br>
+   *  test. Null endpoints zero/one are supported. Two-sided enumeration costs O(n), intervals use<br>
+   *  bounded beta-CDF bisection; O(1) auxiliary storage, no shared state.<br>
+   *  @param successes Integer observed successes in [0,n].<br>
+   *  @param n Positive independent Bernoulli trial count.<br>
+   *  @param p Finite null probability in [0,1], default .5.<br>
+   *  @param alternative TwoSided (default), Less or Greater for true success probability.<br>
+   *  @param conf_level Finite confidence level in (0,1), default .95.<br>
+   *  @return statistic=successes, parameter1=n, estimate1=successes/n, p_value and Clopper-Pearson<br>
+   *  interval; one-sided intervals end at zero/one.<br>
+   *  @throws std::invalid_argument Invalid counts, probability, alternative or confidence level.<br>
+   *  <p alt="Example"><br>
+   *  {@code 
+   const auto b=dm::stats::binomial_test(9,10);
+   std::print("{:.6f}\n",b.p_value); // 0.021484
+   }</p><br>
+   *  <p alt="References"><br>
+   *  - https://stat.ethz.ch/R-manual/R-devel/library/stats/html/binom.test.html<br>
+   *  </p>@see HypothesisTestResult
    */
   public static HypothesisTestResult binomial_test(long successes, long n, double p, Alternative alternative, double conf_level) {
     return new HypothesisTestResult(datamungeJNI.binomial_test__SWIG_0(successes, n, p, alternative.swigValue(), conf_level), true);
   }
 
   /**
-   *  Exact binomial test of whether <code>successes</code> out of <code>n</code> trials is consistent with<br>
-   *         success probability <code>p</code> (default 0.5), summing exact binomial probabilities<br>
-   *         (matching R's binom.test()). estimate1 is the sample proportion; the confidence<br>
-   *         interval is the exact Clopper-Pearson interval.
+   *  Exact binomial test with Clopper-Pearson confidence bounds, like R binom.test().<br>
+   * <br>
+   *  One-sided p-values are inclusive tails. Two-sided p-values sum PMFs no larger than the<br>
+   *  observed PMF, using relative comparison tolerance 1e-7. The equal-tailed Clopper-Pearson<br>
+   *  interval has at-least-nominal coverage but need not invert the probability-ordered two-sided<br>
+   *  test. Null endpoints zero/one are supported. Two-sided enumeration costs O(n), intervals use<br>
+   *  bounded beta-CDF bisection; O(1) auxiliary storage, no shared state.<br>
+   *  @param successes Integer observed successes in [0,n].<br>
+   *  @param n Positive independent Bernoulli trial count.<br>
+   *  @param p Finite null probability in [0,1], default .5.<br>
+   *  @param alternative TwoSided (default), Less or Greater for true success probability.<br>
+   *  @return statistic=successes, parameter1=n, estimate1=successes/n, p_value and Clopper-Pearson<br>
+   *  interval; one-sided intervals end at zero/one.<br>
+   *  @throws std::invalid_argument Invalid counts, probability, alternative or confidence level.<br>
+   *  <p alt="Example"><br>
+   *  {@code 
+   const auto b=dm::stats::binomial_test(9,10);
+   std::print("{:.6f}\n",b.p_value); // 0.021484
+   }</p><br>
+   *  <p alt="References"><br>
+   *  - https://stat.ethz.ch/R-manual/R-devel/library/stats/html/binom.test.html<br>
+   *  </p>@see HypothesisTestResult
    */
   public static HypothesisTestResult binomial_test(long successes, long n, double p, Alternative alternative) {
     return new HypothesisTestResult(datamungeJNI.binomial_test__SWIG_1(successes, n, p, alternative.swigValue()), true);
   }
 
   /**
-   *  Exact binomial test of whether <code>successes</code> out of <code>n</code> trials is consistent with<br>
-   *         success probability <code>p</code> (default 0.5), summing exact binomial probabilities<br>
-   *         (matching R's binom.test()). estimate1 is the sample proportion; the confidence<br>
-   *         interval is the exact Clopper-Pearson interval.
+   *  Exact binomial test with Clopper-Pearson confidence bounds, like R binom.test().<br>
+   * <br>
+   *  One-sided p-values are inclusive tails. Two-sided p-values sum PMFs no larger than the<br>
+   *  observed PMF, using relative comparison tolerance 1e-7. The equal-tailed Clopper-Pearson<br>
+   *  interval has at-least-nominal coverage but need not invert the probability-ordered two-sided<br>
+   *  test. Null endpoints zero/one are supported. Two-sided enumeration costs O(n), intervals use<br>
+   *  bounded beta-CDF bisection; O(1) auxiliary storage, no shared state.<br>
+   *  @param successes Integer observed successes in [0,n].<br>
+   *  @param n Positive independent Bernoulli trial count.<br>
+   *  @param p Finite null probability in [0,1], default .5.<br>
+   *  @return statistic=successes, parameter1=n, estimate1=successes/n, p_value and Clopper-Pearson<br>
+   *  interval; one-sided intervals end at zero/one.<br>
+   *  @throws std::invalid_argument Invalid counts, probability, alternative or confidence level.<br>
+   *  <p alt="Example"><br>
+   *  {@code 
+   const auto b=dm::stats::binomial_test(9,10);
+   std::print("{:.6f}\n",b.p_value); // 0.021484
+   }</p><br>
+   *  <p alt="References"><br>
+   *  - https://stat.ethz.ch/R-manual/R-devel/library/stats/html/binom.test.html<br>
+   *  </p>@see HypothesisTestResult
    */
   public static HypothesisTestResult binomial_test(long successes, long n, double p) {
     return new HypothesisTestResult(datamungeJNI.binomial_test__SWIG_2(successes, n, p), true);
   }
 
   /**
-   *  Exact binomial test of whether <code>successes</code> out of <code>n</code> trials is consistent with<br>
-   *         success probability <code>p</code> (default 0.5), summing exact binomial probabilities<br>
-   *         (matching R's binom.test()). estimate1 is the sample proportion; the confidence<br>
-   *         interval is the exact Clopper-Pearson interval.
+   *  Exact binomial test with Clopper-Pearson confidence bounds, like R binom.test().<br>
+   * <br>
+   *  One-sided p-values are inclusive tails. Two-sided p-values sum PMFs no larger than the<br>
+   *  observed PMF, using relative comparison tolerance 1e-7. The equal-tailed Clopper-Pearson<br>
+   *  interval has at-least-nominal coverage but need not invert the probability-ordered two-sided<br>
+   *  test. Null endpoints zero/one are supported. Two-sided enumeration costs O(n), intervals use<br>
+   *  bounded beta-CDF bisection; O(1) auxiliary storage, no shared state.<br>
+   *  @param successes Integer observed successes in [0,n].<br>
+   *  @param n Positive independent Bernoulli trial count.<br>
+   *  @return statistic=successes, parameter1=n, estimate1=successes/n, p_value and Clopper-Pearson<br>
+   *  interval; one-sided intervals end at zero/one.<br>
+   *  @throws std::invalid_argument Invalid counts, probability, alternative or confidence level.<br>
+   *  <p alt="Example"><br>
+   *  {@code 
+   const auto b=dm::stats::binomial_test(9,10);
+   std::print("{:.6f}\n",b.p_value); // 0.021484
+   }</p><br>
+   *  <p alt="References"><br>
+   *  - https://stat.ethz.ch/R-manual/R-devel/library/stats/html/binom.test.html<br>
+   *  </p>@see HypothesisTestResult
    */
   public static HypothesisTestResult binomial_test(long successes, long n) {
     return new HypothesisTestResult(datamungeJNI.binomial_test__SWIG_3(successes, n), true);
   }
 
   /**
-   *  Fisher's exact test on a 2x2 contingency table<br>
+   *  Conditional Fisher exact test of a 2x2 table with fixed margins.<br>
    * <br>
-   *             | col1 | col2<br>
-   *         row1|  a   |  b<br>
-   *         row2|  c   |  d<br>
-   * <br>
-   *         testing independence of the row and column classifications by summing exact<br>
-   *         hypergeometric probabilities (matching R's fisher.test() p-values). estimate1 is<br>
-   *         the sample odds ratio (a*d)/(b*c), not the conditional MLE R reports by default;<br>
-   *         no confidence interval is computed (has_conf_int stays false). statistic holds the<br>
-   *         observed count `a`.
+   *  Conditions on row/column totals and tests odds ratio one. Two-sided p-values sum probabilities<br>
+   *  no larger than the observed table (relative ordering tolerance 1e-7); they are not generally<br>
+   *  twice the smaller tail. Direct tail summation avoids 1-CDF cancellation. Empty margins give<br>
+   *  p=1. O(s) work/O(1) auxiliary storage for feasible support s; inputs unchanged, no shared<br>
+   *  state.<br>
+   *  @param a Top-left nonnegative integer count.<br>
+   *  @param b Top-right count.<br>
+   *  @param c Bottom-left count.<br>
+   *  @param d Bottom-right count; total must fit size_t.<br>
+   *  @param alternative TwoSided (default), Less or Greater for the odds ratio relative to one.<br>
+   *  @return statistic=a, p_value and estimate1=sample odds ratio a*d/(b*c), not R conditional MLE;<br>
+   *  denominator zero gives infinity for positive numerator or NaN for 0/0. No confidence interval.<br>
+   *  @throws std::invalid_argument Count-total overflow or invalid alternative.<br>
+   *  <p alt="Example"><br>
+   *  {@code 
+   const auto f=dm::stats::fisher_exact_test_2x2(0,3,3,0);
+   std::print("{:.1f}\n",f.p_value); // 0.1
+   }</p><br>
+   *  <p alt="References"><br>
+   *  - https://stat.ethz.ch/R-manual/R-devel/library/stats/html/fisher.test.html<br>
+   *  </p>@see HypothesisTestResult
    */
   public static HypothesisTestResult fisher_exact_test_2x2(long a, long b, long c, long d, Alternative alternative) {
     return new HypothesisTestResult(datamungeJNI.fisher_exact_test_2x2__SWIG_0(a, b, c, d, alternative.swigValue()), true);
   }
 
   /**
-   *  Fisher's exact test on a 2x2 contingency table<br>
+   *  Conditional Fisher exact test of a 2x2 table with fixed margins.<br>
    * <br>
-   *             | col1 | col2<br>
-   *         row1|  a   |  b<br>
-   *         row2|  c   |  d<br>
-   * <br>
-   *         testing independence of the row and column classifications by summing exact<br>
-   *         hypergeometric probabilities (matching R's fisher.test() p-values). estimate1 is<br>
-   *         the sample odds ratio (a*d)/(b*c), not the conditional MLE R reports by default;<br>
-   *         no confidence interval is computed (has_conf_int stays false). statistic holds the<br>
-   *         observed count `a`.
+   *  Conditions on row/column totals and tests odds ratio one. Two-sided p-values sum probabilities<br>
+   *  no larger than the observed table (relative ordering tolerance 1e-7); they are not generally<br>
+   *  twice the smaller tail. Direct tail summation avoids 1-CDF cancellation. Empty margins give<br>
+   *  p=1. O(s) work/O(1) auxiliary storage for feasible support s; inputs unchanged, no shared<br>
+   *  state.<br>
+   *  @param a Top-left nonnegative integer count.<br>
+   *  @param b Top-right count.<br>
+   *  @param c Bottom-left count.<br>
+   *  @param d Bottom-right count; total must fit size_t.<br>
+   *  @return statistic=a, p_value and estimate1=sample odds ratio a*d/(b*c), not R conditional MLE;<br>
+   *  denominator zero gives infinity for positive numerator or NaN for 0/0. No confidence interval.<br>
+   *  @throws std::invalid_argument Count-total overflow or invalid alternative.<br>
+   *  <p alt="Example"><br>
+   *  {@code 
+   const auto f=dm::stats::fisher_exact_test_2x2(0,3,3,0);
+   std::print("{:.1f}\n",f.p_value); // 0.1
+   }</p><br>
+   *  <p alt="References"><br>
+   *  - https://stat.ethz.ch/R-manual/R-devel/library/stats/html/fisher.test.html<br>
+   *  </p>@see HypothesisTestResult
    */
   public static HypothesisTestResult fisher_exact_test_2x2(long a, long b, long c, long d) {
     return new HypothesisTestResult(datamungeJNI.fisher_exact_test_2x2__SWIG_1(a, b, c, d), true);
   }
 
   /**
-   *  Shapiro-Francia test for normality: the squared correlation between the sorted<br>
-   *         sample and the expected normal order statistics (Blom's approximation), with<br>
-   *         Royston's (1993) log-normal p-value approximation. A simpler, closely-related<br>
-   *         cousin of the (more commonly cited but more involved) Shapiro-Wilk test, valid<br>
-   *         for 5 &lt;= n &lt;= 5000; estimate1 is the W' statistic (near 1 for normal-looking<br>
-   *         data, well below 1 for non-normal data). A small p-value is evidence against<br>
-   *         normality.
+   *  Shapiro-Francia composite normality test, like R nortest::sf.test().<br>
+   * <br>
+   *  Squared correlation of sorted observations with Blom normal scores, using Royston (1993) log-<br>
+   *  normal p-value approximation. Tests some normal distribution; a large p-value does not prove<br>
+   *  normality. Rounding/ties affect calibration. O(n log n) work/O(n) storage; input unchanged, no<br>
+   *  omission/shared state.<br>
+   *  @param x Between 5 and 5000 finite, nonconstant observations.<br>
+   *  @return statistic=estimate1=W-prime and approximate p_value; no CI.<br>
+   *  @throws std::invalid_argument Invalid sample size, nonfinite input or constant sample.<br>
+   *  <p alt="Example"><br>
+   *  {@code 
+   const auto s=dm::stats::shapiro_francia_test({1,2,3,4,5});
+   std::print("{}\n",s.has_conf_int); // false
+   }</p><br>
+   *  <p alt="References"><br>
+   *  - https://search.r-project.org/CRAN/refmans/nortest/html/sf.test.html<br>
+   *  </p>@see HypothesisTestResult
    */
   public static HypothesisTestResult shapiro_francia_test(DVector x) {
     return new HypothesisTestResult(datamungeJNI.shapiro_francia_test(DVector.getCPtr(x), x), true);
@@ -743,6 +2243,148 @@ public class datamunge {
    */
   public static DVector romano_wolf_adjust(DVectorVector resampled_p, DVector sorted_p) {
     return new DVector(datamungeJNI.romano_wolf_adjust(DVectorVector.getCPtr(resampled_p), resampled_p, DVector.getCPtr(sorted_p), sorted_p), true);
+  }
+
+  /**
+   *  Expected improvement of a Gaussian prediction below an incumbent (minimisation).<br>
+   * <br>
+   *  For N(,^2)  and target \f$t=\text{incumbent}-\xi,<br>
+   *   \operatorname{E}\max(t-Y,0)=(t-\mu)\Phi(u)+\sigma\varphi(u) with =(t-)/ .
+   @param mean         Predicted mean  .
+   @param sd           Predicted standard deviation  ; 0 gives (t-,0) .
+   @param incumbent    Smallest value observed so far.
+   @param exploration  Margin   an improvement must exceed.
+   @return The expected improvement (never negative).
+  
+   @par Example
+   @code
+   std::print("{:.4f}\n", dm::optim::expected_improvement(0.0, 1.0, 0.0));  // 0.3989 = phi(0)
+   
+  
+   */
+  public static double expected_improvement(double mean, double sd, double incumbent, double exploration) {
+    return datamungeJNI.expected_improvement__SWIG_0(mean, sd, incumbent, exploration);
+  }
+
+  /**
+   *  Expected improvement of a Gaussian prediction below an incumbent (minimisation).<br>
+   * <br>
+   *  For N(,^2)  and target \f$t=\text{incumbent}-\xi,<br>
+   *   \operatorname{E}\max(t-Y,0)=(t-\mu)\Phi(u)+\sigma\varphi(u) with =(t-)/ .
+   @param mean         Predicted mean  .
+   @param sd           Predicted standard deviation  ; 0 gives (t-,0) .
+   @param incumbent    Smallest value observed so far.
+   @param exploration  Margin   an improvement must exceed.
+   @return The expected improvement (never negative).
+  
+   @par Example
+   @code
+   std::print("{:.4f}\n", dm::optim::expected_improvement(0.0, 1.0, 0.0));  // 0.3989 = phi(0)
+   
+  
+   */
+  public static double expected_improvement(double mean, double sd, double incumbent) {
+    return datamungeJNI.expected_improvement__SWIG_1(mean, sd, incumbent);
+  }
+
+  /**
+   *  Probability that a Gaussian prediction falls below incumbent − exploration.<br>
+   *  @param mean         Predicted mean  \mu.<br>
+   *  @param sd           Predicted standard deviation; 0 gives 0 or 1.<br>
+   *  @param incumbent    Smallest value observed so far.<br>
+   *  @param exploration  Margin  \xi\ge0.<br>
+   *  @return  \Phi\big((\text{incumbent}-\xi-\mu)/\sigma\big).<br>
+   * <br>
+   *  <p alt="Example"><br>
+   *  {@code 
+   std::print("{:.4f}\n", dm::optim::probability_of_improvement(1.0, 1.0, 0.0));  // 0.1587
+   }</p>
+   */
+  public static double probability_of_improvement(double mean, double sd, double incumbent, double exploration) {
+    return datamungeJNI.probability_of_improvement__SWIG_0(mean, sd, incumbent, exploration);
+  }
+
+  /**
+   *  Probability that a Gaussian prediction falls below incumbent − exploration.<br>
+   *  @param mean         Predicted mean  \mu.<br>
+   *  @param sd           Predicted standard deviation; 0 gives 0 or 1.<br>
+   *  @param incumbent    Smallest value observed so far.<br>
+   *  @return  \Phi\big((\text{incumbent}-\xi-\mu)/\sigma\big).<br>
+   * <br>
+   *  <p alt="Example"><br>
+   *  {@code 
+   std::print("{:.4f}\n", dm::optim::probability_of_improvement(1.0, 1.0, 0.0));  // 0.1587
+   }</p>
+   */
+  public static double probability_of_improvement(double mean, double sd, double incumbent) {
+    return datamungeJNI.probability_of_improvement__SWIG_1(mean, sd, incumbent);
+  }
+
+  /**
+   *  Exact expected Metropolis acceptance of one HMC proposal (fixed step size and<br>
+   *         number of leapfrog steps, unit mass) on a one-dimensional (m,s^2)  target, started
+          in equilibrium.
+  
+   In scaled coordinates \f$x=((q-m)/s,\,p) each leapfrog step is the linear map<br>
+   *  =&amp;0\-h/2&amp;1&amp;h\0&amp;1&amp;0\-h/2&amp;1 
+   with \f$h=\varepsilon/s,  \det M=1 and  \operatorname{tr}M=2-h^2, so it is stable<br>
+   *  exactly when  \varepsilon<2s. Writing _0=r(,)  the energy error is
+   H=r^2f()  with \f$f=\tfrac12(|M^L(\cos\phi,\sin\phi)|^2-1), and because<br>
+   *  ^2/2(1)  the radial average of (1,e^{-H})  is
+   \f$1/(1+2f) for &gt;0  and 1 otherwise. The angle is integrated numerically.
+   @param step_size Leapfrog step size &gt;0 .
+   @param num_steps Number of leapfrog steps \f$L\geq1.<br>
+   *  @param sd Target standard deviation &gt;0 .
+   @param angles Number of quadrature angles (at least 8).
+   @return The expected acceptance probability.
+   @throws std::invalid_argument for non-positive arguments.
+  
+   */
+  public static double leapfrog_gaussian_acceptance(double step_size, long num_steps, double sd, long angles) {
+    return datamungeJNI.leapfrog_gaussian_acceptance__SWIG_0(step_size, num_steps, sd, angles);
+  }
+
+  /**
+   *  Exact expected Metropolis acceptance of one HMC proposal (fixed step size and<br>
+   *         number of leapfrog steps, unit mass) on a one-dimensional (m,s^2)  target, started
+          in equilibrium.
+  
+   In scaled coordinates \f$x=((q-m)/s,\,p) each leapfrog step is the linear map<br>
+   *  =&amp;0\-h/2&amp;1&amp;h\0&amp;1&amp;0\-h/2&amp;1 
+   with \f$h=\varepsilon/s,  \det M=1 and  \operatorname{tr}M=2-h^2, so it is stable<br>
+   *  exactly when  \varepsilon<2s. Writing _0=r(,)  the energy error is
+   H=r^2f()  with \f$f=\tfrac12(|M^L(\cos\phi,\sin\phi)|^2-1), and because<br>
+   *  ^2/2(1)  the radial average of (1,e^{-H})  is
+   \f$1/(1+2f) for &gt;0  and 1 otherwise. The angle is integrated numerically.
+   @param step_size Leapfrog step size &gt;0 .
+   @param num_steps Number of leapfrog steps \f$L\geq1.<br>
+   *  @param sd Target standard deviation &gt;0 .
+   @param angles Number of quadrature angles (at least 8).
+   @return The expected acceptance probability.
+   @throws std::invalid_argument for non-positive arguments.
+  
+   */
+  public static double leapfrog_gaussian_acceptance(double step_size, long num_steps, double sd) {
+    return datamungeJNI.leapfrog_gaussian_acceptance__SWIG_1(step_size, num_steps, sd);
+  }
+
+  /**
+   *  Asymptotic effective-sample-size fraction _{/N  of importance sampling
+          a \f$d-dimensional Gaussian target with a Gaussian proposal of the same mean and<br>
+   *         covariance scaled by ^2 .
+  
+   \f$N_{\text{eff}}/N\to1/E_q[w^2] for weights =p/q  normalised to mean 1. In one
+   dimension \f$E_q[w^2]=\int p^2/q=k^2/\sqrt{2k^2-1}, finite only for ^2&gt;1/2 , and the
+   dimensions multiply, giving (^2-1}/k^2)^d . It is 1 at \f$k=1 and<br>
+   *  0 (infinite weight variance) for / .
+   @param scale Proposal scale factor \f$k>0.<br>
+   *  @param dimension Dimension  .
+   @return The efficiency in [0, 1].
+   @throws std::invalid_argument for non-positive @p scale or @p dimension.
+  
+   */
+  public static double gaussian_importance_efficiency(double scale, int dimension) {
+    return datamungeJNI.gaussian_importance_efficiency(scale, dimension);
   }
 
 }

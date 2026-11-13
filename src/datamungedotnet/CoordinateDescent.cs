@@ -9,7 +9,17 @@
 //------------------------------------------------------------------------------
 
 
-/// <summary>Cyclic coordinate descent on a DifferentiableFunction.  Each epoch visits every        coordinate in index order and performs an Armijo-backtracked partial-gradient step.</summary>
+/// <summary>CoordinateDescent on the DifferentiableFunction callback interface. Each epoch visits coordinates in index order. Every partial update requests a full gradient and an Armijo-backtracked value sequence; this is not exact one-dimensional minimisation. An exhausted search restores that coordinate. Stops on the full end-of-epoch gradient norm. The caller supplies finite, dimensionally consistent callbacks. Inputs are borrowed; coordinates mutate in place and can retain a partial state if a callback throws. Calls use local optimizer state and propagate callback exceptions; sharing a mutable objective across threads requires external synchronisation. Normal return alone is not a uniform convergence certificate.</summary>
+/// Title: Example
+/// <code>      const dm::optim::CoordinateDescent optimizer;
+///      std::print("{}\n",optimizer.options().max_iterations); // 1000</code>
+///
+///
+///
+/// Title: References
+///  - S. J. Wright (2015), Coordinate descent algorithms, https://doi.org/10.1007/s10107-015-0892-3. This implementation uses the stated full-gradient coordinate/block steps.
+///
+/// <seealso cref="CoordinateDescentOptions, trace_optimize"/>
 public class CoordinateDescent : global::System.IDisposable {
   private global::System.Runtime.InteropServices.HandleRef swigCPtr;
   protected bool swigCMemOwn;
@@ -57,16 +67,56 @@ public class CoordinateDescent : global::System.IDisposable {
     }
   }
 
+  /// <summary>Store a copy of the controls without running the objective.</summary>
+  /// <param name="options"> Method-specific controls; defaults are listed by CoordinateDescentOptions.</param> 
+  /// Title: Example
+  /// <code>      const dm::optim::CoordinateDescent optimizer;
+  ///      std::print("{}\n",optimizer.options().max_iterations); // 1000</code>
+  ///
+  ///
+  ///
+  /// <seealso cref="optimize"/>
   public CoordinateDescent(CoordinateDescentOptions options) : this(datamungePINVOKE.new_CoordinateDescent__SWIG_0(CoordinateDescentOptions.getCPtr(options)), true) {
     if (datamungePINVOKE.SWIGPendingException.Pending) throw datamungePINVOKE.SWIGPendingException.Retrieve();
   }
 
+  /// <summary>Store a copy of the controls without running the objective.</summary>
+  /// Title: Example
+  /// <code>      const dm::optim::CoordinateDescent optimizer;
+  ///      std::print("{}\n",optimizer.options().max_iterations); // 1000</code>
+  ///
+  ///
+  ///
+  /// <seealso cref="optimize"/>
   public CoordinateDescent() : this(datamungePINVOKE.new_CoordinateDescent__SWIG_1(), true) {
   }
 
+  /// <summary>Run CoordinateDescent from the supplied point using the configured finite budget. Each epoch visits coordinates in index order. Every partial update requests a full gradient and an Armijo-backtracked value sequence; this is not exact one-dimensional minimisation. An exhausted search restores that coordinate. Stops on the full end-of-epoch gradient norm.</summary>
+  /// <param name="function"> Borrowed DifferentiableFunction with matching finite output shapes.</param> 
+  /// <param name="coordinates"> Owned-by-caller finite start; overwritten with the native returned point.</param> 
+  /// <returns>Objective at the native returned coordinates; not a stop-status code.</returns> 
+  /// <exception cref="std::invalid_argument"> CoordinateDescent: step_size must be positive; CoordinateDescent: tolerance must be non-negative; CoordinateDescent: armijo_c1 must be in (0, 1); CoordinateDescent: backtracking_factor must be in (0, 1).</exception> 
+  /// <exception cref="std::exception"> Exceptions from supplied callbacks propagate. Raw solvers do not uniformly reject nonfinite inputs.</exception> 
+  /// Title: Example
+  /// <code>      dm::optim::QuadraticObjective f({2,8},{1,-2});
+  ///      dm::optim::CoordinateDescentOptions controls;controls.max_iterations=5;
+  ///      std::vector&lt;double&gt; x{0,0};
+  ///      const auto value=dm::optim::CoordinateDescent(controls).optimize(f,x);
+  ///      std::print("{}\n",std::isfinite(value)); // true</code>
+  ///
+  ///
+  ///
+  /// <seealso cref="trace_optimize"/>
   public double optimize(DifferentiableFunction function, DVector coordinates) {
     double ret = datamungePINVOKE.CoordinateDescent_optimize(swigCPtr, DifferentiableFunction.getCPtr(function), DVector.getCPtr(coordinates));
     if (datamungePINVOKE.SWIGPendingException.Pending) throw datamungePINVOKE.SWIGPendingException.Retrieve();
+    return ret;
+  }
+
+  /// <summary>Borrow this optimizer's stored configuration.</summary>
+  /// <returns>Const option reference, valid during this object's lifetime; no mutation.</returns>
+  public CoordinateDescentOptions options() {
+    CoordinateDescentOptions ret = new CoordinateDescentOptions(datamungePINVOKE.CoordinateDescent_options(swigCPtr), false);
     return ret;
   }
 

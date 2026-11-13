@@ -9,9 +9,21 @@
 package js.datamunge.jdatamunge;
 
 /**
- *  Stochastic (mini-batch) gradient descent on a DifferentiableSeparableFunction: each<br>
- *         step updates coordinates from the average gradient of one shuffled mini-batch of<br>
- *         terms, rather than the full objective's gradient.
+ *  SGD on the DifferentiableSeparableFunction callback interface.<br>
+ *  Uses the mean gradient of each mini-batch, reshuffling component indices each epoch when enabled. Full objective remains the sum of components. Stops on absolute full-objective change per epoch. Nonempty components and positive batch_size are required; seeds reproduce the same build, not a cross-library shuffle transcript.<br>
+ *  The caller supplies finite, dimensionally consistent callbacks. Inputs are borrowed;<br>
+ *  coordinates mutate in place and can retain a partial state if a callback throws.<br>
+ *  Calls use local optimizer state and propagate callback exceptions; sharing a mutable<br>
+ *  objective across threads requires external synchronisation. Normal return alone<br>
+ *  is not a uniform convergence certificate.<br>
+ *  <p alt="Example"><br>
+ *  {@code 
+ const dm::optim::SGD optimizer;
+ std::print("{}\n",optimizer.options().max_epochs); // 100
+ }</p><br>
+ *  <p alt="References"><br>
+ *  - H. Robbins and S. Monro (1951), A Stochastic Approximation Method, https://doi.org/10.1214/aoms/1177729586. The fixed-rate reshuffling variant here differs from their decreasing-step stochastic approximation.<br>
+ *  </p>@see SGDOptions, trace_optimize()
  */
 public class SGD {
   private transient long swigCPtr;
@@ -53,16 +65,61 @@ public class SGD {
     }
   }
 
+  /**
+   *  Store a copy of the controls without running the objective.<br>
+   *  @param options Method-specific controls; defaults are listed by SGDOptions.<br>
+   *  <p alt="Example"><br>
+   *  {@code 
+   const dm::optim::SGD optimizer;
+   std::print("{}\n",optimizer.options().max_epochs); // 100
+   }</p><br>
+   *  @see optimize()
+   */
   public SGD(SGDOptions options) {
     this(datamungeJNI.new_SGD__SWIG_0(SGDOptions.getCPtr(options), options), true);
   }
 
+  /**
+   *  Store a copy of the controls without running the objective.<br>
+   *  <p alt="Example"><br>
+   *  {@code 
+   const dm::optim::SGD optimizer;
+   std::print("{}\n",optimizer.options().max_epochs); // 100
+   }</p><br>
+   *  @see optimize()
+   */
   public SGD() {
     this(datamungeJNI.new_SGD__SWIG_1(), true);
   }
 
+  /**
+   *  Run SGD from the supplied point using the configured finite budget.<br>
+   *  Uses the mean gradient of each mini-batch, reshuffling component indices each epoch when enabled. Full objective remains the sum of components. Stops on absolute full-objective change per epoch. Nonempty components and positive batch_size are required; seeds reproduce the same build, not a cross-library shuffle transcript.<br>
+   *  @param function Borrowed DifferentiableSeparableFunction with matching finite output shapes.<br>
+   *  @param coordinates Owned-by-caller finite start; overwritten with the native returned point.<br>
+   *  @return Objective at the native returned coordinates; not a stop-status code.<br>
+   *  @throws std::invalid_argument SGD: batch_size must be positive; SGD::optimize: function has zero terms.<br>
+   *  @throws std::exception Exceptions from supplied callbacks propagate. Raw solvers do not uniformly reject nonfinite inputs.<br>
+   *  <p alt="Example"><br>
+   *  {@code 
+   dm::optim::LeastSquaresObjective f({{1},{1}},{1,3});
+   dm::optim::SGDOptions controls;controls.max_epochs=5;
+   std::vector<double> x{0};
+   const auto value=dm::optim::SGD(controls).optimize(f,x);
+   std::print("{}\n",std::isfinite(value)); // true
+   }</p><br>
+   *  @see trace_optimize(), SGDOptions
+   */
   public double optimize(DifferentiableSeparableFunction function, DVector coordinates) {
     return datamungeJNI.SGD_optimize(swigCPtr, this, DifferentiableSeparableFunction.getCPtr(function), function, DVector.getCPtr(coordinates), coordinates);
+  }
+
+  /**
+   *  Borrow this optimizer's stored configuration.<br>
+   *  @return Const option reference, valid during this object's lifetime; no mutation.
+   */
+  public SGDOptions options() {
+    return new SGDOptions(datamungeJNI.SGD_options(swigCPtr, this), false);
   }
 
 }

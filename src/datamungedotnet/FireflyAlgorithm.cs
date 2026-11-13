@@ -71,4 +71,11 @@ public class FireflyAlgorithm : global::System.IDisposable {
     return ret;
   }
 
+  /// <summary>The options this FireflyAlgorithm was configured with.</summary>
+  /// <returns>The stored options.</returns>
+  public FireflyAlgorithmOptions options() {
+    FireflyAlgorithmOptions ret = new FireflyAlgorithmOptions(datamungePINVOKE.FireflyAlgorithm_options(swigCPtr), false);
+    return ret;
+  }
+
 }

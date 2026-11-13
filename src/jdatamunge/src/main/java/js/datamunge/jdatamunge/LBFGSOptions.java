@@ -8,6 +8,17 @@
 
 package js.datamunge.jdatamunge;
 
+/**
+ *  Configuration for LBFGS; fields retain their documented native defaults.<br>
+ *  Supply finite values in the supported ranges. Controls are copied at construction;<br>
+ *  validation, stopping and loss scaling belong to optimize().<br>
+ *  <p alt="Example"><br>
+ *  {@code 
+ dm::optim::LBFGSOptions o;
+ std::print("{}\n",o.max_iterations); // 500
+ }</p><br>
+ *  @see LBFGS
+ */
 public class LBFGSOptions {
   private transient long swigCPtr;
   protected transient boolean swigCMemOwn;
@@ -56,58 +67,34 @@ public class LBFGSOptions {
     return datamungeJNI.LBFGSOptions_max_iterations_get(swigCPtr, this);
   }
 
-  /**
-   *  Stops when the gradient norm drops below this.
-   */
   public void setTolerance(double value) {
     datamungeJNI.LBFGSOptions_tolerance_set(swigCPtr, this, value);
   }
 
-  /**
-   *  Stops when the gradient norm drops below this.
-   */
   public double getTolerance() {
     return datamungeJNI.LBFGSOptions_tolerance_get(swigCPtr, this);
   }
 
-  /**
-   *  Number of (s, y) curvature pairs retained for the two-loop recursion.
-   */
   public void setHistory_size(long value) {
     datamungeJNI.LBFGSOptions_history_size_set(swigCPtr, this, value);
   }
 
-  /**
-   *  Number of (s, y) curvature pairs retained for the two-loop recursion.
-   */
   public long getHistory_size() {
     return datamungeJNI.LBFGSOptions_history_size_get(swigCPtr, this);
   }
 
-  /**
-   *  Armijo sufficient-decrease constant for the line search.
-   */
   public void setArmijo_c1(double value) {
     datamungeJNI.LBFGSOptions_armijo_c1_set(swigCPtr, this, value);
   }
 
-  /**
-   *  Armijo sufficient-decrease constant for the line search.
-   */
   public double getArmijo_c1() {
     return datamungeJNI.LBFGSOptions_armijo_c1_get(swigCPtr, this);
   }
 
-  /**
-   *  Weak-Wolfe curvature constant for the line search (typical value for L-BFGS).
-   */
   public void setWolfe_c2(double value) {
     datamungeJNI.LBFGSOptions_wolfe_c2_set(swigCPtr, this, value);
   }
 
-  /**
-   *  Weak-Wolfe curvature constant for the line search (typical value for L-BFGS).
-   */
   public double getWolfe_c2() {
     return datamungeJNI.LBFGSOptions_wolfe_c2_get(swigCPtr, this);
   }

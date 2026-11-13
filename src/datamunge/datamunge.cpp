@@ -333,27 +333,35 @@ std::string DataFrame::string_at(const std::string& column_name, const std::size
 
 DataFrame* DataFrame::empty() { return new DataFrame(); }
 
-DataFrame* DataFrame::iris() { return new DataFrame(datasets::iris()); }
+/// @brief Wraps core frames for data::iris() and the other dataset functions (a friend of
+///        DataFrame, whose core-frame constructor is private).
+struct DatasetFactory {
+  /// @brief A new facade frame owning @p frame.
+  /// @param frame The core frame to take.
+  /// @return The new frame, owned by the caller.
+  static DataFrame* adopt(dstruct::DataFrame frame) { return new DataFrame(std::move(frame)); }
+};
 
-DataFrame* DataFrame::penguins() { return new DataFrame(datasets::penguins()); }
-
-DataFrame* DataFrame::tooth_growth() { return new DataFrame(datasets::tooth_growth()); }
-
-DataFrame* DataFrame::wine() { return new DataFrame(datasets::wine()); }
-DataFrame* DataFrame::titanic() { return new DataFrame(datasets::titanic()); }
-DataFrame* DataFrame::eight_schools() { return new DataFrame(datasets::eight_schools()); }
-DataFrame* DataFrame::faithful() { return new DataFrame(datasets::faithful()); }
-DataFrame* DataFrame::air_passengers() { return new DataFrame(datasets::air_passengers()); }
-DataFrame* DataFrame::volcano() { return new DataFrame(datasets::volcano()); }
-DataFrame* DataFrame::mtcars() { return new DataFrame(datasets::mtcars()); }
-DataFrame* DataFrame::airquality() { return new DataFrame(datasets::airquality()); }
-DataFrame* DataFrame::breast_cancer() { return new DataFrame(datasets::breast_cancer()); }
-DataFrame* DataFrame::diabetes() { return new DataFrame(datasets::diabetes()); }
-DataFrame* DataFrame::digits() { return new DataFrame(datasets::digits()); }
-DataFrame* DataFrame::diamonds() { return new DataFrame(datasets::diamonds()); }
-DataFrame* DataFrame::california_housing() { return new DataFrame(datasets::california_housing()); }
-DataFrame* DataFrame::dataset(const std::string& name) { return new DataFrame(datasets::load(name)); }
-DataFrame* DataFrame::dataset_catalog() { return new DataFrame(datasets::catalog()); }
+namespace data {
+DataFrame* iris() { return DatasetFactory::adopt(datasets::iris()); }
+DataFrame* penguins() { return DatasetFactory::adopt(datasets::penguins()); }
+DataFrame* tooth_growth() { return DatasetFactory::adopt(datasets::tooth_growth()); }
+DataFrame* wine() { return DatasetFactory::adopt(datasets::wine()); }
+DataFrame* titanic() { return DatasetFactory::adopt(datasets::titanic()); }
+DataFrame* eight_schools() { return DatasetFactory::adopt(datasets::eight_schools()); }
+DataFrame* air_passengers() { return DatasetFactory::adopt(datasets::air_passengers()); }
+DataFrame* volcano() { return DatasetFactory::adopt(datasets::volcano()); }
+DataFrame* faithful() { return DatasetFactory::adopt(datasets::faithful()); }
+DataFrame* mtcars() { return DatasetFactory::adopt(datasets::mtcars()); }
+DataFrame* airquality() { return DatasetFactory::adopt(datasets::airquality()); }
+DataFrame* breast_cancer() { return DatasetFactory::adopt(datasets::breast_cancer()); }
+DataFrame* diabetes() { return DatasetFactory::adopt(datasets::diabetes()); }
+DataFrame* digits() { return DatasetFactory::adopt(datasets::digits()); }
+DataFrame* diamonds() { return DatasetFactory::adopt(datasets::diamonds()); }
+DataFrame* california_housing() { return DatasetFactory::adopt(datasets::california_housing()); }
+DataFrame* load(const std::string& name) { return DatasetFactory::adopt(datasets::load(name)); }
+DataFrame* catalog() { return DatasetFactory::adopt(datasets::catalog()); }
+}  // namespace data
 
 DataFrame* DataFrame::read_csv(const std::string& path, char delimiter) {
   datasets::CsvOptions options;

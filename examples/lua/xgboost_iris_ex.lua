@@ -1,6 +1,8 @@
+-- CMD: just TARGET=xgboost_iris_ex run-lua
+
 local dm = require("datamunge")
 
-local iris = dm.DataFrame.iris()
+local iris = dm.data.iris()
 print("iris: " .. iris:nrows() .. " rows x " .. iris:ncols() .. " cols\n")
 
 local model = dm.XGBoostClassifier(iris, "Species ~ Petal.Length + Petal.Width")

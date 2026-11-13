@@ -1,3 +1,5 @@
+;; CMD: just TARGET=bspline_ex run-guile
+
 (use-modules (datamunge) (ice-9 format))
 
 ;; Sample a smooth surface z = sin(x) + y^2 on an 8x8 grid over [0, 1]^2.

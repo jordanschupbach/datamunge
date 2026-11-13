@@ -9,8 +9,34 @@
 //------------------------------------------------------------------------------
 
 
-/// Tiles independently-built `Plot` objects into one multi-panel figure, mimicking R's
-/// `par(mfrow = c(rows, cols))`.
+/// <summary>Tiles independently built plots into one multi-panel figure, like R's        `par(mfrow = c(rows, cols))` followed by one plot per panel.</summary>
+///  Create it with create(rows, cols), then add() up to rows * cols panels; they fill the grid
+///  row by row. Each panel is copied (and its SVG rendered) at add() time, so later changes to
+///  the original plot do not show and panels need not outlive the layout. Each cell is
+///  `width / cols` by `(height - band) / rows` pixels, where band is title_band_px when a
+///  figure title is set and 0 otherwise; every panel is scaled from its own canvas size into its
+///  cell. The figure background is white. Unused cells stay empty.
+///
+/// Title: Example
+/// <code>      const auto x = dm::seql(0.0, 6.0, 30);
+///      auto fig = dm::graphics::RLayout::create(1, 2)
+///                     .size(1200, 500)
+///                     .title("Two views")
+///                     .add(dm::Plot(x, dm::sin(x)).set_title("sin"))
+///                     .add(dm::Plot(x, dm::cos(x)).set_title("cos"));
+///      std::print("{} panels in {}x{}\n", fig.panel_count(), fig.rows(), fig.cols());
+///     2 panels in 1x2
+///      fig.save("two_views.svg");</code>
+///
+///
+///
+///
+/// Title: References
+///  - R `par()` (`mfrow`): https://stat.ethz.ch/R-manual/R-devel/library/graphics/html/par.html
+///
+///
+///
+/// <seealso cref="RPlot, RPlot.margins"/>
 public class RLayout : global::System.IDisposable {
   private global::System.Runtime.InteropServices.HandleRef swigCPtr;
   protected bool swigCMemOwn;
@@ -58,39 +84,318 @@ public class RLayout : global::System.IDisposable {
     }
   }
 
+  /// <summary>Creates an empty layout with ``rows`` by ``cols`` cells, like R's        `par(mfrow = c(rows, cols))`.</summary>
+  ///  The figure starts at 960 by 640 pixels with no title.
+  ///
+  /// <param name="rows">  Number of panel rows; must be positive.</param> 
+  /// <param name="cols">  Number of panel columns; must be positive.</param> 
+  /// <returns>The empty layout.</returns> 
+  /// <exception cref="std::invalid_argument">  If ``rows`` or ``cols`` is 0.</exception> 
+  ///
+  /// Title: Example
+  ///  See RLayout.
+  ///
+  ///
+  ///
+  /// Title: References
+  ///  - R `par()` (`mfrow`): https://stat.ethz.ch/R-manual/R-devel/library/graphics/html/par.html
+  ///
+  ///
+  ///
+  /// <seealso cref="add"/>
   public static RLayout create(uint rows, uint cols) {
     RLayout ret = new RLayout(datamungePINVOKE.RLayout_create(rows, cols), true);
     return ret;
   }
 
+  /// <summary>Copies ``panel`` into the next free cell, filling rows left to right, top to bottom.</summary>
+  ///  The panel's SVG is rendered immediately and stored with the copy, so rendering errors
+  ///  surface here and later edits to the original plot have no effect on the layout.
+  ///
+  /// <param name="panel">  The plot to add; any RPlot (or other Plot) converts.</param> 
+  /// <returns>This layout, for chaining.</returns> 
+  /// <exception cref="std::invalid_argument">  If all rows * cols cells are already filled.</exception> 
+  /// <exception cref="std::runtime_error">  If ``panel`` has no data series or its canvas is smaller than
+  ///              its margins.</exception> 
+  ///
+  /// Title: Example
+  /// <code>      auto fig = dm::graphics::RLayout::create(1, 1).add(dm::Plot(dm::c(1.0, 2.0), dm::c(2.0, 1.0)));
+  ///      try {
+  ///        fig.add(dm::Plot(dm::c(1.0), dm::c(1.0)));
+  ///      } catch (const std::invalid_argument&amp; e) {
+  ///        std::print("{}\n", e.what());  // RLayout::add: layout is already full
+  ///      }</code>
+  ///
+  ///
+  ///
+  /// <seealso cref="panel"/>
   public RLayout add(Plot panel) {
     RLayout ret = new RLayout(datamungePINVOKE.RLayout_add(swigCPtr, Plot.getCPtr(panel)), false);
     if (datamungePINVOKE.SWIGPendingException.Pending) throw datamungePINVOKE.SWIGPendingException.Retrieve();
     return ret;
   }
 
+  /// <summary>Sets the size of the whole figure in pixels (default 960 by 640).</summary>
+  ///  Panels keep their own canvas sizes and are scaled into their cells, so text in a panel
+  ///  shrinks or grows with it; give panels a size close to their cell for readable labels.
+  ///
+  /// <param name="width">  Figure width in pixels.</param> 
+  /// <param name="height">  Figure height in pixels, including the title band.</param> 
+  /// <returns>This layout, for chaining.</returns> 
+  ///
+  /// Title: Example
+  ///  See RLayout.
+  ///
+  /// <seealso cref="title"/>
   public RLayout size(uint width, uint height) {
     RLayout ret = new RLayout(datamungePINVOKE.RLayout_size(swigCPtr, width, height), false);
     return ret;
   }
 
-  ///  Renders the multi-panel figure as a standalone SVG document and returns it as a string.
+  /// <summary>Sets an optional figure-level heading drawn in a band above the panels, like R's        `mtext(main, outer = TRUE)`; an empty string (the default) reserves no band.</summary>
+  /// <param name="value">  Heading text; the band is title_band_px pixels tall.</param> 
+  /// <returns>This layout, for chaining.</returns> 
+  ///
+  /// Title: Example
+  ///  See RLayout.
+  ///
+  ///
+  ///
+  /// Title: References
+  ///  - R `mtext()`: https://stat.ethz.ch/R-manual/R-devel/library/graphics/html/mtext.html
+  ///
+  ///
+  ///
+  /// <seealso cref="title_text"/>
+  public RLayout title(string value) {
+    RLayout ret = new RLayout(datamungePINVOKE.RLayout_title(swigCPtr, value), false);
+    if (datamungePINVOKE.SWIGPendingException.Pending) throw datamungePINVOKE.SWIGPendingException.Retrieve();
+    return ret;
+  }
+
+  /// <summary>Returns the number of panel rows given to create().</summary>
+  /// <returns>Row count (at least 1).</returns>
+  public uint rows() {
+    uint ret = datamungePINVOKE.RLayout_rows(swigCPtr);
+    return ret;
+  }
+
+  /// <summary>Returns the number of panel columns given to create().</summary>
+  /// <returns>Column count (at least 1).</returns>
+  public uint cols() {
+    uint ret = datamungePINVOKE.RLayout_cols(swigCPtr);
+    return ret;
+  }
+
+  /// <summary>Returns the figure width in pixels.</summary>
+  /// <returns>Width set by size() (default 960).</returns>
+  public uint width() {
+    uint ret = datamungePINVOKE.RLayout_width(swigCPtr);
+    return ret;
+  }
+
+  /// <summary>Returns the figure height in pixels.</summary>
+  /// <returns>Height set by size() (default 640).</returns>
+  public uint height() {
+    uint ret = datamungePINVOKE.RLayout_height(swigCPtr);
+    return ret;
+  }
+
+  /// <summary>Returns how many panels have been added.</summary>
+  /// <returns>Panel count, at most rows() * cols().</returns>
+  public uint panel_count() {
+    uint ret = datamungePINVOKE.RLayout_panel_count(swigCPtr);
+    return ret;
+  }
+
+  /// <summary>Borrows the figure-level heading for the lifetime of this layout.</summary>
+  /// <returns>The title; empty (the default) when none is drawn.</returns>
+  public string title_text() {
+    string ret = datamungePINVOKE.RLayout_title_text(swigCPtr);
+    return ret;
+  }
+
+  /// <summary>Borrows the copy of the ``index-th`` added panel.</summary>
+  /// <param name="index">  Zero-based panel index, in the order panels were added.</param> 
+  /// <returns>The stored copy, valid until the next add() or the layout's destruction.</returns> 
+  /// <exception cref="std::out_of_range"> If ``index`` is not below panel_count().</exception> 
+  ///
+  /// Title: Example
+  /// <code>      auto fig = dm::graphics::RLayout::create(1, 2).add(dm::Plot(dm::c(1.0), dm::c(1.0)).set_title("A"));
+  ///      std::print("{}\n", fig.panel(0).title_text());  // A</code>
+  public Plot panel(uint index) {
+    Plot ret = new Plot(datamungePINVOKE.RLayout_panel(swigCPtr, index), false);
+    return ret;
+  }
+
+  /// <summary>Renders the multi-panel figure as a standalone SVG document and returns it as a string.</summary>
+  ///  Each panel becomes a nested `&lt;svg&gt;` scaled into its cell. A layout with no panels renders
+  ///  as an empty white figure. The layout is not modified.
+  ///
+  /// <returns>The complete SVG text.</returns> 
+  ///
+  /// Title: Example
+  /// <code>      auto fig = dm::graphics::RLayout::create(2, 1).add(dm::Plot(dm::c(1.0, 2.0), dm::c(1.0, 2.0)));
+  ///      std::print("{}\n", fig.to_svg().starts_with("&lt;?xml"));  // true</code>
+  ///
+  ///
+  ///
+  /// <seealso cref="save"/>
   public string to_svg() {
     string ret = datamungePINVOKE.RLayout_to_svg(swigCPtr);
     return ret;
   }
 
+  /// <summary>Saves the figure, choosing the format from the extension: `.svg` (or none) writes        SVG, `.png` / `.pdf` write the same tiled raster the X11 viewer shows.</summary>
+  ///  The extension is case-sensitive and an existing file is overwritten. Raster panels are
+  ///  re-rendered from the stored copies and scaled into their cells.
+  ///
+  /// <param name="path">  Destination file.</param> 
+  /// <exception cref="std::invalid_argument"> For any other extension.</exception> 
+  /// <exception cref="std::runtime_error">  If the file cannot be written.</exception> 
+  ///
+  /// Title: Example
+  ///  See RLayout.
+  ///
+  /// <seealso cref="save_svg"/>
   public void save(string path) {
     datamungePINVOKE.RLayout_save(swigCPtr, path);
     if (datamungePINVOKE.SWIGPendingException.Pending) throw datamungePINVOKE.SWIGPendingException.Retrieve();
   }
 
+  /// <summary>Writes to_svg() to ``path`` regardless of its extension.</summary>
+  /// <param name="path">  Destination file; an existing file is overwritten.</param> 
+  /// <exception cref="std::runtime_error">  If the file cannot be opened for writing.</exception> 
+  /// <seealso cref="save"/>
   public void save_svg(string path) {
     datamungePINVOKE.RLayout_save_svg(swigCPtr, path);
     if (datamungePINVOKE.SWIGPendingException.Pending) throw datamungePINVOKE.SWIGPendingException.Retrieve();
   }
 
+  /// <summary>Renders the tiled figure as PNG image bytes (the raster save() writes for `.png`).</summary>
+  /// <returns>The complete PNG file contents.</returns> 
+  /// <exception cref="std::runtime_error">  If a panel cannot be rendered.</exception> 
+  /// <seealso cref="save_png"/>
+  public SWIGTYPE_p_std__vectorT_unsigned_char_t to_png() {
+    SWIGTYPE_p_std__vectorT_unsigned_char_t ret = new SWIGTYPE_p_std__vectorT_unsigned_char_t(datamungePINVOKE.RLayout_to_png(swigCPtr), true);
+    return ret;
+  }
+
+  /// <summary>Renders the tiled figure as a one-page PDF holding the raster image.</summary>
+  /// <returns>The complete PDF file contents.</returns> 
+  /// <exception cref="std::runtime_error">  If a panel cannot be rendered.</exception> 
+  /// <seealso cref="save_pdf"/>
+  public SWIGTYPE_p_std__vectorT_unsigned_char_t to_pdf() {
+    SWIGTYPE_p_std__vectorT_unsigned_char_t ret = new SWIGTYPE_p_std__vectorT_unsigned_char_t(datamungePINVOKE.RLayout_to_pdf(swigCPtr), true);
+    return ret;
+  }
+
+  /// <summary>Writes to_png() to ``path`` regardless of its extension.</summary>
+  /// <param name="path">  Destination file; an existing file is overwritten.</param> 
+  /// <exception cref="std::runtime_error">  If the file cannot be written or a panel cannot be rendered.</exception>
+  public void save_png(string path) {
+    datamungePINVOKE.RLayout_save_png(swigCPtr, path);
+    if (datamungePINVOKE.SWIGPendingException.Pending) throw datamungePINVOKE.SWIGPendingException.Retrieve();
+  }
+
+  /// <summary>Writes to_pdf() to ``path`` regardless of its extension.</summary>
+  /// <param name="path">  Destination file; an existing file is overwritten.</param> 
+  /// <exception cref="std::runtime_error">  If the file cannot be written or a panel cannot be rendered.</exception>
+  public void save_pdf(string path) {
+    datamungePINVOKE.RLayout_save_pdf(swigCPtr, path);
+    if (datamungePINVOKE.SWIGPendingException.Pending) throw datamungePINVOKE.SWIGPendingException.Retrieve();
+  }
+
+  /// <summary>Resizes every stored panel's canvas to its cell, so text keeps its pixel size        instead of being scaled with the panel.</summary>
+  ///  Call it after size() and title() (the title band changes the cell height). Panels added
+  ///  later keep their own size until fit_panels() is called again. A cell whose shorter side is
+  ///  under min_panel_px gets a canvas scaled up to that side (same aspect ratio), so its text is
+  ///  drawn proportionally smaller instead of the margins overflowing the panel.
+  /// <returns>This layout, for chaining.</returns> 
+  ///
+  /// Title: Example
+  /// <code>      auto fig = dm::graphics::RLayout::create(1, 2)
+  ///                     .add(dm::Plot(dm::c(1.0, 2.0), dm::c(2.0, 1.0)))
+  ///                     .add(dm::Plot(dm::c(1.0, 2.0), dm::c(1.0, 2.0)))
+  ///                     .size(1000, 400)
+  ///                     .fit_panels();
+  ///      std::print("{}x{}\n", fig.panel(0).width(), fig.panel(0).height());  // 500x400</code>
+  ///
+  ///
+  ///
+  /// <seealso cref="size"/>
+  public RLayout fit_panels() {
+    RLayout ret = new RLayout(datamungePINVOKE.RLayout_fit_panels(swigCPtr), false);
+    return ret;
+  }
+
+  /// <summary>Opens the tiled figure in the interactive X11 viewer; the toolbar zoom/pan buttons        act on every panel's data bounds at once, keyboard zoom/pan scales the whole image.</summary>
+  ///  Blocks until the window is closed (q or Escape). Use save() in headless code.
+  ///
+  /// <param name="title_hint">  Window title; empty (the default) uses title_text().</param> 
+  /// <exception cref="std::runtime_error"> If X11 support was not enabled at build time or no display is
+  ///              available.</exception> 
+  /// <exception cref="std::invalid_argument">  If no panel was added.</exception> 
+  ///
+  /// Title: Example
+  /// <code>      const auto x = dm::seql(0.0, 6.0, 30);
+  ///      dm::graphics::RLayout::create(1, 2)
+  ///          .add(dm::Plot(x, dm::sin(x)))
+  ///          .add(dm::Plot(x, dm::cos(x)))
+  ///          .show("Trig");</code>
+  ///
+  ///
+  ///
+  /// <seealso cref="save"/>
+  public void show(string title_hint) {
+    datamungePINVOKE.RLayout_show__SWIG_0(swigCPtr, title_hint);
+    if (datamungePINVOKE.SWIGPendingException.Pending) throw datamungePINVOKE.SWIGPendingException.Retrieve();
+  }
+
+  /// <summary>Opens the tiled figure in the interactive X11 viewer; the toolbar zoom/pan buttons        act on every panel's data bounds at once, keyboard zoom/pan scales the whole image.</summary>
+  ///  Blocks until the window is closed (q or Escape). Use save() in headless code.
+  ///
+  /// <exception cref="std::runtime_error"> If X11 support was not enabled at build time or no display is
+  ///              available.</exception> 
+  /// <exception cref="std::invalid_argument">  If no panel was added.</exception> 
+  ///
+  /// Title: Example
+  /// <code>      const auto x = dm::seql(0.0, 6.0, 30);
+  ///      dm::graphics::RLayout::create(1, 2)
+  ///          .add(dm::Plot(x, dm::sin(x)))
+  ///          .add(dm::Plot(x, dm::cos(x)))
+  ///          .show("Trig");</code>
+  ///
+  ///
+  ///
+  /// <seealso cref="save"/>
+  public void show() {
+    datamungePINVOKE.RLayout_show__SWIG_1(swigCPtr);
+  }
+
+  /// <summary>Same as show(); kept as an alias for older code.</summary>
+  /// <param name="title_hint">  Window title; empty (the default) uses title_text().</param> 
+  /// <exception cref="std::runtime_error">  As for show().</exception> 
+  /// <exception cref="std::invalid_argument">  If no panel was added.</exception> 
+  /// <seealso cref="show"/>
+  public void view(string title_hint) {
+    datamungePINVOKE.RLayout_view__SWIG_0(swigCPtr, title_hint);
+    if (datamungePINVOKE.SWIGPendingException.Pending) throw datamungePINVOKE.SWIGPendingException.Retrieve();
+  }
+
+  /// <summary>Same as show(); kept as an alias for older code.</summary>
+  /// <exception cref="std::runtime_error">  As for show().</exception> 
+  /// <exception cref="std::invalid_argument">  If no panel was added.</exception> 
+  /// <seealso cref="show"/>
+  public void view() {
+    datamungePINVOKE.RLayout_view__SWIG_1(swigCPtr);
+  }
+
   public RLayout() : this(datamungePINVOKE.new_RLayout(), true) {
   }
 
+  /// <summary>Height in pixels of the heading band reserved above the panels when a title is set.</summary>
+  public static readonly uint title_band_px = datamungePINVOKE.RLayout_title_band_px_get();
+  /// <summary>Smallest canvas side fit_panels() gives a panel; smaller cells get a larger canvas        with the cell's aspect ratio, scaled down when drawn, so the margins still fit.</summary>
+  public static readonly uint min_panel_px = datamungePINVOKE.RLayout_min_panel_px_get();
 }

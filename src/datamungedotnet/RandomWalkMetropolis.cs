@@ -57,16 +57,30 @@ public class RandomWalkMetropolis : global::System.IDisposable {
     }
   }
 
+  /// <summary>Stores the sampler settings.</summary>
+  /// <param name="options"> Sampler settings.</param>
   public RandomWalkMetropolis(RWMOptions options) : this(datamungePINVOKE.new_RandomWalkMetropolis__SWIG_0(RWMOptions.getCPtr(options)), true) {
     if (datamungePINVOKE.SWIGPendingException.Pending) throw datamungePINVOKE.SWIGPendingException.Retrieve();
   }
 
+  /// <summary>Stores the sampler settings.</summary>
   public RandomWalkMetropolis() : this(datamungePINVOKE.new_RandomWalkMetropolis__SWIG_1(), true) {
   }
 
+  /// <summary>Runs warmup (adapting the step size, and optionally the proposal covariance),        then num_samples draws.</summary>
+  /// <param name="log_posterior"> Log density up to a constant; only evaluate() is used.</param> 
+  /// <param name="initial_params"> Starting point.</param> 
+  /// <returns>Draws, acceptance rate, final step size and learned covariance.</returns>
   public RWMResult sample(ArbitraryFunction log_posterior, DVector initial_params) {
     RWMResult ret = new RWMResult(datamungePINVOKE.RandomWalkMetropolis_sample(swigCPtr, ArbitraryFunction.getCPtr(log_posterior), DVector.getCPtr(initial_params)), true);
     if (datamungePINVOKE.SWIGPendingException.Pending) throw datamungePINVOKE.SWIGPendingException.Retrieve();
+    return ret;
+  }
+
+  /// <summary>The options this RandomWalkMetropolis was configured with.</summary>
+  /// <returns>The stored options.</returns>
+  public RWMOptions options() {
+    RWMOptions ret = new RWMOptions(datamungePINVOKE.RandomWalkMetropolis_options(swigCPtr), false);
     return ret;
   }
 

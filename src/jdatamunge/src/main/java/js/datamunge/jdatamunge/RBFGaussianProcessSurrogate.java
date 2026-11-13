@@ -9,7 +9,28 @@
 package js.datamunge.jdatamunge;
 
 /**
- *  Vector-native RBF Gaussian-process surrogate with expected-improvement acquisition.
+ *  Exact Gaussian-process regression surrogate with the squared-exponential kernel<br>
+ *         (-x-x'^2/2^2) .
+
+ fit() Cholesky-factors \f$K+\sigma_n^2I=LL^\top once and solves for<br>
+ *   \alpha=(K+\sigma_n^2I)^{-1}(y-m); predict() then needs one forward substitution per point:<br>
+ *  mean +k_*^  and variance \f$s-\lVert L^{-1}k_*\rVert^2.<br>
+ * <br>
+ *  The two-argument constructor keeps the original fixed setup: zero prior mean, unit signal<br>
+ *  variance, no normalisation or fitting, expected improvement. The options constructor adds<br>
+ *  value normalisation, marginal-likelihood fitting of the hyperparameters and other acquisitions.<br>
+ *  The kernel is isotropic, so the inputs should be on comparable scales.<br>
+ * <br>
+ *  <p alt="Example"><br>
+ *  {@code 
+ dm::optim::RBFGaussianProcessSurrogate gp(1.0, 0.0);
+ gp.fit({{0.0}, {2.0}}, {1.0, -1.0});
+ const auto p = gp.predict({1.0});
+ std::print("{:.4f} {:.4f}\n", p.mean, p.sd);  // 0.0000 0.5933
+ }</p><br>
+ *  @see BayesianOptimization, expected_improvement() <p alt="References"><br>
+ *  - C. E. Rasmussen and C. K. I. Williams (2006). *Gaussian Processes for Machine Learning*,<br>
+ *    chapters 2 and 5. MIT Press.</p>
  */
 public class RBFGaussianProcessSurrogate extends BayesianSurrogate {
   private transient long swigCPtr;
@@ -51,24 +72,132 @@ public class RBFGaussianProcessSurrogate extends BayesianSurrogate {
     super.delete();
   }
 
+  /**
+   *  Fixed-hyperparameter surrogate with expected improvement.<br>
+   *  @param length_scale  Kernel length scale  \ell>0.<br>
+   *  @param noise         Noise variance added to the diagonal ( \ge0).<br>
+   *  @throws std::invalid_argument  If <code>length_scale</code> is not positive or <code>noise</code> is negative.
+   */
   public RBFGaussianProcessSurrogate(double length_scale, double noise) {
     this(datamungeJNI.new_RBFGaussianProcessSurrogate__SWIG_0(length_scale, noise), true);
   }
 
+  /**
+   *  Fixed-hyperparameter surrogate with expected improvement.<br>
+   *  @param length_scale  Kernel length scale  \ell>0.<br>
+   *  @throws std::invalid_argument  If <code>length_scale</code> is not positive or <code>noise</code> is negative.
+   */
   public RBFGaussianProcessSurrogate(double length_scale) {
     this(datamungeJNI.new_RBFGaussianProcessSurrogate__SWIG_1(length_scale), true);
   }
 
+  /**
+   *  Fixed-hyperparameter surrogate with expected improvement.<br>
+   *  @throws std::invalid_argument  If <code>length_scale</code> is not positive or <code>noise</code> is negative.
+   */
   public RBFGaussianProcessSurrogate() {
     this(datamungeJNI.new_RBFGaussianProcessSurrogate__SWIG_2(), true);
   }
 
+  /**
+   *  Fits the GP to the observations (refitting hyperparameters when configured).<br>
+   *  @param points  Training points, all of one dimension.<br>
+   *  @param values  Objective values.<br>
+   *  @throws std::invalid_argument  If the data are empty, mismatched or of mixed dimension.
+   */
   public void fit(DVectorVector points, DVector values) {
     datamungeJNI.RBFGaussianProcessSurrogate_fit(swigCPtr, this, DVectorVector.getCPtr(points), points, DVector.getCPtr(values), values);
   }
 
+  /**
+   *  The configured acquisition at <code>point</code>.<br>
+   *  @param point      Candidate point.<br>
+   *  @param incumbent  Smallest observed value.<br>
+   *  @return The acquisition value (0 before fitting).<br>
+   *  @throws std::invalid_argument  If <code>point</code> has the wrong dimension.
+   */
   public double acquisition(DVector point, double incumbent) {
     return datamungeJNI.RBFGaussianProcessSurrogate_acquisition(swigCPtr, this, DVector.getCPtr(point), point, incumbent);
+  }
+
+  /**
+   *  Posterior mean and standard deviation at <code>point</code>.<br>
+   *  @param point  Query point.<br>
+   *  @return The prediction, in the objective's units.<br>
+   *  @throws std::logic_error      Before fit().<br>
+   *  @throws std::invalid_argument  If <code>point</code> has the wrong dimension.
+   */
+  public SurrogatePrediction predict(DVector point) {
+    return new SurrogatePrediction(datamungeJNI.RBFGaussianProcessSurrogate_predict(swigCPtr, this, DVector.getCPtr(point), point), true);
+  }
+
+  /**
+   *  Log marginal likelihood of the values at the hyperparameters in use.<br>
+   * <br>
+   *  The density of the raw values under the GP with the prior mean (and scale, when<br>
+   *  normalising) treated as known, so it includes the  -n\log(\text{scale}) Jacobian.<br>
+   *  @return  \log p(y); 0 before fit().
+   */
+  public double log_marginal_likelihood() {
+    return datamungeJNI.RBFGaussianProcessSurrogate_log_marginal_likelihood(swigCPtr, this);
+  }
+
+  /**
+   *  The length scale in use (fitted, after fit(), when fitting is on).<br>
+   *  @return  \ell.
+   */
+  public double length_scale() {
+    return datamungeJNI.RBFGaussianProcessSurrogate_length_scale(swigCPtr, this);
+  }
+
+  /**
+   *  The noise variance in use, in normalised units when normalising.<br>
+   *  @return  \sigma_n^2.
+   */
+  public double noise() {
+    return datamungeJNI.RBFGaussianProcessSurrogate_noise(swigCPtr, this);
+  }
+
+  /**
+   *  The signal variance in use, in normalised units when normalising.<br>
+   *  @return  .
+  
+   */
+  public double signal_variance() {
+    return datamungeJNI.RBFGaussianProcessSurrogate_signal_variance(swigCPtr, this);
+  }
+
+  /**
+   *  The prior mean: the mean of the values when normalising, else 0.<br>
+   *  @return  .
+  
+   */
+  public double prior_mean() {
+    return datamungeJNI.RBFGaussianProcessSurrogate_prior_mean(swigCPtr, this);
+  }
+
+  /**
+   *  The value scale: the standard deviation of the values when normalising, else 1.<br>
+   *  @return The scale.
+   */
+  public double value_scale() {
+    return datamungeJNI.RBFGaussianProcessSurrogate_value_scale(swigCPtr, this);
+  }
+
+  /**
+   *  The training points from the last fit() (empty before fitting).<br>
+   *  @return The stored training points.
+   */
+  public DVectorVector points() {
+    return new DVectorVector(datamungeJNI.RBFGaussianProcessSurrogate_points(swigCPtr, this), false);
+  }
+
+  /**
+   *  The training values from the last fit() (empty before fitting).<br>
+   *  @return The stored training values.
+   */
+  public DVector values() {
+    return new DVector(datamungeJNI.RBFGaussianProcessSurrogate_values(swigCPtr, this), false);
   }
 
 }

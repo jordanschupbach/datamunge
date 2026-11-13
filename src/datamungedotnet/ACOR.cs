@@ -71,4 +71,11 @@ public class ACOR : global::System.IDisposable {
     return ret;
   }
 
+  /// <summary>The options this ACOR was configured with.</summary>
+  /// <returns>The stored options.</returns>
+  public ACOROptions options() {
+    ACOROptions ret = new ACOROptions(datamungePINVOKE.ACOR_options(swigCPtr), false);
+    return ret;
+  }
+
 }

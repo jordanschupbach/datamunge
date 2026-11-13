@@ -1,6 +1,6 @@
 *> Generalized linear models on iris: a logistic regression (versicolor vs. virginica)
 *> with its predicted-probability curve, then a Poisson regression for contrast.
-*> Run with `just run-cobol TARGET=glm_iris_ex`.
+*> CMD: just TARGET=glm_iris_ex run-cobol
 IDENTIFICATION DIVISION.
 PROGRAM-ID. GLM-IRIS-EX.
 DATA DIVISION.
@@ -53,9 +53,9 @@ COPY "datamunge.cpy".
 01 PL-MAX      USAGE COMP-2.
 
 PROCEDURE DIVISION.
-    CALL "dm_data_frame_iris" USING DM-DATA-FRAME-IRIS DM-STATUS
+    CALL "dm_data_iris" USING DM-DATA-IRIS DM-STATUS
     PERFORM CHECK
-    MOVE DM-DATA-FRAME-IRIS-RESULT TO IRIS
+    MOVE DM-DATA-IRIS-RESULT TO IRIS
     MOVE IRIS TO DM-DATA-FRAME-NROWS-SELF
     CALL "dm_data_frame_nrows" USING DM-DATA-FRAME-NROWS DM-STATUS
     PERFORM CHECK

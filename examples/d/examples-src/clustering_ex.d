@@ -1,3 +1,5 @@
+// CMD: just TARGET=clustering_ex run-d
+
 module app;
 
 import std.stdio : writeln;
@@ -43,7 +45,7 @@ void report_purity(int[] cluster_labels, string[] species, size_t n_clusters) {
 }
 
 void main() {
-  auto iris = DataFrame.iris();
+  auto iris = data_iris();
   auto n = iris.nrows();
   string[] species;
   for (size_t i = 0; i < n; i++) species ~= iris.string_at("Species", i);

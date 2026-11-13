@@ -1,3 +1,5 @@
+// CMD: just TARGET=dataframe_ex run-cpp
+
 #include <datamunge/dstruct/dstruct.hpp>
 #include <iostream>
 #include <optional>

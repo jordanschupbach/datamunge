@@ -1,3 +1,5 @@
+-- CMD: just TARGET=lmm_ex run-lua
+
 local dm = require("datamunge")
 
 local function dv(t)
@@ -12,7 +14,7 @@ local function gauss()
 end
 
 print("=================== Random intercept on a real dataset (penguins) ===================")
-local penguins = dm.DataFrame.penguins()
+local penguins = dm.data.penguins()
 local species_model = dm.LMM(penguins, "body_mass_g ~ flipper_length_mm + bill_length_mm + (1 | species)")
 species_model:print_summary()
 

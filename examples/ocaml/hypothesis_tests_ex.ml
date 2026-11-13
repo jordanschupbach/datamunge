@@ -1,3 +1,5 @@
+(* CMD: just TARGET=hypothesis_tests_ex run-ocaml *)
+
 open Swig
 open Datamunge
 
@@ -42,7 +44,7 @@ let column_for_species df column species =
   List.rev !out
 
 let () =
-  let iris = _DataFrame_iris C_void in
+  let iris = _data_iris C_void in
 
   let setosa_petal = column_for_species iris "Petal.Length" "setosa" in
   let versicolor_petal = column_for_species iris "Petal.Length" "versicolor" in

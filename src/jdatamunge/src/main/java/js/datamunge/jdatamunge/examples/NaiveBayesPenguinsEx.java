@@ -9,7 +9,7 @@ public class NaiveBayesPenguinsEx {
   }
 
   public static void run() {
-    var penguins = DataFrame.penguins();
+    var penguins = datamunge.data_penguins();
     System.out.println("penguins: " + penguins.nrows() + " rows x " + penguins.ncols() + " cols\n");
 
     var model = new NaiveBayesClassifier(penguins, "species ~ bill_length_mm + bill_depth_mm + island + sex");

@@ -9,6 +9,14 @@
 //------------------------------------------------------------------------------
 
 
+/// <summary>Configuration for GradientDescent; fields retain their documented native defaults. Supply finite values in the supported ranges. Controls are copied at construction; validation, stopping and loss scaling belong to optimize().</summary>
+/// Title: Example
+/// <code>      dm::optim::GradientDescentOptions o;
+///      std::print("{}\n",o.max_iterations); // 10000</code>
+///
+///
+///
+/// <seealso cref="GradientDescent"/>
 public class GradientDescentOptions : global::System.IDisposable {
   private global::System.Runtime.InteropServices.HandleRef swigCPtr;
   protected bool swigCMemOwn;
@@ -66,7 +74,6 @@ public class GradientDescentOptions : global::System.IDisposable {
     } 
   }
 
-  /// <summary>Classical momentum coefficient in [0, 1); 0 disables momentum (plain gradient descent).</summary>
   public double momentum {
     set {
       datamungePINVOKE.GradientDescentOptions_momentum_set(swigCPtr, value);
@@ -87,7 +94,6 @@ public class GradientDescentOptions : global::System.IDisposable {
     } 
   }
 
-  /// <summary>Stops when the gradient norm or the objective's per-iteration change drops below this.</summary>
   public double tolerance {
     set {
       datamungePINVOKE.GradientDescentOptions_tolerance_set(swigCPtr, value);

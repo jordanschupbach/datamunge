@@ -1,3 +1,5 @@
+% CMD: just TARGET=glm_iris_ex run-octave
+
 1;
 
 datamunge;
@@ -10,7 +12,7 @@ function v = dv(t)
   end
 endfunction
 
-iris = DataFrame_iris();
+iris = data_iris();
 
 % Logistic regression: versicolor vs virginica only -- setosa is perfectly separable from
 % the other two on these predictors, which sends logistic regression's coefficients toward

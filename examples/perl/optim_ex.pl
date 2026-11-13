@@ -1,3 +1,5 @@
+# CMD: just TARGET=optim_ex run-perl
+
 use strict;
 use warnings;
 
@@ -157,7 +159,7 @@ $value = Datamunge::LBFGS->new()->optimize($f, $x);
 print "f=$value x=[" . join(",", @{dv_to_array($x)}) . "] (true minimum: f=0 at [1, 1])\n";
 
 print "\n=================== DifferentiableSeparableFunction: SGD vs. closed-form LM ===================\n";
-my $iris = Datamunge::DataFrame::iris();
+my $iris = Datamunge::data_iris();
 my @sepal_length = map { $iris->numeric_at("Sepal.Length", $_) } (0 .. $iris->nrows() - 1);
 my @sepal_width = map { $iris->numeric_at("Sepal.Width", $_) } (0 .. $iris->nrows() - 1);
 my @petal_length = map { $iris->numeric_at("Petal.Length", $_) } (0 .. $iris->nrows() - 1);

@@ -237,8 +237,8 @@ public class GGPlot : global::System.IDisposable {
     return ret;
   }
 
-  public GGPlot scale_color_manual(SWIGTYPE_p_std__vectorT_datamunge__plot__RGB_t values) {
-    GGPlot ret = new GGPlot(datamungePINVOKE.GGPlot_scale_color_manual(swigCPtr, SWIGTYPE_p_std__vectorT_datamunge__plot__RGB_t.getCPtr(values)), false);
+  public GGPlot scale_color_manual(SWIGTYPE_p_std__vectorT_datamunge__graphics__RGB_t values) {
+    GGPlot ret = new GGPlot(datamungePINVOKE.GGPlot_scale_color_manual(swigCPtr, SWIGTYPE_p_std__vectorT_datamunge__graphics__RGB_t.getCPtr(values)), false);
     if (datamungePINVOKE.SWIGPendingException.Pending) throw datamungePINVOKE.SWIGPendingException.Retrieve();
     return ret;
   }
@@ -289,6 +289,83 @@ public class GGPlot : global::System.IDisposable {
 
   public void show() {
     datamungePINVOKE.GGPlot_show__SWIG_1(swigCPtr);
+  }
+
+  /// <summary>Number of data rows being plotted.</summary>
+  /// <returns>The row count of the frame passed to the constructor.</returns>
+  public int rows() {
+    int ret = datamungePINVOKE.GGPlot_rows(swigCPtr);
+    return ret;
+  }
+
+  /// <summary>The column mapped to x.</summary>
+  /// <returns>The x column name.</returns>
+  public string x_column() {
+    string ret = datamungePINVOKE.GGPlot_x_column(swigCPtr);
+    return ret;
+  }
+
+  /// <summary>The column mapped to y.</summary>
+  /// <returns>The y column name; empty when unmapped.</returns>
+  public string y_column() {
+    string ret = datamungePINVOKE.GGPlot_y_column(swigCPtr);
+    return ret;
+  }
+
+  /// <summary>The discrete color grouping column.</summary>
+  /// <returns>The color column name; empty when unmapped.</returns>
+  public string color_column() {
+    string ret = datamungePINVOKE.GGPlot_color_column(swigCPtr);
+    return ret;
+  }
+
+  /// <summary>Number of geom layers added so far.</summary>
+  /// <returns>The layer count.</returns>
+  public int layer_count() {
+    int ret = datamungePINVOKE.GGPlot_layer_count(swigCPtr);
+    return ret;
+  }
+
+  /// <summary>The geom of each layer in drawing order ("point", "line", "smooth", ...).</summary>
+  /// <returns>One name per layer.</returns>
+  public SVector layer_kinds() {
+    SVector ret = new SVector(datamungePINVOKE.GGPlot_layer_kinds(swigCPtr), true);
+    return ret;
+  }
+
+  /// <summary>The selected theme's name.</summary>
+  /// <returns>"gray" (the default), "minimal", "bw" or "classic".</returns>
+  public string theme_name() {
+    string ret = datamungePINVOKE.GGPlot_theme_name(swigCPtr);
+    return ret;
+  }
+
+  /// <summary>The facet_wrap() column.</summary>
+  /// <returns>The column name; empty when not faceted.</returns>
+  public string facet_column() {
+    string ret = datamungePINVOKE.GGPlot_facet_column(swigCPtr);
+    return ret;
+  }
+
+  /// <summary>The title set by labs().</summary>
+  /// <returns>The title; empty when unset.</returns>
+  public string title_text() {
+    string ret = datamungePINVOKE.GGPlot_title_text(swigCPtr);
+    return ret;
+  }
+
+  /// <summary>The x-axis label set by labs().</summary>
+  /// <returns>The label; empty when unset.</returns>
+  public string x_label() {
+    string ret = datamungePINVOKE.GGPlot_x_label(swigCPtr);
+    return ret;
+  }
+
+  /// <summary>The y-axis label set by labs().</summary>
+  /// <returns>The label; empty when unset.</returns>
+  public string y_label() {
+    string ret = datamungePINVOKE.GGPlot_y_label(swigCPtr);
+    return ret;
   }
 
 }

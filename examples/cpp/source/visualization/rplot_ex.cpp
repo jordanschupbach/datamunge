@@ -1,3 +1,5 @@
+// CMD: just TARGET=rplot_ex run-cpp
+
 // Demonstrates datamunge::graphics::RPlot / RLayout -- the R-base-graphics-style plotting library.
 #include <datamunge/datamunge.hpp>
 #include <datamunge/plot/plot.hpp>

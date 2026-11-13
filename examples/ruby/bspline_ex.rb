@@ -1,3 +1,5 @@
+# CMD: just TARGET=bspline_ex run-ruby
+
 require "octruby"
 
 # Fits a two-dimensional B-spline surface with the bs(x, y) formula term.

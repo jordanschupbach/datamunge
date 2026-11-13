@@ -1,3 +1,5 @@
+// CMD: just TARGET=mds_ex run-go
+
 package main
 
 import (
@@ -14,7 +16,7 @@ func svector(values []string) datamunge.SVector {
 }
 
 func main() {
-	iris := datamunge.DataFrameIris()
+	iris := datamunge.DataIris()
 	features := svector([]string{"Sepal.Length", "Sepal.Width", "Petal.Length", "Petal.Width"})
 
 	n := iris.Nrows()

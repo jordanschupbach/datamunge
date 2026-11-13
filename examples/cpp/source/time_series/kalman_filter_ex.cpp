@@ -1,3 +1,5 @@
+// CMD: just TARGET=kalman_filter_ex run-cpp
+
 #include <datamunge/filter/filter.hpp>
 
 #include <cmath>

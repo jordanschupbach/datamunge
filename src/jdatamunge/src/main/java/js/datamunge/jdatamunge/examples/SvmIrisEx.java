@@ -10,7 +10,7 @@ public class SvmIrisEx {
   }
 
   public static void run() {
-    var iris = DataFrame.iris();
+    var iris = datamunge.data_iris();
     System.out.println("iris: " + iris.nrows() + " rows x " + iris.ncols() + " cols\n");
 
     System.out.println("=== RBF kernel (default) ===");

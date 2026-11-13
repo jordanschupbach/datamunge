@@ -1,6 +1,8 @@
+// CMD: just TARGET=naive_bayes_penguins_ex run-javascript
+
 const datamunge = require("../../index.js");
 
-const penguins = datamunge.DataFrame.penguins();
+const penguins = datamunge.data.penguins();
 console.log(`penguins: ${penguins.nrows()} rows x ${penguins.ncols()} cols\n`);
 
 const model = new datamunge.NaiveBayesClassifier(penguins, "species ~ bill_length_mm + bill_depth_mm + island + sex");
@@ -22,7 +24,7 @@ for (let i = 0; i < n; i++) {
     !penguins.is_null("sex", i)
   ) {
     const actual = penguins.string_at("species", i);
-    const pred = predictions.get(i);
+    const pred = predictions[i];
     if (pred !== actual) {
       misclassified += 1;
       console.log(

@@ -1,4 +1,6 @@
 <?php
+// CMD: just TARGET=glmm_ex run-php
+
 
 function dvector($values) {
     $out = new DVector(count($values));
@@ -19,7 +21,7 @@ function randn() {
 }
 
 print("=================== Binomial (logistic) mixed model on a real dataset (penguins) ===================\n");
-$penguins = DataFrame::penguins();
+$penguins = data_penguins();
 $is_male = array();
 $body_mass = array();
 $island = array();

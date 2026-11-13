@@ -9,6 +9,7 @@
 //------------------------------------------------------------------------------
 
 
+/// <summary>Settings for BayesianOptimization.</summary>
 public class BayesianOptimizationOptions : global::System.IDisposable {
   private global::System.Runtime.InteropServices.HandleRef swigCPtr;
   protected bool swigCMemOwn;
@@ -56,6 +57,7 @@ public class BayesianOptimizationOptions : global::System.IDisposable {
     }
   }
 
+  /// <summary>Uniform random points evaluated before the surrogate is first fitted (at least 1).</summary>
   public uint initial_samples {
     set {
       datamungePINVOKE.BayesianOptimizationOptions_initial_samples_set(swigCPtr, value);
@@ -66,6 +68,7 @@ public class BayesianOptimizationOptions : global::System.IDisposable {
     } 
   }
 
+  /// <summary>Surrogate-guided evaluations after the initial design.</summary>
   public uint max_iterations {
     set {
       datamungePINVOKE.BayesianOptimizationOptions_max_iterations_set(swigCPtr, value);
@@ -76,12 +79,35 @@ public class BayesianOptimizationOptions : global::System.IDisposable {
     } 
   }
 
+  /// <summary>Seed of the random design and the candidate draws.</summary>
   public ulong seed {
     set {
       datamungePINVOKE.BayesianOptimizationOptions_seed_set(swigCPtr, value);
     } 
     get {
       ulong ret = datamungePINVOKE.BayesianOptimizationOptions_seed_get(swigCPtr);
+      return ret;
+    } 
+  }
+
+  /// <summary>Uniform random candidates scored by the acquisition function per iteration (at least 1).</summary>
+  public uint candidates {
+    set {
+      datamungePINVOKE.BayesianOptimizationOptions_candidates_set(swigCPtr, value);
+    } 
+    get {
+      uint ret = datamungePINVOKE.BayesianOptimizationOptions_candidates_get(swigCPtr);
+      return ret;
+    } 
+  }
+
+  /// <summary>Compass-search step halvings that polish the best candidate on the acquisition        surface; 0 keeps the best random candidate as it is.</summary>
+  public uint refine_iterations {
+    set {
+      datamungePINVOKE.BayesianOptimizationOptions_refine_iterations_set(swigCPtr, value);
+    } 
+    get {
+      uint ret = datamungePINVOKE.BayesianOptimizationOptions_refine_iterations_get(swigCPtr);
       return ret;
     } 
   }

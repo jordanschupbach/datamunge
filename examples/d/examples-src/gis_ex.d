@@ -1,3 +1,5 @@
+// CMD: just TARGET=gis_ex run-d
+
 module app;
 
 // Demonstrates datamunge.ShapeLayer: reading a shapefile (.shp geometry + .dbf attributes) and

@@ -9,6 +9,7 @@
 //------------------------------------------------------------------------------
 
 
+///  Settings for ImportanceSampling.
 public class ImportanceSamplingOptions : global::System.IDisposable {
   private global::System.Runtime.InteropServices.HandleRef swigCPtr;
   protected bool swigCMemOwn;
@@ -56,6 +57,7 @@ public class ImportanceSamplingOptions : global::System.IDisposable {
     }
   }
 
+  /// <summary>Number of proposal draws.</summary>
   public uint num_samples {
     set {
       datamungePINVOKE.ImportanceSamplingOptions_num_samples_set(swigCPtr, value);
@@ -66,6 +68,7 @@ public class ImportanceSamplingOptions : global::System.IDisposable {
     } 
   }
 
+  /// <summary>Random seed.</summary>
   public ulong seed {
     set {
       datamungePINVOKE.ImportanceSamplingOptions_seed_set(swigCPtr, value);

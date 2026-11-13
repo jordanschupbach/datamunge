@@ -1,3 +1,5 @@
+(* CMD: just TARGET=glm_iris_ex run-ocaml *)
+
 open Swig
 open Datamunge
 
@@ -7,7 +9,7 @@ let dv values =
   v
 
 let () =
-  let iris = _DataFrame_iris C_void in
+  let iris = _data_iris C_void in
   let n = get_int (invoke iris "nrows" C_void) in
 
   let is_virginica = ref [] and petal_length = ref [] and petal_width = ref [] in

@@ -1,3 +1,5 @@
+% CMD: just TARGET=naive_bayes_penguins_ex run-octave
+
 1;
 
 datamunge;
@@ -6,7 +8,7 @@ datamunge;
 % exposed on the SWIG-bound DataFrame facade) -- NaiveBayesClassifier drops incomplete rows
 % for its own formula columns internally when fitting, matching every other formula-based
 % model in this library.
-penguins = DataFrame_penguins();
+penguins = data_penguins();
 printf("penguins: %d rows x %d cols\n\n", DataFrame_nrows(penguins), DataFrame_ncols(penguins));
 
 % A mix of numeric (Gaussian likelihood) and categorical (frequency-table likelihood)

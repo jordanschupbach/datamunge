@@ -8,6 +8,17 @@
 
 package js.datamunge.jdatamunge;
 
+/**
+ *  Configuration for NesterovAcceleratedGradient; fields retain their documented native defaults.<br>
+ *  Supply finite values in the supported ranges. Controls are copied at construction;<br>
+ *  validation, stopping and loss scaling belong to optimize().<br>
+ *  <p alt="Example"><br>
+ *  {@code 
+ dm::optim::NesterovAcceleratedGradientOptions o;
+ std::print("{}\n",o.max_iterations); // 10000
+ }</p><br>
+ *  @see NesterovAcceleratedGradient
+ */
 public class NesterovAcceleratedGradientOptions {
   private transient long swigCPtr;
   protected transient boolean swigCMemOwn;
@@ -56,16 +67,10 @@ public class NesterovAcceleratedGradientOptions {
     return datamungeJNI.NesterovAcceleratedGradientOptions_step_size_get(swigCPtr, this);
   }
 
-  /**
-   *  Momentum coefficient in [0, 1), typically 0.9.
-   */
   public void setMomentum(double value) {
     datamungeJNI.NesterovAcceleratedGradientOptions_momentum_set(swigCPtr, this, value);
   }
 
-  /**
-   *  Momentum coefficient in [0, 1), typically 0.9.
-   */
   public double getMomentum() {
     return datamungeJNI.NesterovAcceleratedGradientOptions_momentum_get(swigCPtr, this);
   }

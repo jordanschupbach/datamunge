@@ -1512,7 +1512,7 @@ template<> struct Value<datamunge::Vector<double>> {
 };
 } }
 namespace ROSETTA_LUA_MODULE {
-int rosetta_lua_16(lua_State* L) {
+int rosetta_lua_3(lua_State* L) {
     return rosetta_lua::boundary(L, [&]() -> int {
         const int top = lua_gettop(L);
         for (int pass = 1; pass < 2; ++pass) {
@@ -1520,25 +1520,55 @@ int rosetta_lua_16(lua_State* L) {
             {
                 const int raw = top - 0;
                 int given = raw; while (given > 0 && lua_isnil(L, 0 + given)) --given;
-                const int n = std::max(given, 3); (void)n;
-                if (raw >= 3 && given <= 3) {
-                    if (n == 3) {
+                const int n = std::max(given, 7); (void)n;
+                if (raw >= 7 && given <= 7) {
+                    if (n == 7) {
+                        rosetta_lua::converting() = "argument 'f'";
+                        rosetta_lua::Param<const datamunge::algebra::Expr &> p0(L, 1);
+                        rosetta_lua::converting() = "argument 'var'";
+                        rosetta_lua::Param<const std::__cxx11::basic_string<char> &> p1(L, 2);
+                        rosetta_lua::converting() = "argument 'a'";
+                        rosetta_lua::Param<double> p2(L, 3);
+                        rosetta_lua::converting() = "argument 'b'";
+                        rosetta_lua::Param<double> p3(L, 4);
+                        rosetta_lua::converting() = "argument 'whole'";
+                        rosetta_lua::Param<double> p4(L, 5);
+                        rosetta_lua::converting() = "argument 'tol'";
+                        rosetta_lua::Param<double> p5(L, 6);
+                        rosetta_lua::converting() = "argument 'depth'";
+                        rosetta_lua::Param<int> p6(L, 7);
+                        rosetta_lua::converting() = nullptr;
+                        return rosetta_lua::call(L, [&]() -> decltype(auto) { return ::datamunge::algebra::detail::adaptive_simpson_recurse(p0.get(), p1.get(), p2.get(), p3.get(), p4.get(), p5.get(), p6.get()); }, 0, rosetta_lua::Return::automatic);
+                    }
+                }
+            }
+        }
+        rosetta_lua::no_overload(L, "adaptive_simpson_recurse", "    adaptive_simpson_recurse(f: datamunge.Expr, var: string, a: number, b: number, whole: number, tol: number, depth: integer): number\n", 1);
+    });
+}
+int rosetta_lua_13(lua_State* L) {
+    return rosetta_lua::boundary(L, [&]() -> int {
+        const int top = lua_gettop(L);
+        for (int pass = 1; pass < 2; ++pass) {
+            const bool strict = pass == 0; (void)strict;
+            {
+                const int raw = top - 0;
+                int given = raw; while (given > 0 && lua_isnil(L, 0 + given)) --given;
+                const int n = std::max(given, 1); (void)n;
+                if (raw >= 1 && given <= 1) {
+                    if (n == 1) {
                         rosetta_lua::converting() = "argument 'p'";
                         rosetta_lua::Param<const datamunge::algebra::Polynomial &> p0(L, 1);
-                        rosetta_lua::converting() = "argument 'a'";
-                        rosetta_lua::Param<double> p1(L, 2);
-                        rosetta_lua::converting() = "argument 'b'";
-                        rosetta_lua::Param<double> p2(L, 3);
                         rosetta_lua::converting() = nullptr;
-                        return rosetta_lua::call(L, [&]() -> decltype(auto) { return ::datamunge::algebra::sturm_root_count(p0.get(), p1.get(), p2.get()); }, 0, rosetta_lua::Return::automatic);
+                        return rosetta_lua::call(L, [&]() -> decltype(auto) { return ::datamunge::algebra::sturm_sequence(p0.get()); }, 0, rosetta_lua::Return::automatic);
                     }
                 }
             }
         }
-        rosetta_lua::no_overload(L, "sturm_root_count", "    sturm_root_count(p: datamunge.Polynomial, a: number, b: number): integer\n", 1);
+        rosetta_lua::no_overload(L, "sturm_sequence", "    sturm_sequence(p: datamunge.Polynomial): datamunge.Polynomial[]\n", 1);
     });
 }
-int rosetta_lua_24(lua_State* L) {
+int rosetta_lua_23(lua_State* L) {
     return rosetta_lua::boundary(L, [&]() -> int {
         const int top = lua_gettop(L);
         for (int pass = 1; pass < 2; ++pass) {
@@ -1546,21 +1576,23 @@ int rosetta_lua_24(lua_State* L) {
             {
                 const int raw = top - 0;
                 int given = raw; while (given > 0 && lua_isnil(L, 0 + given)) --given;
-                const int n = std::max(given, 1); (void)n;
-                if (raw >= 1 && given <= 1) {
-                    if (n == 1) {
+                const int n = std::max(given, 2); (void)n;
+                if (raw >= 2 && given <= 2) {
+                    if (n == 2) {
                         rosetta_lua::converting() = "argument 'a'";
                         rosetta_lua::Param<datamunge::algebra::detail::Cplx> p0(L, 1);
+                        rosetta_lua::converting() = "argument 'b'";
+                        rosetta_lua::Param<datamunge::algebra::detail::Cplx> p1(L, 2);
                         rosetta_lua::converting() = nullptr;
-                        return rosetta_lua::call(L, [&]() -> decltype(auto) { return ::datamunge::algebra::detail::c_abs(p0.get()); }, 0, rosetta_lua::Return::automatic);
+                        return rosetta_lua::call(L, [&]() -> decltype(auto) { return ::datamunge::algebra::detail::c_div(p0.get(), p1.get()); }, 0, rosetta_lua::Return::automatic);
                     }
                 }
             }
         }
-        rosetta_lua::no_overload(L, "c_abs", "    c_abs(a: datamunge.Cplx): number\n", 1);
+        rosetta_lua::no_overload(L, "c_div", "    c_div(a: datamunge.Cplx, b: datamunge.Cplx): datamunge.Cplx\n", 1);
     });
 }
-int rosetta_lua_62(lua_State* L) {
+int rosetta_lua_28(lua_State* L) {
     return rosetta_lua::boundary(L, [&]() -> int {
         const int top = lua_gettop(L);
         for (int pass = 1; pass < 2; ++pass) {
@@ -1571,40 +1603,18 @@ int rosetta_lua_62(lua_State* L) {
                 const int n = std::max(given, 1); (void)n;
                 if (raw >= 1 && given <= 1) {
                     if (n == 1) {
-                        rosetta_lua::converting() = "argument 'src'";
-                        rosetta_lua::Param<const datamunge::image::Image &> p0(L, 1);
+                        rosetta_lua::converting() = "argument 'p'";
+                        rosetta_lua::Param<const datamunge::algebra::Polynomial &> p0(L, 1);
                         rosetta_lua::converting() = nullptr;
-                        return rosetta_lua::call(L, [&]() -> decltype(auto) { return ::datamunge::image::to_grayscale(p0.get()); }, 0, rosetta_lua::Return::automatic);
+                        return rosetta_lua::call(L, [&]() -> decltype(auto) { return ::datamunge::algebra::square_free_factorization(p0.get()); }, 0, rosetta_lua::Return::automatic);
                     }
                 }
             }
         }
-        rosetta_lua::no_overload(L, "to_grayscale", "    to_grayscale(src: datamunge.Image): datamunge.Image\n", 1);
+        rosetta_lua::no_overload(L, "square_free_factorization", "    square_free_factorization(p: datamunge.Polynomial): datamunge.SquareFreeFactor[]\n", 1);
     });
 }
-int rosetta_lua_66(lua_State* L) {
-    return rosetta_lua::boundary(L, [&]() -> int {
-        const int top = lua_gettop(L);
-        for (int pass = 1; pass < 2; ++pass) {
-            const bool strict = pass == 0; (void)strict;
-            {
-                const int raw = top - 0;
-                int given = raw; while (given > 0 && lua_isnil(L, 0 + given)) --given;
-                const int n = std::max(given, 1); (void)n;
-                if (raw >= 1 && given <= 1) {
-                    if (n == 1) {
-                        rosetta_lua::converting() = "argument 'planes'";
-                        rosetta_lua::Param<const std::vector<datamunge::image::Image> &> p0(L, 1);
-                        rosetta_lua::converting() = nullptr;
-                        return rosetta_lua::call(L, [&]() -> decltype(auto) { return ::datamunge::image::merge_channels(p0.get()); }, 0, rosetta_lua::Return::automatic);
-                    }
-                }
-            }
-        }
-        rosetta_lua::no_overload(L, "merge_channels", "    merge_channels(planes: datamunge.Image[]): datamunge.Image\n", 1);
-    });
-}
-int rosetta_lua_68(lua_State* L) {
+int rosetta_lua_37(lua_State* L) {
     return rosetta_lua::boundary(L, [&]() -> int {
         const int top = lua_gettop(L);
         for (int pass = 1; pass < 2; ++pass) {
@@ -1615,476 +1625,20 @@ int rosetta_lua_68(lua_State* L) {
                 const int n = std::max(given, 2); (void)n;
                 if (raw >= 2 && given <= 2) {
                     if (n == 2) {
-                        rosetta_lua::converting() = "argument 'img'";
-                        rosetta_lua::Param<const datamunge::image::Image &> p0(L, 1);
-                        rosetta_lua::converting() = "argument 'sigma'";
-                        rosetta_lua::Param<double> p1(L, 2);
+                        rosetta_lua::converting() = "argument 'generators'";
+                        rosetta_lua::Param<std::vector<datamunge::algebra::MultivariatePolynomial>> p0(L, 1);
+                        rosetta_lua::converting() = "argument 'order'";
+                        rosetta_lua::Param<datamunge::algebra::MonomialOrder> p1(L, 2);
                         rosetta_lua::converting() = nullptr;
-                        return rosetta_lua::call(L, [&]() -> decltype(auto) { return ::datamunge::cv::detail::structure_tensor(p0.get(), p1.get()); }, 0, rosetta_lua::Return::automatic);
+                        return rosetta_lua::call(L, [&]() -> decltype(auto) { return ::datamunge::algebra::groebner_basis(p0.get(), p1.get()); }, 0, rosetta_lua::Return::automatic);
                     }
                 }
             }
         }
-        rosetta_lua::no_overload(L, "structure_tensor", "    structure_tensor(img: datamunge.Image, sigma: number): datamunge.StructureTensorField\n", 1);
+        rosetta_lua::no_overload(L, "groebner_basis", "    groebner_basis(generators: datamunge.MultivariatePolynomial[], order: datamunge.MonomialOrder): datamunge.MultivariatePolynomial[]\n", 1);
     });
 }
-int rosetta_lua_70(lua_State* L) {
-    return rosetta_lua::boundary(L, [&]() -> int {
-        const int top = lua_gettop(L);
-        for (int pass = 1; pass < 2; ++pass) {
-            const bool strict = pass == 0; (void)strict;
-            {
-                const int raw = top - 0;
-                int given = raw; while (given > 0 && lua_isnil(L, 0 + given)) --given;
-                const int n = std::max(given, 1); (void)n;
-                if (raw >= 1 && given <= 5) {
-                    if (n == 1) {
-                        rosetta_lua::converting() = "argument 'img'";
-                        rosetta_lua::Param<const datamunge::image::Image &> p0(L, 1);
-                        rosetta_lua::converting() = nullptr;
-                        return rosetta_lua::call(L, [&]() -> decltype(auto) { return ::datamunge::cv::harris_corners(p0.get()); }, 0, rosetta_lua::Return::automatic);
-                    }
-                    if (n == 2) {
-                        rosetta_lua::converting() = "argument 'img'";
-                        rosetta_lua::Param<const datamunge::image::Image &> p0(L, 1);
-                        rosetta_lua::converting() = "argument 'k'";
-                        rosetta_lua::Param<double> p1(L, 2);
-                        rosetta_lua::converting() = nullptr;
-                        return rosetta_lua::call(L, [&]() -> decltype(auto) { return ::datamunge::cv::harris_corners(p0.get(), p1.get()); }, 0, rosetta_lua::Return::automatic);
-                    }
-                    if (n == 3) {
-                        rosetta_lua::converting() = "argument 'img'";
-                        rosetta_lua::Param<const datamunge::image::Image &> p0(L, 1);
-                        rosetta_lua::converting() = "argument 'k'";
-                        rosetta_lua::Param<double> p1(L, 2);
-                        rosetta_lua::converting() = "argument 'sigma'";
-                        rosetta_lua::Param<double> p2(L, 3);
-                        rosetta_lua::converting() = nullptr;
-                        return rosetta_lua::call(L, [&]() -> decltype(auto) { return ::datamunge::cv::harris_corners(p0.get(), p1.get(), p2.get()); }, 0, rosetta_lua::Return::automatic);
-                    }
-                    if (n == 4) {
-                        rosetta_lua::converting() = "argument 'img'";
-                        rosetta_lua::Param<const datamunge::image::Image &> p0(L, 1);
-                        rosetta_lua::converting() = "argument 'k'";
-                        rosetta_lua::Param<double> p1(L, 2);
-                        rosetta_lua::converting() = "argument 'sigma'";
-                        rosetta_lua::Param<double> p2(L, 3);
-                        rosetta_lua::converting() = "argument 'threshold_ratio'";
-                        rosetta_lua::Param<double> p3(L, 4);
-                        rosetta_lua::converting() = nullptr;
-                        return rosetta_lua::call(L, [&]() -> decltype(auto) { return ::datamunge::cv::harris_corners(p0.get(), p1.get(), p2.get(), p3.get()); }, 0, rosetta_lua::Return::automatic);
-                    }
-                    if (n == 5) {
-                        rosetta_lua::converting() = "argument 'img'";
-                        rosetta_lua::Param<const datamunge::image::Image &> p0(L, 1);
-                        rosetta_lua::converting() = "argument 'k'";
-                        rosetta_lua::Param<double> p1(L, 2);
-                        rosetta_lua::converting() = "argument 'sigma'";
-                        rosetta_lua::Param<double> p2(L, 3);
-                        rosetta_lua::converting() = "argument 'threshold_ratio'";
-                        rosetta_lua::Param<double> p3(L, 4);
-                        rosetta_lua::converting() = "argument 'nms_radius'";
-                        rosetta_lua::Param<int> p4(L, 5);
-                        rosetta_lua::converting() = nullptr;
-                        return rosetta_lua::call(L, [&]() -> decltype(auto) { return ::datamunge::cv::harris_corners(p0.get(), p1.get(), p2.get(), p3.get(), p4.get()); }, 0, rosetta_lua::Return::automatic);
-                    }
-                }
-            }
-        }
-        rosetta_lua::no_overload(L, "harris_corners", "    harris_corners(img: datamunge.Image, k\?: number, sigma\?: number, threshold_ratio\?: number, nms_radius\?: integer): datamunge.Corner[]\n", 1);
-    });
-}
-int rosetta_lua_86(lua_State* L) {
-    return rosetta_lua::boundary(L, [&]() -> int {
-        const int top = lua_gettop(L);
-        for (int pass = 1; pass < 2; ++pass) {
-            const bool strict = pass == 0; (void)strict;
-            {
-                const int raw = top - 0;
-                int given = raw; while (given > 0 && lua_isnil(L, 0 + given)) --given;
-                const int n = std::max(given, 2); (void)n;
-                if (raw >= 2 && given <= 2) {
-                    if (n == 2) {
-                        rosetta_lua::converting() = "argument 'src'";
-                        rosetta_lua::Param<const datamunge::image::Image &> p0(L, 1);
-                        rosetta_lua::converting() = "argument 'radius'";
-                        rosetta_lua::Param<int> p1(L, 2);
-                        rosetta_lua::converting() = nullptr;
-                        return rosetta_lua::call(L, [&]() -> decltype(auto) { return ::datamunge::image::box_blur(p0.get(), p1.get()); }, 0, rosetta_lua::Return::automatic);
-                    }
-                }
-            }
-        }
-        rosetta_lua::no_overload(L, "box_blur", "    box_blur(src: datamunge.Image, radius: integer): datamunge.Image\n", 1);
-    });
-}
-int rosetta_lua_87(lua_State* L) {
-    return rosetta_lua::boundary(L, [&]() -> int {
-        const int top = lua_gettop(L);
-        for (int pass = 1; pass < 2; ++pass) {
-            const bool strict = pass == 0; (void)strict;
-            {
-                const int raw = top - 0;
-                int given = raw; while (given > 0 && lua_isnil(L, 0 + given)) --given;
-                const int n = std::max(given, 2); (void)n;
-                if (raw >= 2 && given <= 2) {
-                    if (n == 2) {
-                        rosetta_lua::converting() = "argument 'src'";
-                        rosetta_lua::Param<const datamunge::image::Image &> p0(L, 1);
-                        rosetta_lua::converting() = "argument 'sigma'";
-                        rosetta_lua::Param<double> p1(L, 2);
-                        rosetta_lua::converting() = nullptr;
-                        return rosetta_lua::call(L, [&]() -> decltype(auto) { return ::datamunge::image::gaussian_blur(p0.get(), p1.get()); }, 0, rosetta_lua::Return::automatic);
-                    }
-                }
-            }
-        }
-        rosetta_lua::no_overload(L, "gaussian_blur", "    gaussian_blur(src: datamunge.Image, sigma: number): datamunge.Image\n", 1);
-    });
-}
-int rosetta_lua_88(lua_State* L) {
-    return rosetta_lua::boundary(L, [&]() -> int {
-        const int top = lua_gettop(L);
-        for (int pass = 1; pass < 2; ++pass) {
-            const bool strict = pass == 0; (void)strict;
-            {
-                const int raw = top - 0;
-                int given = raw; while (given > 0 && lua_isnil(L, 0 + given)) --given;
-                const int n = std::max(given, 1); (void)n;
-                if (raw >= 1 && given <= 2) {
-                    if (n == 1) {
-                        rosetta_lua::converting() = "argument 'src'";
-                        rosetta_lua::Param<const datamunge::image::Image &> p0(L, 1);
-                        rosetta_lua::converting() = nullptr;
-                        return rosetta_lua::call(L, [&]() -> decltype(auto) { return ::datamunge::image::sharpen(p0.get()); }, 0, rosetta_lua::Return::automatic);
-                    }
-                    if (n == 2) {
-                        rosetta_lua::converting() = "argument 'src'";
-                        rosetta_lua::Param<const datamunge::image::Image &> p0(L, 1);
-                        rosetta_lua::converting() = "argument 'amount'";
-                        rosetta_lua::Param<double> p1(L, 2);
-                        rosetta_lua::converting() = nullptr;
-                        return rosetta_lua::call(L, [&]() -> decltype(auto) { return ::datamunge::image::sharpen(p0.get(), p1.get()); }, 0, rosetta_lua::Return::automatic);
-                    }
-                }
-            }
-        }
-        rosetta_lua::no_overload(L, "sharpen", "    sharpen(src: datamunge.Image, amount\?: number): datamunge.Image\n", 1);
-    });
-}
-int rosetta_lua_95(lua_State* L) {
-    return rosetta_lua::boundary(L, [&]() -> int {
-        const int top = lua_gettop(L);
-        for (int pass = 1; pass < 2; ++pass) {
-            const bool strict = pass == 0; (void)strict;
-            {
-                const int raw = top - 0;
-                int given = raw; while (given > 0 && lua_isnil(L, 0 + given)) --given;
-                const int n = std::max(given, 3); (void)n;
-                if (raw >= 3 && given <= 4) {
-                    if (n == 3) {
-                        rosetta_lua::converting() = "argument 'src'";
-                        rosetta_lua::Param<const datamunge::image::Image &> p0(L, 1);
-                        rosetta_lua::converting() = "argument 'new_width'";
-                        rosetta_lua::Param<int> p1(L, 2);
-                        rosetta_lua::converting() = "argument 'new_height'";
-                        rosetta_lua::Param<int> p2(L, 3);
-                        rosetta_lua::converting() = nullptr;
-                        return rosetta_lua::call(L, [&]() -> decltype(auto) { return ::datamunge::image::resize(p0.get(), p1.get(), p2.get()); }, 0, rosetta_lua::Return::automatic);
-                    }
-                    if (n == 4) {
-                        rosetta_lua::converting() = "argument 'src'";
-                        rosetta_lua::Param<const datamunge::image::Image &> p0(L, 1);
-                        rosetta_lua::converting() = "argument 'new_width'";
-                        rosetta_lua::Param<int> p1(L, 2);
-                        rosetta_lua::converting() = "argument 'new_height'";
-                        rosetta_lua::Param<int> p2(L, 3);
-                        rosetta_lua::converting() = "argument 'filter'";
-                        rosetta_lua::Param<datamunge::image::ResampleFilter> p3(L, 4);
-                        rosetta_lua::converting() = nullptr;
-                        return rosetta_lua::call(L, [&]() -> decltype(auto) { return ::datamunge::image::resize(p0.get(), p1.get(), p2.get(), p3.get()); }, 0, rosetta_lua::Return::automatic);
-                    }
-                }
-            }
-        }
-        rosetta_lua::no_overload(L, "resize", "    resize(src: datamunge.Image, new_width: integer, new_height: integer, filter\?: datamunge.ResampleFilter): datamunge.Image\n", 1);
-    });
-}
-int rosetta_lua_126(lua_State* L) {
-    return rosetta_lua::boundary(L, [&]() -> int {
-        const int top = lua_gettop(L);
-        for (int pass = 1; pass < 2; ++pass) {
-            const bool strict = pass == 0; (void)strict;
-            {
-                const int raw = top - 0;
-                int given = raw; while (given > 0 && lua_isnil(L, 0 + given)) --given;
-                const int n = std::max(given, 1); (void)n;
-                if (raw >= 1 && given <= 2) {
-                    if (n == 1) {
-                        rosetta_lua::converting() = "argument 'points'";
-                        rosetta_lua::Param<const std::vector<datamunge::geometry::Point2D> &> p0(L, 1);
-                        rosetta_lua::converting() = nullptr;
-                        return rosetta_lua::call(L, [&]() -> decltype(auto) { return ::datamunge::geometry::convex_hull_trace(p0.get()); }, 0, rosetta_lua::Return::automatic);
-                    }
-                    if (n == 2) {
-                        rosetta_lua::converting() = "argument 'points'";
-                        rosetta_lua::Param<const std::vector<datamunge::geometry::Point2D> &> p0(L, 1);
-                        rosetta_lua::converting() = "argument 'options'";
-                        rosetta_lua::Param<datamunge::geometry::ConvexHullOptions> p1(L, 2);
-                        rosetta_lua::converting() = nullptr;
-                        return rosetta_lua::call(L, [&]() -> decltype(auto) { return ::datamunge::geometry::convex_hull_trace(p0.get(), p1.get()); }, 0, rosetta_lua::Return::automatic);
-                    }
-                }
-            }
-        }
-        rosetta_lua::no_overload(L, "convex_hull_trace", "    convex_hull_trace(points: datamunge.Point2D[], options\?: datamunge.ConvexHullOptions): datamunge.ConvexHullTrace\n", 1);
-    });
-}
-int rosetta_lua_131(lua_State* L) {
-    return rosetta_lua::boundary(L, [&]() -> int {
-        const int top = lua_gettop(L);
-        for (int pass = 1; pass < 2; ++pass) {
-            const bool strict = pass == 0; (void)strict;
-            {
-                const int raw = top - 0;
-                int given = raw; while (given > 0 && lua_isnil(L, 0 + given)) --given;
-                const int n = std::max(given, 1); (void)n;
-                if (raw >= 1 && given <= 4) {
-                    if (n == 1) {
-                        rosetta_lua::converting() = "argument 'values'";
-                        rosetta_lua::Param<const std::vector<double> &> p0(L, 1);
-                        rosetta_lua::converting() = nullptr;
-                        return rosetta_lua::call(L, [&]() -> decltype(auto) { return ::datamunge::graphics::value_colors(p0.get()); }, 0, rosetta_lua::Return::automatic);
-                    }
-                    if (n == 2) {
-                        rosetta_lua::converting() = "argument 'values'";
-                        rosetta_lua::Param<const std::vector<double> &> p0(L, 1);
-                        rosetta_lua::converting() = "argument 'palette'";
-                        rosetta_lua::Param<std::vector<datamunge::graphics::RGB>> p1(L, 2);
-                        rosetta_lua::converting() = nullptr;
-                        return rosetta_lua::call(L, [&]() -> decltype(auto) { return ::datamunge::graphics::value_colors(p0.get(), p1.get()); }, 0, rosetta_lua::Return::automatic);
-                    }
-                    if (n == 3) {
-                        rosetta_lua::converting() = "argument 'values'";
-                        rosetta_lua::Param<const std::vector<double> &> p0(L, 1);
-                        rosetta_lua::converting() = "argument 'palette'";
-                        rosetta_lua::Param<std::vector<datamunge::graphics::RGB>> p1(L, 2);
-                        rosetta_lua::converting() = "argument 'z_min'";
-                        rosetta_lua::Param<double> p2(L, 3);
-                        rosetta_lua::converting() = nullptr;
-                        return rosetta_lua::call(L, [&]() -> decltype(auto) { return ::datamunge::graphics::value_colors(p0.get(), p1.get(), p2.get()); }, 0, rosetta_lua::Return::automatic);
-                    }
-                    if (n == 4) {
-                        rosetta_lua::converting() = "argument 'values'";
-                        rosetta_lua::Param<const std::vector<double> &> p0(L, 1);
-                        rosetta_lua::converting() = "argument 'palette'";
-                        rosetta_lua::Param<std::vector<datamunge::graphics::RGB>> p1(L, 2);
-                        rosetta_lua::converting() = "argument 'z_min'";
-                        rosetta_lua::Param<double> p2(L, 3);
-                        rosetta_lua::converting() = "argument 'z_max'";
-                        rosetta_lua::Param<double> p3(L, 4);
-                        rosetta_lua::converting() = nullptr;
-                        return rosetta_lua::call(L, [&]() -> decltype(auto) { return ::datamunge::graphics::value_colors(p0.get(), p1.get(), p2.get(), p3.get()); }, 0, rosetta_lua::Return::automatic);
-                    }
-                }
-            }
-        }
-        rosetta_lua::no_overload(L, "value_colors", "    value_colors(values: number[], palette\?: datamunge.RGB[], z_min\?: number, z_max\?: number): datamunge.RGB[]\n", 1);
-    });
-}
-int rosetta_lua_142(lua_State* L) {
-    return rosetta_lua::boundary(L, [&]() -> int {
-        const int top = lua_gettop(L);
-        for (int pass = 1; pass < 2; ++pass) {
-            const bool strict = pass == 0; (void)strict;
-            {
-                const int raw = top - 0;
-                int given = raw; while (given > 0 && lua_isnil(L, 0 + given)) --given;
-                const int n = std::max(given, 2); (void)n;
-                if (raw >= 2 && given <= 2) {
-                    if (n == 2) {
-                        rosetta_lua::converting() = "argument 'circle'";
-                        rosetta_lua::Param<const datamunge::geometry::Circle &> p0(L, 1);
-                        rosetta_lua::converting() = "argument 'p'";
-                        rosetta_lua::Param<const datamunge::geometry::Point2D &> p1(L, 2);
-                        rosetta_lua::converting() = nullptr;
-                        return rosetta_lua::call(L, [&]() -> decltype(auto) { return ::datamunge::geometry::detail::circle_contains(p0.get(), p1.get()); }, 0, rosetta_lua::Return::automatic);
-                    }
-                }
-            }
-        }
-        rosetta_lua::no_overload(L, "circle_contains", "    circle_contains(circle: datamunge.Circle, p: datamunge.Point2D): boolean\n", 1);
-    });
-}
-int rosetta_lua_197(lua_State* L) {
-    return rosetta_lua::boundary(L, [&]() -> int {
-        const int top = lua_gettop(L);
-        for (int pass = 1; pass < 2; ++pass) {
-            const bool strict = pass == 0; (void)strict;
-            {
-                const int raw = top - 0;
-                int given = raw; while (given > 0 && lua_isnil(L, 0 + given)) --given;
-                const int n = std::max(given, 2); (void)n;
-                if (raw >= 2 && given <= 6) {
-                    if (n == 2) {
-                        rosetta_lua::converting() = "argument 'successes'";
-                        rosetta_lua::Param<unsigned long> p0(L, 1);
-                        rosetta_lua::converting() = "argument 'n'";
-                        rosetta_lua::Param<unsigned long> p1(L, 2);
-                        rosetta_lua::converting() = nullptr;
-                        return rosetta_lua::call(L, [&]() -> decltype(auto) { return ::datamunge::stats::proportion_test_one_sample(p0.get(), p1.get()); }, 0, rosetta_lua::Return::automatic);
-                    }
-                    if (n == 3) {
-                        rosetta_lua::converting() = "argument 'successes'";
-                        rosetta_lua::Param<unsigned long> p0(L, 1);
-                        rosetta_lua::converting() = "argument 'n'";
-                        rosetta_lua::Param<unsigned long> p1(L, 2);
-                        rosetta_lua::converting() = "argument 'p'";
-                        rosetta_lua::Param<double> p2(L, 3);
-                        rosetta_lua::converting() = nullptr;
-                        return rosetta_lua::call(L, [&]() -> decltype(auto) { return ::datamunge::stats::proportion_test_one_sample(p0.get(), p1.get(), p2.get()); }, 0, rosetta_lua::Return::automatic);
-                    }
-                    if (n == 4) {
-                        rosetta_lua::converting() = "argument 'successes'";
-                        rosetta_lua::Param<unsigned long> p0(L, 1);
-                        rosetta_lua::converting() = "argument 'n'";
-                        rosetta_lua::Param<unsigned long> p1(L, 2);
-                        rosetta_lua::converting() = "argument 'p'";
-                        rosetta_lua::Param<double> p2(L, 3);
-                        rosetta_lua::converting() = "argument 'alternative'";
-                        rosetta_lua::Param<datamunge::stats::Alternative> p3(L, 4);
-                        rosetta_lua::converting() = nullptr;
-                        return rosetta_lua::call(L, [&]() -> decltype(auto) { return ::datamunge::stats::proportion_test_one_sample(p0.get(), p1.get(), p2.get(), p3.get()); }, 0, rosetta_lua::Return::automatic);
-                    }
-                    if (n == 5) {
-                        rosetta_lua::converting() = "argument 'successes'";
-                        rosetta_lua::Param<unsigned long> p0(L, 1);
-                        rosetta_lua::converting() = "argument 'n'";
-                        rosetta_lua::Param<unsigned long> p1(L, 2);
-                        rosetta_lua::converting() = "argument 'p'";
-                        rosetta_lua::Param<double> p2(L, 3);
-                        rosetta_lua::converting() = "argument 'alternative'";
-                        rosetta_lua::Param<datamunge::stats::Alternative> p3(L, 4);
-                        rosetta_lua::converting() = "argument 'correct'";
-                        rosetta_lua::Param<bool> p4(L, 5);
-                        rosetta_lua::converting() = nullptr;
-                        return rosetta_lua::call(L, [&]() -> decltype(auto) { return ::datamunge::stats::proportion_test_one_sample(p0.get(), p1.get(), p2.get(), p3.get(), p4.get()); }, 0, rosetta_lua::Return::automatic);
-                    }
-                    if (n == 6) {
-                        rosetta_lua::converting() = "argument 'successes'";
-                        rosetta_lua::Param<unsigned long> p0(L, 1);
-                        rosetta_lua::converting() = "argument 'n'";
-                        rosetta_lua::Param<unsigned long> p1(L, 2);
-                        rosetta_lua::converting() = "argument 'p'";
-                        rosetta_lua::Param<double> p2(L, 3);
-                        rosetta_lua::converting() = "argument 'alternative'";
-                        rosetta_lua::Param<datamunge::stats::Alternative> p3(L, 4);
-                        rosetta_lua::converting() = "argument 'correct'";
-                        rosetta_lua::Param<bool> p4(L, 5);
-                        rosetta_lua::converting() = "argument 'conf_level'";
-                        rosetta_lua::Param<double> p5(L, 6);
-                        rosetta_lua::converting() = nullptr;
-                        return rosetta_lua::call(L, [&]() -> decltype(auto) { return ::datamunge::stats::proportion_test_one_sample(p0.get(), p1.get(), p2.get(), p3.get(), p4.get(), p5.get()); }, 0, rosetta_lua::Return::automatic);
-                    }
-                }
-            }
-        }
-        rosetta_lua::no_overload(L, "proportion_test_one_sample", "    proportion_test_one_sample(successes: integer, n: integer, p\?: number, alternative\?: datamunge.Alternative, correct\?: boolean, conf_level\?: number): datamunge.HypothesisTestResult\n", 1);
-    });
-}
-int rosetta_lua_200(lua_State* L) {
-    return rosetta_lua::boundary(L, [&]() -> int {
-        const int top = lua_gettop(L);
-        for (int pass = 1; pass < 2; ++pass) {
-            const bool strict = pass == 0; (void)strict;
-            {
-                const int raw = top - 0;
-                int given = raw; while (given > 0 && lua_isnil(L, 0 + given)) --given;
-                const int n = std::max(given, 1); (void)n;
-                if (raw >= 1 && given <= 4) {
-                    if (n == 1) {
-                        rosetta_lua::converting() = "argument 'x'";
-                        rosetta_lua::Param<const std::vector<double> &> p0(L, 1);
-                        rosetta_lua::converting() = nullptr;
-                        return rosetta_lua::call(L, [&]() -> decltype(auto) { return ::datamunge::stats::t_test_one_sample(p0.get()); }, 0, rosetta_lua::Return::automatic);
-                    }
-                    if (n == 2) {
-                        rosetta_lua::converting() = "argument 'x'";
-                        rosetta_lua::Param<const std::vector<double> &> p0(L, 1);
-                        rosetta_lua::converting() = "argument 'mu'";
-                        rosetta_lua::Param<double> p1(L, 2);
-                        rosetta_lua::converting() = nullptr;
-                        return rosetta_lua::call(L, [&]() -> decltype(auto) { return ::datamunge::stats::t_test_one_sample(p0.get(), p1.get()); }, 0, rosetta_lua::Return::automatic);
-                    }
-                    if (n == 3) {
-                        rosetta_lua::converting() = "argument 'x'";
-                        rosetta_lua::Param<const std::vector<double> &> p0(L, 1);
-                        rosetta_lua::converting() = "argument 'mu'";
-                        rosetta_lua::Param<double> p1(L, 2);
-                        rosetta_lua::converting() = "argument 'alternative'";
-                        rosetta_lua::Param<datamunge::stats::Alternative> p2(L, 3);
-                        rosetta_lua::converting() = nullptr;
-                        return rosetta_lua::call(L, [&]() -> decltype(auto) { return ::datamunge::stats::t_test_one_sample(p0.get(), p1.get(), p2.get()); }, 0, rosetta_lua::Return::automatic);
-                    }
-                    if (n == 4) {
-                        rosetta_lua::converting() = "argument 'x'";
-                        rosetta_lua::Param<const std::vector<double> &> p0(L, 1);
-                        rosetta_lua::converting() = "argument 'mu'";
-                        rosetta_lua::Param<double> p1(L, 2);
-                        rosetta_lua::converting() = "argument 'alternative'";
-                        rosetta_lua::Param<datamunge::stats::Alternative> p2(L, 3);
-                        rosetta_lua::converting() = "argument 'conf_level'";
-                        rosetta_lua::Param<double> p3(L, 4);
-                        rosetta_lua::converting() = nullptr;
-                        return rosetta_lua::call(L, [&]() -> decltype(auto) { return ::datamunge::stats::t_test_one_sample(p0.get(), p1.get(), p2.get(), p3.get()); }, 0, rosetta_lua::Return::automatic);
-                    }
-                }
-            }
-        }
-        rosetta_lua::no_overload(L, "t_test_one_sample", "    t_test_one_sample(x: number[], mu\?: number, alternative\?: datamunge.Alternative, conf_level\?: number): datamunge.HypothesisTestResult\n", 1);
-    });
-}
-int rosetta_lua_204(lua_State* L) {
-    return rosetta_lua::boundary(L, [&]() -> int {
-        const int top = lua_gettop(L);
-        for (int pass = 1; pass < 2; ++pass) {
-            const bool strict = pass == 0; (void)strict;
-            {
-                const int raw = top - 0;
-                int given = raw; while (given > 0 && lua_isnil(L, 0 + given)) --given;
-                const int n = std::max(given, 1); (void)n;
-                if (raw >= 1 && given <= 3) {
-                    if (n == 1) {
-                        rosetta_lua::converting() = "argument 'x'";
-                        rosetta_lua::Param<const std::vector<double> &> p0(L, 1);
-                        rosetta_lua::converting() = nullptr;
-                        return rosetta_lua::call(L, [&]() -> decltype(auto) { return ::datamunge::stats::wilcoxon_signed_rank_test(p0.get()); }, 0, rosetta_lua::Return::automatic);
-                    }
-                    if (n == 2) {
-                        rosetta_lua::converting() = "argument 'x'";
-                        rosetta_lua::Param<const std::vector<double> &> p0(L, 1);
-                        rosetta_lua::converting() = "argument 'mu'";
-                        rosetta_lua::Param<double> p1(L, 2);
-                        rosetta_lua::converting() = nullptr;
-                        return rosetta_lua::call(L, [&]() -> decltype(auto) { return ::datamunge::stats::wilcoxon_signed_rank_test(p0.get(), p1.get()); }, 0, rosetta_lua::Return::automatic);
-                    }
-                    if (n == 3) {
-                        rosetta_lua::converting() = "argument 'x'";
-                        rosetta_lua::Param<const std::vector<double> &> p0(L, 1);
-                        rosetta_lua::converting() = "argument 'mu'";
-                        rosetta_lua::Param<double> p1(L, 2);
-                        rosetta_lua::converting() = "argument 'alternative'";
-                        rosetta_lua::Param<datamunge::stats::Alternative> p2(L, 3);
-                        rosetta_lua::converting() = nullptr;
-                        return rosetta_lua::call(L, [&]() -> decltype(auto) { return ::datamunge::stats::wilcoxon_signed_rank_test(p0.get(), p1.get(), p2.get()); }, 0, rosetta_lua::Return::automatic);
-                    }
-                }
-            }
-        }
-        rosetta_lua::no_overload(L, "wilcoxon_signed_rank_test", "    wilcoxon_signed_rank_test(x: number[], mu\?: number, alternative\?: datamunge.Alternative): datamunge.HypothesisTestResult\n", 1);
-    });
-}
-int rosetta_lua_224(lua_State* L) {
+int rosetta_lua_41(lua_State* L) {
     return rosetta_lua::boundary(L, [&]() -> int {
         const int top = lua_gettop(L);
         for (int pass = 1; pass < 2; ++pass) {
@@ -2095,1094 +1649,355 @@ int rosetta_lua_224(lua_State* L) {
                 const int n = std::max(given, 3); (void)n;
                 if (raw >= 3 && given <= 3) {
                     if (n == 3) {
-                        rosetta_lua::converting() = "argument 'lower'";
+                        rosetta_lua::converting() = "argument 'base'";
                         rosetta_lua::Param<double> p0(L, 1);
-                        rosetta_lua::converting() = "argument 'upper'";
+                        rosetta_lua::converting() = "argument 'exponent'";
                         rosetta_lua::Param<double> p1(L, 2);
-                        rosetta_lua::converting() = "argument 'n'";
-                        rosetta_lua::Param<unsigned long> p2(L, 3);
+                        rosetta_lua::converting() = "argument 'modulus'";
+                        rosetta_lua::Param<double> p2(L, 3);
                         rosetta_lua::converting() = nullptr;
-                        return rosetta_lua::call(L, [&]() -> decltype(auto) { return ::datamunge::lua_bindings::runif(p0.get(), p1.get(), p2.get()); }, 0, rosetta_lua::Return::automatic);
+                        return rosetta_lua::call(L, [&]() -> decltype(auto) { return ::datamunge::algebra::mod_pow(p0.get(), p1.get(), p2.get()); }, 0, rosetta_lua::Return::automatic);
                     }
                 }
             }
         }
-        rosetta_lua::no_overload(L, "runif", "    runif(lower: number, upper: number, n: integer): number[]\n", 1);
+        rosetta_lua::no_overload(L, "mod_pow", "    mod_pow(base: number, exponent: number, modulus: number): number\n", 1);
     });
 }
-int rosetta_lua_420(lua_State* L) {
+int rosetta_lua_83(lua_State* L) {
     return rosetta_lua::boundary(L, [&]() -> int {
-        auto* native = rosetta_lua::native<datamunge::bayes::MAPOptions>(L, 1);
-        rosetta_lua::result<decltype((native->max_iterations))>(L, native->max_iterations, 1, rosetta_lua::Return::automatic);
-        return 1;
-    });
-}
-int rosetta_lua_421(lua_State* L) {
-    return rosetta_lua::boundary(L, [&]() -> int {
-        auto* native = rosetta_lua::native<datamunge::bayes::MAPOptions>(L, 1);
-        using F = std::remove_cv_t<std::remove_reference_t<decltype(native->max_iterations)>>;
-        if constexpr (rosetta_lua::bound_v<F>) {
-            // obj.field.x = v assigns the modified field object to itself.
-            if (rosetta_lua::is_instance<F>(L, 2) && rosetta_lua::native<F>(L, 2) == &native->max_iterations) return 0;
-        }
-        rosetta_lua::converting() = "field 'max_iterations'";
-        rosetta_lua::Param<const F&> converted(L, 2);
-        rosetta_lua::converting() = nullptr;
-        rosetta_lua::assign_field(native->max_iterations, converted.get());
-        return 0;
-    });
-}
-int rosetta_lua_422(lua_State* L) {
-    return rosetta_lua::boundary(L, [&]() -> int {
-        auto* native = rosetta_lua::native<datamunge::bayes::MAPOptions>(L, 1);
-        rosetta_lua::result<decltype((native->tolerance))>(L, native->tolerance, 1, rosetta_lua::Return::automatic);
-        return 1;
-    });
-}
-int rosetta_lua_423(lua_State* L) {
-    return rosetta_lua::boundary(L, [&]() -> int {
-        auto* native = rosetta_lua::native<datamunge::bayes::MAPOptions>(L, 1);
-        using F = std::remove_cv_t<std::remove_reference_t<decltype(native->tolerance)>>;
-        if constexpr (rosetta_lua::bound_v<F>) {
-            // obj.field.x = v assigns the modified field object to itself.
-            if (rosetta_lua::is_instance<F>(L, 2) && rosetta_lua::native<F>(L, 2) == &native->tolerance) return 0;
-        }
-        rosetta_lua::converting() = "field 'tolerance'";
-        rosetta_lua::Param<const F&> converted(L, 2);
-        rosetta_lua::converting() = nullptr;
-        rosetta_lua::assign_field(native->tolerance, converted.get());
-        return 0;
-    });
-}
-int rosetta_lua_424(lua_State* L) {
-    return rosetta_lua::boundary(L, [&]() -> int {
-        auto* native = rosetta_lua::native<datamunge::bayes::MAPOptions>(L, 1);
-        rosetta_lua::result<decltype((native->history_size))>(L, native->history_size, 1, rosetta_lua::Return::automatic);
-        return 1;
-    });
-}
-int rosetta_lua_425(lua_State* L) {
-    return rosetta_lua::boundary(L, [&]() -> int {
-        auto* native = rosetta_lua::native<datamunge::bayes::MAPOptions>(L, 1);
-        using F = std::remove_cv_t<std::remove_reference_t<decltype(native->history_size)>>;
-        if constexpr (rosetta_lua::bound_v<F>) {
-            // obj.field.x = v assigns the modified field object to itself.
-            if (rosetta_lua::is_instance<F>(L, 2) && rosetta_lua::native<F>(L, 2) == &native->history_size) return 0;
-        }
-        rosetta_lua::converting() = "field 'history_size'";
-        rosetta_lua::Param<const F&> converted(L, 2);
-        rosetta_lua::converting() = nullptr;
-        rosetta_lua::assign_field(native->history_size, converted.get());
-        return 0;
-    });
-}
-int rosetta_lua_426(lua_State* L) {
-    return rosetta_lua::boundary(L, [&]() -> int {
-        const bool subclass = rosetta_lua::subclass_call(L, 1); (void)subclass;
         const int top = lua_gettop(L);
         for (int pass = 1; pass < 2; ++pass) {
             const bool strict = pass == 0; (void)strict;
             {
-                const int raw = top - 1;
-                int given = raw; while (given > 0 && lua_isnil(L, 1 + given)) --given;
-                const int n = std::max(given, 0); (void)n;
-                if (raw >= 0 && given <= 0) {
-                    if (n == 0) {
-                        rosetta_lua::push_pointer(L, new datamunge::bayes::MAPOptions(), &rosetta_lua::Info<datamunge::bayes::MAPOptions>::value, rosetta_lua::Ownership::owned, 0);
-                        if (subclass) rosetta_lua::adopt_instance(L, -1, 1, nullptr);
-                        return 1;
-                    }
-                }
-            }
-        }
-        rosetta_lua::no_overload(L, "MAPOptions", "    MAPOptions()\n", 2);
-    });
-}
-int rosetta_lua_707(lua_State* L) {
-    return rosetta_lua::boundary(L, [&]() -> int {
-        auto* native = rosetta_lua::native<datamunge::geometry::DelaunayAnalysis>(L, 1);
-        rosetta_lua::result<decltype((native->distinct_points))>(L, native->distinct_points, 1, rosetta_lua::Return::automatic);
-        return 1;
-    });
-}
-int rosetta_lua_708(lua_State* L) {
-    return rosetta_lua::boundary(L, [&]() -> int {
-        auto* native = rosetta_lua::native<datamunge::geometry::DelaunayAnalysis>(L, 1);
-        using F = std::remove_cv_t<std::remove_reference_t<decltype(native->distinct_points)>>;
-        if constexpr (rosetta_lua::bound_v<F>) {
-            // obj.field.x = v assigns the modified field object to itself.
-            if (rosetta_lua::is_instance<F>(L, 2) && rosetta_lua::native<F>(L, 2) == &native->distinct_points) return 0;
-        }
-        rosetta_lua::converting() = "field 'distinct_points'";
-        rosetta_lua::Param<const F&> converted(L, 2);
-        rosetta_lua::converting() = nullptr;
-        rosetta_lua::assign_field(native->distinct_points, converted.get());
-        return 0;
-    });
-}
-int rosetta_lua_709(lua_State* L) {
-    return rosetta_lua::boundary(L, [&]() -> int {
-        auto* native = rosetta_lua::native<datamunge::geometry::DelaunayAnalysis>(L, 1);
-        rosetta_lua::result<decltype((native->used_points))>(L, native->used_points, 1, rosetta_lua::Return::automatic);
-        return 1;
-    });
-}
-int rosetta_lua_710(lua_State* L) {
-    return rosetta_lua::boundary(L, [&]() -> int {
-        auto* native = rosetta_lua::native<datamunge::geometry::DelaunayAnalysis>(L, 1);
-        using F = std::remove_cv_t<std::remove_reference_t<decltype(native->used_points)>>;
-        if constexpr (rosetta_lua::bound_v<F>) {
-            // obj.field.x = v assigns the modified field object to itself.
-            if (rosetta_lua::is_instance<F>(L, 2) && rosetta_lua::native<F>(L, 2) == &native->used_points) return 0;
-        }
-        rosetta_lua::converting() = "field 'used_points'";
-        rosetta_lua::Param<const F&> converted(L, 2);
-        rosetta_lua::converting() = nullptr;
-        rosetta_lua::assign_field(native->used_points, converted.get());
-        return 0;
-    });
-}
-int rosetta_lua_711(lua_State* L) {
-    return rosetta_lua::boundary(L, [&]() -> int {
-        auto* native = rosetta_lua::native<datamunge::geometry::DelaunayAnalysis>(L, 1);
-        rosetta_lua::result<decltype((native->triangles))>(L, native->triangles, 1, rosetta_lua::Return::automatic);
-        return 1;
-    });
-}
-int rosetta_lua_712(lua_State* L) {
-    return rosetta_lua::boundary(L, [&]() -> int {
-        auto* native = rosetta_lua::native<datamunge::geometry::DelaunayAnalysis>(L, 1);
-        using F = std::remove_cv_t<std::remove_reference_t<decltype(native->triangles)>>;
-        if constexpr (rosetta_lua::bound_v<F>) {
-            // obj.field.x = v assigns the modified field object to itself.
-            if (rosetta_lua::is_instance<F>(L, 2) && rosetta_lua::native<F>(L, 2) == &native->triangles) return 0;
-        }
-        rosetta_lua::converting() = "field 'triangles'";
-        rosetta_lua::Param<const F&> converted(L, 2);
-        rosetta_lua::converting() = nullptr;
-        rosetta_lua::assign_field(native->triangles, converted.get());
-        return 0;
-    });
-}
-int rosetta_lua_713(lua_State* L) {
-    return rosetta_lua::boundary(L, [&]() -> int {
-        auto* native = rosetta_lua::native<datamunge::geometry::DelaunayAnalysis>(L, 1);
-        rosetta_lua::result<decltype((native->edges))>(L, native->edges, 1, rosetta_lua::Return::automatic);
-        return 1;
-    });
-}
-int rosetta_lua_714(lua_State* L) {
-    return rosetta_lua::boundary(L, [&]() -> int {
-        auto* native = rosetta_lua::native<datamunge::geometry::DelaunayAnalysis>(L, 1);
-        using F = std::remove_cv_t<std::remove_reference_t<decltype(native->edges)>>;
-        if constexpr (rosetta_lua::bound_v<F>) {
-            // obj.field.x = v assigns the modified field object to itself.
-            if (rosetta_lua::is_instance<F>(L, 2) && rosetta_lua::native<F>(L, 2) == &native->edges) return 0;
-        }
-        rosetta_lua::converting() = "field 'edges'";
-        rosetta_lua::Param<const F&> converted(L, 2);
-        rosetta_lua::converting() = nullptr;
-        rosetta_lua::assign_field(native->edges, converted.get());
-        return 0;
-    });
-}
-int rosetta_lua_715(lua_State* L) {
-    return rosetta_lua::boundary(L, [&]() -> int {
-        auto* native = rosetta_lua::native<datamunge::geometry::DelaunayAnalysis>(L, 1);
-        rosetta_lua::result<decltype((native->boundary_edges))>(L, native->boundary_edges, 1, rosetta_lua::Return::automatic);
-        return 1;
-    });
-}
-int rosetta_lua_716(lua_State* L) {
-    return rosetta_lua::boundary(L, [&]() -> int {
-        auto* native = rosetta_lua::native<datamunge::geometry::DelaunayAnalysis>(L, 1);
-        using F = std::remove_cv_t<std::remove_reference_t<decltype(native->boundary_edges)>>;
-        if constexpr (rosetta_lua::bound_v<F>) {
-            // obj.field.x = v assigns the modified field object to itself.
-            if (rosetta_lua::is_instance<F>(L, 2) && rosetta_lua::native<F>(L, 2) == &native->boundary_edges) return 0;
-        }
-        rosetta_lua::converting() = "field 'boundary_edges'";
-        rosetta_lua::Param<const F&> converted(L, 2);
-        rosetta_lua::converting() = nullptr;
-        rosetta_lua::assign_field(native->boundary_edges, converted.get());
-        return 0;
-    });
-}
-int rosetta_lua_717(lua_State* L) {
-    return rosetta_lua::boundary(L, [&]() -> int {
-        auto* native = rosetta_lua::native<datamunge::geometry::DelaunayAnalysis>(L, 1);
-        rosetta_lua::result<decltype((native->circle_tests))>(L, native->circle_tests, 1, rosetta_lua::Return::automatic);
-        return 1;
-    });
-}
-int rosetta_lua_718(lua_State* L) {
-    return rosetta_lua::boundary(L, [&]() -> int {
-        auto* native = rosetta_lua::native<datamunge::geometry::DelaunayAnalysis>(L, 1);
-        using F = std::remove_cv_t<std::remove_reference_t<decltype(native->circle_tests)>>;
-        if constexpr (rosetta_lua::bound_v<F>) {
-            // obj.field.x = v assigns the modified field object to itself.
-            if (rosetta_lua::is_instance<F>(L, 2) && rosetta_lua::native<F>(L, 2) == &native->circle_tests) return 0;
-        }
-        rosetta_lua::converting() = "field 'circle_tests'";
-        rosetta_lua::Param<const F&> converted(L, 2);
-        rosetta_lua::converting() = nullptr;
-        rosetta_lua::assign_field(native->circle_tests, converted.get());
-        return 0;
-    });
-}
-int rosetta_lua_719(lua_State* L) {
-    return rosetta_lua::boundary(L, [&]() -> int {
-        auto* native = rosetta_lua::native<datamunge::geometry::DelaunayAnalysis>(L, 1);
-        rosetta_lua::result<decltype((native->interior_violations))>(L, native->interior_violations, 1, rosetta_lua::Return::automatic);
-        return 1;
-    });
-}
-int rosetta_lua_720(lua_State* L) {
-    return rosetta_lua::boundary(L, [&]() -> int {
-        auto* native = rosetta_lua::native<datamunge::geometry::DelaunayAnalysis>(L, 1);
-        using F = std::remove_cv_t<std::remove_reference_t<decltype(native->interior_violations)>>;
-        if constexpr (rosetta_lua::bound_v<F>) {
-            // obj.field.x = v assigns the modified field object to itself.
-            if (rosetta_lua::is_instance<F>(L, 2) && rosetta_lua::native<F>(L, 2) == &native->interior_violations) return 0;
-        }
-        rosetta_lua::converting() = "field 'interior_violations'";
-        rosetta_lua::Param<const F&> converted(L, 2);
-        rosetta_lua::converting() = nullptr;
-        rosetta_lua::assign_field(native->interior_violations, converted.get());
-        return 0;
-    });
-}
-int rosetta_lua_721(lua_State* L) {
-    return rosetta_lua::boundary(L, [&]() -> int {
-        auto* native = rosetta_lua::native<datamunge::geometry::DelaunayAnalysis>(L, 1);
-        rosetta_lua::result<decltype((native->minimum_angle_degrees))>(L, native->minimum_angle_degrees, 1, rosetta_lua::Return::automatic);
-        return 1;
-    });
-}
-int rosetta_lua_722(lua_State* L) {
-    return rosetta_lua::boundary(L, [&]() -> int {
-        auto* native = rosetta_lua::native<datamunge::geometry::DelaunayAnalysis>(L, 1);
-        using F = std::remove_cv_t<std::remove_reference_t<decltype(native->minimum_angle_degrees)>>;
-        if constexpr (rosetta_lua::bound_v<F>) {
-            // obj.field.x = v assigns the modified field object to itself.
-            if (rosetta_lua::is_instance<F>(L, 2) && rosetta_lua::native<F>(L, 2) == &native->minimum_angle_degrees) return 0;
-        }
-        rosetta_lua::converting() = "field 'minimum_angle_degrees'";
-        rosetta_lua::Param<const F&> converted(L, 2);
-        rosetta_lua::converting() = nullptr;
-        rosetta_lua::assign_field(native->minimum_angle_degrees, converted.get());
-        return 0;
-    });
-}
-int rosetta_lua_723(lua_State* L) {
-    return rosetta_lua::boundary(L, [&]() -> int {
-        const bool subclass = rosetta_lua::subclass_call(L, 1); (void)subclass;
-        const int top = lua_gettop(L);
-        for (int pass = 1; pass < 2; ++pass) {
-            const bool strict = pass == 0; (void)strict;
-            {
-                const int raw = top - 1;
-                int given = raw; while (given > 0 && lua_isnil(L, 1 + given)) --given;
-                const int n = std::max(given, 0); (void)n;
-                if (raw >= 0 && given <= 0) {
-                    if (n == 0) {
-                        rosetta_lua::push_pointer(L, new datamunge::geometry::DelaunayAnalysis(), &rosetta_lua::Info<datamunge::geometry::DelaunayAnalysis>::value, rosetta_lua::Ownership::owned, 0);
-                        if (subclass) rosetta_lua::adopt_instance(L, -1, 1, nullptr);
-                        return 1;
-                    }
-                }
-            }
-        }
-        rosetta_lua::no_overload(L, "DelaunayAnalysis", "    DelaunayAnalysis()\n", 2);
-    });
-}
-int rosetta_lua_776(lua_State* L) {
-    return rosetta_lua::boundary(L, [&]() -> int {
-        if (!rosetta_lua::is_instance<datamunge::filter::KalmanFilter>(L, 1)) rosetta_lua::fail("KalmanFilter.predict: expected a KalmanFilter object as self; call it as object:predict(...)");
-        const int top = lua_gettop(L);
-        for (int pass = 1; pass < 2; ++pass) {
-            const bool strict = pass == 0; (void)strict;
-            {
-                const int raw = top - 1;
-                int given = raw; while (given > 0 && lua_isnil(L, 1 + given)) --given;
-                const int n = std::max(given, 0); (void)n;
-                if (raw >= 0 && given <= 0) {
-                    auto* native = rosetta_lua::native<datamunge::filter::KalmanFilter>(L, 1);
-                    if (n == 0) {
-                        return rosetta_lua::call(L, [&]() -> decltype(auto) { return native->predict(); }, 1, rosetta_lua::Return::automatic);
-                    }
-                }
-            }
-        }
-        rosetta_lua::no_overload(L, "predict", "    predict()\n", 2);
-    });
-}
-int rosetta_lua_777(lua_State* L) {
-    return rosetta_lua::boundary(L, [&]() -> int {
-        if (!rosetta_lua::is_instance<datamunge::filter::KalmanFilter>(L, 1)) rosetta_lua::fail("KalmanFilter.update: expected a KalmanFilter object as self; call it as object:update(...)");
-        const int top = lua_gettop(L);
-        for (int pass = 1; pass < 2; ++pass) {
-            const bool strict = pass == 0; (void)strict;
-            {
-                const int raw = top - 1;
-                int given = raw; while (given > 0 && lua_isnil(L, 1 + given)) --given;
+                const int raw = top - 0;
+                int given = raw; while (given > 0 && lua_isnil(L, 0 + given)) --given;
                 const int n = std::max(given, 1); (void)n;
                 if (raw >= 1 && given <= 1) {
-                    auto* native = rosetta_lua::native<datamunge::filter::KalmanFilter>(L, 1);
                     if (n == 1) {
-                        rosetta_lua::converting() = "argument 'z'";
-                        rosetta_lua::Param<const std::vector<double> &> p0(L, 2);
+                        rosetta_lua::converting() = "argument 'size'";
+                        rosetta_lua::Param<int> p0(L, 1);
                         rosetta_lua::converting() = nullptr;
-                        return rosetta_lua::call(L, [&]() -> decltype(auto) { return native->update(p0.get()); }, 1, rosetta_lua::Return::automatic);
+                        return rosetta_lua::call(L, [&]() -> decltype(auto) { return ::datamunge::image::box_kernel(p0.get()); }, 0, rosetta_lua::Return::automatic);
                     }
                 }
             }
         }
-        rosetta_lua::no_overload(L, "update", "    update(z: number[])\n", 2);
+        rosetta_lua::no_overload(L, "box_kernel", "    box_kernel(size: integer): number[]\n", 1);
     });
 }
-int rosetta_lua_778(lua_State* L) {
+int rosetta_lua_104(lua_State* L) {
     return rosetta_lua::boundary(L, [&]() -> int {
-        if (!rosetta_lua::is_instance<datamunge::filter::KalmanFilter>(L, 1)) rosetta_lua::fail("KalmanFilter.state: expected a KalmanFilter object as self; call it as object:state(...)");
         const int top = lua_gettop(L);
         for (int pass = 1; pass < 2; ++pass) {
             const bool strict = pass == 0; (void)strict;
             {
-                const int raw = top - 1;
-                int given = raw; while (given > 0 && lua_isnil(L, 1 + given)) --given;
-                const int n = std::max(given, 0); (void)n;
-                if (raw >= 0 && given <= 0) {
-                    auto* native = rosetta_lua::native<datamunge::filter::KalmanFilter>(L, 1);
-                    if (n == 0) {
-                        return rosetta_lua::call(L, [&]() -> decltype(auto) { return native->state(); }, 1, rosetta_lua::Return::automatic);
-                    }
-                }
-            }
-        }
-        rosetta_lua::no_overload(L, "state", "    state(): number[]\n", 2);
-    });
-}
-int rosetta_lua_779(lua_State* L) {
-    return rosetta_lua::boundary(L, [&]() -> int {
-        if (!rosetta_lua::is_instance<datamunge::filter::KalmanFilter>(L, 1)) rosetta_lua::fail("KalmanFilter.covariance: expected a KalmanFilter object as self; call it as object:covariance(...)");
-        const int top = lua_gettop(L);
-        for (int pass = 1; pass < 2; ++pass) {
-            const bool strict = pass == 0; (void)strict;
-            {
-                const int raw = top - 1;
-                int given = raw; while (given > 0 && lua_isnil(L, 1 + given)) --given;
-                const int n = std::max(given, 0); (void)n;
-                if (raw >= 0 && given <= 0) {
-                    auto* native = rosetta_lua::native<datamunge::filter::KalmanFilter>(L, 1);
-                    if (n == 0) {
-                        return rosetta_lua::call(L, [&]() -> decltype(auto) { return native->covariance(); }, 1, rosetta_lua::Return::automatic);
-                    }
-                }
-            }
-        }
-        rosetta_lua::no_overload(L, "covariance", "    covariance(): number[][]\n", 2);
-    });
-}
-int rosetta_lua_780(lua_State* L) {
-    return rosetta_lua::boundary(L, [&]() -> int {
-        if (!rosetta_lua::is_instance<datamunge::filter::KalmanFilter>(L, 1)) rosetta_lua::fail("KalmanFilter.filter: expected a KalmanFilter object as self; call it as object:filter(...)");
-        const int top = lua_gettop(L);
-        for (int pass = 1; pass < 2; ++pass) {
-            const bool strict = pass == 0; (void)strict;
-            {
-                const int raw = top - 1;
-                int given = raw; while (given > 0 && lua_isnil(L, 1 + given)) --given;
+                const int raw = top - 0;
+                int given = raw; while (given > 0 && lua_isnil(L, 0 + given)) --given;
                 const int n = std::max(given, 1); (void)n;
-                if (raw >= 1 && given <= 1) {
-                    auto* native = rosetta_lua::native<datamunge::filter::KalmanFilter>(L, 1);
+                if (raw >= 1 && given <= 2) {
                     if (n == 1) {
-                        rosetta_lua::converting() = "argument 'measurements'";
-                        rosetta_lua::Param<const std::vector<std::vector<double>> &> p0(L, 2);
+                        rosetta_lua::converting() = "argument 'img'";
+                        rosetta_lua::Param<const datamunge::image::Image &> p0(L, 1);
                         rosetta_lua::converting() = nullptr;
-                        return rosetta_lua::call(L, [&]() -> decltype(auto) { return native->filter(p0.get()); }, 1, rosetta_lua::Return::automatic);
+                        return rosetta_lua::call(L, [&]() -> decltype(auto) { return ::datamunge::cv::connected_components(p0.get()); }, 0, rosetta_lua::Return::automatic);
                     }
-                }
-            }
-        }
-        rosetta_lua::no_overload(L, "filter", "    filter(measurements: number[][]): datamunge.KalmanState[]\n", 2);
-    });
-}
-int rosetta_lua_781(lua_State* L) {
-    return rosetta_lua::boundary(L, [&]() -> int {
-        if (!rosetta_lua::is_instance<datamunge::filter::KalmanFilter>(L, 1)) rosetta_lua::fail("KalmanFilter.smooth: expected a KalmanFilter object as self; call it as object:smooth(...)");
-        const int top = lua_gettop(L);
-        for (int pass = 1; pass < 2; ++pass) {
-            const bool strict = pass == 0; (void)strict;
-            {
-                const int raw = top - 1;
-                int given = raw; while (given > 0 && lua_isnil(L, 1 + given)) --given;
-                const int n = std::max(given, 1); (void)n;
-                if (raw >= 1 && given <= 1) {
-                    auto* native = rosetta_lua::native<datamunge::filter::KalmanFilter>(L, 1);
-                    if (n == 1) {
-                        rosetta_lua::converting() = "argument 'measurements'";
-                        rosetta_lua::Param<const std::vector<std::vector<double>> &> p0(L, 2);
+                    if (n == 2) {
+                        rosetta_lua::converting() = "argument 'img'";
+                        rosetta_lua::Param<const datamunge::image::Image &> p0(L, 1);
+                        rosetta_lua::converting() = "argument 'eight_connected'";
+                        rosetta_lua::Param<bool> p1(L, 2);
                         rosetta_lua::converting() = nullptr;
-                        return rosetta_lua::call(L, [&]() -> decltype(auto) { return native->smooth(p0.get()); }, 1, rosetta_lua::Return::automatic);
+                        return rosetta_lua::call(L, [&]() -> decltype(auto) { return ::datamunge::cv::connected_components(p0.get(), p1.get()); }, 0, rosetta_lua::Return::automatic);
                     }
                 }
             }
         }
-        rosetta_lua::no_overload(L, "smooth", "    smooth(measurements: number[][]): datamunge.SmoothResult\n", 2);
+        rosetta_lua::no_overload(L, "connected_components", "    connected_components(img: datamunge.Image, eight_connected\?: boolean): datamunge.LabelMap\n", 1);
     });
 }
-int rosetta_lua_782(lua_State* L) {
+int rosetta_lua_113(lua_State* L) {
     return rosetta_lua::boundary(L, [&]() -> int {
-        const bool subclass = rosetta_lua::subclass_call(L, 1); (void)subclass;
         const int top = lua_gettop(L);
         for (int pass = 1; pass < 2; ++pass) {
             const bool strict = pass == 0; (void)strict;
             {
-                const int raw = top - 1;
-                int given = raw; while (given > 0 && lua_isnil(L, 1 + given)) --given;
-                const int n = std::max(given, 6); (void)n;
-                if (raw >= 6 && given <= 6) {
-                    if (n == 6) {
-                        rosetta_lua::converting() = "argument 'F'";
-                        rosetta_lua::Param<std::vector<std::vector<double>>> p0(L, 2);
-                        rosetta_lua::converting() = "argument 'H'";
-                        rosetta_lua::Param<std::vector<std::vector<double>>> p1(L, 3);
-                        rosetta_lua::converting() = "argument 'Q'";
-                        rosetta_lua::Param<std::vector<std::vector<double>>> p2(L, 4);
-                        rosetta_lua::converting() = "argument 'R'";
-                        rosetta_lua::Param<std::vector<std::vector<double>>> p3(L, 5);
-                        rosetta_lua::converting() = "argument 'x0'";
-                        rosetta_lua::Param<std::vector<double>> p4(L, 6);
-                        rosetta_lua::converting() = "argument 'P0'";
-                        rosetta_lua::Param<std::vector<std::vector<double>>> p5(L, 7);
-                        rosetta_lua::converting() = nullptr;
-                        rosetta_lua::push_pointer(L, new datamunge::filter::KalmanFilter(p0.get(), p1.get(), p2.get(), p3.get(), p4.get(), p5.get()), &rosetta_lua::Info<datamunge::filter::KalmanFilter>::value, rosetta_lua::Ownership::owned, 0);
-                        if (subclass) rosetta_lua::adopt_instance(L, -1, 1, nullptr);
-                        return 1;
-                    }
-                }
-            }
-        }
-        rosetta_lua::no_overload(L, "KalmanFilter", "    KalmanFilter(F: number[][], H: number[][], Q: number[][], R: number[][], x0: number[], P0: number[][])\n", 2);
-    });
-}
-int rosetta_lua_1263(lua_State* L) {
-    return rosetta_lua::boundary(L, [&]() -> int {
-        auto* native = rosetta_lua::native<datamunge::optim::AugmentedLagrangianOptions>(L, 1);
-        rosetta_lua::result<decltype((native->step_size))>(L, native->step_size, 1, rosetta_lua::Return::automatic);
-        return 1;
-    });
-}
-int rosetta_lua_1264(lua_State* L) {
-    return rosetta_lua::boundary(L, [&]() -> int {
-        auto* native = rosetta_lua::native<datamunge::optim::AugmentedLagrangianOptions>(L, 1);
-        using F = std::remove_cv_t<std::remove_reference_t<decltype(native->step_size)>>;
-        if constexpr (rosetta_lua::bound_v<F>) {
-            // obj.field.x = v assigns the modified field object to itself.
-            if (rosetta_lua::is_instance<F>(L, 2) && rosetta_lua::native<F>(L, 2) == &native->step_size) return 0;
-        }
-        rosetta_lua::converting() = "field 'step_size'";
-        rosetta_lua::Param<const F&> converted(L, 2);
-        rosetta_lua::converting() = nullptr;
-        rosetta_lua::assign_field(native->step_size, converted.get());
-        return 0;
-    });
-}
-int rosetta_lua_1265(lua_State* L) {
-    return rosetta_lua::boundary(L, [&]() -> int {
-        auto* native = rosetta_lua::native<datamunge::optim::AugmentedLagrangianOptions>(L, 1);
-        rosetta_lua::result<decltype((native->initial_penalty))>(L, native->initial_penalty, 1, rosetta_lua::Return::automatic);
-        return 1;
-    });
-}
-int rosetta_lua_1266(lua_State* L) {
-    return rosetta_lua::boundary(L, [&]() -> int {
-        auto* native = rosetta_lua::native<datamunge::optim::AugmentedLagrangianOptions>(L, 1);
-        using F = std::remove_cv_t<std::remove_reference_t<decltype(native->initial_penalty)>>;
-        if constexpr (rosetta_lua::bound_v<F>) {
-            // obj.field.x = v assigns the modified field object to itself.
-            if (rosetta_lua::is_instance<F>(L, 2) && rosetta_lua::native<F>(L, 2) == &native->initial_penalty) return 0;
-        }
-        rosetta_lua::converting() = "field 'initial_penalty'";
-        rosetta_lua::Param<const F&> converted(L, 2);
-        rosetta_lua::converting() = nullptr;
-        rosetta_lua::assign_field(native->initial_penalty, converted.get());
-        return 0;
-    });
-}
-int rosetta_lua_1267(lua_State* L) {
-    return rosetta_lua::boundary(L, [&]() -> int {
-        auto* native = rosetta_lua::native<datamunge::optim::AugmentedLagrangianOptions>(L, 1);
-        rosetta_lua::result<decltype((native->max_outer_iterations))>(L, native->max_outer_iterations, 1, rosetta_lua::Return::automatic);
-        return 1;
-    });
-}
-int rosetta_lua_1268(lua_State* L) {
-    return rosetta_lua::boundary(L, [&]() -> int {
-        auto* native = rosetta_lua::native<datamunge::optim::AugmentedLagrangianOptions>(L, 1);
-        using F = std::remove_cv_t<std::remove_reference_t<decltype(native->max_outer_iterations)>>;
-        if constexpr (rosetta_lua::bound_v<F>) {
-            // obj.field.x = v assigns the modified field object to itself.
-            if (rosetta_lua::is_instance<F>(L, 2) && rosetta_lua::native<F>(L, 2) == &native->max_outer_iterations) return 0;
-        }
-        rosetta_lua::converting() = "field 'max_outer_iterations'";
-        rosetta_lua::Param<const F&> converted(L, 2);
-        rosetta_lua::converting() = nullptr;
-        rosetta_lua::assign_field(native->max_outer_iterations, converted.get());
-        return 0;
-    });
-}
-int rosetta_lua_1269(lua_State* L) {
-    return rosetta_lua::boundary(L, [&]() -> int {
-        auto* native = rosetta_lua::native<datamunge::optim::AugmentedLagrangianOptions>(L, 1);
-        rosetta_lua::result<decltype((native->inner_iterations))>(L, native->inner_iterations, 1, rosetta_lua::Return::automatic);
-        return 1;
-    });
-}
-int rosetta_lua_1270(lua_State* L) {
-    return rosetta_lua::boundary(L, [&]() -> int {
-        auto* native = rosetta_lua::native<datamunge::optim::AugmentedLagrangianOptions>(L, 1);
-        using F = std::remove_cv_t<std::remove_reference_t<decltype(native->inner_iterations)>>;
-        if constexpr (rosetta_lua::bound_v<F>) {
-            // obj.field.x = v assigns the modified field object to itself.
-            if (rosetta_lua::is_instance<F>(L, 2) && rosetta_lua::native<F>(L, 2) == &native->inner_iterations) return 0;
-        }
-        rosetta_lua::converting() = "field 'inner_iterations'";
-        rosetta_lua::Param<const F&> converted(L, 2);
-        rosetta_lua::converting() = nullptr;
-        rosetta_lua::assign_field(native->inner_iterations, converted.get());
-        return 0;
-    });
-}
-int rosetta_lua_1271(lua_State* L) {
-    return rosetta_lua::boundary(L, [&]() -> int {
-        auto* native = rosetta_lua::native<datamunge::optim::AugmentedLagrangianOptions>(L, 1);
-        rosetta_lua::result<decltype((native->tolerance))>(L, native->tolerance, 1, rosetta_lua::Return::automatic);
-        return 1;
-    });
-}
-int rosetta_lua_1272(lua_State* L) {
-    return rosetta_lua::boundary(L, [&]() -> int {
-        auto* native = rosetta_lua::native<datamunge::optim::AugmentedLagrangianOptions>(L, 1);
-        using F = std::remove_cv_t<std::remove_reference_t<decltype(native->tolerance)>>;
-        if constexpr (rosetta_lua::bound_v<F>) {
-            // obj.field.x = v assigns the modified field object to itself.
-            if (rosetta_lua::is_instance<F>(L, 2) && rosetta_lua::native<F>(L, 2) == &native->tolerance) return 0;
-        }
-        rosetta_lua::converting() = "field 'tolerance'";
-        rosetta_lua::Param<const F&> converted(L, 2);
-        rosetta_lua::converting() = nullptr;
-        rosetta_lua::assign_field(native->tolerance, converted.get());
-        return 0;
-    });
-}
-int rosetta_lua_1273(lua_State* L) {
-    return rosetta_lua::boundary(L, [&]() -> int {
-        const bool subclass = rosetta_lua::subclass_call(L, 1); (void)subclass;
-        const int top = lua_gettop(L);
-        for (int pass = 1; pass < 2; ++pass) {
-            const bool strict = pass == 0; (void)strict;
-            {
-                const int raw = top - 1;
-                int given = raw; while (given > 0 && lua_isnil(L, 1 + given)) --given;
-                const int n = std::max(given, 0); (void)n;
-                if (raw >= 0 && given <= 0) {
-                    if (n == 0) {
-                        rosetta_lua::push_pointer(L, new datamunge::optim::AugmentedLagrangianOptions(), &rosetta_lua::Info<datamunge::optim::AugmentedLagrangianOptions>::value, rosetta_lua::Ownership::owned, 0);
-                        if (subclass) rosetta_lua::adopt_instance(L, -1, 1, nullptr);
-                        return 1;
-                    }
-                }
-            }
-        }
-        rosetta_lua::no_overload(L, "AugmentedLagrangianOptions", "    AugmentedLagrangianOptions()\n", 2);
-    });
-}
-int rosetta_lua_1333(lua_State* L) {
-    return rosetta_lua::boundary(L, [&]() -> int {
-        if (!rosetta_lua::is_instance<datamunge::optim::CMAES>(L, 1)) rosetta_lua::fail("CMAES.optimize: expected a CMAES object as self; call it as object:optimize(...)");
-        const int top = lua_gettop(L);
-        for (int pass = 1; pass < 2; ++pass) {
-            const bool strict = pass == 0; (void)strict;
-            {
-                const int raw = top - 1;
-                int given = raw; while (given > 0 && lua_isnil(L, 1 + given)) --given;
+                const int raw = top - 0;
+                int given = raw; while (given > 0 && lua_isnil(L, 0 + given)) --given;
                 const int n = std::max(given, 2); (void)n;
                 if (raw >= 2 && given <= 2) {
-                    auto* native = rosetta_lua::native<datamunge::optim::CMAES>(L, 1);
                     if (n == 2) {
-                        rosetta_lua::converting() = "argument 'function'";
-                        rosetta_lua::Param<datamunge::optim::ArbitraryFunction &> p0(L, 2);
-                        rosetta_lua::converting() = "argument 'coordinates'";
-                        rosetta_lua::Param<std::vector<double> &> p1(L, 3);
+                        rosetta_lua::converting() = "argument 'a'";
+                        rosetta_lua::Param<const datamunge::geometry::Point2D &> p0(L, 1);
+                        rosetta_lua::converting() = "argument 'b'";
+                        rosetta_lua::Param<const datamunge::geometry::Point2D &> p1(L, 2);
                         rosetta_lua::converting() = nullptr;
-                        const int results = rosetta_lua::call(L, [&]() -> decltype(auto) { return native->optimize(p0.get(), p1.get()); }, 1, rosetta_lua::Return::automatic);
-                        p1.writeback(L, 3);
-                        return results;
+                        return rosetta_lua::call(L, [&]() -> decltype(auto) { return ::datamunge::geometry::distance(p0.get(), p1.get()); }, 0, rosetta_lua::Return::automatic);
                     }
                 }
             }
         }
-        rosetta_lua::no_overload(L, "optimize", "    optimize(function: datamunge.ArbitraryFunction, coordinates: number[]): number\n", 2);
+        rosetta_lua::no_overload(L, "distance", "    distance(a: datamunge.Point2D, b: datamunge.Point2D): number\n", 1);
     });
 }
-int rosetta_lua_1334(lua_State* L) {
+int rosetta_lua_137(lua_State* L) {
     return rosetta_lua::boundary(L, [&]() -> int {
-        if (!rosetta_lua::is_instance<datamunge::optim::CMAES>(L, 1)) rosetta_lua::fail("CMAES.options: expected a CMAES object as self; call it as object:options(...)");
         const int top = lua_gettop(L);
         for (int pass = 1; pass < 2; ++pass) {
             const bool strict = pass == 0; (void)strict;
             {
-                const int raw = top - 1;
-                int given = raw; while (given > 0 && lua_isnil(L, 1 + given)) --given;
-                const int n = std::max(given, 0); (void)n;
-                if (raw >= 0 && given <= 0) {
-                    auto* native = rosetta_lua::native<datamunge::optim::CMAES>(L, 1);
-                    if (n == 0) {
-                        return rosetta_lua::call(L, [&]() -> decltype(auto) { return native->options(); }, 1, rosetta_lua::Return::automatic);
+                const int raw = top - 0;
+                int given = raw; while (given > 0 && lua_isnil(L, 0 + given)) --given;
+                const int n = std::max(given, 3); (void)n;
+                if (raw >= 3 && given <= 5) {
+                    if (n == 3) {
+                        rosetta_lua::converting() = "argument 'a'";
+                        rosetta_lua::Param<const std::vector<double> &> p0(L, 1);
+                        rosetta_lua::converting() = "argument 'b'";
+                        rosetta_lua::Param<const std::vector<double> &> p1(L, 2);
+                        rosetta_lua::converting() = "argument 'result'";
+                        rosetta_lua::Param<const datamunge::geometry::DTWResult &> p2(L, 3);
+                        rosetta_lua::converting() = nullptr;
+                        return rosetta_lua::call(L, [&]() -> decltype(auto) { return ::datamunge::geometry::plot_dtw_alignment(p0.get(), p1.get(), p2.get()); }, 0, rosetta_lua::Return::automatic);
+                    }
+                    if (n == 4) {
+                        rosetta_lua::converting() = "argument 'a'";
+                        rosetta_lua::Param<const std::vector<double> &> p0(L, 1);
+                        rosetta_lua::converting() = "argument 'b'";
+                        rosetta_lua::Param<const std::vector<double> &> p1(L, 2);
+                        rosetta_lua::converting() = "argument 'result'";
+                        rosetta_lua::Param<const datamunge::geometry::DTWResult &> p2(L, 3);
+                        rosetta_lua::converting() = "argument 'offset'";
+                        rosetta_lua::Param<double> p3(L, 4);
+                        rosetta_lua::converting() = nullptr;
+                        return rosetta_lua::call(L, [&]() -> decltype(auto) { return ::datamunge::geometry::plot_dtw_alignment(p0.get(), p1.get(), p2.get(), p3.get()); }, 0, rosetta_lua::Return::automatic);
+                    }
+                    if (n == 5) {
+                        rosetta_lua::converting() = "argument 'a'";
+                        rosetta_lua::Param<const std::vector<double> &> p0(L, 1);
+                        rosetta_lua::converting() = "argument 'b'";
+                        rosetta_lua::Param<const std::vector<double> &> p1(L, 2);
+                        rosetta_lua::converting() = "argument 'result'";
+                        rosetta_lua::Param<const datamunge::geometry::DTWResult &> p2(L, 3);
+                        rosetta_lua::converting() = "argument 'offset'";
+                        rosetta_lua::Param<double> p3(L, 4);
+                        rosetta_lua::converting() = "argument 'max_pairs'";
+                        rosetta_lua::Param<unsigned long> p4(L, 5);
+                        rosetta_lua::converting() = nullptr;
+                        return rosetta_lua::call(L, [&]() -> decltype(auto) { return ::datamunge::geometry::plot_dtw_alignment(p0.get(), p1.get(), p2.get(), p3.get(), p4.get()); }, 0, rosetta_lua::Return::automatic);
                     }
                 }
             }
         }
-        rosetta_lua::no_overload(L, "options", "    options(): datamunge.CMAESOptions\n", 2);
+        rosetta_lua::no_overload(L, "plot_dtw_alignment", "    plot_dtw_alignment(a: number[], b: number[], result: datamunge.DTWResult, offset\?: number, max_pairs\?: integer): datamunge.RPlot\n", 1);
     });
 }
-int rosetta_lua_1335(lua_State* L) {
+int rosetta_lua_143(lua_State* L) {
     return rosetta_lua::boundary(L, [&]() -> int {
-        const bool subclass = rosetta_lua::subclass_call(L, 1); (void)subclass;
         const int top = lua_gettop(L);
         for (int pass = 1; pass < 2; ++pass) {
             const bool strict = pass == 0; (void)strict;
             {
-                const int raw = top - 1;
-                int given = raw; while (given > 0 && lua_isnil(L, 1 + given)) --given;
-                const int n = std::max(given, 0); (void)n;
-                if (raw >= 0 && given <= 1) {
-                    if (n == 0) {
-                        rosetta_lua::push_pointer(L, new datamunge::optim::CMAES(), &rosetta_lua::Info<datamunge::optim::CMAES>::value, rosetta_lua::Ownership::owned, 0);
-                        if (subclass) rosetta_lua::adopt_instance(L, -1, 1, nullptr);
-                        return 1;
-                    }
+                const int raw = top - 0;
+                int given = raw; while (given > 0 && lua_isnil(L, 0 + given)) --given;
+                const int n = std::max(given, 1); (void)n;
+                if (raw >= 1 && given <= 1) {
                     if (n == 1) {
-                        rosetta_lua::converting() = "argument 'options'";
-                        rosetta_lua::Param<datamunge::optim::CMAESOptions> p0(L, 2);
-                        rosetta_lua::converting() = nullptr;
-                        rosetta_lua::push_pointer(L, new datamunge::optim::CMAES(p0.get()), &rosetta_lua::Info<datamunge::optim::CMAES>::value, rosetta_lua::Ownership::owned, 0);
-                        if (subclass) rosetta_lua::adopt_instance(L, -1, 1, nullptr);
-                        return 1;
-                    }
-                }
-            }
-        }
-        rosetta_lua::no_overload(L, "CMAES", "    CMAES(options\?: datamunge.CMAESOptions)\n", 2);
-    });
-}
-int rosetta_lua_1604(lua_State* L) {
-    return rosetta_lua::boundary(L, [&]() -> int {
-        auto* native = rosetta_lua::native<datamunge::optim::NesterovAcceleratedGradientOptions>(L, 1);
-        rosetta_lua::result<decltype((native->step_size))>(L, native->step_size, 1, rosetta_lua::Return::automatic);
-        return 1;
-    });
-}
-int rosetta_lua_1605(lua_State* L) {
-    return rosetta_lua::boundary(L, [&]() -> int {
-        auto* native = rosetta_lua::native<datamunge::optim::NesterovAcceleratedGradientOptions>(L, 1);
-        using F = std::remove_cv_t<std::remove_reference_t<decltype(native->step_size)>>;
-        if constexpr (rosetta_lua::bound_v<F>) {
-            // obj.field.x = v assigns the modified field object to itself.
-            if (rosetta_lua::is_instance<F>(L, 2) && rosetta_lua::native<F>(L, 2) == &native->step_size) return 0;
-        }
-        rosetta_lua::converting() = "field 'step_size'";
-        rosetta_lua::Param<const F&> converted(L, 2);
-        rosetta_lua::converting() = nullptr;
-        rosetta_lua::assign_field(native->step_size, converted.get());
-        return 0;
-    });
-}
-int rosetta_lua_1606(lua_State* L) {
-    return rosetta_lua::boundary(L, [&]() -> int {
-        auto* native = rosetta_lua::native<datamunge::optim::NesterovAcceleratedGradientOptions>(L, 1);
-        rosetta_lua::result<decltype((native->momentum))>(L, native->momentum, 1, rosetta_lua::Return::automatic);
-        return 1;
-    });
-}
-int rosetta_lua_1607(lua_State* L) {
-    return rosetta_lua::boundary(L, [&]() -> int {
-        auto* native = rosetta_lua::native<datamunge::optim::NesterovAcceleratedGradientOptions>(L, 1);
-        using F = std::remove_cv_t<std::remove_reference_t<decltype(native->momentum)>>;
-        if constexpr (rosetta_lua::bound_v<F>) {
-            // obj.field.x = v assigns the modified field object to itself.
-            if (rosetta_lua::is_instance<F>(L, 2) && rosetta_lua::native<F>(L, 2) == &native->momentum) return 0;
-        }
-        rosetta_lua::converting() = "field 'momentum'";
-        rosetta_lua::Param<const F&> converted(L, 2);
-        rosetta_lua::converting() = nullptr;
-        rosetta_lua::assign_field(native->momentum, converted.get());
-        return 0;
-    });
-}
-int rosetta_lua_1608(lua_State* L) {
-    return rosetta_lua::boundary(L, [&]() -> int {
-        auto* native = rosetta_lua::native<datamunge::optim::NesterovAcceleratedGradientOptions>(L, 1);
-        rosetta_lua::result<decltype((native->max_iterations))>(L, native->max_iterations, 1, rosetta_lua::Return::automatic);
-        return 1;
-    });
-}
-int rosetta_lua_1609(lua_State* L) {
-    return rosetta_lua::boundary(L, [&]() -> int {
-        auto* native = rosetta_lua::native<datamunge::optim::NesterovAcceleratedGradientOptions>(L, 1);
-        using F = std::remove_cv_t<std::remove_reference_t<decltype(native->max_iterations)>>;
-        if constexpr (rosetta_lua::bound_v<F>) {
-            // obj.field.x = v assigns the modified field object to itself.
-            if (rosetta_lua::is_instance<F>(L, 2) && rosetta_lua::native<F>(L, 2) == &native->max_iterations) return 0;
-        }
-        rosetta_lua::converting() = "field 'max_iterations'";
-        rosetta_lua::Param<const F&> converted(L, 2);
-        rosetta_lua::converting() = nullptr;
-        rosetta_lua::assign_field(native->max_iterations, converted.get());
-        return 0;
-    });
-}
-int rosetta_lua_1610(lua_State* L) {
-    return rosetta_lua::boundary(L, [&]() -> int {
-        auto* native = rosetta_lua::native<datamunge::optim::NesterovAcceleratedGradientOptions>(L, 1);
-        rosetta_lua::result<decltype((native->tolerance))>(L, native->tolerance, 1, rosetta_lua::Return::automatic);
-        return 1;
-    });
-}
-int rosetta_lua_1611(lua_State* L) {
-    return rosetta_lua::boundary(L, [&]() -> int {
-        auto* native = rosetta_lua::native<datamunge::optim::NesterovAcceleratedGradientOptions>(L, 1);
-        using F = std::remove_cv_t<std::remove_reference_t<decltype(native->tolerance)>>;
-        if constexpr (rosetta_lua::bound_v<F>) {
-            // obj.field.x = v assigns the modified field object to itself.
-            if (rosetta_lua::is_instance<F>(L, 2) && rosetta_lua::native<F>(L, 2) == &native->tolerance) return 0;
-        }
-        rosetta_lua::converting() = "field 'tolerance'";
-        rosetta_lua::Param<const F&> converted(L, 2);
-        rosetta_lua::converting() = nullptr;
-        rosetta_lua::assign_field(native->tolerance, converted.get());
-        return 0;
-    });
-}
-int rosetta_lua_1612(lua_State* L) {
-    return rosetta_lua::boundary(L, [&]() -> int {
-        const bool subclass = rosetta_lua::subclass_call(L, 1); (void)subclass;
-        const int top = lua_gettop(L);
-        for (int pass = 1; pass < 2; ++pass) {
-            const bool strict = pass == 0; (void)strict;
-            {
-                const int raw = top - 1;
-                int given = raw; while (given > 0 && lua_isnil(L, 1 + given)) --given;
-                const int n = std::max(given, 0); (void)n;
-                if (raw >= 0 && given <= 0) {
-                    if (n == 0) {
-                        rosetta_lua::push_pointer(L, new datamunge::optim::NesterovAcceleratedGradientOptions(), &rosetta_lua::Info<datamunge::optim::NesterovAcceleratedGradientOptions>::value, rosetta_lua::Ownership::owned, 0);
-                        if (subclass) rosetta_lua::adopt_instance(L, -1, 1, nullptr);
-                        return 1;
-                    }
-                }
-            }
-        }
-        rosetta_lua::no_overload(L, "NesterovAcceleratedGradientOptions", "    NesterovAcceleratedGradientOptions()\n", 2);
-    });
-}
-int rosetta_lua_1616(lua_State* L) {
-    return rosetta_lua::boundary(L, [&]() -> int {
-        auto* native = rosetta_lua::native<datamunge::optim::NadamOptions>(L, 1);
-        rosetta_lua::result<decltype((native->step_size))>(L, native->step_size, 1, rosetta_lua::Return::automatic);
-        return 1;
-    });
-}
-int rosetta_lua_1617(lua_State* L) {
-    return rosetta_lua::boundary(L, [&]() -> int {
-        auto* native = rosetta_lua::native<datamunge::optim::NadamOptions>(L, 1);
-        using F = std::remove_cv_t<std::remove_reference_t<decltype(native->step_size)>>;
-        if constexpr (rosetta_lua::bound_v<F>) {
-            // obj.field.x = v assigns the modified field object to itself.
-            if (rosetta_lua::is_instance<F>(L, 2) && rosetta_lua::native<F>(L, 2) == &native->step_size) return 0;
-        }
-        rosetta_lua::converting() = "field 'step_size'";
-        rosetta_lua::Param<const F&> converted(L, 2);
-        rosetta_lua::converting() = nullptr;
-        rosetta_lua::assign_field(native->step_size, converted.get());
-        return 0;
-    });
-}
-int rosetta_lua_1618(lua_State* L) {
-    return rosetta_lua::boundary(L, [&]() -> int {
-        auto* native = rosetta_lua::native<datamunge::optim::NadamOptions>(L, 1);
-        rosetta_lua::result<decltype((native->beta1))>(L, native->beta1, 1, rosetta_lua::Return::automatic);
-        return 1;
-    });
-}
-int rosetta_lua_1619(lua_State* L) {
-    return rosetta_lua::boundary(L, [&]() -> int {
-        auto* native = rosetta_lua::native<datamunge::optim::NadamOptions>(L, 1);
-        using F = std::remove_cv_t<std::remove_reference_t<decltype(native->beta1)>>;
-        if constexpr (rosetta_lua::bound_v<F>) {
-            // obj.field.x = v assigns the modified field object to itself.
-            if (rosetta_lua::is_instance<F>(L, 2) && rosetta_lua::native<F>(L, 2) == &native->beta1) return 0;
-        }
-        rosetta_lua::converting() = "field 'beta1'";
-        rosetta_lua::Param<const F&> converted(L, 2);
-        rosetta_lua::converting() = nullptr;
-        rosetta_lua::assign_field(native->beta1, converted.get());
-        return 0;
-    });
-}
-int rosetta_lua_1620(lua_State* L) {
-    return rosetta_lua::boundary(L, [&]() -> int {
-        auto* native = rosetta_lua::native<datamunge::optim::NadamOptions>(L, 1);
-        rosetta_lua::result<decltype((native->beta2))>(L, native->beta2, 1, rosetta_lua::Return::automatic);
-        return 1;
-    });
-}
-int rosetta_lua_1621(lua_State* L) {
-    return rosetta_lua::boundary(L, [&]() -> int {
-        auto* native = rosetta_lua::native<datamunge::optim::NadamOptions>(L, 1);
-        using F = std::remove_cv_t<std::remove_reference_t<decltype(native->beta2)>>;
-        if constexpr (rosetta_lua::bound_v<F>) {
-            // obj.field.x = v assigns the modified field object to itself.
-            if (rosetta_lua::is_instance<F>(L, 2) && rosetta_lua::native<F>(L, 2) == &native->beta2) return 0;
-        }
-        rosetta_lua::converting() = "field 'beta2'";
-        rosetta_lua::Param<const F&> converted(L, 2);
-        rosetta_lua::converting() = nullptr;
-        rosetta_lua::assign_field(native->beta2, converted.get());
-        return 0;
-    });
-}
-int rosetta_lua_1622(lua_State* L) {
-    return rosetta_lua::boundary(L, [&]() -> int {
-        auto* native = rosetta_lua::native<datamunge::optim::NadamOptions>(L, 1);
-        rosetta_lua::result<decltype((native->epsilon))>(L, native->epsilon, 1, rosetta_lua::Return::automatic);
-        return 1;
-    });
-}
-int rosetta_lua_1623(lua_State* L) {
-    return rosetta_lua::boundary(L, [&]() -> int {
-        auto* native = rosetta_lua::native<datamunge::optim::NadamOptions>(L, 1);
-        using F = std::remove_cv_t<std::remove_reference_t<decltype(native->epsilon)>>;
-        if constexpr (rosetta_lua::bound_v<F>) {
-            // obj.field.x = v assigns the modified field object to itself.
-            if (rosetta_lua::is_instance<F>(L, 2) && rosetta_lua::native<F>(L, 2) == &native->epsilon) return 0;
-        }
-        rosetta_lua::converting() = "field 'epsilon'";
-        rosetta_lua::Param<const F&> converted(L, 2);
-        rosetta_lua::converting() = nullptr;
-        rosetta_lua::assign_field(native->epsilon, converted.get());
-        return 0;
-    });
-}
-int rosetta_lua_1624(lua_State* L) {
-    return rosetta_lua::boundary(L, [&]() -> int {
-        auto* native = rosetta_lua::native<datamunge::optim::NadamOptions>(L, 1);
-        rosetta_lua::result<decltype((native->max_iterations))>(L, native->max_iterations, 1, rosetta_lua::Return::automatic);
-        return 1;
-    });
-}
-int rosetta_lua_1625(lua_State* L) {
-    return rosetta_lua::boundary(L, [&]() -> int {
-        auto* native = rosetta_lua::native<datamunge::optim::NadamOptions>(L, 1);
-        using F = std::remove_cv_t<std::remove_reference_t<decltype(native->max_iterations)>>;
-        if constexpr (rosetta_lua::bound_v<F>) {
-            // obj.field.x = v assigns the modified field object to itself.
-            if (rosetta_lua::is_instance<F>(L, 2) && rosetta_lua::native<F>(L, 2) == &native->max_iterations) return 0;
-        }
-        rosetta_lua::converting() = "field 'max_iterations'";
-        rosetta_lua::Param<const F&> converted(L, 2);
-        rosetta_lua::converting() = nullptr;
-        rosetta_lua::assign_field(native->max_iterations, converted.get());
-        return 0;
-    });
-}
-int rosetta_lua_1626(lua_State* L) {
-    return rosetta_lua::boundary(L, [&]() -> int {
-        auto* native = rosetta_lua::native<datamunge::optim::NadamOptions>(L, 1);
-        rosetta_lua::result<decltype((native->tolerance))>(L, native->tolerance, 1, rosetta_lua::Return::automatic);
-        return 1;
-    });
-}
-int rosetta_lua_1627(lua_State* L) {
-    return rosetta_lua::boundary(L, [&]() -> int {
-        auto* native = rosetta_lua::native<datamunge::optim::NadamOptions>(L, 1);
-        using F = std::remove_cv_t<std::remove_reference_t<decltype(native->tolerance)>>;
-        if constexpr (rosetta_lua::bound_v<F>) {
-            // obj.field.x = v assigns the modified field object to itself.
-            if (rosetta_lua::is_instance<F>(L, 2) && rosetta_lua::native<F>(L, 2) == &native->tolerance) return 0;
-        }
-        rosetta_lua::converting() = "field 'tolerance'";
-        rosetta_lua::Param<const F&> converted(L, 2);
-        rosetta_lua::converting() = nullptr;
-        rosetta_lua::assign_field(native->tolerance, converted.get());
-        return 0;
-    });
-}
-int rosetta_lua_1628(lua_State* L) {
-    return rosetta_lua::boundary(L, [&]() -> int {
-        const bool subclass = rosetta_lua::subclass_call(L, 1); (void)subclass;
-        const int top = lua_gettop(L);
-        for (int pass = 1; pass < 2; ++pass) {
-            const bool strict = pass == 0; (void)strict;
-            {
-                const int raw = top - 1;
-                int given = raw; while (given > 0 && lua_isnil(L, 1 + given)) --given;
-                const int n = std::max(given, 0); (void)n;
-                if (raw >= 0 && given <= 0) {
-                    if (n == 0) {
-                        rosetta_lua::push_pointer(L, new datamunge::optim::NadamOptions(), &rosetta_lua::Info<datamunge::optim::NadamOptions>::value, rosetta_lua::Ownership::owned, 0);
-                        if (subclass) rosetta_lua::adopt_instance(L, -1, 1, nullptr);
-                        return 1;
-                    }
-                }
-            }
-        }
-        rosetta_lua::no_overload(L, "NadamOptions", "    NadamOptions()\n", 2);
-    });
-}
-int rosetta_lua_1730(lua_State* L) {
-    return rosetta_lua::boundary(L, [&]() -> int {
-        auto* native = rosetta_lua::native<datamunge::optim::SurrogatePrediction>(L, 1);
-        rosetta_lua::result<decltype((native->mean))>(L, native->mean, 1, rosetta_lua::Return::automatic);
-        return 1;
-    });
-}
-int rosetta_lua_1731(lua_State* L) {
-    return rosetta_lua::boundary(L, [&]() -> int {
-        auto* native = rosetta_lua::native<datamunge::optim::SurrogatePrediction>(L, 1);
-        using F = std::remove_cv_t<std::remove_reference_t<decltype(native->mean)>>;
-        if constexpr (rosetta_lua::bound_v<F>) {
-            // obj.field.x = v assigns the modified field object to itself.
-            if (rosetta_lua::is_instance<F>(L, 2) && rosetta_lua::native<F>(L, 2) == &native->mean) return 0;
-        }
-        rosetta_lua::converting() = "field 'mean'";
-        rosetta_lua::Param<const F&> converted(L, 2);
-        rosetta_lua::converting() = nullptr;
-        rosetta_lua::assign_field(native->mean, converted.get());
-        return 0;
-    });
-}
-int rosetta_lua_1732(lua_State* L) {
-    return rosetta_lua::boundary(L, [&]() -> int {
-        auto* native = rosetta_lua::native<datamunge::optim::SurrogatePrediction>(L, 1);
-        rosetta_lua::result<decltype((native->sd))>(L, native->sd, 1, rosetta_lua::Return::automatic);
-        return 1;
-    });
-}
-int rosetta_lua_1733(lua_State* L) {
-    return rosetta_lua::boundary(L, [&]() -> int {
-        auto* native = rosetta_lua::native<datamunge::optim::SurrogatePrediction>(L, 1);
-        using F = std::remove_cv_t<std::remove_reference_t<decltype(native->sd)>>;
-        if constexpr (rosetta_lua::bound_v<F>) {
-            // obj.field.x = v assigns the modified field object to itself.
-            if (rosetta_lua::is_instance<F>(L, 2) && rosetta_lua::native<F>(L, 2) == &native->sd) return 0;
-        }
-        rosetta_lua::converting() = "field 'sd'";
-        rosetta_lua::Param<const F&> converted(L, 2);
-        rosetta_lua::converting() = nullptr;
-        rosetta_lua::assign_field(native->sd, converted.get());
-        return 0;
-    });
-}
-int rosetta_lua_1734(lua_State* L) {
-    return rosetta_lua::boundary(L, [&]() -> int {
-        const bool subclass = rosetta_lua::subclass_call(L, 1); (void)subclass;
-        const int top = lua_gettop(L);
-        for (int pass = 1; pass < 2; ++pass) {
-            const bool strict = pass == 0; (void)strict;
-            {
-                const int raw = top - 1;
-                int given = raw; while (given > 0 && lua_isnil(L, 1 + given)) --given;
-                const int n = std::max(given, 0); (void)n;
-                if (raw >= 0 && given <= 0) {
-                    if (n == 0) {
-                        rosetta_lua::push_pointer(L, new datamunge::optim::SurrogatePrediction(), &rosetta_lua::Info<datamunge::optim::SurrogatePrediction>::value, rosetta_lua::Ownership::owned, 0);
-                        if (subclass) rosetta_lua::adopt_instance(L, -1, 1, nullptr);
-                        return 1;
-                    }
-                }
-            }
-        }
-        rosetta_lua::no_overload(L, "SurrogatePrediction", "    SurrogatePrediction()\n", 2);
-    });
-}
-int rosetta_lua_1758(lua_State* L) {
-    return rosetta_lua::boundary(L, [&]() -> int {
-        if (!rosetta_lua::is_instance<datamunge::optim::RBFGaussianProcessSurrogate>(L, 1)) rosetta_lua::fail("RBFGaussianProcessSurrogate.options: expected a RBFGaussianProcessSurrogate object as self; call it as object:options(...)");
-        const int top = lua_gettop(L);
-        for (int pass = 1; pass < 2; ++pass) {
-            const bool strict = pass == 0; (void)strict;
-            {
-                const int raw = top - 1;
-                int given = raw; while (given > 0 && lua_isnil(L, 1 + given)) --given;
-                const int n = std::max(given, 0); (void)n;
-                if (raw >= 0 && given <= 0) {
-                    auto* native = rosetta_lua::native<datamunge::optim::RBFGaussianProcessSurrogate>(L, 1);
-                    if (n == 0) {
-                        return rosetta_lua::call(L, [&]() -> decltype(auto) { return native->options(); }, 1, rosetta_lua::Return::automatic);
-                    }
-                }
-            }
-        }
-        rosetta_lua::no_overload(L, "options", "    options(): datamunge.GaussianProcessSurrogateOptions\n", 2);
-    });
-}
-int rosetta_lua_1759(lua_State* L) {
-    return rosetta_lua::boundary(L, [&]() -> int {
-        if (!rosetta_lua::is_instance<datamunge::optim::RBFGaussianProcessSurrogate>(L, 1)) rosetta_lua::fail("RBFGaussianProcessSurrogate.fit: expected a RBFGaussianProcessSurrogate object as self; call it as object:fit(...)");
-        const int top = lua_gettop(L);
-        for (int pass = 1; pass < 2; ++pass) {
-            const bool strict = pass == 0; (void)strict;
-            {
-                const int raw = top - 1;
-                int given = raw; while (given > 0 && lua_isnil(L, 1 + given)) --given;
-                const int n = std::max(given, 2); (void)n;
-                if (raw >= 2 && given <= 2) {
-                    auto* native = rosetta_lua::native<datamunge::optim::RBFGaussianProcessSurrogate>(L, 1);
-                    if (n == 2) {
                         rosetta_lua::converting() = "argument 'points'";
-                        rosetta_lua::Param<const std::vector<std::vector<double>> &> p0(L, 2);
-                        rosetta_lua::converting() = "argument 'values'";
-                        rosetta_lua::Param<const std::vector<double> &> p1(L, 3);
+                        rosetta_lua::Param<std::vector<datamunge::geometry::Point2D>> p0(L, 1);
                         rosetta_lua::converting() = nullptr;
-                        return rosetta_lua::call(L, [&]() -> decltype(auto) { if (rosetta_lua::is_director(L, 1)) { return native->datamunge::optim::RBFGaussianProcessSurrogate::fit(p0.get(), p1.get()); } return native->fit(p0.get(), p1.get()); }, 1, rosetta_lua::Return::automatic);
+                        return rosetta_lua::call(L, [&]() -> decltype(auto) { return ::datamunge::geometry::min_enclosing_circle(p0.get()); }, 0, rosetta_lua::Return::automatic);
                     }
                 }
             }
         }
-        rosetta_lua::no_overload(L, "fit", "    fit(points: number[][], values: number[])\n", 2);
+        rosetta_lua::no_overload(L, "min_enclosing_circle", "    min_enclosing_circle(points: datamunge.Point2D[]): datamunge.Circle\n", 1);
     });
 }
-int rosetta_lua_1760(lua_State* L) {
+int rosetta_lua_151(lua_State* L) {
     return rosetta_lua::boundary(L, [&]() -> int {
-        if (!rosetta_lua::is_instance<datamunge::optim::RBFGaussianProcessSurrogate>(L, 1)) rosetta_lua::fail("RBFGaussianProcessSurrogate.acquisition: expected a RBFGaussianProcessSurrogate object as self; call it as object:acquisition(...)");
+        const int top = lua_gettop(L);
+        for (int pass = 1; pass < 2; ++pass) {
+            const bool strict = pass == 0; (void)strict;
+            {
+                const int raw = top - 0;
+                int given = raw; while (given > 0 && lua_isnil(L, 0 + given)) --given;
+                const int n = std::max(given, 4); (void)n;
+                if (raw >= 4 && given <= 4) {
+                    if (n == 4) {
+                        rosetta_lua::converting() = "argument 'p1'";
+                        rosetta_lua::Param<const datamunge::geometry::Point2D &> p0(L, 1);
+                        rosetta_lua::converting() = "argument 'q1'";
+                        rosetta_lua::Param<const datamunge::geometry::Point2D &> p1(L, 2);
+                        rosetta_lua::converting() = "argument 'p2'";
+                        rosetta_lua::Param<const datamunge::geometry::Point2D &> p2(L, 3);
+                        rosetta_lua::converting() = "argument 'q2'";
+                        rosetta_lua::Param<const datamunge::geometry::Point2D &> p3(L, 4);
+                        rosetta_lua::converting() = nullptr;
+                        return rosetta_lua::call(L, [&]() -> decltype(auto) { return ::datamunge::geometry::segments_intersect(p0.get(), p1.get(), p2.get(), p3.get()); }, 0, rosetta_lua::Return::automatic);
+                    }
+                }
+            }
+        }
+        rosetta_lua::no_overload(L, "segments_intersect", "    segments_intersect(p1: datamunge.Point2D, q1: datamunge.Point2D, p2: datamunge.Point2D, q2: datamunge.Point2D): boolean\n", 1);
+    });
+}
+int rosetta_lua_170(lua_State* L) {
+    return rosetta_lua::boundary(L, [&]() -> int {
+        const int top = lua_gettop(L);
+        for (int pass = 1; pass < 2; ++pass) {
+            const bool strict = pass == 0; (void)strict;
+            {
+                const int raw = top - 0;
+                int given = raw; while (given > 0 && lua_isnil(L, 0 + given)) --given;
+                const int n = std::max(given, 5); (void)n;
+                if (raw >= 5 && given <= 6) {
+                    if (n == 5) {
+                        rosetta_lua::converting() = "argument 'img'";
+                        rosetta_lua::Param<datamunge::image::Image &> p0(L, 1);
+                        rosetta_lua::converting() = "argument 'cx'";
+                        rosetta_lua::Param<int> p1(L, 2);
+                        rosetta_lua::converting() = "argument 'cy'";
+                        rosetta_lua::Param<int> p2(L, 3);
+                        rosetta_lua::converting() = "argument 'radius'";
+                        rosetta_lua::Param<int> p3(L, 4);
+                        rosetta_lua::converting() = "argument 'color'";
+                        rosetta_lua::Param<const datamunge::image::Pixel &> p4(L, 5);
+                        rosetta_lua::converting() = nullptr;
+                        return rosetta_lua::call(L, [&]() -> decltype(auto) { return ::datamunge::image::draw_circle(p0.get(), p1.get(), p2.get(), p3.get(), p4.get()); }, 0, rosetta_lua::Return::automatic);
+                    }
+                    if (n == 6) {
+                        rosetta_lua::converting() = "argument 'img'";
+                        rosetta_lua::Param<datamunge::image::Image &> p0(L, 1);
+                        rosetta_lua::converting() = "argument 'cx'";
+                        rosetta_lua::Param<int> p1(L, 2);
+                        rosetta_lua::converting() = "argument 'cy'";
+                        rosetta_lua::Param<int> p2(L, 3);
+                        rosetta_lua::converting() = "argument 'radius'";
+                        rosetta_lua::Param<int> p3(L, 4);
+                        rosetta_lua::converting() = "argument 'color'";
+                        rosetta_lua::Param<const datamunge::image::Pixel &> p4(L, 5);
+                        rosetta_lua::converting() = "argument 'filled'";
+                        rosetta_lua::Param<bool> p5(L, 6);
+                        rosetta_lua::converting() = nullptr;
+                        return rosetta_lua::call(L, [&]() -> decltype(auto) { return ::datamunge::image::draw_circle(p0.get(), p1.get(), p2.get(), p3.get(), p4.get(), p5.get()); }, 0, rosetta_lua::Return::automatic);
+                    }
+                }
+            }
+        }
+        rosetta_lua::no_overload(L, "draw_circle", "    draw_circle(img: datamunge.Image, cx: integer, cy: integer, radius: integer, color: datamunge.Pixel, filled\?: boolean)\n", 1);
+    });
+}
+int rosetta_lua_178(lua_State* L) {
+    return rosetta_lua::boundary(L, [&]() -> int {
+        const int top = lua_gettop(L);
+        for (int pass = 1; pass < 2; ++pass) {
+            const bool strict = pass == 0; (void)strict;
+            {
+                const int raw = top - 0;
+                int given = raw; while (given > 0 && lua_isnil(L, 0 + given)) --given;
+                const int n = std::max(given, 1); (void)n;
+                if (raw >= 1 && given <= 1) {
+                    if (n == 1) {
+                        rosetta_lua::converting() = "argument 'path'";
+                        rosetta_lua::Param<const std::__cxx11::basic_string<char> &> p0(L, 1);
+                        rosetta_lua::converting() = nullptr;
+                        return rosetta_lua::call(L, [&]() -> decltype(auto) { return ::datamunge::image::read_png(p0.get()); }, 0, rosetta_lua::Return::automatic);
+                    }
+                }
+            }
+        }
+        rosetta_lua::no_overload(L, "read_png", "    read_png(path: string): datamunge.Image\n", 1);
+    });
+}
+int rosetta_lua_183(lua_State* L) {
+    return rosetta_lua::boundary(L, [&]() -> int {
+        const int top = lua_gettop(L);
+        for (int pass = 1; pass < 2; ++pass) {
+            const bool strict = pass == 0; (void)strict;
+            {
+                const int raw = top - 0;
+                int given = raw; while (given > 0 && lua_isnil(L, 0 + given)) --given;
+                const int n = std::max(given, 2); (void)n;
+                if (raw >= 2 && given <= 2) {
+                    if (n == 2) {
+                        rosetta_lua::converting() = "argument 'values'";
+                        rosetta_lua::Param<const std::vector<double> &> p0(L, 1);
+                        rosetta_lua::converting() = "argument 'group_sizes'";
+                        rosetta_lua::Param<const std::vector<unsigned long> &> p1(L, 2);
+                        rosetta_lua::converting() = nullptr;
+                        return rosetta_lua::call(L, [&]() -> decltype(auto) { return ::datamunge::stats::kruskal_wallis_test(p0.get(), p1.get()); }, 0, rosetta_lua::Return::automatic);
+                    }
+                }
+            }
+        }
+        rosetta_lua::no_overload(L, "kruskal_wallis_test", "    kruskal_wallis_test(values: number[], group_sizes: integer[]): datamunge.HypothesisTestResult\n", 1);
+    });
+}
+int rosetta_lua_218(lua_State* L) {
+    return rosetta_lua::boundary(L, [&]() -> int {
+        const int top = lua_gettop(L);
+        for (int pass = 1; pass < 2; ++pass) {
+            const bool strict = pass == 0; (void)strict;
+            {
+                const int raw = top - 0;
+                int given = raw; while (given > 0 && lua_isnil(L, 0 + given)) --given;
+                const int n = std::max(given, 0); (void)n;
+                if (raw >= 0 && given <= 0) {
+                    if (n == 0) {
+                        return rosetta_lua::call(L, [&]() -> decltype(auto) { return ::datamunge::data::wine(); }, 0, rosetta_lua::Return::automatic);
+                    }
+                }
+            }
+        }
+        rosetta_lua::no_overload(L, "wine", "    wine(): datamunge.DataFrame\?\n", 1);
+    });
+}
+int rosetta_lua_264(lua_State* L) {
+    return rosetta_lua::boundary(L, [&]() -> int {
+        if (!rosetta_lua::is_instance<datamunge::algebra::Polynomial>(L, 1)) rosetta_lua::fail("Polynomial.degree: expected a Polynomial object as self; call it as object:degree(...)");
         const int top = lua_gettop(L);
         for (int pass = 1; pass < 2; ++pass) {
             const bool strict = pass == 0; (void)strict;
             {
                 const int raw = top - 1;
                 int given = raw; while (given > 0 && lua_isnil(L, 1 + given)) --given;
-                const int n = std::max(given, 2); (void)n;
-                if (raw >= 2 && given <= 2) {
-                    auto* native = rosetta_lua::native<datamunge::optim::RBFGaussianProcessSurrogate>(L, 1);
-                    if (n == 2) {
-                        rosetta_lua::converting() = "argument 'point'";
-                        rosetta_lua::Param<const std::vector<double> &> p0(L, 2);
-                        rosetta_lua::converting() = "argument 'incumbent'";
-                        rosetta_lua::Param<double> p1(L, 3);
-                        rosetta_lua::converting() = nullptr;
-                        return rosetta_lua::call(L, [&]() -> decltype(auto) { if (rosetta_lua::is_director(L, 1)) { return native->datamunge::optim::RBFGaussianProcessSurrogate::acquisition(p0.get(), p1.get()); } return native->acquisition(p0.get(), p1.get()); }, 1, rosetta_lua::Return::automatic);
+                const int n = std::max(given, 0); (void)n;
+                if (raw >= 0 && given <= 0) {
+                    auto* native = rosetta_lua::native<datamunge::algebra::Polynomial>(L, 1);
+                    if (n == 0) {
+                        return rosetta_lua::call(L, [&]() -> decltype(auto) { return native->degree(); }, 1, rosetta_lua::Return::automatic);
                     }
                 }
             }
         }
-        rosetta_lua::no_overload(L, "acquisition", "    acquisition(point: number[], incumbent: number): number\n", 2);
+        rosetta_lua::no_overload(L, "degree", "    degree(): integer\n", 2);
     });
 }
-int rosetta_lua_1761(lua_State* L) {
+int rosetta_lua_265(lua_State* L) {
     return rosetta_lua::boundary(L, [&]() -> int {
-        if (!rosetta_lua::is_instance<datamunge::optim::RBFGaussianProcessSurrogate>(L, 1)) rosetta_lua::fail("RBFGaussianProcessSurrogate.predict: expected a RBFGaussianProcessSurrogate object as self; call it as object:predict(...)");
+        if (!rosetta_lua::is_instance<datamunge::algebra::Polynomial>(L, 1)) rosetta_lua::fail("Polynomial.is_zero: expected a Polynomial object as self; call it as object:is_zero(...)");
+        const int top = lua_gettop(L);
+        for (int pass = 1; pass < 2; ++pass) {
+            const bool strict = pass == 0; (void)strict;
+            {
+                const int raw = top - 1;
+                int given = raw; while (given > 0 && lua_isnil(L, 1 + given)) --given;
+                const int n = std::max(given, 0); (void)n;
+                if (raw >= 0 && given <= 0) {
+                    auto* native = rosetta_lua::native<datamunge::algebra::Polynomial>(L, 1);
+                    if (n == 0) {
+                        return rosetta_lua::call(L, [&]() -> decltype(auto) { return native->is_zero(); }, 1, rosetta_lua::Return::automatic);
+                    }
+                }
+            }
+        }
+        rosetta_lua::no_overload(L, "is_zero", "    is_zero(): boolean\n", 2);
+    });
+}
+int rosetta_lua_266(lua_State* L) {
+    return rosetta_lua::boundary(L, [&]() -> int {
+        if (!rosetta_lua::is_instance<datamunge::algebra::Polynomial>(L, 1)) rosetta_lua::fail("Polynomial.coefficient: expected a Polynomial object as self; call it as object:coefficient(...)");
         const int top = lua_gettop(L);
         for (int pass = 1; pass < 2; ++pass) {
             const bool strict = pass == 0; (void)strict;
@@ -3191,22 +2006,22 @@ int rosetta_lua_1761(lua_State* L) {
                 int given = raw; while (given > 0 && lua_isnil(L, 1 + given)) --given;
                 const int n = std::max(given, 1); (void)n;
                 if (raw >= 1 && given <= 1) {
-                    auto* native = rosetta_lua::native<datamunge::optim::RBFGaussianProcessSurrogate>(L, 1);
+                    auto* native = rosetta_lua::native<datamunge::algebra::Polynomial>(L, 1);
                     if (n == 1) {
-                        rosetta_lua::converting() = "argument 'point'";
-                        rosetta_lua::Param<const std::vector<double> &> p0(L, 2);
+                        rosetta_lua::converting() = "argument 'i'";
+                        rosetta_lua::Param<int> p0(L, 2);
                         rosetta_lua::converting() = nullptr;
-                        return rosetta_lua::call(L, [&]() -> decltype(auto) { return native->predict(p0.get()); }, 1, rosetta_lua::Return::automatic);
+                        return rosetta_lua::call(L, [&]() -> decltype(auto) { return native->coefficient(p0.get()); }, 1, rosetta_lua::Return::automatic);
                     }
                 }
             }
         }
-        rosetta_lua::no_overload(L, "predict", "    predict(point: number[]): datamunge.SurrogatePrediction\n", 2);
+        rosetta_lua::no_overload(L, "coefficient", "    coefficient(i: integer): number\n", 2);
     });
 }
-int rosetta_lua_1762(lua_State* L) {
+int rosetta_lua_267(lua_State* L) {
     return rosetta_lua::boundary(L, [&]() -> int {
-        if (!rosetta_lua::is_instance<datamunge::optim::RBFGaussianProcessSurrogate>(L, 1)) rosetta_lua::fail("RBFGaussianProcessSurrogate.log_marginal_likelihood: expected a RBFGaussianProcessSurrogate object as self; call it as object:log_marginal_likelihood(...)");
+        if (!rosetta_lua::is_instance<datamunge::algebra::Polynomial>(L, 1)) rosetta_lua::fail("Polynomial.coefficients: expected a Polynomial object as self; call it as object:coefficients(...)");
         const int top = lua_gettop(L);
         for (int pass = 1; pass < 2; ++pass) {
             const bool strict = pass == 0; (void)strict;
@@ -3215,19 +2030,43 @@ int rosetta_lua_1762(lua_State* L) {
                 int given = raw; while (given > 0 && lua_isnil(L, 1 + given)) --given;
                 const int n = std::max(given, 0); (void)n;
                 if (raw >= 0 && given <= 0) {
-                    auto* native = rosetta_lua::native<datamunge::optim::RBFGaussianProcessSurrogate>(L, 1);
+                    auto* native = rosetta_lua::native<datamunge::algebra::Polynomial>(L, 1);
                     if (n == 0) {
-                        return rosetta_lua::call(L, [&]() -> decltype(auto) { return native->log_marginal_likelihood(); }, 1, rosetta_lua::Return::automatic);
+                        return rosetta_lua::call(L, [&]() -> decltype(auto) { return native->coefficients(); }, 1, rosetta_lua::Return::automatic);
                     }
                 }
             }
         }
-        rosetta_lua::no_overload(L, "log_marginal_likelihood", "    log_marginal_likelihood(): number\n", 2);
+        rosetta_lua::no_overload(L, "coefficients", "    coefficients(): number[]\n", 2);
     });
 }
-int rosetta_lua_1763(lua_State* L) {
+int rosetta_lua_268(lua_State* L) {
     return rosetta_lua::boundary(L, [&]() -> int {
-        if (!rosetta_lua::is_instance<datamunge::optim::RBFGaussianProcessSurrogate>(L, 1)) rosetta_lua::fail("RBFGaussianProcessSurrogate.length_scale: expected a RBFGaussianProcessSurrogate object as self; call it as object:length_scale(...)");
+        if (!rosetta_lua::is_instance<datamunge::algebra::Polynomial>(L, 1)) rosetta_lua::fail("Polynomial.evaluate: expected a Polynomial object as self; call it as object:evaluate(...)");
+        const int top = lua_gettop(L);
+        for (int pass = 1; pass < 2; ++pass) {
+            const bool strict = pass == 0; (void)strict;
+            {
+                const int raw = top - 1;
+                int given = raw; while (given > 0 && lua_isnil(L, 1 + given)) --given;
+                const int n = std::max(given, 1); (void)n;
+                if (raw >= 1 && given <= 1) {
+                    auto* native = rosetta_lua::native<datamunge::algebra::Polynomial>(L, 1);
+                    if (n == 1) {
+                        rosetta_lua::converting() = "argument 'x'";
+                        rosetta_lua::Param<double> p0(L, 2);
+                        rosetta_lua::converting() = nullptr;
+                        return rosetta_lua::call(L, [&]() -> decltype(auto) { return native->evaluate(p0.get()); }, 1, rosetta_lua::Return::automatic);
+                    }
+                }
+            }
+        }
+        rosetta_lua::no_overload(L, "evaluate", "    evaluate(x: number): number\n", 2);
+    });
+}
+int rosetta_lua_269(lua_State* L) {
+    return rosetta_lua::boundary(L, [&]() -> int {
+        if (!rosetta_lua::is_instance<datamunge::algebra::Polynomial>(L, 1)) rosetta_lua::fail("Polynomial.derivative: expected a Polynomial object as self; call it as object:derivative(...)");
         const int top = lua_gettop(L);
         for (int pass = 1; pass < 2; ++pass) {
             const bool strict = pass == 0; (void)strict;
@@ -3236,19 +2075,19 @@ int rosetta_lua_1763(lua_State* L) {
                 int given = raw; while (given > 0 && lua_isnil(L, 1 + given)) --given;
                 const int n = std::max(given, 0); (void)n;
                 if (raw >= 0 && given <= 0) {
-                    auto* native = rosetta_lua::native<datamunge::optim::RBFGaussianProcessSurrogate>(L, 1);
+                    auto* native = rosetta_lua::native<datamunge::algebra::Polynomial>(L, 1);
                     if (n == 0) {
-                        return rosetta_lua::call(L, [&]() -> decltype(auto) { return native->length_scale(); }, 1, rosetta_lua::Return::automatic);
+                        return rosetta_lua::call(L, [&]() -> decltype(auto) { return native->derivative(); }, 1, rosetta_lua::Return::automatic);
                     }
                 }
             }
         }
-        rosetta_lua::no_overload(L, "length_scale", "    length_scale(): number\n", 2);
+        rosetta_lua::no_overload(L, "derivative", "    derivative(): datamunge.Polynomial\n", 2);
     });
 }
-int rosetta_lua_1764(lua_State* L) {
+int rosetta_lua_270(lua_State* L) {
     return rosetta_lua::boundary(L, [&]() -> int {
-        if (!rosetta_lua::is_instance<datamunge::optim::RBFGaussianProcessSurrogate>(L, 1)) rosetta_lua::fail("RBFGaussianProcessSurrogate.noise: expected a RBFGaussianProcessSurrogate object as self; call it as object:noise(...)");
+        if (!rosetta_lua::is_instance<datamunge::algebra::Polynomial>(L, 1)) rosetta_lua::fail("Polynomial.antiderivative: expected a Polynomial object as self; call it as object:antiderivative(...)");
         const int top = lua_gettop(L);
         for (int pass = 1; pass < 2; ++pass) {
             const bool strict = pass == 0; (void)strict;
@@ -3257,19 +2096,115 @@ int rosetta_lua_1764(lua_State* L) {
                 int given = raw; while (given > 0 && lua_isnil(L, 1 + given)) --given;
                 const int n = std::max(given, 0); (void)n;
                 if (raw >= 0 && given <= 0) {
-                    auto* native = rosetta_lua::native<datamunge::optim::RBFGaussianProcessSurrogate>(L, 1);
+                    auto* native = rosetta_lua::native<datamunge::algebra::Polynomial>(L, 1);
                     if (n == 0) {
-                        return rosetta_lua::call(L, [&]() -> decltype(auto) { return native->noise(); }, 1, rosetta_lua::Return::automatic);
+                        return rosetta_lua::call(L, [&]() -> decltype(auto) { return native->antiderivative(); }, 1, rosetta_lua::Return::automatic);
                     }
                 }
             }
         }
-        rosetta_lua::no_overload(L, "noise", "    noise(): number\n", 2);
+        rosetta_lua::no_overload(L, "antiderivative", "    antiderivative(): datamunge.Polynomial\n", 2);
     });
 }
-int rosetta_lua_1765(lua_State* L) {
+int rosetta_lua_271(lua_State* L) {
     return rosetta_lua::boundary(L, [&]() -> int {
-        if (!rosetta_lua::is_instance<datamunge::optim::RBFGaussianProcessSurrogate>(L, 1)) rosetta_lua::fail("RBFGaussianProcessSurrogate.signal_variance: expected a RBFGaussianProcessSurrogate object as self; call it as object:signal_variance(...)");
+        if (!rosetta_lua::is_instance<datamunge::algebra::Polynomial>(L, 1)) rosetta_lua::fail("Polynomial.add: expected a Polynomial object as self; call it as object:add(...)");
+        const int top = lua_gettop(L);
+        for (int pass = 1; pass < 2; ++pass) {
+            const bool strict = pass == 0; (void)strict;
+            {
+                const int raw = top - 1;
+                int given = raw; while (given > 0 && lua_isnil(L, 1 + given)) --given;
+                const int n = std::max(given, 1); (void)n;
+                if (raw >= 1 && given <= 1) {
+                    auto* native = rosetta_lua::native<datamunge::algebra::Polynomial>(L, 1);
+                    if (n == 1) {
+                        rosetta_lua::converting() = "argument 'other'";
+                        rosetta_lua::Param<const datamunge::algebra::Polynomial &> p0(L, 2);
+                        rosetta_lua::converting() = nullptr;
+                        return rosetta_lua::call(L, [&]() -> decltype(auto) { return native->add(p0.get()); }, 1, rosetta_lua::Return::automatic);
+                    }
+                }
+            }
+        }
+        rosetta_lua::no_overload(L, "add", "    add(other: datamunge.Polynomial): datamunge.Polynomial\n", 2);
+    });
+}
+int rosetta_lua_272(lua_State* L) {
+    return rosetta_lua::boundary(L, [&]() -> int {
+        if (!rosetta_lua::is_instance<datamunge::algebra::Polynomial>(L, 1)) rosetta_lua::fail("Polynomial.subtract: expected a Polynomial object as self; call it as object:subtract(...)");
+        const int top = lua_gettop(L);
+        for (int pass = 1; pass < 2; ++pass) {
+            const bool strict = pass == 0; (void)strict;
+            {
+                const int raw = top - 1;
+                int given = raw; while (given > 0 && lua_isnil(L, 1 + given)) --given;
+                const int n = std::max(given, 1); (void)n;
+                if (raw >= 1 && given <= 1) {
+                    auto* native = rosetta_lua::native<datamunge::algebra::Polynomial>(L, 1);
+                    if (n == 1) {
+                        rosetta_lua::converting() = "argument 'other'";
+                        rosetta_lua::Param<const datamunge::algebra::Polynomial &> p0(L, 2);
+                        rosetta_lua::converting() = nullptr;
+                        return rosetta_lua::call(L, [&]() -> decltype(auto) { return native->subtract(p0.get()); }, 1, rosetta_lua::Return::automatic);
+                    }
+                }
+            }
+        }
+        rosetta_lua::no_overload(L, "subtract", "    subtract(other: datamunge.Polynomial): datamunge.Polynomial\n", 2);
+    });
+}
+int rosetta_lua_273(lua_State* L) {
+    return rosetta_lua::boundary(L, [&]() -> int {
+        if (!rosetta_lua::is_instance<datamunge::algebra::Polynomial>(L, 1)) rosetta_lua::fail("Polynomial.multiply: expected a Polynomial object as self; call it as object:multiply(...)");
+        const int top = lua_gettop(L);
+        for (int pass = 1; pass < 2; ++pass) {
+            const bool strict = pass == 0; (void)strict;
+            {
+                const int raw = top - 1;
+                int given = raw; while (given > 0 && lua_isnil(L, 1 + given)) --given;
+                const int n = std::max(given, 1); (void)n;
+                if (raw >= 1 && given <= 1) {
+                    auto* native = rosetta_lua::native<datamunge::algebra::Polynomial>(L, 1);
+                    if (n == 1) {
+                        rosetta_lua::converting() = "argument 'other'";
+                        rosetta_lua::Param<const datamunge::algebra::Polynomial &> p0(L, 2);
+                        rosetta_lua::converting() = nullptr;
+                        return rosetta_lua::call(L, [&]() -> decltype(auto) { return native->multiply(p0.get()); }, 1, rosetta_lua::Return::automatic);
+                    }
+                }
+            }
+        }
+        rosetta_lua::no_overload(L, "multiply", "    multiply(other: datamunge.Polynomial): datamunge.Polynomial\n", 2);
+    });
+}
+int rosetta_lua_274(lua_State* L) {
+    return rosetta_lua::boundary(L, [&]() -> int {
+        if (!rosetta_lua::is_instance<datamunge::algebra::Polynomial>(L, 1)) rosetta_lua::fail("Polynomial.scale: expected a Polynomial object as self; call it as object:scale(...)");
+        const int top = lua_gettop(L);
+        for (int pass = 1; pass < 2; ++pass) {
+            const bool strict = pass == 0; (void)strict;
+            {
+                const int raw = top - 1;
+                int given = raw; while (given > 0 && lua_isnil(L, 1 + given)) --given;
+                const int n = std::max(given, 1); (void)n;
+                if (raw >= 1 && given <= 1) {
+                    auto* native = rosetta_lua::native<datamunge::algebra::Polynomial>(L, 1);
+                    if (n == 1) {
+                        rosetta_lua::converting() = "argument 'factor'";
+                        rosetta_lua::Param<double> p0(L, 2);
+                        rosetta_lua::converting() = nullptr;
+                        return rosetta_lua::call(L, [&]() -> decltype(auto) { return native->scale(p0.get()); }, 1, rosetta_lua::Return::automatic);
+                    }
+                }
+            }
+        }
+        rosetta_lua::no_overload(L, "scale", "    scale(factor: number): datamunge.Polynomial\n", 2);
+    });
+}
+int rosetta_lua_275(lua_State* L) {
+    return rosetta_lua::boundary(L, [&]() -> int {
+        if (!rosetta_lua::is_instance<datamunge::algebra::Polynomial>(L, 1)) rosetta_lua::fail("Polynomial.negate: expected a Polynomial object as self; call it as object:negate(...)");
         const int top = lua_gettop(L);
         for (int pass = 1; pass < 2; ++pass) {
             const bool strict = pass == 0; (void)strict;
@@ -3278,19 +2213,19 @@ int rosetta_lua_1765(lua_State* L) {
                 int given = raw; while (given > 0 && lua_isnil(L, 1 + given)) --given;
                 const int n = std::max(given, 0); (void)n;
                 if (raw >= 0 && given <= 0) {
-                    auto* native = rosetta_lua::native<datamunge::optim::RBFGaussianProcessSurrogate>(L, 1);
+                    auto* native = rosetta_lua::native<datamunge::algebra::Polynomial>(L, 1);
                     if (n == 0) {
-                        return rosetta_lua::call(L, [&]() -> decltype(auto) { return native->signal_variance(); }, 1, rosetta_lua::Return::automatic);
+                        return rosetta_lua::call(L, [&]() -> decltype(auto) { return native->negate(); }, 1, rosetta_lua::Return::automatic);
                     }
                 }
             }
         }
-        rosetta_lua::no_overload(L, "signal_variance", "    signal_variance(): number\n", 2);
+        rosetta_lua::no_overload(L, "negate", "    negate(): datamunge.Polynomial\n", 2);
     });
 }
-int rosetta_lua_1766(lua_State* L) {
+int rosetta_lua_276(lua_State* L) {
     return rosetta_lua::boundary(L, [&]() -> int {
-        if (!rosetta_lua::is_instance<datamunge::optim::RBFGaussianProcessSurrogate>(L, 1)) rosetta_lua::fail("RBFGaussianProcessSurrogate.prior_mean: expected a RBFGaussianProcessSurrogate object as self; call it as object:prior_mean(...)");
+        if (!rosetta_lua::is_instance<datamunge::algebra::Polynomial>(L, 1)) rosetta_lua::fail("Polynomial.to_string: expected a Polynomial object as self; call it as object:to_string(...)");
         const int top = lua_gettop(L);
         for (int pass = 1; pass < 2; ++pass) {
             const bool strict = pass == 0; (void)strict;
@@ -3299,19 +2234,19 @@ int rosetta_lua_1766(lua_State* L) {
                 int given = raw; while (given > 0 && lua_isnil(L, 1 + given)) --given;
                 const int n = std::max(given, 0); (void)n;
                 if (raw >= 0 && given <= 0) {
-                    auto* native = rosetta_lua::native<datamunge::optim::RBFGaussianProcessSurrogate>(L, 1);
+                    auto* native = rosetta_lua::native<datamunge::algebra::Polynomial>(L, 1);
                     if (n == 0) {
-                        return rosetta_lua::call(L, [&]() -> decltype(auto) { return native->prior_mean(); }, 1, rosetta_lua::Return::automatic);
+                        return rosetta_lua::call(L, [&]() -> decltype(auto) { return native->to_string(); }, 1, rosetta_lua::Return::automatic);
                     }
                 }
             }
         }
-        rosetta_lua::no_overload(L, "prior_mean", "    prior_mean(): number\n", 2);
+        rosetta_lua::no_overload(L, "to_string", "    to_string(): string\n", 2);
     });
 }
-int rosetta_lua_1767(lua_State* L) {
+int rosetta_lua_277(lua_State* L) {
     return rosetta_lua::boundary(L, [&]() -> int {
-        if (!rosetta_lua::is_instance<datamunge::optim::RBFGaussianProcessSurrogate>(L, 1)) rosetta_lua::fail("RBFGaussianProcessSurrogate.value_scale: expected a RBFGaussianProcessSurrogate object as self; call it as object:value_scale(...)");
+        if (!rosetta_lua::is_instance<datamunge::algebra::Polynomial>(L, 1)) rosetta_lua::fail("Polynomial.to_tex: expected a Polynomial object as self; call it as object:to_tex(...)");
         const int top = lua_gettop(L);
         for (int pass = 1; pass < 2; ++pass) {
             const bool strict = pass == 0; (void)strict;
@@ -3319,79 +2254,58 @@ int rosetta_lua_1767(lua_State* L) {
                 const int raw = top - 1;
                 int given = raw; while (given > 0 && lua_isnil(L, 1 + given)) --given;
                 const int n = std::max(given, 0); (void)n;
-                if (raw >= 0 && given <= 0) {
-                    auto* native = rosetta_lua::native<datamunge::optim::RBFGaussianProcessSurrogate>(L, 1);
+                if (raw >= 0 && given <= 2) {
+                    rosetta_lua::converting() = "self";
+                    rosetta_lua::Param<const datamunge::algebra::Polynomial &> self_param(L, 1);
+                    rosetta_lua::converting() = nullptr;
                     if (n == 0) {
-                        return rosetta_lua::call(L, [&]() -> decltype(auto) { return native->value_scale(); }, 1, rosetta_lua::Return::automatic);
+                        return rosetta_lua::call(L, [&]() -> decltype(auto) { return ::datamunge::lua_bindings::polynomial_to_tex(self_param.get()); }, 1, rosetta_lua::Return::automatic);
+                    }
+                    if (n == 1) {
+                        rosetta_lua::converting() = "argument 'variable'";
+                        rosetta_lua::Param<const std::__cxx11::basic_string<char> &> p0(L, 2);
+                        rosetta_lua::converting() = nullptr;
+                        return rosetta_lua::call(L, [&]() -> decltype(auto) { return ::datamunge::lua_bindings::polynomial_to_tex(self_param.get(), p0.get()); }, 1, rosetta_lua::Return::automatic);
+                    }
+                    if (n == 2) {
+                        rosetta_lua::converting() = "argument 'variable'";
+                        rosetta_lua::Param<const std::__cxx11::basic_string<char> &> p0(L, 2);
+                        rosetta_lua::converting() = "argument 'precision'";
+                        rosetta_lua::Param<int> p1(L, 3);
+                        rosetta_lua::converting() = nullptr;
+                        return rosetta_lua::call(L, [&]() -> decltype(auto) { return ::datamunge::lua_bindings::polynomial_to_tex(self_param.get(), p0.get(), p1.get()); }, 1, rosetta_lua::Return::automatic);
                     }
                 }
             }
         }
-        rosetta_lua::no_overload(L, "value_scale", "    value_scale(): number\n", 2);
+        rosetta_lua::no_overload(L, "to_tex", "    to_tex(variable\?: string, precision\?: integer): string\n", 2);
     });
 }
-int rosetta_lua_1768(lua_State* L) {
+int rosetta_lua_278(lua_State* L) {
     return rosetta_lua::boundary(L, [&]() -> int {
-        if (!rosetta_lua::is_instance<datamunge::optim::RBFGaussianProcessSurrogate>(L, 1)) rosetta_lua::fail("RBFGaussianProcessSurrogate.points: expected a RBFGaussianProcessSurrogate object as self; call it as object:points(...)");
         const int top = lua_gettop(L);
         for (int pass = 1; pass < 2; ++pass) {
             const bool strict = pass == 0; (void)strict;
             {
                 const int raw = top - 1;
                 int given = raw; while (given > 0 && lua_isnil(L, 1 + given)) --given;
-                const int n = std::max(given, 0); (void)n;
-                if (raw >= 0 && given <= 0) {
-                    auto* native = rosetta_lua::native<datamunge::optim::RBFGaussianProcessSurrogate>(L, 1);
-                    if (n == 0) {
-                        return rosetta_lua::call(L, [&]() -> decltype(auto) { return native->points(); }, 1, rosetta_lua::Return::automatic);
+                const int n = std::max(given, 1); (void)n;
+                if (raw >= 1 && given <= 1) {
+                    auto* native = rosetta_lua::native<datamunge::algebra::Polynomial>(L, 1);
+                    if (n == 1) {
+                        rosetta_lua::converting() = "argument 'other'";
+                        rosetta_lua::Param<const datamunge::algebra::Polynomial &> p0(L, 2);
+                        rosetta_lua::converting() = nullptr;
+                        return rosetta_lua::call(L, [&]() -> decltype(auto) { return native->operator==(p0.get()); }, 1, rosetta_lua::Return::automatic);
                     }
                 }
             }
         }
-        rosetta_lua::no_overload(L, "points", "    points(): number[][]\n", 2);
+        lua_pushboolean(L, 0);
+        return 1;
     });
 }
-int rosetta_lua_1769(lua_State* L) {
-    return rosetta_lua::boundary(L, [&]() -> int {
-        if (!rosetta_lua::is_instance<datamunge::optim::RBFGaussianProcessSurrogate>(L, 1)) rosetta_lua::fail("RBFGaussianProcessSurrogate.values: expected a RBFGaussianProcessSurrogate object as self; call it as object:values(...)");
-        const int top = lua_gettop(L);
-        for (int pass = 1; pass < 2; ++pass) {
-            const bool strict = pass == 0; (void)strict;
-            {
-                const int raw = top - 1;
-                int given = raw; while (given > 0 && lua_isnil(L, 1 + given)) --given;
-                const int n = std::max(given, 0); (void)n;
-                if (raw >= 0 && given <= 0) {
-                    auto* native = rosetta_lua::native<datamunge::optim::RBFGaussianProcessSurrogate>(L, 1);
-                    if (n == 0) {
-                        return rosetta_lua::call(L, [&]() -> decltype(auto) { return native->values(); }, 1, rosetta_lua::Return::automatic);
-                    }
-                }
-            }
-        }
-        rosetta_lua::no_overload(L, "values", "    values(): number[]\n", 2);
-    });
-}
-struct rosetta_director_datamunge__optim__RBFGaussianProcessSurrogate final : datamunge::optim::RBFGaussianProcessSurrogate, rosetta_lua::Director {
-    template<class... A> explicit rosetta_director_datamunge__optim__RBFGaussianProcessSurrogate(A&&... arguments) : datamunge::optim::RBFGaussianProcessSurrogate(std::forward<A>(arguments)...) {}
-    void fit(const std::vector<std::vector<double>> & a0, const std::vector<double> & a1) override {
-        if (rosetta_has_self()) {
-            lua_State* L = rosetta_thread();
-            if (rosetta_override(L, "fit"))
-                return rosetta_lua::invoke_override<void, const std::vector<std::vector<double>> &, const std::vector<double> &>(L, a0, a1);
-        }
-        return datamunge::optim::RBFGaussianProcessSurrogate::fit(a0, a1);
-    }
-    double acquisition(const std::vector<double> & a0, double a1) override {
-        if (rosetta_has_self()) {
-            lua_State* L = rosetta_thread();
-            if (rosetta_override(L, "acquisition"))
-                return rosetta_lua::invoke_override<double, const std::vector<double> &, double>(L, a0, std::move(a1));
-        }
-        return datamunge::optim::RBFGaussianProcessSurrogate::acquisition(a0, std::move(a1));
-    }
-};
-int rosetta_lua_1770(lua_State* L) {
+int rosetta_lua_279(lua_State* L) {
     return rosetta_lua::boundary(L, [&]() -> int {
         const bool subclass = rosetta_lua::subclass_call(L, 1); (void)subclass;
         const int top = lua_gettop(L);
@@ -3401,47 +2315,9 @@ int rosetta_lua_1770(lua_State* L) {
                 const int raw = top - 1;
                 int given = raw; while (given > 0 && lua_isnil(L, 1 + given)) --given;
                 const int n = std::max(given, 0); (void)n;
-                if (raw >= 0 && given <= 2
-                    && (n <= 0 || rosetta_lua::Param<double>::check(L, 2, strict))
-                    && (n <= 1 || rosetta_lua::Param<double>::check(L, 3, strict))) {
+                if (raw >= 0 && given <= 0) {
                     if (n == 0) {
-                        if (subclass) {
-                            auto* created = new rosetta_director_datamunge__optim__RBFGaussianProcessSurrogate();
-                            rosetta_lua::push_pointer(L, static_cast<datamunge::optim::RBFGaussianProcessSurrogate*>(created), &rosetta_lua::Info<datamunge::optim::RBFGaussianProcessSurrogate>::value, rosetta_lua::Ownership::owned, 0);
-                            rosetta_lua::adopt_instance(L, -1, 1, created);
-                            return 1;
-                        }
-                        rosetta_lua::push_pointer(L, new datamunge::optim::RBFGaussianProcessSurrogate(), &rosetta_lua::Info<datamunge::optim::RBFGaussianProcessSurrogate>::value, rosetta_lua::Ownership::owned, 0);
-                        if (subclass) rosetta_lua::adopt_instance(L, -1, 1, nullptr);
-                        return 1;
-                    }
-                    if (n == 1) {
-                        rosetta_lua::converting() = "argument 'length_scale'";
-                        rosetta_lua::Param<double> p0(L, 2);
-                        rosetta_lua::converting() = nullptr;
-                        if (subclass) {
-                            auto* created = new rosetta_director_datamunge__optim__RBFGaussianProcessSurrogate(p0.get());
-                            rosetta_lua::push_pointer(L, static_cast<datamunge::optim::RBFGaussianProcessSurrogate*>(created), &rosetta_lua::Info<datamunge::optim::RBFGaussianProcessSurrogate>::value, rosetta_lua::Ownership::owned, 0);
-                            rosetta_lua::adopt_instance(L, -1, 1, created);
-                            return 1;
-                        }
-                        rosetta_lua::push_pointer(L, new datamunge::optim::RBFGaussianProcessSurrogate(p0.get()), &rosetta_lua::Info<datamunge::optim::RBFGaussianProcessSurrogate>::value, rosetta_lua::Ownership::owned, 0);
-                        if (subclass) rosetta_lua::adopt_instance(L, -1, 1, nullptr);
-                        return 1;
-                    }
-                    if (n == 2) {
-                        rosetta_lua::converting() = "argument 'length_scale'";
-                        rosetta_lua::Param<double> p0(L, 2);
-                        rosetta_lua::converting() = "argument 'noise'";
-                        rosetta_lua::Param<double> p1(L, 3);
-                        rosetta_lua::converting() = nullptr;
-                        if (subclass) {
-                            auto* created = new rosetta_director_datamunge__optim__RBFGaussianProcessSurrogate(p0.get(), p1.get());
-                            rosetta_lua::push_pointer(L, static_cast<datamunge::optim::RBFGaussianProcessSurrogate*>(created), &rosetta_lua::Info<datamunge::optim::RBFGaussianProcessSurrogate>::value, rosetta_lua::Ownership::owned, 0);
-                            rosetta_lua::adopt_instance(L, -1, 1, created);
-                            return 1;
-                        }
-                        rosetta_lua::push_pointer(L, new datamunge::optim::RBFGaussianProcessSurrogate(p0.get(), p1.get()), &rosetta_lua::Info<datamunge::optim::RBFGaussianProcessSurrogate>::value, rosetta_lua::Ownership::owned, 0);
+                        rosetta_lua::push_pointer(L, new datamunge::algebra::Polynomial(), &rosetta_lua::Info<datamunge::algebra::Polynomial>::value, rosetta_lua::Ownership::owned, 0);
                         if (subclass) rosetta_lua::adopt_instance(L, -1, 1, nullptr);
                         return 1;
                     }
@@ -3452,77 +2328,104 @@ int rosetta_lua_1770(lua_State* L) {
                 int given = raw; while (given > 0 && lua_isnil(L, 1 + given)) --given;
                 const int n = std::max(given, 1); (void)n;
                 if (raw >= 1 && given <= 1
-                    && (n <= 0 || rosetta_lua::Param<const datamunge::optim::GaussianProcessSurrogateOptions &>::check(L, 2, strict))) {
+                    && (n <= 0 || rosetta_lua::Param<double>::check(L, 2, strict))) {
                     if (n == 1) {
-                        rosetta_lua::converting() = "argument 'options'";
-                        rosetta_lua::Param<const datamunge::optim::GaussianProcessSurrogateOptions &> p0(L, 2);
+                        rosetta_lua::converting() = "argument 'constant'";
+                        rosetta_lua::Param<double> p0(L, 2);
                         rosetta_lua::converting() = nullptr;
-                        if (subclass) {
-                            auto* created = new rosetta_director_datamunge__optim__RBFGaussianProcessSurrogate(p0.get());
-                            rosetta_lua::push_pointer(L, static_cast<datamunge::optim::RBFGaussianProcessSurrogate*>(created), &rosetta_lua::Info<datamunge::optim::RBFGaussianProcessSurrogate>::value, rosetta_lua::Ownership::owned, 0);
-                            rosetta_lua::adopt_instance(L, -1, 1, created);
-                            return 1;
-                        }
-                        rosetta_lua::push_pointer(L, new datamunge::optim::RBFGaussianProcessSurrogate(p0.get()), &rosetta_lua::Info<datamunge::optim::RBFGaussianProcessSurrogate>::value, rosetta_lua::Ownership::owned, 0);
+                        rosetta_lua::push_pointer(L, new datamunge::algebra::Polynomial(p0.get()), &rosetta_lua::Info<datamunge::algebra::Polynomial>::value, rosetta_lua::Ownership::owned, 0);
+                        if (subclass) rosetta_lua::adopt_instance(L, -1, 1, nullptr);
+                        return 1;
+                    }
+                }
+            }
+            {
+                const int raw = top - 1;
+                int given = raw; while (given > 0 && lua_isnil(L, 1 + given)) --given;
+                const int n = std::max(given, 1); (void)n;
+                if (raw >= 1 && given <= 1
+                    && (n <= 0 || rosetta_lua::Param<std::vector<double>>::check(L, 2, strict))) {
+                    if (n == 1) {
+                        rosetta_lua::converting() = "argument 'coeffs'";
+                        rosetta_lua::Param<std::vector<double>> p0(L, 2);
+                        rosetta_lua::converting() = nullptr;
+                        rosetta_lua::push_pointer(L, new datamunge::algebra::Polynomial(p0.get()), &rosetta_lua::Info<datamunge::algebra::Polynomial>::value, rosetta_lua::Ownership::owned, 0);
                         if (subclass) rosetta_lua::adopt_instance(L, -1, 1, nullptr);
                         return 1;
                     }
                 }
             }
         }
-        rosetta_lua::no_overload(L, "RBFGaussianProcessSurrogate", "    RBFGaussianProcessSurrogate(length_scale\?: number, noise\?: number)\n    RBFGaussianProcessSurrogate(options: datamunge.GaussianProcessSurrogateOptions)\n", 2);
+        rosetta_lua::no_overload(L, "Polynomial", "    Polynomial()\n    Polynomial(constant: number)\n    Polynomial(coeffs: number[])\n", 2);
     });
 }
-int rosetta_lua_1848(lua_State* L) {
+int rosetta_lua_280(lua_State* L) {
     return rosetta_lua::boundary(L, [&]() -> int {
-        if (!rosetta_lua::is_instance<datamunge::optim::TrustRegionNewton>(L, 1)) rosetta_lua::fail("TrustRegionNewton.optimize: expected a TrustRegionNewton object as self; call it as object:optimize(...)");
-        const int top = lua_gettop(L);
-        for (int pass = 1; pass < 2; ++pass) {
-            const bool strict = pass == 0; (void)strict;
-            {
-                const int raw = top - 1;
-                int given = raw; while (given > 0 && lua_isnil(L, 1 + given)) --given;
-                const int n = std::max(given, 2); (void)n;
-                if (raw >= 2 && given <= 2) {
-                    auto* native = rosetta_lua::native<datamunge::optim::TrustRegionNewton>(L, 1);
-                    if (n == 2) {
-                        rosetta_lua::converting() = "argument 'function'";
-                        rosetta_lua::Param<datamunge::optim::HessianFunction &> p0(L, 2);
-                        rosetta_lua::converting() = "argument 'coordinates'";
-                        rosetta_lua::Param<std::vector<double> &> p1(L, 3);
-                        rosetta_lua::converting() = nullptr;
-                        const int results = rosetta_lua::call(L, [&]() -> decltype(auto) { return native->optimize(p0.get(), p1.get()); }, 1, rosetta_lua::Return::automatic);
-                        p1.writeback(L, 3);
-                        return results;
-                    }
-                }
-            }
-        }
-        rosetta_lua::no_overload(L, "optimize", "    optimize(function: datamunge.HessianFunction, coordinates: number[]): number\n", 2);
+        auto* native = rosetta_lua::native<datamunge::algebra::PolyExtendedGcdResult>(L, 1);
+        rosetta_lua::result<decltype((native->gcd))>(L, native->gcd, 1, rosetta_lua::Return::automatic);
+        return 1;
     });
 }
-int rosetta_lua_1849(lua_State* L) {
+int rosetta_lua_281(lua_State* L) {
     return rosetta_lua::boundary(L, [&]() -> int {
-        if (!rosetta_lua::is_instance<datamunge::optim::TrustRegionNewton>(L, 1)) rosetta_lua::fail("TrustRegionNewton.options: expected a TrustRegionNewton object as self; call it as object:options(...)");
-        const int top = lua_gettop(L);
-        for (int pass = 1; pass < 2; ++pass) {
-            const bool strict = pass == 0; (void)strict;
-            {
-                const int raw = top - 1;
-                int given = raw; while (given > 0 && lua_isnil(L, 1 + given)) --given;
-                const int n = std::max(given, 0); (void)n;
-                if (raw >= 0 && given <= 0) {
-                    auto* native = rosetta_lua::native<datamunge::optim::TrustRegionNewton>(L, 1);
-                    if (n == 0) {
-                        return rosetta_lua::call(L, [&]() -> decltype(auto) { return native->options(); }, 1, rosetta_lua::Return::automatic);
-                    }
-                }
-            }
+        auto* native = rosetta_lua::native<datamunge::algebra::PolyExtendedGcdResult>(L, 1);
+        using F = std::remove_cv_t<std::remove_reference_t<decltype(native->gcd)>>;
+        if constexpr (rosetta_lua::bound_v<F>) {
+            // obj.field.x = v assigns the modified field object to itself.
+            if (rosetta_lua::is_instance<F>(L, 2) && rosetta_lua::native<F>(L, 2) == &native->gcd) return 0;
         }
-        rosetta_lua::no_overload(L, "options", "    options(): datamunge.TrustRegionNewtonOptions\n", 2);
+        rosetta_lua::converting() = "field 'gcd'";
+        rosetta_lua::Param<const F&> converted(L, 2);
+        rosetta_lua::converting() = nullptr;
+        rosetta_lua::assign_field(native->gcd, converted.get());
+        return 0;
     });
 }
-int rosetta_lua_1850(lua_State* L) {
+int rosetta_lua_282(lua_State* L) {
+    return rosetta_lua::boundary(L, [&]() -> int {
+        auto* native = rosetta_lua::native<datamunge::algebra::PolyExtendedGcdResult>(L, 1);
+        rosetta_lua::result<decltype((native->s))>(L, native->s, 1, rosetta_lua::Return::automatic);
+        return 1;
+    });
+}
+int rosetta_lua_283(lua_State* L) {
+    return rosetta_lua::boundary(L, [&]() -> int {
+        auto* native = rosetta_lua::native<datamunge::algebra::PolyExtendedGcdResult>(L, 1);
+        using F = std::remove_cv_t<std::remove_reference_t<decltype(native->s)>>;
+        if constexpr (rosetta_lua::bound_v<F>) {
+            // obj.field.x = v assigns the modified field object to itself.
+            if (rosetta_lua::is_instance<F>(L, 2) && rosetta_lua::native<F>(L, 2) == &native->s) return 0;
+        }
+        rosetta_lua::converting() = "field 's'";
+        rosetta_lua::Param<const F&> converted(L, 2);
+        rosetta_lua::converting() = nullptr;
+        rosetta_lua::assign_field(native->s, converted.get());
+        return 0;
+    });
+}
+int rosetta_lua_284(lua_State* L) {
+    return rosetta_lua::boundary(L, [&]() -> int {
+        auto* native = rosetta_lua::native<datamunge::algebra::PolyExtendedGcdResult>(L, 1);
+        rosetta_lua::result<decltype((native->t))>(L, native->t, 1, rosetta_lua::Return::automatic);
+        return 1;
+    });
+}
+int rosetta_lua_285(lua_State* L) {
+    return rosetta_lua::boundary(L, [&]() -> int {
+        auto* native = rosetta_lua::native<datamunge::algebra::PolyExtendedGcdResult>(L, 1);
+        using F = std::remove_cv_t<std::remove_reference_t<decltype(native->t)>>;
+        if constexpr (rosetta_lua::bound_v<F>) {
+            // obj.field.x = v assigns the modified field object to itself.
+            if (rosetta_lua::is_instance<F>(L, 2) && rosetta_lua::native<F>(L, 2) == &native->t) return 0;
+        }
+        rosetta_lua::converting() = "field 't'";
+        rosetta_lua::Param<const F&> converted(L, 2);
+        rosetta_lua::converting() = nullptr;
+        rosetta_lua::assign_field(native->t, converted.get());
+        return 0;
+    });
+}
+int rosetta_lua_286(lua_State* L) {
     return rosetta_lua::boundary(L, [&]() -> int {
         const bool subclass = rosetta_lua::subclass_call(L, 1); (void)subclass;
         const int top = lua_gettop(L);
@@ -3532,29 +2435,715 @@ int rosetta_lua_1850(lua_State* L) {
                 const int raw = top - 1;
                 int given = raw; while (given > 0 && lua_isnil(L, 1 + given)) --given;
                 const int n = std::max(given, 0); (void)n;
-                if (raw >= 0 && given <= 1) {
+                if (raw >= 0 && given <= 0) {
                     if (n == 0) {
-                        rosetta_lua::push_pointer(L, new datamunge::optim::TrustRegionNewton(), &rosetta_lua::Info<datamunge::optim::TrustRegionNewton>::value, rosetta_lua::Ownership::owned, 0);
-                        if (subclass) rosetta_lua::adopt_instance(L, -1, 1, nullptr);
-                        return 1;
-                    }
-                    if (n == 1) {
-                        rosetta_lua::converting() = "argument 'options'";
-                        rosetta_lua::Param<datamunge::optim::TrustRegionNewtonOptions> p0(L, 2);
-                        rosetta_lua::converting() = nullptr;
-                        rosetta_lua::push_pointer(L, new datamunge::optim::TrustRegionNewton(p0.get()), &rosetta_lua::Info<datamunge::optim::TrustRegionNewton>::value, rosetta_lua::Ownership::owned, 0);
+                        rosetta_lua::push_pointer(L, new datamunge::algebra::PolyExtendedGcdResult(), &rosetta_lua::Info<datamunge::algebra::PolyExtendedGcdResult>::value, rosetta_lua::Ownership::owned, 0);
                         if (subclass) rosetta_lua::adopt_instance(L, -1, 1, nullptr);
                         return 1;
                     }
                 }
             }
         }
-        rosetta_lua::no_overload(L, "TrustRegionNewton", "    TrustRegionNewton(options\?: datamunge.TrustRegionNewtonOptions)\n", 2);
+        rosetta_lua::no_overload(L, "PolyExtendedGcdResult", "    PolyExtendedGcdResult()\n", 2);
     });
 }
-int rosetta_lua_1862(lua_State* L) {
+int rosetta_lua_292(lua_State* L) {
     return rosetta_lua::boundary(L, [&]() -> int {
-        if (!rosetta_lua::is_instance<datamunge::optim::WhaleOptimization>(L, 1)) rosetta_lua::fail("WhaleOptimization.optimize: expected a WhaleOptimization object as self; call it as object:optimize(...)");
+        if (!rosetta_lua::is_instance<datamunge::algebra::Complex>(L, 1)) rosetta_lua::fail("Complex.modulus: expected a Complex object as self; call it as object:modulus(...)");
+        const int top = lua_gettop(L);
+        for (int pass = 1; pass < 2; ++pass) {
+            const bool strict = pass == 0; (void)strict;
+            {
+                const int raw = top - 1;
+                int given = raw; while (given > 0 && lua_isnil(L, 1 + given)) --given;
+                const int n = std::max(given, 0); (void)n;
+                if (raw >= 0 && given <= 0) {
+                    auto* native = rosetta_lua::native<datamunge::algebra::Complex>(L, 1);
+                    if (n == 0) {
+                        return rosetta_lua::call(L, [&]() -> decltype(auto) { return native->modulus(); }, 1, rosetta_lua::Return::automatic);
+                    }
+                }
+            }
+        }
+        rosetta_lua::no_overload(L, "modulus", "    modulus(): number\n", 2);
+    });
+}
+int rosetta_lua_293(lua_State* L) {
+    return rosetta_lua::boundary(L, [&]() -> int {
+        const int top = lua_gettop(L);
+        for (int pass = 1; pass < 2; ++pass) {
+            const bool strict = pass == 0; (void)strict;
+            {
+                const int raw = top - 1;
+                int given = raw; while (given > 0 && lua_isnil(L, 1 + given)) --given;
+                const int n = std::max(given, 1); (void)n;
+                if (raw >= 1 && given <= 1) {
+                    auto* native = rosetta_lua::native<datamunge::algebra::Complex>(L, 1);
+                    if (n == 1) {
+                        rosetta_lua::converting() = "argument 'other'";
+                        rosetta_lua::Param<const datamunge::algebra::Complex &> p0(L, 2);
+                        rosetta_lua::converting() = nullptr;
+                        return rosetta_lua::call(L, [&]() -> decltype(auto) { return native->operator==(p0.get()); }, 1, rosetta_lua::Return::automatic);
+                    }
+                }
+            }
+        }
+        lua_pushboolean(L, 0);
+        return 1;
+    });
+}
+int rosetta_lua_294(lua_State* L) {
+    return rosetta_lua::boundary(L, [&]() -> int {
+        auto* native = rosetta_lua::native<datamunge::algebra::Complex>(L, 1);
+        rosetta_lua::result<decltype((native->re))>(L, native->re, 1, rosetta_lua::Return::automatic);
+        return 1;
+    });
+}
+int rosetta_lua_295(lua_State* L) {
+    return rosetta_lua::boundary(L, [&]() -> int {
+        auto* native = rosetta_lua::native<datamunge::algebra::Complex>(L, 1);
+        using F = std::remove_cv_t<std::remove_reference_t<decltype(native->re)>>;
+        if constexpr (rosetta_lua::bound_v<F>) {
+            // obj.field.x = v assigns the modified field object to itself.
+            if (rosetta_lua::is_instance<F>(L, 2) && rosetta_lua::native<F>(L, 2) == &native->re) return 0;
+        }
+        rosetta_lua::converting() = "field 're'";
+        rosetta_lua::Param<const F&> converted(L, 2);
+        rosetta_lua::converting() = nullptr;
+        rosetta_lua::assign_field(native->re, converted.get());
+        return 0;
+    });
+}
+int rosetta_lua_296(lua_State* L) {
+    return rosetta_lua::boundary(L, [&]() -> int {
+        auto* native = rosetta_lua::native<datamunge::algebra::Complex>(L, 1);
+        rosetta_lua::result<decltype((native->im))>(L, native->im, 1, rosetta_lua::Return::automatic);
+        return 1;
+    });
+}
+int rosetta_lua_297(lua_State* L) {
+    return rosetta_lua::boundary(L, [&]() -> int {
+        auto* native = rosetta_lua::native<datamunge::algebra::Complex>(L, 1);
+        using F = std::remove_cv_t<std::remove_reference_t<decltype(native->im)>>;
+        if constexpr (rosetta_lua::bound_v<F>) {
+            // obj.field.x = v assigns the modified field object to itself.
+            if (rosetta_lua::is_instance<F>(L, 2) && rosetta_lua::native<F>(L, 2) == &native->im) return 0;
+        }
+        rosetta_lua::converting() = "field 'im'";
+        rosetta_lua::Param<const F&> converted(L, 2);
+        rosetta_lua::converting() = nullptr;
+        rosetta_lua::assign_field(native->im, converted.get());
+        return 0;
+    });
+}
+int rosetta_lua_298(lua_State* L) {
+    return rosetta_lua::boundary(L, [&]() -> int {
+        const bool subclass = rosetta_lua::subclass_call(L, 1); (void)subclass;
+        const int top = lua_gettop(L);
+        for (int pass = 1; pass < 2; ++pass) {
+            const bool strict = pass == 0; (void)strict;
+            {
+                const int raw = top - 1;
+                int given = raw; while (given > 0 && lua_isnil(L, 1 + given)) --given;
+                const int n = std::max(given, 0); (void)n;
+                if (raw >= 0 && given <= 0) {
+                    if (n == 0) {
+                        rosetta_lua::push_pointer(L, new datamunge::algebra::Complex(), &rosetta_lua::Info<datamunge::algebra::Complex>::value, rosetta_lua::Ownership::owned, 0);
+                        if (subclass) rosetta_lua::adopt_instance(L, -1, 1, nullptr);
+                        return 1;
+                    }
+                }
+            }
+        }
+        rosetta_lua::no_overload(L, "Complex", "    Complex()\n", 2);
+    });
+}
+int rosetta_lua_366(lua_State* L) {
+    return rosetta_lua::boundary(L, [&]() -> int {
+        if (!rosetta_lua::is_instance<datamunge::optim::HessianFunction>(L, 1)) rosetta_lua::fail("HessianFunction.hessian: expected a HessianFunction object as self; call it as object:hessian(...)");
+        const int top = lua_gettop(L);
+        for (int pass = 1; pass < 2; ++pass) {
+            const bool strict = pass == 0; (void)strict;
+            {
+                const int raw = top - 1;
+                int given = raw; while (given > 0 && lua_isnil(L, 1 + given)) --given;
+                const int n = std::max(given, 1); (void)n;
+                if (raw >= 1 && given <= 1) {
+                    auto* native = rosetta_lua::native<datamunge::optim::HessianFunction>(L, 1);
+                    if (n == 1) {
+                        rosetta_lua::converting() = "argument 'coordinates'";
+                        rosetta_lua::Param<const std::vector<double> &> p0(L, 2);
+                        rosetta_lua::converting() = nullptr;
+                        return rosetta_lua::call(L, [&]() -> decltype(auto) { if (rosetta_lua::is_director(L, 1)) { rosetta_lua::pure_virtual("datamunge::optim::HessianFunction::hessian"); } return native->hessian(p0.get()); }, 1, rosetta_lua::Return::automatic);
+                    }
+                }
+            }
+        }
+        rosetta_lua::no_overload(L, "hessian", "    hessian(coordinates: number[]): number[][]\n", 2);
+    });
+}
+struct rosetta_director_datamunge__optim__HessianFunction final : datamunge::optim::HessianFunction, rosetta_lua::Director {
+    template<class... A> explicit rosetta_director_datamunge__optim__HessianFunction(A&&... arguments) : datamunge::optim::HessianFunction(std::forward<A>(arguments)...) {}
+    std::vector<std::vector<double>> hessian(const std::vector<double> & a0) override {
+        if (rosetta_has_self()) {
+            lua_State* L = rosetta_thread();
+            if (rosetta_override(L, "hessian"))
+                return rosetta_lua::invoke_override<std::vector<std::vector<double>>, const std::vector<double> &>(L, a0);
+        }
+        rosetta_lua::pure_virtual("datamunge::optim::HessianFunction::hessian");
+    }
+    std::vector<double> gradient(const std::vector<double> & a0) override {
+        if (rosetta_has_self()) {
+            lua_State* L = rosetta_thread();
+            if (rosetta_override(L, "gradient"))
+                return rosetta_lua::invoke_override<std::vector<double>, const std::vector<double> &>(L, a0);
+        }
+        rosetta_lua::pure_virtual("datamunge::optim::HessianFunction::gradient");
+    }
+    double evaluate(const std::vector<double> & a0) override {
+        if (rosetta_has_self()) {
+            lua_State* L = rosetta_thread();
+            if (rosetta_override(L, "evaluate"))
+                return rosetta_lua::invoke_override<double, const std::vector<double> &>(L, a0);
+        }
+        rosetta_lua::pure_virtual("datamunge::optim::HessianFunction::evaluate");
+    }
+};
+int rosetta_lua_367(lua_State* L) {
+    return rosetta_lua::boundary(L, [&]() -> int {
+        const bool subclass = rosetta_lua::subclass_call(L, 1); (void)subclass;
+        const int top = lua_gettop(L);
+        for (int pass = 1; pass < 2; ++pass) {
+            const bool strict = pass == 0; (void)strict;
+            {
+                const int raw = top - 1;
+                int given = raw; while (given > 0 && lua_isnil(L, 1 + given)) --given;
+                const int n = std::max(given, 0); (void)n;
+                if (raw >= 0 && given <= 0) {
+                    if (n == 0) {
+                        if (subclass) {
+                            auto* created = new rosetta_director_datamunge__optim__HessianFunction();
+                            rosetta_lua::push_pointer(L, static_cast<datamunge::optim::HessianFunction*>(created), &rosetta_lua::Info<datamunge::optim::HessianFunction>::value, rosetta_lua::Ownership::owned, 0);
+                            rosetta_lua::adopt_instance(L, -1, 1, created);
+                            return 1;
+                        }
+                        rosetta_lua::fail("HessianFunction is abstract; implement it in Lua with HessianFunction:extend{...}");
+                    }
+                }
+            }
+        }
+        rosetta_lua::no_overload(L, "HessianFunction", "    HessianFunction()\n", 2);
+    });
+}
+int rosetta_lua_907(lua_State* L) {
+    return rosetta_lua::boundary(L, [&]() -> int {
+        if (!rosetta_lua::is_instance<datamunge::Callback>(L, 1)) rosetta_lua::fail("Callback.call: expected a Callback object as self; call it as object:call(...)");
+        const int top = lua_gettop(L);
+        for (int pass = 1; pass < 2; ++pass) {
+            const bool strict = pass == 0; (void)strict;
+            {
+                const int raw = top - 1;
+                int given = raw; while (given > 0 && lua_isnil(L, 1 + given)) --given;
+                const int n = std::max(given, 1); (void)n;
+                if (raw >= 1 && given <= 1) {
+                    auto* native = rosetta_lua::native<datamunge::Callback>(L, 1);
+                    if (n == 1) {
+                        rosetta_lua::converting() = "argument 'x'";
+                        rosetta_lua::Param<double> p0(L, 2);
+                        rosetta_lua::converting() = nullptr;
+                        return rosetta_lua::call(L, [&]() -> decltype(auto) { if (rosetta_lua::is_director(L, 1)) { return native->datamunge::Callback::call(p0.get()); } return native->call(p0.get()); }, 1, rosetta_lua::Return::automatic);
+                    }
+                }
+            }
+        }
+        rosetta_lua::no_overload(L, "call", "    call(x: number): number\n", 2);
+    });
+}
+struct rosetta_director_datamunge__Callback final : datamunge::Callback, rosetta_lua::Director {
+    template<class... A> explicit rosetta_director_datamunge__Callback(A&&... arguments) : datamunge::Callback(std::forward<A>(arguments)...) {}
+    double call(double a0) override {
+        if (rosetta_has_self()) {
+            lua_State* L = rosetta_thread();
+            if (rosetta_override(L, "call"))
+                return rosetta_lua::invoke_override<double, double>(L, std::move(a0));
+        }
+        return datamunge::Callback::call(std::move(a0));
+    }
+};
+int rosetta_lua_908(lua_State* L) {
+    return rosetta_lua::boundary(L, [&]() -> int {
+        const bool subclass = rosetta_lua::subclass_call(L, 1); (void)subclass;
+        const int top = lua_gettop(L);
+        for (int pass = 1; pass < 2; ++pass) {
+            const bool strict = pass == 0; (void)strict;
+            {
+                const int raw = top - 1;
+                int given = raw; while (given > 0 && lua_isnil(L, 1 + given)) --given;
+                const int n = std::max(given, 0); (void)n;
+                if (raw >= 0 && given <= 0) {
+                    if (n == 0) {
+                        if (subclass) {
+                            auto* created = new rosetta_director_datamunge__Callback();
+                            rosetta_lua::push_pointer(L, static_cast<datamunge::Callback*>(created), &rosetta_lua::Info<datamunge::Callback>::value, rosetta_lua::Ownership::owned, 0);
+                            rosetta_lua::adopt_instance(L, -1, 1, created);
+                            return 1;
+                        }
+                        rosetta_lua::push_pointer(L, new datamunge::Callback(), &rosetta_lua::Info<datamunge::Callback>::value, rosetta_lua::Ownership::owned, 0);
+                        if (subclass) rosetta_lua::adopt_instance(L, -1, 1, nullptr);
+                        return 1;
+                    }
+                }
+            }
+        }
+        rosetta_lua::no_overload(L, "Callback", "    Callback()\n", 2);
+    });
+}
+int rosetta_lua_918(lua_State* L) {
+    return rosetta_lua::boundary(L, [&]() -> int {
+        auto* native = rosetta_lua::native<datamunge::graphics::DataSeries>(L, 1);
+        rosetta_lua::result<decltype((native->kind))>(L, native->kind, 1, rosetta_lua::Return::automatic);
+        return 1;
+    });
+}
+int rosetta_lua_919(lua_State* L) {
+    return rosetta_lua::boundary(L, [&]() -> int {
+        auto* native = rosetta_lua::native<datamunge::graphics::DataSeries>(L, 1);
+        using F = std::remove_cv_t<std::remove_reference_t<decltype(native->kind)>>;
+        if constexpr (rosetta_lua::bound_v<F>) {
+            // obj.field.x = v assigns the modified field object to itself.
+            if (rosetta_lua::is_instance<F>(L, 2) && rosetta_lua::native<F>(L, 2) == &native->kind) return 0;
+        }
+        rosetta_lua::converting() = "field 'kind'";
+        rosetta_lua::Param<const F&> converted(L, 2);
+        rosetta_lua::converting() = nullptr;
+        rosetta_lua::assign_field(native->kind, converted.get());
+        return 0;
+    });
+}
+int rosetta_lua_920(lua_State* L) {
+    return rosetta_lua::boundary(L, [&]() -> int {
+        auto* native = rosetta_lua::native<datamunge::graphics::DataSeries>(L, 1);
+        rosetta_lua::result<decltype((native->x))>(L, native->x, 1, rosetta_lua::Return::automatic);
+        return 1;
+    });
+}
+int rosetta_lua_921(lua_State* L) {
+    return rosetta_lua::boundary(L, [&]() -> int {
+        auto* native = rosetta_lua::native<datamunge::graphics::DataSeries>(L, 1);
+        using F = std::remove_cv_t<std::remove_reference_t<decltype(native->x)>>;
+        if constexpr (rosetta_lua::bound_v<F>) {
+            // obj.field.x = v assigns the modified field object to itself.
+            if (rosetta_lua::is_instance<F>(L, 2) && rosetta_lua::native<F>(L, 2) == &native->x) return 0;
+        }
+        rosetta_lua::converting() = "field 'x'";
+        rosetta_lua::Param<const F&> converted(L, 2);
+        rosetta_lua::converting() = nullptr;
+        rosetta_lua::assign_field(native->x, converted.get());
+        return 0;
+    });
+}
+int rosetta_lua_922(lua_State* L) {
+    return rosetta_lua::boundary(L, [&]() -> int {
+        auto* native = rosetta_lua::native<datamunge::graphics::DataSeries>(L, 1);
+        rosetta_lua::result<decltype((native->y))>(L, native->y, 1, rosetta_lua::Return::automatic);
+        return 1;
+    });
+}
+int rosetta_lua_923(lua_State* L) {
+    return rosetta_lua::boundary(L, [&]() -> int {
+        auto* native = rosetta_lua::native<datamunge::graphics::DataSeries>(L, 1);
+        using F = std::remove_cv_t<std::remove_reference_t<decltype(native->y)>>;
+        if constexpr (rosetta_lua::bound_v<F>) {
+            // obj.field.x = v assigns the modified field object to itself.
+            if (rosetta_lua::is_instance<F>(L, 2) && rosetta_lua::native<F>(L, 2) == &native->y) return 0;
+        }
+        rosetta_lua::converting() = "field 'y'";
+        rosetta_lua::Param<const F&> converted(L, 2);
+        rosetta_lua::converting() = nullptr;
+        rosetta_lua::assign_field(native->y, converted.get());
+        return 0;
+    });
+}
+int rosetta_lua_924(lua_State* L) {
+    return rosetta_lua::boundary(L, [&]() -> int {
+        auto* native = rosetta_lua::native<datamunge::graphics::DataSeries>(L, 1);
+        rosetta_lua::result<decltype((native->label))>(L, native->label, 1, rosetta_lua::Return::automatic);
+        return 1;
+    });
+}
+int rosetta_lua_925(lua_State* L) {
+    return rosetta_lua::boundary(L, [&]() -> int {
+        auto* native = rosetta_lua::native<datamunge::graphics::DataSeries>(L, 1);
+        using F = std::remove_cv_t<std::remove_reference_t<decltype(native->label)>>;
+        if constexpr (rosetta_lua::bound_v<F>) {
+            // obj.field.x = v assigns the modified field object to itself.
+            if (rosetta_lua::is_instance<F>(L, 2) && rosetta_lua::native<F>(L, 2) == &native->label) return 0;
+        }
+        rosetta_lua::converting() = "field 'label'";
+        rosetta_lua::Param<const F&> converted(L, 2);
+        rosetta_lua::converting() = nullptr;
+        rosetta_lua::assign_field(native->label, converted.get());
+        return 0;
+    });
+}
+int rosetta_lua_926(lua_State* L) {
+    return rosetta_lua::boundary(L, [&]() -> int {
+        auto* native = rosetta_lua::native<datamunge::graphics::DataSeries>(L, 1);
+        rosetta_lua::result<decltype((native->color))>(L, native->color, 1, rosetta_lua::Return::automatic);
+        return 1;
+    });
+}
+int rosetta_lua_927(lua_State* L) {
+    return rosetta_lua::boundary(L, [&]() -> int {
+        auto* native = rosetta_lua::native<datamunge::graphics::DataSeries>(L, 1);
+        using F = std::remove_cv_t<std::remove_reference_t<decltype(native->color)>>;
+        if constexpr (rosetta_lua::bound_v<F>) {
+            // obj.field.x = v assigns the modified field object to itself.
+            if (rosetta_lua::is_instance<F>(L, 2) && rosetta_lua::native<F>(L, 2) == &native->color) return 0;
+        }
+        rosetta_lua::converting() = "field 'color'";
+        rosetta_lua::Param<const F&> converted(L, 2);
+        rosetta_lua::converting() = nullptr;
+        rosetta_lua::assign_field(native->color, converted.get());
+        return 0;
+    });
+}
+int rosetta_lua_928(lua_State* L) {
+    return rosetta_lua::boundary(L, [&]() -> int {
+        auto* native = rosetta_lua::native<datamunge::graphics::DataSeries>(L, 1);
+        rosetta_lua::result<decltype((native->stroke_width))>(L, native->stroke_width, 1, rosetta_lua::Return::automatic);
+        return 1;
+    });
+}
+int rosetta_lua_929(lua_State* L) {
+    return rosetta_lua::boundary(L, [&]() -> int {
+        auto* native = rosetta_lua::native<datamunge::graphics::DataSeries>(L, 1);
+        using F = std::remove_cv_t<std::remove_reference_t<decltype(native->stroke_width)>>;
+        if constexpr (rosetta_lua::bound_v<F>) {
+            // obj.field.x = v assigns the modified field object to itself.
+            if (rosetta_lua::is_instance<F>(L, 2) && rosetta_lua::native<F>(L, 2) == &native->stroke_width) return 0;
+        }
+        rosetta_lua::converting() = "field 'stroke_width'";
+        rosetta_lua::Param<const F&> converted(L, 2);
+        rosetta_lua::converting() = nullptr;
+        rosetta_lua::assign_field(native->stroke_width, converted.get());
+        return 0;
+    });
+}
+int rosetta_lua_930(lua_State* L) {
+    return rosetta_lua::boundary(L, [&]() -> int {
+        auto* native = rosetta_lua::native<datamunge::graphics::DataSeries>(L, 1);
+        rosetta_lua::result<decltype((native->marker_size))>(L, native->marker_size, 1, rosetta_lua::Return::automatic);
+        return 1;
+    });
+}
+int rosetta_lua_931(lua_State* L) {
+    return rosetta_lua::boundary(L, [&]() -> int {
+        auto* native = rosetta_lua::native<datamunge::graphics::DataSeries>(L, 1);
+        using F = std::remove_cv_t<std::remove_reference_t<decltype(native->marker_size)>>;
+        if constexpr (rosetta_lua::bound_v<F>) {
+            // obj.field.x = v assigns the modified field object to itself.
+            if (rosetta_lua::is_instance<F>(L, 2) && rosetta_lua::native<F>(L, 2) == &native->marker_size) return 0;
+        }
+        rosetta_lua::converting() = "field 'marker_size'";
+        rosetta_lua::Param<const F&> converted(L, 2);
+        rosetta_lua::converting() = nullptr;
+        rosetta_lua::assign_field(native->marker_size, converted.get());
+        return 0;
+    });
+}
+int rosetta_lua_932(lua_State* L) {
+    return rosetta_lua::boundary(L, [&]() -> int {
+        auto* native = rosetta_lua::native<datamunge::graphics::DataSeries>(L, 1);
+        rosetta_lua::result<decltype((native->bar_width))>(L, native->bar_width, 1, rosetta_lua::Return::automatic);
+        return 1;
+    });
+}
+int rosetta_lua_933(lua_State* L) {
+    return rosetta_lua::boundary(L, [&]() -> int {
+        auto* native = rosetta_lua::native<datamunge::graphics::DataSeries>(L, 1);
+        using F = std::remove_cv_t<std::remove_reference_t<decltype(native->bar_width)>>;
+        if constexpr (rosetta_lua::bound_v<F>) {
+            // obj.field.x = v assigns the modified field object to itself.
+            if (rosetta_lua::is_instance<F>(L, 2) && rosetta_lua::native<F>(L, 2) == &native->bar_width) return 0;
+        }
+        rosetta_lua::converting() = "field 'bar_width'";
+        rosetta_lua::Param<const F&> converted(L, 2);
+        rosetta_lua::converting() = nullptr;
+        rosetta_lua::assign_field(native->bar_width, converted.get());
+        return 0;
+    });
+}
+int rosetta_lua_934(lua_State* L) {
+    return rosetta_lua::boundary(L, [&]() -> int {
+        auto* native = rosetta_lua::native<datamunge::graphics::DataSeries>(L, 1);
+        rosetta_lua::result<decltype((native->filled))>(L, native->filled, 1, rosetta_lua::Return::automatic);
+        return 1;
+    });
+}
+int rosetta_lua_935(lua_State* L) {
+    return rosetta_lua::boundary(L, [&]() -> int {
+        auto* native = rosetta_lua::native<datamunge::graphics::DataSeries>(L, 1);
+        using F = std::remove_cv_t<std::remove_reference_t<decltype(native->filled)>>;
+        if constexpr (rosetta_lua::bound_v<F>) {
+            // obj.field.x = v assigns the modified field object to itself.
+            if (rosetta_lua::is_instance<F>(L, 2) && rosetta_lua::native<F>(L, 2) == &native->filled) return 0;
+        }
+        rosetta_lua::converting() = "field 'filled'";
+        rosetta_lua::Param<const F&> converted(L, 2);
+        rosetta_lua::converting() = nullptr;
+        rosetta_lua::assign_field(native->filled, converted.get());
+        return 0;
+    });
+}
+int rosetta_lua_936(lua_State* L) {
+    return rosetta_lua::boundary(L, [&]() -> int {
+        auto* native = rosetta_lua::native<datamunge::graphics::DataSeries>(L, 1);
+        rosetta_lua::result<decltype((native->point_colors))>(L, native->point_colors, 1, rosetta_lua::Return::automatic);
+        return 1;
+    });
+}
+int rosetta_lua_937(lua_State* L) {
+    return rosetta_lua::boundary(L, [&]() -> int {
+        auto* native = rosetta_lua::native<datamunge::graphics::DataSeries>(L, 1);
+        using F = std::remove_cv_t<std::remove_reference_t<decltype(native->point_colors)>>;
+        if constexpr (rosetta_lua::bound_v<F>) {
+            // obj.field.x = v assigns the modified field object to itself.
+            if (rosetta_lua::is_instance<F>(L, 2) && rosetta_lua::native<F>(L, 2) == &native->point_colors) return 0;
+        }
+        rosetta_lua::converting() = "field 'point_colors'";
+        rosetta_lua::Param<const F&> converted(L, 2);
+        rosetta_lua::converting() = nullptr;
+        rosetta_lua::assign_field(native->point_colors, converted.get());
+        return 0;
+    });
+}
+int rosetta_lua_938(lua_State* L) {
+    return rosetta_lua::boundary(L, [&]() -> int {
+        const bool subclass = rosetta_lua::subclass_call(L, 1); (void)subclass;
+        const int top = lua_gettop(L);
+        for (int pass = 1; pass < 2; ++pass) {
+            const bool strict = pass == 0; (void)strict;
+            {
+                const int raw = top - 1;
+                int given = raw; while (given > 0 && lua_isnil(L, 1 + given)) --given;
+                const int n = std::max(given, 0); (void)n;
+                if (raw >= 0 && given <= 0) {
+                    if (n == 0) {
+                        rosetta_lua::push_pointer(L, new datamunge::graphics::DataSeries(), &rosetta_lua::Info<datamunge::graphics::DataSeries>::value, rosetta_lua::Ownership::owned, 0);
+                        if (subclass) rosetta_lua::adopt_instance(L, -1, 1, nullptr);
+                        return 1;
+                    }
+                }
+            }
+        }
+        rosetta_lua::no_overload(L, "DataSeries", "    DataSeries()\n", 2);
+    });
+}
+int rosetta_lua_950(lua_State* L) {
+    return rosetta_lua::boundary(L, [&]() -> int {
+        auto* native = rosetta_lua::native<datamunge::graphics::LegendEntry>(L, 1);
+        rosetta_lua::result<decltype((native->label))>(L, native->label, 1, rosetta_lua::Return::automatic);
+        return 1;
+    });
+}
+int rosetta_lua_951(lua_State* L) {
+    return rosetta_lua::boundary(L, [&]() -> int {
+        auto* native = rosetta_lua::native<datamunge::graphics::LegendEntry>(L, 1);
+        using F = std::remove_cv_t<std::remove_reference_t<decltype(native->label)>>;
+        if constexpr (rosetta_lua::bound_v<F>) {
+            // obj.field.x = v assigns the modified field object to itself.
+            if (rosetta_lua::is_instance<F>(L, 2) && rosetta_lua::native<F>(L, 2) == &native->label) return 0;
+        }
+        rosetta_lua::converting() = "field 'label'";
+        rosetta_lua::Param<const F&> converted(L, 2);
+        rosetta_lua::converting() = nullptr;
+        rosetta_lua::assign_field(native->label, converted.get());
+        return 0;
+    });
+}
+int rosetta_lua_952(lua_State* L) {
+    return rosetta_lua::boundary(L, [&]() -> int {
+        auto* native = rosetta_lua::native<datamunge::graphics::LegendEntry>(L, 1);
+        rosetta_lua::result<decltype((native->color))>(L, native->color, 1, rosetta_lua::Return::automatic);
+        return 1;
+    });
+}
+int rosetta_lua_953(lua_State* L) {
+    return rosetta_lua::boundary(L, [&]() -> int {
+        auto* native = rosetta_lua::native<datamunge::graphics::LegendEntry>(L, 1);
+        using F = std::remove_cv_t<std::remove_reference_t<decltype(native->color)>>;
+        if constexpr (rosetta_lua::bound_v<F>) {
+            // obj.field.x = v assigns the modified field object to itself.
+            if (rosetta_lua::is_instance<F>(L, 2) && rosetta_lua::native<F>(L, 2) == &native->color) return 0;
+        }
+        rosetta_lua::converting() = "field 'color'";
+        rosetta_lua::Param<const F&> converted(L, 2);
+        rosetta_lua::converting() = nullptr;
+        rosetta_lua::assign_field(native->color, converted.get());
+        return 0;
+    });
+}
+int rosetta_lua_954(lua_State* L) {
+    return rosetta_lua::boundary(L, [&]() -> int {
+        const bool subclass = rosetta_lua::subclass_call(L, 1); (void)subclass;
+        const int top = lua_gettop(L);
+        for (int pass = 1; pass < 2; ++pass) {
+            const bool strict = pass == 0; (void)strict;
+            {
+                const int raw = top - 1;
+                int given = raw; while (given > 0 && lua_isnil(L, 1 + given)) --given;
+                const int n = std::max(given, 0); (void)n;
+                if (raw >= 0 && given <= 0) {
+                    if (n == 0) {
+                        rosetta_lua::push_pointer(L, new datamunge::graphics::LegendEntry(), &rosetta_lua::Info<datamunge::graphics::LegendEntry>::value, rosetta_lua::Ownership::owned, 0);
+                        if (subclass) rosetta_lua::adopt_instance(L, -1, 1, nullptr);
+                        return 1;
+                    }
+                }
+            }
+        }
+        rosetta_lua::no_overload(L, "LegendEntry", "    LegendEntry()\n", 2);
+    });
+}
+int rosetta_lua_1181(lua_State* L) {
+    return rosetta_lua::boundary(L, [&]() -> int {
+        if (!rosetta_lua::is_instance<datamunge::ode::ODESolution>(L, 1)) rosetta_lua::fail("ODESolution.size: expected a ODESolution object as self; call it as object:size(...)");
+        const int top = lua_gettop(L);
+        for (int pass = 1; pass < 2; ++pass) {
+            const bool strict = pass == 0; (void)strict;
+            {
+                const int raw = top - 1;
+                int given = raw; while (given > 0 && lua_isnil(L, 1 + given)) --given;
+                const int n = std::max(given, 0); (void)n;
+                if (raw >= 0 && given <= 0) {
+                    auto* native = rosetta_lua::native<datamunge::ode::ODESolution>(L, 1);
+                    if (n == 0) {
+                        return rosetta_lua::call(L, [&]() -> decltype(auto) { return native->size(); }, 1, rosetta_lua::Return::automatic);
+                    }
+                }
+            }
+        }
+        rosetta_lua::no_overload(L, "size", "    size(): integer\n", 2);
+    });
+}
+int rosetta_lua_1182(lua_State* L) {
+    return rosetta_lua::boundary(L, [&]() -> int {
+        if (!rosetta_lua::is_instance<datamunge::ode::ODESolution>(L, 1)) rosetta_lua::fail("ODESolution.time_at: expected a ODESolution object as self; call it as object:time_at(...)");
+        const int top = lua_gettop(L);
+        for (int pass = 1; pass < 2; ++pass) {
+            const bool strict = pass == 0; (void)strict;
+            {
+                const int raw = top - 1;
+                int given = raw; while (given > 0 && lua_isnil(L, 1 + given)) --given;
+                const int n = std::max(given, 1); (void)n;
+                if (raw >= 1 && given <= 1) {
+                    auto* native = rosetta_lua::native<datamunge::ode::ODESolution>(L, 1);
+                    if (n == 1) {
+                        rosetta_lua::converting() = "argument 'index'";
+                        rosetta_lua::Param<unsigned long> p0(L, 2);
+                        rosetta_lua::converting() = nullptr;
+                        return rosetta_lua::call(L, [&]() -> decltype(auto) { return native->time_at(p0.get()); }, 1, rosetta_lua::Return::automatic);
+                    }
+                }
+            }
+        }
+        rosetta_lua::no_overload(L, "time_at", "    time_at(index: integer): number\n", 2);
+    });
+}
+int rosetta_lua_1183(lua_State* L) {
+    return rosetta_lua::boundary(L, [&]() -> int {
+        if (!rosetta_lua::is_instance<datamunge::ode::ODESolution>(L, 1)) rosetta_lua::fail("ODESolution.state_at: expected a ODESolution object as self; call it as object:state_at(...)");
+        const int top = lua_gettop(L);
+        for (int pass = 1; pass < 2; ++pass) {
+            const bool strict = pass == 0; (void)strict;
+            {
+                const int raw = top - 1;
+                int given = raw; while (given > 0 && lua_isnil(L, 1 + given)) --given;
+                const int n = std::max(given, 1); (void)n;
+                if (raw >= 1 && given <= 1) {
+                    auto* native = rosetta_lua::native<datamunge::ode::ODESolution>(L, 1);
+                    if (n == 1) {
+                        rosetta_lua::converting() = "argument 'index'";
+                        rosetta_lua::Param<unsigned long> p0(L, 2);
+                        rosetta_lua::converting() = nullptr;
+                        return rosetta_lua::call(L, [&]() -> decltype(auto) { return native->state_at(p0.get()); }, 1, rosetta_lua::Return::automatic);
+                    }
+                }
+            }
+        }
+        rosetta_lua::no_overload(L, "state_at", "    state_at(index: integer): number[]\n", 2);
+    });
+}
+int rosetta_lua_1184(lua_State* L) {
+    return rosetta_lua::boundary(L, [&]() -> int {
+        auto* native = rosetta_lua::native<datamunge::ode::ODESolution>(L, 1);
+        rosetta_lua::result<decltype((native->steps_taken))>(L, native->steps_taken, 1, rosetta_lua::Return::automatic);
+        return 1;
+    });
+}
+int rosetta_lua_1185(lua_State* L) {
+    return rosetta_lua::boundary(L, [&]() -> int {
+        auto* native = rosetta_lua::native<datamunge::ode::ODESolution>(L, 1);
+        using F = std::remove_cv_t<std::remove_reference_t<decltype(native->steps_taken)>>;
+        if constexpr (rosetta_lua::bound_v<F>) {
+            // obj.field.x = v assigns the modified field object to itself.
+            if (rosetta_lua::is_instance<F>(L, 2) && rosetta_lua::native<F>(L, 2) == &native->steps_taken) return 0;
+        }
+        rosetta_lua::converting() = "field 'steps_taken'";
+        rosetta_lua::Param<const F&> converted(L, 2);
+        rosetta_lua::converting() = nullptr;
+        rosetta_lua::assign_field(native->steps_taken, converted.get());
+        return 0;
+    });
+}
+int rosetta_lua_1186(lua_State* L) {
+    return rosetta_lua::boundary(L, [&]() -> int {
+        auto* native = rosetta_lua::native<datamunge::ode::ODESolution>(L, 1);
+        rosetta_lua::result<decltype((native->function_evaluations))>(L, native->function_evaluations, 1, rosetta_lua::Return::automatic);
+        return 1;
+    });
+}
+int rosetta_lua_1187(lua_State* L) {
+    return rosetta_lua::boundary(L, [&]() -> int {
+        auto* native = rosetta_lua::native<datamunge::ode::ODESolution>(L, 1);
+        using F = std::remove_cv_t<std::remove_reference_t<decltype(native->function_evaluations)>>;
+        if constexpr (rosetta_lua::bound_v<F>) {
+            // obj.field.x = v assigns the modified field object to itself.
+            if (rosetta_lua::is_instance<F>(L, 2) && rosetta_lua::native<F>(L, 2) == &native->function_evaluations) return 0;
+        }
+        rosetta_lua::converting() = "field 'function_evaluations'";
+        rosetta_lua::Param<const F&> converted(L, 2);
+        rosetta_lua::converting() = nullptr;
+        rosetta_lua::assign_field(native->function_evaluations, converted.get());
+        return 0;
+    });
+}
+int rosetta_lua_1188(lua_State* L) {
+    return rosetta_lua::boundary(L, [&]() -> int {
+        const bool subclass = rosetta_lua::subclass_call(L, 1); (void)subclass;
+        const int top = lua_gettop(L);
+        for (int pass = 1; pass < 2; ++pass) {
+            const bool strict = pass == 0; (void)strict;
+            {
+                const int raw = top - 1;
+                int given = raw; while (given > 0 && lua_isnil(L, 1 + given)) --given;
+                const int n = std::max(given, 0); (void)n;
+                if (raw >= 0 && given <= 0) {
+                    if (n == 0) {
+                        rosetta_lua::push_pointer(L, new datamunge::ode::ODESolution(), &rosetta_lua::Info<datamunge::ode::ODESolution>::value, rosetta_lua::Ownership::owned, 0);
+                        if (subclass) rosetta_lua::adopt_instance(L, -1, 1, nullptr);
+                        return 1;
+                    }
+                }
+            }
+        }
+        rosetta_lua::no_overload(L, "ODESolution", "    ODESolution()\n", 2);
+    });
+}
+int rosetta_lua_1479(lua_State* L) {
+    return rosetta_lua::boundary(L, [&]() -> int {
+        if (!rosetta_lua::is_instance<datamunge::optim::FireflyAlgorithm>(L, 1)) rosetta_lua::fail("FireflyAlgorithm.optimize: expected a FireflyAlgorithm object as self; call it as object:optimize(...)");
         const int top = lua_gettop(L);
         for (int pass = 1; pass < 2; ++pass) {
             const bool strict = pass == 0; (void)strict;
@@ -3563,7 +3152,7 @@ int rosetta_lua_1862(lua_State* L) {
                 int given = raw; while (given > 0 && lua_isnil(L, 1 + given)) --given;
                 const int n = std::max(given, 4); (void)n;
                 if (raw >= 4 && given <= 4) {
-                    auto* native = rosetta_lua::native<datamunge::optim::WhaleOptimization>(L, 1);
+                    auto* native = rosetta_lua::native<datamunge::optim::FireflyAlgorithm>(L, 1);
                     if (n == 4) {
                         rosetta_lua::converting() = "argument 'function'";
                         rosetta_lua::Param<datamunge::optim::ArbitraryFunction &> p0(L, 2);
@@ -3584,9 +3173,9 @@ int rosetta_lua_1862(lua_State* L) {
         rosetta_lua::no_overload(L, "optimize", "    optimize(function: datamunge.ArbitraryFunction, coordinates: number[], lower_bound: number[], upper_bound: number[]): number\n", 2);
     });
 }
-int rosetta_lua_1863(lua_State* L) {
+int rosetta_lua_1480(lua_State* L) {
     return rosetta_lua::boundary(L, [&]() -> int {
-        if (!rosetta_lua::is_instance<datamunge::optim::WhaleOptimization>(L, 1)) rosetta_lua::fail("WhaleOptimization.options: expected a WhaleOptimization object as self; call it as object:options(...)");
+        if (!rosetta_lua::is_instance<datamunge::optim::FireflyAlgorithm>(L, 1)) rosetta_lua::fail("FireflyAlgorithm.options: expected a FireflyAlgorithm object as self; call it as object:options(...)");
         const int top = lua_gettop(L);
         for (int pass = 1; pass < 2; ++pass) {
             const bool strict = pass == 0; (void)strict;
@@ -3595,17 +3184,17 @@ int rosetta_lua_1863(lua_State* L) {
                 int given = raw; while (given > 0 && lua_isnil(L, 1 + given)) --given;
                 const int n = std::max(given, 0); (void)n;
                 if (raw >= 0 && given <= 0) {
-                    auto* native = rosetta_lua::native<datamunge::optim::WhaleOptimization>(L, 1);
+                    auto* native = rosetta_lua::native<datamunge::optim::FireflyAlgorithm>(L, 1);
                     if (n == 0) {
                         return rosetta_lua::call(L, [&]() -> decltype(auto) { return native->options(); }, 1, rosetta_lua::Return::automatic);
                     }
                 }
             }
         }
-        rosetta_lua::no_overload(L, "options", "    options(): datamunge.WhaleOptimizationOptions\n", 2);
+        rosetta_lua::no_overload(L, "options", "    options(): datamunge.FireflyAlgorithmOptions\n", 2);
     });
 }
-int rosetta_lua_1864(lua_State* L) {
+int rosetta_lua_1481(lua_State* L) {
     return rosetta_lua::boundary(L, [&]() -> int {
         const bool subclass = rosetta_lua::subclass_call(L, 1); (void)subclass;
         const int top = lua_gettop(L);
@@ -3617,22 +3206,752 @@ int rosetta_lua_1864(lua_State* L) {
                 const int n = std::max(given, 0); (void)n;
                 if (raw >= 0 && given <= 1) {
                     if (n == 0) {
-                        rosetta_lua::push_pointer(L, new datamunge::optim::WhaleOptimization(), &rosetta_lua::Info<datamunge::optim::WhaleOptimization>::value, rosetta_lua::Ownership::owned, 0);
+                        rosetta_lua::push_pointer(L, new datamunge::optim::FireflyAlgorithm(), &rosetta_lua::Info<datamunge::optim::FireflyAlgorithm>::value, rosetta_lua::Ownership::owned, 0);
                         if (subclass) rosetta_lua::adopt_instance(L, -1, 1, nullptr);
                         return 1;
                     }
                     if (n == 1) {
                         rosetta_lua::converting() = "argument 'options'";
-                        rosetta_lua::Param<datamunge::optim::WhaleOptimizationOptions> p0(L, 2);
+                        rosetta_lua::Param<datamunge::optim::FireflyAlgorithmOptions> p0(L, 2);
                         rosetta_lua::converting() = nullptr;
-                        rosetta_lua::push_pointer(L, new datamunge::optim::WhaleOptimization(p0.get()), &rosetta_lua::Info<datamunge::optim::WhaleOptimization>::value, rosetta_lua::Ownership::owned, 0);
+                        rosetta_lua::push_pointer(L, new datamunge::optim::FireflyAlgorithm(p0.get()), &rosetta_lua::Info<datamunge::optim::FireflyAlgorithm>::value, rosetta_lua::Ownership::owned, 0);
                         if (subclass) rosetta_lua::adopt_instance(L, -1, 1, nullptr);
                         return 1;
                     }
                 }
             }
         }
-        rosetta_lua::no_overload(L, "WhaleOptimization", "    WhaleOptimization(options\?: datamunge.WhaleOptimizationOptions)\n", 2);
+        rosetta_lua::no_overload(L, "FireflyAlgorithm", "    FireflyAlgorithm(options\?: datamunge.FireflyAlgorithmOptions)\n", 2);
+    });
+}
+int rosetta_lua_1489(lua_State* L) {
+    return rosetta_lua::boundary(L, [&]() -> int {
+        if (!rosetta_lua::is_instance<datamunge::optim::FISTA>(L, 1)) rosetta_lua::fail("FISTA.optimize: expected a FISTA object as self; call it as object:optimize(...)");
+        const int top = lua_gettop(L);
+        for (int pass = 1; pass < 2; ++pass) {
+            const bool strict = pass == 0; (void)strict;
+            {
+                const int raw = top - 1;
+                int given = raw; while (given > 0 && lua_isnil(L, 1 + given)) --given;
+                const int n = std::max(given, 2); (void)n;
+                if (raw >= 2 && given <= 2) {
+                    auto* native = rosetta_lua::native<datamunge::optim::FISTA>(L, 1);
+                    if (n == 2) {
+                        rosetta_lua::converting() = "argument 'function'";
+                        rosetta_lua::Param<datamunge::optim::ProximalFunction &> p0(L, 2);
+                        rosetta_lua::converting() = "argument 'coordinates'";
+                        rosetta_lua::Param<std::vector<double> &> p1(L, 3);
+                        rosetta_lua::converting() = nullptr;
+                        const int results = rosetta_lua::call(L, [&]() -> decltype(auto) { return native->optimize(p0.get(), p1.get()); }, 1, rosetta_lua::Return::automatic);
+                        p1.writeback(L, 3);
+                        return results;
+                    }
+                }
+            }
+        }
+        rosetta_lua::no_overload(L, "optimize", "    optimize(function: datamunge.ProximalFunction, coordinates: number[]): number\n", 2);
+    });
+}
+int rosetta_lua_1490(lua_State* L) {
+    return rosetta_lua::boundary(L, [&]() -> int {
+        if (!rosetta_lua::is_instance<datamunge::optim::FISTA>(L, 1)) rosetta_lua::fail("FISTA.options: expected a FISTA object as self; call it as object:options(...)");
+        const int top = lua_gettop(L);
+        for (int pass = 1; pass < 2; ++pass) {
+            const bool strict = pass == 0; (void)strict;
+            {
+                const int raw = top - 1;
+                int given = raw; while (given > 0 && lua_isnil(L, 1 + given)) --given;
+                const int n = std::max(given, 0); (void)n;
+                if (raw >= 0 && given <= 0) {
+                    auto* native = rosetta_lua::native<datamunge::optim::FISTA>(L, 1);
+                    if (n == 0) {
+                        return rosetta_lua::call(L, [&]() -> decltype(auto) { return native->options(); }, 1, rosetta_lua::Return::automatic);
+                    }
+                }
+            }
+        }
+        rosetta_lua::no_overload(L, "options", "    options(): datamunge.FISTAOptions\n", 2);
+    });
+}
+int rosetta_lua_1491(lua_State* L) {
+    return rosetta_lua::boundary(L, [&]() -> int {
+        const bool subclass = rosetta_lua::subclass_call(L, 1); (void)subclass;
+        const int top = lua_gettop(L);
+        for (int pass = 1; pass < 2; ++pass) {
+            const bool strict = pass == 0; (void)strict;
+            {
+                const int raw = top - 1;
+                int given = raw; while (given > 0 && lua_isnil(L, 1 + given)) --given;
+                const int n = std::max(given, 0); (void)n;
+                if (raw >= 0 && given <= 1) {
+                    if (n == 0) {
+                        rosetta_lua::push_pointer(L, new datamunge::optim::FISTA(), &rosetta_lua::Info<datamunge::optim::FISTA>::value, rosetta_lua::Ownership::owned, 0);
+                        if (subclass) rosetta_lua::adopt_instance(L, -1, 1, nullptr);
+                        return 1;
+                    }
+                    if (n == 1) {
+                        rosetta_lua::converting() = "argument 'options'";
+                        rosetta_lua::Param<datamunge::optim::FISTAOptions> p0(L, 2);
+                        rosetta_lua::converting() = nullptr;
+                        rosetta_lua::push_pointer(L, new datamunge::optim::FISTA(p0.get()), &rosetta_lua::Info<datamunge::optim::FISTA>::value, rosetta_lua::Ownership::owned, 0);
+                        if (subclass) rosetta_lua::adopt_instance(L, -1, 1, nullptr);
+                        return 1;
+                    }
+                }
+            }
+        }
+        rosetta_lua::no_overload(L, "FISTA", "    FISTA(options\?: datamunge.FISTAOptions)\n", 2);
+    });
+}
+int rosetta_lua_1675(lua_State* L) {
+    return rosetta_lua::boundary(L, [&]() -> int {
+        if (!rosetta_lua::is_instance<datamunge::optim::ParallelTempering>(L, 1)) rosetta_lua::fail("ParallelTempering.optimize: expected a ParallelTempering object as self; call it as object:optimize(...)");
+        const int top = lua_gettop(L);
+        for (int pass = 1; pass < 2; ++pass) {
+            const bool strict = pass == 0; (void)strict;
+            {
+                const int raw = top - 1;
+                int given = raw; while (given > 0 && lua_isnil(L, 1 + given)) --given;
+                const int n = std::max(given, 2); (void)n;
+                if (raw >= 2 && given <= 2) {
+                    auto* native = rosetta_lua::native<datamunge::optim::ParallelTempering>(L, 1);
+                    if (n == 2) {
+                        rosetta_lua::converting() = "argument 'function'";
+                        rosetta_lua::Param<datamunge::optim::ArbitraryFunction &> p0(L, 2);
+                        rosetta_lua::converting() = "argument 'coordinates'";
+                        rosetta_lua::Param<std::vector<double> &> p1(L, 3);
+                        rosetta_lua::converting() = nullptr;
+                        const int results = rosetta_lua::call(L, [&]() -> decltype(auto) { return native->optimize(p0.get(), p1.get()); }, 1, rosetta_lua::Return::automatic);
+                        p1.writeback(L, 3);
+                        return results;
+                    }
+                }
+            }
+        }
+        rosetta_lua::no_overload(L, "optimize", "    optimize(function: datamunge.ArbitraryFunction, coordinates: number[]): number\n", 2);
+    });
+}
+int rosetta_lua_1676(lua_State* L) {
+    return rosetta_lua::boundary(L, [&]() -> int {
+        if (!rosetta_lua::is_instance<datamunge::optim::ParallelTempering>(L, 1)) rosetta_lua::fail("ParallelTempering.options: expected a ParallelTempering object as self; call it as object:options(...)");
+        const int top = lua_gettop(L);
+        for (int pass = 1; pass < 2; ++pass) {
+            const bool strict = pass == 0; (void)strict;
+            {
+                const int raw = top - 1;
+                int given = raw; while (given > 0 && lua_isnil(L, 1 + given)) --given;
+                const int n = std::max(given, 0); (void)n;
+                if (raw >= 0 && given <= 0) {
+                    auto* native = rosetta_lua::native<datamunge::optim::ParallelTempering>(L, 1);
+                    if (n == 0) {
+                        return rosetta_lua::call(L, [&]() -> decltype(auto) { return native->options(); }, 1, rosetta_lua::Return::automatic);
+                    }
+                }
+            }
+        }
+        rosetta_lua::no_overload(L, "options", "    options(): datamunge.ParallelTemperingOptions\n", 2);
+    });
+}
+int rosetta_lua_1677(lua_State* L) {
+    return rosetta_lua::boundary(L, [&]() -> int {
+        const bool subclass = rosetta_lua::subclass_call(L, 1); (void)subclass;
+        const int top = lua_gettop(L);
+        for (int pass = 1; pass < 2; ++pass) {
+            const bool strict = pass == 0; (void)strict;
+            {
+                const int raw = top - 1;
+                int given = raw; while (given > 0 && lua_isnil(L, 1 + given)) --given;
+                const int n = std::max(given, 0); (void)n;
+                if (raw >= 0 && given <= 1) {
+                    if (n == 0) {
+                        rosetta_lua::push_pointer(L, new datamunge::optim::ParallelTempering(), &rosetta_lua::Info<datamunge::optim::ParallelTempering>::value, rosetta_lua::Ownership::owned, 0);
+                        if (subclass) rosetta_lua::adopt_instance(L, -1, 1, nullptr);
+                        return 1;
+                    }
+                    if (n == 1) {
+                        rosetta_lua::converting() = "argument 'options'";
+                        rosetta_lua::Param<datamunge::optim::ParallelTemperingOptions> p0(L, 2);
+                        rosetta_lua::converting() = nullptr;
+                        rosetta_lua::push_pointer(L, new datamunge::optim::ParallelTempering(p0.get()), &rosetta_lua::Info<datamunge::optim::ParallelTempering>::value, rosetta_lua::Ownership::owned, 0);
+                        if (subclass) rosetta_lua::adopt_instance(L, -1, 1, nullptr);
+                        return 1;
+                    }
+                }
+            }
+        }
+        rosetta_lua::no_overload(L, "ParallelTempering", "    ParallelTempering(options\?: datamunge.ParallelTemperingOptions)\n", 2);
+    });
+}
+int rosetta_lua_1789(lua_State* L) {
+    return rosetta_lua::boundary(L, [&]() -> int {
+        auto* native = rosetta_lua::native<datamunge::optim::SGDOptions>(L, 1);
+        rosetta_lua::result<decltype((native->step_size))>(L, native->step_size, 1, rosetta_lua::Return::automatic);
+        return 1;
+    });
+}
+int rosetta_lua_1790(lua_State* L) {
+    return rosetta_lua::boundary(L, [&]() -> int {
+        auto* native = rosetta_lua::native<datamunge::optim::SGDOptions>(L, 1);
+        using F = std::remove_cv_t<std::remove_reference_t<decltype(native->step_size)>>;
+        if constexpr (rosetta_lua::bound_v<F>) {
+            // obj.field.x = v assigns the modified field object to itself.
+            if (rosetta_lua::is_instance<F>(L, 2) && rosetta_lua::native<F>(L, 2) == &native->step_size) return 0;
+        }
+        rosetta_lua::converting() = "field 'step_size'";
+        rosetta_lua::Param<const F&> converted(L, 2);
+        rosetta_lua::converting() = nullptr;
+        rosetta_lua::assign_field(native->step_size, converted.get());
+        return 0;
+    });
+}
+int rosetta_lua_1791(lua_State* L) {
+    return rosetta_lua::boundary(L, [&]() -> int {
+        auto* native = rosetta_lua::native<datamunge::optim::SGDOptions>(L, 1);
+        rosetta_lua::result<decltype((native->max_epochs))>(L, native->max_epochs, 1, rosetta_lua::Return::automatic);
+        return 1;
+    });
+}
+int rosetta_lua_1792(lua_State* L) {
+    return rosetta_lua::boundary(L, [&]() -> int {
+        auto* native = rosetta_lua::native<datamunge::optim::SGDOptions>(L, 1);
+        using F = std::remove_cv_t<std::remove_reference_t<decltype(native->max_epochs)>>;
+        if constexpr (rosetta_lua::bound_v<F>) {
+            // obj.field.x = v assigns the modified field object to itself.
+            if (rosetta_lua::is_instance<F>(L, 2) && rosetta_lua::native<F>(L, 2) == &native->max_epochs) return 0;
+        }
+        rosetta_lua::converting() = "field 'max_epochs'";
+        rosetta_lua::Param<const F&> converted(L, 2);
+        rosetta_lua::converting() = nullptr;
+        rosetta_lua::assign_field(native->max_epochs, converted.get());
+        return 0;
+    });
+}
+int rosetta_lua_1793(lua_State* L) {
+    return rosetta_lua::boundary(L, [&]() -> int {
+        auto* native = rosetta_lua::native<datamunge::optim::SGDOptions>(L, 1);
+        rosetta_lua::result<decltype((native->batch_size))>(L, native->batch_size, 1, rosetta_lua::Return::automatic);
+        return 1;
+    });
+}
+int rosetta_lua_1794(lua_State* L) {
+    return rosetta_lua::boundary(L, [&]() -> int {
+        auto* native = rosetta_lua::native<datamunge::optim::SGDOptions>(L, 1);
+        using F = std::remove_cv_t<std::remove_reference_t<decltype(native->batch_size)>>;
+        if constexpr (rosetta_lua::bound_v<F>) {
+            // obj.field.x = v assigns the modified field object to itself.
+            if (rosetta_lua::is_instance<F>(L, 2) && rosetta_lua::native<F>(L, 2) == &native->batch_size) return 0;
+        }
+        rosetta_lua::converting() = "field 'batch_size'";
+        rosetta_lua::Param<const F&> converted(L, 2);
+        rosetta_lua::converting() = nullptr;
+        rosetta_lua::assign_field(native->batch_size, converted.get());
+        return 0;
+    });
+}
+int rosetta_lua_1795(lua_State* L) {
+    return rosetta_lua::boundary(L, [&]() -> int {
+        auto* native = rosetta_lua::native<datamunge::optim::SGDOptions>(L, 1);
+        rosetta_lua::result<decltype((native->tolerance))>(L, native->tolerance, 1, rosetta_lua::Return::automatic);
+        return 1;
+    });
+}
+int rosetta_lua_1796(lua_State* L) {
+    return rosetta_lua::boundary(L, [&]() -> int {
+        auto* native = rosetta_lua::native<datamunge::optim::SGDOptions>(L, 1);
+        using F = std::remove_cv_t<std::remove_reference_t<decltype(native->tolerance)>>;
+        if constexpr (rosetta_lua::bound_v<F>) {
+            // obj.field.x = v assigns the modified field object to itself.
+            if (rosetta_lua::is_instance<F>(L, 2) && rosetta_lua::native<F>(L, 2) == &native->tolerance) return 0;
+        }
+        rosetta_lua::converting() = "field 'tolerance'";
+        rosetta_lua::Param<const F&> converted(L, 2);
+        rosetta_lua::converting() = nullptr;
+        rosetta_lua::assign_field(native->tolerance, converted.get());
+        return 0;
+    });
+}
+int rosetta_lua_1797(lua_State* L) {
+    return rosetta_lua::boundary(L, [&]() -> int {
+        auto* native = rosetta_lua::native<datamunge::optim::SGDOptions>(L, 1);
+        rosetta_lua::result<decltype((native->shuffle))>(L, native->shuffle, 1, rosetta_lua::Return::automatic);
+        return 1;
+    });
+}
+int rosetta_lua_1798(lua_State* L) {
+    return rosetta_lua::boundary(L, [&]() -> int {
+        auto* native = rosetta_lua::native<datamunge::optim::SGDOptions>(L, 1);
+        using F = std::remove_cv_t<std::remove_reference_t<decltype(native->shuffle)>>;
+        if constexpr (rosetta_lua::bound_v<F>) {
+            // obj.field.x = v assigns the modified field object to itself.
+            if (rosetta_lua::is_instance<F>(L, 2) && rosetta_lua::native<F>(L, 2) == &native->shuffle) return 0;
+        }
+        rosetta_lua::converting() = "field 'shuffle'";
+        rosetta_lua::Param<const F&> converted(L, 2);
+        rosetta_lua::converting() = nullptr;
+        rosetta_lua::assign_field(native->shuffle, converted.get());
+        return 0;
+    });
+}
+int rosetta_lua_1799(lua_State* L) {
+    return rosetta_lua::boundary(L, [&]() -> int {
+        auto* native = rosetta_lua::native<datamunge::optim::SGDOptions>(L, 1);
+        rosetta_lua::result<decltype((native->seed))>(L, native->seed, 1, rosetta_lua::Return::automatic);
+        return 1;
+    });
+}
+int rosetta_lua_1800(lua_State* L) {
+    return rosetta_lua::boundary(L, [&]() -> int {
+        auto* native = rosetta_lua::native<datamunge::optim::SGDOptions>(L, 1);
+        using F = std::remove_cv_t<std::remove_reference_t<decltype(native->seed)>>;
+        if constexpr (rosetta_lua::bound_v<F>) {
+            // obj.field.x = v assigns the modified field object to itself.
+            if (rosetta_lua::is_instance<F>(L, 2) && rosetta_lua::native<F>(L, 2) == &native->seed) return 0;
+        }
+        rosetta_lua::converting() = "field 'seed'";
+        rosetta_lua::Param<const F&> converted(L, 2);
+        rosetta_lua::converting() = nullptr;
+        rosetta_lua::assign_field(native->seed, converted.get());
+        return 0;
+    });
+}
+int rosetta_lua_1801(lua_State* L) {
+    return rosetta_lua::boundary(L, [&]() -> int {
+        const bool subclass = rosetta_lua::subclass_call(L, 1); (void)subclass;
+        const int top = lua_gettop(L);
+        for (int pass = 1; pass < 2; ++pass) {
+            const bool strict = pass == 0; (void)strict;
+            {
+                const int raw = top - 1;
+                int given = raw; while (given > 0 && lua_isnil(L, 1 + given)) --given;
+                const int n = std::max(given, 0); (void)n;
+                if (raw >= 0 && given <= 0) {
+                    if (n == 0) {
+                        rosetta_lua::push_pointer(L, new datamunge::optim::SGDOptions(), &rosetta_lua::Info<datamunge::optim::SGDOptions>::value, rosetta_lua::Ownership::owned, 0);
+                        if (subclass) rosetta_lua::adopt_instance(L, -1, 1, nullptr);
+                        return 1;
+                    }
+                }
+            }
+        }
+        rosetta_lua::no_overload(L, "SGDOptions", "    SGDOptions()\n", 2);
+    });
+}
+int rosetta_lua_1957(lua_State* L) {
+    return rosetta_lua::boundary(L, [&]() -> int {
+        auto* native = rosetta_lua::native<datamunge::stats::KendallTau>(L, 1);
+        rosetta_lua::result<decltype((native->concordant))>(L, native->concordant, 1, rosetta_lua::Return::automatic);
+        return 1;
+    });
+}
+int rosetta_lua_1958(lua_State* L) {
+    return rosetta_lua::boundary(L, [&]() -> int {
+        auto* native = rosetta_lua::native<datamunge::stats::KendallTau>(L, 1);
+        using F = std::remove_cv_t<std::remove_reference_t<decltype(native->concordant)>>;
+        if constexpr (rosetta_lua::bound_v<F>) {
+            // obj.field.x = v assigns the modified field object to itself.
+            if (rosetta_lua::is_instance<F>(L, 2) && rosetta_lua::native<F>(L, 2) == &native->concordant) return 0;
+        }
+        rosetta_lua::converting() = "field 'concordant'";
+        rosetta_lua::Param<const F&> converted(L, 2);
+        rosetta_lua::converting() = nullptr;
+        rosetta_lua::assign_field(native->concordant, converted.get());
+        return 0;
+    });
+}
+int rosetta_lua_1959(lua_State* L) {
+    return rosetta_lua::boundary(L, [&]() -> int {
+        auto* native = rosetta_lua::native<datamunge::stats::KendallTau>(L, 1);
+        rosetta_lua::result<decltype((native->discordant))>(L, native->discordant, 1, rosetta_lua::Return::automatic);
+        return 1;
+    });
+}
+int rosetta_lua_1960(lua_State* L) {
+    return rosetta_lua::boundary(L, [&]() -> int {
+        auto* native = rosetta_lua::native<datamunge::stats::KendallTau>(L, 1);
+        using F = std::remove_cv_t<std::remove_reference_t<decltype(native->discordant)>>;
+        if constexpr (rosetta_lua::bound_v<F>) {
+            // obj.field.x = v assigns the modified field object to itself.
+            if (rosetta_lua::is_instance<F>(L, 2) && rosetta_lua::native<F>(L, 2) == &native->discordant) return 0;
+        }
+        rosetta_lua::converting() = "field 'discordant'";
+        rosetta_lua::Param<const F&> converted(L, 2);
+        rosetta_lua::converting() = nullptr;
+        rosetta_lua::assign_field(native->discordant, converted.get());
+        return 0;
+    });
+}
+int rosetta_lua_1961(lua_State* L) {
+    return rosetta_lua::boundary(L, [&]() -> int {
+        auto* native = rosetta_lua::native<datamunge::stats::KendallTau>(L, 1);
+        rosetta_lua::result<decltype((native->ties_x))>(L, native->ties_x, 1, rosetta_lua::Return::automatic);
+        return 1;
+    });
+}
+int rosetta_lua_1962(lua_State* L) {
+    return rosetta_lua::boundary(L, [&]() -> int {
+        auto* native = rosetta_lua::native<datamunge::stats::KendallTau>(L, 1);
+        using F = std::remove_cv_t<std::remove_reference_t<decltype(native->ties_x)>>;
+        if constexpr (rosetta_lua::bound_v<F>) {
+            // obj.field.x = v assigns the modified field object to itself.
+            if (rosetta_lua::is_instance<F>(L, 2) && rosetta_lua::native<F>(L, 2) == &native->ties_x) return 0;
+        }
+        rosetta_lua::converting() = "field 'ties_x'";
+        rosetta_lua::Param<const F&> converted(L, 2);
+        rosetta_lua::converting() = nullptr;
+        rosetta_lua::assign_field(native->ties_x, converted.get());
+        return 0;
+    });
+}
+int rosetta_lua_1963(lua_State* L) {
+    return rosetta_lua::boundary(L, [&]() -> int {
+        auto* native = rosetta_lua::native<datamunge::stats::KendallTau>(L, 1);
+        rosetta_lua::result<decltype((native->ties_y))>(L, native->ties_y, 1, rosetta_lua::Return::automatic);
+        return 1;
+    });
+}
+int rosetta_lua_1964(lua_State* L) {
+    return rosetta_lua::boundary(L, [&]() -> int {
+        auto* native = rosetta_lua::native<datamunge::stats::KendallTau>(L, 1);
+        using F = std::remove_cv_t<std::remove_reference_t<decltype(native->ties_y)>>;
+        if constexpr (rosetta_lua::bound_v<F>) {
+            // obj.field.x = v assigns the modified field object to itself.
+            if (rosetta_lua::is_instance<F>(L, 2) && rosetta_lua::native<F>(L, 2) == &native->ties_y) return 0;
+        }
+        rosetta_lua::converting() = "field 'ties_y'";
+        rosetta_lua::Param<const F&> converted(L, 2);
+        rosetta_lua::converting() = nullptr;
+        rosetta_lua::assign_field(native->ties_y, converted.get());
+        return 0;
+    });
+}
+int rosetta_lua_1965(lua_State* L) {
+    return rosetta_lua::boundary(L, [&]() -> int {
+        auto* native = rosetta_lua::native<datamunge::stats::KendallTau>(L, 1);
+        rosetta_lua::result<decltype((native->ties_xy))>(L, native->ties_xy, 1, rosetta_lua::Return::automatic);
+        return 1;
+    });
+}
+int rosetta_lua_1966(lua_State* L) {
+    return rosetta_lua::boundary(L, [&]() -> int {
+        auto* native = rosetta_lua::native<datamunge::stats::KendallTau>(L, 1);
+        using F = std::remove_cv_t<std::remove_reference_t<decltype(native->ties_xy)>>;
+        if constexpr (rosetta_lua::bound_v<F>) {
+            // obj.field.x = v assigns the modified field object to itself.
+            if (rosetta_lua::is_instance<F>(L, 2) && rosetta_lua::native<F>(L, 2) == &native->ties_xy) return 0;
+        }
+        rosetta_lua::converting() = "field 'ties_xy'";
+        rosetta_lua::Param<const F&> converted(L, 2);
+        rosetta_lua::converting() = nullptr;
+        rosetta_lua::assign_field(native->ties_xy, converted.get());
+        return 0;
+    });
+}
+int rosetta_lua_1967(lua_State* L) {
+    return rosetta_lua::boundary(L, [&]() -> int {
+        auto* native = rosetta_lua::native<datamunge::stats::KendallTau>(L, 1);
+        rosetta_lua::result<decltype((native->tau_a))>(L, native->tau_a, 1, rosetta_lua::Return::automatic);
+        return 1;
+    });
+}
+int rosetta_lua_1968(lua_State* L) {
+    return rosetta_lua::boundary(L, [&]() -> int {
+        auto* native = rosetta_lua::native<datamunge::stats::KendallTau>(L, 1);
+        using F = std::remove_cv_t<std::remove_reference_t<decltype(native->tau_a)>>;
+        if constexpr (rosetta_lua::bound_v<F>) {
+            // obj.field.x = v assigns the modified field object to itself.
+            if (rosetta_lua::is_instance<F>(L, 2) && rosetta_lua::native<F>(L, 2) == &native->tau_a) return 0;
+        }
+        rosetta_lua::converting() = "field 'tau_a'";
+        rosetta_lua::Param<const F&> converted(L, 2);
+        rosetta_lua::converting() = nullptr;
+        rosetta_lua::assign_field(native->tau_a, converted.get());
+        return 0;
+    });
+}
+int rosetta_lua_1969(lua_State* L) {
+    return rosetta_lua::boundary(L, [&]() -> int {
+        auto* native = rosetta_lua::native<datamunge::stats::KendallTau>(L, 1);
+        rosetta_lua::result<decltype((native->tau_b))>(L, native->tau_b, 1, rosetta_lua::Return::automatic);
+        return 1;
+    });
+}
+int rosetta_lua_1970(lua_State* L) {
+    return rosetta_lua::boundary(L, [&]() -> int {
+        auto* native = rosetta_lua::native<datamunge::stats::KendallTau>(L, 1);
+        using F = std::remove_cv_t<std::remove_reference_t<decltype(native->tau_b)>>;
+        if constexpr (rosetta_lua::bound_v<F>) {
+            // obj.field.x = v assigns the modified field object to itself.
+            if (rosetta_lua::is_instance<F>(L, 2) && rosetta_lua::native<F>(L, 2) == &native->tau_b) return 0;
+        }
+        rosetta_lua::converting() = "field 'tau_b'";
+        rosetta_lua::Param<const F&> converted(L, 2);
+        rosetta_lua::converting() = nullptr;
+        rosetta_lua::assign_field(native->tau_b, converted.get());
+        return 0;
+    });
+}
+int rosetta_lua_1971(lua_State* L) {
+    return rosetta_lua::boundary(L, [&]() -> int {
+        const bool subclass = rosetta_lua::subclass_call(L, 1); (void)subclass;
+        const int top = lua_gettop(L);
+        for (int pass = 1; pass < 2; ++pass) {
+            const bool strict = pass == 0; (void)strict;
+            {
+                const int raw = top - 1;
+                int given = raw; while (given > 0 && lua_isnil(L, 1 + given)) --given;
+                const int n = std::max(given, 0); (void)n;
+                if (raw >= 0 && given <= 0) {
+                    if (n == 0) {
+                        rosetta_lua::push_pointer(L, new datamunge::stats::KendallTau(), &rosetta_lua::Info<datamunge::stats::KendallTau>::value, rosetta_lua::Ownership::owned, 0);
+                        if (subclass) rosetta_lua::adopt_instance(L, -1, 1, nullptr);
+                        return 1;
+                    }
+                }
+            }
+        }
+        rosetta_lua::no_overload(L, "KendallTau", "    KendallTau()\n", 2);
+    });
+}
+int rosetta_lua_1972(lua_State* L) {
+    return rosetta_lua::boundary(L, [&]() -> int {
+        auto* native = rosetta_lua::native<datamunge::stats::ExponentialSmoothingOptions>(L, 1);
+        rosetta_lua::result<decltype((native->trend))>(L, native->trend, 1, rosetta_lua::Return::automatic);
+        return 1;
+    });
+}
+int rosetta_lua_1973(lua_State* L) {
+    return rosetta_lua::boundary(L, [&]() -> int {
+        auto* native = rosetta_lua::native<datamunge::stats::ExponentialSmoothingOptions>(L, 1);
+        using F = std::remove_cv_t<std::remove_reference_t<decltype(native->trend)>>;
+        if constexpr (rosetta_lua::bound_v<F>) {
+            // obj.field.x = v assigns the modified field object to itself.
+            if (rosetta_lua::is_instance<F>(L, 2) && rosetta_lua::native<F>(L, 2) == &native->trend) return 0;
+        }
+        rosetta_lua::converting() = "field 'trend'";
+        rosetta_lua::Param<const F&> converted(L, 2);
+        rosetta_lua::converting() = nullptr;
+        rosetta_lua::assign_field(native->trend, converted.get());
+        return 0;
+    });
+}
+int rosetta_lua_1974(lua_State* L) {
+    return rosetta_lua::boundary(L, [&]() -> int {
+        auto* native = rosetta_lua::native<datamunge::stats::ExponentialSmoothingOptions>(L, 1);
+        rosetta_lua::result<decltype((native->seasonal))>(L, native->seasonal, 1, rosetta_lua::Return::automatic);
+        return 1;
+    });
+}
+int rosetta_lua_1975(lua_State* L) {
+    return rosetta_lua::boundary(L, [&]() -> int {
+        auto* native = rosetta_lua::native<datamunge::stats::ExponentialSmoothingOptions>(L, 1);
+        using F = std::remove_cv_t<std::remove_reference_t<decltype(native->seasonal)>>;
+        if constexpr (rosetta_lua::bound_v<F>) {
+            // obj.field.x = v assigns the modified field object to itself.
+            if (rosetta_lua::is_instance<F>(L, 2) && rosetta_lua::native<F>(L, 2) == &native->seasonal) return 0;
+        }
+        rosetta_lua::converting() = "field 'seasonal'";
+        rosetta_lua::Param<const F&> converted(L, 2);
+        rosetta_lua::converting() = nullptr;
+        rosetta_lua::assign_field(native->seasonal, converted.get());
+        return 0;
+    });
+}
+int rosetta_lua_1976(lua_State* L) {
+    return rosetta_lua::boundary(L, [&]() -> int {
+        auto* native = rosetta_lua::native<datamunge::stats::ExponentialSmoothingOptions>(L, 1);
+        rosetta_lua::result<decltype((native->seasonal_period))>(L, native->seasonal_period, 1, rosetta_lua::Return::automatic);
+        return 1;
+    });
+}
+int rosetta_lua_1977(lua_State* L) {
+    return rosetta_lua::boundary(L, [&]() -> int {
+        auto* native = rosetta_lua::native<datamunge::stats::ExponentialSmoothingOptions>(L, 1);
+        using F = std::remove_cv_t<std::remove_reference_t<decltype(native->seasonal_period)>>;
+        if constexpr (rosetta_lua::bound_v<F>) {
+            // obj.field.x = v assigns the modified field object to itself.
+            if (rosetta_lua::is_instance<F>(L, 2) && rosetta_lua::native<F>(L, 2) == &native->seasonal_period) return 0;
+        }
+        rosetta_lua::converting() = "field 'seasonal_period'";
+        rosetta_lua::Param<const F&> converted(L, 2);
+        rosetta_lua::converting() = nullptr;
+        rosetta_lua::assign_field(native->seasonal_period, converted.get());
+        return 0;
+    });
+}
+int rosetta_lua_1978(lua_State* L) {
+    return rosetta_lua::boundary(L, [&]() -> int {
+        auto* native = rosetta_lua::native<datamunge::stats::ExponentialSmoothingOptions>(L, 1);
+        rosetta_lua::result<decltype((native->alpha))>(L, native->alpha, 1, rosetta_lua::Return::automatic);
+        return 1;
+    });
+}
+int rosetta_lua_1979(lua_State* L) {
+    return rosetta_lua::boundary(L, [&]() -> int {
+        auto* native = rosetta_lua::native<datamunge::stats::ExponentialSmoothingOptions>(L, 1);
+        using F = std::remove_cv_t<std::remove_reference_t<decltype(native->alpha)>>;
+        if constexpr (rosetta_lua::bound_v<F>) {
+            // obj.field.x = v assigns the modified field object to itself.
+            if (rosetta_lua::is_instance<F>(L, 2) && rosetta_lua::native<F>(L, 2) == &native->alpha) return 0;
+        }
+        rosetta_lua::converting() = "field 'alpha'";
+        rosetta_lua::Param<const F&> converted(L, 2);
+        rosetta_lua::converting() = nullptr;
+        rosetta_lua::assign_field(native->alpha, converted.get());
+        return 0;
+    });
+}
+int rosetta_lua_1980(lua_State* L) {
+    return rosetta_lua::boundary(L, [&]() -> int {
+        auto* native = rosetta_lua::native<datamunge::stats::ExponentialSmoothingOptions>(L, 1);
+        rosetta_lua::result<decltype((native->beta))>(L, native->beta, 1, rosetta_lua::Return::automatic);
+        return 1;
+    });
+}
+int rosetta_lua_1981(lua_State* L) {
+    return rosetta_lua::boundary(L, [&]() -> int {
+        auto* native = rosetta_lua::native<datamunge::stats::ExponentialSmoothingOptions>(L, 1);
+        using F = std::remove_cv_t<std::remove_reference_t<decltype(native->beta)>>;
+        if constexpr (rosetta_lua::bound_v<F>) {
+            // obj.field.x = v assigns the modified field object to itself.
+            if (rosetta_lua::is_instance<F>(L, 2) && rosetta_lua::native<F>(L, 2) == &native->beta) return 0;
+        }
+        rosetta_lua::converting() = "field 'beta'";
+        rosetta_lua::Param<const F&> converted(L, 2);
+        rosetta_lua::converting() = nullptr;
+        rosetta_lua::assign_field(native->beta, converted.get());
+        return 0;
+    });
+}
+int rosetta_lua_1982(lua_State* L) {
+    return rosetta_lua::boundary(L, [&]() -> int {
+        auto* native = rosetta_lua::native<datamunge::stats::ExponentialSmoothingOptions>(L, 1);
+        rosetta_lua::result<decltype((native->gamma))>(L, native->gamma, 1, rosetta_lua::Return::automatic);
+        return 1;
+    });
+}
+int rosetta_lua_1983(lua_State* L) {
+    return rosetta_lua::boundary(L, [&]() -> int {
+        auto* native = rosetta_lua::native<datamunge::stats::ExponentialSmoothingOptions>(L, 1);
+        using F = std::remove_cv_t<std::remove_reference_t<decltype(native->gamma)>>;
+        if constexpr (rosetta_lua::bound_v<F>) {
+            // obj.field.x = v assigns the modified field object to itself.
+            if (rosetta_lua::is_instance<F>(L, 2) && rosetta_lua::native<F>(L, 2) == &native->gamma) return 0;
+        }
+        rosetta_lua::converting() = "field 'gamma'";
+        rosetta_lua::Param<const F&> converted(L, 2);
+        rosetta_lua::converting() = nullptr;
+        rosetta_lua::assign_field(native->gamma, converted.get());
+        return 0;
+    });
+}
+int rosetta_lua_1984(lua_State* L) {
+    return rosetta_lua::boundary(L, [&]() -> int {
+        auto* native = rosetta_lua::native<datamunge::stats::ExponentialSmoothingOptions>(L, 1);
+        rosetta_lua::result<decltype((native->phi))>(L, native->phi, 1, rosetta_lua::Return::automatic);
+        return 1;
+    });
+}
+int rosetta_lua_1985(lua_State* L) {
+    return rosetta_lua::boundary(L, [&]() -> int {
+        auto* native = rosetta_lua::native<datamunge::stats::ExponentialSmoothingOptions>(L, 1);
+        using F = std::remove_cv_t<std::remove_reference_t<decltype(native->phi)>>;
+        if constexpr (rosetta_lua::bound_v<F>) {
+            // obj.field.x = v assigns the modified field object to itself.
+            if (rosetta_lua::is_instance<F>(L, 2) && rosetta_lua::native<F>(L, 2) == &native->phi) return 0;
+        }
+        rosetta_lua::converting() = "field 'phi'";
+        rosetta_lua::Param<const F&> converted(L, 2);
+        rosetta_lua::converting() = nullptr;
+        rosetta_lua::assign_field(native->phi, converted.get());
+        return 0;
+    });
+}
+int rosetta_lua_1986(lua_State* L) {
+    return rosetta_lua::boundary(L, [&]() -> int {
+        auto* native = rosetta_lua::native<datamunge::stats::ExponentialSmoothingOptions>(L, 1);
+        rosetta_lua::result<decltype((native->de_population_size))>(L, native->de_population_size, 1, rosetta_lua::Return::automatic);
+        return 1;
+    });
+}
+int rosetta_lua_1987(lua_State* L) {
+    return rosetta_lua::boundary(L, [&]() -> int {
+        auto* native = rosetta_lua::native<datamunge::stats::ExponentialSmoothingOptions>(L, 1);
+        using F = std::remove_cv_t<std::remove_reference_t<decltype(native->de_population_size)>>;
+        if constexpr (rosetta_lua::bound_v<F>) {
+            // obj.field.x = v assigns the modified field object to itself.
+            if (rosetta_lua::is_instance<F>(L, 2) && rosetta_lua::native<F>(L, 2) == &native->de_population_size) return 0;
+        }
+        rosetta_lua::converting() = "field 'de_population_size'";
+        rosetta_lua::Param<const F&> converted(L, 2);
+        rosetta_lua::converting() = nullptr;
+        rosetta_lua::assign_field(native->de_population_size, converted.get());
+        return 0;
+    });
+}
+int rosetta_lua_1988(lua_State* L) {
+    return rosetta_lua::boundary(L, [&]() -> int {
+        auto* native = rosetta_lua::native<datamunge::stats::ExponentialSmoothingOptions>(L, 1);
+        rosetta_lua::result<decltype((native->de_max_generations))>(L, native->de_max_generations, 1, rosetta_lua::Return::automatic);
+        return 1;
+    });
+}
+int rosetta_lua_1989(lua_State* L) {
+    return rosetta_lua::boundary(L, [&]() -> int {
+        auto* native = rosetta_lua::native<datamunge::stats::ExponentialSmoothingOptions>(L, 1);
+        using F = std::remove_cv_t<std::remove_reference_t<decltype(native->de_max_generations)>>;
+        if constexpr (rosetta_lua::bound_v<F>) {
+            // obj.field.x = v assigns the modified field object to itself.
+            if (rosetta_lua::is_instance<F>(L, 2) && rosetta_lua::native<F>(L, 2) == &native->de_max_generations) return 0;
+        }
+        rosetta_lua::converting() = "field 'de_max_generations'";
+        rosetta_lua::Param<const F&> converted(L, 2);
+        rosetta_lua::converting() = nullptr;
+        rosetta_lua::assign_field(native->de_max_generations, converted.get());
+        return 0;
+    });
+}
+int rosetta_lua_1990(lua_State* L) {
+    return rosetta_lua::boundary(L, [&]() -> int {
+        auto* native = rosetta_lua::native<datamunge::stats::ExponentialSmoothingOptions>(L, 1);
+        rosetta_lua::result<decltype((native->seed))>(L, native->seed, 1, rosetta_lua::Return::automatic);
+        return 1;
+    });
+}
+int rosetta_lua_1991(lua_State* L) {
+    return rosetta_lua::boundary(L, [&]() -> int {
+        auto* native = rosetta_lua::native<datamunge::stats::ExponentialSmoothingOptions>(L, 1);
+        using F = std::remove_cv_t<std::remove_reference_t<decltype(native->seed)>>;
+        if constexpr (rosetta_lua::bound_v<F>) {
+            // obj.field.x = v assigns the modified field object to itself.
+            if (rosetta_lua::is_instance<F>(L, 2) && rosetta_lua::native<F>(L, 2) == &native->seed) return 0;
+        }
+        rosetta_lua::converting() = "field 'seed'";
+        rosetta_lua::Param<const F&> converted(L, 2);
+        rosetta_lua::converting() = nullptr;
+        rosetta_lua::assign_field(native->seed, converted.get());
+        return 0;
+    });
+}
+int rosetta_lua_1992(lua_State* L) {
+    return rosetta_lua::boundary(L, [&]() -> int {
+        const bool subclass = rosetta_lua::subclass_call(L, 1); (void)subclass;
+        const int top = lua_gettop(L);
+        for (int pass = 1; pass < 2; ++pass) {
+            const bool strict = pass == 0; (void)strict;
+            {
+                const int raw = top - 1;
+                int given = raw; while (given > 0 && lua_isnil(L, 1 + given)) --given;
+                const int n = std::max(given, 0); (void)n;
+                if (raw >= 0 && given <= 0) {
+                    if (n == 0) {
+                        rosetta_lua::push_pointer(L, new datamunge::stats::ExponentialSmoothingOptions(), &rosetta_lua::Info<datamunge::stats::ExponentialSmoothingOptions>::value, rosetta_lua::Ownership::owned, 0);
+                        if (subclass) rosetta_lua::adopt_instance(L, -1, 1, nullptr);
+                        return 1;
+                    }
+                }
+            }
+        }
+        rosetta_lua::no_overload(L, "ExponentialSmoothingOptions", "    ExponentialSmoothingOptions()\n", 2);
     });
 }
 int rosetta_lua_2341(lua_State* L) {
@@ -4843,9 +5162,9 @@ int rosetta_lua_2606(lua_State* L) {
         rosetta_lua::no_overload(L, "UMAP", "    UMAP(data: datamunge.DataFrame, feature_columns: string[], n_components\?: integer, n_neighbors\?: integer, min_dist\?: number, max_iterations\?: integer, learning_rate\?: number, negative_sample_rate\?: number, metric\?: string, seed\?: integer)\n    UMAP(data: datamunge.DataFrame, encoded_feature_columns: string, n_components\?: integer, n_neighbors\?: integer, min_dist\?: number, max_iterations\?: integer, learning_rate\?: number, negative_sample_rate\?: number, metric\?: string, seed\?: integer)\n", 2);
     });
 }
-int rosetta_lua_2689(lua_State* L) {
+int rosetta_lua_2854(lua_State* L) {
     return rosetta_lua::boundary(L, [&]() -> int {
-        if (!rosetta_lua::is_instance<datamunge::KernelRegression>(L, 1)) rosetta_lua::fail("KernelRegression.predictor_names: expected a KernelRegression object as self; call it as object:predictor_names(...)");
+        if (!rosetta_lua::is_instance<datamunge::Dual>(L, 1)) rosetta_lua::fail("Dual.value: expected a Dual object as self; call it as object:value(...)");
         const int top = lua_gettop(L);
         for (int pass = 1; pass < 2; ++pass) {
             const bool strict = pass == 0; (void)strict;
@@ -4854,19 +5173,19 @@ int rosetta_lua_2689(lua_State* L) {
                 int given = raw; while (given > 0 && lua_isnil(L, 1 + given)) --given;
                 const int n = std::max(given, 0); (void)n;
                 if (raw >= 0 && given <= 0) {
-                    auto* native = rosetta_lua::native<datamunge::KernelRegression>(L, 1);
+                    auto* native = rosetta_lua::native<datamunge::Dual>(L, 1);
                     if (n == 0) {
-                        return rosetta_lua::call(L, [&]() -> decltype(auto) { return native->predictor_names(); }, 1, rosetta_lua::Return::automatic);
+                        return rosetta_lua::call(L, [&]() -> decltype(auto) { return native->value(); }, 1, rosetta_lua::Return::automatic);
                     }
                 }
             }
         }
-        rosetta_lua::no_overload(L, "predictor_names", "    predictor_names(): string[]\n", 2);
+        rosetta_lua::no_overload(L, "value", "    value(): number\n", 2);
     });
 }
-int rosetta_lua_2690(lua_State* L) {
+int rosetta_lua_2855(lua_State* L) {
     return rosetta_lua::boundary(L, [&]() -> int {
-        if (!rosetta_lua::is_instance<datamunge::KernelRegression>(L, 1)) rosetta_lua::fail("KernelRegression.observations: expected a KernelRegression object as self; call it as object:observations(...)");
+        if (!rosetta_lua::is_instance<datamunge::Dual>(L, 1)) rosetta_lua::fail("Dual.derivative: expected a Dual object as self; call it as object:derivative(...)");
         const int top = lua_gettop(L);
         for (int pass = 1; pass < 2; ++pass) {
             const bool strict = pass == 0; (void)strict;
@@ -4875,208 +5194,19 @@ int rosetta_lua_2690(lua_State* L) {
                 int given = raw; while (given > 0 && lua_isnil(L, 1 + given)) --given;
                 const int n = std::max(given, 0); (void)n;
                 if (raw >= 0 && given <= 0) {
-                    auto* native = rosetta_lua::native<datamunge::KernelRegression>(L, 1);
+                    auto* native = rosetta_lua::native<datamunge::Dual>(L, 1);
                     if (n == 0) {
-                        return rosetta_lua::call(L, [&]() -> decltype(auto) { return native->observations(); }, 1, rosetta_lua::Return::automatic);
+                        return rosetta_lua::call(L, [&]() -> decltype(auto) { return native->derivative(); }, 1, rosetta_lua::Return::automatic);
                     }
                 }
             }
         }
-        rosetta_lua::no_overload(L, "observations", "    observations(): integer\n", 2);
+        rosetta_lua::no_overload(L, "derivative", "    derivative(): number\n", 2);
     });
 }
-int rosetta_lua_2691(lua_State* L) {
+int rosetta_lua_2856(lua_State* L) {
     return rosetta_lua::boundary(L, [&]() -> int {
-        if (!rosetta_lua::is_instance<datamunge::KernelRegression>(L, 1)) rosetta_lua::fail("KernelRegression.bandwidth: expected a KernelRegression object as self; call it as object:bandwidth(...)");
-        const int top = lua_gettop(L);
-        for (int pass = 1; pass < 2; ++pass) {
-            const bool strict = pass == 0; (void)strict;
-            {
-                const int raw = top - 1;
-                int given = raw; while (given > 0 && lua_isnil(L, 1 + given)) --given;
-                const int n = std::max(given, 0); (void)n;
-                if (raw >= 0 && given <= 0) {
-                    auto* native = rosetta_lua::native<datamunge::KernelRegression>(L, 1);
-                    if (n == 0) {
-                        return rosetta_lua::call(L, [&]() -> decltype(auto) { return native->bandwidth(); }, 1, rosetta_lua::Return::automatic);
-                    }
-                }
-            }
-        }
-        rosetta_lua::no_overload(L, "bandwidth", "    bandwidth(): number\n", 2);
-    });
-}
-int rosetta_lua_2692(lua_State* L) {
-    return rosetta_lua::boundary(L, [&]() -> int {
-        if (!rosetta_lua::is_instance<datamunge::KernelRegression>(L, 1)) rosetta_lua::fail("KernelRegression.bandwidth_was_selected: expected a KernelRegression object as self; call it as object:bandwidth_was_selected(...)");
-        const int top = lua_gettop(L);
-        for (int pass = 1; pass < 2; ++pass) {
-            const bool strict = pass == 0; (void)strict;
-            {
-                const int raw = top - 1;
-                int given = raw; while (given > 0 && lua_isnil(L, 1 + given)) --given;
-                const int n = std::max(given, 0); (void)n;
-                if (raw >= 0 && given <= 0) {
-                    auto* native = rosetta_lua::native<datamunge::KernelRegression>(L, 1);
-                    if (n == 0) {
-                        return rosetta_lua::call(L, [&]() -> decltype(auto) { return native->bandwidth_was_selected(); }, 1, rosetta_lua::Return::automatic);
-                    }
-                }
-            }
-        }
-        rosetta_lua::no_overload(L, "bandwidth_was_selected", "    bandwidth_was_selected(): boolean\n", 2);
-    });
-}
-int rosetta_lua_2693(lua_State* L) {
-    return rosetta_lua::boundary(L, [&]() -> int {
-        if (!rosetta_lua::is_instance<datamunge::KernelRegression>(L, 1)) rosetta_lua::fail("KernelRegression.bandwidth_grid: expected a KernelRegression object as self; call it as object:bandwidth_grid(...)");
-        const int top = lua_gettop(L);
-        for (int pass = 1; pass < 2; ++pass) {
-            const bool strict = pass == 0; (void)strict;
-            {
-                const int raw = top - 1;
-                int given = raw; while (given > 0 && lua_isnil(L, 1 + given)) --given;
-                const int n = std::max(given, 0); (void)n;
-                if (raw >= 0 && given <= 0) {
-                    auto* native = rosetta_lua::native<datamunge::KernelRegression>(L, 1);
-                    if (n == 0) {
-                        return rosetta_lua::call(L, [&]() -> decltype(auto) { return native->bandwidth_grid(); }, 1, rosetta_lua::Return::automatic);
-                    }
-                }
-            }
-        }
-        rosetta_lua::no_overload(L, "bandwidth_grid", "    bandwidth_grid(): number[]\n", 2);
-    });
-}
-int rosetta_lua_2694(lua_State* L) {
-    return rosetta_lua::boundary(L, [&]() -> int {
-        if (!rosetta_lua::is_instance<datamunge::KernelRegression>(L, 1)) rosetta_lua::fail("KernelRegression.cv_mean_squared_error: expected a KernelRegression object as self; call it as object:cv_mean_squared_error(...)");
-        const int top = lua_gettop(L);
-        for (int pass = 1; pass < 2; ++pass) {
-            const bool strict = pass == 0; (void)strict;
-            {
-                const int raw = top - 1;
-                int given = raw; while (given > 0 && lua_isnil(L, 1 + given)) --given;
-                const int n = std::max(given, 0); (void)n;
-                if (raw >= 0 && given <= 0) {
-                    auto* native = rosetta_lua::native<datamunge::KernelRegression>(L, 1);
-                    if (n == 0) {
-                        return rosetta_lua::call(L, [&]() -> decltype(auto) { return native->cv_mean_squared_error(); }, 1, rosetta_lua::Return::automatic);
-                    }
-                }
-            }
-        }
-        rosetta_lua::no_overload(L, "cv_mean_squared_error", "    cv_mean_squared_error(): number[]\n", 2);
-    });
-}
-int rosetta_lua_2695(lua_State* L) {
-    return rosetta_lua::boundary(L, [&]() -> int {
-        if (!rosetta_lua::is_instance<datamunge::KernelRegression>(L, 1)) rosetta_lua::fail("KernelRegression.fitted_values: expected a KernelRegression object as self; call it as object:fitted_values(...)");
-        const int top = lua_gettop(L);
-        for (int pass = 1; pass < 2; ++pass) {
-            const bool strict = pass == 0; (void)strict;
-            {
-                const int raw = top - 1;
-                int given = raw; while (given > 0 && lua_isnil(L, 1 + given)) --given;
-                const int n = std::max(given, 0); (void)n;
-                if (raw >= 0 && given <= 0) {
-                    auto* native = rosetta_lua::native<datamunge::KernelRegression>(L, 1);
-                    if (n == 0) {
-                        return rosetta_lua::call(L, [&]() -> decltype(auto) { return native->fitted_values(); }, 1, rosetta_lua::Return::automatic);
-                    }
-                }
-            }
-        }
-        rosetta_lua::no_overload(L, "fitted_values", "    fitted_values(): number[]\n", 2);
-    });
-}
-int rosetta_lua_2696(lua_State* L) {
-    return rosetta_lua::boundary(L, [&]() -> int {
-        if (!rosetta_lua::is_instance<datamunge::KernelRegression>(L, 1)) rosetta_lua::fail("KernelRegression.r_squared: expected a KernelRegression object as self; call it as object:r_squared(...)");
-        const int top = lua_gettop(L);
-        for (int pass = 1; pass < 2; ++pass) {
-            const bool strict = pass == 0; (void)strict;
-            {
-                const int raw = top - 1;
-                int given = raw; while (given > 0 && lua_isnil(L, 1 + given)) --given;
-                const int n = std::max(given, 0); (void)n;
-                if (raw >= 0 && given <= 0) {
-                    auto* native = rosetta_lua::native<datamunge::KernelRegression>(L, 1);
-                    if (n == 0) {
-                        return rosetta_lua::call(L, [&]() -> decltype(auto) { return native->r_squared(); }, 1, rosetta_lua::Return::automatic);
-                    }
-                }
-            }
-        }
-        rosetta_lua::no_overload(L, "r_squared", "    r_squared(): number\n", 2);
-    });
-}
-int rosetta_lua_2697(lua_State* L) {
-    return rosetta_lua::boundary(L, [&]() -> int {
-        if (!rosetta_lua::is_instance<datamunge::KernelRegression>(L, 1)) rosetta_lua::fail("KernelRegression.rmse: expected a KernelRegression object as self; call it as object:rmse(...)");
-        const int top = lua_gettop(L);
-        for (int pass = 1; pass < 2; ++pass) {
-            const bool strict = pass == 0; (void)strict;
-            {
-                const int raw = top - 1;
-                int given = raw; while (given > 0 && lua_isnil(L, 1 + given)) --given;
-                const int n = std::max(given, 0); (void)n;
-                if (raw >= 0 && given <= 0) {
-                    auto* native = rosetta_lua::native<datamunge::KernelRegression>(L, 1);
-                    if (n == 0) {
-                        return rosetta_lua::call(L, [&]() -> decltype(auto) { return native->rmse(); }, 1, rosetta_lua::Return::automatic);
-                    }
-                }
-            }
-        }
-        rosetta_lua::no_overload(L, "rmse", "    rmse(): number\n", 2);
-    });
-}
-int rosetta_lua_2698(lua_State* L) {
-    return rosetta_lua::boundary(L, [&]() -> int {
-        if (!rosetta_lua::is_instance<datamunge::KernelRegression>(L, 1)) rosetta_lua::fail("KernelRegression.summary: expected a KernelRegression object as self; call it as object:summary(...)");
-        const int top = lua_gettop(L);
-        for (int pass = 1; pass < 2; ++pass) {
-            const bool strict = pass == 0; (void)strict;
-            {
-                const int raw = top - 1;
-                int given = raw; while (given > 0 && lua_isnil(L, 1 + given)) --given;
-                const int n = std::max(given, 0); (void)n;
-                if (raw >= 0 && given <= 0) {
-                    auto* native = rosetta_lua::native<datamunge::KernelRegression>(L, 1);
-                    if (n == 0) {
-                        return rosetta_lua::call(L, [&]() -> decltype(auto) { return native->summary(); }, 1, rosetta_lua::Return::automatic);
-                    }
-                }
-            }
-        }
-        rosetta_lua::no_overload(L, "summary", "    summary(): string\n", 2);
-    });
-}
-int rosetta_lua_2699(lua_State* L) {
-    return rosetta_lua::boundary(L, [&]() -> int {
-        if (!rosetta_lua::is_instance<datamunge::KernelRegression>(L, 1)) rosetta_lua::fail("KernelRegression.print_summary: expected a KernelRegression object as self; call it as object:print_summary(...)");
-        const int top = lua_gettop(L);
-        for (int pass = 1; pass < 2; ++pass) {
-            const bool strict = pass == 0; (void)strict;
-            {
-                const int raw = top - 1;
-                int given = raw; while (given > 0 && lua_isnil(L, 1 + given)) --given;
-                const int n = std::max(given, 0); (void)n;
-                if (raw >= 0 && given <= 0) {
-                    auto* native = rosetta_lua::native<datamunge::KernelRegression>(L, 1);
-                    if (n == 0) {
-                        return rosetta_lua::call(L, [&]() -> decltype(auto) { return native->print_summary(); }, 1, rosetta_lua::Return::automatic);
-                    }
-                }
-            }
-        }
-        rosetta_lua::no_overload(L, "print_summary", "    print_summary()\n", 2);
-    });
-}
-int rosetta_lua_2700(lua_State* L) {
-    return rosetta_lua::boundary(L, [&]() -> int {
-        if (!rosetta_lua::is_instance<datamunge::KernelRegression>(L, 1)) rosetta_lua::fail("KernelRegression.predict: expected a KernelRegression object as self; call it as object:predict(...)");
+        if (!rosetta_lua::is_instance<datamunge::Dual>(L, 1)) rosetta_lua::fail("Dual.add: expected a Dual object as self; call it as object:add(...)");
         const int top = lua_gettop(L);
         for (int pass = 1; pass < 2; ++pass) {
             const bool strict = pass == 0; (void)strict;
@@ -5085,22 +5215,22 @@ int rosetta_lua_2700(lua_State* L) {
                 int given = raw; while (given > 0 && lua_isnil(L, 1 + given)) --given;
                 const int n = std::max(given, 1); (void)n;
                 if (raw >= 1 && given <= 1) {
-                    auto* native = rosetta_lua::native<datamunge::KernelRegression>(L, 1);
+                    auto* native = rosetta_lua::native<datamunge::Dual>(L, 1);
                     if (n == 1) {
-                        rosetta_lua::converting() = "argument 'newdata'";
-                        rosetta_lua::Param<const datamunge::DataFrame &> p0(L, 2);
+                        rosetta_lua::converting() = "argument 'other'";
+                        rosetta_lua::Param<const datamunge::Dual &> p0(L, 2);
                         rosetta_lua::converting() = nullptr;
-                        return rosetta_lua::call(L, [&]() -> decltype(auto) { return native->predict(p0.get()); }, 1, rosetta_lua::Return::automatic);
+                        return rosetta_lua::call(L, [&]() -> decltype(auto) { return native->add(p0.get()); }, 1, rosetta_lua::Return::automatic);
                     }
                 }
             }
         }
-        rosetta_lua::no_overload(L, "predict", "    predict(newdata: datamunge.DataFrame): number[]\n", 2);
+        rosetta_lua::no_overload(L, "add", "    add(other: datamunge.Dual): datamunge.Dual\n", 2);
     });
 }
-int rosetta_lua_2701(lua_State* L) {
+int rosetta_lua_2857(lua_State* L) {
     return rosetta_lua::boundary(L, [&]() -> int {
-        if (!rosetta_lua::is_instance<datamunge::KernelRegression>(L, 1)) rosetta_lua::fail("KernelRegression.plot_fit: expected a KernelRegression object as self; call it as object:plot_fit(...)");
+        if (!rosetta_lua::is_instance<datamunge::Dual>(L, 1)) rosetta_lua::fail("Dual.subtract: expected a Dual object as self; call it as object:subtract(...)");
         const int top = lua_gettop(L);
         for (int pass = 1; pass < 2; ++pass) {
             const bool strict = pass == 0; (void)strict;
@@ -5108,31 +5238,71 @@ int rosetta_lua_2701(lua_State* L) {
                 const int raw = top - 1;
                 int given = raw; while (given > 0 && lua_isnil(L, 1 + given)) --given;
                 const int n = std::max(given, 1); (void)n;
-                if (raw >= 1 && given <= 2) {
-                    auto* native = rosetta_lua::native<datamunge::KernelRegression>(L, 1);
+                if (raw >= 1 && given <= 1) {
+                    auto* native = rosetta_lua::native<datamunge::Dual>(L, 1);
                     if (n == 1) {
-                        rosetta_lua::converting() = "argument 'data'";
-                        rosetta_lua::Param<const datamunge::DataFrame &> p0(L, 2);
+                        rosetta_lua::converting() = "argument 'other'";
+                        rosetta_lua::Param<const datamunge::Dual &> p0(L, 2);
                         rosetta_lua::converting() = nullptr;
-                        return rosetta_lua::call(L, [&]() -> decltype(auto) { return native->plot_fit(p0.get()); }, 1, rosetta_lua::Return::automatic);
+                        return rosetta_lua::call(L, [&]() -> decltype(auto) { return native->subtract(p0.get()); }, 1, rosetta_lua::Return::automatic);
                     }
-                    if (n == 2) {
-                        rosetta_lua::converting() = "argument 'data'";
-                        rosetta_lua::Param<const datamunge::DataFrame &> p0(L, 2);
-                        rosetta_lua::converting() = "argument 'grid_resolution'";
-                        rosetta_lua::Param<unsigned long> p1(L, 3);
+                }
+            }
+        }
+        rosetta_lua::no_overload(L, "subtract", "    subtract(other: datamunge.Dual): datamunge.Dual\n", 2);
+    });
+}
+int rosetta_lua_2858(lua_State* L) {
+    return rosetta_lua::boundary(L, [&]() -> int {
+        if (!rosetta_lua::is_instance<datamunge::Dual>(L, 1)) rosetta_lua::fail("Dual.multiply: expected a Dual object as self; call it as object:multiply(...)");
+        const int top = lua_gettop(L);
+        for (int pass = 1; pass < 2; ++pass) {
+            const bool strict = pass == 0; (void)strict;
+            {
+                const int raw = top - 1;
+                int given = raw; while (given > 0 && lua_isnil(L, 1 + given)) --given;
+                const int n = std::max(given, 1); (void)n;
+                if (raw >= 1 && given <= 1) {
+                    auto* native = rosetta_lua::native<datamunge::Dual>(L, 1);
+                    if (n == 1) {
+                        rosetta_lua::converting() = "argument 'other'";
+                        rosetta_lua::Param<const datamunge::Dual &> p0(L, 2);
                         rosetta_lua::converting() = nullptr;
-                        return rosetta_lua::call(L, [&]() -> decltype(auto) { return native->plot_fit(p0.get(), p1.get()); }, 1, rosetta_lua::Return::automatic);
+                        return rosetta_lua::call(L, [&]() -> decltype(auto) { return native->multiply(p0.get()); }, 1, rosetta_lua::Return::automatic);
                     }
                 }
             }
         }
-        rosetta_lua::no_overload(L, "plot_fit", "    plot_fit(data: datamunge.DataFrame, grid_resolution\?: integer): datamunge.RPlot\n", 2);
+        rosetta_lua::no_overload(L, "multiply", "    multiply(other: datamunge.Dual): datamunge.Dual\n", 2);
     });
 }
-int rosetta_lua_2702(lua_State* L) {
+int rosetta_lua_2859(lua_State* L) {
     return rosetta_lua::boundary(L, [&]() -> int {
-        if (!rosetta_lua::is_instance<datamunge::KernelRegression>(L, 1)) rosetta_lua::fail("KernelRegression.plot_predicted_vs_actual: expected a KernelRegression object as self; call it as object:plot_predicted_vs_actual(...)");
+        if (!rosetta_lua::is_instance<datamunge::Dual>(L, 1)) rosetta_lua::fail("Dual.divide: expected a Dual object as self; call it as object:divide(...)");
+        const int top = lua_gettop(L);
+        for (int pass = 1; pass < 2; ++pass) {
+            const bool strict = pass == 0; (void)strict;
+            {
+                const int raw = top - 1;
+                int given = raw; while (given > 0 && lua_isnil(L, 1 + given)) --given;
+                const int n = std::max(given, 1); (void)n;
+                if (raw >= 1 && given <= 1) {
+                    auto* native = rosetta_lua::native<datamunge::Dual>(L, 1);
+                    if (n == 1) {
+                        rosetta_lua::converting() = "argument 'other'";
+                        rosetta_lua::Param<const datamunge::Dual &> p0(L, 2);
+                        rosetta_lua::converting() = nullptr;
+                        return rosetta_lua::call(L, [&]() -> decltype(auto) { return native->divide(p0.get()); }, 1, rosetta_lua::Return::automatic);
+                    }
+                }
+            }
+        }
+        rosetta_lua::no_overload(L, "divide", "    divide(other: datamunge.Dual): datamunge.Dual\n", 2);
+    });
+}
+int rosetta_lua_2860(lua_State* L) {
+    return rosetta_lua::boundary(L, [&]() -> int {
+        if (!rosetta_lua::is_instance<datamunge::Dual>(L, 1)) rosetta_lua::fail("Dual.negate: expected a Dual object as self; call it as object:negate(...)");
         const int top = lua_gettop(L);
         for (int pass = 1; pass < 2; ++pass) {
             const bool strict = pass == 0; (void)strict;
@@ -5141,19 +5311,139 @@ int rosetta_lua_2702(lua_State* L) {
                 int given = raw; while (given > 0 && lua_isnil(L, 1 + given)) --given;
                 const int n = std::max(given, 0); (void)n;
                 if (raw >= 0 && given <= 0) {
-                    auto* native = rosetta_lua::native<datamunge::KernelRegression>(L, 1);
+                    auto* native = rosetta_lua::native<datamunge::Dual>(L, 1);
                     if (n == 0) {
-                        return rosetta_lua::call(L, [&]() -> decltype(auto) { return native->plot_predicted_vs_actual(); }, 1, rosetta_lua::Return::automatic);
+                        return rosetta_lua::call(L, [&]() -> decltype(auto) { return native->negate(); }, 1, rosetta_lua::Return::automatic);
                     }
                 }
             }
         }
-        rosetta_lua::no_overload(L, "plot_predicted_vs_actual", "    plot_predicted_vs_actual(): datamunge.RPlot\n", 2);
+        rosetta_lua::no_overload(L, "negate", "    negate(): datamunge.Dual\n", 2);
     });
 }
-int rosetta_lua_2703(lua_State* L) {
+int rosetta_lua_2861(lua_State* L) {
     return rosetta_lua::boundary(L, [&]() -> int {
-        if (!rosetta_lua::is_instance<datamunge::KernelRegression>(L, 1)) rosetta_lua::fail("KernelRegression.plot_residuals_vs_fitted: expected a KernelRegression object as self; call it as object:plot_residuals_vs_fitted(...)");
+        if (!rosetta_lua::is_instance<datamunge::Dual>(L, 1)) rosetta_lua::fail("Dual.add_scalar: expected a Dual object as self; call it as object:add_scalar(...)");
+        const int top = lua_gettop(L);
+        for (int pass = 1; pass < 2; ++pass) {
+            const bool strict = pass == 0; (void)strict;
+            {
+                const int raw = top - 1;
+                int given = raw; while (given > 0 && lua_isnil(L, 1 + given)) --given;
+                const int n = std::max(given, 1); (void)n;
+                if (raw >= 1 && given <= 1) {
+                    auto* native = rosetta_lua::native<datamunge::Dual>(L, 1);
+                    if (n == 1) {
+                        rosetta_lua::converting() = "argument 'scalar'";
+                        rosetta_lua::Param<double> p0(L, 2);
+                        rosetta_lua::converting() = nullptr;
+                        return rosetta_lua::call(L, [&]() -> decltype(auto) { return native->add_scalar(p0.get()); }, 1, rosetta_lua::Return::automatic);
+                    }
+                }
+            }
+        }
+        rosetta_lua::no_overload(L, "add_scalar", "    add_scalar(scalar: number): datamunge.Dual\n", 2);
+    });
+}
+int rosetta_lua_2862(lua_State* L) {
+    return rosetta_lua::boundary(L, [&]() -> int {
+        if (!rosetta_lua::is_instance<datamunge::Dual>(L, 1)) rosetta_lua::fail("Dual.subtract_scalar: expected a Dual object as self; call it as object:subtract_scalar(...)");
+        const int top = lua_gettop(L);
+        for (int pass = 1; pass < 2; ++pass) {
+            const bool strict = pass == 0; (void)strict;
+            {
+                const int raw = top - 1;
+                int given = raw; while (given > 0 && lua_isnil(L, 1 + given)) --given;
+                const int n = std::max(given, 1); (void)n;
+                if (raw >= 1 && given <= 1) {
+                    auto* native = rosetta_lua::native<datamunge::Dual>(L, 1);
+                    if (n == 1) {
+                        rosetta_lua::converting() = "argument 'scalar'";
+                        rosetta_lua::Param<double> p0(L, 2);
+                        rosetta_lua::converting() = nullptr;
+                        return rosetta_lua::call(L, [&]() -> decltype(auto) { return native->subtract_scalar(p0.get()); }, 1, rosetta_lua::Return::automatic);
+                    }
+                }
+            }
+        }
+        rosetta_lua::no_overload(L, "subtract_scalar", "    subtract_scalar(scalar: number): datamunge.Dual\n", 2);
+    });
+}
+int rosetta_lua_2863(lua_State* L) {
+    return rosetta_lua::boundary(L, [&]() -> int {
+        if (!rosetta_lua::is_instance<datamunge::Dual>(L, 1)) rosetta_lua::fail("Dual.multiply_scalar: expected a Dual object as self; call it as object:multiply_scalar(...)");
+        const int top = lua_gettop(L);
+        for (int pass = 1; pass < 2; ++pass) {
+            const bool strict = pass == 0; (void)strict;
+            {
+                const int raw = top - 1;
+                int given = raw; while (given > 0 && lua_isnil(L, 1 + given)) --given;
+                const int n = std::max(given, 1); (void)n;
+                if (raw >= 1 && given <= 1) {
+                    auto* native = rosetta_lua::native<datamunge::Dual>(L, 1);
+                    if (n == 1) {
+                        rosetta_lua::converting() = "argument 'scalar'";
+                        rosetta_lua::Param<double> p0(L, 2);
+                        rosetta_lua::converting() = nullptr;
+                        return rosetta_lua::call(L, [&]() -> decltype(auto) { return native->multiply_scalar(p0.get()); }, 1, rosetta_lua::Return::automatic);
+                    }
+                }
+            }
+        }
+        rosetta_lua::no_overload(L, "multiply_scalar", "    multiply_scalar(scalar: number): datamunge.Dual\n", 2);
+    });
+}
+int rosetta_lua_2864(lua_State* L) {
+    return rosetta_lua::boundary(L, [&]() -> int {
+        if (!rosetta_lua::is_instance<datamunge::Dual>(L, 1)) rosetta_lua::fail("Dual.divide_scalar: expected a Dual object as self; call it as object:divide_scalar(...)");
+        const int top = lua_gettop(L);
+        for (int pass = 1; pass < 2; ++pass) {
+            const bool strict = pass == 0; (void)strict;
+            {
+                const int raw = top - 1;
+                int given = raw; while (given > 0 && lua_isnil(L, 1 + given)) --given;
+                const int n = std::max(given, 1); (void)n;
+                if (raw >= 1 && given <= 1) {
+                    auto* native = rosetta_lua::native<datamunge::Dual>(L, 1);
+                    if (n == 1) {
+                        rosetta_lua::converting() = "argument 'scalar'";
+                        rosetta_lua::Param<double> p0(L, 2);
+                        rosetta_lua::converting() = nullptr;
+                        return rosetta_lua::call(L, [&]() -> decltype(auto) { return native->divide_scalar(p0.get()); }, 1, rosetta_lua::Return::automatic);
+                    }
+                }
+            }
+        }
+        rosetta_lua::no_overload(L, "divide_scalar", "    divide_scalar(scalar: number): datamunge.Dual\n", 2);
+    });
+}
+int rosetta_lua_2865(lua_State* L) {
+    return rosetta_lua::boundary(L, [&]() -> int {
+        if (!rosetta_lua::is_instance<datamunge::Dual>(L, 1)) rosetta_lua::fail("Dual.pow: expected a Dual object as self; call it as object:pow(...)");
+        const int top = lua_gettop(L);
+        for (int pass = 1; pass < 2; ++pass) {
+            const bool strict = pass == 0; (void)strict;
+            {
+                const int raw = top - 1;
+                int given = raw; while (given > 0 && lua_isnil(L, 1 + given)) --given;
+                const int n = std::max(given, 1); (void)n;
+                if (raw >= 1 && given <= 1) {
+                    auto* native = rosetta_lua::native<datamunge::Dual>(L, 1);
+                    if (n == 1) {
+                        rosetta_lua::converting() = "argument 'exponent'";
+                        rosetta_lua::Param<double> p0(L, 2);
+                        rosetta_lua::converting() = nullptr;
+                        return rosetta_lua::call(L, [&]() -> decltype(auto) { return native->pow(p0.get()); }, 1, rosetta_lua::Return::automatic);
+                    }
+                }
+            }
+        }
+        rosetta_lua::no_overload(L, "pow", "    pow(exponent: number): datamunge.Dual\n", 2);
+    });
+}
+int rosetta_lua_2866(lua_State* L) {
+    return rosetta_lua::boundary(L, [&]() -> int {
+        if (!rosetta_lua::is_instance<datamunge::Dual>(L, 1)) rosetta_lua::fail("Dual.exp: expected a Dual object as self; call it as object:exp(...)");
         const int top = lua_gettop(L);
         for (int pass = 1; pass < 2; ++pass) {
             const bool strict = pass == 0; (void)strict;
@@ -5162,19 +5452,19 @@ int rosetta_lua_2703(lua_State* L) {
                 int given = raw; while (given > 0 && lua_isnil(L, 1 + given)) --given;
                 const int n = std::max(given, 0); (void)n;
                 if (raw >= 0 && given <= 0) {
-                    auto* native = rosetta_lua::native<datamunge::KernelRegression>(L, 1);
+                    auto* native = rosetta_lua::native<datamunge::Dual>(L, 1);
                     if (n == 0) {
-                        return rosetta_lua::call(L, [&]() -> decltype(auto) { return native->plot_residuals_vs_fitted(); }, 1, rosetta_lua::Return::automatic);
+                        return rosetta_lua::call(L, [&]() -> decltype(auto) { return native->exp(); }, 1, rosetta_lua::Return::automatic);
                     }
                 }
             }
         }
-        rosetta_lua::no_overload(L, "plot_residuals_vs_fitted", "    plot_residuals_vs_fitted(): datamunge.RPlot\n", 2);
+        rosetta_lua::no_overload(L, "exp", "    exp(): datamunge.Dual\n", 2);
     });
 }
-int rosetta_lua_2704(lua_State* L) {
+int rosetta_lua_2867(lua_State* L) {
     return rosetta_lua::boundary(L, [&]() -> int {
-        if (!rosetta_lua::is_instance<datamunge::KernelRegression>(L, 1)) rosetta_lua::fail("KernelRegression.plot_cv_curve: expected a KernelRegression object as self; call it as object:plot_cv_curve(...)");
+        if (!rosetta_lua::is_instance<datamunge::Dual>(L, 1)) rosetta_lua::fail("Dual.log: expected a Dual object as self; call it as object:log(...)");
         const int top = lua_gettop(L);
         for (int pass = 1; pass < 2; ++pass) {
             const bool strict = pass == 0; (void)strict;
@@ -5183,17 +5473,143 @@ int rosetta_lua_2704(lua_State* L) {
                 int given = raw; while (given > 0 && lua_isnil(L, 1 + given)) --given;
                 const int n = std::max(given, 0); (void)n;
                 if (raw >= 0 && given <= 0) {
-                    auto* native = rosetta_lua::native<datamunge::KernelRegression>(L, 1);
+                    auto* native = rosetta_lua::native<datamunge::Dual>(L, 1);
                     if (n == 0) {
-                        return rosetta_lua::call(L, [&]() -> decltype(auto) { return native->plot_cv_curve(); }, 1, rosetta_lua::Return::automatic);
+                        return rosetta_lua::call(L, [&]() -> decltype(auto) { return native->log(); }, 1, rosetta_lua::Return::automatic);
                     }
                 }
             }
         }
-        rosetta_lua::no_overload(L, "plot_cv_curve", "    plot_cv_curve(): datamunge.RPlot\n", 2);
+        rosetta_lua::no_overload(L, "log", "    log(): datamunge.Dual\n", 2);
     });
 }
-int rosetta_lua_2705(lua_State* L) {
+int rosetta_lua_2868(lua_State* L) {
+    return rosetta_lua::boundary(L, [&]() -> int {
+        if (!rosetta_lua::is_instance<datamunge::Dual>(L, 1)) rosetta_lua::fail("Dual.sqrt: expected a Dual object as self; call it as object:sqrt(...)");
+        const int top = lua_gettop(L);
+        for (int pass = 1; pass < 2; ++pass) {
+            const bool strict = pass == 0; (void)strict;
+            {
+                const int raw = top - 1;
+                int given = raw; while (given > 0 && lua_isnil(L, 1 + given)) --given;
+                const int n = std::max(given, 0); (void)n;
+                if (raw >= 0 && given <= 0) {
+                    auto* native = rosetta_lua::native<datamunge::Dual>(L, 1);
+                    if (n == 0) {
+                        return rosetta_lua::call(L, [&]() -> decltype(auto) { return native->sqrt(); }, 1, rosetta_lua::Return::automatic);
+                    }
+                }
+            }
+        }
+        rosetta_lua::no_overload(L, "sqrt", "    sqrt(): datamunge.Dual\n", 2);
+    });
+}
+int rosetta_lua_2869(lua_State* L) {
+    return rosetta_lua::boundary(L, [&]() -> int {
+        if (!rosetta_lua::is_instance<datamunge::Dual>(L, 1)) rosetta_lua::fail("Dual.sin: expected a Dual object as self; call it as object:sin(...)");
+        const int top = lua_gettop(L);
+        for (int pass = 1; pass < 2; ++pass) {
+            const bool strict = pass == 0; (void)strict;
+            {
+                const int raw = top - 1;
+                int given = raw; while (given > 0 && lua_isnil(L, 1 + given)) --given;
+                const int n = std::max(given, 0); (void)n;
+                if (raw >= 0 && given <= 0) {
+                    auto* native = rosetta_lua::native<datamunge::Dual>(L, 1);
+                    if (n == 0) {
+                        return rosetta_lua::call(L, [&]() -> decltype(auto) { return native->sin(); }, 1, rosetta_lua::Return::automatic);
+                    }
+                }
+            }
+        }
+        rosetta_lua::no_overload(L, "sin", "    sin(): datamunge.Dual\n", 2);
+    });
+}
+int rosetta_lua_2870(lua_State* L) {
+    return rosetta_lua::boundary(L, [&]() -> int {
+        if (!rosetta_lua::is_instance<datamunge::Dual>(L, 1)) rosetta_lua::fail("Dual.cos: expected a Dual object as self; call it as object:cos(...)");
+        const int top = lua_gettop(L);
+        for (int pass = 1; pass < 2; ++pass) {
+            const bool strict = pass == 0; (void)strict;
+            {
+                const int raw = top - 1;
+                int given = raw; while (given > 0 && lua_isnil(L, 1 + given)) --given;
+                const int n = std::max(given, 0); (void)n;
+                if (raw >= 0 && given <= 0) {
+                    auto* native = rosetta_lua::native<datamunge::Dual>(L, 1);
+                    if (n == 0) {
+                        return rosetta_lua::call(L, [&]() -> decltype(auto) { return native->cos(); }, 1, rosetta_lua::Return::automatic);
+                    }
+                }
+            }
+        }
+        rosetta_lua::no_overload(L, "cos", "    cos(): datamunge.Dual\n", 2);
+    });
+}
+int rosetta_lua_2871(lua_State* L) {
+    return rosetta_lua::boundary(L, [&]() -> int {
+        if (!rosetta_lua::is_instance<datamunge::Dual>(L, 1)) rosetta_lua::fail("Dual.tan: expected a Dual object as self; call it as object:tan(...)");
+        const int top = lua_gettop(L);
+        for (int pass = 1; pass < 2; ++pass) {
+            const bool strict = pass == 0; (void)strict;
+            {
+                const int raw = top - 1;
+                int given = raw; while (given > 0 && lua_isnil(L, 1 + given)) --given;
+                const int n = std::max(given, 0); (void)n;
+                if (raw >= 0 && given <= 0) {
+                    auto* native = rosetta_lua::native<datamunge::Dual>(L, 1);
+                    if (n == 0) {
+                        return rosetta_lua::call(L, [&]() -> decltype(auto) { return native->tan(); }, 1, rosetta_lua::Return::automatic);
+                    }
+                }
+            }
+        }
+        rosetta_lua::no_overload(L, "tan", "    tan(): datamunge.Dual\n", 2);
+    });
+}
+int rosetta_lua_2872(lua_State* L) {
+    return rosetta_lua::boundary(L, [&]() -> int {
+        if (!rosetta_lua::is_instance<datamunge::Dual>(L, 1)) rosetta_lua::fail("Dual.tanh: expected a Dual object as self; call it as object:tanh(...)");
+        const int top = lua_gettop(L);
+        for (int pass = 1; pass < 2; ++pass) {
+            const bool strict = pass == 0; (void)strict;
+            {
+                const int raw = top - 1;
+                int given = raw; while (given > 0 && lua_isnil(L, 1 + given)) --given;
+                const int n = std::max(given, 0); (void)n;
+                if (raw >= 0 && given <= 0) {
+                    auto* native = rosetta_lua::native<datamunge::Dual>(L, 1);
+                    if (n == 0) {
+                        return rosetta_lua::call(L, [&]() -> decltype(auto) { return native->tanh(); }, 1, rosetta_lua::Return::automatic);
+                    }
+                }
+            }
+        }
+        rosetta_lua::no_overload(L, "tanh", "    tanh(): datamunge.Dual\n", 2);
+    });
+}
+int rosetta_lua_2873(lua_State* L) {
+    return rosetta_lua::boundary(L, [&]() -> int {
+        if (!rosetta_lua::is_instance<datamunge::Dual>(L, 1)) rosetta_lua::fail("Dual.abs: expected a Dual object as self; call it as object:abs(...)");
+        const int top = lua_gettop(L);
+        for (int pass = 1; pass < 2; ++pass) {
+            const bool strict = pass == 0; (void)strict;
+            {
+                const int raw = top - 1;
+                int given = raw; while (given > 0 && lua_isnil(L, 1 + given)) --given;
+                const int n = std::max(given, 0); (void)n;
+                if (raw >= 0 && given <= 0) {
+                    auto* native = rosetta_lua::native<datamunge::Dual>(L, 1);
+                    if (n == 0) {
+                        return rosetta_lua::call(L, [&]() -> decltype(auto) { return native->abs(); }, 1, rosetta_lua::Return::automatic);
+                    }
+                }
+            }
+        }
+        rosetta_lua::no_overload(L, "abs", "    abs(): datamunge.Dual\n", 2);
+    });
+}
+int rosetta_lua_2874(lua_State* L) {
     return rosetta_lua::boundary(L, [&]() -> int {
         const bool subclass = rosetta_lua::subclass_call(L, 1); (void)subclass;
         const int top = lua_gettop(L);
@@ -5202,203 +5618,123 @@ int rosetta_lua_2705(lua_State* L) {
             {
                 const int raw = top - 1;
                 int given = raw; while (given > 0 && lua_isnil(L, 1 + given)) --given;
-                const int n = std::max(given, 2); (void)n;
-                if (raw >= 2 && given <= 6) {
-                    if (n == 2) {
-                        rosetta_lua::converting() = "argument 'data'";
-                        rosetta_lua::Param<const datamunge::DataFrame &> p0(L, 2);
-                        rosetta_lua::converting() = "argument 'formula'";
-                        rosetta_lua::Param<const std::__cxx11::basic_string<char> &> p1(L, 3);
-                        rosetta_lua::converting() = nullptr;
-                        rosetta_lua::push_pointer(L, new datamunge::KernelRegression(p0.get(), p1.get()), &rosetta_lua::Info<datamunge::KernelRegression>::value, rosetta_lua::Ownership::owned, 0);
-                        if (subclass) rosetta_lua::adopt_instance(L, -1, 1, nullptr);
-                        return 1;
-                    }
-                    if (n == 3) {
-                        rosetta_lua::converting() = "argument 'data'";
-                        rosetta_lua::Param<const datamunge::DataFrame &> p0(L, 2);
-                        rosetta_lua::converting() = "argument 'formula'";
-                        rosetta_lua::Param<const std::__cxx11::basic_string<char> &> p1(L, 3);
-                        rosetta_lua::converting() = "argument 'kernel'";
-                        rosetta_lua::Param<const std::__cxx11::basic_string<char> &> p2(L, 4);
-                        rosetta_lua::converting() = nullptr;
-                        rosetta_lua::push_pointer(L, new datamunge::KernelRegression(p0.get(), p1.get(), p2.get()), &rosetta_lua::Info<datamunge::KernelRegression>::value, rosetta_lua::Ownership::owned, 0);
-                        if (subclass) rosetta_lua::adopt_instance(L, -1, 1, nullptr);
-                        return 1;
-                    }
-                    if (n == 4) {
-                        rosetta_lua::converting() = "argument 'data'";
-                        rosetta_lua::Param<const datamunge::DataFrame &> p0(L, 2);
-                        rosetta_lua::converting() = "argument 'formula'";
-                        rosetta_lua::Param<const std::__cxx11::basic_string<char> &> p1(L, 3);
-                        rosetta_lua::converting() = "argument 'kernel'";
-                        rosetta_lua::Param<const std::__cxx11::basic_string<char> &> p2(L, 4);
-                        rosetta_lua::converting() = "argument 'bandwidth'";
-                        rosetta_lua::Param<double> p3(L, 5);
-                        rosetta_lua::converting() = nullptr;
-                        rosetta_lua::push_pointer(L, new datamunge::KernelRegression(p0.get(), p1.get(), p2.get(), p3.get()), &rosetta_lua::Info<datamunge::KernelRegression>::value, rosetta_lua::Ownership::owned, 0);
-                        if (subclass) rosetta_lua::adopt_instance(L, -1, 1, nullptr);
-                        return 1;
-                    }
-                    if (n == 5) {
-                        rosetta_lua::converting() = "argument 'data'";
-                        rosetta_lua::Param<const datamunge::DataFrame &> p0(L, 2);
-                        rosetta_lua::converting() = "argument 'formula'";
-                        rosetta_lua::Param<const std::__cxx11::basic_string<char> &> p1(L, 3);
-                        rosetta_lua::converting() = "argument 'kernel'";
-                        rosetta_lua::Param<const std::__cxx11::basic_string<char> &> p2(L, 4);
-                        rosetta_lua::converting() = "argument 'bandwidth'";
-                        rosetta_lua::Param<double> p3(L, 5);
-                        rosetta_lua::converting() = "argument 'n_bandwidth'";
-                        rosetta_lua::Param<unsigned long> p4(L, 6);
-                        rosetta_lua::converting() = nullptr;
-                        rosetta_lua::push_pointer(L, new datamunge::KernelRegression(p0.get(), p1.get(), p2.get(), p3.get(), p4.get()), &rosetta_lua::Info<datamunge::KernelRegression>::value, rosetta_lua::Ownership::owned, 0);
-                        if (subclass) rosetta_lua::adopt_instance(L, -1, 1, nullptr);
-                        return 1;
-                    }
-                    if (n == 6) {
-                        rosetta_lua::converting() = "argument 'data'";
-                        rosetta_lua::Param<const datamunge::DataFrame &> p0(L, 2);
-                        rosetta_lua::converting() = "argument 'formula'";
-                        rosetta_lua::Param<const std::__cxx11::basic_string<char> &> p1(L, 3);
-                        rosetta_lua::converting() = "argument 'kernel'";
-                        rosetta_lua::Param<const std::__cxx11::basic_string<char> &> p2(L, 4);
-                        rosetta_lua::converting() = "argument 'bandwidth'";
-                        rosetta_lua::Param<double> p3(L, 5);
-                        rosetta_lua::converting() = "argument 'n_bandwidth'";
-                        rosetta_lua::Param<unsigned long> p4(L, 6);
-                        rosetta_lua::converting() = "argument 'standardize'";
-                        rosetta_lua::Param<bool> p5(L, 7);
-                        rosetta_lua::converting() = nullptr;
-                        rosetta_lua::push_pointer(L, new datamunge::KernelRegression(p0.get(), p1.get(), p2.get(), p3.get(), p4.get(), p5.get()), &rosetta_lua::Info<datamunge::KernelRegression>::value, rosetta_lua::Ownership::owned, 0);
-                        if (subclass) rosetta_lua::adopt_instance(L, -1, 1, nullptr);
-                        return 1;
-                    }
-                }
-            }
-        }
-        rosetta_lua::no_overload(L, "KernelRegression", "    KernelRegression(data: datamunge.DataFrame, formula: string, kernel\?: string, bandwidth\?: number, n_bandwidth\?: integer, standardize\?: boolean)\n", 2);
-    });
-}
-int rosetta_lua_3158(lua_State* L) {
-    return rosetta_lua::boundary(L, [&]() -> int {
-        if (!rosetta_lua::is_instance<datamunge::sim::TaskBatch>(L, 1)) rosetta_lua::fail("TaskBatch.size: expected a TaskBatch object as self; call it as object:size(...)");
-        const int top = lua_gettop(L);
-        for (int pass = 1; pass < 2; ++pass) {
-            const bool strict = pass == 0; (void)strict;
-            {
-                const int raw = top - 1;
-                int given = raw; while (given > 0 && lua_isnil(L, 1 + given)) --given;
-                const int n = std::max(given, 0); (void)n;
-                if (raw >= 0 && given <= 0) {
-                    auto* native = rosetta_lua::native<datamunge::sim::TaskBatch>(L, 1);
-                    if (n == 0) {
-                        return rosetta_lua::call(L, [&]() -> decltype(auto) { return native->size(); }, 1, rosetta_lua::Return::automatic);
-                    }
-                }
-            }
-        }
-        rosetta_lua::no_overload(L, "size", "    size(): integer\n", 2);
-    });
-}
-int rosetta_lua_3159(lua_State* L) {
-    return rosetta_lua::boundary(L, [&]() -> int {
-        if (!rosetta_lua::is_instance<datamunge::sim::TaskBatch>(L, 1)) rosetta_lua::fail("TaskBatch.observation_size: expected a TaskBatch object as self; call it as object:observation_size(...)");
-        const int top = lua_gettop(L);
-        for (int pass = 1; pass < 2; ++pass) {
-            const bool strict = pass == 0; (void)strict;
-            {
-                const int raw = top - 1;
-                int given = raw; while (given > 0 && lua_isnil(L, 1 + given)) --given;
-                const int n = std::max(given, 0); (void)n;
-                if (raw >= 0 && given <= 0) {
-                    auto* native = rosetta_lua::native<datamunge::sim::TaskBatch>(L, 1);
-                    if (n == 0) {
-                        return rosetta_lua::call(L, [&]() -> decltype(auto) { return native->observation_size(); }, 1, rosetta_lua::Return::automatic);
-                    }
-                }
-            }
-        }
-        rosetta_lua::no_overload(L, "observation_size", "    observation_size(): integer\n", 2);
-    });
-}
-int rosetta_lua_3160(lua_State* L) {
-    return rosetta_lua::boundary(L, [&]() -> int {
-        if (!rosetta_lua::is_instance<datamunge::sim::TaskBatch>(L, 1)) rosetta_lua::fail("TaskBatch.action_size: expected a TaskBatch object as self; call it as object:action_size(...)");
-        const int top = lua_gettop(L);
-        for (int pass = 1; pass < 2; ++pass) {
-            const bool strict = pass == 0; (void)strict;
-            {
-                const int raw = top - 1;
-                int given = raw; while (given > 0 && lua_isnil(L, 1 + given)) --given;
-                const int n = std::max(given, 0); (void)n;
-                if (raw >= 0 && given <= 0) {
-                    auto* native = rosetta_lua::native<datamunge::sim::TaskBatch>(L, 1);
-                    if (n == 0) {
-                        return rosetta_lua::call(L, [&]() -> decltype(auto) { return native->action_size(); }, 1, rosetta_lua::Return::automatic);
-                    }
-                }
-            }
-        }
-        rosetta_lua::no_overload(L, "action_size", "    action_size(): integer\n", 2);
-    });
-}
-int rosetta_lua_3161(lua_State* L) {
-    return rosetta_lua::boundary(L, [&]() -> int {
-        if (!rosetta_lua::is_instance<datamunge::sim::TaskBatch>(L, 1)) rosetta_lua::fail("TaskBatch.output: expected a TaskBatch object as self; call it as object:output(...)");
-        const int top = lua_gettop(L);
-        for (int pass = 1; pass < 2; ++pass) {
-            const bool strict = pass == 0; (void)strict;
-            {
-                const int raw = top - 1;
-                int given = raw; while (given > 0 && lua_isnil(L, 1 + given)) --given;
-                const int n = std::max(given, 0); (void)n;
-                if (raw >= 0 && given <= 0) {
-                    auto* native = rosetta_lua::native<datamunge::sim::TaskBatch>(L, 1);
-                    if (n == 0) {
-                        return rosetta_lua::call(L, [&]() -> decltype(auto) { return native->output(); }, 1, rosetta_lua::Return::copy);
-                    }
-                }
-            }
-        }
-        rosetta_lua::no_overload(L, "output", "    output(): datamunge.TaskOutput\n", 2);
-    });
-}
-int rosetta_lua_3162(lua_State* L) {
-    return rosetta_lua::boundary(L, [&]() -> int {
-        if (!rosetta_lua::is_instance<datamunge::sim::TaskBatch>(L, 1)) rosetta_lua::fail("TaskBatch.step: expected a TaskBatch object as self; call it as object:step(...)");
-        const int top = lua_gettop(L);
-        for (int pass = 1; pass < 2; ++pass) {
-            const bool strict = pass == 0; (void)strict;
-            {
-                const int raw = top - 1;
-                int given = raw; while (given > 0 && lua_isnil(L, 1 + given)) --given;
                 const int n = std::max(given, 1); (void)n;
                 if (raw >= 1 && given <= 2) {
-                    auto* native = rosetta_lua::native<datamunge::sim::TaskBatch>(L, 1);
                     if (n == 1) {
-                        rosetta_lua::converting() = "argument 'actions'";
-                        rosetta_lua::Param<const std::vector<double> &> p0(L, 2);
+                        rosetta_lua::converting() = "argument 'value'";
+                        rosetta_lua::Param<double> p0(L, 2);
                         rosetta_lua::converting() = nullptr;
-                        return rosetta_lua::call(L, [&]() -> decltype(auto) { return native->step(p0.get()); }, 1, rosetta_lua::Return::copy);
+                        rosetta_lua::push_pointer(L, new datamunge::Dual(p0.get()), &rosetta_lua::Info<datamunge::Dual>::value, rosetta_lua::Ownership::owned, 0);
+                        if (subclass) rosetta_lua::adopt_instance(L, -1, 1, nullptr);
+                        return 1;
                     }
                     if (n == 2) {
-                        rosetta_lua::converting() = "argument 'actions'";
-                        rosetta_lua::Param<const std::vector<double> &> p0(L, 2);
-                        rosetta_lua::converting() = "argument 'mask'";
-                        rosetta_lua::Param<const std::vector<unsigned char> &> p1(L, 3);
+                        rosetta_lua::converting() = "argument 'value'";
+                        rosetta_lua::Param<double> p0(L, 2);
+                        rosetta_lua::converting() = "argument 'derivative'";
+                        rosetta_lua::Param<double> p1(L, 3);
                         rosetta_lua::converting() = nullptr;
-                        return rosetta_lua::call(L, [&]() -> decltype(auto) { return native->step(p0.get(), p1.get()); }, 1, rosetta_lua::Return::copy);
+                        rosetta_lua::push_pointer(L, new datamunge::Dual(p0.get(), p1.get()), &rosetta_lua::Info<datamunge::Dual>::value, rosetta_lua::Ownership::owned, 0);
+                        if (subclass) rosetta_lua::adopt_instance(L, -1, 1, nullptr);
+                        return 1;
                     }
                 }
             }
         }
-        rosetta_lua::no_overload(L, "step", "    step(actions: number[], mask\?: integer[]): datamunge.TaskOutput\n", 2);
+        rosetta_lua::no_overload(L, "Dual", "    Dual(value: number, derivative\?: number)\n", 2);
     });
 }
-int rosetta_lua_3163(lua_State* L) {
+int rosetta_lua_2958(lua_State* L) {
     return rosetta_lua::boundary(L, [&]() -> int {
-        if (!rosetta_lua::is_instance<datamunge::sim::TaskBatch>(L, 1)) rosetta_lua::fail("TaskBatch.reset: expected a TaskBatch object as self; call it as object:reset(...)");
+        auto* native = rosetta_lua::native<datamunge::fda::SplineSolveOptions>(L, 1);
+        rosetta_lua::result<decltype((native->method))>(L, native->method, 1, rosetta_lua::Return::automatic);
+        return 1;
+    });
+}
+int rosetta_lua_2959(lua_State* L) {
+    return rosetta_lua::boundary(L, [&]() -> int {
+        auto* native = rosetta_lua::native<datamunge::fda::SplineSolveOptions>(L, 1);
+        using F = std::remove_cv_t<std::remove_reference_t<decltype(native->method)>>;
+        if constexpr (rosetta_lua::bound_v<F>) {
+            // obj.field.x = v assigns the modified field object to itself.
+            if (rosetta_lua::is_instance<F>(L, 2) && rosetta_lua::native<F>(L, 2) == &native->method) return 0;
+        }
+        rosetta_lua::converting() = "field 'method'";
+        rosetta_lua::Param<const F&> converted(L, 2);
+        rosetta_lua::converting() = nullptr;
+        rosetta_lua::assign_field(native->method, converted.get());
+        return 0;
+    });
+}
+int rosetta_lua_2960(lua_State* L) {
+    return rosetta_lua::boundary(L, [&]() -> int {
+        auto* native = rosetta_lua::native<datamunge::fda::SplineSolveOptions>(L, 1);
+        rosetta_lua::result<decltype((native->direct_limit))>(L, native->direct_limit, 1, rosetta_lua::Return::automatic);
+        return 1;
+    });
+}
+int rosetta_lua_2961(lua_State* L) {
+    return rosetta_lua::boundary(L, [&]() -> int {
+        auto* native = rosetta_lua::native<datamunge::fda::SplineSolveOptions>(L, 1);
+        using F = std::remove_cv_t<std::remove_reference_t<decltype(native->direct_limit)>>;
+        if constexpr (rosetta_lua::bound_v<F>) {
+            // obj.field.x = v assigns the modified field object to itself.
+            if (rosetta_lua::is_instance<F>(L, 2) && rosetta_lua::native<F>(L, 2) == &native->direct_limit) return 0;
+        }
+        rosetta_lua::converting() = "field 'direct_limit'";
+        rosetta_lua::Param<const F&> converted(L, 2);
+        rosetta_lua::converting() = nullptr;
+        rosetta_lua::assign_field(native->direct_limit, converted.get());
+        return 0;
+    });
+}
+int rosetta_lua_2962(lua_State* L) {
+    return rosetta_lua::boundary(L, [&]() -> int {
+        auto* native = rosetta_lua::native<datamunge::fda::SplineSolveOptions>(L, 1);
+        rosetta_lua::result<decltype((native->tolerance))>(L, native->tolerance, 1, rosetta_lua::Return::automatic);
+        return 1;
+    });
+}
+int rosetta_lua_2963(lua_State* L) {
+    return rosetta_lua::boundary(L, [&]() -> int {
+        auto* native = rosetta_lua::native<datamunge::fda::SplineSolveOptions>(L, 1);
+        using F = std::remove_cv_t<std::remove_reference_t<decltype(native->tolerance)>>;
+        if constexpr (rosetta_lua::bound_v<F>) {
+            // obj.field.x = v assigns the modified field object to itself.
+            if (rosetta_lua::is_instance<F>(L, 2) && rosetta_lua::native<F>(L, 2) == &native->tolerance) return 0;
+        }
+        rosetta_lua::converting() = "field 'tolerance'";
+        rosetta_lua::Param<const F&> converted(L, 2);
+        rosetta_lua::converting() = nullptr;
+        rosetta_lua::assign_field(native->tolerance, converted.get());
+        return 0;
+    });
+}
+int rosetta_lua_2964(lua_State* L) {
+    return rosetta_lua::boundary(L, [&]() -> int {
+        auto* native = rosetta_lua::native<datamunge::fda::SplineSolveOptions>(L, 1);
+        rosetta_lua::result<decltype((native->max_iterations))>(L, native->max_iterations, 1, rosetta_lua::Return::automatic);
+        return 1;
+    });
+}
+int rosetta_lua_2965(lua_State* L) {
+    return rosetta_lua::boundary(L, [&]() -> int {
+        auto* native = rosetta_lua::native<datamunge::fda::SplineSolveOptions>(L, 1);
+        using F = std::remove_cv_t<std::remove_reference_t<decltype(native->max_iterations)>>;
+        if constexpr (rosetta_lua::bound_v<F>) {
+            // obj.field.x = v assigns the modified field object to itself.
+            if (rosetta_lua::is_instance<F>(L, 2) && rosetta_lua::native<F>(L, 2) == &native->max_iterations) return 0;
+        }
+        rosetta_lua::converting() = "field 'max_iterations'";
+        rosetta_lua::Param<const F&> converted(L, 2);
+        rosetta_lua::converting() = nullptr;
+        rosetta_lua::assign_field(native->max_iterations, converted.get());
+        return 0;
+    });
+}
+int rosetta_lua_2966(lua_State* L) {
+    return rosetta_lua::boundary(L, [&]() -> int {
+        const bool subclass = rosetta_lua::subclass_call(L, 1); (void)subclass;
         const int top = lua_gettop(L);
         for (int pass = 1; pass < 2; ++pass) {
             const bool strict = pass == 0; (void)strict;
@@ -5406,105 +5742,16 @@ int rosetta_lua_3163(lua_State* L) {
                 const int raw = top - 1;
                 int given = raw; while (given > 0 && lua_isnil(L, 1 + given)) --given;
                 const int n = std::max(given, 0); (void)n;
-                if (raw >= 0 && given <= 1) {
-                    auto* native = rosetta_lua::native<datamunge::sim::TaskBatch>(L, 1);
+                if (raw >= 0 && given <= 0) {
                     if (n == 0) {
-                        return rosetta_lua::call(L, [&]() -> decltype(auto) { return native->reset(); }, 1, rosetta_lua::Return::copy);
-                    }
-                    if (n == 1) {
-                        rosetta_lua::converting() = "argument 'mask'";
-                        rosetta_lua::Param<const std::vector<unsigned char> &> p0(L, 2);
-                        rosetta_lua::converting() = nullptr;
-                        return rosetta_lua::call(L, [&]() -> decltype(auto) { return native->reset(p0.get()); }, 1, rosetta_lua::Return::copy);
+                        rosetta_lua::push_pointer(L, new datamunge::fda::SplineSolveOptions(), &rosetta_lua::Info<datamunge::fda::SplineSolveOptions>::value, rosetta_lua::Ownership::owned, 0);
+                        if (subclass) rosetta_lua::adopt_instance(L, -1, 1, nullptr);
+                        return 1;
                     }
                 }
             }
         }
-        rosetta_lua::no_overload(L, "reset", "    reset(mask\?: integer[]): datamunge.TaskOutput\n", 2);
-    });
-}
-int rosetta_lua_3164(lua_State* L) {
-    return rosetta_lua::boundary(L, [&]() -> int {
-        if (!rosetta_lua::is_instance<datamunge::sim::TaskBatch>(L, 1)) rosetta_lua::fail("TaskBatch.seed: expected a TaskBatch object as self; call it as object:seed(...)");
-        const int top = lua_gettop(L);
-        for (int pass = 1; pass < 2; ++pass) {
-            const bool strict = pass == 0; (void)strict;
-            {
-                const int raw = top - 1;
-                int given = raw; while (given > 0 && lua_isnil(L, 1 + given)) --given;
-                const int n = std::max(given, 1); (void)n;
-                if (raw >= 1 && given <= 1) {
-                    auto* native = rosetta_lua::native<datamunge::sim::TaskBatch>(L, 1);
-                    if (n == 1) {
-                        rosetta_lua::converting() = "argument 'seed'";
-                        rosetta_lua::Param<unsigned long> p0(L, 2);
-                        rosetta_lua::converting() = nullptr;
-                        return rosetta_lua::call(L, [&]() -> decltype(auto) { return native->seed(p0.get()); }, 1, rosetta_lua::Return::automatic);
-                    }
-                }
-            }
-        }
-        rosetta_lua::no_overload(L, "seed", "    seed(seed: integer)\n", 2);
-    });
-}
-int rosetta_lua_3165(lua_State* L) {
-    return rosetta_lua::boundary(L, [&]() -> int {
-        const int top = lua_gettop(L);
-        for (int pass = 1; pass < 2; ++pass) {
-            const bool strict = pass == 0; (void)strict;
-            {
-                const int raw = top - 0;
-                int given = raw; while (given > 0 && lua_isnil(L, 0 + given)) --given;
-                const int n = std::max(given, 2); (void)n;
-                if (raw >= 2 && given <= 5) {
-                    if (n == 2) {
-                        rosetta_lua::converting() = "argument 'task'";
-                        rosetta_lua::Param<datamunge::sim::Task> p0(L, 1);
-                        rosetta_lua::converting() = "argument 'count'";
-                        rosetta_lua::Param<unsigned long> p1(L, 2);
-                        rosetta_lua::converting() = nullptr;
-                        return rosetta_lua::call(L, [&]() -> decltype(auto) { return ::datamunge::lua_bindings::task_batch_create(p0.get(), p1.get()); }, 0, rosetta_lua::Return::owned);
-                    }
-                    if (n == 3) {
-                        rosetta_lua::converting() = "argument 'task'";
-                        rosetta_lua::Param<datamunge::sim::Task> p0(L, 1);
-                        rosetta_lua::converting() = "argument 'count'";
-                        rosetta_lua::Param<unsigned long> p1(L, 2);
-                        rosetta_lua::converting() = "argument 'workers'";
-                        rosetta_lua::Param<unsigned long> p2(L, 3);
-                        rosetta_lua::converting() = nullptr;
-                        return rosetta_lua::call(L, [&]() -> decltype(auto) { return ::datamunge::lua_bindings::task_batch_create(p0.get(), p1.get(), p2.get()); }, 0, rosetta_lua::Return::owned);
-                    }
-                    if (n == 4) {
-                        rosetta_lua::converting() = "argument 'task'";
-                        rosetta_lua::Param<datamunge::sim::Task> p0(L, 1);
-                        rosetta_lua::converting() = "argument 'count'";
-                        rosetta_lua::Param<unsigned long> p1(L, 2);
-                        rosetta_lua::converting() = "argument 'workers'";
-                        rosetta_lua::Param<unsigned long> p2(L, 3);
-                        rosetta_lua::converting() = "argument 'seed'";
-                        rosetta_lua::Param<unsigned long> p3(L, 4);
-                        rosetta_lua::converting() = nullptr;
-                        return rosetta_lua::call(L, [&]() -> decltype(auto) { return ::datamunge::lua_bindings::task_batch_create(p0.get(), p1.get(), p2.get(), p3.get()); }, 0, rosetta_lua::Return::owned);
-                    }
-                    if (n == 5) {
-                        rosetta_lua::converting() = "argument 'task'";
-                        rosetta_lua::Param<datamunge::sim::Task> p0(L, 1);
-                        rosetta_lua::converting() = "argument 'count'";
-                        rosetta_lua::Param<unsigned long> p1(L, 2);
-                        rosetta_lua::converting() = "argument 'workers'";
-                        rosetta_lua::Param<unsigned long> p2(L, 3);
-                        rosetta_lua::converting() = "argument 'seed'";
-                        rosetta_lua::Param<unsigned long> p3(L, 4);
-                        rosetta_lua::converting() = "argument 'time_limit'";
-                        rosetta_lua::Param<unsigned long> p4(L, 5);
-                        rosetta_lua::converting() = nullptr;
-                        return rosetta_lua::call(L, [&]() -> decltype(auto) { return ::datamunge::lua_bindings::task_batch_create(p0.get(), p1.get(), p2.get(), p3.get(), p4.get()); }, 0, rosetta_lua::Return::owned);
-                    }
-                }
-            }
-        }
-        rosetta_lua::no_overload(L, "create", "    create(task: datamunge.Task, count: integer, workers\?: integer, seed\?: integer, time_limit\?: integer): datamunge.TaskBatch\?\n", 1);
+        rosetta_lua::no_overload(L, "SplineSolveOptions", "    SplineSolveOptions()\n", 2);
     });
 }
 int rosetta_lua_3166(lua_State* L) {

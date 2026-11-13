@@ -1,3 +1,5 @@
+// CMD: just TARGET=ggplot_ex run-go
+
 package main
 
 import (
@@ -14,7 +16,7 @@ func rgb(r, g, b int) datamunge.RGB {
 }
 
 func main() {
-	iris := datamunge.DataFrameIris()
+	iris := datamunge.DataIris()
 
 	// ggplot(iris, aes(x = Sepal.Length, y = Sepal.Width, color = Species)) + geom_point()
 	scatter := datamunge.NewGGPlot(iris, "Sepal.Length", "Sepal.Width", "Species")

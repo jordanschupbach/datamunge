@@ -1,3 +1,5 @@
+% CMD: just TARGET=lda_iris_ex run-octave
+
 1;
 
 datamunge;
@@ -10,7 +12,7 @@ function v = dv(t)
   end
 endfunction
 
-iris = DataFrame_iris();
+iris = data_iris();
 printf("iris: %d rows x %d cols\n\n", DataFrame_nrows(iris), DataFrame_ncols(iris));
 
 model = LDA(iris, "Species ~ Sepal.Length + Sepal.Width + Petal.Length + Petal.Width");

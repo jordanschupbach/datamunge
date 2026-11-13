@@ -1,3 +1,5 @@
+;; CMD: just TARGET=ggplot_ex run-guile
+
 ;; Demonstrates GGPlot -- the ggplot2-style grammar-of-graphics library.
 (use-modules (datamunge))
 
@@ -8,7 +10,7 @@
     (RGB-b-set c b)
     c))
 
-(define iris (DataFrame-iris))
+(define iris (data_iris))
 
 ;; ggplot(iris, aes(x = Sepal.Length, y = Sepal.Width, color = Species)) + geom_point()
 (define scatter (new-GGPlot iris "Sepal.Length" "Sepal.Width" "Species"))

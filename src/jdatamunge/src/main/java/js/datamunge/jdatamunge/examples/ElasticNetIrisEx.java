@@ -13,7 +13,7 @@ public class ElasticNetIrisEx {
   public static void run() {
     String formula = "Petal.Length ~ Sepal.Length + Sepal.Width + Petal.Width + Sepal.Length:Petal.Width";
 
-    var iris = DataFrame.iris();
+    var iris = datamunge.data_iris();
     System.out.println("iris: " + iris.nrows() + " rows x " + iris.ncols() + " cols");
     System.out.println("formula: " + formula + "\n");
 

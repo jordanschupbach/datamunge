@@ -1,3 +1,5 @@
+// CMD: just TARGET=lda_iris_ex run-go
+
 package main
 
 import (
@@ -14,7 +16,7 @@ func dvector(values []float64) datamunge.DVector {
 }
 
 func main() {
-	iris := datamunge.DataFrameIris()
+	iris := datamunge.DataIris()
 	fmt.Printf("iris: %d rows x %d cols\n\n", iris.Nrows(), iris.Ncols())
 
 	model := datamunge.NewLDA(iris, "Species ~ Sepal.Length + Sepal.Width + Petal.Length + Petal.Width")

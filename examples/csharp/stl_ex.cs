@@ -1,3 +1,5 @@
+// CMD: just TARGET=stl_ex run-csharp
+
 using System;
 using System.Diagnostics;
 using System.Collections.Generic;

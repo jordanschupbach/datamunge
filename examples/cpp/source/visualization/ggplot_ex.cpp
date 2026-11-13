@@ -1,3 +1,5 @@
+// CMD: just TARGET=ggplot_ex run-cpp
+
 // Demonstrates datamunge::graphics::GGPlot -- the ggplot2-style grammar-of-graphics library.
 #include <datamunge/datamunge.hpp>
 #include <datamunge/datasets/datasets.hpp>

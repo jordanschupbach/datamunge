@@ -1,10 +1,12 @@
+;; CMD: just TARGET=kernel_regression_iris_ex run-lisp
+
 ;;;; Nadaraya-Watson kernel regression on iris: CV-selected bandwidth vs. too-small and too-large ones.
 (require "asdf")
 (asdf:load-system "datamunge")
 
 (defparameter *formula* "Petal.Length ~ Petal.Width")
 
-(defparameter *iris* (dm:data-frame-iris))
+(defparameter *iris* (dm.data:iris))
 (format t "iris: ~a rows x ~a cols~%" (dm:nrows *iris*) (dm:ncols *iris*))
 (format t "formula: ~a~%~%" *formula*)
 

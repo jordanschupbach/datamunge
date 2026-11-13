@@ -8,6 +8,17 @@
 
 package js.datamunge.jdatamunge;
 
+/**
+ *  Configuration for SVRG; fields retain their documented native defaults.<br>
+ *  Supply finite values in the supported ranges. Controls are copied at construction;<br>
+ *  validation, stopping and loss scaling belong to optimize().<br>
+ *  <p alt="Example"><br>
+ *  {@code 
+ dm::optim::SVRGOptions o;
+ std::print("{}\n",o.max_epochs); // 100
+ }</p><br>
+ *  @see SVRG
+ */
 public class SVRGOptions {
   private transient long swigCPtr;
   protected transient boolean swigCMemOwn;
@@ -64,16 +75,10 @@ public class SVRGOptions {
     return datamungeJNI.SVRGOptions_max_epochs_get(swigCPtr, this);
   }
 
-  /**
-   *  Stochastic updates per epoch; zero uses the number of component functions.
-   */
   public void setInner_iterations(long value) {
     datamungeJNI.SVRGOptions_inner_iterations_set(swigCPtr, this, value);
   }
 
-  /**
-   *  Stochastic updates per epoch; zero uses the number of component functions.
-   */
   public long getInner_iterations() {
     return datamungeJNI.SVRGOptions_inner_iterations_get(swigCPtr, this);
   }

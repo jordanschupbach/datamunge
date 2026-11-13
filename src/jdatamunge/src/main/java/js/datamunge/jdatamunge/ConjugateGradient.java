@@ -9,7 +9,21 @@
 package js.datamunge.jdatamunge;
 
 /**
- *  Nonlinear conjugate gradient with the Polak-Ribiere+ update and an Armijo line search.
+ *  ConjugateGradient on the DifferentiableFunction callback interface.<br>
+ *  Nonlinear Polak-Ribiere-plus directions with negative beta truncated to zero, periodic/descent restarts and an Armijo line search. It is not linear CG with exact line minimisation and does not imply termination in p steps. Returns when gradient/change/search conditions stop progress.<br>
+ *  The caller supplies finite, dimensionally consistent callbacks. Inputs are borrowed;<br>
+ *  coordinates mutate in place and can retain a partial state if a callback throws.<br>
+ *  Calls use local optimizer state and propagate callback exceptions; sharing a mutable<br>
+ *  objective across threads requires external synchronisation. Normal return alone<br>
+ *  is not a uniform convergence certificate.<br>
+ *  <p alt="Example"><br>
+ *  {@code 
+ const dm::optim::ConjugateGradient optimizer;
+ std::print("{}\n",optimizer.options().max_iterations); // 1000
+ }</p><br>
+ *  <p alt="References"><br>
+ *  - J. Nocedal and S. J. Wright (2006), Numerical Optimization, second edition, https://doi.org/10.1007/978-0-387-40065-5. The implemented variant and stopping rules are specified above.<br>
+ *  </p>@see ConjugateGradientOptions, trace_optimize()
  */
 public class ConjugateGradient {
   private transient long swigCPtr;
@@ -51,16 +65,61 @@ public class ConjugateGradient {
     }
   }
 
+  /**
+   *  Store a copy of the controls without running the objective.<br>
+   *  @param options Method-specific controls; defaults are listed by ConjugateGradientOptions.<br>
+   *  <p alt="Example"><br>
+   *  {@code 
+   const dm::optim::ConjugateGradient optimizer;
+   std::print("{}\n",optimizer.options().max_iterations); // 1000
+   }</p><br>
+   *  @see optimize()
+   */
   public ConjugateGradient(ConjugateGradientOptions options) {
     this(datamungeJNI.new_ConjugateGradient__SWIG_0(ConjugateGradientOptions.getCPtr(options), options), true);
   }
 
+  /**
+   *  Store a copy of the controls without running the objective.<br>
+   *  <p alt="Example"><br>
+   *  {@code 
+   const dm::optim::ConjugateGradient optimizer;
+   std::print("{}\n",optimizer.options().max_iterations); // 1000
+   }</p><br>
+   *  @see optimize()
+   */
   public ConjugateGradient() {
     this(datamungeJNI.new_ConjugateGradient__SWIG_1(), true);
   }
 
+  /**
+   *  Run ConjugateGradient from the supplied point using the configured finite budget.<br>
+   *  Nonlinear Polak-Ribiere-plus directions with negative beta truncated to zero, periodic/descent restarts and an Armijo line search. It is not linear CG with exact line minimisation and does not imply termination in p steps. Returns when gradient/change/search conditions stop progress.<br>
+   *  @param function Borrowed DifferentiableFunction with matching finite output shapes.<br>
+   *  @param coordinates Owned-by-caller finite start; overwritten with the native returned point.<br>
+   *  @return Objective at the native returned coordinates; not a stop-status code.<br>
+   *  @throws std::invalid_argument ConjugateGradient: tolerance must be non-negative; ConjugateGradient: armijo_c1 must be in (0, 1); ConjugateGradient: backtracking_factor must be in (0, 1).<br>
+   *  @throws std::exception Exceptions from supplied callbacks propagate. Raw solvers do not uniformly reject nonfinite inputs.<br>
+   *  <p alt="Example"><br>
+   *  {@code 
+   dm::optim::QuadraticObjective f({2,8},{1,-2});
+   dm::optim::ConjugateGradientOptions controls;controls.max_iterations=5;
+   std::vector<double> x{0,0};
+   const auto value=dm::optim::ConjugateGradient(controls).optimize(f,x);
+   std::print("{}\n",std::isfinite(value)); // true
+   }</p><br>
+   *  @see trace_optimize(), ConjugateGradientOptions
+   */
   public double optimize(DifferentiableFunction function, DVector coordinates) {
     return datamungeJNI.ConjugateGradient_optimize(swigCPtr, this, DifferentiableFunction.getCPtr(function), function, DVector.getCPtr(coordinates), coordinates);
+  }
+
+  /**
+   *  Borrow this optimizer's stored configuration.<br>
+   *  @return Const option reference, valid during this object's lifetime; no mutation.
+   */
+  public ConjugateGradientOptions options() {
+    return new ConjugateGradientOptions(datamungeJNI.ConjugateGradient_options(swigCPtr, this), false);
   }
 
 }

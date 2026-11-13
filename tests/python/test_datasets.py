@@ -34,24 +34,24 @@ def test_builtin_datasets_have_documented_shapes():
         "digits": (1797, 65),
     }
     for name, (rows, cols) in expected.items():
-        frame = getattr(dm.DataFrame, name)()
+        frame = getattr(dm.data, name)()
         assert (frame.nrows(), frame.ncols()) == (rows, cols), name
-        same = dm.DataFrame.dataset(name)
+        same = dm.data.load(name)
         assert same.nrows() == rows
-    titanic = dm.DataFrame.titanic()
+    titanic = dm.data.titanic()
     assert titanic.string_at("Sex", 0) == "male"
     assert titanic.is_null("Age", 5)
-    assert dm.DataFrame.eight_schools().numeric_at("effect", 0) == 28
+    assert dm.data.eight_schools().numeric_at("effect", 0) == 28
 
 
 def test_catalog_and_unknown_names():
     dm = _dm()
-    catalog = dm.DataFrame.dataset_catalog()
+    catalog = dm.data.catalog()
     assert catalog.nrows() == 24
     assert "diamonds" in list(dm.downloadable())
     assert "rebot_devarm" in list(dm.downloadable())
     with pytest.raises(ValueError):
-        dm.DataFrame.dataset("no_such_dataset")
+        dm.data.load("no_such_dataset")
     with pytest.raises(RuntimeError):
         dm.DataFrame.read_csv("/definitely/not/here.csv")
 

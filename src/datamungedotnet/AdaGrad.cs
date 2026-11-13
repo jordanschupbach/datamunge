@@ -9,7 +9,17 @@
 //------------------------------------------------------------------------------
 
 
-/// <summary>Full-batch AdaGrad (Duchi, Hazan, Singer 2011) on a DifferentiableFunction.  AdaGrad        scales each coordinate's step by the inverse root of its accumulated squared gradient,        making it useful when gradient magnitudes differ substantially by coordinate.</summary>
+/// <summary>AdaGrad on the DifferentiableFunction callback interface. Accumulates squared full gradients; divides each update by sqrt(sum+epsilon). Tests the pre-update gradient norm after applying the update. Every optimize call resets the accumulator. O(p) local storage. The caller supplies finite, dimensionally consistent callbacks. Inputs are borrowed; coordinates mutate in place and can retain a partial state if a callback throws. Calls use local optimizer state and propagate callback exceptions; sharing a mutable objective across threads requires external synchronisation. Normal return alone is not a uniform convergence certificate.</summary>
+/// Title: Example
+/// <code>      const dm::optim::AdaGrad optimizer;
+///      std::print("{}\n",optimizer.options().max_iterations); // 10000</code>
+///
+///
+///
+/// Title: References
+///  - J. Duchi, E. Hazan and Y. Singer (2011), Adaptive Subgradient Methods for Online Learning and Stochastic Optimization, https://jmlr.org/papers/v12/duchi11a.html
+///
+/// <seealso cref="AdaGradOptions, trace_optimize"/>
 public class AdaGrad : global::System.IDisposable {
   private global::System.Runtime.InteropServices.HandleRef swigCPtr;
   protected bool swigCMemOwn;
@@ -57,16 +67,56 @@ public class AdaGrad : global::System.IDisposable {
     }
   }
 
+  /// <summary>Store a copy of the controls without running the objective.</summary>
+  /// <param name="options"> Method-specific controls; defaults are listed by AdaGradOptions.</param> 
+  /// Title: Example
+  /// <code>      const dm::optim::AdaGrad optimizer;
+  ///      std::print("{}\n",optimizer.options().max_iterations); // 10000</code>
+  ///
+  ///
+  ///
+  /// <seealso cref="optimize"/>
   public AdaGrad(AdaGradOptions options) : this(datamungePINVOKE.new_AdaGrad__SWIG_0(AdaGradOptions.getCPtr(options)), true) {
     if (datamungePINVOKE.SWIGPendingException.Pending) throw datamungePINVOKE.SWIGPendingException.Retrieve();
   }
 
+  /// <summary>Store a copy of the controls without running the objective.</summary>
+  /// Title: Example
+  /// <code>      const dm::optim::AdaGrad optimizer;
+  ///      std::print("{}\n",optimizer.options().max_iterations); // 10000</code>
+  ///
+  ///
+  ///
+  /// <seealso cref="optimize"/>
   public AdaGrad() : this(datamungePINVOKE.new_AdaGrad__SWIG_1(), true) {
   }
 
+  /// <summary>Run AdaGrad from the supplied point using the configured finite budget. Accumulates squared full gradients; divides each update by sqrt(sum+epsilon). Tests the pre-update gradient norm after applying the update. Every optimize call resets the accumulator. O(p) local storage.</summary>
+  /// <param name="function"> Borrowed DifferentiableFunction with matching finite output shapes.</param> 
+  /// <param name="coordinates"> Owned-by-caller finite start; overwritten with the native returned point.</param> 
+  /// <returns>Objective at the native returned coordinates; not a stop-status code.</returns> 
+  /// <exception cref="std::invalid_argument"> AdaGrad: step_size must be positive; AdaGrad: epsilon must be positive; AdaGrad: tolerance must be non-negative.</exception> 
+  /// <exception cref="std::exception"> Exceptions from supplied callbacks propagate. Raw solvers do not uniformly reject nonfinite inputs.</exception> 
+  /// Title: Example
+  /// <code>      dm::optim::QuadraticObjective f({2,8},{1,-2});
+  ///      dm::optim::AdaGradOptions controls;controls.max_iterations=5;
+  ///      std::vector&lt;double&gt; x{0,0};
+  ///      const auto value=dm::optim::AdaGrad(controls).optimize(f,x);
+  ///      std::print("{}\n",std::isfinite(value)); // true</code>
+  ///
+  ///
+  ///
+  /// <seealso cref="trace_optimize"/>
   public double optimize(DifferentiableFunction function, DVector coordinates) {
     double ret = datamungePINVOKE.AdaGrad_optimize(swigCPtr, DifferentiableFunction.getCPtr(function), DVector.getCPtr(coordinates));
     if (datamungePINVOKE.SWIGPendingException.Pending) throw datamungePINVOKE.SWIGPendingException.Retrieve();
+    return ret;
+  }
+
+  /// <summary>Borrow this optimizer's stored configuration.</summary>
+  /// <returns>Const option reference, valid during this object's lifetime; no mutation.</returns>
+  public AdaGradOptions options() {
+    AdaGradOptions ret = new AdaGradOptions(datamungePINVOKE.AdaGrad_options(swigCPtr), false);
     return ret;
   }
 

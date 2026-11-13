@@ -2517,215 +2517,222 @@ namespace Swig {
 #define SWIGTYPE_p_datamunge__AgglomerativeClustering swig_types[2]
 #define SWIGTYPE_p_datamunge__BSplineRegression swig_types[3]
 #define SWIGTYPE_p_datamunge__Callback swig_types[4]
-#define SWIGTYPE_p_datamunge__DBSCAN swig_types[5]
-#define SWIGTYPE_p_datamunge__DataFrame swig_types[6]
-#define SWIGTYPE_p_datamunge__DecisionTreeClassifier swig_types[7]
-#define SWIGTYPE_p_datamunge__DecisionTreeRegressor swig_types[8]
-#define SWIGTYPE_p_datamunge__DiffusionMaps swig_types[9]
-#define SWIGTYPE_p_datamunge__Dual swig_types[10]
-#define SWIGTYPE_p_datamunge__ElasticNet swig_types[11]
-#define SWIGTYPE_p_datamunge__GBMClassifier swig_types[12]
-#define SWIGTYPE_p_datamunge__GBMRegressor swig_types[13]
-#define SWIGTYPE_p_datamunge__GGPlot swig_types[14]
-#define SWIGTYPE_p_datamunge__GLM swig_types[15]
-#define SWIGTYPE_p_datamunge__GLMM swig_types[16]
-#define SWIGTYPE_p_datamunge__GaussianProcessRegression swig_types[17]
-#define SWIGTYPE_p_datamunge__HyperDual swig_types[18]
-#define SWIGTYPE_p_datamunge__INLAMixedModel swig_types[19]
-#define SWIGTYPE_p_datamunge__Isomap swig_types[20]
-#define SWIGTYPE_p_datamunge__KMeans swig_types[21]
-#define SWIGTYPE_p_datamunge__KNNClassifier swig_types[22]
-#define SWIGTYPE_p_datamunge__KNNRegressor swig_types[23]
-#define SWIGTYPE_p_datamunge__KernelPCA swig_types[24]
-#define SWIGTYPE_p_datamunge__KernelRegression swig_types[25]
-#define SWIGTYPE_p_datamunge__LDA swig_types[26]
-#define SWIGTYPE_p_datamunge__LLE swig_types[27]
-#define SWIGTYPE_p_datamunge__LM swig_types[28]
-#define SWIGTYPE_p_datamunge__LMM swig_types[29]
-#define SWIGTYPE_p_datamunge__LaplacianEigenmaps swig_types[30]
-#define SWIGTYPE_p_datamunge__Lasso swig_types[31]
-#define SWIGTYPE_p_datamunge__MDS swig_types[32]
-#define SWIGTYPE_p_datamunge__NaiveBayesClassifier swig_types[33]
-#define SWIGTYPE_p_datamunge__PCA swig_types[34]
-#define SWIGTYPE_p_datamunge__PSplineRegression swig_types[35]
-#define SWIGTYPE_p_datamunge__RandomForestClassifier swig_types[36]
-#define SWIGTYPE_p_datamunge__RandomForestRegressor swig_types[37]
-#define SWIGTYPE_p_datamunge__Ridge swig_types[38]
-#define SWIGTYPE_p_datamunge__SVM swig_types[39]
-#define SWIGTYPE_p_datamunge__SammonMapping swig_types[40]
-#define SWIGTYPE_p_datamunge__ShapeLayer swig_types[41]
-#define SWIGTYPE_p_datamunge__TSNE swig_types[42]
-#define SWIGTYPE_p_datamunge__Tape swig_types[43]
-#define SWIGTYPE_p_datamunge__Tensor swig_types[44]
-#define SWIGTYPE_p_datamunge__UMAP swig_types[45]
-#define SWIGTYPE_p_datamunge__Var swig_types[46]
-#define SWIGTYPE_p_datamunge__XGBoostClassifier swig_types[47]
-#define SWIGTYPE_p_datamunge__XGBoostRegressor swig_types[48]
-#define SWIGTYPE_p_datamunge__bayes__GibbsOptions swig_types[49]
-#define SWIGTYPE_p_datamunge__bayes__GibbsResult swig_types[50]
-#define SWIGTYPE_p_datamunge__bayes__GibbsSampler swig_types[51]
-#define SWIGTYPE_p_datamunge__bayes__HMC swig_types[52]
-#define SWIGTYPE_p_datamunge__bayes__HMCOptions swig_types[53]
-#define SWIGTYPE_p_datamunge__bayes__HMCResult swig_types[54]
-#define SWIGTYPE_p_datamunge__bayes__ImportanceSampling swig_types[55]
-#define SWIGTYPE_p_datamunge__bayes__ImportanceSamplingOptions swig_types[56]
-#define SWIGTYPE_p_datamunge__bayes__ImportanceSamplingResult swig_types[57]
-#define SWIGTYPE_p_datamunge__bayes__MAP swig_types[58]
-#define SWIGTYPE_p_datamunge__bayes__MAPOptions swig_types[59]
-#define SWIGTYPE_p_datamunge__bayes__NUTS swig_types[60]
-#define SWIGTYPE_p_datamunge__bayes__NUTSOptions swig_types[61]
-#define SWIGTYPE_p_datamunge__bayes__NUTSResult swig_types[62]
-#define SWIGTYPE_p_datamunge__bayes__RWMOptions swig_types[63]
-#define SWIGTYPE_p_datamunge__bayes__RWMResult swig_types[64]
-#define SWIGTYPE_p_datamunge__bayes__RandomWalkMetropolis swig_types[65]
-#define SWIGTYPE_p_datamunge__image__Image swig_types[66]
-#define SWIGTYPE_p_datamunge__ode__ODEOptions swig_types[67]
-#define SWIGTYPE_p_datamunge__ode__ODESolution swig_types[68]
-#define SWIGTYPE_p_datamunge__ode__ODESolver swig_types[69]
-#define SWIGTYPE_p_datamunge__ode__RHS swig_types[70]
-#define SWIGTYPE_p_datamunge__optim__ACOR swig_types[71]
-#define SWIGTYPE_p_datamunge__optim__ACOROptions swig_types[72]
-#define SWIGTYPE_p_datamunge__optim__AMSGrad swig_types[73]
-#define SWIGTYPE_p_datamunge__optim__AMSGradOptions swig_types[74]
-#define SWIGTYPE_p_datamunge__optim__AdaDelta swig_types[75]
-#define SWIGTYPE_p_datamunge__optim__AdaDeltaOptions swig_types[76]
-#define SWIGTYPE_p_datamunge__optim__AdaGrad swig_types[77]
-#define SWIGTYPE_p_datamunge__optim__AdaGradOptions swig_types[78]
-#define SWIGTYPE_p_datamunge__optim__Adam swig_types[79]
-#define SWIGTYPE_p_datamunge__optim__AdamOptions swig_types[80]
-#define SWIGTYPE_p_datamunge__optim__ArbitraryFunction swig_types[81]
-#define SWIGTYPE_p_datamunge__optim__ArtificialBeeColony swig_types[82]
-#define SWIGTYPE_p_datamunge__optim__ArtificialBeeColonyOptions swig_types[83]
-#define SWIGTYPE_p_datamunge__optim__AugmentedLagrangian swig_types[84]
-#define SWIGTYPE_p_datamunge__optim__AugmentedLagrangianOptions swig_types[85]
-#define SWIGTYPE_p_datamunge__optim__BayesianOptimization swig_types[86]
-#define SWIGTYPE_p_datamunge__optim__BayesianOptimizationOptions swig_types[87]
-#define SWIGTYPE_p_datamunge__optim__BayesianSurrogate swig_types[88]
-#define SWIGTYPE_p_datamunge__optim__CMAES swig_types[89]
-#define SWIGTYPE_p_datamunge__optim__CMAESOptions swig_types[90]
-#define SWIGTYPE_p_datamunge__optim__ConjugateGradient swig_types[91]
-#define SWIGTYPE_p_datamunge__optim__ConjugateGradientOptions swig_types[92]
-#define SWIGTYPE_p_datamunge__optim__CoordinateDescent swig_types[93]
-#define SWIGTYPE_p_datamunge__optim__CoordinateDescentOptions swig_types[94]
-#define SWIGTYPE_p_datamunge__optim__CrossEntropyMethod swig_types[95]
-#define SWIGTYPE_p_datamunge__optim__CrossEntropyMethodOptions swig_types[96]
-#define SWIGTYPE_p_datamunge__optim__CuckooSearch swig_types[97]
-#define SWIGTYPE_p_datamunge__optim__CuckooSearchOptions swig_types[98]
-#define SWIGTYPE_p_datamunge__optim__DEOptions swig_types[99]
-#define SWIGTYPE_p_datamunge__optim__DifferentiableFunction swig_types[100]
-#define SWIGTYPE_p_datamunge__optim__DifferentiableSeparableFunction swig_types[101]
-#define SWIGTYPE_p_datamunge__optim__DifferentialEvolution swig_types[102]
-#define SWIGTYPE_p_datamunge__optim__EqualityConstrainedFunction swig_types[103]
-#define SWIGTYPE_p_datamunge__optim__EstimationOfDistribution swig_types[104]
-#define SWIGTYPE_p_datamunge__optim__EstimationOfDistributionOptions swig_types[105]
-#define SWIGTYPE_p_datamunge__optim__EvolutionStrategy swig_types[106]
-#define SWIGTYPE_p_datamunge__optim__EvolutionStrategyOptions swig_types[107]
-#define SWIGTYPE_p_datamunge__optim__FISTA swig_types[108]
-#define SWIGTYPE_p_datamunge__optim__FISTAOptions swig_types[109]
-#define SWIGTYPE_p_datamunge__optim__FireflyAlgorithm swig_types[110]
-#define SWIGTYPE_p_datamunge__optim__FireflyAlgorithmOptions swig_types[111]
-#define SWIGTYPE_p_datamunge__optim__GAOptions swig_types[112]
-#define SWIGTYPE_p_datamunge__optim__GeneticAlgorithm swig_types[113]
-#define SWIGTYPE_p_datamunge__optim__GradientDescent swig_types[114]
-#define SWIGTYPE_p_datamunge__optim__GradientDescentOptions swig_types[115]
-#define SWIGTYPE_p_datamunge__optim__GreyWolfOptimizer swig_types[116]
-#define SWIGTYPE_p_datamunge__optim__GreyWolfOptimizerOptions swig_types[117]
-#define SWIGTYPE_p_datamunge__optim__HarmonySearch swig_types[118]
-#define SWIGTYPE_p_datamunge__optim__HarmonySearchOptions swig_types[119]
-#define SWIGTYPE_p_datamunge__optim__HessianFunction swig_types[120]
-#define SWIGTYPE_p_datamunge__optim__InequalityConstrainedFunction swig_types[121]
-#define SWIGTYPE_p_datamunge__optim__InteriorPoint swig_types[122]
-#define SWIGTYPE_p_datamunge__optim__InteriorPointOptions swig_types[123]
-#define SWIGTYPE_p_datamunge__optim__LBFGS swig_types[124]
-#define SWIGTYPE_p_datamunge__optim__LBFGSOptions swig_types[125]
-#define SWIGTYPE_p_datamunge__optim__LevenbergMarquardt swig_types[126]
-#define SWIGTYPE_p_datamunge__optim__LevenbergMarquardtOptions swig_types[127]
-#define SWIGTYPE_p_datamunge__optim__Nadam swig_types[128]
-#define SWIGTYPE_p_datamunge__optim__NadamOptions swig_types[129]
-#define SWIGTYPE_p_datamunge__optim__NelderMead swig_types[130]
-#define SWIGTYPE_p_datamunge__optim__NelderMeadOptions swig_types[131]
-#define SWIGTYPE_p_datamunge__optim__NesterovAcceleratedGradient swig_types[132]
-#define SWIGTYPE_p_datamunge__optim__NesterovAcceleratedGradientOptions swig_types[133]
-#define SWIGTYPE_p_datamunge__optim__Newton swig_types[134]
-#define SWIGTYPE_p_datamunge__optim__NewtonOptions swig_types[135]
-#define SWIGTYPE_p_datamunge__optim__PSO swig_types[136]
-#define SWIGTYPE_p_datamunge__optim__PSOOptions swig_types[137]
-#define SWIGTYPE_p_datamunge__optim__ParallelTempering swig_types[138]
-#define SWIGTYPE_p_datamunge__optim__ParallelTemperingOptions swig_types[139]
-#define SWIGTYPE_p_datamunge__optim__ProximalFunction swig_types[140]
-#define SWIGTYPE_p_datamunge__optim__ProximalGradient swig_types[141]
-#define SWIGTYPE_p_datamunge__optim__ProximalGradientOptions swig_types[142]
-#define SWIGTYPE_p_datamunge__optim__RBFGaussianProcessSurrogate swig_types[143]
-#define SWIGTYPE_p_datamunge__optim__RMSProp swig_types[144]
-#define SWIGTYPE_p_datamunge__optim__RMSPropOptions swig_types[145]
-#define SWIGTYPE_p_datamunge__optim__RandomizedBlockCoordinateDescent swig_types[146]
-#define SWIGTYPE_p_datamunge__optim__RandomizedBlockCoordinateDescentOptions swig_types[147]
-#define SWIGTYPE_p_datamunge__optim__ResidualFunction swig_types[148]
-#define SWIGTYPE_p_datamunge__optim__SAGA swig_types[149]
-#define SWIGTYPE_p_datamunge__optim__SAGAOptions swig_types[150]
-#define SWIGTYPE_p_datamunge__optim__SGD swig_types[151]
-#define SWIGTYPE_p_datamunge__optim__SGDOptions swig_types[152]
-#define SWIGTYPE_p_datamunge__optim__SQP swig_types[153]
-#define SWIGTYPE_p_datamunge__optim__SQPOptions swig_types[154]
-#define SWIGTYPE_p_datamunge__optim__SVRG swig_types[155]
-#define SWIGTYPE_p_datamunge__optim__SVRGOptions swig_types[156]
-#define SWIGTYPE_p_datamunge__optim__SeparableFunction swig_types[157]
-#define SWIGTYPE_p_datamunge__optim__SimulatedAnnealing swig_types[158]
-#define SWIGTYPE_p_datamunge__optim__SimulatedAnnealingOptions swig_types[159]
-#define SWIGTYPE_p_datamunge__optim__TrustRegionNewton swig_types[160]
-#define SWIGTYPE_p_datamunge__optim__TrustRegionNewtonOptions swig_types[161]
-#define SWIGTYPE_p_datamunge__optim__WhaleOptimization swig_types[162]
-#define SWIGTYPE_p_datamunge__optim__WhaleOptimizationOptions swig_types[163]
-#define SWIGTYPE_p_datamunge__plot__ABLine swig_types[164]
-#define SWIGTYPE_p_datamunge__plot__DataSeries swig_types[165]
-#define SWIGTYPE_p_datamunge__plot__LegendEntry swig_types[166]
-#define SWIGTYPE_p_datamunge__plot__Plot swig_types[167]
-#define SWIGTYPE_p_datamunge__plot__RGB swig_types[168]
-#define SWIGTYPE_p_datamunge__plot__RLayout swig_types[169]
-#define SWIGTYPE_p_datamunge__plot__RPlot swig_types[170]
-#define SWIGTYPE_p_datamunge__stats__ARIMA swig_types[171]
-#define SWIGTYPE_p_datamunge__stats__ARIMAOptions swig_types[172]
-#define SWIGTYPE_p_datamunge__stats__ExponentialSmoothing swig_types[173]
-#define SWIGTYPE_p_datamunge__stats__ExponentialSmoothingOptions swig_types[174]
-#define SWIGTYPE_p_datamunge__stats__HypothesisTestResult swig_types[175]
-#define SWIGTYPE_p_difference_type swig_types[176]
-#define SWIGTYPE_p_first_type swig_types[177]
-#define SWIGTYPE_p_int swig_types[178]
-#define SWIGTYPE_p_long_long swig_types[179]
-#define SWIGTYPE_p_p_void swig_types[180]
-#define SWIGTYPE_p_second_type swig_types[181]
-#define SWIGTYPE_p_short swig_types[182]
-#define SWIGTYPE_p_signed_char swig_types[183]
-#define SWIGTYPE_p_size_type swig_types[184]
-#define SWIGTYPE_p_std__allocatorT_double_t swig_types[185]
-#define SWIGTYPE_p_std__allocatorT_int_t swig_types[186]
-#define SWIGTYPE_p_std__allocatorT_size_t_t swig_types[187]
-#define SWIGTYPE_p_std__allocatorT_std__string_t swig_types[188]
-#define SWIGTYPE_p_std__allocatorT_std__vectorT_double_t_t swig_types[189]
-#define SWIGTYPE_p_std__pairT_double_double_t swig_types[190]
-#define SWIGTYPE_p_std__pairT_int_int_t swig_types[191]
-#define SWIGTYPE_p_std__pairT_std__string_std__string_t swig_types[192]
-#define SWIGTYPE_p_std__pairT_std__vectorT_double_t_std__vectorT_double_t_t swig_types[193]
-#define SWIGTYPE_p_std__vectorT_datamunge__plot__ABLine_std__allocatorT_datamunge__plot__ABLine_t_t swig_types[194]
-#define SWIGTYPE_p_std__vectorT_datamunge__plot__DataSeries_std__allocatorT_datamunge__plot__DataSeries_t_t swig_types[195]
-#define SWIGTYPE_p_std__vectorT_datamunge__plot__LegendEntry_std__allocatorT_datamunge__plot__LegendEntry_t_t swig_types[196]
-#define SWIGTYPE_p_std__vectorT_datamunge__plot__RGB_std__allocatorT_datamunge__plot__RGB_t_t swig_types[197]
-#define SWIGTYPE_p_std__vectorT_double_t swig_types[198]
-#define SWIGTYPE_p_std__vectorT_int_t swig_types[199]
-#define SWIGTYPE_p_std__vectorT_size_t_t swig_types[200]
-#define SWIGTYPE_p_std__vectorT_std__string_t swig_types[201]
-#define SWIGTYPE_p_std__vectorT_std__vectorT_double_t_t swig_types[202]
-#define SWIGTYPE_p_swig__ConstIterator swig_types[203]
-#define SWIGTYPE_p_swig__GC_VALUE swig_types[204]
-#define SWIGTYPE_p_swig__Iterator swig_types[205]
-#define SWIGTYPE_p_unsigned_char swig_types[206]
-#define SWIGTYPE_p_unsigned_int swig_types[207]
-#define SWIGTYPE_p_unsigned_long_long swig_types[208]
-#define SWIGTYPE_p_unsigned_short swig_types[209]
-#define SWIGTYPE_p_value_type swig_types[210]
-#define SWIGTYPE_p_void swig_types[211]
-static swig_type_info *swig_types[213];
-static swig_module_info swig_module = {swig_types, 212, 0, 0, 0, 0};
+#define SWIGTYPE_p_datamunge__CsvReader swig_types[5]
+#define SWIGTYPE_p_datamunge__DBSCAN swig_types[6]
+#define SWIGTYPE_p_datamunge__DataFrame swig_types[7]
+#define SWIGTYPE_p_datamunge__DecisionTreeClassifier swig_types[8]
+#define SWIGTYPE_p_datamunge__DecisionTreeRegressor swig_types[9]
+#define SWIGTYPE_p_datamunge__DiffusionMaps swig_types[10]
+#define SWIGTYPE_p_datamunge__Dual swig_types[11]
+#define SWIGTYPE_p_datamunge__ElasticNet swig_types[12]
+#define SWIGTYPE_p_datamunge__GBMClassifier swig_types[13]
+#define SWIGTYPE_p_datamunge__GBMRegressor swig_types[14]
+#define SWIGTYPE_p_datamunge__GGPlot swig_types[15]
+#define SWIGTYPE_p_datamunge__GLM swig_types[16]
+#define SWIGTYPE_p_datamunge__GLMM swig_types[17]
+#define SWIGTYPE_p_datamunge__GaussianProcessRegression swig_types[18]
+#define SWIGTYPE_p_datamunge__HyperDual swig_types[19]
+#define SWIGTYPE_p_datamunge__INLAMixedModel swig_types[20]
+#define SWIGTYPE_p_datamunge__Isomap swig_types[21]
+#define SWIGTYPE_p_datamunge__KMeans swig_types[22]
+#define SWIGTYPE_p_datamunge__KNNClassifier swig_types[23]
+#define SWIGTYPE_p_datamunge__KNNRegressor swig_types[24]
+#define SWIGTYPE_p_datamunge__KernelPCA swig_types[25]
+#define SWIGTYPE_p_datamunge__KernelRegression swig_types[26]
+#define SWIGTYPE_p_datamunge__LDA swig_types[27]
+#define SWIGTYPE_p_datamunge__LLE swig_types[28]
+#define SWIGTYPE_p_datamunge__LM swig_types[29]
+#define SWIGTYPE_p_datamunge__LMM swig_types[30]
+#define SWIGTYPE_p_datamunge__LaplacianEigenmaps swig_types[31]
+#define SWIGTYPE_p_datamunge__Lasso swig_types[32]
+#define SWIGTYPE_p_datamunge__MDS swig_types[33]
+#define SWIGTYPE_p_datamunge__NaiveBayesClassifier swig_types[34]
+#define SWIGTYPE_p_datamunge__PCA swig_types[35]
+#define SWIGTYPE_p_datamunge__PSplineRegression swig_types[36]
+#define SWIGTYPE_p_datamunge__RandomForestClassifier swig_types[37]
+#define SWIGTYPE_p_datamunge__RandomForestRegressor swig_types[38]
+#define SWIGTYPE_p_datamunge__Ridge swig_types[39]
+#define SWIGTYPE_p_datamunge__SVM swig_types[40]
+#define SWIGTYPE_p_datamunge__SammonMapping swig_types[41]
+#define SWIGTYPE_p_datamunge__ShapeLayer swig_types[42]
+#define SWIGTYPE_p_datamunge__Splom swig_types[43]
+#define SWIGTYPE_p_datamunge__TSNE swig_types[44]
+#define SWIGTYPE_p_datamunge__Tape swig_types[45]
+#define SWIGTYPE_p_datamunge__Tensor swig_types[46]
+#define SWIGTYPE_p_datamunge__UMAP swig_types[47]
+#define SWIGTYPE_p_datamunge__Var swig_types[48]
+#define SWIGTYPE_p_datamunge__XGBoostClassifier swig_types[49]
+#define SWIGTYPE_p_datamunge__XGBoostRegressor swig_types[50]
+#define SWIGTYPE_p_datamunge__bayes__GibbsOptions swig_types[51]
+#define SWIGTYPE_p_datamunge__bayes__GibbsResult swig_types[52]
+#define SWIGTYPE_p_datamunge__bayes__GibbsSampler swig_types[53]
+#define SWIGTYPE_p_datamunge__bayes__HMC swig_types[54]
+#define SWIGTYPE_p_datamunge__bayes__HMCOptions swig_types[55]
+#define SWIGTYPE_p_datamunge__bayes__HMCResult swig_types[56]
+#define SWIGTYPE_p_datamunge__bayes__ImportanceSampling swig_types[57]
+#define SWIGTYPE_p_datamunge__bayes__ImportanceSamplingOptions swig_types[58]
+#define SWIGTYPE_p_datamunge__bayes__ImportanceSamplingResult swig_types[59]
+#define SWIGTYPE_p_datamunge__bayes__MAP swig_types[60]
+#define SWIGTYPE_p_datamunge__bayes__MAPOptions swig_types[61]
+#define SWIGTYPE_p_datamunge__bayes__NUTS swig_types[62]
+#define SWIGTYPE_p_datamunge__bayes__NUTSOptions swig_types[63]
+#define SWIGTYPE_p_datamunge__bayes__NUTSResult swig_types[64]
+#define SWIGTYPE_p_datamunge__bayes__RWMOptions swig_types[65]
+#define SWIGTYPE_p_datamunge__bayes__RWMResult swig_types[66]
+#define SWIGTYPE_p_datamunge__bayes__RandomWalkMetropolis swig_types[67]
+#define SWIGTYPE_p_datamunge__datasets__ImageBatch swig_types[68]
+#define SWIGTYPE_p_datamunge__graphics__ABLine swig_types[69]
+#define SWIGTYPE_p_datamunge__graphics__DataSeries swig_types[70]
+#define SWIGTYPE_p_datamunge__graphics__LegendEntry swig_types[71]
+#define SWIGTYPE_p_datamunge__graphics__Plot swig_types[72]
+#define SWIGTYPE_p_datamunge__graphics__RGB swig_types[73]
+#define SWIGTYPE_p_datamunge__graphics__RLayout swig_types[74]
+#define SWIGTYPE_p_datamunge__graphics__RPlot swig_types[75]
+#define SWIGTYPE_p_datamunge__image__Image swig_types[76]
+#define SWIGTYPE_p_datamunge__ode__ODEOptions swig_types[77]
+#define SWIGTYPE_p_datamunge__ode__ODESolution swig_types[78]
+#define SWIGTYPE_p_datamunge__ode__ODESolver swig_types[79]
+#define SWIGTYPE_p_datamunge__ode__RHS swig_types[80]
+#define SWIGTYPE_p_datamunge__optim__ACOR swig_types[81]
+#define SWIGTYPE_p_datamunge__optim__ACOROptions swig_types[82]
+#define SWIGTYPE_p_datamunge__optim__AMSGrad swig_types[83]
+#define SWIGTYPE_p_datamunge__optim__AMSGradOptions swig_types[84]
+#define SWIGTYPE_p_datamunge__optim__AdaDelta swig_types[85]
+#define SWIGTYPE_p_datamunge__optim__AdaDeltaOptions swig_types[86]
+#define SWIGTYPE_p_datamunge__optim__AdaGrad swig_types[87]
+#define SWIGTYPE_p_datamunge__optim__AdaGradOptions swig_types[88]
+#define SWIGTYPE_p_datamunge__optim__Adam swig_types[89]
+#define SWIGTYPE_p_datamunge__optim__AdamOptions swig_types[90]
+#define SWIGTYPE_p_datamunge__optim__ArbitraryFunction swig_types[91]
+#define SWIGTYPE_p_datamunge__optim__ArtificialBeeColony swig_types[92]
+#define SWIGTYPE_p_datamunge__optim__ArtificialBeeColonyOptions swig_types[93]
+#define SWIGTYPE_p_datamunge__optim__AugmentedLagrangian swig_types[94]
+#define SWIGTYPE_p_datamunge__optim__AugmentedLagrangianOptions swig_types[95]
+#define SWIGTYPE_p_datamunge__optim__BayesianOptimization swig_types[96]
+#define SWIGTYPE_p_datamunge__optim__BayesianOptimizationOptions swig_types[97]
+#define SWIGTYPE_p_datamunge__optim__BayesianOptimizationResult swig_types[98]
+#define SWIGTYPE_p_datamunge__optim__BayesianSurrogate swig_types[99]
+#define SWIGTYPE_p_datamunge__optim__CMAES swig_types[100]
+#define SWIGTYPE_p_datamunge__optim__CMAESOptions swig_types[101]
+#define SWIGTYPE_p_datamunge__optim__ConjugateGradient swig_types[102]
+#define SWIGTYPE_p_datamunge__optim__ConjugateGradientOptions swig_types[103]
+#define SWIGTYPE_p_datamunge__optim__CoordinateDescent swig_types[104]
+#define SWIGTYPE_p_datamunge__optim__CoordinateDescentOptions swig_types[105]
+#define SWIGTYPE_p_datamunge__optim__CrossEntropyMethod swig_types[106]
+#define SWIGTYPE_p_datamunge__optim__CrossEntropyMethodOptions swig_types[107]
+#define SWIGTYPE_p_datamunge__optim__CuckooSearch swig_types[108]
+#define SWIGTYPE_p_datamunge__optim__CuckooSearchOptions swig_types[109]
+#define SWIGTYPE_p_datamunge__optim__DEOptions swig_types[110]
+#define SWIGTYPE_p_datamunge__optim__DifferentiableFunction swig_types[111]
+#define SWIGTYPE_p_datamunge__optim__DifferentiableSeparableFunction swig_types[112]
+#define SWIGTYPE_p_datamunge__optim__DifferentialEvolution swig_types[113]
+#define SWIGTYPE_p_datamunge__optim__EqualityConstrainedFunction swig_types[114]
+#define SWIGTYPE_p_datamunge__optim__EstimationOfDistribution swig_types[115]
+#define SWIGTYPE_p_datamunge__optim__EstimationOfDistributionOptions swig_types[116]
+#define SWIGTYPE_p_datamunge__optim__EvolutionStrategy swig_types[117]
+#define SWIGTYPE_p_datamunge__optim__EvolutionStrategyOptions swig_types[118]
+#define SWIGTYPE_p_datamunge__optim__FISTA swig_types[119]
+#define SWIGTYPE_p_datamunge__optim__FISTAOptions swig_types[120]
+#define SWIGTYPE_p_datamunge__optim__FireflyAlgorithm swig_types[121]
+#define SWIGTYPE_p_datamunge__optim__FireflyAlgorithmOptions swig_types[122]
+#define SWIGTYPE_p_datamunge__optim__GAOptions swig_types[123]
+#define SWIGTYPE_p_datamunge__optim__GeneticAlgorithm swig_types[124]
+#define SWIGTYPE_p_datamunge__optim__GradientDescent swig_types[125]
+#define SWIGTYPE_p_datamunge__optim__GradientDescentOptions swig_types[126]
+#define SWIGTYPE_p_datamunge__optim__GreyWolfOptimizer swig_types[127]
+#define SWIGTYPE_p_datamunge__optim__GreyWolfOptimizerOptions swig_types[128]
+#define SWIGTYPE_p_datamunge__optim__HarmonySearch swig_types[129]
+#define SWIGTYPE_p_datamunge__optim__HarmonySearchOptions swig_types[130]
+#define SWIGTYPE_p_datamunge__optim__HessianFunction swig_types[131]
+#define SWIGTYPE_p_datamunge__optim__InequalityConstrainedFunction swig_types[132]
+#define SWIGTYPE_p_datamunge__optim__InteriorPoint swig_types[133]
+#define SWIGTYPE_p_datamunge__optim__InteriorPointOptions swig_types[134]
+#define SWIGTYPE_p_datamunge__optim__LBFGS swig_types[135]
+#define SWIGTYPE_p_datamunge__optim__LBFGSOptions swig_types[136]
+#define SWIGTYPE_p_datamunge__optim__LevenbergMarquardt swig_types[137]
+#define SWIGTYPE_p_datamunge__optim__LevenbergMarquardtOptions swig_types[138]
+#define SWIGTYPE_p_datamunge__optim__Nadam swig_types[139]
+#define SWIGTYPE_p_datamunge__optim__NadamOptions swig_types[140]
+#define SWIGTYPE_p_datamunge__optim__NelderMead swig_types[141]
+#define SWIGTYPE_p_datamunge__optim__NelderMeadOptions swig_types[142]
+#define SWIGTYPE_p_datamunge__optim__NesterovAcceleratedGradient swig_types[143]
+#define SWIGTYPE_p_datamunge__optim__NesterovAcceleratedGradientOptions swig_types[144]
+#define SWIGTYPE_p_datamunge__optim__Newton swig_types[145]
+#define SWIGTYPE_p_datamunge__optim__NewtonOptions swig_types[146]
+#define SWIGTYPE_p_datamunge__optim__PSO swig_types[147]
+#define SWIGTYPE_p_datamunge__optim__PSOOptions swig_types[148]
+#define SWIGTYPE_p_datamunge__optim__ParallelTempering swig_types[149]
+#define SWIGTYPE_p_datamunge__optim__ParallelTemperingOptions swig_types[150]
+#define SWIGTYPE_p_datamunge__optim__ProximalFunction swig_types[151]
+#define SWIGTYPE_p_datamunge__optim__ProximalGradient swig_types[152]
+#define SWIGTYPE_p_datamunge__optim__ProximalGradientOptions swig_types[153]
+#define SWIGTYPE_p_datamunge__optim__RBFGaussianProcessSurrogate swig_types[154]
+#define SWIGTYPE_p_datamunge__optim__RMSProp swig_types[155]
+#define SWIGTYPE_p_datamunge__optim__RMSPropOptions swig_types[156]
+#define SWIGTYPE_p_datamunge__optim__RandomizedBlockCoordinateDescent swig_types[157]
+#define SWIGTYPE_p_datamunge__optim__RandomizedBlockCoordinateDescentOptions swig_types[158]
+#define SWIGTYPE_p_datamunge__optim__ResidualFunction swig_types[159]
+#define SWIGTYPE_p_datamunge__optim__SAGA swig_types[160]
+#define SWIGTYPE_p_datamunge__optim__SAGAOptions swig_types[161]
+#define SWIGTYPE_p_datamunge__optim__SGD swig_types[162]
+#define SWIGTYPE_p_datamunge__optim__SGDOptions swig_types[163]
+#define SWIGTYPE_p_datamunge__optim__SQP swig_types[164]
+#define SWIGTYPE_p_datamunge__optim__SQPOptions swig_types[165]
+#define SWIGTYPE_p_datamunge__optim__SVRG swig_types[166]
+#define SWIGTYPE_p_datamunge__optim__SVRGOptions swig_types[167]
+#define SWIGTYPE_p_datamunge__optim__SeparableFunction swig_types[168]
+#define SWIGTYPE_p_datamunge__optim__SimulatedAnnealing swig_types[169]
+#define SWIGTYPE_p_datamunge__optim__SimulatedAnnealingOptions swig_types[170]
+#define SWIGTYPE_p_datamunge__optim__SurrogatePrediction swig_types[171]
+#define SWIGTYPE_p_datamunge__optim__TrustRegionNewton swig_types[172]
+#define SWIGTYPE_p_datamunge__optim__TrustRegionNewtonOptions swig_types[173]
+#define SWIGTYPE_p_datamunge__optim__WhaleOptimization swig_types[174]
+#define SWIGTYPE_p_datamunge__optim__WhaleOptimizationOptions swig_types[175]
+#define SWIGTYPE_p_datamunge__stats__ARIMA swig_types[176]
+#define SWIGTYPE_p_datamunge__stats__ARIMAOptions swig_types[177]
+#define SWIGTYPE_p_datamunge__stats__ExponentialSmoothing swig_types[178]
+#define SWIGTYPE_p_datamunge__stats__ExponentialSmoothingOptions swig_types[179]
+#define SWIGTYPE_p_datamunge__stats__HypothesisTestResult swig_types[180]
+#define SWIGTYPE_p_datamunge__stats__KendallTau swig_types[181]
+#define SWIGTYPE_p_difference_type swig_types[182]
+#define SWIGTYPE_p_first_type swig_types[183]
+#define SWIGTYPE_p_int swig_types[184]
+#define SWIGTYPE_p_long_long swig_types[185]
+#define SWIGTYPE_p_p_void swig_types[186]
+#define SWIGTYPE_p_second_type swig_types[187]
+#define SWIGTYPE_p_short swig_types[188]
+#define SWIGTYPE_p_signed_char swig_types[189]
+#define SWIGTYPE_p_size_type swig_types[190]
+#define SWIGTYPE_p_std__allocatorT_double_t swig_types[191]
+#define SWIGTYPE_p_std__allocatorT_int_t swig_types[192]
+#define SWIGTYPE_p_std__allocatorT_size_t_t swig_types[193]
+#define SWIGTYPE_p_std__allocatorT_std__string_t swig_types[194]
+#define SWIGTYPE_p_std__allocatorT_std__vectorT_double_t_t swig_types[195]
+#define SWIGTYPE_p_std__pairT_double_double_t swig_types[196]
+#define SWIGTYPE_p_std__pairT_int_int_t swig_types[197]
+#define SWIGTYPE_p_std__pairT_std__string_std__string_t swig_types[198]
+#define SWIGTYPE_p_std__pairT_std__vectorT_double_t_std__vectorT_double_t_t swig_types[199]
+#define SWIGTYPE_p_std__vectorT_datamunge__graphics__ABLine_std__allocatorT_datamunge__graphics__ABLine_t_t swig_types[200]
+#define SWIGTYPE_p_std__vectorT_datamunge__graphics__DataSeries_std__allocatorT_datamunge__graphics__DataSeries_t_t swig_types[201]
+#define SWIGTYPE_p_std__vectorT_datamunge__graphics__LegendEntry_std__allocatorT_datamunge__graphics__LegendEntry_t_t swig_types[202]
+#define SWIGTYPE_p_std__vectorT_datamunge__graphics__RGB_std__allocatorT_datamunge__graphics__RGB_t_t swig_types[203]
+#define SWIGTYPE_p_std__vectorT_double_t swig_types[204]
+#define SWIGTYPE_p_std__vectorT_int_t swig_types[205]
+#define SWIGTYPE_p_std__vectorT_size_t_t swig_types[206]
+#define SWIGTYPE_p_std__vectorT_std__string_t swig_types[207]
+#define SWIGTYPE_p_std__vectorT_std__vectorT_double_t_t swig_types[208]
+#define SWIGTYPE_p_std__vectorT_unsigned_char_std__allocatorT_unsigned_char_t_t swig_types[209]
+#define SWIGTYPE_p_swig__ConstIterator swig_types[210]
+#define SWIGTYPE_p_swig__GC_VALUE swig_types[211]
+#define SWIGTYPE_p_swig__Iterator swig_types[212]
+#define SWIGTYPE_p_unsigned_char swig_types[213]
+#define SWIGTYPE_p_unsigned_int swig_types[214]
+#define SWIGTYPE_p_unsigned_long_long swig_types[215]
+#define SWIGTYPE_p_unsigned_short swig_types[216]
+#define SWIGTYPE_p_value_type swig_types[217]
+#define SWIGTYPE_p_void swig_types[218]
+static swig_type_info *swig_types[220];
+static swig_module_info swig_module = {swig_types, 219, 0, 0, 0, 0};
 #define SWIG_TypeQuery(name) SWIG_TypeQueryModule(&swig_module, &swig_module, name)
 #define SWIG_MangledTypeQuery(name) SWIG_MangledTypeQueryModule(&swig_module, &swig_module, name)
 
@@ -7370,7 +7377,12 @@ SWIGINTERN VALUE std_vector_Sl_std_string_Sg____delete__(std::vector< std::strin
     return r;
   }
 
+// ruby.h defines a function-like StringValue(v) macro, which would rewrite the constructors of
+// datamunge::StringValue; hide it while the library headers are parsed.
+#pragma push_macro("StringValue")
+#undef StringValue
 #include "datamunge/datamunge.hpp"
+#pragma pop_macro("StringValue")
 
 
 SWIGINTERN int
@@ -7392,10 +7404,50 @@ SWIG_AsVal_bool (VALUE obj, bool *val)
   return SWIG_TypeError;
 }
 
-SWIGINTERN datamunge::graphics::RGB *new_datamunge_plot_RGB__SWIG_0(){ return new datamunge::graphics::RGB(); }
-SWIGINTERN datamunge::graphics::RGB *new_datamunge_plot_RGB__SWIG_1(int r,int g,int b,double alpha=1.0){
-    return new datamunge::graphics::RGB{r, g, b, alpha};
+
+SWIGINTERN int
+SWIG_AsCharArray(VALUE obj, char *val, size_t size)
+{ 
+  char* cptr = 0; size_t csize = 0; int alloc = SWIG_OLDOBJ;
+  int res = SWIG_AsCharPtrAndSize(obj, &cptr, &csize, &alloc);
+  if (SWIG_IsOK(res)) {
+    /* special case of single char conversion when we don't need space for NUL */
+    if (size == 1 && csize == 2 && cptr && !cptr[1]) --csize;
+    if (csize <= size) {
+      if (val) {
+	if (csize) memcpy(val, cptr, csize*sizeof(char));
+	if (csize < size) memset(val + csize, 0, (size - csize)*sizeof(char));
+      }
+      if (alloc == SWIG_NEWOBJ) {
+	delete[] cptr;
+	res = SWIG_DelNewMask(res);
+      }      
+      return res;
+    }
+    if (alloc == SWIG_NEWOBJ) delete[] cptr;
   }
+  return SWIG_TypeError;
+}
+
+
+SWIGINTERN int
+SWIG_AsVal_char (VALUE obj, char *val)
+{    
+  int res = SWIG_AsCharArray(obj, val, 1);
+  if (!SWIG_IsOK(res)) {
+    long v;
+    res = SWIG_AddCast(SWIG_AsVal_long (obj, &v));
+    if (SWIG_IsOK(res)) {
+      if ((CHAR_MIN <= v) && (v <= CHAR_MAX)) {
+	if (val) *val = static_cast< char >(v);
+      } else {
+	res = SWIG_OverflowError;
+      }
+    }
+  }
+  return res;
+}
+
 /* ---------------------------------------------------
  * C++ director class helpers
  * --------------------------------------------------- */
@@ -27055,6 +27107,107 @@ fail:
 
 
 SWIGINTERN VALUE
+_wrap_DataFrame_to_md__SWIG_0(int argc, VALUE *argv, VALUE self) {
+  datamunge::DataFrame *arg1 = 0 ;
+  int arg2 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  int val2 ;
+  int ecode2 = 0 ;
+  std::string result;
+  VALUE vresult = Qnil;
+  
+  if ((argc < 1) || (argc > 1)) {
+    rb_raise(rb_eArgError, "wrong # of arguments(%d for 1)",argc); SWIG_fail;
+  }
+  res1 = SWIG_ConvertPtr(self, &argp1,SWIGTYPE_p_datamunge__DataFrame, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::DataFrame const *","to_md", 1, self )); 
+  }
+  arg1 = reinterpret_cast< datamunge::DataFrame * >(argp1);
+  ecode2 = SWIG_AsVal_int(argv[0], &val2);
+  if (!SWIG_IsOK(ecode2)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode2), Ruby_Format_TypeError( "", "int","to_md", 2, argv[0] ));
+  } 
+  arg2 = static_cast< int >(val2);
+  result = ((datamunge::DataFrame const *)arg1)->to_md(arg2);
+  vresult = SWIG_From_std_string(static_cast< std::string >(result));
+  return vresult;
+fail:
+  return Qnil;
+}
+
+
+SWIGINTERN VALUE
+_wrap_DataFrame_to_md__SWIG_1(int argc, VALUE *argv, VALUE self) {
+  datamunge::DataFrame *arg1 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  std::string result;
+  VALUE vresult = Qnil;
+  
+  if ((argc < 0) || (argc > 0)) {
+    rb_raise(rb_eArgError, "wrong # of arguments(%d for 0)",argc); SWIG_fail;
+  }
+  res1 = SWIG_ConvertPtr(self, &argp1,SWIGTYPE_p_datamunge__DataFrame, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::DataFrame const *","to_md", 1, self )); 
+  }
+  arg1 = reinterpret_cast< datamunge::DataFrame * >(argp1);
+  result = ((datamunge::DataFrame const *)arg1)->to_md();
+  vresult = SWIG_From_std_string(static_cast< std::string >(result));
+  return vresult;
+fail:
+  return Qnil;
+}
+
+
+SWIGINTERN VALUE _wrap_DataFrame_to_md(int nargs, VALUE *args, VALUE self) {
+  int argc;
+  VALUE argv[3];
+  int ii;
+  
+  argc = nargs + 1;
+  argv[0] = self;
+  if (argc > 3) SWIG_fail;
+  for (ii = 1; (ii < argc); ++ii) {
+    argv[ii] = args[ii-1];
+  }
+  if (argc == 1) {
+    int _v = 0;
+    void *vptr = 0;
+    int res = SWIG_ConvertPtr(argv[0], &vptr, SWIGTYPE_p_datamunge__DataFrame, 0);
+    _v = SWIG_CheckState(res);
+    if (_v) {
+      return _wrap_DataFrame_to_md__SWIG_1(nargs, args, self);
+    }
+  }
+  if (argc == 2) {
+    int _v = 0;
+    void *vptr = 0;
+    int res = SWIG_ConvertPtr(argv[0], &vptr, SWIGTYPE_p_datamunge__DataFrame, 0);
+    _v = SWIG_CheckState(res);
+    if (_v) {
+      {
+        int res = SWIG_AsVal_int(argv[1], NULL);
+        _v = SWIG_CheckState(res);
+      }
+      if (_v) {
+        return _wrap_DataFrame_to_md__SWIG_0(nargs, args, self);
+      }
+    }
+  }
+  
+fail:
+  Ruby_Format_OverloadedError( argc, 3, "DataFrame.to_md", 
+    "    std::string DataFrame.to_md(int digits)\n"
+    "    std::string DataFrame.to_md()\n");
+  
+  return Qnil;
+}
+
+
+SWIGINTERN VALUE
 _wrap_DataFrame_is_numeric_column(int argc, VALUE *argv, VALUE self) {
   datamunge::DataFrame *arg1 = 0 ;
   std::string *arg2 = 0 ;
@@ -27235,30 +27388,249 @@ fail:
 
 
 SWIGINTERN VALUE
-_wrap_DataFrame_iris(int argc, VALUE *argv, VALUE self) {
+_wrap_DataFrame_read_csv__SWIG_0(int argc, VALUE *argv, VALUE self) {
+  std::string *arg1 = 0 ;
+  char arg2 ;
+  int res1 = SWIG_OLDOBJ ;
+  char val2 ;
+  int ecode2 = 0 ;
   datamunge::DataFrame *result = 0 ;
   VALUE vresult = Qnil;
   
-  if ((argc < 0) || (argc > 0)) {
-    rb_raise(rb_eArgError, "wrong # of arguments(%d for 0)",argc); SWIG_fail;
+  if ((argc < 2) || (argc > 2)) {
+    rb_raise(rb_eArgError, "wrong # of arguments(%d for 2)",argc); SWIG_fail;
   }
-  result = (datamunge::DataFrame *)datamunge::DataFrame::iris();
+  {
+    std::string *ptr = (std::string *)0;
+    res1 = SWIG_AsPtr_std_string(argv[0], &ptr);
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "std::string const &","datamunge::DataFrame::read_csv", 1, argv[0] )); 
+    }
+    if (!ptr) {
+      SWIG_exception_fail(SWIG_NullReferenceError, Ruby_Format_TypeError("invalid null reference ", "std::string const &","datamunge::DataFrame::read_csv", 1, argv[0])); 
+    }
+    arg1 = ptr;
+  }
+  ecode2 = SWIG_AsVal_char(argv[1], &val2);
+  if (!SWIG_IsOK(ecode2)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode2), Ruby_Format_TypeError( "", "char","datamunge::DataFrame::read_csv", 2, argv[1] ));
+  } 
+  arg2 = static_cast< char >(val2);
+  result = (datamunge::DataFrame *)datamunge::DataFrame::read_csv((std::string const &)*arg1,arg2);
   vresult = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__DataFrame, 0 |  0 );
+  if (SWIG_IsNewObj(res1)) delete arg1;
   return vresult;
 fail:
+  if (SWIG_IsNewObj(res1)) delete arg1;
   return Qnil;
 }
 
 
 SWIGINTERN VALUE
-_wrap_DataFrame_penguins(int argc, VALUE *argv, VALUE self) {
+_wrap_DataFrame_read_csv__SWIG_1(int argc, VALUE *argv, VALUE self) {
+  std::string *arg1 = 0 ;
+  int res1 = SWIG_OLDOBJ ;
   datamunge::DataFrame *result = 0 ;
   VALUE vresult = Qnil;
   
-  if ((argc < 0) || (argc > 0)) {
-    rb_raise(rb_eArgError, "wrong # of arguments(%d for 0)",argc); SWIG_fail;
+  if ((argc < 1) || (argc > 1)) {
+    rb_raise(rb_eArgError, "wrong # of arguments(%d for 1)",argc); SWIG_fail;
   }
-  result = (datamunge::DataFrame *)datamunge::DataFrame::penguins();
+  {
+    std::string *ptr = (std::string *)0;
+    res1 = SWIG_AsPtr_std_string(argv[0], &ptr);
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "std::string const &","datamunge::DataFrame::read_csv", 1, argv[0] )); 
+    }
+    if (!ptr) {
+      SWIG_exception_fail(SWIG_NullReferenceError, Ruby_Format_TypeError("invalid null reference ", "std::string const &","datamunge::DataFrame::read_csv", 1, argv[0])); 
+    }
+    arg1 = ptr;
+  }
+  result = (datamunge::DataFrame *)datamunge::DataFrame::read_csv((std::string const &)*arg1);
+  vresult = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__DataFrame, 0 |  0 );
+  if (SWIG_IsNewObj(res1)) delete arg1;
+  return vresult;
+fail:
+  if (SWIG_IsNewObj(res1)) delete arg1;
+  return Qnil;
+}
+
+
+SWIGINTERN VALUE _wrap_DataFrame_read_csv(int nargs, VALUE *args, VALUE self) {
+  int argc;
+  VALUE argv[2];
+  int ii;
+  
+  argc = nargs;
+  if (argc > 2) SWIG_fail;
+  for (ii = 0; (ii < argc); ++ii) {
+    argv[ii] = args[ii];
+  }
+  if (argc == 1) {
+    int _v = 0;
+    int res = SWIG_AsPtr_std_string(argv[0], (std::string**)(0));
+    _v = SWIG_CheckState(res);
+    if (_v) {
+      return _wrap_DataFrame_read_csv__SWIG_1(nargs, args, self);
+    }
+  }
+  if (argc == 2) {
+    int _v = 0;
+    int res = SWIG_AsPtr_std_string(argv[0], (std::string**)(0));
+    _v = SWIG_CheckState(res);
+    if (_v) {
+      {
+        int res = SWIG_AsVal_char(argv[1], NULL);
+        _v = SWIG_CheckState(res);
+      }
+      if (_v) {
+        return _wrap_DataFrame_read_csv__SWIG_0(nargs, args, self);
+      }
+    }
+  }
+  
+fail:
+  Ruby_Format_OverloadedError( argc, 2, "DataFrame.read_csv", 
+    "    datamunge::DataFrame DataFrame.read_csv(std::string const &path, char delimiter)\n"
+    "    datamunge::DataFrame * DataFrame.read_csv(std::string const &path)\n");
+  
+  return Qnil;
+}
+
+
+SWIGINTERN VALUE
+_wrap_DataFrame_parse_csv__SWIG_0(int argc, VALUE *argv, VALUE self) {
+  std::string *arg1 = 0 ;
+  char arg2 ;
+  int res1 = SWIG_OLDOBJ ;
+  char val2 ;
+  int ecode2 = 0 ;
+  datamunge::DataFrame *result = 0 ;
+  VALUE vresult = Qnil;
+  
+  if ((argc < 2) || (argc > 2)) {
+    rb_raise(rb_eArgError, "wrong # of arguments(%d for 2)",argc); SWIG_fail;
+  }
+  {
+    std::string *ptr = (std::string *)0;
+    res1 = SWIG_AsPtr_std_string(argv[0], &ptr);
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "std::string const &","datamunge::DataFrame::parse_csv", 1, argv[0] )); 
+    }
+    if (!ptr) {
+      SWIG_exception_fail(SWIG_NullReferenceError, Ruby_Format_TypeError("invalid null reference ", "std::string const &","datamunge::DataFrame::parse_csv", 1, argv[0])); 
+    }
+    arg1 = ptr;
+  }
+  ecode2 = SWIG_AsVal_char(argv[1], &val2);
+  if (!SWIG_IsOK(ecode2)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode2), Ruby_Format_TypeError( "", "char","datamunge::DataFrame::parse_csv", 2, argv[1] ));
+  } 
+  arg2 = static_cast< char >(val2);
+  result = (datamunge::DataFrame *)datamunge::DataFrame::parse_csv((std::string const &)*arg1,arg2);
+  vresult = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__DataFrame, 0 |  0 );
+  if (SWIG_IsNewObj(res1)) delete arg1;
+  return vresult;
+fail:
+  if (SWIG_IsNewObj(res1)) delete arg1;
+  return Qnil;
+}
+
+
+SWIGINTERN VALUE
+_wrap_DataFrame_parse_csv__SWIG_1(int argc, VALUE *argv, VALUE self) {
+  std::string *arg1 = 0 ;
+  int res1 = SWIG_OLDOBJ ;
+  datamunge::DataFrame *result = 0 ;
+  VALUE vresult = Qnil;
+  
+  if ((argc < 1) || (argc > 1)) {
+    rb_raise(rb_eArgError, "wrong # of arguments(%d for 1)",argc); SWIG_fail;
+  }
+  {
+    std::string *ptr = (std::string *)0;
+    res1 = SWIG_AsPtr_std_string(argv[0], &ptr);
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "std::string const &","datamunge::DataFrame::parse_csv", 1, argv[0] )); 
+    }
+    if (!ptr) {
+      SWIG_exception_fail(SWIG_NullReferenceError, Ruby_Format_TypeError("invalid null reference ", "std::string const &","datamunge::DataFrame::parse_csv", 1, argv[0])); 
+    }
+    arg1 = ptr;
+  }
+  result = (datamunge::DataFrame *)datamunge::DataFrame::parse_csv((std::string const &)*arg1);
+  vresult = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__DataFrame, 0 |  0 );
+  if (SWIG_IsNewObj(res1)) delete arg1;
+  return vresult;
+fail:
+  if (SWIG_IsNewObj(res1)) delete arg1;
+  return Qnil;
+}
+
+
+SWIGINTERN VALUE _wrap_DataFrame_parse_csv(int nargs, VALUE *args, VALUE self) {
+  int argc;
+  VALUE argv[2];
+  int ii;
+  
+  argc = nargs;
+  if (argc > 2) SWIG_fail;
+  for (ii = 0; (ii < argc); ++ii) {
+    argv[ii] = args[ii];
+  }
+  if (argc == 1) {
+    int _v = 0;
+    int res = SWIG_AsPtr_std_string(argv[0], (std::string**)(0));
+    _v = SWIG_CheckState(res);
+    if (_v) {
+      return _wrap_DataFrame_parse_csv__SWIG_1(nargs, args, self);
+    }
+  }
+  if (argc == 2) {
+    int _v = 0;
+    int res = SWIG_AsPtr_std_string(argv[0], (std::string**)(0));
+    _v = SWIG_CheckState(res);
+    if (_v) {
+      {
+        int res = SWIG_AsVal_char(argv[1], NULL);
+        _v = SWIG_CheckState(res);
+      }
+      if (_v) {
+        return _wrap_DataFrame_parse_csv__SWIG_0(nargs, args, self);
+      }
+    }
+  }
+  
+fail:
+  Ruby_Format_OverloadedError( argc, 2, "DataFrame.parse_csv", 
+    "    datamunge::DataFrame DataFrame.parse_csv(std::string const &text, char delimiter)\n"
+    "    datamunge::DataFrame * DataFrame.parse_csv(std::string const &text)\n");
+  
+  return Qnil;
+}
+
+
+SWIGINTERN VALUE
+_wrap_DataFrame_from_image_batch(int argc, VALUE *argv, VALUE self) {
+  datamunge::datasets::ImageBatch *arg1 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  datamunge::DataFrame *result = 0 ;
+  VALUE vresult = Qnil;
+  
+  if ((argc < 1) || (argc > 1)) {
+    rb_raise(rb_eArgError, "wrong # of arguments(%d for 1)",argc); SWIG_fail;
+  }
+  res1 = SWIG_ConvertPtr(argv[0], &argp1, SWIGTYPE_p_datamunge__datasets__ImageBatch,  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::datasets::ImageBatch const &","datamunge::DataFrame::from_image_batch", 1, argv[0] )); 
+  }
+  if (!argp1) {
+    SWIG_exception_fail(SWIG_NullReferenceError, Ruby_Format_TypeError("invalid null reference ", "datamunge::datasets::ImageBatch const &","datamunge::DataFrame::from_image_batch", 1, argv[0])); 
+  }
+  arg1 = reinterpret_cast< datamunge::datasets::ImageBatch * >(argp1);
+  result = (datamunge::DataFrame *)datamunge::DataFrame::from_image_batch((datamunge::datasets::ImageBatch const &)*arg1);
   vresult = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__DataFrame, 0 |  0 );
   return vresult;
 fail:
@@ -27269,6 +27641,682 @@ fail:
 SWIGINTERN void
 free_datamunge_DataFrame(void *self) {
     datamunge::DataFrame *arg1 = (datamunge::DataFrame *)self;
+    delete arg1;
+}
+
+SWIGINTERN VALUE
+_wrap_data_iris(int argc, VALUE *argv, VALUE self) {
+  datamunge::DataFrame *result = 0 ;
+  VALUE vresult = Qnil;
+  
+  if ((argc < 0) || (argc > 0)) {
+    rb_raise(rb_eArgError, "wrong # of arguments(%d for 0)",argc); SWIG_fail;
+  }
+  result = (datamunge::DataFrame *)datamunge::data::iris();
+  vresult = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__DataFrame, 0 |  0 );
+  return vresult;
+fail:
+  return Qnil;
+}
+
+
+SWIGINTERN VALUE
+_wrap_data_penguins(int argc, VALUE *argv, VALUE self) {
+  datamunge::DataFrame *result = 0 ;
+  VALUE vresult = Qnil;
+  
+  if ((argc < 0) || (argc > 0)) {
+    rb_raise(rb_eArgError, "wrong # of arguments(%d for 0)",argc); SWIG_fail;
+  }
+  result = (datamunge::DataFrame *)datamunge::data::penguins();
+  vresult = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__DataFrame, 0 |  0 );
+  return vresult;
+fail:
+  return Qnil;
+}
+
+
+SWIGINTERN VALUE
+_wrap_data_tooth_growth(int argc, VALUE *argv, VALUE self) {
+  datamunge::DataFrame *result = 0 ;
+  VALUE vresult = Qnil;
+  
+  if ((argc < 0) || (argc > 0)) {
+    rb_raise(rb_eArgError, "wrong # of arguments(%d for 0)",argc); SWIG_fail;
+  }
+  result = (datamunge::DataFrame *)datamunge::data::tooth_growth();
+  vresult = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__DataFrame, 0 |  0 );
+  return vresult;
+fail:
+  return Qnil;
+}
+
+
+SWIGINTERN VALUE
+_wrap_data_wine(int argc, VALUE *argv, VALUE self) {
+  datamunge::DataFrame *result = 0 ;
+  VALUE vresult = Qnil;
+  
+  if ((argc < 0) || (argc > 0)) {
+    rb_raise(rb_eArgError, "wrong # of arguments(%d for 0)",argc); SWIG_fail;
+  }
+  result = (datamunge::DataFrame *)datamunge::data::wine();
+  vresult = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__DataFrame, 0 |  0 );
+  return vresult;
+fail:
+  return Qnil;
+}
+
+
+SWIGINTERN VALUE
+_wrap_data_titanic(int argc, VALUE *argv, VALUE self) {
+  datamunge::DataFrame *result = 0 ;
+  VALUE vresult = Qnil;
+  
+  if ((argc < 0) || (argc > 0)) {
+    rb_raise(rb_eArgError, "wrong # of arguments(%d for 0)",argc); SWIG_fail;
+  }
+  result = (datamunge::DataFrame *)datamunge::data::titanic();
+  vresult = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__DataFrame, 0 |  0 );
+  return vresult;
+fail:
+  return Qnil;
+}
+
+
+SWIGINTERN VALUE
+_wrap_data_eight_schools(int argc, VALUE *argv, VALUE self) {
+  datamunge::DataFrame *result = 0 ;
+  VALUE vresult = Qnil;
+  
+  if ((argc < 0) || (argc > 0)) {
+    rb_raise(rb_eArgError, "wrong # of arguments(%d for 0)",argc); SWIG_fail;
+  }
+  result = (datamunge::DataFrame *)datamunge::data::eight_schools();
+  vresult = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__DataFrame, 0 |  0 );
+  return vresult;
+fail:
+  return Qnil;
+}
+
+
+SWIGINTERN VALUE
+_wrap_data_air_passengers(int argc, VALUE *argv, VALUE self) {
+  datamunge::DataFrame *result = 0 ;
+  VALUE vresult = Qnil;
+  
+  if ((argc < 0) || (argc > 0)) {
+    rb_raise(rb_eArgError, "wrong # of arguments(%d for 0)",argc); SWIG_fail;
+  }
+  result = (datamunge::DataFrame *)datamunge::data::air_passengers();
+  vresult = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__DataFrame, 0 |  0 );
+  return vresult;
+fail:
+  return Qnil;
+}
+
+
+SWIGINTERN VALUE
+_wrap_data_volcano(int argc, VALUE *argv, VALUE self) {
+  datamunge::DataFrame *result = 0 ;
+  VALUE vresult = Qnil;
+  
+  if ((argc < 0) || (argc > 0)) {
+    rb_raise(rb_eArgError, "wrong # of arguments(%d for 0)",argc); SWIG_fail;
+  }
+  result = (datamunge::DataFrame *)datamunge::data::volcano();
+  vresult = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__DataFrame, 0 |  0 );
+  return vresult;
+fail:
+  return Qnil;
+}
+
+
+SWIGINTERN VALUE
+_wrap_data_faithful(int argc, VALUE *argv, VALUE self) {
+  datamunge::DataFrame *result = 0 ;
+  VALUE vresult = Qnil;
+  
+  if ((argc < 0) || (argc > 0)) {
+    rb_raise(rb_eArgError, "wrong # of arguments(%d for 0)",argc); SWIG_fail;
+  }
+  result = (datamunge::DataFrame *)datamunge::data::faithful();
+  vresult = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__DataFrame, 0 |  0 );
+  return vresult;
+fail:
+  return Qnil;
+}
+
+
+SWIGINTERN VALUE
+_wrap_data_mtcars(int argc, VALUE *argv, VALUE self) {
+  datamunge::DataFrame *result = 0 ;
+  VALUE vresult = Qnil;
+  
+  if ((argc < 0) || (argc > 0)) {
+    rb_raise(rb_eArgError, "wrong # of arguments(%d for 0)",argc); SWIG_fail;
+  }
+  result = (datamunge::DataFrame *)datamunge::data::mtcars();
+  vresult = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__DataFrame, 0 |  0 );
+  return vresult;
+fail:
+  return Qnil;
+}
+
+
+SWIGINTERN VALUE
+_wrap_data_airquality(int argc, VALUE *argv, VALUE self) {
+  datamunge::DataFrame *result = 0 ;
+  VALUE vresult = Qnil;
+  
+  if ((argc < 0) || (argc > 0)) {
+    rb_raise(rb_eArgError, "wrong # of arguments(%d for 0)",argc); SWIG_fail;
+  }
+  result = (datamunge::DataFrame *)datamunge::data::airquality();
+  vresult = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__DataFrame, 0 |  0 );
+  return vresult;
+fail:
+  return Qnil;
+}
+
+
+SWIGINTERN VALUE
+_wrap_data_breast_cancer(int argc, VALUE *argv, VALUE self) {
+  datamunge::DataFrame *result = 0 ;
+  VALUE vresult = Qnil;
+  
+  if ((argc < 0) || (argc > 0)) {
+    rb_raise(rb_eArgError, "wrong # of arguments(%d for 0)",argc); SWIG_fail;
+  }
+  result = (datamunge::DataFrame *)datamunge::data::breast_cancer();
+  vresult = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__DataFrame, 0 |  0 );
+  return vresult;
+fail:
+  return Qnil;
+}
+
+
+SWIGINTERN VALUE
+_wrap_data_diabetes(int argc, VALUE *argv, VALUE self) {
+  datamunge::DataFrame *result = 0 ;
+  VALUE vresult = Qnil;
+  
+  if ((argc < 0) || (argc > 0)) {
+    rb_raise(rb_eArgError, "wrong # of arguments(%d for 0)",argc); SWIG_fail;
+  }
+  result = (datamunge::DataFrame *)datamunge::data::diabetes();
+  vresult = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__DataFrame, 0 |  0 );
+  return vresult;
+fail:
+  return Qnil;
+}
+
+
+SWIGINTERN VALUE
+_wrap_data_digits(int argc, VALUE *argv, VALUE self) {
+  datamunge::DataFrame *result = 0 ;
+  VALUE vresult = Qnil;
+  
+  if ((argc < 0) || (argc > 0)) {
+    rb_raise(rb_eArgError, "wrong # of arguments(%d for 0)",argc); SWIG_fail;
+  }
+  result = (datamunge::DataFrame *)datamunge::data::digits();
+  vresult = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__DataFrame, 0 |  0 );
+  return vresult;
+fail:
+  return Qnil;
+}
+
+
+SWIGINTERN VALUE
+_wrap_data_diamonds(int argc, VALUE *argv, VALUE self) {
+  datamunge::DataFrame *result = 0 ;
+  VALUE vresult = Qnil;
+  
+  if ((argc < 0) || (argc > 0)) {
+    rb_raise(rb_eArgError, "wrong # of arguments(%d for 0)",argc); SWIG_fail;
+  }
+  result = (datamunge::DataFrame *)datamunge::data::diamonds();
+  vresult = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__DataFrame, 0 |  0 );
+  return vresult;
+fail:
+  return Qnil;
+}
+
+
+SWIGINTERN VALUE
+_wrap_data_california_housing(int argc, VALUE *argv, VALUE self) {
+  datamunge::DataFrame *result = 0 ;
+  VALUE vresult = Qnil;
+  
+  if ((argc < 0) || (argc > 0)) {
+    rb_raise(rb_eArgError, "wrong # of arguments(%d for 0)",argc); SWIG_fail;
+  }
+  result = (datamunge::DataFrame *)datamunge::data::california_housing();
+  vresult = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__DataFrame, 0 |  0 );
+  return vresult;
+fail:
+  return Qnil;
+}
+
+
+SWIGINTERN VALUE
+_wrap_data_load(int argc, VALUE *argv, VALUE self) {
+  std::string *arg1 = 0 ;
+  int res1 = SWIG_OLDOBJ ;
+  datamunge::DataFrame *result = 0 ;
+  VALUE vresult = Qnil;
+  
+  if ((argc < 1) || (argc > 1)) {
+    rb_raise(rb_eArgError, "wrong # of arguments(%d for 1)",argc); SWIG_fail;
+  }
+  {
+    std::string *ptr = (std::string *)0;
+    res1 = SWIG_AsPtr_std_string(argv[0], &ptr);
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "std::string const &","datamunge::data::load", 1, argv[0] )); 
+    }
+    if (!ptr) {
+      SWIG_exception_fail(SWIG_NullReferenceError, Ruby_Format_TypeError("invalid null reference ", "std::string const &","datamunge::data::load", 1, argv[0])); 
+    }
+    arg1 = ptr;
+  }
+  result = (datamunge::DataFrame *)datamunge::data::load((std::string const &)*arg1);
+  vresult = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__DataFrame, 0 |  0 );
+  if (SWIG_IsNewObj(res1)) delete arg1;
+  return vresult;
+fail:
+  if (SWIG_IsNewObj(res1)) delete arg1;
+  return Qnil;
+}
+
+
+SWIGINTERN VALUE
+_wrap_data_catalog(int argc, VALUE *argv, VALUE self) {
+  datamunge::DataFrame *result = 0 ;
+  VALUE vresult = Qnil;
+  
+  if ((argc < 0) || (argc > 0)) {
+    rb_raise(rb_eArgError, "wrong # of arguments(%d for 0)",argc); SWIG_fail;
+  }
+  result = (datamunge::DataFrame *)datamunge::data::catalog();
+  vresult = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__DataFrame, 0 |  0 );
+  return vresult;
+fail:
+  return Qnil;
+}
+
+
+static swig_class SwigClassCsvReader;
+
+SWIGINTERN VALUE
+_wrap_new_CsvReader__SWIG_0(int argc, VALUE *argv, VALUE self) {
+  std::string *arg1 = 0 ;
+  int arg2 ;
+  char arg3 ;
+  int res1 = SWIG_OLDOBJ ;
+  int val2 ;
+  int ecode2 = 0 ;
+  char val3 ;
+  int ecode3 = 0 ;
+  const char *classname SWIGUNUSED = "Octruby::CsvReader";
+  datamunge::CsvReader *result = 0 ;
+  
+  if ((argc < 3) || (argc > 3)) {
+    rb_raise(rb_eArgError, "wrong # of arguments(%d for 3)",argc); SWIG_fail;
+  }
+  {
+    std::string *ptr = (std::string *)0;
+    res1 = SWIG_AsPtr_std_string(argv[0], &ptr);
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "std::string const &","CsvReader", 1, argv[0] )); 
+    }
+    if (!ptr) {
+      SWIG_exception_fail(SWIG_NullReferenceError, Ruby_Format_TypeError("invalid null reference ", "std::string const &","CsvReader", 1, argv[0])); 
+    }
+    arg1 = ptr;
+  }
+  ecode2 = SWIG_AsVal_int(argv[1], &val2);
+  if (!SWIG_IsOK(ecode2)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode2), Ruby_Format_TypeError( "", "int","CsvReader", 2, argv[1] ));
+  } 
+  arg2 = static_cast< int >(val2);
+  ecode3 = SWIG_AsVal_char(argv[2], &val3);
+  if (!SWIG_IsOK(ecode3)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode3), Ruby_Format_TypeError( "", "char","CsvReader", 3, argv[2] ));
+  } 
+  arg3 = static_cast< char >(val3);
+  result = (datamunge::CsvReader *)new datamunge::CsvReader((std::string const &)*arg1,arg2,arg3);
+  ((struct swig_ruby_wrapped_object *)RTYPEDDATA_GET_DATA(self))->data = result;
+  if (SWIG_IsNewObj(res1)) delete arg1;
+  return self;
+fail:
+  if (SWIG_IsNewObj(res1)) delete arg1;
+  return Qnil;
+}
+
+
+SWIGINTERN VALUE
+_wrap_new_CsvReader__SWIG_1(int argc, VALUE *argv, VALUE self) {
+  std::string *arg1 = 0 ;
+  int arg2 ;
+  int res1 = SWIG_OLDOBJ ;
+  int val2 ;
+  int ecode2 = 0 ;
+  const char *classname SWIGUNUSED = "Octruby::CsvReader";
+  datamunge::CsvReader *result = 0 ;
+  
+  if ((argc < 2) || (argc > 2)) {
+    rb_raise(rb_eArgError, "wrong # of arguments(%d for 2)",argc); SWIG_fail;
+  }
+  {
+    std::string *ptr = (std::string *)0;
+    res1 = SWIG_AsPtr_std_string(argv[0], &ptr);
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "std::string const &","CsvReader", 1, argv[0] )); 
+    }
+    if (!ptr) {
+      SWIG_exception_fail(SWIG_NullReferenceError, Ruby_Format_TypeError("invalid null reference ", "std::string const &","CsvReader", 1, argv[0])); 
+    }
+    arg1 = ptr;
+  }
+  ecode2 = SWIG_AsVal_int(argv[1], &val2);
+  if (!SWIG_IsOK(ecode2)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode2), Ruby_Format_TypeError( "", "int","CsvReader", 2, argv[1] ));
+  } 
+  arg2 = static_cast< int >(val2);
+  result = (datamunge::CsvReader *)new datamunge::CsvReader((std::string const &)*arg1,arg2);
+  ((struct swig_ruby_wrapped_object *)RTYPEDDATA_GET_DATA(self))->data = result;
+  if (SWIG_IsNewObj(res1)) delete arg1;
+  return self;
+fail:
+  if (SWIG_IsNewObj(res1)) delete arg1;
+  return Qnil;
+}
+
+
+SWIGINTERN VALUE
+#ifdef HAVE_RB_DEFINE_ALLOC_FUNC
+_wrap_CsvReader_allocate(VALUE self)
+#else
+_wrap_CsvReader_allocate(int argc, VALUE *argv, VALUE self)
+#endif
+{
+  VALUE vresult = SWIG_NewClassInstance(self, SWIGTYPE_p_datamunge__CsvReader);
+#ifndef HAVE_RB_DEFINE_ALLOC_FUNC
+  rb_obj_call_init(vresult, argc, argv);
+#endif
+  return vresult;
+}
+
+
+SWIGINTERN VALUE
+_wrap_new_CsvReader__SWIG_2(int argc, VALUE *argv, VALUE self) {
+  std::string *arg1 = 0 ;
+  int res1 = SWIG_OLDOBJ ;
+  const char *classname SWIGUNUSED = "Octruby::CsvReader";
+  datamunge::CsvReader *result = 0 ;
+  
+  if ((argc < 1) || (argc > 1)) {
+    rb_raise(rb_eArgError, "wrong # of arguments(%d for 1)",argc); SWIG_fail;
+  }
+  {
+    std::string *ptr = (std::string *)0;
+    res1 = SWIG_AsPtr_std_string(argv[0], &ptr);
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "std::string const &","CsvReader", 1, argv[0] )); 
+    }
+    if (!ptr) {
+      SWIG_exception_fail(SWIG_NullReferenceError, Ruby_Format_TypeError("invalid null reference ", "std::string const &","CsvReader", 1, argv[0])); 
+    }
+    arg1 = ptr;
+  }
+  result = (datamunge::CsvReader *)new datamunge::CsvReader((std::string const &)*arg1);
+  ((struct swig_ruby_wrapped_object *)RTYPEDDATA_GET_DATA(self))->data = result;
+  if (SWIG_IsNewObj(res1)) delete arg1;
+  return self;
+fail:
+  if (SWIG_IsNewObj(res1)) delete arg1;
+  return Qnil;
+}
+
+
+SWIGINTERN VALUE _wrap_new_CsvReader(int nargs, VALUE *args, VALUE self) {
+  int argc;
+  VALUE argv[3];
+  int ii;
+  
+  argc = nargs;
+  if (argc > 3) SWIG_fail;
+  for (ii = 0; (ii < argc); ++ii) {
+    argv[ii] = args[ii];
+  }
+  if (argc == 1) {
+    int _v = 0;
+    int res = SWIG_AsPtr_std_string(argv[0], (std::string**)(0));
+    _v = SWIG_CheckState(res);
+    if (_v) {
+      return _wrap_new_CsvReader__SWIG_2(nargs, args, self);
+    }
+  }
+  if (argc == 2) {
+    int _v = 0;
+    int res = SWIG_AsPtr_std_string(argv[0], (std::string**)(0));
+    _v = SWIG_CheckState(res);
+    if (_v) {
+      {
+        int res = SWIG_AsVal_int(argv[1], NULL);
+        _v = SWIG_CheckState(res);
+      }
+      if (_v) {
+        return _wrap_new_CsvReader__SWIG_1(nargs, args, self);
+      }
+    }
+  }
+  if (argc == 3) {
+    int _v = 0;
+    int res = SWIG_AsPtr_std_string(argv[0], (std::string**)(0));
+    _v = SWIG_CheckState(res);
+    if (_v) {
+      {
+        int res = SWIG_AsVal_int(argv[1], NULL);
+        _v = SWIG_CheckState(res);
+      }
+      if (_v) {
+        {
+          int res = SWIG_AsVal_char(argv[2], NULL);
+          _v = SWIG_CheckState(res);
+        }
+        if (_v) {
+          return _wrap_new_CsvReader__SWIG_0(nargs, args, self);
+        }
+      }
+    }
+  }
+  
+fail:
+  Ruby_Format_OverloadedError( argc, 3, "CsvReader.new", 
+    "    CsvReader.new(std::string const &path, int batch_size, char delimiter)\n"
+    "    CsvReader.new(std::string const &path, int batch_size)\n"
+    "    CsvReader.new(std::string const &path)\n");
+  
+  return Qnil;
+}
+
+
+SWIGINTERN VALUE
+_wrap_CsvReader_has_next(int argc, VALUE *argv, VALUE self) {
+  datamunge::CsvReader *arg1 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  bool result;
+  VALUE vresult = Qnil;
+  
+  if ((argc < 0) || (argc > 0)) {
+    rb_raise(rb_eArgError, "wrong # of arguments(%d for 0)",argc); SWIG_fail;
+  }
+  res1 = SWIG_ConvertPtr(self, &argp1,SWIGTYPE_p_datamunge__CsvReader, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::CsvReader *","has_next", 1, self )); 
+  }
+  arg1 = reinterpret_cast< datamunge::CsvReader * >(argp1);
+  result = (bool)(arg1)->has_next();
+  vresult = SWIG_From_bool(static_cast< bool >(result));
+  return vresult;
+fail:
+  return Qnil;
+}
+
+
+SWIGINTERN VALUE
+_wrap_CsvReader_next(int argc, VALUE *argv, VALUE self) {
+  datamunge::CsvReader *arg1 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  datamunge::DataFrame *result = 0 ;
+  VALUE vresult = Qnil;
+  
+  if ((argc < 0) || (argc > 0)) {
+    rb_raise(rb_eArgError, "wrong # of arguments(%d for 0)",argc); SWIG_fail;
+  }
+  res1 = SWIG_ConvertPtr(self, &argp1,SWIGTYPE_p_datamunge__CsvReader, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::CsvReader *","next", 1, self )); 
+  }
+  arg1 = reinterpret_cast< datamunge::CsvReader * >(argp1);
+  result = (datamunge::DataFrame *)(arg1)->next();
+  vresult = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__DataFrame, 0 |  0 );
+  return vresult;
+fail:
+  return Qnil;
+}
+
+
+SWIGINTERN VALUE
+_wrap_CsvReader_reset(int argc, VALUE *argv, VALUE self) {
+  datamunge::CsvReader *arg1 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  
+  if ((argc < 0) || (argc > 0)) {
+    rb_raise(rb_eArgError, "wrong # of arguments(%d for 0)",argc); SWIG_fail;
+  }
+  res1 = SWIG_ConvertPtr(self, &argp1,SWIGTYPE_p_datamunge__CsvReader, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::CsvReader *","reset", 1, self )); 
+  }
+  arg1 = reinterpret_cast< datamunge::CsvReader * >(argp1);
+  (arg1)->reset();
+  return Qnil;
+fail:
+  return Qnil;
+}
+
+
+SWIGINTERN VALUE
+_wrap_CsvReader_batch_size(int argc, VALUE *argv, VALUE self) {
+  datamunge::CsvReader *arg1 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  int result;
+  VALUE vresult = Qnil;
+  
+  if ((argc < 0) || (argc > 0)) {
+    rb_raise(rb_eArgError, "wrong # of arguments(%d for 0)",argc); SWIG_fail;
+  }
+  res1 = SWIG_ConvertPtr(self, &argp1,SWIGTYPE_p_datamunge__CsvReader, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::CsvReader const *","batch_size", 1, self )); 
+  }
+  arg1 = reinterpret_cast< datamunge::CsvReader * >(argp1);
+  result = (int)((datamunge::CsvReader const *)arg1)->batch_size();
+  vresult = SWIG_From_int(static_cast< int >(result));
+  return vresult;
+fail:
+  return Qnil;
+}
+
+
+SWIGINTERN VALUE
+_wrap_CsvReader_set_batch_size(int argc, VALUE *argv, VALUE self) {
+  datamunge::CsvReader *arg1 = 0 ;
+  int arg2 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  int val2 ;
+  int ecode2 = 0 ;
+  
+  if ((argc < 1) || (argc > 1)) {
+    rb_raise(rb_eArgError, "wrong # of arguments(%d for 1)",argc); SWIG_fail;
+  }
+  res1 = SWIG_ConvertPtr(self, &argp1,SWIGTYPE_p_datamunge__CsvReader, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::CsvReader *","set_batch_size", 1, self )); 
+  }
+  arg1 = reinterpret_cast< datamunge::CsvReader * >(argp1);
+  ecode2 = SWIG_AsVal_int(argv[0], &val2);
+  if (!SWIG_IsOK(ecode2)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode2), Ruby_Format_TypeError( "", "int","set_batch_size", 2, argv[0] ));
+  } 
+  arg2 = static_cast< int >(val2);
+  (arg1)->set_batch_size(arg2);
+  return Qnil;
+fail:
+  return Qnil;
+}
+
+
+SWIGINTERN VALUE
+_wrap_CsvReader_column_names(int argc, VALUE *argv, VALUE self) {
+  datamunge::CsvReader *arg1 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  std::vector< std::string,std::allocator< std::string > > result;
+  VALUE vresult = Qnil;
+  
+  if ((argc < 0) || (argc > 0)) {
+    rb_raise(rb_eArgError, "wrong # of arguments(%d for 0)",argc); SWIG_fail;
+  }
+  res1 = SWIG_ConvertPtr(self, &argp1,SWIGTYPE_p_datamunge__CsvReader, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::CsvReader const *","column_names", 1, self )); 
+  }
+  arg1 = reinterpret_cast< datamunge::CsvReader * >(argp1);
+  result = ((datamunge::CsvReader const *)arg1)->column_names();
+  vresult = swig::from(static_cast< std::vector< std::string,std::allocator< std::string > > >(result));
+  return vresult;
+fail:
+  return Qnil;
+}
+
+
+SWIGINTERN VALUE
+_wrap_CsvReader_rows_read(int argc, VALUE *argv, VALUE self) {
+  datamunge::CsvReader *arg1 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  double result;
+  VALUE vresult = Qnil;
+  
+  if ((argc < 0) || (argc > 0)) {
+    rb_raise(rb_eArgError, "wrong # of arguments(%d for 0)",argc); SWIG_fail;
+  }
+  res1 = SWIG_ConvertPtr(self, &argp1,SWIGTYPE_p_datamunge__CsvReader, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::CsvReader const *","rows_read", 1, self )); 
+  }
+  arg1 = reinterpret_cast< datamunge::CsvReader * >(argp1);
+  result = (double)((datamunge::CsvReader const *)arg1)->rows_read();
+  vresult = SWIG_From_double(static_cast< double >(result));
+  return vresult;
+fail:
+  return Qnil;
+}
+
+
+SWIGINTERN void
+free_datamunge_CsvReader(void *self) {
+    datamunge::CsvReader *arg1 = (datamunge::CsvReader *)self;
     delete arg1;
 }
 
@@ -27620,8 +28668,8 @@ fail:
 SWIGINTERN VALUE
 _wrap_ShapeLayer_plot__SWIG_0(int argc, VALUE *argv, VALUE self) {
   datamunge::ShapeLayer *arg1 = 0 ;
-  SwigValueWrapper< datamunge::graphics::RGB > arg2 ;
-  SwigValueWrapper< datamunge::graphics::RGB > arg3 ;
+  datamunge::graphics::RGB arg2 ;
+  datamunge::graphics::RGB arg3 ;
   std::size_t arg4 ;
   std::size_t arg5 ;
   void *argp1 = 0 ;
@@ -27646,7 +28694,7 @@ _wrap_ShapeLayer_plot__SWIG_0(int argc, VALUE *argv, VALUE self) {
   }
   arg1 = reinterpret_cast< datamunge::ShapeLayer * >(argp1);
   {
-    res2 = SWIG_ConvertPtr(argv[0], &argp2, SWIGTYPE_p_datamunge__plot__RGB,  0 );
+    res2 = SWIG_ConvertPtr(argv[0], &argp2, SWIGTYPE_p_datamunge__graphics__RGB,  0 );
     if (!SWIG_IsOK(res2)) {
       SWIG_exception_fail(SWIG_ArgError(res2), Ruby_Format_TypeError( "", "datamunge::graphics::RGB","plot", 2, argv[0] )); 
     }  
@@ -27657,7 +28705,7 @@ _wrap_ShapeLayer_plot__SWIG_0(int argc, VALUE *argv, VALUE self) {
     }
   }
   {
-    res3 = SWIG_ConvertPtr(argv[1], &argp3, SWIGTYPE_p_datamunge__plot__RGB,  0 );
+    res3 = SWIG_ConvertPtr(argv[1], &argp3, SWIGTYPE_p_datamunge__graphics__RGB,  0 );
     if (!SWIG_IsOK(res3)) {
       SWIG_exception_fail(SWIG_ArgError(res3), Ruby_Format_TypeError( "", "datamunge::graphics::RGB","plot", 3, argv[1] )); 
     }  
@@ -27678,7 +28726,7 @@ _wrap_ShapeLayer_plot__SWIG_0(int argc, VALUE *argv, VALUE self) {
   } 
   arg5 = static_cast< std::size_t >(val5);
   result = ((datamunge::ShapeLayer const *)arg1)->plot(SWIG_STD_MOVE(*(&arg2)),SWIG_STD_MOVE(*(&arg3)),SWIG_STD_MOVE(*(&arg4)),SWIG_STD_MOVE(*(&arg5)));
-  vresult = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
+  vresult = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__graphics__RPlot, SWIG_POINTER_OWN |  0 );
   return vresult;
 fail:
   return Qnil;
@@ -27688,8 +28736,8 @@ fail:
 SWIGINTERN VALUE
 _wrap_ShapeLayer_plot__SWIG_1(int argc, VALUE *argv, VALUE self) {
   datamunge::ShapeLayer *arg1 = 0 ;
-  SwigValueWrapper< datamunge::graphics::RGB > arg2 ;
-  SwigValueWrapper< datamunge::graphics::RGB > arg3 ;
+  datamunge::graphics::RGB arg2 ;
+  datamunge::graphics::RGB arg3 ;
   std::size_t arg4 ;
   void *argp1 = 0 ;
   int res1 = 0 ;
@@ -27711,7 +28759,7 @@ _wrap_ShapeLayer_plot__SWIG_1(int argc, VALUE *argv, VALUE self) {
   }
   arg1 = reinterpret_cast< datamunge::ShapeLayer * >(argp1);
   {
-    res2 = SWIG_ConvertPtr(argv[0], &argp2, SWIGTYPE_p_datamunge__plot__RGB,  0 );
+    res2 = SWIG_ConvertPtr(argv[0], &argp2, SWIGTYPE_p_datamunge__graphics__RGB,  0 );
     if (!SWIG_IsOK(res2)) {
       SWIG_exception_fail(SWIG_ArgError(res2), Ruby_Format_TypeError( "", "datamunge::graphics::RGB","plot", 2, argv[0] )); 
     }  
@@ -27722,7 +28770,7 @@ _wrap_ShapeLayer_plot__SWIG_1(int argc, VALUE *argv, VALUE self) {
     }
   }
   {
-    res3 = SWIG_ConvertPtr(argv[1], &argp3, SWIGTYPE_p_datamunge__plot__RGB,  0 );
+    res3 = SWIG_ConvertPtr(argv[1], &argp3, SWIGTYPE_p_datamunge__graphics__RGB,  0 );
     if (!SWIG_IsOK(res3)) {
       SWIG_exception_fail(SWIG_ArgError(res3), Ruby_Format_TypeError( "", "datamunge::graphics::RGB","plot", 3, argv[1] )); 
     }  
@@ -27738,7 +28786,7 @@ _wrap_ShapeLayer_plot__SWIG_1(int argc, VALUE *argv, VALUE self) {
   } 
   arg4 = static_cast< std::size_t >(val4);
   result = ((datamunge::ShapeLayer const *)arg1)->plot(SWIG_STD_MOVE(*(&arg2)),SWIG_STD_MOVE(*(&arg3)),SWIG_STD_MOVE(*(&arg4)));
-  vresult = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
+  vresult = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__graphics__RPlot, SWIG_POINTER_OWN |  0 );
   return vresult;
 fail:
   return Qnil;
@@ -27748,8 +28796,8 @@ fail:
 SWIGINTERN VALUE
 _wrap_ShapeLayer_plot__SWIG_2(int argc, VALUE *argv, VALUE self) {
   datamunge::ShapeLayer *arg1 = 0 ;
-  SwigValueWrapper< datamunge::graphics::RGB > arg2 ;
-  SwigValueWrapper< datamunge::graphics::RGB > arg3 ;
+  datamunge::graphics::RGB arg2 ;
+  datamunge::graphics::RGB arg3 ;
   void *argp1 = 0 ;
   int res1 = 0 ;
   void *argp2 = 0 ;
@@ -27768,7 +28816,7 @@ _wrap_ShapeLayer_plot__SWIG_2(int argc, VALUE *argv, VALUE self) {
   }
   arg1 = reinterpret_cast< datamunge::ShapeLayer * >(argp1);
   {
-    res2 = SWIG_ConvertPtr(argv[0], &argp2, SWIGTYPE_p_datamunge__plot__RGB,  0 );
+    res2 = SWIG_ConvertPtr(argv[0], &argp2, SWIGTYPE_p_datamunge__graphics__RGB,  0 );
     if (!SWIG_IsOK(res2)) {
       SWIG_exception_fail(SWIG_ArgError(res2), Ruby_Format_TypeError( "", "datamunge::graphics::RGB","plot", 2, argv[0] )); 
     }  
@@ -27779,7 +28827,7 @@ _wrap_ShapeLayer_plot__SWIG_2(int argc, VALUE *argv, VALUE self) {
     }
   }
   {
-    res3 = SWIG_ConvertPtr(argv[1], &argp3, SWIGTYPE_p_datamunge__plot__RGB,  0 );
+    res3 = SWIG_ConvertPtr(argv[1], &argp3, SWIGTYPE_p_datamunge__graphics__RGB,  0 );
     if (!SWIG_IsOK(res3)) {
       SWIG_exception_fail(SWIG_ArgError(res3), Ruby_Format_TypeError( "", "datamunge::graphics::RGB","plot", 3, argv[1] )); 
     }  
@@ -27790,7 +28838,7 @@ _wrap_ShapeLayer_plot__SWIG_2(int argc, VALUE *argv, VALUE self) {
     }
   }
   result = ((datamunge::ShapeLayer const *)arg1)->plot(SWIG_STD_MOVE(*(&arg2)),SWIG_STD_MOVE(*(&arg3)));
-  vresult = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
+  vresult = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__graphics__RPlot, SWIG_POINTER_OWN |  0 );
   return vresult;
 fail:
   return Qnil;
@@ -27800,7 +28848,7 @@ fail:
 SWIGINTERN VALUE
 _wrap_ShapeLayer_plot__SWIG_3(int argc, VALUE *argv, VALUE self) {
   datamunge::ShapeLayer *arg1 = 0 ;
-  SwigValueWrapper< datamunge::graphics::RGB > arg2 ;
+  datamunge::graphics::RGB arg2 ;
   void *argp1 = 0 ;
   int res1 = 0 ;
   void *argp2 = 0 ;
@@ -27817,7 +28865,7 @@ _wrap_ShapeLayer_plot__SWIG_3(int argc, VALUE *argv, VALUE self) {
   }
   arg1 = reinterpret_cast< datamunge::ShapeLayer * >(argp1);
   {
-    res2 = SWIG_ConvertPtr(argv[0], &argp2, SWIGTYPE_p_datamunge__plot__RGB,  0 );
+    res2 = SWIG_ConvertPtr(argv[0], &argp2, SWIGTYPE_p_datamunge__graphics__RGB,  0 );
     if (!SWIG_IsOK(res2)) {
       SWIG_exception_fail(SWIG_ArgError(res2), Ruby_Format_TypeError( "", "datamunge::graphics::RGB","plot", 2, argv[0] )); 
     }  
@@ -27828,7 +28876,7 @@ _wrap_ShapeLayer_plot__SWIG_3(int argc, VALUE *argv, VALUE self) {
     }
   }
   result = ((datamunge::ShapeLayer const *)arg1)->plot(SWIG_STD_MOVE(*(&arg2)));
-  vresult = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
+  vresult = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__graphics__RPlot, SWIG_POINTER_OWN |  0 );
   return vresult;
 fail:
   return Qnil;
@@ -27852,7 +28900,7 @@ _wrap_ShapeLayer_plot__SWIG_4(int argc, VALUE *argv, VALUE self) {
   }
   arg1 = reinterpret_cast< datamunge::ShapeLayer * >(argp1);
   result = ((datamunge::ShapeLayer const *)arg1)->plot();
-  vresult = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
+  vresult = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__graphics__RPlot, SWIG_POINTER_OWN |  0 );
   return vresult;
 fail:
   return Qnil;
@@ -27886,7 +28934,7 @@ SWIGINTERN VALUE _wrap_ShapeLayer_plot(int nargs, VALUE *args, VALUE self) {
     _v = SWIG_CheckState(res);
     if (_v) {
       void *vptr = 0;
-      int res = SWIG_ConvertPtr(argv[1], &vptr, SWIGTYPE_p_datamunge__plot__RGB, SWIG_POINTER_NO_NULL);
+      int res = SWIG_ConvertPtr(argv[1], &vptr, SWIGTYPE_p_datamunge__graphics__RGB, SWIG_POINTER_NO_NULL);
       _v = SWIG_CheckState(res);
       if (_v) {
         return _wrap_ShapeLayer_plot__SWIG_3(nargs, args, self);
@@ -27900,11 +28948,11 @@ SWIGINTERN VALUE _wrap_ShapeLayer_plot(int nargs, VALUE *args, VALUE self) {
     _v = SWIG_CheckState(res);
     if (_v) {
       void *vptr = 0;
-      int res = SWIG_ConvertPtr(argv[1], &vptr, SWIGTYPE_p_datamunge__plot__RGB, SWIG_POINTER_NO_NULL);
+      int res = SWIG_ConvertPtr(argv[1], &vptr, SWIGTYPE_p_datamunge__graphics__RGB, SWIG_POINTER_NO_NULL);
       _v = SWIG_CheckState(res);
       if (_v) {
         void *vptr = 0;
-        int res = SWIG_ConvertPtr(argv[2], &vptr, SWIGTYPE_p_datamunge__plot__RGB, SWIG_POINTER_NO_NULL);
+        int res = SWIG_ConvertPtr(argv[2], &vptr, SWIGTYPE_p_datamunge__graphics__RGB, SWIG_POINTER_NO_NULL);
         _v = SWIG_CheckState(res);
         if (_v) {
           return _wrap_ShapeLayer_plot__SWIG_2(nargs, args, self);
@@ -27919,11 +28967,11 @@ SWIGINTERN VALUE _wrap_ShapeLayer_plot(int nargs, VALUE *args, VALUE self) {
     _v = SWIG_CheckState(res);
     if (_v) {
       void *vptr = 0;
-      int res = SWIG_ConvertPtr(argv[1], &vptr, SWIGTYPE_p_datamunge__plot__RGB, SWIG_POINTER_NO_NULL);
+      int res = SWIG_ConvertPtr(argv[1], &vptr, SWIGTYPE_p_datamunge__graphics__RGB, SWIG_POINTER_NO_NULL);
       _v = SWIG_CheckState(res);
       if (_v) {
         void *vptr = 0;
-        int res = SWIG_ConvertPtr(argv[2], &vptr, SWIGTYPE_p_datamunge__plot__RGB, SWIG_POINTER_NO_NULL);
+        int res = SWIG_ConvertPtr(argv[2], &vptr, SWIGTYPE_p_datamunge__graphics__RGB, SWIG_POINTER_NO_NULL);
         _v = SWIG_CheckState(res);
         if (_v) {
           {
@@ -27944,11 +28992,11 @@ SWIGINTERN VALUE _wrap_ShapeLayer_plot(int nargs, VALUE *args, VALUE self) {
     _v = SWIG_CheckState(res);
     if (_v) {
       void *vptr = 0;
-      int res = SWIG_ConvertPtr(argv[1], &vptr, SWIGTYPE_p_datamunge__plot__RGB, SWIG_POINTER_NO_NULL);
+      int res = SWIG_ConvertPtr(argv[1], &vptr, SWIGTYPE_p_datamunge__graphics__RGB, SWIG_POINTER_NO_NULL);
       _v = SWIG_CheckState(res);
       if (_v) {
         void *vptr = 0;
-        int res = SWIG_ConvertPtr(argv[2], &vptr, SWIGTYPE_p_datamunge__plot__RGB, SWIG_POINTER_NO_NULL);
+        int res = SWIG_ConvertPtr(argv[2], &vptr, SWIGTYPE_p_datamunge__graphics__RGB, SWIG_POINTER_NO_NULL);
         _v = SWIG_CheckState(res);
         if (_v) {
           {
@@ -28495,7 +29543,7 @@ fail:
 SWIGINTERN VALUE
 _wrap_GGPlot_geom_point__SWIG_0(int argc, VALUE *argv, VALUE self) {
   datamunge::GGPlot *arg1 = 0 ;
-  SwigValueWrapper< datamunge::graphics::RGB > arg2 ;
+  datamunge::graphics::RGB arg2 ;
   double arg3 ;
   void *argp1 = 0 ;
   int res1 = 0 ;
@@ -28515,7 +29563,7 @@ _wrap_GGPlot_geom_point__SWIG_0(int argc, VALUE *argv, VALUE self) {
   }
   arg1 = reinterpret_cast< datamunge::GGPlot * >(argp1);
   {
-    res2 = SWIG_ConvertPtr(argv[0], &argp2, SWIGTYPE_p_datamunge__plot__RGB,  0 );
+    res2 = SWIG_ConvertPtr(argv[0], &argp2, SWIGTYPE_p_datamunge__graphics__RGB,  0 );
     if (!SWIG_IsOK(res2)) {
       SWIG_exception_fail(SWIG_ArgError(res2), Ruby_Format_TypeError( "", "datamunge::graphics::RGB","geom_point", 2, argv[0] )); 
     }  
@@ -28541,7 +29589,7 @@ fail:
 SWIGINTERN VALUE
 _wrap_GGPlot_geom_point__SWIG_1(int argc, VALUE *argv, VALUE self) {
   datamunge::GGPlot *arg1 = 0 ;
-  SwigValueWrapper< datamunge::graphics::RGB > arg2 ;
+  datamunge::graphics::RGB arg2 ;
   void *argp1 = 0 ;
   int res1 = 0 ;
   void *argp2 = 0 ;
@@ -28558,7 +29606,7 @@ _wrap_GGPlot_geom_point__SWIG_1(int argc, VALUE *argv, VALUE self) {
   }
   arg1 = reinterpret_cast< datamunge::GGPlot * >(argp1);
   {
-    res2 = SWIG_ConvertPtr(argv[0], &argp2, SWIGTYPE_p_datamunge__plot__RGB,  0 );
+    res2 = SWIG_ConvertPtr(argv[0], &argp2, SWIGTYPE_p_datamunge__graphics__RGB,  0 );
     if (!SWIG_IsOK(res2)) {
       SWIG_exception_fail(SWIG_ArgError(res2), Ruby_Format_TypeError( "", "datamunge::graphics::RGB","geom_point", 2, argv[0] )); 
     }  
@@ -28627,7 +29675,7 @@ SWIGINTERN VALUE _wrap_GGPlot_geom_point(int nargs, VALUE *args, VALUE self) {
     _v = SWIG_CheckState(res);
     if (_v) {
       void *vptr = 0;
-      int res = SWIG_ConvertPtr(argv[1], &vptr, SWIGTYPE_p_datamunge__plot__RGB, SWIG_POINTER_NO_NULL);
+      int res = SWIG_ConvertPtr(argv[1], &vptr, SWIGTYPE_p_datamunge__graphics__RGB, SWIG_POINTER_NO_NULL);
       _v = SWIG_CheckState(res);
       if (_v) {
         return _wrap_GGPlot_geom_point__SWIG_1(nargs, args, self);
@@ -28641,7 +29689,7 @@ SWIGINTERN VALUE _wrap_GGPlot_geom_point(int nargs, VALUE *args, VALUE self) {
     _v = SWIG_CheckState(res);
     if (_v) {
       void *vptr = 0;
-      int res = SWIG_ConvertPtr(argv[1], &vptr, SWIGTYPE_p_datamunge__plot__RGB, SWIG_POINTER_NO_NULL);
+      int res = SWIG_ConvertPtr(argv[1], &vptr, SWIGTYPE_p_datamunge__graphics__RGB, SWIG_POINTER_NO_NULL);
       _v = SWIG_CheckState(res);
       if (_v) {
         {
@@ -28668,7 +29716,7 @@ fail:
 SWIGINTERN VALUE
 _wrap_GGPlot_geom_line__SWIG_0(int argc, VALUE *argv, VALUE self) {
   datamunge::GGPlot *arg1 = 0 ;
-  SwigValueWrapper< datamunge::graphics::RGB > arg2 ;
+  datamunge::graphics::RGB arg2 ;
   double arg3 ;
   void *argp1 = 0 ;
   int res1 = 0 ;
@@ -28688,7 +29736,7 @@ _wrap_GGPlot_geom_line__SWIG_0(int argc, VALUE *argv, VALUE self) {
   }
   arg1 = reinterpret_cast< datamunge::GGPlot * >(argp1);
   {
-    res2 = SWIG_ConvertPtr(argv[0], &argp2, SWIGTYPE_p_datamunge__plot__RGB,  0 );
+    res2 = SWIG_ConvertPtr(argv[0], &argp2, SWIGTYPE_p_datamunge__graphics__RGB,  0 );
     if (!SWIG_IsOK(res2)) {
       SWIG_exception_fail(SWIG_ArgError(res2), Ruby_Format_TypeError( "", "datamunge::graphics::RGB","geom_line", 2, argv[0] )); 
     }  
@@ -28714,7 +29762,7 @@ fail:
 SWIGINTERN VALUE
 _wrap_GGPlot_geom_line__SWIG_1(int argc, VALUE *argv, VALUE self) {
   datamunge::GGPlot *arg1 = 0 ;
-  SwigValueWrapper< datamunge::graphics::RGB > arg2 ;
+  datamunge::graphics::RGB arg2 ;
   void *argp1 = 0 ;
   int res1 = 0 ;
   void *argp2 = 0 ;
@@ -28731,7 +29779,7 @@ _wrap_GGPlot_geom_line__SWIG_1(int argc, VALUE *argv, VALUE self) {
   }
   arg1 = reinterpret_cast< datamunge::GGPlot * >(argp1);
   {
-    res2 = SWIG_ConvertPtr(argv[0], &argp2, SWIGTYPE_p_datamunge__plot__RGB,  0 );
+    res2 = SWIG_ConvertPtr(argv[0], &argp2, SWIGTYPE_p_datamunge__graphics__RGB,  0 );
     if (!SWIG_IsOK(res2)) {
       SWIG_exception_fail(SWIG_ArgError(res2), Ruby_Format_TypeError( "", "datamunge::graphics::RGB","geom_line", 2, argv[0] )); 
     }  
@@ -28800,7 +29848,7 @@ SWIGINTERN VALUE _wrap_GGPlot_geom_line(int nargs, VALUE *args, VALUE self) {
     _v = SWIG_CheckState(res);
     if (_v) {
       void *vptr = 0;
-      int res = SWIG_ConvertPtr(argv[1], &vptr, SWIGTYPE_p_datamunge__plot__RGB, SWIG_POINTER_NO_NULL);
+      int res = SWIG_ConvertPtr(argv[1], &vptr, SWIGTYPE_p_datamunge__graphics__RGB, SWIG_POINTER_NO_NULL);
       _v = SWIG_CheckState(res);
       if (_v) {
         return _wrap_GGPlot_geom_line__SWIG_1(nargs, args, self);
@@ -28814,7 +29862,7 @@ SWIGINTERN VALUE _wrap_GGPlot_geom_line(int nargs, VALUE *args, VALUE self) {
     _v = SWIG_CheckState(res);
     if (_v) {
       void *vptr = 0;
-      int res = SWIG_ConvertPtr(argv[1], &vptr, SWIGTYPE_p_datamunge__plot__RGB, SWIG_POINTER_NO_NULL);
+      int res = SWIG_ConvertPtr(argv[1], &vptr, SWIGTYPE_p_datamunge__graphics__RGB, SWIG_POINTER_NO_NULL);
       _v = SWIG_CheckState(res);
       if (_v) {
         {
@@ -28841,7 +29889,7 @@ fail:
 SWIGINTERN VALUE
 _wrap_GGPlot_geom_bar__SWIG_0(int argc, VALUE *argv, VALUE self) {
   datamunge::GGPlot *arg1 = 0 ;
-  SwigValueWrapper< datamunge::graphics::RGB > arg2 ;
+  datamunge::graphics::RGB arg2 ;
   void *argp1 = 0 ;
   int res1 = 0 ;
   void *argp2 = 0 ;
@@ -28858,7 +29906,7 @@ _wrap_GGPlot_geom_bar__SWIG_0(int argc, VALUE *argv, VALUE self) {
   }
   arg1 = reinterpret_cast< datamunge::GGPlot * >(argp1);
   {
-    res2 = SWIG_ConvertPtr(argv[0], &argp2, SWIGTYPE_p_datamunge__plot__RGB,  0 );
+    res2 = SWIG_ConvertPtr(argv[0], &argp2, SWIGTYPE_p_datamunge__graphics__RGB,  0 );
     if (!SWIG_IsOK(res2)) {
       SWIG_exception_fail(SWIG_ArgError(res2), Ruby_Format_TypeError( "", "datamunge::graphics::RGB","geom_bar", 2, argv[0] )); 
     }  
@@ -28927,7 +29975,7 @@ SWIGINTERN VALUE _wrap_GGPlot_geom_bar(int nargs, VALUE *args, VALUE self) {
     _v = SWIG_CheckState(res);
     if (_v) {
       void *vptr = 0;
-      int res = SWIG_ConvertPtr(argv[1], &vptr, SWIGTYPE_p_datamunge__plot__RGB, SWIG_POINTER_NO_NULL);
+      int res = SWIG_ConvertPtr(argv[1], &vptr, SWIGTYPE_p_datamunge__graphics__RGB, SWIG_POINTER_NO_NULL);
       _v = SWIG_CheckState(res);
       if (_v) {
         return _wrap_GGPlot_geom_bar__SWIG_0(nargs, args, self);
@@ -28947,7 +29995,7 @@ fail:
 SWIGINTERN VALUE
 _wrap_GGPlot_geom_col__SWIG_0(int argc, VALUE *argv, VALUE self) {
   datamunge::GGPlot *arg1 = 0 ;
-  SwigValueWrapper< datamunge::graphics::RGB > arg2 ;
+  datamunge::graphics::RGB arg2 ;
   void *argp1 = 0 ;
   int res1 = 0 ;
   void *argp2 = 0 ;
@@ -28964,7 +30012,7 @@ _wrap_GGPlot_geom_col__SWIG_0(int argc, VALUE *argv, VALUE self) {
   }
   arg1 = reinterpret_cast< datamunge::GGPlot * >(argp1);
   {
-    res2 = SWIG_ConvertPtr(argv[0], &argp2, SWIGTYPE_p_datamunge__plot__RGB,  0 );
+    res2 = SWIG_ConvertPtr(argv[0], &argp2, SWIGTYPE_p_datamunge__graphics__RGB,  0 );
     if (!SWIG_IsOK(res2)) {
       SWIG_exception_fail(SWIG_ArgError(res2), Ruby_Format_TypeError( "", "datamunge::graphics::RGB","geom_col", 2, argv[0] )); 
     }  
@@ -29033,7 +30081,7 @@ SWIGINTERN VALUE _wrap_GGPlot_geom_col(int nargs, VALUE *args, VALUE self) {
     _v = SWIG_CheckState(res);
     if (_v) {
       void *vptr = 0;
-      int res = SWIG_ConvertPtr(argv[1], &vptr, SWIGTYPE_p_datamunge__plot__RGB, SWIG_POINTER_NO_NULL);
+      int res = SWIG_ConvertPtr(argv[1], &vptr, SWIGTYPE_p_datamunge__graphics__RGB, SWIG_POINTER_NO_NULL);
       _v = SWIG_CheckState(res);
       if (_v) {
         return _wrap_GGPlot_geom_col__SWIG_0(nargs, args, self);
@@ -29054,7 +30102,7 @@ SWIGINTERN VALUE
 _wrap_GGPlot_geom_histogram__SWIG_0(int argc, VALUE *argv, VALUE self) {
   datamunge::GGPlot *arg1 = 0 ;
   std::size_t arg2 ;
-  SwigValueWrapper< datamunge::graphics::RGB > arg3 ;
+  datamunge::graphics::RGB arg3 ;
   void *argp1 = 0 ;
   int res1 = 0 ;
   size_t val2 ;
@@ -29078,7 +30126,7 @@ _wrap_GGPlot_geom_histogram__SWIG_0(int argc, VALUE *argv, VALUE self) {
   } 
   arg2 = static_cast< std::size_t >(val2);
   {
-    res3 = SWIG_ConvertPtr(argv[1], &argp3, SWIGTYPE_p_datamunge__plot__RGB,  0 );
+    res3 = SWIG_ConvertPtr(argv[1], &argp3, SWIGTYPE_p_datamunge__graphics__RGB,  0 );
     if (!SWIG_IsOK(res3)) {
       SWIG_exception_fail(SWIG_ArgError(res3), Ruby_Format_TypeError( "", "datamunge::graphics::RGB","geom_histogram", 3, argv[1] )); 
     }  
@@ -29199,7 +30247,7 @@ SWIGINTERN VALUE _wrap_GGPlot_geom_histogram(int nargs, VALUE *args, VALUE self)
       }
       if (_v) {
         void *vptr = 0;
-        int res = SWIG_ConvertPtr(argv[2], &vptr, SWIGTYPE_p_datamunge__plot__RGB, SWIG_POINTER_NO_NULL);
+        int res = SWIG_ConvertPtr(argv[2], &vptr, SWIGTYPE_p_datamunge__graphics__RGB, SWIG_POINTER_NO_NULL);
         _v = SWIG_CheckState(res);
         if (_v) {
           return _wrap_GGPlot_geom_histogram__SWIG_0(nargs, args, self);
@@ -29221,7 +30269,7 @@ fail:
 SWIGINTERN VALUE
 _wrap_GGPlot_geom_boxplot__SWIG_0(int argc, VALUE *argv, VALUE self) {
   datamunge::GGPlot *arg1 = 0 ;
-  SwigValueWrapper< datamunge::graphics::RGB > arg2 ;
+  datamunge::graphics::RGB arg2 ;
   void *argp1 = 0 ;
   int res1 = 0 ;
   void *argp2 = 0 ;
@@ -29238,7 +30286,7 @@ _wrap_GGPlot_geom_boxplot__SWIG_0(int argc, VALUE *argv, VALUE self) {
   }
   arg1 = reinterpret_cast< datamunge::GGPlot * >(argp1);
   {
-    res2 = SWIG_ConvertPtr(argv[0], &argp2, SWIGTYPE_p_datamunge__plot__RGB,  0 );
+    res2 = SWIG_ConvertPtr(argv[0], &argp2, SWIGTYPE_p_datamunge__graphics__RGB,  0 );
     if (!SWIG_IsOK(res2)) {
       SWIG_exception_fail(SWIG_ArgError(res2), Ruby_Format_TypeError( "", "datamunge::graphics::RGB","geom_boxplot", 2, argv[0] )); 
     }  
@@ -29307,7 +30355,7 @@ SWIGINTERN VALUE _wrap_GGPlot_geom_boxplot(int nargs, VALUE *args, VALUE self) {
     _v = SWIG_CheckState(res);
     if (_v) {
       void *vptr = 0;
-      int res = SWIG_ConvertPtr(argv[1], &vptr, SWIGTYPE_p_datamunge__plot__RGB, SWIG_POINTER_NO_NULL);
+      int res = SWIG_ConvertPtr(argv[1], &vptr, SWIGTYPE_p_datamunge__graphics__RGB, SWIG_POINTER_NO_NULL);
       _v = SWIG_CheckState(res);
       if (_v) {
         return _wrap_GGPlot_geom_boxplot__SWIG_0(nargs, args, self);
@@ -29327,7 +30375,7 @@ fail:
 SWIGINTERN VALUE
 _wrap_GGPlot_geom_smooth__SWIG_0(int argc, VALUE *argv, VALUE self) {
   datamunge::GGPlot *arg1 = 0 ;
-  SwigValueWrapper< datamunge::graphics::RGB > arg2 ;
+  datamunge::graphics::RGB arg2 ;
   void *argp1 = 0 ;
   int res1 = 0 ;
   void *argp2 = 0 ;
@@ -29344,7 +30392,7 @@ _wrap_GGPlot_geom_smooth__SWIG_0(int argc, VALUE *argv, VALUE self) {
   }
   arg1 = reinterpret_cast< datamunge::GGPlot * >(argp1);
   {
-    res2 = SWIG_ConvertPtr(argv[0], &argp2, SWIGTYPE_p_datamunge__plot__RGB,  0 );
+    res2 = SWIG_ConvertPtr(argv[0], &argp2, SWIGTYPE_p_datamunge__graphics__RGB,  0 );
     if (!SWIG_IsOK(res2)) {
       SWIG_exception_fail(SWIG_ArgError(res2), Ruby_Format_TypeError( "", "datamunge::graphics::RGB","geom_smooth", 2, argv[0] )); 
     }  
@@ -29413,7 +30461,7 @@ SWIGINTERN VALUE _wrap_GGPlot_geom_smooth(int nargs, VALUE *args, VALUE self) {
     _v = SWIG_CheckState(res);
     if (_v) {
       void *vptr = 0;
-      int res = SWIG_ConvertPtr(argv[1], &vptr, SWIGTYPE_p_datamunge__plot__RGB, SWIG_POINTER_NO_NULL);
+      int res = SWIG_ConvertPtr(argv[1], &vptr, SWIGTYPE_p_datamunge__graphics__RGB, SWIG_POINTER_NO_NULL);
       _v = SWIG_CheckState(res);
       if (_v) {
         return _wrap_GGPlot_geom_smooth__SWIG_0(nargs, args, self);
@@ -29433,7 +30481,7 @@ fail:
 SWIGINTERN VALUE
 _wrap_GGPlot_geom_area__SWIG_0(int argc, VALUE *argv, VALUE self) {
   datamunge::GGPlot *arg1 = 0 ;
-  SwigValueWrapper< datamunge::graphics::RGB > arg2 ;
+  datamunge::graphics::RGB arg2 ;
   void *argp1 = 0 ;
   int res1 = 0 ;
   void *argp2 = 0 ;
@@ -29450,7 +30498,7 @@ _wrap_GGPlot_geom_area__SWIG_0(int argc, VALUE *argv, VALUE self) {
   }
   arg1 = reinterpret_cast< datamunge::GGPlot * >(argp1);
   {
-    res2 = SWIG_ConvertPtr(argv[0], &argp2, SWIGTYPE_p_datamunge__plot__RGB,  0 );
+    res2 = SWIG_ConvertPtr(argv[0], &argp2, SWIGTYPE_p_datamunge__graphics__RGB,  0 );
     if (!SWIG_IsOK(res2)) {
       SWIG_exception_fail(SWIG_ArgError(res2), Ruby_Format_TypeError( "", "datamunge::graphics::RGB","geom_area", 2, argv[0] )); 
     }  
@@ -29519,7 +30567,7 @@ SWIGINTERN VALUE _wrap_GGPlot_geom_area(int nargs, VALUE *args, VALUE self) {
     _v = SWIG_CheckState(res);
     if (_v) {
       void *vptr = 0;
-      int res = SWIG_ConvertPtr(argv[1], &vptr, SWIGTYPE_p_datamunge__plot__RGB, SWIG_POINTER_NO_NULL);
+      int res = SWIG_ConvertPtr(argv[1], &vptr, SWIGTYPE_p_datamunge__graphics__RGB, SWIG_POINTER_NO_NULL);
       _v = SWIG_CheckState(res);
       if (_v) {
         return _wrap_GGPlot_geom_area__SWIG_0(nargs, args, self);
@@ -29541,7 +30589,7 @@ _wrap_GGPlot_geom_ribbon__SWIG_0(int argc, VALUE *argv, VALUE self) {
   datamunge::GGPlot *arg1 = 0 ;
   std::string *arg2 = 0 ;
   std::string *arg3 = 0 ;
-  SwigValueWrapper< datamunge::graphics::RGB > arg4 ;
+  datamunge::graphics::RGB arg4 ;
   void *argp1 = 0 ;
   int res1 = 0 ;
   int res2 = SWIG_OLDOBJ ;
@@ -29582,7 +30630,7 @@ _wrap_GGPlot_geom_ribbon__SWIG_0(int argc, VALUE *argv, VALUE self) {
     arg3 = ptr;
   }
   {
-    res4 = SWIG_ConvertPtr(argv[2], &argp4, SWIGTYPE_p_datamunge__plot__RGB,  0 );
+    res4 = SWIG_ConvertPtr(argv[2], &argp4, SWIGTYPE_p_datamunge__graphics__RGB,  0 );
     if (!SWIG_IsOK(res4)) {
       SWIG_exception_fail(SWIG_ArgError(res4), Ruby_Format_TypeError( "", "datamunge::graphics::RGB","geom_ribbon", 4, argv[2] )); 
     }  
@@ -29699,7 +30747,7 @@ SWIGINTERN VALUE _wrap_GGPlot_geom_ribbon(int nargs, VALUE *args, VALUE self) {
         _v = SWIG_CheckState(res);
         if (_v) {
           void *vptr = 0;
-          int res = SWIG_ConvertPtr(argv[3], &vptr, SWIGTYPE_p_datamunge__plot__RGB, SWIG_POINTER_NO_NULL);
+          int res = SWIG_ConvertPtr(argv[3], &vptr, SWIGTYPE_p_datamunge__graphics__RGB, SWIG_POINTER_NO_NULL);
           _v = SWIG_CheckState(res);
           if (_v) {
             return _wrap_GGPlot_geom_ribbon__SWIG_0(nargs, args, self);
@@ -29721,7 +30769,7 @@ fail:
 SWIGINTERN VALUE
 _wrap_GGPlot_geom_density__SWIG_0(int argc, VALUE *argv, VALUE self) {
   datamunge::GGPlot *arg1 = 0 ;
-  SwigValueWrapper< datamunge::graphics::RGB > arg2 ;
+  datamunge::graphics::RGB arg2 ;
   void *argp1 = 0 ;
   int res1 = 0 ;
   void *argp2 = 0 ;
@@ -29738,7 +30786,7 @@ _wrap_GGPlot_geom_density__SWIG_0(int argc, VALUE *argv, VALUE self) {
   }
   arg1 = reinterpret_cast< datamunge::GGPlot * >(argp1);
   {
-    res2 = SWIG_ConvertPtr(argv[0], &argp2, SWIGTYPE_p_datamunge__plot__RGB,  0 );
+    res2 = SWIG_ConvertPtr(argv[0], &argp2, SWIGTYPE_p_datamunge__graphics__RGB,  0 );
     if (!SWIG_IsOK(res2)) {
       SWIG_exception_fail(SWIG_ArgError(res2), Ruby_Format_TypeError( "", "datamunge::graphics::RGB","geom_density", 2, argv[0] )); 
     }  
@@ -29807,7 +30855,7 @@ SWIGINTERN VALUE _wrap_GGPlot_geom_density(int nargs, VALUE *args, VALUE self) {
     _v = SWIG_CheckState(res);
     if (_v) {
       void *vptr = 0;
-      int res = SWIG_ConvertPtr(argv[1], &vptr, SWIGTYPE_p_datamunge__plot__RGB, SWIG_POINTER_NO_NULL);
+      int res = SWIG_ConvertPtr(argv[1], &vptr, SWIGTYPE_p_datamunge__graphics__RGB, SWIG_POINTER_NO_NULL);
       _v = SWIG_CheckState(res);
       if (_v) {
         return _wrap_GGPlot_geom_density__SWIG_0(nargs, args, self);
@@ -30054,7 +31102,7 @@ _wrap_GGPlot_scale_color_manual(int argc, VALUE *argv, VALUE self) {
     SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::GGPlot *","scale_color_manual", 1, self )); 
   }
   arg1 = reinterpret_cast< datamunge::GGPlot * >(argp1);
-  res2 = SWIG_ConvertPtr(argv[0], &argp2, SWIGTYPE_p_std__vectorT_datamunge__plot__RGB_std__allocatorT_datamunge__plot__RGB_t_t,  0 );
+  res2 = SWIG_ConvertPtr(argv[0], &argp2, SWIGTYPE_p_std__vectorT_datamunge__graphics__RGB_std__allocatorT_datamunge__graphics__RGB_t_t,  0 );
   if (!SWIG_IsOK(res2)) {
     SWIG_exception_fail(SWIG_ArgError(res2), Ruby_Format_TypeError( "", "std::vector< datamunge::graphics::RGB,std::allocator< datamunge::graphics::RGB > > const &","scale_color_manual", 2, argv[0] )); 
   }
@@ -30535,9 +31583,1400 @@ fail:
 }
 
 
+SWIGINTERN VALUE
+_wrap_GGPlot_rows(int argc, VALUE *argv, VALUE self) {
+  datamunge::GGPlot *arg1 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  int result;
+  VALUE vresult = Qnil;
+  
+  if ((argc < 0) || (argc > 0)) {
+    rb_raise(rb_eArgError, "wrong # of arguments(%d for 0)",argc); SWIG_fail;
+  }
+  res1 = SWIG_ConvertPtr(self, &argp1,SWIGTYPE_p_datamunge__GGPlot, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::GGPlot const *","rows", 1, self )); 
+  }
+  arg1 = reinterpret_cast< datamunge::GGPlot * >(argp1);
+  result = (int)((datamunge::GGPlot const *)arg1)->rows();
+  vresult = SWIG_From_int(static_cast< int >(result));
+  return vresult;
+fail:
+  return Qnil;
+}
+
+
+SWIGINTERN VALUE
+_wrap_GGPlot_x_column(int argc, VALUE *argv, VALUE self) {
+  datamunge::GGPlot *arg1 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  std::string result;
+  VALUE vresult = Qnil;
+  
+  if ((argc < 0) || (argc > 0)) {
+    rb_raise(rb_eArgError, "wrong # of arguments(%d for 0)",argc); SWIG_fail;
+  }
+  res1 = SWIG_ConvertPtr(self, &argp1,SWIGTYPE_p_datamunge__GGPlot, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::GGPlot const *","x_column", 1, self )); 
+  }
+  arg1 = reinterpret_cast< datamunge::GGPlot * >(argp1);
+  result = ((datamunge::GGPlot const *)arg1)->x_column();
+  vresult = SWIG_From_std_string(static_cast< std::string >(result));
+  return vresult;
+fail:
+  return Qnil;
+}
+
+
+SWIGINTERN VALUE
+_wrap_GGPlot_y_column(int argc, VALUE *argv, VALUE self) {
+  datamunge::GGPlot *arg1 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  std::string result;
+  VALUE vresult = Qnil;
+  
+  if ((argc < 0) || (argc > 0)) {
+    rb_raise(rb_eArgError, "wrong # of arguments(%d for 0)",argc); SWIG_fail;
+  }
+  res1 = SWIG_ConvertPtr(self, &argp1,SWIGTYPE_p_datamunge__GGPlot, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::GGPlot const *","y_column", 1, self )); 
+  }
+  arg1 = reinterpret_cast< datamunge::GGPlot * >(argp1);
+  result = ((datamunge::GGPlot const *)arg1)->y_column();
+  vresult = SWIG_From_std_string(static_cast< std::string >(result));
+  return vresult;
+fail:
+  return Qnil;
+}
+
+
+SWIGINTERN VALUE
+_wrap_GGPlot_color_column(int argc, VALUE *argv, VALUE self) {
+  datamunge::GGPlot *arg1 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  std::string result;
+  VALUE vresult = Qnil;
+  
+  if ((argc < 0) || (argc > 0)) {
+    rb_raise(rb_eArgError, "wrong # of arguments(%d for 0)",argc); SWIG_fail;
+  }
+  res1 = SWIG_ConvertPtr(self, &argp1,SWIGTYPE_p_datamunge__GGPlot, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::GGPlot const *","color_column", 1, self )); 
+  }
+  arg1 = reinterpret_cast< datamunge::GGPlot * >(argp1);
+  result = ((datamunge::GGPlot const *)arg1)->color_column();
+  vresult = SWIG_From_std_string(static_cast< std::string >(result));
+  return vresult;
+fail:
+  return Qnil;
+}
+
+
+SWIGINTERN VALUE
+_wrap_GGPlot_layer_count(int argc, VALUE *argv, VALUE self) {
+  datamunge::GGPlot *arg1 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  int result;
+  VALUE vresult = Qnil;
+  
+  if ((argc < 0) || (argc > 0)) {
+    rb_raise(rb_eArgError, "wrong # of arguments(%d for 0)",argc); SWIG_fail;
+  }
+  res1 = SWIG_ConvertPtr(self, &argp1,SWIGTYPE_p_datamunge__GGPlot, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::GGPlot const *","layer_count", 1, self )); 
+  }
+  arg1 = reinterpret_cast< datamunge::GGPlot * >(argp1);
+  result = (int)((datamunge::GGPlot const *)arg1)->layer_count();
+  vresult = SWIG_From_int(static_cast< int >(result));
+  return vresult;
+fail:
+  return Qnil;
+}
+
+
+SWIGINTERN VALUE
+_wrap_GGPlot_layer_kinds(int argc, VALUE *argv, VALUE self) {
+  datamunge::GGPlot *arg1 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  std::vector< std::string,std::allocator< std::string > > result;
+  VALUE vresult = Qnil;
+  
+  if ((argc < 0) || (argc > 0)) {
+    rb_raise(rb_eArgError, "wrong # of arguments(%d for 0)",argc); SWIG_fail;
+  }
+  res1 = SWIG_ConvertPtr(self, &argp1,SWIGTYPE_p_datamunge__GGPlot, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::GGPlot const *","layer_kinds", 1, self )); 
+  }
+  arg1 = reinterpret_cast< datamunge::GGPlot * >(argp1);
+  result = ((datamunge::GGPlot const *)arg1)->layer_kinds();
+  vresult = swig::from(static_cast< std::vector< std::string,std::allocator< std::string > > >(result));
+  return vresult;
+fail:
+  return Qnil;
+}
+
+
+SWIGINTERN VALUE
+_wrap_GGPlot_theme_name(int argc, VALUE *argv, VALUE self) {
+  datamunge::GGPlot *arg1 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  std::string result;
+  VALUE vresult = Qnil;
+  
+  if ((argc < 0) || (argc > 0)) {
+    rb_raise(rb_eArgError, "wrong # of arguments(%d for 0)",argc); SWIG_fail;
+  }
+  res1 = SWIG_ConvertPtr(self, &argp1,SWIGTYPE_p_datamunge__GGPlot, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::GGPlot const *","theme_name", 1, self )); 
+  }
+  arg1 = reinterpret_cast< datamunge::GGPlot * >(argp1);
+  result = ((datamunge::GGPlot const *)arg1)->theme_name();
+  vresult = SWIG_From_std_string(static_cast< std::string >(result));
+  return vresult;
+fail:
+  return Qnil;
+}
+
+
+SWIGINTERN VALUE
+_wrap_GGPlot_facet_column(int argc, VALUE *argv, VALUE self) {
+  datamunge::GGPlot *arg1 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  std::string result;
+  VALUE vresult = Qnil;
+  
+  if ((argc < 0) || (argc > 0)) {
+    rb_raise(rb_eArgError, "wrong # of arguments(%d for 0)",argc); SWIG_fail;
+  }
+  res1 = SWIG_ConvertPtr(self, &argp1,SWIGTYPE_p_datamunge__GGPlot, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::GGPlot const *","facet_column", 1, self )); 
+  }
+  arg1 = reinterpret_cast< datamunge::GGPlot * >(argp1);
+  result = ((datamunge::GGPlot const *)arg1)->facet_column();
+  vresult = SWIG_From_std_string(static_cast< std::string >(result));
+  return vresult;
+fail:
+  return Qnil;
+}
+
+
+SWIGINTERN VALUE
+_wrap_GGPlot_title_text(int argc, VALUE *argv, VALUE self) {
+  datamunge::GGPlot *arg1 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  std::string result;
+  VALUE vresult = Qnil;
+  
+  if ((argc < 0) || (argc > 0)) {
+    rb_raise(rb_eArgError, "wrong # of arguments(%d for 0)",argc); SWIG_fail;
+  }
+  res1 = SWIG_ConvertPtr(self, &argp1,SWIGTYPE_p_datamunge__GGPlot, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::GGPlot const *","title_text", 1, self )); 
+  }
+  arg1 = reinterpret_cast< datamunge::GGPlot * >(argp1);
+  result = ((datamunge::GGPlot const *)arg1)->title_text();
+  vresult = SWIG_From_std_string(static_cast< std::string >(result));
+  return vresult;
+fail:
+  return Qnil;
+}
+
+
+SWIGINTERN VALUE
+_wrap_GGPlot_x_label(int argc, VALUE *argv, VALUE self) {
+  datamunge::GGPlot *arg1 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  std::string result;
+  VALUE vresult = Qnil;
+  
+  if ((argc < 0) || (argc > 0)) {
+    rb_raise(rb_eArgError, "wrong # of arguments(%d for 0)",argc); SWIG_fail;
+  }
+  res1 = SWIG_ConvertPtr(self, &argp1,SWIGTYPE_p_datamunge__GGPlot, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::GGPlot const *","x_label", 1, self )); 
+  }
+  arg1 = reinterpret_cast< datamunge::GGPlot * >(argp1);
+  result = ((datamunge::GGPlot const *)arg1)->x_label();
+  vresult = SWIG_From_std_string(static_cast< std::string >(result));
+  return vresult;
+fail:
+  return Qnil;
+}
+
+
+SWIGINTERN VALUE
+_wrap_GGPlot_y_label(int argc, VALUE *argv, VALUE self) {
+  datamunge::GGPlot *arg1 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  std::string result;
+  VALUE vresult = Qnil;
+  
+  if ((argc < 0) || (argc > 0)) {
+    rb_raise(rb_eArgError, "wrong # of arguments(%d for 0)",argc); SWIG_fail;
+  }
+  res1 = SWIG_ConvertPtr(self, &argp1,SWIGTYPE_p_datamunge__GGPlot, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::GGPlot const *","y_label", 1, self )); 
+  }
+  arg1 = reinterpret_cast< datamunge::GGPlot * >(argp1);
+  result = ((datamunge::GGPlot const *)arg1)->y_label();
+  vresult = SWIG_From_std_string(static_cast< std::string >(result));
+  return vresult;
+fail:
+  return Qnil;
+}
+
+
 SWIGINTERN void
 free_datamunge_GGPlot(void *self) {
     datamunge::GGPlot *arg1 = (datamunge::GGPlot *)self;
+    delete arg1;
+}
+
+static swig_class SwigClassSplom;
+
+SWIGINTERN VALUE
+_wrap_new_Splom__SWIG_0(int argc, VALUE *argv, VALUE self) {
+  datamunge::DataFrame *arg1 = 0 ;
+  std::vector< std::string,std::allocator< std::string > > *arg2 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  int res2 = SWIG_OLDOBJ ;
+  const char *classname SWIGUNUSED = "Octruby::Splom";
+  datamunge::Splom *result = 0 ;
+  
+  if ((argc < 2) || (argc > 2)) {
+    rb_raise(rb_eArgError, "wrong # of arguments(%d for 2)",argc); SWIG_fail;
+  }
+  res1 = SWIG_ConvertPtr(argv[0], &argp1, SWIGTYPE_p_datamunge__DataFrame,  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::DataFrame const &","Splom", 1, argv[0] )); 
+  }
+  if (!argp1) {
+    SWIG_exception_fail(SWIG_NullReferenceError, Ruby_Format_TypeError("invalid null reference ", "datamunge::DataFrame const &","Splom", 1, argv[0])); 
+  }
+  arg1 = reinterpret_cast< datamunge::DataFrame * >(argp1);
+  {
+    std::vector< std::string,std::allocator< std::string > > *ptr = (std::vector< std::string,std::allocator< std::string > > *)0;
+    res2 = swig::asptr(argv[1], &ptr);
+    if (!SWIG_IsOK(res2)) {
+      SWIG_exception_fail(SWIG_ArgError(res2), Ruby_Format_TypeError( "", "std::vector< std::string,std::allocator< std::string > > const &","Splom", 2, argv[1] )); 
+    }
+    if (!ptr) {
+      SWIG_exception_fail(SWIG_NullReferenceError, Ruby_Format_TypeError("invalid null reference ", "std::vector< std::string,std::allocator< std::string > > const &","Splom", 2, argv[1])); 
+    }
+    arg2 = ptr;
+  }
+  result = (datamunge::Splom *)new datamunge::Splom((datamunge::DataFrame const &)*arg1,(std::vector< std::string,std::allocator< std::string > > const &)*arg2);
+  ((struct swig_ruby_wrapped_object *)RTYPEDDATA_GET_DATA(self))->data = result;
+  if (SWIG_IsNewObj(res2)) delete arg2;
+  return self;
+fail:
+  if (SWIG_IsNewObj(res2)) delete arg2;
+  return Qnil;
+}
+
+
+SWIGINTERN VALUE
+#ifdef HAVE_RB_DEFINE_ALLOC_FUNC
+_wrap_Splom_allocate(VALUE self)
+#else
+_wrap_Splom_allocate(int argc, VALUE *argv, VALUE self)
+#endif
+{
+  VALUE vresult = SWIG_NewClassInstance(self, SWIGTYPE_p_datamunge__Splom);
+#ifndef HAVE_RB_DEFINE_ALLOC_FUNC
+  rb_obj_call_init(vresult, argc, argv);
+#endif
+  return vresult;
+}
+
+
+SWIGINTERN VALUE
+_wrap_new_Splom__SWIG_1(int argc, VALUE *argv, VALUE self) {
+  datamunge::DataFrame *arg1 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  const char *classname SWIGUNUSED = "Octruby::Splom";
+  datamunge::Splom *result = 0 ;
+  
+  if ((argc < 1) || (argc > 1)) {
+    rb_raise(rb_eArgError, "wrong # of arguments(%d for 1)",argc); SWIG_fail;
+  }
+  res1 = SWIG_ConvertPtr(argv[0], &argp1, SWIGTYPE_p_datamunge__DataFrame,  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::DataFrame const &","Splom", 1, argv[0] )); 
+  }
+  if (!argp1) {
+    SWIG_exception_fail(SWIG_NullReferenceError, Ruby_Format_TypeError("invalid null reference ", "datamunge::DataFrame const &","Splom", 1, argv[0])); 
+  }
+  arg1 = reinterpret_cast< datamunge::DataFrame * >(argp1);
+  result = (datamunge::Splom *)new datamunge::Splom((datamunge::DataFrame const &)*arg1);
+  ((struct swig_ruby_wrapped_object *)RTYPEDDATA_GET_DATA(self))->data = result;
+  return self;
+fail:
+  return Qnil;
+}
+
+
+SWIGINTERN VALUE _wrap_new_Splom(int nargs, VALUE *args, VALUE self) {
+  int argc;
+  VALUE argv[2];
+  int ii;
+  
+  argc = nargs;
+  if (argc > 2) SWIG_fail;
+  for (ii = 0; (ii < argc); ++ii) {
+    argv[ii] = args[ii];
+  }
+  if (argc == 1) {
+    int _v = 0;
+    void *vptr = 0;
+    int res = SWIG_ConvertPtr(argv[0], &vptr, SWIGTYPE_p_datamunge__DataFrame, SWIG_POINTER_NO_NULL);
+    _v = SWIG_CheckState(res);
+    if (_v) {
+      return _wrap_new_Splom__SWIG_1(nargs, args, self);
+    }
+  }
+  if (argc == 2) {
+    int _v = 0;
+    void *vptr = 0;
+    int res = SWIG_ConvertPtr(argv[0], &vptr, SWIGTYPE_p_datamunge__DataFrame, SWIG_POINTER_NO_NULL);
+    _v = SWIG_CheckState(res);
+    if (_v) {
+      int res = swig::asptr(argv[1], (std::vector< std::string,std::allocator< std::string > >**)(0));
+      _v = SWIG_CheckState(res);
+      if (_v) {
+        return _wrap_new_Splom__SWIG_0(nargs, args, self);
+      }
+    }
+  }
+  
+fail:
+  Ruby_Format_OverloadedError( argc, 2, "Splom.new", 
+    "    Splom.new(datamunge::DataFrame const &data, std::vector< std::string,std::allocator< std::string > > const &columns)\n"
+    "    Splom.new(datamunge::DataFrame const &data)\n");
+  
+  return Qnil;
+}
+
+
+SWIGINTERN VALUE
+_wrap_Splom_title(int argc, VALUE *argv, VALUE self) {
+  datamunge::Splom *arg1 = 0 ;
+  std::string *arg2 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  int res2 = SWIG_OLDOBJ ;
+  datamunge::Splom *result = 0 ;
+  VALUE vresult = Qnil;
+  
+  if ((argc < 1) || (argc > 1)) {
+    rb_raise(rb_eArgError, "wrong # of arguments(%d for 1)",argc); SWIG_fail;
+  }
+  res1 = SWIG_ConvertPtr(self, &argp1,SWIGTYPE_p_datamunge__Splom, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::Splom *","title", 1, self )); 
+  }
+  arg1 = reinterpret_cast< datamunge::Splom * >(argp1);
+  {
+    std::string *ptr = (std::string *)0;
+    res2 = SWIG_AsPtr_std_string(argv[0], &ptr);
+    if (!SWIG_IsOK(res2)) {
+      SWIG_exception_fail(SWIG_ArgError(res2), Ruby_Format_TypeError( "", "std::string const &","title", 2, argv[0] )); 
+    }
+    if (!ptr) {
+      SWIG_exception_fail(SWIG_NullReferenceError, Ruby_Format_TypeError("invalid null reference ", "std::string const &","title", 2, argv[0])); 
+    }
+    arg2 = ptr;
+  }
+  result = (datamunge::Splom *) &(arg1)->title((std::string const &)*arg2);
+  vresult = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__Splom, 0 |  0 );
+  if (SWIG_IsNewObj(res2)) delete arg2;
+  return vresult;
+fail:
+  if (SWIG_IsNewObj(res2)) delete arg2;
+  return Qnil;
+}
+
+
+/*
+  Document-method: Octruby::Splom.size
+
+  call-seq:
+    size(width, height) -> Splom
+
+Size or Length of the Splom.
+*/
+SWIGINTERN VALUE
+_wrap_Splom_size(int argc, VALUE *argv, VALUE self) {
+  datamunge::Splom *arg1 = 0 ;
+  std::size_t arg2 ;
+  std::size_t arg3 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  size_t val2 ;
+  int ecode2 = 0 ;
+  size_t val3 ;
+  int ecode3 = 0 ;
+  datamunge::Splom *result = 0 ;
+  VALUE vresult = Qnil;
+  
+  if ((argc < 2) || (argc > 2)) {
+    rb_raise(rb_eArgError, "wrong # of arguments(%d for 2)",argc); SWIG_fail;
+  }
+  res1 = SWIG_ConvertPtr(self, &argp1,SWIGTYPE_p_datamunge__Splom, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::Splom *","size", 1, self )); 
+  }
+  arg1 = reinterpret_cast< datamunge::Splom * >(argp1);
+  ecode2 = SWIG_AsVal_size_t(argv[0], &val2);
+  if (!SWIG_IsOK(ecode2)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode2), Ruby_Format_TypeError( "", "std::size_t","size", 2, argv[0] ));
+  } 
+  arg2 = static_cast< std::size_t >(val2);
+  ecode3 = SWIG_AsVal_size_t(argv[1], &val3);
+  if (!SWIG_IsOK(ecode3)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode3), Ruby_Format_TypeError( "", "std::size_t","size", 3, argv[1] ));
+  } 
+  arg3 = static_cast< std::size_t >(val3);
+  result = (datamunge::Splom *) &(arg1)->size(SWIG_STD_MOVE(*(&arg2)),SWIG_STD_MOVE(*(&arg3)));
+  vresult = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__Splom, 0 |  0 );
+  return vresult;
+fail:
+  return Qnil;
+}
+
+
+SWIGINTERN VALUE
+_wrap_Splom_color(int argc, VALUE *argv, VALUE self) {
+  datamunge::Splom *arg1 = 0 ;
+  datamunge::graphics::RGB arg2 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  void *argp2 = 0 ;
+  int res2 = 0 ;
+  datamunge::Splom *result = 0 ;
+  VALUE vresult = Qnil;
+  
+  if ((argc < 1) || (argc > 1)) {
+    rb_raise(rb_eArgError, "wrong # of arguments(%d for 1)",argc); SWIG_fail;
+  }
+  res1 = SWIG_ConvertPtr(self, &argp1,SWIGTYPE_p_datamunge__Splom, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::Splom *","color", 1, self )); 
+  }
+  arg1 = reinterpret_cast< datamunge::Splom * >(argp1);
+  {
+    res2 = SWIG_ConvertPtr(argv[0], &argp2, SWIGTYPE_p_datamunge__graphics__RGB,  0 );
+    if (!SWIG_IsOK(res2)) {
+      SWIG_exception_fail(SWIG_ArgError(res2), Ruby_Format_TypeError( "", "datamunge::graphics::RGB","color", 2, argv[0] )); 
+    }  
+    if (!argp2) {
+      SWIG_exception_fail(SWIG_NullReferenceError, Ruby_Format_TypeError("invalid null reference ", "datamunge::graphics::RGB","color", 2, argv[0]));
+    } else {
+      arg2 = *(reinterpret_cast< datamunge::graphics::RGB * >(argp2));
+    }
+  }
+  result = (datamunge::Splom *) &(arg1)->color(SWIG_STD_MOVE(*(&arg2)));
+  vresult = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__Splom, 0 |  0 );
+  return vresult;
+fail:
+  return Qnil;
+}
+
+
+SWIGINTERN VALUE
+_wrap_Splom_group_by__SWIG_0(int argc, VALUE *argv, VALUE self) {
+  datamunge::Splom *arg1 = 0 ;
+  std::string *arg2 = 0 ;
+  std::vector< datamunge::graphics::RGB,std::allocator< datamunge::graphics::RGB > > *arg3 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  int res2 = SWIG_OLDOBJ ;
+  void *argp3 = 0 ;
+  int res3 = 0 ;
+  datamunge::Splom *result = 0 ;
+  VALUE vresult = Qnil;
+  
+  if ((argc < 2) || (argc > 2)) {
+    rb_raise(rb_eArgError, "wrong # of arguments(%d for 2)",argc); SWIG_fail;
+  }
+  res1 = SWIG_ConvertPtr(self, &argp1,SWIGTYPE_p_datamunge__Splom, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::Splom *","group_by", 1, self )); 
+  }
+  arg1 = reinterpret_cast< datamunge::Splom * >(argp1);
+  {
+    std::string *ptr = (std::string *)0;
+    res2 = SWIG_AsPtr_std_string(argv[0], &ptr);
+    if (!SWIG_IsOK(res2)) {
+      SWIG_exception_fail(SWIG_ArgError(res2), Ruby_Format_TypeError( "", "std::string const &","group_by", 2, argv[0] )); 
+    }
+    if (!ptr) {
+      SWIG_exception_fail(SWIG_NullReferenceError, Ruby_Format_TypeError("invalid null reference ", "std::string const &","group_by", 2, argv[0])); 
+    }
+    arg2 = ptr;
+  }
+  res3 = SWIG_ConvertPtr(argv[1], &argp3, SWIGTYPE_p_std__vectorT_datamunge__graphics__RGB_std__allocatorT_datamunge__graphics__RGB_t_t,  0 );
+  if (!SWIG_IsOK(res3)) {
+    SWIG_exception_fail(SWIG_ArgError(res3), Ruby_Format_TypeError( "", "std::vector< datamunge::graphics::RGB,std::allocator< datamunge::graphics::RGB > > const &","group_by", 3, argv[1] )); 
+  }
+  if (!argp3) {
+    SWIG_exception_fail(SWIG_NullReferenceError, Ruby_Format_TypeError("invalid null reference ", "std::vector< datamunge::graphics::RGB,std::allocator< datamunge::graphics::RGB > > const &","group_by", 3, argv[1])); 
+  }
+  arg3 = reinterpret_cast< std::vector< datamunge::graphics::RGB,std::allocator< datamunge::graphics::RGB > > * >(argp3);
+  result = (datamunge::Splom *) &(arg1)->group_by((std::string const &)*arg2,(std::vector< datamunge::graphics::RGB,std::allocator< datamunge::graphics::RGB > > const &)*arg3);
+  vresult = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__Splom, 0 |  0 );
+  if (SWIG_IsNewObj(res2)) delete arg2;
+  return vresult;
+fail:
+  if (SWIG_IsNewObj(res2)) delete arg2;
+  return Qnil;
+}
+
+
+SWIGINTERN VALUE
+_wrap_Splom_group_by__SWIG_1(int argc, VALUE *argv, VALUE self) {
+  datamunge::Splom *arg1 = 0 ;
+  std::string *arg2 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  int res2 = SWIG_OLDOBJ ;
+  datamunge::Splom *result = 0 ;
+  VALUE vresult = Qnil;
+  
+  if ((argc < 1) || (argc > 1)) {
+    rb_raise(rb_eArgError, "wrong # of arguments(%d for 1)",argc); SWIG_fail;
+  }
+  res1 = SWIG_ConvertPtr(self, &argp1,SWIGTYPE_p_datamunge__Splom, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::Splom *","group_by", 1, self )); 
+  }
+  arg1 = reinterpret_cast< datamunge::Splom * >(argp1);
+  {
+    std::string *ptr = (std::string *)0;
+    res2 = SWIG_AsPtr_std_string(argv[0], &ptr);
+    if (!SWIG_IsOK(res2)) {
+      SWIG_exception_fail(SWIG_ArgError(res2), Ruby_Format_TypeError( "", "std::string const &","group_by", 2, argv[0] )); 
+    }
+    if (!ptr) {
+      SWIG_exception_fail(SWIG_NullReferenceError, Ruby_Format_TypeError("invalid null reference ", "std::string const &","group_by", 2, argv[0])); 
+    }
+    arg2 = ptr;
+  }
+  result = (datamunge::Splom *) &(arg1)->group_by((std::string const &)*arg2);
+  vresult = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__Splom, 0 |  0 );
+  if (SWIG_IsNewObj(res2)) delete arg2;
+  return vresult;
+fail:
+  if (SWIG_IsNewObj(res2)) delete arg2;
+  return Qnil;
+}
+
+
+SWIGINTERN VALUE _wrap_Splom_group_by(int nargs, VALUE *args, VALUE self) {
+  int argc;
+  VALUE argv[4];
+  int ii;
+  
+  argc = nargs + 1;
+  argv[0] = self;
+  if (argc > 4) SWIG_fail;
+  for (ii = 1; (ii < argc); ++ii) {
+    argv[ii] = args[ii-1];
+  }
+  if (argc == 2) {
+    int _v = 0;
+    void *vptr = 0;
+    int res = SWIG_ConvertPtr(argv[0], &vptr, SWIGTYPE_p_datamunge__Splom, 0);
+    _v = SWIG_CheckState(res);
+    if (_v) {
+      int res = SWIG_AsPtr_std_string(argv[1], (std::string**)(0));
+      _v = SWIG_CheckState(res);
+      if (_v) {
+        return _wrap_Splom_group_by__SWIG_1(nargs, args, self);
+      }
+    }
+  }
+  if (argc == 3) {
+    int _v = 0;
+    void *vptr = 0;
+    int res = SWIG_ConvertPtr(argv[0], &vptr, SWIGTYPE_p_datamunge__Splom, 0);
+    _v = SWIG_CheckState(res);
+    if (_v) {
+      int res = SWIG_AsPtr_std_string(argv[1], (std::string**)(0));
+      _v = SWIG_CheckState(res);
+      if (_v) {
+        void *vptr = 0;
+        int res = SWIG_ConvertPtr(argv[2], &vptr, SWIGTYPE_p_std__vectorT_datamunge__graphics__RGB_std__allocatorT_datamunge__graphics__RGB_t_t, SWIG_POINTER_NO_NULL);
+        _v = SWIG_CheckState(res);
+        if (_v) {
+          return _wrap_Splom_group_by__SWIG_0(nargs, args, self);
+        }
+      }
+    }
+  }
+  
+fail:
+  Ruby_Format_OverloadedError( argc, 4, "Splom.group_by", 
+    "    datamunge::Splom Splom.group_by(std::string const &column, std::vector< datamunge::graphics::RGB,std::allocator< datamunge::graphics::RGB > > const &palette)\n"
+    "    datamunge::Splom & Splom.group_by(std::string const &column)\n");
+  
+  return Qnil;
+}
+
+
+SWIGINTERN VALUE
+_wrap_Splom_point_colors(int argc, VALUE *argv, VALUE self) {
+  datamunge::Splom *arg1 = 0 ;
+  std::vector< datamunge::graphics::RGB,std::allocator< datamunge::graphics::RGB > > *arg2 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  void *argp2 = 0 ;
+  int res2 = 0 ;
+  datamunge::Splom *result = 0 ;
+  VALUE vresult = Qnil;
+  
+  if ((argc < 1) || (argc > 1)) {
+    rb_raise(rb_eArgError, "wrong # of arguments(%d for 1)",argc); SWIG_fail;
+  }
+  res1 = SWIG_ConvertPtr(self, &argp1,SWIGTYPE_p_datamunge__Splom, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::Splom *","point_colors", 1, self )); 
+  }
+  arg1 = reinterpret_cast< datamunge::Splom * >(argp1);
+  res2 = SWIG_ConvertPtr(argv[0], &argp2, SWIGTYPE_p_std__vectorT_datamunge__graphics__RGB_std__allocatorT_datamunge__graphics__RGB_t_t,  0 );
+  if (!SWIG_IsOK(res2)) {
+    SWIG_exception_fail(SWIG_ArgError(res2), Ruby_Format_TypeError( "", "std::vector< datamunge::graphics::RGB,std::allocator< datamunge::graphics::RGB > > const &","point_colors", 2, argv[0] )); 
+  }
+  if (!argp2) {
+    SWIG_exception_fail(SWIG_NullReferenceError, Ruby_Format_TypeError("invalid null reference ", "std::vector< datamunge::graphics::RGB,std::allocator< datamunge::graphics::RGB > > const &","point_colors", 2, argv[0])); 
+  }
+  arg2 = reinterpret_cast< std::vector< datamunge::graphics::RGB,std::allocator< datamunge::graphics::RGB > > * >(argp2);
+  result = (datamunge::Splom *) &(arg1)->point_colors((std::vector< datamunge::graphics::RGB,std::allocator< datamunge::graphics::RGB > > const &)*arg2);
+  vresult = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__Splom, 0 |  0 );
+  return vresult;
+fail:
+  return Qnil;
+}
+
+
+SWIGINTERN VALUE
+_wrap_Splom_level_palette(int argc, VALUE *argv, VALUE self) {
+  datamunge::Splom *arg1 = 0 ;
+  std::vector< datamunge::graphics::RGB,std::allocator< datamunge::graphics::RGB > > *arg2 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  void *argp2 = 0 ;
+  int res2 = 0 ;
+  datamunge::Splom *result = 0 ;
+  VALUE vresult = Qnil;
+  
+  if ((argc < 1) || (argc > 1)) {
+    rb_raise(rb_eArgError, "wrong # of arguments(%d for 1)",argc); SWIG_fail;
+  }
+  res1 = SWIG_ConvertPtr(self, &argp1,SWIGTYPE_p_datamunge__Splom, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::Splom *","level_palette", 1, self )); 
+  }
+  arg1 = reinterpret_cast< datamunge::Splom * >(argp1);
+  res2 = SWIG_ConvertPtr(argv[0], &argp2, SWIGTYPE_p_std__vectorT_datamunge__graphics__RGB_std__allocatorT_datamunge__graphics__RGB_t_t,  0 );
+  if (!SWIG_IsOK(res2)) {
+    SWIG_exception_fail(SWIG_ArgError(res2), Ruby_Format_TypeError( "", "std::vector< datamunge::graphics::RGB,std::allocator< datamunge::graphics::RGB > > const &","level_palette", 2, argv[0] )); 
+  }
+  if (!argp2) {
+    SWIG_exception_fail(SWIG_NullReferenceError, Ruby_Format_TypeError("invalid null reference ", "std::vector< datamunge::graphics::RGB,std::allocator< datamunge::graphics::RGB > > const &","level_palette", 2, argv[0])); 
+  }
+  arg2 = reinterpret_cast< std::vector< datamunge::graphics::RGB,std::allocator< datamunge::graphics::RGB > > * >(argp2);
+  result = (datamunge::Splom *) &(arg1)->level_palette((std::vector< datamunge::graphics::RGB,std::allocator< datamunge::graphics::RGB > > const &)*arg2);
+  vresult = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__Splom, 0 |  0 );
+  return vresult;
+fail:
+  return Qnil;
+}
+
+
+SWIGINTERN VALUE
+_wrap_Splom_marker_size(int argc, VALUE *argv, VALUE self) {
+  datamunge::Splom *arg1 = 0 ;
+  double arg2 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  double val2 ;
+  int ecode2 = 0 ;
+  datamunge::Splom *result = 0 ;
+  VALUE vresult = Qnil;
+  
+  if ((argc < 1) || (argc > 1)) {
+    rb_raise(rb_eArgError, "wrong # of arguments(%d for 1)",argc); SWIG_fail;
+  }
+  res1 = SWIG_ConvertPtr(self, &argp1,SWIGTYPE_p_datamunge__Splom, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::Splom *","marker_size", 1, self )); 
+  }
+  arg1 = reinterpret_cast< datamunge::Splom * >(argp1);
+  ecode2 = SWIG_AsVal_double(argv[0], &val2);
+  if (!SWIG_IsOK(ecode2)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode2), Ruby_Format_TypeError( "", "double","marker_size", 2, argv[0] ));
+  } 
+  arg2 = static_cast< double >(val2);
+  result = (datamunge::Splom *) &(arg1)->marker_size(arg2);
+  vresult = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__Splom, 0 |  0 );
+  return vresult;
+fail:
+  return Qnil;
+}
+
+
+SWIGINTERN VALUE
+_wrap_Splom_diagonal_names(int argc, VALUE *argv, VALUE self) {
+  datamunge::Splom *arg1 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  datamunge::Splom *result = 0 ;
+  VALUE vresult = Qnil;
+  
+  if ((argc < 0) || (argc > 0)) {
+    rb_raise(rb_eArgError, "wrong # of arguments(%d for 0)",argc); SWIG_fail;
+  }
+  res1 = SWIG_ConvertPtr(self, &argp1,SWIGTYPE_p_datamunge__Splom, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::Splom *","diagonal_names", 1, self )); 
+  }
+  arg1 = reinterpret_cast< datamunge::Splom * >(argp1);
+  result = (datamunge::Splom *) &(arg1)->diagonal_names();
+  vresult = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__Splom, 0 |  0 );
+  return vresult;
+fail:
+  return Qnil;
+}
+
+
+SWIGINTERN VALUE
+_wrap_Splom_diagonal_density(int argc, VALUE *argv, VALUE self) {
+  datamunge::Splom *arg1 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  datamunge::Splom *result = 0 ;
+  VALUE vresult = Qnil;
+  
+  if ((argc < 0) || (argc > 0)) {
+    rb_raise(rb_eArgError, "wrong # of arguments(%d for 0)",argc); SWIG_fail;
+  }
+  res1 = SWIG_ConvertPtr(self, &argp1,SWIGTYPE_p_datamunge__Splom, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::Splom *","diagonal_density", 1, self )); 
+  }
+  arg1 = reinterpret_cast< datamunge::Splom * >(argp1);
+  result = (datamunge::Splom *) &(arg1)->diagonal_density();
+  vresult = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__Splom, 0 |  0 );
+  return vresult;
+fail:
+  return Qnil;
+}
+
+
+SWIGINTERN VALUE
+_wrap_Splom_diagonal_histogram(int argc, VALUE *argv, VALUE self) {
+  datamunge::Splom *arg1 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  datamunge::Splom *result = 0 ;
+  VALUE vresult = Qnil;
+  
+  if ((argc < 0) || (argc > 0)) {
+    rb_raise(rb_eArgError, "wrong # of arguments(%d for 0)",argc); SWIG_fail;
+  }
+  res1 = SWIG_ConvertPtr(self, &argp1,SWIGTYPE_p_datamunge__Splom, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::Splom *","diagonal_histogram", 1, self )); 
+  }
+  arg1 = reinterpret_cast< datamunge::Splom * >(argp1);
+  result = (datamunge::Splom *) &(arg1)->diagonal_histogram();
+  vresult = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__Splom, 0 |  0 );
+  return vresult;
+fail:
+  return Qnil;
+}
+
+
+SWIGINTERN VALUE
+_wrap_Splom_span(int argc, VALUE *argv, VALUE self) {
+  datamunge::Splom *arg1 = 0 ;
+  double arg2 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  double val2 ;
+  int ecode2 = 0 ;
+  datamunge::Splom *result = 0 ;
+  VALUE vresult = Qnil;
+  
+  if ((argc < 1) || (argc > 1)) {
+    rb_raise(rb_eArgError, "wrong # of arguments(%d for 1)",argc); SWIG_fail;
+  }
+  res1 = SWIG_ConvertPtr(self, &argp1,SWIGTYPE_p_datamunge__Splom, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::Splom *","span", 1, self )); 
+  }
+  arg1 = reinterpret_cast< datamunge::Splom * >(argp1);
+  ecode2 = SWIG_AsVal_double(argv[0], &val2);
+  if (!SWIG_IsOK(ecode2)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode2), Ruby_Format_TypeError( "", "double","span", 2, argv[0] ));
+  } 
+  arg2 = static_cast< double >(val2);
+  result = (datamunge::Splom *) &(arg1)->span(arg2);
+  vresult = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__Splom, 0 |  0 );
+  return vresult;
+fail:
+  return Qnil;
+}
+
+
+SWIGINTERN VALUE
+_wrap_Splom_prediction_level(int argc, VALUE *argv, VALUE self) {
+  datamunge::Splom *arg1 = 0 ;
+  double arg2 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  double val2 ;
+  int ecode2 = 0 ;
+  datamunge::Splom *result = 0 ;
+  VALUE vresult = Qnil;
+  
+  if ((argc < 1) || (argc > 1)) {
+    rb_raise(rb_eArgError, "wrong # of arguments(%d for 1)",argc); SWIG_fail;
+  }
+  res1 = SWIG_ConvertPtr(self, &argp1,SWIGTYPE_p_datamunge__Splom, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::Splom *","prediction_level", 1, self )); 
+  }
+  arg1 = reinterpret_cast< datamunge::Splom * >(argp1);
+  ecode2 = SWIG_AsVal_double(argv[0], &val2);
+  if (!SWIG_IsOK(ecode2)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode2), Ruby_Format_TypeError( "", "double","prediction_level", 2, argv[0] ));
+  } 
+  arg2 = static_cast< double >(val2);
+  result = (datamunge::Splom *) &(arg1)->prediction_level(arg2);
+  vresult = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__Splom, 0 |  0 );
+  return vresult;
+fail:
+  return Qnil;
+}
+
+
+SWIGINTERN VALUE
+_wrap_Splom_bins(int argc, VALUE *argv, VALUE self) {
+  datamunge::Splom *arg1 = 0 ;
+  std::size_t arg2 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  size_t val2 ;
+  int ecode2 = 0 ;
+  datamunge::Splom *result = 0 ;
+  VALUE vresult = Qnil;
+  
+  if ((argc < 1) || (argc > 1)) {
+    rb_raise(rb_eArgError, "wrong # of arguments(%d for 1)",argc); SWIG_fail;
+  }
+  res1 = SWIG_ConvertPtr(self, &argp1,SWIGTYPE_p_datamunge__Splom, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::Splom *","bins", 1, self )); 
+  }
+  arg1 = reinterpret_cast< datamunge::Splom * >(argp1);
+  ecode2 = SWIG_AsVal_size_t(argv[0], &val2);
+  if (!SWIG_IsOK(ecode2)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode2), Ruby_Format_TypeError( "", "std::size_t","bins", 2, argv[0] ));
+  } 
+  arg2 = static_cast< std::size_t >(val2);
+  result = (datamunge::Splom *) &(arg1)->bins(SWIG_STD_MOVE(*(&arg2)));
+  vresult = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__Splom, 0 |  0 );
+  return vresult;
+fail:
+  return Qnil;
+}
+
+
+SWIGINTERN VALUE
+_wrap_Splom_show_grid__SWIG_0(int argc, VALUE *argv, VALUE self) {
+  datamunge::Splom *arg1 = 0 ;
+  bool arg2 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  bool val2 ;
+  int ecode2 = 0 ;
+  datamunge::Splom *result = 0 ;
+  VALUE vresult = Qnil;
+  
+  if ((argc < 1) || (argc > 1)) {
+    rb_raise(rb_eArgError, "wrong # of arguments(%d for 1)",argc); SWIG_fail;
+  }
+  res1 = SWIG_ConvertPtr(self, &argp1,SWIGTYPE_p_datamunge__Splom, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::Splom *","show_grid", 1, self )); 
+  }
+  arg1 = reinterpret_cast< datamunge::Splom * >(argp1);
+  ecode2 = SWIG_AsVal_bool(argv[0], &val2);
+  if (!SWIG_IsOK(ecode2)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode2), Ruby_Format_TypeError( "", "bool","show_grid", 2, argv[0] ));
+  } 
+  arg2 = static_cast< bool >(val2);
+  result = (datamunge::Splom *) &(arg1)->show_grid(arg2);
+  vresult = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__Splom, 0 |  0 );
+  return vresult;
+fail:
+  return Qnil;
+}
+
+
+SWIGINTERN VALUE
+_wrap_Splom_show_grid__SWIG_1(int argc, VALUE *argv, VALUE self) {
+  datamunge::Splom *arg1 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  datamunge::Splom *result = 0 ;
+  VALUE vresult = Qnil;
+  
+  if ((argc < 0) || (argc > 0)) {
+    rb_raise(rb_eArgError, "wrong # of arguments(%d for 0)",argc); SWIG_fail;
+  }
+  res1 = SWIG_ConvertPtr(self, &argp1,SWIGTYPE_p_datamunge__Splom, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::Splom *","show_grid", 1, self )); 
+  }
+  arg1 = reinterpret_cast< datamunge::Splom * >(argp1);
+  result = (datamunge::Splom *) &(arg1)->show_grid();
+  vresult = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__Splom, 0 |  0 );
+  return vresult;
+fail:
+  return Qnil;
+}
+
+
+SWIGINTERN VALUE _wrap_Splom_show_grid(int nargs, VALUE *args, VALUE self) {
+  int argc;
+  VALUE argv[3];
+  int ii;
+  
+  argc = nargs + 1;
+  argv[0] = self;
+  if (argc > 3) SWIG_fail;
+  for (ii = 1; (ii < argc); ++ii) {
+    argv[ii] = args[ii-1];
+  }
+  if (argc == 1) {
+    int _v = 0;
+    void *vptr = 0;
+    int res = SWIG_ConvertPtr(argv[0], &vptr, SWIGTYPE_p_datamunge__Splom, 0);
+    _v = SWIG_CheckState(res);
+    if (_v) {
+      return _wrap_Splom_show_grid__SWIG_1(nargs, args, self);
+    }
+  }
+  if (argc == 2) {
+    int _v = 0;
+    void *vptr = 0;
+    int res = SWIG_ConvertPtr(argv[0], &vptr, SWIGTYPE_p_datamunge__Splom, 0);
+    _v = SWIG_CheckState(res);
+    if (_v) {
+      {
+        int res = SWIG_AsVal_bool(argv[1], NULL);
+        _v = SWIG_CheckState(res);
+      }
+      if (_v) {
+        return _wrap_Splom_show_grid__SWIG_0(nargs, args, self);
+      }
+    }
+  }
+  
+fail:
+  Ruby_Format_OverloadedError( argc, 3, "Splom.show_grid", 
+    "    datamunge::Splom Splom.show_grid(bool enabled)\n"
+    "    datamunge::Splom & Splom.show_grid()\n");
+  
+  return Qnil;
+}
+
+
+SWIGINTERN VALUE
+_wrap_Splom_variables(int argc, VALUE *argv, VALUE self) {
+  datamunge::Splom *arg1 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  std::vector< std::string,std::allocator< std::string > > result;
+  VALUE vresult = Qnil;
+  
+  if ((argc < 0) || (argc > 0)) {
+    rb_raise(rb_eArgError, "wrong # of arguments(%d for 0)",argc); SWIG_fail;
+  }
+  res1 = SWIG_ConvertPtr(self, &argp1,SWIGTYPE_p_datamunge__Splom, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::Splom const *","variables", 1, self )); 
+  }
+  arg1 = reinterpret_cast< datamunge::Splom * >(argp1);
+  result = ((datamunge::Splom const *)arg1)->variables();
+  vresult = swig::from(static_cast< std::vector< std::string,std::allocator< std::string > > >(result));
+  return vresult;
+fail:
+  return Qnil;
+}
+
+
+SWIGINTERN VALUE
+_wrap_Splom_groups(int argc, VALUE *argv, VALUE self) {
+  datamunge::Splom *arg1 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  std::vector< std::string,std::allocator< std::string > > result;
+  VALUE vresult = Qnil;
+  
+  if ((argc < 0) || (argc > 0)) {
+    rb_raise(rb_eArgError, "wrong # of arguments(%d for 0)",argc); SWIG_fail;
+  }
+  res1 = SWIG_ConvertPtr(self, &argp1,SWIGTYPE_p_datamunge__Splom, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::Splom const *","groups", 1, self )); 
+  }
+  arg1 = reinterpret_cast< datamunge::Splom * >(argp1);
+  result = ((datamunge::Splom const *)arg1)->groups();
+  vresult = swig::from(static_cast< std::vector< std::string,std::allocator< std::string > > >(result));
+  return vresult;
+fail:
+  return Qnil;
+}
+
+
+SWIGINTERN VALUE
+_wrap_Splom_title_text(int argc, VALUE *argv, VALUE self) {
+  datamunge::Splom *arg1 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  std::string result;
+  VALUE vresult = Qnil;
+  
+  if ((argc < 0) || (argc > 0)) {
+    rb_raise(rb_eArgError, "wrong # of arguments(%d for 0)",argc); SWIG_fail;
+  }
+  res1 = SWIG_ConvertPtr(self, &argp1,SWIGTYPE_p_datamunge__Splom, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::Splom const *","title_text", 1, self )); 
+  }
+  arg1 = reinterpret_cast< datamunge::Splom * >(argp1);
+  result = ((datamunge::Splom const *)arg1)->title_text();
+  vresult = SWIG_From_std_string(static_cast< std::string >(result));
+  return vresult;
+fail:
+  return Qnil;
+}
+
+
+SWIGINTERN VALUE
+_wrap_Splom_width(int argc, VALUE *argv, VALUE self) {
+  datamunge::Splom *arg1 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  int result;
+  VALUE vresult = Qnil;
+  
+  if ((argc < 0) || (argc > 0)) {
+    rb_raise(rb_eArgError, "wrong # of arguments(%d for 0)",argc); SWIG_fail;
+  }
+  res1 = SWIG_ConvertPtr(self, &argp1,SWIGTYPE_p_datamunge__Splom, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::Splom const *","width", 1, self )); 
+  }
+  arg1 = reinterpret_cast< datamunge::Splom * >(argp1);
+  result = (int)((datamunge::Splom const *)arg1)->width();
+  vresult = SWIG_From_int(static_cast< int >(result));
+  return vresult;
+fail:
+  return Qnil;
+}
+
+
+SWIGINTERN VALUE
+_wrap_Splom_height(int argc, VALUE *argv, VALUE self) {
+  datamunge::Splom *arg1 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  int result;
+  VALUE vresult = Qnil;
+  
+  if ((argc < 0) || (argc > 0)) {
+    rb_raise(rb_eArgError, "wrong # of arguments(%d for 0)",argc); SWIG_fail;
+  }
+  res1 = SWIG_ConvertPtr(self, &argp1,SWIGTYPE_p_datamunge__Splom, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::Splom const *","height", 1, self )); 
+  }
+  arg1 = reinterpret_cast< datamunge::Splom * >(argp1);
+  result = (int)((datamunge::Splom const *)arg1)->height();
+  vresult = SWIG_From_int(static_cast< int >(result));
+  return vresult;
+fail:
+  return Qnil;
+}
+
+
+SWIGINTERN VALUE
+_wrap_Splom_panel(int argc, VALUE *argv, VALUE self) {
+  datamunge::Splom *arg1 = 0 ;
+  std::size_t arg2 ;
+  std::size_t arg3 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  size_t val2 ;
+  int ecode2 = 0 ;
+  size_t val3 ;
+  int ecode3 = 0 ;
+  datamunge::graphics::RPlot result;
+  VALUE vresult = Qnil;
+  
+  if ((argc < 2) || (argc > 2)) {
+    rb_raise(rb_eArgError, "wrong # of arguments(%d for 2)",argc); SWIG_fail;
+  }
+  res1 = SWIG_ConvertPtr(self, &argp1,SWIGTYPE_p_datamunge__Splom, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::Splom const *","panel", 1, self )); 
+  }
+  arg1 = reinterpret_cast< datamunge::Splom * >(argp1);
+  ecode2 = SWIG_AsVal_size_t(argv[0], &val2);
+  if (!SWIG_IsOK(ecode2)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode2), Ruby_Format_TypeError( "", "std::size_t","panel", 2, argv[0] ));
+  } 
+  arg2 = static_cast< std::size_t >(val2);
+  ecode3 = SWIG_AsVal_size_t(argv[1], &val3);
+  if (!SWIG_IsOK(ecode3)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode3), Ruby_Format_TypeError( "", "std::size_t","panel", 3, argv[1] ));
+  } 
+  arg3 = static_cast< std::size_t >(val3);
+  result = ((datamunge::Splom const *)arg1)->panel(SWIG_STD_MOVE(*(&arg2)),SWIG_STD_MOVE(*(&arg3)));
+  vresult = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__graphics__RPlot, SWIG_POINTER_OWN |  0 );
+  return vresult;
+fail:
+  return Qnil;
+}
+
+
+SWIGINTERN VALUE
+_wrap_Splom_to_svg(int argc, VALUE *argv, VALUE self) {
+  datamunge::Splom *arg1 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  std::string result;
+  VALUE vresult = Qnil;
+  
+  if ((argc < 0) || (argc > 0)) {
+    rb_raise(rb_eArgError, "wrong # of arguments(%d for 0)",argc); SWIG_fail;
+  }
+  res1 = SWIG_ConvertPtr(self, &argp1,SWIGTYPE_p_datamunge__Splom, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::Splom const *","to_svg", 1, self )); 
+  }
+  arg1 = reinterpret_cast< datamunge::Splom * >(argp1);
+  result = ((datamunge::Splom const *)arg1)->to_svg();
+  vresult = SWIG_From_std_string(static_cast< std::string >(result));
+  return vresult;
+fail:
+  return Qnil;
+}
+
+
+SWIGINTERN VALUE
+_wrap_Splom_save(int argc, VALUE *argv, VALUE self) {
+  datamunge::Splom *arg1 = 0 ;
+  std::string *arg2 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  int res2 = SWIG_OLDOBJ ;
+  
+  if ((argc < 1) || (argc > 1)) {
+    rb_raise(rb_eArgError, "wrong # of arguments(%d for 1)",argc); SWIG_fail;
+  }
+  res1 = SWIG_ConvertPtr(self, &argp1,SWIGTYPE_p_datamunge__Splom, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::Splom const *","save", 1, self )); 
+  }
+  arg1 = reinterpret_cast< datamunge::Splom * >(argp1);
+  {
+    std::string *ptr = (std::string *)0;
+    res2 = SWIG_AsPtr_std_string(argv[0], &ptr);
+    if (!SWIG_IsOK(res2)) {
+      SWIG_exception_fail(SWIG_ArgError(res2), Ruby_Format_TypeError( "", "std::string const &","save", 2, argv[0] )); 
+    }
+    if (!ptr) {
+      SWIG_exception_fail(SWIG_NullReferenceError, Ruby_Format_TypeError("invalid null reference ", "std::string const &","save", 2, argv[0])); 
+    }
+    arg2 = ptr;
+  }
+  ((datamunge::Splom const *)arg1)->save((std::string const &)*arg2);
+  if (SWIG_IsNewObj(res2)) delete arg2;
+  return Qnil;
+fail:
+  if (SWIG_IsNewObj(res2)) delete arg2;
+  return Qnil;
+}
+
+
+SWIGINTERN VALUE
+_wrap_Splom_save_svg(int argc, VALUE *argv, VALUE self) {
+  datamunge::Splom *arg1 = 0 ;
+  std::string *arg2 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  int res2 = SWIG_OLDOBJ ;
+  
+  if ((argc < 1) || (argc > 1)) {
+    rb_raise(rb_eArgError, "wrong # of arguments(%d for 1)",argc); SWIG_fail;
+  }
+  res1 = SWIG_ConvertPtr(self, &argp1,SWIGTYPE_p_datamunge__Splom, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::Splom const *","save_svg", 1, self )); 
+  }
+  arg1 = reinterpret_cast< datamunge::Splom * >(argp1);
+  {
+    std::string *ptr = (std::string *)0;
+    res2 = SWIG_AsPtr_std_string(argv[0], &ptr);
+    if (!SWIG_IsOK(res2)) {
+      SWIG_exception_fail(SWIG_ArgError(res2), Ruby_Format_TypeError( "", "std::string const &","save_svg", 2, argv[0] )); 
+    }
+    if (!ptr) {
+      SWIG_exception_fail(SWIG_NullReferenceError, Ruby_Format_TypeError("invalid null reference ", "std::string const &","save_svg", 2, argv[0])); 
+    }
+    arg2 = ptr;
+  }
+  ((datamunge::Splom const *)arg1)->save_svg((std::string const &)*arg2);
+  if (SWIG_IsNewObj(res2)) delete arg2;
+  return Qnil;
+fail:
+  if (SWIG_IsNewObj(res2)) delete arg2;
+  return Qnil;
+}
+
+
+SWIGINTERN VALUE
+_wrap_Splom_show__SWIG_0(int argc, VALUE *argv, VALUE self) {
+  datamunge::Splom *arg1 = 0 ;
+  std::string *arg2 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  int res2 = SWIG_OLDOBJ ;
+  
+  if ((argc < 1) || (argc > 1)) {
+    rb_raise(rb_eArgError, "wrong # of arguments(%d for 1)",argc); SWIG_fail;
+  }
+  res1 = SWIG_ConvertPtr(self, &argp1,SWIGTYPE_p_datamunge__Splom, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::Splom const *","show", 1, self )); 
+  }
+  arg1 = reinterpret_cast< datamunge::Splom * >(argp1);
+  {
+    std::string *ptr = (std::string *)0;
+    res2 = SWIG_AsPtr_std_string(argv[0], &ptr);
+    if (!SWIG_IsOK(res2)) {
+      SWIG_exception_fail(SWIG_ArgError(res2), Ruby_Format_TypeError( "", "std::string const &","show", 2, argv[0] )); 
+    }
+    if (!ptr) {
+      SWIG_exception_fail(SWIG_NullReferenceError, Ruby_Format_TypeError("invalid null reference ", "std::string const &","show", 2, argv[0])); 
+    }
+    arg2 = ptr;
+  }
+  ((datamunge::Splom const *)arg1)->show((std::string const &)*arg2);
+  if (SWIG_IsNewObj(res2)) delete arg2;
+  return Qnil;
+fail:
+  if (SWIG_IsNewObj(res2)) delete arg2;
+  return Qnil;
+}
+
+
+SWIGINTERN VALUE
+_wrap_Splom_show__SWIG_1(int argc, VALUE *argv, VALUE self) {
+  datamunge::Splom *arg1 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  
+  if ((argc < 0) || (argc > 0)) {
+    rb_raise(rb_eArgError, "wrong # of arguments(%d for 0)",argc); SWIG_fail;
+  }
+  res1 = SWIG_ConvertPtr(self, &argp1,SWIGTYPE_p_datamunge__Splom, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::Splom const *","show", 1, self )); 
+  }
+  arg1 = reinterpret_cast< datamunge::Splom * >(argp1);
+  ((datamunge::Splom const *)arg1)->show();
+  return Qnil;
+fail:
+  return Qnil;
+}
+
+
+SWIGINTERN VALUE _wrap_Splom_show(int nargs, VALUE *args, VALUE self) {
+  int argc;
+  VALUE argv[3];
+  int ii;
+  
+  argc = nargs + 1;
+  argv[0] = self;
+  if (argc > 3) SWIG_fail;
+  for (ii = 1; (ii < argc); ++ii) {
+    argv[ii] = args[ii-1];
+  }
+  if (argc == 1) {
+    int _v = 0;
+    void *vptr = 0;
+    int res = SWIG_ConvertPtr(argv[0], &vptr, SWIGTYPE_p_datamunge__Splom, 0);
+    _v = SWIG_CheckState(res);
+    if (_v) {
+      return _wrap_Splom_show__SWIG_1(nargs, args, self);
+    }
+  }
+  if (argc == 2) {
+    int _v = 0;
+    void *vptr = 0;
+    int res = SWIG_ConvertPtr(argv[0], &vptr, SWIGTYPE_p_datamunge__Splom, 0);
+    _v = SWIG_CheckState(res);
+    if (_v) {
+      int res = SWIG_AsPtr_std_string(argv[1], (std::string**)(0));
+      _v = SWIG_CheckState(res);
+      if (_v) {
+        return _wrap_Splom_show__SWIG_0(nargs, args, self);
+      }
+    }
+  }
+  
+fail:
+  Ruby_Format_OverloadedError( argc, 3, "Splom.show", 
+    "    void Splom.show(std::string const &title_hint)\n"
+    "    void Splom.show()\n");
+  
+  return Qnil;
+}
+
+
+SWIGINTERN void
+free_datamunge_Splom(void *self) {
+    datamunge::Splom *arg1 = (datamunge::Splom *)self;
     delete arg1;
 }
 
@@ -31755,7 +34194,7 @@ _wrap_LM_plot_residuals_vs_fitted(int argc, VALUE *argv, VALUE self) {
   }
   arg1 = reinterpret_cast< datamunge::LM * >(argp1);
   result = ((datamunge::LM const *)arg1)->plot_residuals_vs_fitted();
-  vresult = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
+  vresult = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__graphics__RPlot, SWIG_POINTER_OWN |  0 );
   return vresult;
 fail:
   return Qnil;
@@ -31779,7 +34218,7 @@ _wrap_LM_plot_normal_qq(int argc, VALUE *argv, VALUE self) {
   }
   arg1 = reinterpret_cast< datamunge::LM * >(argp1);
   result = ((datamunge::LM const *)arg1)->plot_normal_qq();
-  vresult = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
+  vresult = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__graphics__RPlot, SWIG_POINTER_OWN |  0 );
   return vresult;
 fail:
   return Qnil;
@@ -31803,7 +34242,7 @@ _wrap_LM_plot_scale_location(int argc, VALUE *argv, VALUE self) {
   }
   arg1 = reinterpret_cast< datamunge::LM * >(argp1);
   result = ((datamunge::LM const *)arg1)->plot_scale_location();
-  vresult = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
+  vresult = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__graphics__RPlot, SWIG_POINTER_OWN |  0 );
   return vresult;
 fail:
   return Qnil;
@@ -31827,7 +34266,7 @@ _wrap_LM_plot_residuals_vs_leverage(int argc, VALUE *argv, VALUE self) {
   }
   arg1 = reinterpret_cast< datamunge::LM * >(argp1);
   result = ((datamunge::LM const *)arg1)->plot_residuals_vs_leverage();
-  vresult = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
+  vresult = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__graphics__RPlot, SWIG_POINTER_OWN |  0 );
   return vresult;
 fail:
   return Qnil;
@@ -36747,6 +39186,107 @@ fail:
 
 
 SWIGINTERN VALUE
+_wrap_LDA_to_md__SWIG_0(int argc, VALUE *argv, VALUE self) {
+  datamunge::LDA *arg1 = 0 ;
+  int arg2 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  int val2 ;
+  int ecode2 = 0 ;
+  std::string result;
+  VALUE vresult = Qnil;
+  
+  if ((argc < 1) || (argc > 1)) {
+    rb_raise(rb_eArgError, "wrong # of arguments(%d for 1)",argc); SWIG_fail;
+  }
+  res1 = SWIG_ConvertPtr(self, &argp1,SWIGTYPE_p_datamunge__LDA, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::LDA const *","to_md", 1, self )); 
+  }
+  arg1 = reinterpret_cast< datamunge::LDA * >(argp1);
+  ecode2 = SWIG_AsVal_int(argv[0], &val2);
+  if (!SWIG_IsOK(ecode2)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode2), Ruby_Format_TypeError( "", "int","to_md", 2, argv[0] ));
+  } 
+  arg2 = static_cast< int >(val2);
+  result = ((datamunge::LDA const *)arg1)->to_md(arg2);
+  vresult = SWIG_From_std_string(static_cast< std::string >(result));
+  return vresult;
+fail:
+  return Qnil;
+}
+
+
+SWIGINTERN VALUE
+_wrap_LDA_to_md__SWIG_1(int argc, VALUE *argv, VALUE self) {
+  datamunge::LDA *arg1 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  std::string result;
+  VALUE vresult = Qnil;
+  
+  if ((argc < 0) || (argc > 0)) {
+    rb_raise(rb_eArgError, "wrong # of arguments(%d for 0)",argc); SWIG_fail;
+  }
+  res1 = SWIG_ConvertPtr(self, &argp1,SWIGTYPE_p_datamunge__LDA, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::LDA const *","to_md", 1, self )); 
+  }
+  arg1 = reinterpret_cast< datamunge::LDA * >(argp1);
+  result = ((datamunge::LDA const *)arg1)->to_md();
+  vresult = SWIG_From_std_string(static_cast< std::string >(result));
+  return vresult;
+fail:
+  return Qnil;
+}
+
+
+SWIGINTERN VALUE _wrap_LDA_to_md(int nargs, VALUE *args, VALUE self) {
+  int argc;
+  VALUE argv[3];
+  int ii;
+  
+  argc = nargs + 1;
+  argv[0] = self;
+  if (argc > 3) SWIG_fail;
+  for (ii = 1; (ii < argc); ++ii) {
+    argv[ii] = args[ii-1];
+  }
+  if (argc == 1) {
+    int _v = 0;
+    void *vptr = 0;
+    int res = SWIG_ConvertPtr(argv[0], &vptr, SWIGTYPE_p_datamunge__LDA, 0);
+    _v = SWIG_CheckState(res);
+    if (_v) {
+      return _wrap_LDA_to_md__SWIG_1(nargs, args, self);
+    }
+  }
+  if (argc == 2) {
+    int _v = 0;
+    void *vptr = 0;
+    int res = SWIG_ConvertPtr(argv[0], &vptr, SWIGTYPE_p_datamunge__LDA, 0);
+    _v = SWIG_CheckState(res);
+    if (_v) {
+      {
+        int res = SWIG_AsVal_int(argv[1], NULL);
+        _v = SWIG_CheckState(res);
+      }
+      if (_v) {
+        return _wrap_LDA_to_md__SWIG_0(nargs, args, self);
+      }
+    }
+  }
+  
+fail:
+  Ruby_Format_OverloadedError( argc, 3, "LDA.to_md", 
+    "    std::string LDA.to_md(int digits)\n"
+    "    std::string LDA.to_md()\n");
+  
+  return Qnil;
+}
+
+
+SWIGINTERN VALUE
 _wrap_LDA_predict(int argc, VALUE *argv, VALUE self) {
   datamunge::LDA *arg1 = 0 ;
   datamunge::DataFrame *arg2 = 0 ;
@@ -36817,7 +39357,39 @@ fail:
 
 
 SWIGINTERN VALUE
-_wrap_LDA_plot_discriminants(int argc, VALUE *argv, VALUE self) {
+_wrap_LDA_plot_discriminants__SWIG_0(int argc, VALUE *argv, VALUE self) {
+  datamunge::LDA *arg1 = 0 ;
+  bool arg2 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  bool val2 ;
+  int ecode2 = 0 ;
+  datamunge::graphics::RPlot result;
+  VALUE vresult = Qnil;
+  
+  if ((argc < 1) || (argc > 1)) {
+    rb_raise(rb_eArgError, "wrong # of arguments(%d for 1)",argc); SWIG_fail;
+  }
+  res1 = SWIG_ConvertPtr(self, &argp1,SWIGTYPE_p_datamunge__LDA, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::LDA const *","plot_discriminants", 1, self )); 
+  }
+  arg1 = reinterpret_cast< datamunge::LDA * >(argp1);
+  ecode2 = SWIG_AsVal_bool(argv[0], &val2);
+  if (!SWIG_IsOK(ecode2)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode2), Ruby_Format_TypeError( "", "bool","plot_discriminants", 2, argv[0] ));
+  } 
+  arg2 = static_cast< bool >(val2);
+  result = ((datamunge::LDA const *)arg1)->plot_discriminants(arg2);
+  vresult = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__graphics__RPlot, SWIG_POINTER_OWN |  0 );
+  return vresult;
+fail:
+  return Qnil;
+}
+
+
+SWIGINTERN VALUE
+_wrap_LDA_plot_discriminants__SWIG_1(int argc, VALUE *argv, VALUE self) {
   datamunge::LDA *arg1 = 0 ;
   void *argp1 = 0 ;
   int res1 = 0 ;
@@ -36833,9 +39405,54 @@ _wrap_LDA_plot_discriminants(int argc, VALUE *argv, VALUE self) {
   }
   arg1 = reinterpret_cast< datamunge::LDA * >(argp1);
   result = ((datamunge::LDA const *)arg1)->plot_discriminants();
-  vresult = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
+  vresult = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__graphics__RPlot, SWIG_POINTER_OWN |  0 );
   return vresult;
 fail:
+  return Qnil;
+}
+
+
+SWIGINTERN VALUE _wrap_LDA_plot_discriminants(int nargs, VALUE *args, VALUE self) {
+  int argc;
+  VALUE argv[3];
+  int ii;
+  
+  argc = nargs + 1;
+  argv[0] = self;
+  if (argc > 3) SWIG_fail;
+  for (ii = 1; (ii < argc); ++ii) {
+    argv[ii] = args[ii-1];
+  }
+  if (argc == 1) {
+    int _v = 0;
+    void *vptr = 0;
+    int res = SWIG_ConvertPtr(argv[0], &vptr, SWIGTYPE_p_datamunge__LDA, 0);
+    _v = SWIG_CheckState(res);
+    if (_v) {
+      return _wrap_LDA_plot_discriminants__SWIG_1(nargs, args, self);
+    }
+  }
+  if (argc == 2) {
+    int _v = 0;
+    void *vptr = 0;
+    int res = SWIG_ConvertPtr(argv[0], &vptr, SWIGTYPE_p_datamunge__LDA, 0);
+    _v = SWIG_CheckState(res);
+    if (_v) {
+      {
+        int res = SWIG_AsVal_bool(argv[1], NULL);
+        _v = SWIG_CheckState(res);
+      }
+      if (_v) {
+        return _wrap_LDA_plot_discriminants__SWIG_0(nargs, args, self);
+      }
+    }
+  }
+  
+fail:
+  Ruby_Format_OverloadedError( argc, 3, "LDA.plot_discriminants", 
+    "    datamunge::graphics::RPlot LDA.plot_discriminants(bool decision_regions)\n"
+    "    datamunge::graphics::RPlot LDA.plot_discriminants()\n");
+  
   return Qnil;
 }
 
@@ -36872,6 +39489,30 @@ _wrap_LDA_save_discriminant_plot(int argc, VALUE *argv, VALUE self) {
   return Qnil;
 fail:
   if (SWIG_IsNewObj(res2)) delete arg2;
+  return Qnil;
+}
+
+
+SWIGINTERN VALUE
+_wrap_LDA_plot_decision_regions(int argc, VALUE *argv, VALUE self) {
+  datamunge::LDA *arg1 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  datamunge::graphics::RPlot result;
+  VALUE vresult = Qnil;
+  
+  if ((argc < 0) || (argc > 0)) {
+    rb_raise(rb_eArgError, "wrong # of arguments(%d for 0)",argc); SWIG_fail;
+  }
+  res1 = SWIG_ConvertPtr(self, &argp1,SWIGTYPE_p_datamunge__LDA, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::LDA const *","plot_decision_regions", 1, self )); 
+  }
+  arg1 = reinterpret_cast< datamunge::LDA * >(argp1);
+  result = ((datamunge::LDA const *)arg1)->plot_decision_regions();
+  vresult = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__graphics__RPlot, SWIG_POINTER_OWN |  0 );
+  return vresult;
+fail:
   return Qnil;
 }
 
@@ -38743,7 +41384,7 @@ _wrap_DecisionTreeClassifier_plot_classification(int argc, VALUE *argv, VALUE se
     arg4 = ptr;
   }
   result = ((datamunge::DecisionTreeClassifier const *)arg1)->plot_classification((datamunge::DataFrame const &)*arg2,(std::string const &)*arg3,(std::string const &)*arg4);
-  vresult = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
+  vresult = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__graphics__RPlot, SWIG_POINTER_OWN |  0 );
   if (SWIG_IsNewObj(res3)) delete arg3;
   if (SWIG_IsNewObj(res4)) delete arg4;
   return vresult;
@@ -38805,7 +41446,7 @@ _wrap_DecisionTreeClassifier_plot_decision_regions__SWIG_0(int argc, VALUE *argv
   } 
   arg4 = static_cast< std::size_t >(val4);
   result = ((datamunge::DecisionTreeClassifier const *)arg1)->plot_decision_regions((std::string const &)*arg2,(std::string const &)*arg3,SWIG_STD_MOVE(*(&arg4)));
-  vresult = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
+  vresult = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__graphics__RPlot, SWIG_POINTER_OWN |  0 );
   if (SWIG_IsNewObj(res2)) delete arg2;
   if (SWIG_IsNewObj(res3)) delete arg3;
   return vresult;
@@ -38859,7 +41500,7 @@ _wrap_DecisionTreeClassifier_plot_decision_regions__SWIG_1(int argc, VALUE *argv
     arg3 = ptr;
   }
   result = ((datamunge::DecisionTreeClassifier const *)arg1)->plot_decision_regions((std::string const &)*arg2,(std::string const &)*arg3);
-  vresult = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
+  vresult = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__graphics__RPlot, SWIG_POINTER_OWN |  0 );
   if (SWIG_IsNewObj(res2)) delete arg2;
   if (SWIG_IsNewObj(res3)) delete arg3;
   return vresult;
@@ -39593,7 +42234,7 @@ _wrap_DecisionTreeRegressor_plot_predicted_vs_actual(int argc, VALUE *argv, VALU
   }
   arg1 = reinterpret_cast< datamunge::DecisionTreeRegressor * >(argp1);
   result = ((datamunge::DecisionTreeRegressor const *)arg1)->plot_predicted_vs_actual();
-  vresult = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
+  vresult = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__graphics__RPlot, SWIG_POINTER_OWN |  0 );
   return vresult;
 fail:
   return Qnil;
@@ -39617,7 +42258,7 @@ _wrap_DecisionTreeRegressor_plot_residuals_vs_fitted(int argc, VALUE *argv, VALU
   }
   arg1 = reinterpret_cast< datamunge::DecisionTreeRegressor * >(argp1);
   result = ((datamunge::DecisionTreeRegressor const *)arg1)->plot_residuals_vs_fitted();
-  vresult = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
+  vresult = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__graphics__RPlot, SWIG_POINTER_OWN |  0 );
   return vresult;
 fail:
   return Qnil;
@@ -41260,7 +43901,7 @@ _wrap_RandomForestClassifier_plot_classification(int argc, VALUE *argv, VALUE se
     arg4 = ptr;
   }
   result = ((datamunge::RandomForestClassifier const *)arg1)->plot_classification((datamunge::DataFrame const &)*arg2,(std::string const &)*arg3,(std::string const &)*arg4);
-  vresult = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
+  vresult = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__graphics__RPlot, SWIG_POINTER_OWN |  0 );
   if (SWIG_IsNewObj(res3)) delete arg3;
   if (SWIG_IsNewObj(res4)) delete arg4;
   return vresult;
@@ -41322,7 +43963,7 @@ _wrap_RandomForestClassifier_plot_decision_regions__SWIG_0(int argc, VALUE *argv
   } 
   arg4 = static_cast< std::size_t >(val4);
   result = ((datamunge::RandomForestClassifier const *)arg1)->plot_decision_regions((std::string const &)*arg2,(std::string const &)*arg3,SWIG_STD_MOVE(*(&arg4)));
-  vresult = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
+  vresult = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__graphics__RPlot, SWIG_POINTER_OWN |  0 );
   if (SWIG_IsNewObj(res2)) delete arg2;
   if (SWIG_IsNewObj(res3)) delete arg3;
   return vresult;
@@ -41376,7 +44017,7 @@ _wrap_RandomForestClassifier_plot_decision_regions__SWIG_1(int argc, VALUE *argv
     arg3 = ptr;
   }
   result = ((datamunge::RandomForestClassifier const *)arg1)->plot_decision_regions((std::string const &)*arg2,(std::string const &)*arg3);
-  vresult = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
+  vresult = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__graphics__RPlot, SWIG_POINTER_OWN |  0 );
   if (SWIG_IsNewObj(res2)) delete arg2;
   if (SWIG_IsNewObj(res3)) delete arg3;
   return vresult;
@@ -42834,7 +45475,7 @@ _wrap_RandomForestRegressor_plot_predicted_vs_actual(int argc, VALUE *argv, VALU
   }
   arg1 = reinterpret_cast< datamunge::RandomForestRegressor * >(argp1);
   result = ((datamunge::RandomForestRegressor const *)arg1)->plot_predicted_vs_actual();
-  vresult = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
+  vresult = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__graphics__RPlot, SWIG_POINTER_OWN |  0 );
   return vresult;
 fail:
   return Qnil;
@@ -42858,7 +45499,7 @@ _wrap_RandomForestRegressor_plot_residuals_vs_fitted(int argc, VALUE *argv, VALU
   }
   arg1 = reinterpret_cast< datamunge::RandomForestRegressor * >(argp1);
   result = ((datamunge::RandomForestRegressor const *)arg1)->plot_residuals_vs_fitted();
-  vresult = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
+  vresult = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__graphics__RPlot, SWIG_POINTER_OWN |  0 );
   return vresult;
 fail:
   return Qnil;
@@ -44073,7 +46714,7 @@ _wrap_ElasticNet_plot_coefficient_path(int argc, VALUE *argv, VALUE self) {
   }
   arg1 = reinterpret_cast< datamunge::ElasticNet * >(argp1);
   result = ((datamunge::ElasticNet const *)arg1)->plot_coefficient_path();
-  vresult = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
+  vresult = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__graphics__RPlot, SWIG_POINTER_OWN |  0 );
   return vresult;
 fail:
   return Qnil;
@@ -44097,7 +46738,7 @@ _wrap_ElasticNet_plot_cv_curve(int argc, VALUE *argv, VALUE self) {
   }
   arg1 = reinterpret_cast< datamunge::ElasticNet * >(argp1);
   result = ((datamunge::ElasticNet const *)arg1)->plot_cv_curve();
-  vresult = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
+  vresult = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__graphics__RPlot, SWIG_POINTER_OWN |  0 );
   return vresult;
 fail:
   return Qnil;
@@ -44121,7 +46762,7 @@ _wrap_ElasticNet_plot_predicted_vs_actual(int argc, VALUE *argv, VALUE self) {
   }
   arg1 = reinterpret_cast< datamunge::ElasticNet * >(argp1);
   result = ((datamunge::ElasticNet const *)arg1)->plot_predicted_vs_actual();
-  vresult = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
+  vresult = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__graphics__RPlot, SWIG_POINTER_OWN |  0 );
   return vresult;
 fail:
   return Qnil;
@@ -44145,7 +46786,7 @@ _wrap_ElasticNet_plot_residuals_vs_fitted(int argc, VALUE *argv, VALUE self) {
   }
   arg1 = reinterpret_cast< datamunge::ElasticNet * >(argp1);
   result = ((datamunge::ElasticNet const *)arg1)->plot_residuals_vs_fitted();
-  vresult = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
+  vresult = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__graphics__RPlot, SWIG_POINTER_OWN |  0 );
   return vresult;
 fail:
   return Qnil;
@@ -45172,7 +47813,7 @@ _wrap_Ridge_plot_coefficient_path(int argc, VALUE *argv, VALUE self) {
   }
   arg1 = reinterpret_cast< datamunge::Ridge * >(argp1);
   result = ((datamunge::Ridge const *)arg1)->plot_coefficient_path();
-  vresult = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
+  vresult = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__graphics__RPlot, SWIG_POINTER_OWN |  0 );
   return vresult;
 fail:
   return Qnil;
@@ -45196,7 +47837,7 @@ _wrap_Ridge_plot_cv_curve(int argc, VALUE *argv, VALUE self) {
   }
   arg1 = reinterpret_cast< datamunge::Ridge * >(argp1);
   result = ((datamunge::Ridge const *)arg1)->plot_cv_curve();
-  vresult = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
+  vresult = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__graphics__RPlot, SWIG_POINTER_OWN |  0 );
   return vresult;
 fail:
   return Qnil;
@@ -45220,7 +47861,7 @@ _wrap_Ridge_plot_predicted_vs_actual(int argc, VALUE *argv, VALUE self) {
   }
   arg1 = reinterpret_cast< datamunge::Ridge * >(argp1);
   result = ((datamunge::Ridge const *)arg1)->plot_predicted_vs_actual();
-  vresult = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
+  vresult = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__graphics__RPlot, SWIG_POINTER_OWN |  0 );
   return vresult;
 fail:
   return Qnil;
@@ -45244,7 +47885,7 @@ _wrap_Ridge_plot_residuals_vs_fitted(int argc, VALUE *argv, VALUE self) {
   }
   arg1 = reinterpret_cast< datamunge::Ridge * >(argp1);
   result = ((datamunge::Ridge const *)arg1)->plot_residuals_vs_fitted();
-  vresult = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
+  vresult = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__graphics__RPlot, SWIG_POINTER_OWN |  0 );
   return vresult;
 fail:
   return Qnil;
@@ -46295,7 +48936,7 @@ _wrap_Lasso_plot_coefficient_path(int argc, VALUE *argv, VALUE self) {
   }
   arg1 = reinterpret_cast< datamunge::Lasso * >(argp1);
   result = ((datamunge::Lasso const *)arg1)->plot_coefficient_path();
-  vresult = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
+  vresult = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__graphics__RPlot, SWIG_POINTER_OWN |  0 );
   return vresult;
 fail:
   return Qnil;
@@ -46319,7 +48960,7 @@ _wrap_Lasso_plot_cv_curve(int argc, VALUE *argv, VALUE self) {
   }
   arg1 = reinterpret_cast< datamunge::Lasso * >(argp1);
   result = ((datamunge::Lasso const *)arg1)->plot_cv_curve();
-  vresult = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
+  vresult = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__graphics__RPlot, SWIG_POINTER_OWN |  0 );
   return vresult;
 fail:
   return Qnil;
@@ -46343,7 +48984,7 @@ _wrap_Lasso_plot_predicted_vs_actual(int argc, VALUE *argv, VALUE self) {
   }
   arg1 = reinterpret_cast< datamunge::Lasso * >(argp1);
   result = ((datamunge::Lasso const *)arg1)->plot_predicted_vs_actual();
-  vresult = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
+  vresult = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__graphics__RPlot, SWIG_POINTER_OWN |  0 );
   return vresult;
 fail:
   return Qnil;
@@ -46367,7 +49008,7 @@ _wrap_Lasso_plot_residuals_vs_fitted(int argc, VALUE *argv, VALUE self) {
   }
   arg1 = reinterpret_cast< datamunge::Lasso * >(argp1);
   result = ((datamunge::Lasso const *)arg1)->plot_residuals_vs_fitted();
-  vresult = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
+  vresult = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__graphics__RPlot, SWIG_POINTER_OWN |  0 );
   return vresult;
 fail:
   return Qnil;
@@ -47163,7 +49804,7 @@ _wrap_KNNClassifier_plot_classification(int argc, VALUE *argv, VALUE self) {
     arg4 = ptr;
   }
   result = ((datamunge::KNNClassifier const *)arg1)->plot_classification((datamunge::DataFrame const &)*arg2,(std::string const &)*arg3,(std::string const &)*arg4);
-  vresult = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
+  vresult = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__graphics__RPlot, SWIG_POINTER_OWN |  0 );
   if (SWIG_IsNewObj(res3)) delete arg3;
   if (SWIG_IsNewObj(res4)) delete arg4;
   return vresult;
@@ -47225,7 +49866,7 @@ _wrap_KNNClassifier_plot_decision_regions__SWIG_0(int argc, VALUE *argv, VALUE s
   } 
   arg4 = static_cast< std::size_t >(val4);
   result = ((datamunge::KNNClassifier const *)arg1)->plot_decision_regions((std::string const &)*arg2,(std::string const &)*arg3,SWIG_STD_MOVE(*(&arg4)));
-  vresult = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
+  vresult = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__graphics__RPlot, SWIG_POINTER_OWN |  0 );
   if (SWIG_IsNewObj(res2)) delete arg2;
   if (SWIG_IsNewObj(res3)) delete arg3;
   return vresult;
@@ -47279,7 +49920,7 @@ _wrap_KNNClassifier_plot_decision_regions__SWIG_1(int argc, VALUE *argv, VALUE s
     arg3 = ptr;
   }
   result = ((datamunge::KNNClassifier const *)arg1)->plot_decision_regions((std::string const &)*arg2,(std::string const &)*arg3);
-  vresult = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
+  vresult = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__graphics__RPlot, SWIG_POINTER_OWN |  0 );
   if (SWIG_IsNewObj(res2)) delete arg2;
   if (SWIG_IsNewObj(res3)) delete arg3;
   return vresult;
@@ -48068,7 +50709,7 @@ _wrap_KNNRegressor_plot_predicted_vs_actual(int argc, VALUE *argv, VALUE self) {
   }
   arg1 = reinterpret_cast< datamunge::KNNRegressor * >(argp1);
   result = ((datamunge::KNNRegressor const *)arg1)->plot_predicted_vs_actual();
-  vresult = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
+  vresult = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__graphics__RPlot, SWIG_POINTER_OWN |  0 );
   return vresult;
 fail:
   return Qnil;
@@ -48092,7 +50733,7 @@ _wrap_KNNRegressor_plot_residuals_vs_fitted(int argc, VALUE *argv, VALUE self) {
   }
   arg1 = reinterpret_cast< datamunge::KNNRegressor * >(argp1);
   result = ((datamunge::KNNRegressor const *)arg1)->plot_residuals_vs_fitted();
-  vresult = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
+  vresult = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__graphics__RPlot, SWIG_POINTER_OWN |  0 );
   return vresult;
 fail:
   return Qnil;
@@ -50318,7 +52959,7 @@ _wrap_PCA_plot_scores__SWIG_0(int argc, VALUE *argv, VALUE self) {
   } 
   arg3 = static_cast< std::size_t >(val3);
   result = ((datamunge::PCA const *)arg1)->plot_scores(SWIG_STD_MOVE(*(&arg2)),SWIG_STD_MOVE(*(&arg3)));
-  vresult = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
+  vresult = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__graphics__RPlot, SWIG_POINTER_OWN |  0 );
   return vresult;
 fail:
   return Qnil;
@@ -50350,7 +52991,7 @@ _wrap_PCA_plot_scores__SWIG_1(int argc, VALUE *argv, VALUE self) {
   } 
   arg2 = static_cast< std::size_t >(val2);
   result = ((datamunge::PCA const *)arg1)->plot_scores(SWIG_STD_MOVE(*(&arg2)));
-  vresult = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
+  vresult = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__graphics__RPlot, SWIG_POINTER_OWN |  0 );
   return vresult;
 fail:
   return Qnil;
@@ -50374,7 +53015,7 @@ _wrap_PCA_plot_scores__SWIG_2(int argc, VALUE *argv, VALUE self) {
   }
   arg1 = reinterpret_cast< datamunge::PCA * >(argp1);
   result = ((datamunge::PCA const *)arg1)->plot_scores();
-  vresult = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
+  vresult = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__graphics__RPlot, SWIG_POINTER_OWN |  0 );
   return vresult;
 fail:
   return Qnil;
@@ -50494,7 +53135,7 @@ _wrap_PCA_plot_scores_grouped__SWIG_0(int argc, VALUE *argv, VALUE self) {
   } 
   arg4 = static_cast< std::size_t >(val4);
   result = ((datamunge::PCA const *)arg1)->plot_scores_grouped((std::vector< std::string,std::allocator< std::string > > const &)*arg2,SWIG_STD_MOVE(*(&arg3)),SWIG_STD_MOVE(*(&arg4)));
-  vresult = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
+  vresult = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__graphics__RPlot, SWIG_POINTER_OWN |  0 );
   if (SWIG_IsNewObj(res2)) delete arg2;
   return vresult;
 fail:
@@ -50541,7 +53182,7 @@ _wrap_PCA_plot_scores_grouped__SWIG_1(int argc, VALUE *argv, VALUE self) {
   } 
   arg3 = static_cast< std::size_t >(val3);
   result = ((datamunge::PCA const *)arg1)->plot_scores_grouped((std::vector< std::string,std::allocator< std::string > > const &)*arg2,SWIG_STD_MOVE(*(&arg3)));
-  vresult = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
+  vresult = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__graphics__RPlot, SWIG_POINTER_OWN |  0 );
   if (SWIG_IsNewObj(res2)) delete arg2;
   return vresult;
 fail:
@@ -50580,7 +53221,7 @@ _wrap_PCA_plot_scores_grouped__SWIG_2(int argc, VALUE *argv, VALUE self) {
     arg2 = ptr;
   }
   result = ((datamunge::PCA const *)arg1)->plot_scores_grouped((std::vector< std::string,std::allocator< std::string > > const &)*arg2);
-  vresult = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
+  vresult = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__graphics__RPlot, SWIG_POINTER_OWN |  0 );
   if (SWIG_IsNewObj(res2)) delete arg2;
   return vresult;
 fail:
@@ -50685,7 +53326,7 @@ _wrap_PCA_plot_scree(int argc, VALUE *argv, VALUE self) {
   }
   arg1 = reinterpret_cast< datamunge::PCA * >(argp1);
   result = ((datamunge::PCA const *)arg1)->plot_scree();
-  vresult = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
+  vresult = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__graphics__RPlot, SWIG_POINTER_OWN |  0 );
   return vresult;
 fail:
   return Qnil;
@@ -51441,7 +54082,7 @@ _wrap_MDS_plot_embedding__SWIG_0(int argc, VALUE *argv, VALUE self) {
   } 
   arg3 = static_cast< std::size_t >(val3);
   result = ((datamunge::MDS const *)arg1)->plot_embedding(SWIG_STD_MOVE(*(&arg2)),SWIG_STD_MOVE(*(&arg3)));
-  vresult = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
+  vresult = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__graphics__RPlot, SWIG_POINTER_OWN |  0 );
   return vresult;
 fail:
   return Qnil;
@@ -51473,7 +54114,7 @@ _wrap_MDS_plot_embedding__SWIG_1(int argc, VALUE *argv, VALUE self) {
   } 
   arg2 = static_cast< std::size_t >(val2);
   result = ((datamunge::MDS const *)arg1)->plot_embedding(SWIG_STD_MOVE(*(&arg2)));
-  vresult = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
+  vresult = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__graphics__RPlot, SWIG_POINTER_OWN |  0 );
   return vresult;
 fail:
   return Qnil;
@@ -51497,7 +54138,7 @@ _wrap_MDS_plot_embedding__SWIG_2(int argc, VALUE *argv, VALUE self) {
   }
   arg1 = reinterpret_cast< datamunge::MDS * >(argp1);
   result = ((datamunge::MDS const *)arg1)->plot_embedding();
-  vresult = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
+  vresult = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__graphics__RPlot, SWIG_POINTER_OWN |  0 );
   return vresult;
 fail:
   return Qnil;
@@ -51617,7 +54258,7 @@ _wrap_MDS_plot_embedding_grouped__SWIG_0(int argc, VALUE *argv, VALUE self) {
   } 
   arg4 = static_cast< std::size_t >(val4);
   result = ((datamunge::MDS const *)arg1)->plot_embedding_grouped((std::vector< std::string,std::allocator< std::string > > const &)*arg2,SWIG_STD_MOVE(*(&arg3)),SWIG_STD_MOVE(*(&arg4)));
-  vresult = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
+  vresult = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__graphics__RPlot, SWIG_POINTER_OWN |  0 );
   if (SWIG_IsNewObj(res2)) delete arg2;
   return vresult;
 fail:
@@ -51664,7 +54305,7 @@ _wrap_MDS_plot_embedding_grouped__SWIG_1(int argc, VALUE *argv, VALUE self) {
   } 
   arg3 = static_cast< std::size_t >(val3);
   result = ((datamunge::MDS const *)arg1)->plot_embedding_grouped((std::vector< std::string,std::allocator< std::string > > const &)*arg2,SWIG_STD_MOVE(*(&arg3)));
-  vresult = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
+  vresult = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__graphics__RPlot, SWIG_POINTER_OWN |  0 );
   if (SWIG_IsNewObj(res2)) delete arg2;
   return vresult;
 fail:
@@ -51703,7 +54344,7 @@ _wrap_MDS_plot_embedding_grouped__SWIG_2(int argc, VALUE *argv, VALUE self) {
     arg2 = ptr;
   }
   result = ((datamunge::MDS const *)arg1)->plot_embedding_grouped((std::vector< std::string,std::allocator< std::string > > const &)*arg2);
-  vresult = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
+  vresult = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__graphics__RPlot, SWIG_POINTER_OWN |  0 );
   if (SWIG_IsNewObj(res2)) delete arg2;
   return vresult;
 fail:
@@ -52736,7 +55377,7 @@ _wrap_Isomap_plot_embedding__SWIG_0(int argc, VALUE *argv, VALUE self) {
   } 
   arg3 = static_cast< std::size_t >(val3);
   result = ((datamunge::Isomap const *)arg1)->plot_embedding(SWIG_STD_MOVE(*(&arg2)),SWIG_STD_MOVE(*(&arg3)));
-  vresult = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
+  vresult = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__graphics__RPlot, SWIG_POINTER_OWN |  0 );
   return vresult;
 fail:
   return Qnil;
@@ -52768,7 +55409,7 @@ _wrap_Isomap_plot_embedding__SWIG_1(int argc, VALUE *argv, VALUE self) {
   } 
   arg2 = static_cast< std::size_t >(val2);
   result = ((datamunge::Isomap const *)arg1)->plot_embedding(SWIG_STD_MOVE(*(&arg2)));
-  vresult = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
+  vresult = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__graphics__RPlot, SWIG_POINTER_OWN |  0 );
   return vresult;
 fail:
   return Qnil;
@@ -52792,7 +55433,7 @@ _wrap_Isomap_plot_embedding__SWIG_2(int argc, VALUE *argv, VALUE self) {
   }
   arg1 = reinterpret_cast< datamunge::Isomap * >(argp1);
   result = ((datamunge::Isomap const *)arg1)->plot_embedding();
-  vresult = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
+  vresult = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__graphics__RPlot, SWIG_POINTER_OWN |  0 );
   return vresult;
 fail:
   return Qnil;
@@ -52912,7 +55553,7 @@ _wrap_Isomap_plot_embedding_grouped__SWIG_0(int argc, VALUE *argv, VALUE self) {
   } 
   arg4 = static_cast< std::size_t >(val4);
   result = ((datamunge::Isomap const *)arg1)->plot_embedding_grouped((std::vector< std::string,std::allocator< std::string > > const &)*arg2,SWIG_STD_MOVE(*(&arg3)),SWIG_STD_MOVE(*(&arg4)));
-  vresult = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
+  vresult = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__graphics__RPlot, SWIG_POINTER_OWN |  0 );
   if (SWIG_IsNewObj(res2)) delete arg2;
   return vresult;
 fail:
@@ -52959,7 +55600,7 @@ _wrap_Isomap_plot_embedding_grouped__SWIG_1(int argc, VALUE *argv, VALUE self) {
   } 
   arg3 = static_cast< std::size_t >(val3);
   result = ((datamunge::Isomap const *)arg1)->plot_embedding_grouped((std::vector< std::string,std::allocator< std::string > > const &)*arg2,SWIG_STD_MOVE(*(&arg3)));
-  vresult = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
+  vresult = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__graphics__RPlot, SWIG_POINTER_OWN |  0 );
   if (SWIG_IsNewObj(res2)) delete arg2;
   return vresult;
 fail:
@@ -52998,7 +55639,7 @@ _wrap_Isomap_plot_embedding_grouped__SWIG_2(int argc, VALUE *argv, VALUE self) {
     arg2 = ptr;
   }
   result = ((datamunge::Isomap const *)arg1)->plot_embedding_grouped((std::vector< std::string,std::allocator< std::string > > const &)*arg2);
-  vresult = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
+  vresult = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__graphics__RPlot, SWIG_POINTER_OWN |  0 );
   if (SWIG_IsNewObj(res2)) delete arg2;
   return vresult;
 fail:
@@ -54231,7 +56872,7 @@ _wrap_LLE_plot_embedding__SWIG_0(int argc, VALUE *argv, VALUE self) {
   } 
   arg3 = static_cast< std::size_t >(val3);
   result = ((datamunge::LLE const *)arg1)->plot_embedding(SWIG_STD_MOVE(*(&arg2)),SWIG_STD_MOVE(*(&arg3)));
-  vresult = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
+  vresult = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__graphics__RPlot, SWIG_POINTER_OWN |  0 );
   return vresult;
 fail:
   return Qnil;
@@ -54263,7 +56904,7 @@ _wrap_LLE_plot_embedding__SWIG_1(int argc, VALUE *argv, VALUE self) {
   } 
   arg2 = static_cast< std::size_t >(val2);
   result = ((datamunge::LLE const *)arg1)->plot_embedding(SWIG_STD_MOVE(*(&arg2)));
-  vresult = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
+  vresult = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__graphics__RPlot, SWIG_POINTER_OWN |  0 );
   return vresult;
 fail:
   return Qnil;
@@ -54287,7 +56928,7 @@ _wrap_LLE_plot_embedding__SWIG_2(int argc, VALUE *argv, VALUE self) {
   }
   arg1 = reinterpret_cast< datamunge::LLE * >(argp1);
   result = ((datamunge::LLE const *)arg1)->plot_embedding();
-  vresult = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
+  vresult = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__graphics__RPlot, SWIG_POINTER_OWN |  0 );
   return vresult;
 fail:
   return Qnil;
@@ -54407,7 +57048,7 @@ _wrap_LLE_plot_embedding_grouped__SWIG_0(int argc, VALUE *argv, VALUE self) {
   } 
   arg4 = static_cast< std::size_t >(val4);
   result = ((datamunge::LLE const *)arg1)->plot_embedding_grouped((std::vector< std::string,std::allocator< std::string > > const &)*arg2,SWIG_STD_MOVE(*(&arg3)),SWIG_STD_MOVE(*(&arg4)));
-  vresult = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
+  vresult = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__graphics__RPlot, SWIG_POINTER_OWN |  0 );
   if (SWIG_IsNewObj(res2)) delete arg2;
   return vresult;
 fail:
@@ -54454,7 +57095,7 @@ _wrap_LLE_plot_embedding_grouped__SWIG_1(int argc, VALUE *argv, VALUE self) {
   } 
   arg3 = static_cast< std::size_t >(val3);
   result = ((datamunge::LLE const *)arg1)->plot_embedding_grouped((std::vector< std::string,std::allocator< std::string > > const &)*arg2,SWIG_STD_MOVE(*(&arg3)));
-  vresult = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
+  vresult = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__graphics__RPlot, SWIG_POINTER_OWN |  0 );
   if (SWIG_IsNewObj(res2)) delete arg2;
   return vresult;
 fail:
@@ -54493,7 +57134,7 @@ _wrap_LLE_plot_embedding_grouped__SWIG_2(int argc, VALUE *argv, VALUE self) {
     arg2 = ptr;
   }
   result = ((datamunge::LLE const *)arg1)->plot_embedding_grouped((std::vector< std::string,std::allocator< std::string > > const &)*arg2);
-  vresult = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
+  vresult = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__graphics__RPlot, SWIG_POINTER_OWN |  0 );
   if (SWIG_IsNewObj(res2)) delete arg2;
   return vresult;
 fail:
@@ -58088,7 +60729,7 @@ _wrap_TSNE_plot_embedding__SWIG_0(int argc, VALUE *argv, VALUE self) {
   } 
   arg3 = static_cast< std::size_t >(val3);
   result = ((datamunge::TSNE const *)arg1)->plot_embedding(SWIG_STD_MOVE(*(&arg2)),SWIG_STD_MOVE(*(&arg3)));
-  vresult = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
+  vresult = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__graphics__RPlot, SWIG_POINTER_OWN |  0 );
   return vresult;
 fail:
   return Qnil;
@@ -58120,7 +60761,7 @@ _wrap_TSNE_plot_embedding__SWIG_1(int argc, VALUE *argv, VALUE self) {
   } 
   arg2 = static_cast< std::size_t >(val2);
   result = ((datamunge::TSNE const *)arg1)->plot_embedding(SWIG_STD_MOVE(*(&arg2)));
-  vresult = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
+  vresult = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__graphics__RPlot, SWIG_POINTER_OWN |  0 );
   return vresult;
 fail:
   return Qnil;
@@ -58144,7 +60785,7 @@ _wrap_TSNE_plot_embedding__SWIG_2(int argc, VALUE *argv, VALUE self) {
   }
   arg1 = reinterpret_cast< datamunge::TSNE * >(argp1);
   result = ((datamunge::TSNE const *)arg1)->plot_embedding();
-  vresult = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
+  vresult = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__graphics__RPlot, SWIG_POINTER_OWN |  0 );
   return vresult;
 fail:
   return Qnil;
@@ -58264,7 +60905,7 @@ _wrap_TSNE_plot_embedding_grouped__SWIG_0(int argc, VALUE *argv, VALUE self) {
   } 
   arg4 = static_cast< std::size_t >(val4);
   result = ((datamunge::TSNE const *)arg1)->plot_embedding_grouped((std::vector< std::string,std::allocator< std::string > > const &)*arg2,SWIG_STD_MOVE(*(&arg3)),SWIG_STD_MOVE(*(&arg4)));
-  vresult = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
+  vresult = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__graphics__RPlot, SWIG_POINTER_OWN |  0 );
   if (SWIG_IsNewObj(res2)) delete arg2;
   return vresult;
 fail:
@@ -58311,7 +60952,7 @@ _wrap_TSNE_plot_embedding_grouped__SWIG_1(int argc, VALUE *argv, VALUE self) {
   } 
   arg3 = static_cast< std::size_t >(val3);
   result = ((datamunge::TSNE const *)arg1)->plot_embedding_grouped((std::vector< std::string,std::allocator< std::string > > const &)*arg2,SWIG_STD_MOVE(*(&arg3)));
-  vresult = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
+  vresult = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__graphics__RPlot, SWIG_POINTER_OWN |  0 );
   if (SWIG_IsNewObj(res2)) delete arg2;
   return vresult;
 fail:
@@ -58350,7 +60991,7 @@ _wrap_TSNE_plot_embedding_grouped__SWIG_2(int argc, VALUE *argv, VALUE self) {
     arg2 = ptr;
   }
   result = ((datamunge::TSNE const *)arg1)->plot_embedding_grouped((std::vector< std::string,std::allocator< std::string > > const &)*arg2);
-  vresult = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
+  vresult = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__graphics__RPlot, SWIG_POINTER_OWN |  0 );
   if (SWIG_IsNewObj(res2)) delete arg2;
   return vresult;
 fail:
@@ -59349,7 +61990,7 @@ _wrap_LaplacianEigenmaps_plot_embedding__SWIG_0(int argc, VALUE *argv, VALUE sel
   } 
   arg3 = static_cast< std::size_t >(val3);
   result = ((datamunge::LaplacianEigenmaps const *)arg1)->plot_embedding(SWIG_STD_MOVE(*(&arg2)),SWIG_STD_MOVE(*(&arg3)));
-  vresult = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
+  vresult = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__graphics__RPlot, SWIG_POINTER_OWN |  0 );
   return vresult;
 fail:
   return Qnil;
@@ -59381,7 +62022,7 @@ _wrap_LaplacianEigenmaps_plot_embedding__SWIG_1(int argc, VALUE *argv, VALUE sel
   } 
   arg2 = static_cast< std::size_t >(val2);
   result = ((datamunge::LaplacianEigenmaps const *)arg1)->plot_embedding(SWIG_STD_MOVE(*(&arg2)));
-  vresult = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
+  vresult = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__graphics__RPlot, SWIG_POINTER_OWN |  0 );
   return vresult;
 fail:
   return Qnil;
@@ -59405,7 +62046,7 @@ _wrap_LaplacianEigenmaps_plot_embedding__SWIG_2(int argc, VALUE *argv, VALUE sel
   }
   arg1 = reinterpret_cast< datamunge::LaplacianEigenmaps * >(argp1);
   result = ((datamunge::LaplacianEigenmaps const *)arg1)->plot_embedding();
-  vresult = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
+  vresult = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__graphics__RPlot, SWIG_POINTER_OWN |  0 );
   return vresult;
 fail:
   return Qnil;
@@ -59525,7 +62166,7 @@ _wrap_LaplacianEigenmaps_plot_embedding_grouped__SWIG_0(int argc, VALUE *argv, V
   } 
   arg4 = static_cast< std::size_t >(val4);
   result = ((datamunge::LaplacianEigenmaps const *)arg1)->plot_embedding_grouped((std::vector< std::string,std::allocator< std::string > > const &)*arg2,SWIG_STD_MOVE(*(&arg3)),SWIG_STD_MOVE(*(&arg4)));
-  vresult = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
+  vresult = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__graphics__RPlot, SWIG_POINTER_OWN |  0 );
   if (SWIG_IsNewObj(res2)) delete arg2;
   return vresult;
 fail:
@@ -59572,7 +62213,7 @@ _wrap_LaplacianEigenmaps_plot_embedding_grouped__SWIG_1(int argc, VALUE *argv, V
   } 
   arg3 = static_cast< std::size_t >(val3);
   result = ((datamunge::LaplacianEigenmaps const *)arg1)->plot_embedding_grouped((std::vector< std::string,std::allocator< std::string > > const &)*arg2,SWIG_STD_MOVE(*(&arg3)));
-  vresult = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
+  vresult = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__graphics__RPlot, SWIG_POINTER_OWN |  0 );
   if (SWIG_IsNewObj(res2)) delete arg2;
   return vresult;
 fail:
@@ -59611,7 +62252,7 @@ _wrap_LaplacianEigenmaps_plot_embedding_grouped__SWIG_2(int argc, VALUE *argv, V
     arg2 = ptr;
   }
   result = ((datamunge::LaplacianEigenmaps const *)arg1)->plot_embedding_grouped((std::vector< std::string,std::allocator< std::string > > const &)*arg2);
-  vresult = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
+  vresult = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__graphics__RPlot, SWIG_POINTER_OWN |  0 );
   if (SWIG_IsNewObj(res2)) delete arg2;
   return vresult;
 fail:
@@ -60834,7 +63475,7 @@ _wrap_DiffusionMaps_plot_embedding__SWIG_0(int argc, VALUE *argv, VALUE self) {
   } 
   arg3 = static_cast< std::size_t >(val3);
   result = ((datamunge::DiffusionMaps const *)arg1)->plot_embedding(SWIG_STD_MOVE(*(&arg2)),SWIG_STD_MOVE(*(&arg3)));
-  vresult = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
+  vresult = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__graphics__RPlot, SWIG_POINTER_OWN |  0 );
   return vresult;
 fail:
   return Qnil;
@@ -60866,7 +63507,7 @@ _wrap_DiffusionMaps_plot_embedding__SWIG_1(int argc, VALUE *argv, VALUE self) {
   } 
   arg2 = static_cast< std::size_t >(val2);
   result = ((datamunge::DiffusionMaps const *)arg1)->plot_embedding(SWIG_STD_MOVE(*(&arg2)));
-  vresult = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
+  vresult = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__graphics__RPlot, SWIG_POINTER_OWN |  0 );
   return vresult;
 fail:
   return Qnil;
@@ -60890,7 +63531,7 @@ _wrap_DiffusionMaps_plot_embedding__SWIG_2(int argc, VALUE *argv, VALUE self) {
   }
   arg1 = reinterpret_cast< datamunge::DiffusionMaps * >(argp1);
   result = ((datamunge::DiffusionMaps const *)arg1)->plot_embedding();
-  vresult = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
+  vresult = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__graphics__RPlot, SWIG_POINTER_OWN |  0 );
   return vresult;
 fail:
   return Qnil;
@@ -61010,7 +63651,7 @@ _wrap_DiffusionMaps_plot_embedding_grouped__SWIG_0(int argc, VALUE *argv, VALUE 
   } 
   arg4 = static_cast< std::size_t >(val4);
   result = ((datamunge::DiffusionMaps const *)arg1)->plot_embedding_grouped((std::vector< std::string,std::allocator< std::string > > const &)*arg2,SWIG_STD_MOVE(*(&arg3)),SWIG_STD_MOVE(*(&arg4)));
-  vresult = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
+  vresult = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__graphics__RPlot, SWIG_POINTER_OWN |  0 );
   if (SWIG_IsNewObj(res2)) delete arg2;
   return vresult;
 fail:
@@ -61057,7 +63698,7 @@ _wrap_DiffusionMaps_plot_embedding_grouped__SWIG_1(int argc, VALUE *argv, VALUE 
   } 
   arg3 = static_cast< std::size_t >(val3);
   result = ((datamunge::DiffusionMaps const *)arg1)->plot_embedding_grouped((std::vector< std::string,std::allocator< std::string > > const &)*arg2,SWIG_STD_MOVE(*(&arg3)));
-  vresult = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
+  vresult = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__graphics__RPlot, SWIG_POINTER_OWN |  0 );
   if (SWIG_IsNewObj(res2)) delete arg2;
   return vresult;
 fail:
@@ -61096,7 +63737,7 @@ _wrap_DiffusionMaps_plot_embedding_grouped__SWIG_2(int argc, VALUE *argv, VALUE 
     arg2 = ptr;
   }
   result = ((datamunge::DiffusionMaps const *)arg1)->plot_embedding_grouped((std::vector< std::string,std::allocator< std::string > > const &)*arg2);
-  vresult = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
+  vresult = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__graphics__RPlot, SWIG_POINTER_OWN |  0 );
   if (SWIG_IsNewObj(res2)) delete arg2;
   return vresult;
 fail:
@@ -62611,7 +65252,7 @@ _wrap_KernelPCA_plot_embedding__SWIG_0(int argc, VALUE *argv, VALUE self) {
   } 
   arg3 = static_cast< std::size_t >(val3);
   result = ((datamunge::KernelPCA const *)arg1)->plot_embedding(SWIG_STD_MOVE(*(&arg2)),SWIG_STD_MOVE(*(&arg3)));
-  vresult = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
+  vresult = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__graphics__RPlot, SWIG_POINTER_OWN |  0 );
   return vresult;
 fail:
   return Qnil;
@@ -62643,7 +65284,7 @@ _wrap_KernelPCA_plot_embedding__SWIG_1(int argc, VALUE *argv, VALUE self) {
   } 
   arg2 = static_cast< std::size_t >(val2);
   result = ((datamunge::KernelPCA const *)arg1)->plot_embedding(SWIG_STD_MOVE(*(&arg2)));
-  vresult = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
+  vresult = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__graphics__RPlot, SWIG_POINTER_OWN |  0 );
   return vresult;
 fail:
   return Qnil;
@@ -62667,7 +65308,7 @@ _wrap_KernelPCA_plot_embedding__SWIG_2(int argc, VALUE *argv, VALUE self) {
   }
   arg1 = reinterpret_cast< datamunge::KernelPCA * >(argp1);
   result = ((datamunge::KernelPCA const *)arg1)->plot_embedding();
-  vresult = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
+  vresult = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__graphics__RPlot, SWIG_POINTER_OWN |  0 );
   return vresult;
 fail:
   return Qnil;
@@ -62787,7 +65428,7 @@ _wrap_KernelPCA_plot_embedding_grouped__SWIG_0(int argc, VALUE *argv, VALUE self
   } 
   arg4 = static_cast< std::size_t >(val4);
   result = ((datamunge::KernelPCA const *)arg1)->plot_embedding_grouped((std::vector< std::string,std::allocator< std::string > > const &)*arg2,SWIG_STD_MOVE(*(&arg3)),SWIG_STD_MOVE(*(&arg4)));
-  vresult = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
+  vresult = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__graphics__RPlot, SWIG_POINTER_OWN |  0 );
   if (SWIG_IsNewObj(res2)) delete arg2;
   return vresult;
 fail:
@@ -62834,7 +65475,7 @@ _wrap_KernelPCA_plot_embedding_grouped__SWIG_1(int argc, VALUE *argv, VALUE self
   } 
   arg3 = static_cast< std::size_t >(val3);
   result = ((datamunge::KernelPCA const *)arg1)->plot_embedding_grouped((std::vector< std::string,std::allocator< std::string > > const &)*arg2,SWIG_STD_MOVE(*(&arg3)));
-  vresult = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
+  vresult = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__graphics__RPlot, SWIG_POINTER_OWN |  0 );
   if (SWIG_IsNewObj(res2)) delete arg2;
   return vresult;
 fail:
@@ -62873,7 +65514,7 @@ _wrap_KernelPCA_plot_embedding_grouped__SWIG_2(int argc, VALUE *argv, VALUE self
     arg2 = ptr;
   }
   result = ((datamunge::KernelPCA const *)arg1)->plot_embedding_grouped((std::vector< std::string,std::allocator< std::string > > const &)*arg2);
-  vresult = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
+  vresult = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__graphics__RPlot, SWIG_POINTER_OWN |  0 );
   if (SWIG_IsNewObj(res2)) delete arg2;
   return vresult;
 fail:
@@ -64672,7 +67313,7 @@ _wrap_SammonMapping_plot_embedding__SWIG_0(int argc, VALUE *argv, VALUE self) {
   } 
   arg3 = static_cast< std::size_t >(val3);
   result = ((datamunge::SammonMapping const *)arg1)->plot_embedding(SWIG_STD_MOVE(*(&arg2)),SWIG_STD_MOVE(*(&arg3)));
-  vresult = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
+  vresult = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__graphics__RPlot, SWIG_POINTER_OWN |  0 );
   return vresult;
 fail:
   return Qnil;
@@ -64704,7 +67345,7 @@ _wrap_SammonMapping_plot_embedding__SWIG_1(int argc, VALUE *argv, VALUE self) {
   } 
   arg2 = static_cast< std::size_t >(val2);
   result = ((datamunge::SammonMapping const *)arg1)->plot_embedding(SWIG_STD_MOVE(*(&arg2)));
-  vresult = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
+  vresult = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__graphics__RPlot, SWIG_POINTER_OWN |  0 );
   return vresult;
 fail:
   return Qnil;
@@ -64728,7 +67369,7 @@ _wrap_SammonMapping_plot_embedding__SWIG_2(int argc, VALUE *argv, VALUE self) {
   }
   arg1 = reinterpret_cast< datamunge::SammonMapping * >(argp1);
   result = ((datamunge::SammonMapping const *)arg1)->plot_embedding();
-  vresult = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
+  vresult = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__graphics__RPlot, SWIG_POINTER_OWN |  0 );
   return vresult;
 fail:
   return Qnil;
@@ -64848,7 +67489,7 @@ _wrap_SammonMapping_plot_embedding_grouped__SWIG_0(int argc, VALUE *argv, VALUE 
   } 
   arg4 = static_cast< std::size_t >(val4);
   result = ((datamunge::SammonMapping const *)arg1)->plot_embedding_grouped((std::vector< std::string,std::allocator< std::string > > const &)*arg2,SWIG_STD_MOVE(*(&arg3)),SWIG_STD_MOVE(*(&arg4)));
-  vresult = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
+  vresult = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__graphics__RPlot, SWIG_POINTER_OWN |  0 );
   if (SWIG_IsNewObj(res2)) delete arg2;
   return vresult;
 fail:
@@ -64895,7 +67536,7 @@ _wrap_SammonMapping_plot_embedding_grouped__SWIG_1(int argc, VALUE *argv, VALUE 
   } 
   arg3 = static_cast< std::size_t >(val3);
   result = ((datamunge::SammonMapping const *)arg1)->plot_embedding_grouped((std::vector< std::string,std::allocator< std::string > > const &)*arg2,SWIG_STD_MOVE(*(&arg3)));
-  vresult = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
+  vresult = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__graphics__RPlot, SWIG_POINTER_OWN |  0 );
   if (SWIG_IsNewObj(res2)) delete arg2;
   return vresult;
 fail:
@@ -64934,7 +67575,7 @@ _wrap_SammonMapping_plot_embedding_grouped__SWIG_2(int argc, VALUE *argv, VALUE 
     arg2 = ptr;
   }
   result = ((datamunge::SammonMapping const *)arg1)->plot_embedding_grouped((std::vector< std::string,std::allocator< std::string > > const &)*arg2);
-  vresult = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
+  vresult = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__graphics__RPlot, SWIG_POINTER_OWN |  0 );
   if (SWIG_IsNewObj(res2)) delete arg2;
   return vresult;
 fail:
@@ -67377,7 +70018,7 @@ _wrap_UMAP_plot_embedding__SWIG_0(int argc, VALUE *argv, VALUE self) {
   } 
   arg3 = static_cast< std::size_t >(val3);
   result = ((datamunge::UMAP const *)arg1)->plot_embedding(SWIG_STD_MOVE(*(&arg2)),SWIG_STD_MOVE(*(&arg3)));
-  vresult = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
+  vresult = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__graphics__RPlot, SWIG_POINTER_OWN |  0 );
   return vresult;
 fail:
   return Qnil;
@@ -67409,7 +70050,7 @@ _wrap_UMAP_plot_embedding__SWIG_1(int argc, VALUE *argv, VALUE self) {
   } 
   arg2 = static_cast< std::size_t >(val2);
   result = ((datamunge::UMAP const *)arg1)->plot_embedding(SWIG_STD_MOVE(*(&arg2)));
-  vresult = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
+  vresult = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__graphics__RPlot, SWIG_POINTER_OWN |  0 );
   return vresult;
 fail:
   return Qnil;
@@ -67433,7 +70074,7 @@ _wrap_UMAP_plot_embedding__SWIG_2(int argc, VALUE *argv, VALUE self) {
   }
   arg1 = reinterpret_cast< datamunge::UMAP * >(argp1);
   result = ((datamunge::UMAP const *)arg1)->plot_embedding();
-  vresult = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
+  vresult = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__graphics__RPlot, SWIG_POINTER_OWN |  0 );
   return vresult;
 fail:
   return Qnil;
@@ -67553,7 +70194,7 @@ _wrap_UMAP_plot_embedding_grouped__SWIG_0(int argc, VALUE *argv, VALUE self) {
   } 
   arg4 = static_cast< std::size_t >(val4);
   result = ((datamunge::UMAP const *)arg1)->plot_embedding_grouped((std::vector< std::string,std::allocator< std::string > > const &)*arg2,SWIG_STD_MOVE(*(&arg3)),SWIG_STD_MOVE(*(&arg4)));
-  vresult = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
+  vresult = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__graphics__RPlot, SWIG_POINTER_OWN |  0 );
   if (SWIG_IsNewObj(res2)) delete arg2;
   return vresult;
 fail:
@@ -67600,7 +70241,7 @@ _wrap_UMAP_plot_embedding_grouped__SWIG_1(int argc, VALUE *argv, VALUE self) {
   } 
   arg3 = static_cast< std::size_t >(val3);
   result = ((datamunge::UMAP const *)arg1)->plot_embedding_grouped((std::vector< std::string,std::allocator< std::string > > const &)*arg2,SWIG_STD_MOVE(*(&arg3)));
-  vresult = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
+  vresult = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__graphics__RPlot, SWIG_POINTER_OWN |  0 );
   if (SWIG_IsNewObj(res2)) delete arg2;
   return vresult;
 fail:
@@ -67639,7 +70280,7 @@ _wrap_UMAP_plot_embedding_grouped__SWIG_2(int argc, VALUE *argv, VALUE self) {
     arg2 = ptr;
   }
   result = ((datamunge::UMAP const *)arg1)->plot_embedding_grouped((std::vector< std::string,std::allocator< std::string > > const &)*arg2);
-  vresult = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
+  vresult = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__graphics__RPlot, SWIG_POINTER_OWN |  0 );
   if (SWIG_IsNewObj(res2)) delete arg2;
   return vresult;
 fail:
@@ -70789,7 +73430,7 @@ _wrap_GBMClassifier_plot_classification(int argc, VALUE *argv, VALUE self) {
     arg4 = ptr;
   }
   result = ((datamunge::GBMClassifier const *)arg1)->plot_classification((datamunge::DataFrame const &)*arg2,(std::string const &)*arg3,(std::string const &)*arg4);
-  vresult = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
+  vresult = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__graphics__RPlot, SWIG_POINTER_OWN |  0 );
   if (SWIG_IsNewObj(res3)) delete arg3;
   if (SWIG_IsNewObj(res4)) delete arg4;
   return vresult;
@@ -70851,7 +73492,7 @@ _wrap_GBMClassifier_plot_decision_regions__SWIG_0(int argc, VALUE *argv, VALUE s
   } 
   arg4 = static_cast< std::size_t >(val4);
   result = ((datamunge::GBMClassifier const *)arg1)->plot_decision_regions((std::string const &)*arg2,(std::string const &)*arg3,SWIG_STD_MOVE(*(&arg4)));
-  vresult = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
+  vresult = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__graphics__RPlot, SWIG_POINTER_OWN |  0 );
   if (SWIG_IsNewObj(res2)) delete arg2;
   if (SWIG_IsNewObj(res3)) delete arg3;
   return vresult;
@@ -70905,7 +73546,7 @@ _wrap_GBMClassifier_plot_decision_regions__SWIG_1(int argc, VALUE *argv, VALUE s
     arg3 = ptr;
   }
   result = ((datamunge::GBMClassifier const *)arg1)->plot_decision_regions((std::string const &)*arg2,(std::string const &)*arg3);
-  vresult = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
+  vresult = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__graphics__RPlot, SWIG_POINTER_OWN |  0 );
   if (SWIG_IsNewObj(res2)) delete arg2;
   if (SWIG_IsNewObj(res3)) delete arg3;
   return vresult;
@@ -70994,7 +73635,7 @@ _wrap_GBMClassifier_plot_training_deviance(int argc, VALUE *argv, VALUE self) {
   }
   arg1 = reinterpret_cast< datamunge::GBMClassifier * >(argp1);
   result = ((datamunge::GBMClassifier const *)arg1)->plot_training_deviance();
-  vresult = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
+  vresult = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__graphics__RPlot, SWIG_POINTER_OWN |  0 );
   return vresult;
 fail:
   return Qnil;
@@ -72171,7 +74812,7 @@ _wrap_GBMRegressor_plot_predicted_vs_actual(int argc, VALUE *argv, VALUE self) {
   }
   arg1 = reinterpret_cast< datamunge::GBMRegressor * >(argp1);
   result = ((datamunge::GBMRegressor const *)arg1)->plot_predicted_vs_actual();
-  vresult = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
+  vresult = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__graphics__RPlot, SWIG_POINTER_OWN |  0 );
   return vresult;
 fail:
   return Qnil;
@@ -72195,7 +74836,7 @@ _wrap_GBMRegressor_plot_residuals_vs_fitted(int argc, VALUE *argv, VALUE self) {
   }
   arg1 = reinterpret_cast< datamunge::GBMRegressor * >(argp1);
   result = ((datamunge::GBMRegressor const *)arg1)->plot_residuals_vs_fitted();
-  vresult = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
+  vresult = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__graphics__RPlot, SWIG_POINTER_OWN |  0 );
   return vresult;
 fail:
   return Qnil;
@@ -72219,7 +74860,7 @@ _wrap_GBMRegressor_plot_training_deviance(int argc, VALUE *argv, VALUE self) {
   }
   arg1 = reinterpret_cast< datamunge::GBMRegressor * >(argp1);
   result = ((datamunge::GBMRegressor const *)arg1)->plot_training_deviance();
-  vresult = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
+  vresult = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__graphics__RPlot, SWIG_POINTER_OWN |  0 );
   return vresult;
 fail:
   return Qnil;
@@ -74224,7 +76865,7 @@ _wrap_XGBoostClassifier_plot_classification(int argc, VALUE *argv, VALUE self) {
     arg4 = ptr;
   }
   result = ((datamunge::XGBoostClassifier const *)arg1)->plot_classification((datamunge::DataFrame const &)*arg2,(std::string const &)*arg3,(std::string const &)*arg4);
-  vresult = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
+  vresult = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__graphics__RPlot, SWIG_POINTER_OWN |  0 );
   if (SWIG_IsNewObj(res3)) delete arg3;
   if (SWIG_IsNewObj(res4)) delete arg4;
   return vresult;
@@ -74286,7 +76927,7 @@ _wrap_XGBoostClassifier_plot_decision_regions__SWIG_0(int argc, VALUE *argv, VAL
   } 
   arg4 = static_cast< std::size_t >(val4);
   result = ((datamunge::XGBoostClassifier const *)arg1)->plot_decision_regions((std::string const &)*arg2,(std::string const &)*arg3,SWIG_STD_MOVE(*(&arg4)));
-  vresult = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
+  vresult = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__graphics__RPlot, SWIG_POINTER_OWN |  0 );
   if (SWIG_IsNewObj(res2)) delete arg2;
   if (SWIG_IsNewObj(res3)) delete arg3;
   return vresult;
@@ -74340,7 +76981,7 @@ _wrap_XGBoostClassifier_plot_decision_regions__SWIG_1(int argc, VALUE *argv, VAL
     arg3 = ptr;
   }
   result = ((datamunge::XGBoostClassifier const *)arg1)->plot_decision_regions((std::string const &)*arg2,(std::string const &)*arg3);
-  vresult = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
+  vresult = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__graphics__RPlot, SWIG_POINTER_OWN |  0 );
   if (SWIG_IsNewObj(res2)) delete arg2;
   if (SWIG_IsNewObj(res3)) delete arg3;
   return vresult;
@@ -74429,7 +77070,7 @@ _wrap_XGBoostClassifier_plot_training_deviance(int argc, VALUE *argv, VALUE self
   }
   arg1 = reinterpret_cast< datamunge::XGBoostClassifier * >(argp1);
   result = ((datamunge::XGBoostClassifier const *)arg1)->plot_training_deviance();
-  vresult = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
+  vresult = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__graphics__RPlot, SWIG_POINTER_OWN |  0 );
   return vresult;
 fail:
   return Qnil;
@@ -76362,7 +79003,7 @@ _wrap_XGBoostRegressor_plot_predicted_vs_actual(int argc, VALUE *argv, VALUE sel
   }
   arg1 = reinterpret_cast< datamunge::XGBoostRegressor * >(argp1);
   result = ((datamunge::XGBoostRegressor const *)arg1)->plot_predicted_vs_actual();
-  vresult = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
+  vresult = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__graphics__RPlot, SWIG_POINTER_OWN |  0 );
   return vresult;
 fail:
   return Qnil;
@@ -76386,7 +79027,7 @@ _wrap_XGBoostRegressor_plot_residuals_vs_fitted(int argc, VALUE *argv, VALUE sel
   }
   arg1 = reinterpret_cast< datamunge::XGBoostRegressor * >(argp1);
   result = ((datamunge::XGBoostRegressor const *)arg1)->plot_residuals_vs_fitted();
-  vresult = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
+  vresult = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__graphics__RPlot, SWIG_POINTER_OWN |  0 );
   return vresult;
 fail:
   return Qnil;
@@ -76410,7 +79051,7 @@ _wrap_XGBoostRegressor_plot_training_deviance(int argc, VALUE *argv, VALUE self)
   }
   arg1 = reinterpret_cast< datamunge::XGBoostRegressor * >(argp1);
   result = ((datamunge::XGBoostRegressor const *)arg1)->plot_training_deviance();
-  vresult = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
+  vresult = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__graphics__RPlot, SWIG_POINTER_OWN |  0 );
   return vresult;
 fail:
   return Qnil;
@@ -77230,7 +79871,7 @@ _wrap_KernelRegression_plot_fit__SWIG_0(int argc, VALUE *argv, VALUE self) {
   } 
   arg3 = static_cast< std::size_t >(val3);
   result = ((datamunge::KernelRegression const *)arg1)->plot_fit((datamunge::DataFrame const &)*arg2,SWIG_STD_MOVE(*(&arg3)));
-  vresult = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
+  vresult = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__graphics__RPlot, SWIG_POINTER_OWN |  0 );
   return vresult;
 fail:
   return Qnil;
@@ -77265,7 +79906,7 @@ _wrap_KernelRegression_plot_fit__SWIG_1(int argc, VALUE *argv, VALUE self) {
   }
   arg2 = reinterpret_cast< datamunge::DataFrame * >(argp2);
   result = ((datamunge::KernelRegression const *)arg1)->plot_fit((datamunge::DataFrame const &)*arg2);
-  vresult = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
+  vresult = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__graphics__RPlot, SWIG_POINTER_OWN |  0 );
   return vresult;
 fail:
   return Qnil;
@@ -77344,7 +79985,7 @@ _wrap_KernelRegression_plot_predicted_vs_actual(int argc, VALUE *argv, VALUE sel
   }
   arg1 = reinterpret_cast< datamunge::KernelRegression * >(argp1);
   result = ((datamunge::KernelRegression const *)arg1)->plot_predicted_vs_actual();
-  vresult = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
+  vresult = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__graphics__RPlot, SWIG_POINTER_OWN |  0 );
   return vresult;
 fail:
   return Qnil;
@@ -77368,7 +80009,7 @@ _wrap_KernelRegression_plot_residuals_vs_fitted(int argc, VALUE *argv, VALUE sel
   }
   arg1 = reinterpret_cast< datamunge::KernelRegression * >(argp1);
   result = ((datamunge::KernelRegression const *)arg1)->plot_residuals_vs_fitted();
-  vresult = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
+  vresult = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__graphics__RPlot, SWIG_POINTER_OWN |  0 );
   return vresult;
 fail:
   return Qnil;
@@ -77392,7 +80033,7 @@ _wrap_KernelRegression_plot_cv_curve(int argc, VALUE *argv, VALUE self) {
   }
   arg1 = reinterpret_cast< datamunge::KernelRegression * >(argp1);
   result = ((datamunge::KernelRegression const *)arg1)->plot_cv_curve();
-  vresult = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
+  vresult = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__graphics__RPlot, SWIG_POINTER_OWN |  0 );
   return vresult;
 fail:
   return Qnil;
@@ -78643,7 +81284,7 @@ _wrap_GaussianProcessRegression_plot_fit__SWIG_0(int argc, VALUE *argv, VALUE se
   } 
   arg4 = static_cast< double >(val4);
   result = ((datamunge::GaussianProcessRegression const *)arg1)->plot_fit((datamunge::DataFrame const &)*arg2,SWIG_STD_MOVE(*(&arg3)),arg4);
-  vresult = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
+  vresult = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__graphics__RPlot, SWIG_POINTER_OWN |  0 );
   return vresult;
 fail:
   return Qnil;
@@ -78686,7 +81327,7 @@ _wrap_GaussianProcessRegression_plot_fit__SWIG_1(int argc, VALUE *argv, VALUE se
   } 
   arg3 = static_cast< std::size_t >(val3);
   result = ((datamunge::GaussianProcessRegression const *)arg1)->plot_fit((datamunge::DataFrame const &)*arg2,SWIG_STD_MOVE(*(&arg3)));
-  vresult = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
+  vresult = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__graphics__RPlot, SWIG_POINTER_OWN |  0 );
   return vresult;
 fail:
   return Qnil;
@@ -78721,7 +81362,7 @@ _wrap_GaussianProcessRegression_plot_fit__SWIG_2(int argc, VALUE *argv, VALUE se
   }
   arg2 = reinterpret_cast< datamunge::DataFrame * >(argp2);
   result = ((datamunge::GaussianProcessRegression const *)arg1)->plot_fit((datamunge::DataFrame const &)*arg2);
-  vresult = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
+  vresult = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__graphics__RPlot, SWIG_POINTER_OWN |  0 );
   return vresult;
 fail:
   return Qnil;
@@ -78827,7 +81468,7 @@ _wrap_GaussianProcessRegression_plot_predicted_vs_actual(int argc, VALUE *argv, 
   }
   arg1 = reinterpret_cast< datamunge::GaussianProcessRegression * >(argp1);
   result = ((datamunge::GaussianProcessRegression const *)arg1)->plot_predicted_vs_actual();
-  vresult = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
+  vresult = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__graphics__RPlot, SWIG_POINTER_OWN |  0 );
   return vresult;
 fail:
   return Qnil;
@@ -78851,7 +81492,7 @@ _wrap_GaussianProcessRegression_plot_residuals_vs_fitted(int argc, VALUE *argv, 
   }
   arg1 = reinterpret_cast< datamunge::GaussianProcessRegression * >(argp1);
   result = ((datamunge::GaussianProcessRegression const *)arg1)->plot_residuals_vs_fitted();
-  vresult = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
+  vresult = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__graphics__RPlot, SWIG_POINTER_OWN |  0 );
   return vresult;
 fail:
   return Qnil;
@@ -78875,7 +81516,7 @@ _wrap_GaussianProcessRegression_plot_length_scale_profile(int argc, VALUE *argv,
   }
   arg1 = reinterpret_cast< datamunge::GaussianProcessRegression * >(argp1);
   result = ((datamunge::GaussianProcessRegression const *)arg1)->plot_length_scale_profile();
-  vresult = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
+  vresult = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__graphics__RPlot, SWIG_POINTER_OWN |  0 );
   return vresult;
 fail:
   return Qnil;
@@ -79446,7 +82087,7 @@ _wrap_NaiveBayesClassifier_plot_classification(int argc, VALUE *argv, VALUE self
     arg4 = ptr;
   }
   result = ((datamunge::NaiveBayesClassifier const *)arg1)->plot_classification((datamunge::DataFrame const &)*arg2,(std::string const &)*arg3,(std::string const &)*arg4);
-  vresult = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
+  vresult = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__graphics__RPlot, SWIG_POINTER_OWN |  0 );
   if (SWIG_IsNewObj(res3)) delete arg3;
   if (SWIG_IsNewObj(res4)) delete arg4;
   return vresult;
@@ -79508,7 +82149,7 @@ _wrap_NaiveBayesClassifier_plot_decision_regions__SWIG_0(int argc, VALUE *argv, 
   } 
   arg4 = static_cast< std::size_t >(val4);
   result = ((datamunge::NaiveBayesClassifier const *)arg1)->plot_decision_regions((std::string const &)*arg2,(std::string const &)*arg3,SWIG_STD_MOVE(*(&arg4)));
-  vresult = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
+  vresult = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__graphics__RPlot, SWIG_POINTER_OWN |  0 );
   if (SWIG_IsNewObj(res2)) delete arg2;
   if (SWIG_IsNewObj(res3)) delete arg3;
   return vresult;
@@ -79562,7 +82203,7 @@ _wrap_NaiveBayesClassifier_plot_decision_regions__SWIG_1(int argc, VALUE *argv, 
     arg3 = ptr;
   }
   result = ((datamunge::NaiveBayesClassifier const *)arg1)->plot_decision_regions((std::string const &)*arg2,(std::string const &)*arg3);
-  vresult = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
+  vresult = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__graphics__RPlot, SWIG_POINTER_OWN |  0 );
   if (SWIG_IsNewObj(res2)) delete arg2;
   if (SWIG_IsNewObj(res3)) delete arg3;
   return vresult;
@@ -81154,7 +83795,7 @@ _wrap_GLM_plot_residuals_vs_fitted(int argc, VALUE *argv, VALUE self) {
   }
   arg1 = reinterpret_cast< datamunge::GLM * >(argp1);
   result = ((datamunge::GLM const *)arg1)->plot_residuals_vs_fitted();
-  vresult = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
+  vresult = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__graphics__RPlot, SWIG_POINTER_OWN |  0 );
   return vresult;
 fail:
   return Qnil;
@@ -81178,7 +83819,7 @@ _wrap_GLM_plot_normal_qq(int argc, VALUE *argv, VALUE self) {
   }
   arg1 = reinterpret_cast< datamunge::GLM * >(argp1);
   result = ((datamunge::GLM const *)arg1)->plot_normal_qq();
-  vresult = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
+  vresult = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__graphics__RPlot, SWIG_POINTER_OWN |  0 );
   return vresult;
 fail:
   return Qnil;
@@ -81202,7 +83843,7 @@ _wrap_GLM_plot_scale_location(int argc, VALUE *argv, VALUE self) {
   }
   arg1 = reinterpret_cast< datamunge::GLM * >(argp1);
   result = ((datamunge::GLM const *)arg1)->plot_scale_location();
-  vresult = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
+  vresult = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__graphics__RPlot, SWIG_POINTER_OWN |  0 );
   return vresult;
 fail:
   return Qnil;
@@ -81226,7 +83867,7 @@ _wrap_GLM_plot_residuals_vs_leverage(int argc, VALUE *argv, VALUE self) {
   }
   arg1 = reinterpret_cast< datamunge::GLM * >(argp1);
   result = ((datamunge::GLM const *)arg1)->plot_residuals_vs_leverage();
-  vresult = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
+  vresult = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__graphics__RPlot, SWIG_POINTER_OWN |  0 );
   return vresult;
 fail:
   return Qnil;
@@ -87790,7 +90431,7 @@ _wrap_RGB_r_set(int argc, VALUE *argv, VALUE self) {
   if ((argc < 1) || (argc > 1)) {
     rb_raise(rb_eArgError, "wrong # of arguments(%d for 1)",argc); SWIG_fail;
   }
-  res1 = SWIG_ConvertPtr(self, &argp1,SWIGTYPE_p_datamunge__plot__RGB, 0 |  0 );
+  res1 = SWIG_ConvertPtr(self, &argp1,SWIGTYPE_p_datamunge__graphics__RGB, 0 |  0 );
   if (!SWIG_IsOK(res1)) {
     SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::graphics::RGB *","r", 1, self )); 
   }
@@ -87818,7 +90459,7 @@ _wrap_RGB_r_get(int argc, VALUE *argv, VALUE self) {
   if ((argc < 0) || (argc > 0)) {
     rb_raise(rb_eArgError, "wrong # of arguments(%d for 0)",argc); SWIG_fail;
   }
-  res1 = SWIG_ConvertPtr(self, &argp1,SWIGTYPE_p_datamunge__plot__RGB, 0 |  0 );
+  res1 = SWIG_ConvertPtr(self, &argp1,SWIGTYPE_p_datamunge__graphics__RGB, 0 |  0 );
   if (!SWIG_IsOK(res1)) {
     SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::graphics::RGB *","r", 1, self )); 
   }
@@ -87843,7 +90484,7 @@ _wrap_RGB_g_set(int argc, VALUE *argv, VALUE self) {
   if ((argc < 1) || (argc > 1)) {
     rb_raise(rb_eArgError, "wrong # of arguments(%d for 1)",argc); SWIG_fail;
   }
-  res1 = SWIG_ConvertPtr(self, &argp1,SWIGTYPE_p_datamunge__plot__RGB, 0 |  0 );
+  res1 = SWIG_ConvertPtr(self, &argp1,SWIGTYPE_p_datamunge__graphics__RGB, 0 |  0 );
   if (!SWIG_IsOK(res1)) {
     SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::graphics::RGB *","g", 1, self )); 
   }
@@ -87871,7 +90512,7 @@ _wrap_RGB_g_get(int argc, VALUE *argv, VALUE self) {
   if ((argc < 0) || (argc > 0)) {
     rb_raise(rb_eArgError, "wrong # of arguments(%d for 0)",argc); SWIG_fail;
   }
-  res1 = SWIG_ConvertPtr(self, &argp1,SWIGTYPE_p_datamunge__plot__RGB, 0 |  0 );
+  res1 = SWIG_ConvertPtr(self, &argp1,SWIGTYPE_p_datamunge__graphics__RGB, 0 |  0 );
   if (!SWIG_IsOK(res1)) {
     SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::graphics::RGB *","g", 1, self )); 
   }
@@ -87896,7 +90537,7 @@ _wrap_RGB_b_set(int argc, VALUE *argv, VALUE self) {
   if ((argc < 1) || (argc > 1)) {
     rb_raise(rb_eArgError, "wrong # of arguments(%d for 1)",argc); SWIG_fail;
   }
-  res1 = SWIG_ConvertPtr(self, &argp1,SWIGTYPE_p_datamunge__plot__RGB, 0 |  0 );
+  res1 = SWIG_ConvertPtr(self, &argp1,SWIGTYPE_p_datamunge__graphics__RGB, 0 |  0 );
   if (!SWIG_IsOK(res1)) {
     SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::graphics::RGB *","b", 1, self )); 
   }
@@ -87924,7 +90565,7 @@ _wrap_RGB_b_get(int argc, VALUE *argv, VALUE self) {
   if ((argc < 0) || (argc > 0)) {
     rb_raise(rb_eArgError, "wrong # of arguments(%d for 0)",argc); SWIG_fail;
   }
-  res1 = SWIG_ConvertPtr(self, &argp1,SWIGTYPE_p_datamunge__plot__RGB, 0 |  0 );
+  res1 = SWIG_ConvertPtr(self, &argp1,SWIGTYPE_p_datamunge__graphics__RGB, 0 |  0 );
   if (!SWIG_IsOK(res1)) {
     SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::graphics::RGB *","b", 1, self )); 
   }
@@ -87949,7 +90590,7 @@ _wrap_RGB_alpha_set(int argc, VALUE *argv, VALUE self) {
   if ((argc < 1) || (argc > 1)) {
     rb_raise(rb_eArgError, "wrong # of arguments(%d for 1)",argc); SWIG_fail;
   }
-  res1 = SWIG_ConvertPtr(self, &argp1,SWIGTYPE_p_datamunge__plot__RGB, 0 |  0 );
+  res1 = SWIG_ConvertPtr(self, &argp1,SWIGTYPE_p_datamunge__graphics__RGB, 0 |  0 );
   if (!SWIG_IsOK(res1)) {
     SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::graphics::RGB *","alpha", 1, self )); 
   }
@@ -87977,7 +90618,7 @@ _wrap_RGB_alpha_get(int argc, VALUE *argv, VALUE self) {
   if ((argc < 0) || (argc > 0)) {
     rb_raise(rb_eArgError, "wrong # of arguments(%d for 0)",argc); SWIG_fail;
   }
-  res1 = SWIG_ConvertPtr(self, &argp1,SWIGTYPE_p_datamunge__plot__RGB, 0 |  0 );
+  res1 = SWIG_ConvertPtr(self, &argp1,SWIGTYPE_p_datamunge__graphics__RGB, 0 |  0 );
   if (!SWIG_IsOK(res1)) {
     SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::graphics::RGB *","alpha", 1, self )); 
   }
@@ -87998,7 +90639,7 @@ _wrap_new_RGB__SWIG_0(int argc, VALUE *argv, VALUE self) {
   if ((argc < 0) || (argc > 0)) {
     rb_raise(rb_eArgError, "wrong # of arguments(%d for 0)",argc); SWIG_fail;
   }
-  result = (datamunge::graphics::RGB *)new_datamunge_plot_RGB__SWIG_0();
+  result = (datamunge::graphics::RGB *)new datamunge::graphics::RGB();
   ((struct swig_ruby_wrapped_object *)RTYPEDDATA_GET_DATA(self))->data = result;
   return self;
 fail:
@@ -88046,26 +90687,11 @@ _wrap_new_RGB__SWIG_1(int argc, VALUE *argv, VALUE self) {
     SWIG_exception_fail(SWIG_ArgError(ecode4), Ruby_Format_TypeError( "", "double","RGB", 4, argv[3] ));
   } 
   arg4 = static_cast< double >(val4);
-  result = (datamunge::graphics::RGB *)new_datamunge_plot_RGB__SWIG_1(arg1,arg2,arg3,arg4);
+  result = (datamunge::graphics::RGB *)new datamunge::graphics::RGB(arg1,arg2,arg3,arg4);
   ((struct swig_ruby_wrapped_object *)RTYPEDDATA_GET_DATA(self))->data = result;
   return self;
 fail:
   return Qnil;
-}
-
-
-SWIGINTERN VALUE
-#ifdef HAVE_RB_DEFINE_ALLOC_FUNC
-_wrap_RGB_allocate(VALUE self)
-#else
-_wrap_RGB_allocate(int argc, VALUE *argv, VALUE self)
-#endif
-{
-  VALUE vresult = SWIG_NewClassInstance(self, SWIGTYPE_p_datamunge__plot__RGB);
-#ifndef HAVE_RB_DEFINE_ALLOC_FUNC
-  rb_obj_call_init(vresult, argc, argv);
-#endif
-  return vresult;
 }
 
 
@@ -88101,10 +90727,112 @@ _wrap_new_RGB__SWIG_2(int argc, VALUE *argv, VALUE self) {
     SWIG_exception_fail(SWIG_ArgError(ecode3), Ruby_Format_TypeError( "", "int","RGB", 3, argv[2] ));
   } 
   arg3 = static_cast< int >(val3);
-  result = (datamunge::graphics::RGB *)new_datamunge_plot_RGB__SWIG_1(arg1,arg2,arg3);
+  result = (datamunge::graphics::RGB *)new datamunge::graphics::RGB(arg1,arg2,arg3);
   ((struct swig_ruby_wrapped_object *)RTYPEDDATA_GET_DATA(self))->data = result;
   return self;
 fail:
+  return Qnil;
+}
+
+
+SWIGINTERN VALUE
+_wrap_new_RGB__SWIG_3(int argc, VALUE *argv, VALUE self) {
+  int arg1 ;
+  int val1 ;
+  int ecode1 = 0 ;
+  const char *classname SWIGUNUSED = "Octruby::RGB";
+  datamunge::graphics::RGB *result = 0 ;
+  
+  if ((argc < 1) || (argc > 1)) {
+    rb_raise(rb_eArgError, "wrong # of arguments(%d for 1)",argc); SWIG_fail;
+  }
+  ecode1 = SWIG_AsVal_int(argv[0], &val1);
+  if (!SWIG_IsOK(ecode1)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode1), Ruby_Format_TypeError( "", "int","RGB", 1, argv[0] ));
+  } 
+  arg1 = static_cast< int >(val1);
+  result = (datamunge::graphics::RGB *)new datamunge::graphics::RGB(arg1);
+  ((struct swig_ruby_wrapped_object *)RTYPEDDATA_GET_DATA(self))->data = result;
+  return self;
+fail:
+  return Qnil;
+}
+
+
+SWIGINTERN VALUE
+_wrap_new_RGB__SWIG_4(int argc, VALUE *argv, VALUE self) {
+  int arg1 ;
+  int arg2 ;
+  int val1 ;
+  int ecode1 = 0 ;
+  int val2 ;
+  int ecode2 = 0 ;
+  const char *classname SWIGUNUSED = "Octruby::RGB";
+  datamunge::graphics::RGB *result = 0 ;
+  
+  if ((argc < 2) || (argc > 2)) {
+    rb_raise(rb_eArgError, "wrong # of arguments(%d for 2)",argc); SWIG_fail;
+  }
+  ecode1 = SWIG_AsVal_int(argv[0], &val1);
+  if (!SWIG_IsOK(ecode1)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode1), Ruby_Format_TypeError( "", "int","RGB", 1, argv[0] ));
+  } 
+  arg1 = static_cast< int >(val1);
+  ecode2 = SWIG_AsVal_int(argv[1], &val2);
+  if (!SWIG_IsOK(ecode2)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode2), Ruby_Format_TypeError( "", "int","RGB", 2, argv[1] ));
+  } 
+  arg2 = static_cast< int >(val2);
+  result = (datamunge::graphics::RGB *)new datamunge::graphics::RGB(arg1,arg2);
+  ((struct swig_ruby_wrapped_object *)RTYPEDDATA_GET_DATA(self))->data = result;
+  return self;
+fail:
+  return Qnil;
+}
+
+
+SWIGINTERN VALUE
+#ifdef HAVE_RB_DEFINE_ALLOC_FUNC
+_wrap_RGB_allocate(VALUE self)
+#else
+_wrap_RGB_allocate(int argc, VALUE *argv, VALUE self)
+#endif
+{
+  VALUE vresult = SWIG_NewClassInstance(self, SWIGTYPE_p_datamunge__graphics__RGB);
+#ifndef HAVE_RB_DEFINE_ALLOC_FUNC
+  rb_obj_call_init(vresult, argc, argv);
+#endif
+  return vresult;
+}
+
+
+SWIGINTERN VALUE
+_wrap_new_RGB__SWIG_5(int argc, VALUE *argv, VALUE self) {
+  std::string *arg1 = 0 ;
+  int res1 = SWIG_OLDOBJ ;
+  const char *classname SWIGUNUSED = "Octruby::RGB";
+  datamunge::graphics::RGB *result = 0 ;
+  
+  if ((argc < 1) || (argc > 1)) {
+    rb_raise(rb_eArgError, "wrong # of arguments(%d for 1)",argc); SWIG_fail;
+  }
+  {
+    std::string *ptr = (std::string *)0;
+    res1 = SWIG_AsPtr_std_string(argv[0], &ptr);
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "std::string const &","RGB", 1, argv[0] )); 
+    }
+    if (!ptr) {
+      SWIG_exception_fail(SWIG_NullReferenceError, Ruby_Format_TypeError("invalid null reference ", "std::string const &","RGB", 1, argv[0])); 
+    }
+    arg1 = ptr;
+  }
+  result = (datamunge::graphics::RGB *)new datamunge::graphics::RGB((std::string const &)*arg1);
+  ((struct swig_ruby_wrapped_object *)RTYPEDDATA_GET_DATA(self))->data = result;
+  if (SWIG_IsNewObj(res1)) delete arg1;
+  return self;
+fail:
+  if (SWIG_IsNewObj(res1)) delete arg1;
   return Qnil;
 }
 
@@ -88121,6 +90849,40 @@ SWIGINTERN VALUE _wrap_new_RGB(int nargs, VALUE *args, VALUE self) {
   }
   if (argc == 0) {
     return _wrap_new_RGB__SWIG_0(nargs, args, self);
+  }
+  if (argc == 1) {
+    int _v = 0;
+    {
+      int res = SWIG_AsVal_int(argv[0], NULL);
+      _v = SWIG_CheckState(res);
+    }
+    if (_v) {
+      return _wrap_new_RGB__SWIG_3(nargs, args, self);
+    }
+  }
+  if (argc == 1) {
+    int _v = 0;
+    int res = SWIG_AsPtr_std_string(argv[0], (std::string**)(0));
+    _v = SWIG_CheckState(res);
+    if (_v) {
+      return _wrap_new_RGB__SWIG_5(nargs, args, self);
+    }
+  }
+  if (argc == 2) {
+    int _v = 0;
+    {
+      int res = SWIG_AsVal_int(argv[0], NULL);
+      _v = SWIG_CheckState(res);
+    }
+    if (_v) {
+      {
+        int res = SWIG_AsVal_int(argv[1], NULL);
+        _v = SWIG_CheckState(res);
+      }
+      if (_v) {
+        return _wrap_new_RGB__SWIG_4(nargs, args, self);
+      }
+    }
   }
   if (argc == 3) {
     int _v = 0;
@@ -88176,15 +90938,18 @@ SWIGINTERN VALUE _wrap_new_RGB(int nargs, VALUE *args, VALUE self) {
 fail:
   Ruby_Format_OverloadedError( argc, 4, "RGB.new", 
     "    RGB.new()\n"
-    "    RGB.new(int r, int g, int b, double alpha)\n"
-    "    RGB.new(int r, int g, int b)\n");
+    "    RGB.new(int red, int green, int blue, double opacity)\n"
+    "    RGB.new(int red, int green, int blue)\n"
+    "    RGB.new(int red)\n"
+    "    RGB.new(int red, int green)\n"
+    "    RGB.new(std::string const &color)\n");
   
   return Qnil;
 }
 
 
 SWIGINTERN void
-free_datamunge_plot_RGB(void *self) {
+free_datamunge_graphics_RGB(void *self) {
     datamunge::graphics::RGB *arg1 = (datamunge::graphics::RGB *)self;
     delete arg1;
 }
@@ -88203,7 +90968,7 @@ _wrap_DataSeries_kind_set(int argc, VALUE *argv, VALUE self) {
   if ((argc < 1) || (argc > 1)) {
     rb_raise(rb_eArgError, "wrong # of arguments(%d for 1)",argc); SWIG_fail;
   }
-  res1 = SWIG_ConvertPtr(self, &argp1,SWIGTYPE_p_datamunge__plot__DataSeries, 0 |  0 );
+  res1 = SWIG_ConvertPtr(self, &argp1,SWIGTYPE_p_datamunge__graphics__DataSeries, 0 |  0 );
   if (!SWIG_IsOK(res1)) {
     SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::graphics::DataSeries *","kind", 1, self )); 
   }
@@ -88231,7 +90996,7 @@ _wrap_DataSeries_kind_get(int argc, VALUE *argv, VALUE self) {
   if ((argc < 0) || (argc > 0)) {
     rb_raise(rb_eArgError, "wrong # of arguments(%d for 0)",argc); SWIG_fail;
   }
-  res1 = SWIG_ConvertPtr(self, &argp1,SWIGTYPE_p_datamunge__plot__DataSeries, 0 |  0 );
+  res1 = SWIG_ConvertPtr(self, &argp1,SWIGTYPE_p_datamunge__graphics__DataSeries, 0 |  0 );
   if (!SWIG_IsOK(res1)) {
     SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::graphics::DataSeries *","kind", 1, self )); 
   }
@@ -88256,7 +91021,7 @@ _wrap_DataSeries_x_set(int argc, VALUE *argv, VALUE self) {
   if ((argc < 1) || (argc > 1)) {
     rb_raise(rb_eArgError, "wrong # of arguments(%d for 1)",argc); SWIG_fail;
   }
-  res1 = SWIG_ConvertPtr(self, &argp1,SWIGTYPE_p_datamunge__plot__DataSeries, 0 |  0 );
+  res1 = SWIG_ConvertPtr(self, &argp1,SWIGTYPE_p_datamunge__graphics__DataSeries, 0 |  0 );
   if (!SWIG_IsOK(res1)) {
     SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::graphics::DataSeries *","x", 1, self )); 
   }
@@ -88284,7 +91049,7 @@ _wrap_DataSeries_x_get(int argc, VALUE *argv, VALUE self) {
   if ((argc < 0) || (argc > 0)) {
     rb_raise(rb_eArgError, "wrong # of arguments(%d for 0)",argc); SWIG_fail;
   }
-  res1 = SWIG_ConvertPtr(self, &argp1,SWIGTYPE_p_datamunge__plot__DataSeries, 0 |  0 );
+  res1 = SWIG_ConvertPtr(self, &argp1,SWIGTYPE_p_datamunge__graphics__DataSeries, 0 |  0 );
   if (!SWIG_IsOK(res1)) {
     SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::graphics::DataSeries *","x", 1, self )); 
   }
@@ -88309,7 +91074,7 @@ _wrap_DataSeries_y_set(int argc, VALUE *argv, VALUE self) {
   if ((argc < 1) || (argc > 1)) {
     rb_raise(rb_eArgError, "wrong # of arguments(%d for 1)",argc); SWIG_fail;
   }
-  res1 = SWIG_ConvertPtr(self, &argp1,SWIGTYPE_p_datamunge__plot__DataSeries, 0 |  0 );
+  res1 = SWIG_ConvertPtr(self, &argp1,SWIGTYPE_p_datamunge__graphics__DataSeries, 0 |  0 );
   if (!SWIG_IsOK(res1)) {
     SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::graphics::DataSeries *","y", 1, self )); 
   }
@@ -88337,7 +91102,7 @@ _wrap_DataSeries_y_get(int argc, VALUE *argv, VALUE self) {
   if ((argc < 0) || (argc > 0)) {
     rb_raise(rb_eArgError, "wrong # of arguments(%d for 0)",argc); SWIG_fail;
   }
-  res1 = SWIG_ConvertPtr(self, &argp1,SWIGTYPE_p_datamunge__plot__DataSeries, 0 |  0 );
+  res1 = SWIG_ConvertPtr(self, &argp1,SWIGTYPE_p_datamunge__graphics__DataSeries, 0 |  0 );
   if (!SWIG_IsOK(res1)) {
     SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::graphics::DataSeries *","y", 1, self )); 
   }
@@ -88361,7 +91126,7 @@ _wrap_DataSeries_label_set(int argc, VALUE *argv, VALUE self) {
   if ((argc < 1) || (argc > 1)) {
     rb_raise(rb_eArgError, "wrong # of arguments(%d for 1)",argc); SWIG_fail;
   }
-  res1 = SWIG_ConvertPtr(self, &argp1,SWIGTYPE_p_datamunge__plot__DataSeries, 0 |  0 );
+  res1 = SWIG_ConvertPtr(self, &argp1,SWIGTYPE_p_datamunge__graphics__DataSeries, 0 |  0 );
   if (!SWIG_IsOK(res1)) {
     SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::graphics::DataSeries *","label", 1, self )); 
   }
@@ -88397,7 +91162,7 @@ _wrap_DataSeries_label_get(int argc, VALUE *argv, VALUE self) {
   if ((argc < 0) || (argc > 0)) {
     rb_raise(rb_eArgError, "wrong # of arguments(%d for 0)",argc); SWIG_fail;
   }
-  res1 = SWIG_ConvertPtr(self, &argp1,SWIGTYPE_p_datamunge__plot__DataSeries, 0 |  0 );
+  res1 = SWIG_ConvertPtr(self, &argp1,SWIGTYPE_p_datamunge__graphics__DataSeries, 0 |  0 );
   if (!SWIG_IsOK(res1)) {
     SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::graphics::DataSeries *","label", 1, self )); 
   }
@@ -88413,7 +91178,7 @@ fail:
 SWIGINTERN VALUE
 _wrap_DataSeries_color_set(int argc, VALUE *argv, VALUE self) {
   datamunge::graphics::DataSeries *arg1 = 0 ;
-  datamunge::graphics::RGB *arg2 = 0 ;
+  datamunge::graphics::RGBA *arg2 = 0 ;
   void *argp1 = 0 ;
   int res1 = 0 ;
   void *argp2 = 0 ;
@@ -88422,16 +91187,16 @@ _wrap_DataSeries_color_set(int argc, VALUE *argv, VALUE self) {
   if ((argc < 1) || (argc > 1)) {
     rb_raise(rb_eArgError, "wrong # of arguments(%d for 1)",argc); SWIG_fail;
   }
-  res1 = SWIG_ConvertPtr(self, &argp1,SWIGTYPE_p_datamunge__plot__DataSeries, 0 |  0 );
+  res1 = SWIG_ConvertPtr(self, &argp1,SWIGTYPE_p_datamunge__graphics__DataSeries, 0 |  0 );
   if (!SWIG_IsOK(res1)) {
     SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::graphics::DataSeries *","color", 1, self )); 
   }
   arg1 = reinterpret_cast< datamunge::graphics::DataSeries * >(argp1);
-  res2 = SWIG_ConvertPtr(argv[0], &argp2,SWIGTYPE_p_datamunge__plot__RGB, 0 |  0 );
+  res2 = SWIG_ConvertPtr(argv[0], &argp2,SWIGTYPE_p_datamunge__graphics__RGB, 0 |  0 );
   if (!SWIG_IsOK(res2)) {
-    SWIG_exception_fail(SWIG_ArgError(res2), Ruby_Format_TypeError( "", "datamunge::graphics::RGB *","color", 2, argv[0] )); 
+    SWIG_exception_fail(SWIG_ArgError(res2), Ruby_Format_TypeError( "", "datamunge::graphics::RGBA *","color", 2, argv[0] )); 
   }
-  arg2 = reinterpret_cast< datamunge::graphics::RGB * >(argp2);
+  arg2 = reinterpret_cast< datamunge::graphics::RGBA * >(argp2);
   if (arg1) (arg1)->color = *arg2;
   return Qnil;
 fail:
@@ -88444,19 +91209,19 @@ _wrap_DataSeries_color_get(int argc, VALUE *argv, VALUE self) {
   datamunge::graphics::DataSeries *arg1 = 0 ;
   void *argp1 = 0 ;
   int res1 = 0 ;
-  datamunge::graphics::RGB *result = 0 ;
+  datamunge::graphics::RGBA *result = 0 ;
   VALUE vresult = Qnil;
   
   if ((argc < 0) || (argc > 0)) {
     rb_raise(rb_eArgError, "wrong # of arguments(%d for 0)",argc); SWIG_fail;
   }
-  res1 = SWIG_ConvertPtr(self, &argp1,SWIGTYPE_p_datamunge__plot__DataSeries, 0 |  0 );
+  res1 = SWIG_ConvertPtr(self, &argp1,SWIGTYPE_p_datamunge__graphics__DataSeries, 0 |  0 );
   if (!SWIG_IsOK(res1)) {
     SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::graphics::DataSeries *","color", 1, self )); 
   }
   arg1 = reinterpret_cast< datamunge::graphics::DataSeries * >(argp1);
-  result = (datamunge::graphics::RGB *)& ((arg1)->color);
-  vresult = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__plot__RGB, 0 |  0 );
+  result = (datamunge::graphics::RGBA *)& ((arg1)->color);
+  vresult = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__graphics__RGB, 0 |  0 );
   return vresult;
 fail:
   return Qnil;
@@ -88475,7 +91240,7 @@ _wrap_DataSeries_stroke_width_set(int argc, VALUE *argv, VALUE self) {
   if ((argc < 1) || (argc > 1)) {
     rb_raise(rb_eArgError, "wrong # of arguments(%d for 1)",argc); SWIG_fail;
   }
-  res1 = SWIG_ConvertPtr(self, &argp1,SWIGTYPE_p_datamunge__plot__DataSeries, 0 |  0 );
+  res1 = SWIG_ConvertPtr(self, &argp1,SWIGTYPE_p_datamunge__graphics__DataSeries, 0 |  0 );
   if (!SWIG_IsOK(res1)) {
     SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::graphics::DataSeries *","stroke_width", 1, self )); 
   }
@@ -88503,7 +91268,7 @@ _wrap_DataSeries_stroke_width_get(int argc, VALUE *argv, VALUE self) {
   if ((argc < 0) || (argc > 0)) {
     rb_raise(rb_eArgError, "wrong # of arguments(%d for 0)",argc); SWIG_fail;
   }
-  res1 = SWIG_ConvertPtr(self, &argp1,SWIGTYPE_p_datamunge__plot__DataSeries, 0 |  0 );
+  res1 = SWIG_ConvertPtr(self, &argp1,SWIGTYPE_p_datamunge__graphics__DataSeries, 0 |  0 );
   if (!SWIG_IsOK(res1)) {
     SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::graphics::DataSeries *","stroke_width", 1, self )); 
   }
@@ -88528,7 +91293,7 @@ _wrap_DataSeries_marker_size_set(int argc, VALUE *argv, VALUE self) {
   if ((argc < 1) || (argc > 1)) {
     rb_raise(rb_eArgError, "wrong # of arguments(%d for 1)",argc); SWIG_fail;
   }
-  res1 = SWIG_ConvertPtr(self, &argp1,SWIGTYPE_p_datamunge__plot__DataSeries, 0 |  0 );
+  res1 = SWIG_ConvertPtr(self, &argp1,SWIGTYPE_p_datamunge__graphics__DataSeries, 0 |  0 );
   if (!SWIG_IsOK(res1)) {
     SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::graphics::DataSeries *","marker_size", 1, self )); 
   }
@@ -88556,7 +91321,7 @@ _wrap_DataSeries_marker_size_get(int argc, VALUE *argv, VALUE self) {
   if ((argc < 0) || (argc > 0)) {
     rb_raise(rb_eArgError, "wrong # of arguments(%d for 0)",argc); SWIG_fail;
   }
-  res1 = SWIG_ConvertPtr(self, &argp1,SWIGTYPE_p_datamunge__plot__DataSeries, 0 |  0 );
+  res1 = SWIG_ConvertPtr(self, &argp1,SWIGTYPE_p_datamunge__graphics__DataSeries, 0 |  0 );
   if (!SWIG_IsOK(res1)) {
     SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::graphics::DataSeries *","marker_size", 1, self )); 
   }
@@ -88581,7 +91346,7 @@ _wrap_DataSeries_bar_width_set(int argc, VALUE *argv, VALUE self) {
   if ((argc < 1) || (argc > 1)) {
     rb_raise(rb_eArgError, "wrong # of arguments(%d for 1)",argc); SWIG_fail;
   }
-  res1 = SWIG_ConvertPtr(self, &argp1,SWIGTYPE_p_datamunge__plot__DataSeries, 0 |  0 );
+  res1 = SWIG_ConvertPtr(self, &argp1,SWIGTYPE_p_datamunge__graphics__DataSeries, 0 |  0 );
   if (!SWIG_IsOK(res1)) {
     SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::graphics::DataSeries *","bar_width", 1, self )); 
   }
@@ -88609,7 +91374,7 @@ _wrap_DataSeries_bar_width_get(int argc, VALUE *argv, VALUE self) {
   if ((argc < 0) || (argc > 0)) {
     rb_raise(rb_eArgError, "wrong # of arguments(%d for 0)",argc); SWIG_fail;
   }
-  res1 = SWIG_ConvertPtr(self, &argp1,SWIGTYPE_p_datamunge__plot__DataSeries, 0 |  0 );
+  res1 = SWIG_ConvertPtr(self, &argp1,SWIGTYPE_p_datamunge__graphics__DataSeries, 0 |  0 );
   if (!SWIG_IsOK(res1)) {
     SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::graphics::DataSeries *","bar_width", 1, self )); 
   }
@@ -88634,7 +91399,7 @@ _wrap_DataSeries_filled_set(int argc, VALUE *argv, VALUE self) {
   if ((argc < 1) || (argc > 1)) {
     rb_raise(rb_eArgError, "wrong # of arguments(%d for 1)",argc); SWIG_fail;
   }
-  res1 = SWIG_ConvertPtr(self, &argp1,SWIGTYPE_p_datamunge__plot__DataSeries, 0 |  0 );
+  res1 = SWIG_ConvertPtr(self, &argp1,SWIGTYPE_p_datamunge__graphics__DataSeries, 0 |  0 );
   if (!SWIG_IsOK(res1)) {
     SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::graphics::DataSeries *","filled", 1, self )); 
   }
@@ -88662,7 +91427,7 @@ _wrap_DataSeries_filled_get(int argc, VALUE *argv, VALUE self) {
   if ((argc < 0) || (argc > 0)) {
     rb_raise(rb_eArgError, "wrong # of arguments(%d for 0)",argc); SWIG_fail;
   }
-  res1 = SWIG_ConvertPtr(self, &argp1,SWIGTYPE_p_datamunge__plot__DataSeries, 0 |  0 );
+  res1 = SWIG_ConvertPtr(self, &argp1,SWIGTYPE_p_datamunge__graphics__DataSeries, 0 |  0 );
   if (!SWIG_IsOK(res1)) {
     SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::graphics::DataSeries *","filled", 1, self )); 
   }
@@ -88676,13 +91441,66 @@ fail:
 
 
 SWIGINTERN VALUE
+_wrap_DataSeries_point_colors_set(int argc, VALUE *argv, VALUE self) {
+  datamunge::graphics::DataSeries *arg1 = 0 ;
+  std::vector< datamunge::graphics::RGBA,std::allocator< datamunge::graphics::RGBA > > *arg2 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  void *argp2 = 0 ;
+  int res2 = 0 ;
+  
+  if ((argc < 1) || (argc > 1)) {
+    rb_raise(rb_eArgError, "wrong # of arguments(%d for 1)",argc); SWIG_fail;
+  }
+  res1 = SWIG_ConvertPtr(self, &argp1,SWIGTYPE_p_datamunge__graphics__DataSeries, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::graphics::DataSeries *","point_colors", 1, self )); 
+  }
+  arg1 = reinterpret_cast< datamunge::graphics::DataSeries * >(argp1);
+  res2 = SWIG_ConvertPtr(argv[0], &argp2,SWIGTYPE_p_std__vectorT_datamunge__graphics__RGB_std__allocatorT_datamunge__graphics__RGB_t_t, 0 |  0 );
+  if (!SWIG_IsOK(res2)) {
+    SWIG_exception_fail(SWIG_ArgError(res2), Ruby_Format_TypeError( "", "std::vector< datamunge::graphics::RGBA,std::allocator< datamunge::graphics::RGBA > > *","point_colors", 2, argv[0] )); 
+  }
+  arg2 = reinterpret_cast< std::vector< datamunge::graphics::RGBA,std::allocator< datamunge::graphics::RGBA > > * >(argp2);
+  if (arg1) (arg1)->point_colors = *arg2;
+  return Qnil;
+fail:
+  return Qnil;
+}
+
+
+SWIGINTERN VALUE
+_wrap_DataSeries_point_colors_get(int argc, VALUE *argv, VALUE self) {
+  datamunge::graphics::DataSeries *arg1 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  std::vector< datamunge::graphics::RGBA,std::allocator< datamunge::graphics::RGBA > > *result = 0 ;
+  VALUE vresult = Qnil;
+  
+  if ((argc < 0) || (argc > 0)) {
+    rb_raise(rb_eArgError, "wrong # of arguments(%d for 0)",argc); SWIG_fail;
+  }
+  res1 = SWIG_ConvertPtr(self, &argp1,SWIGTYPE_p_datamunge__graphics__DataSeries, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::graphics::DataSeries *","point_colors", 1, self )); 
+  }
+  arg1 = reinterpret_cast< datamunge::graphics::DataSeries * >(argp1);
+  result = (std::vector< datamunge::graphics::RGBA,std::allocator< datamunge::graphics::RGBA > > *)& ((arg1)->point_colors);
+  vresult = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_std__vectorT_datamunge__graphics__RGB_std__allocatorT_datamunge__graphics__RGB_t_t, 0 |  0 );
+  return vresult;
+fail:
+  return Qnil;
+}
+
+
+SWIGINTERN VALUE
 #ifdef HAVE_RB_DEFINE_ALLOC_FUNC
 _wrap_DataSeries_allocate(VALUE self)
 #else
 _wrap_DataSeries_allocate(int argc, VALUE *argv, VALUE self)
 #endif
 {
-  VALUE vresult = SWIG_NewClassInstance(self, SWIGTYPE_p_datamunge__plot__DataSeries);
+  VALUE vresult = SWIG_NewClassInstance(self, SWIGTYPE_p_datamunge__graphics__DataSeries);
 #ifndef HAVE_RB_DEFINE_ALLOC_FUNC
   rb_obj_call_init(vresult, argc, argv);
 #endif
@@ -88707,7 +91525,7 @@ fail:
 
 
 SWIGINTERN void
-free_datamunge_plot_DataSeries(void *self) {
+free_datamunge_graphics_DataSeries(void *self) {
     datamunge::graphics::DataSeries *arg1 = (datamunge::graphics::DataSeries *)self;
     delete arg1;
 }
@@ -88726,7 +91544,7 @@ _wrap_ABLine_vertical_set(int argc, VALUE *argv, VALUE self) {
   if ((argc < 1) || (argc > 1)) {
     rb_raise(rb_eArgError, "wrong # of arguments(%d for 1)",argc); SWIG_fail;
   }
-  res1 = SWIG_ConvertPtr(self, &argp1,SWIGTYPE_p_datamunge__plot__ABLine, 0 |  0 );
+  res1 = SWIG_ConvertPtr(self, &argp1,SWIGTYPE_p_datamunge__graphics__ABLine, 0 |  0 );
   if (!SWIG_IsOK(res1)) {
     SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::graphics::ABLine *","vertical", 1, self )); 
   }
@@ -88754,7 +91572,7 @@ _wrap_ABLine_vertical_get(int argc, VALUE *argv, VALUE self) {
   if ((argc < 0) || (argc > 0)) {
     rb_raise(rb_eArgError, "wrong # of arguments(%d for 0)",argc); SWIG_fail;
   }
-  res1 = SWIG_ConvertPtr(self, &argp1,SWIGTYPE_p_datamunge__plot__ABLine, 0 |  0 );
+  res1 = SWIG_ConvertPtr(self, &argp1,SWIGTYPE_p_datamunge__graphics__ABLine, 0 |  0 );
   if (!SWIG_IsOK(res1)) {
     SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::graphics::ABLine *","vertical", 1, self )); 
   }
@@ -88779,7 +91597,7 @@ _wrap_ABLine_value_set(int argc, VALUE *argv, VALUE self) {
   if ((argc < 1) || (argc > 1)) {
     rb_raise(rb_eArgError, "wrong # of arguments(%d for 1)",argc); SWIG_fail;
   }
-  res1 = SWIG_ConvertPtr(self, &argp1,SWIGTYPE_p_datamunge__plot__ABLine, 0 |  0 );
+  res1 = SWIG_ConvertPtr(self, &argp1,SWIGTYPE_p_datamunge__graphics__ABLine, 0 |  0 );
   if (!SWIG_IsOK(res1)) {
     SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::graphics::ABLine *","value", 1, self )); 
   }
@@ -88807,7 +91625,7 @@ _wrap_ABLine_value_get(int argc, VALUE *argv, VALUE self) {
   if ((argc < 0) || (argc > 0)) {
     rb_raise(rb_eArgError, "wrong # of arguments(%d for 0)",argc); SWIG_fail;
   }
-  res1 = SWIG_ConvertPtr(self, &argp1,SWIGTYPE_p_datamunge__plot__ABLine, 0 |  0 );
+  res1 = SWIG_ConvertPtr(self, &argp1,SWIGTYPE_p_datamunge__graphics__ABLine, 0 |  0 );
   if (!SWIG_IsOK(res1)) {
     SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::graphics::ABLine *","value", 1, self )); 
   }
@@ -88832,7 +91650,7 @@ _wrap_ABLine_slope_set(int argc, VALUE *argv, VALUE self) {
   if ((argc < 1) || (argc > 1)) {
     rb_raise(rb_eArgError, "wrong # of arguments(%d for 1)",argc); SWIG_fail;
   }
-  res1 = SWIG_ConvertPtr(self, &argp1,SWIGTYPE_p_datamunge__plot__ABLine, 0 |  0 );
+  res1 = SWIG_ConvertPtr(self, &argp1,SWIGTYPE_p_datamunge__graphics__ABLine, 0 |  0 );
   if (!SWIG_IsOK(res1)) {
     SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::graphics::ABLine *","slope", 1, self )); 
   }
@@ -88860,7 +91678,7 @@ _wrap_ABLine_slope_get(int argc, VALUE *argv, VALUE self) {
   if ((argc < 0) || (argc > 0)) {
     rb_raise(rb_eArgError, "wrong # of arguments(%d for 0)",argc); SWIG_fail;
   }
-  res1 = SWIG_ConvertPtr(self, &argp1,SWIGTYPE_p_datamunge__plot__ABLine, 0 |  0 );
+  res1 = SWIG_ConvertPtr(self, &argp1,SWIGTYPE_p_datamunge__graphics__ABLine, 0 |  0 );
   if (!SWIG_IsOK(res1)) {
     SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::graphics::ABLine *","slope", 1, self )); 
   }
@@ -88876,7 +91694,7 @@ fail:
 SWIGINTERN VALUE
 _wrap_ABLine_color_set(int argc, VALUE *argv, VALUE self) {
   datamunge::graphics::ABLine *arg1 = 0 ;
-  datamunge::graphics::RGB *arg2 = 0 ;
+  datamunge::graphics::RGBA *arg2 = 0 ;
   void *argp1 = 0 ;
   int res1 = 0 ;
   void *argp2 = 0 ;
@@ -88885,16 +91703,16 @@ _wrap_ABLine_color_set(int argc, VALUE *argv, VALUE self) {
   if ((argc < 1) || (argc > 1)) {
     rb_raise(rb_eArgError, "wrong # of arguments(%d for 1)",argc); SWIG_fail;
   }
-  res1 = SWIG_ConvertPtr(self, &argp1,SWIGTYPE_p_datamunge__plot__ABLine, 0 |  0 );
+  res1 = SWIG_ConvertPtr(self, &argp1,SWIGTYPE_p_datamunge__graphics__ABLine, 0 |  0 );
   if (!SWIG_IsOK(res1)) {
     SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::graphics::ABLine *","color", 1, self )); 
   }
   arg1 = reinterpret_cast< datamunge::graphics::ABLine * >(argp1);
-  res2 = SWIG_ConvertPtr(argv[0], &argp2,SWIGTYPE_p_datamunge__plot__RGB, 0 |  0 );
+  res2 = SWIG_ConvertPtr(argv[0], &argp2,SWIGTYPE_p_datamunge__graphics__RGB, 0 |  0 );
   if (!SWIG_IsOK(res2)) {
-    SWIG_exception_fail(SWIG_ArgError(res2), Ruby_Format_TypeError( "", "datamunge::graphics::RGB *","color", 2, argv[0] )); 
+    SWIG_exception_fail(SWIG_ArgError(res2), Ruby_Format_TypeError( "", "datamunge::graphics::RGBA *","color", 2, argv[0] )); 
   }
-  arg2 = reinterpret_cast< datamunge::graphics::RGB * >(argp2);
+  arg2 = reinterpret_cast< datamunge::graphics::RGBA * >(argp2);
   if (arg1) (arg1)->color = *arg2;
   return Qnil;
 fail:
@@ -88907,19 +91725,19 @@ _wrap_ABLine_color_get(int argc, VALUE *argv, VALUE self) {
   datamunge::graphics::ABLine *arg1 = 0 ;
   void *argp1 = 0 ;
   int res1 = 0 ;
-  datamunge::graphics::RGB *result = 0 ;
+  datamunge::graphics::RGBA *result = 0 ;
   VALUE vresult = Qnil;
   
   if ((argc < 0) || (argc > 0)) {
     rb_raise(rb_eArgError, "wrong # of arguments(%d for 0)",argc); SWIG_fail;
   }
-  res1 = SWIG_ConvertPtr(self, &argp1,SWIGTYPE_p_datamunge__plot__ABLine, 0 |  0 );
+  res1 = SWIG_ConvertPtr(self, &argp1,SWIGTYPE_p_datamunge__graphics__ABLine, 0 |  0 );
   if (!SWIG_IsOK(res1)) {
     SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::graphics::ABLine *","color", 1, self )); 
   }
   arg1 = reinterpret_cast< datamunge::graphics::ABLine * >(argp1);
-  result = (datamunge::graphics::RGB *)& ((arg1)->color);
-  vresult = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__plot__RGB, 0 |  0 );
+  result = (datamunge::graphics::RGBA *)& ((arg1)->color);
+  vresult = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__graphics__RGB, 0 |  0 );
   return vresult;
 fail:
   return Qnil;
@@ -88938,7 +91756,7 @@ _wrap_ABLine_stroke_width_set(int argc, VALUE *argv, VALUE self) {
   if ((argc < 1) || (argc > 1)) {
     rb_raise(rb_eArgError, "wrong # of arguments(%d for 1)",argc); SWIG_fail;
   }
-  res1 = SWIG_ConvertPtr(self, &argp1,SWIGTYPE_p_datamunge__plot__ABLine, 0 |  0 );
+  res1 = SWIG_ConvertPtr(self, &argp1,SWIGTYPE_p_datamunge__graphics__ABLine, 0 |  0 );
   if (!SWIG_IsOK(res1)) {
     SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::graphics::ABLine *","stroke_width", 1, self )); 
   }
@@ -88966,7 +91784,7 @@ _wrap_ABLine_stroke_width_get(int argc, VALUE *argv, VALUE self) {
   if ((argc < 0) || (argc > 0)) {
     rb_raise(rb_eArgError, "wrong # of arguments(%d for 0)",argc); SWIG_fail;
   }
-  res1 = SWIG_ConvertPtr(self, &argp1,SWIGTYPE_p_datamunge__plot__ABLine, 0 |  0 );
+  res1 = SWIG_ConvertPtr(self, &argp1,SWIGTYPE_p_datamunge__graphics__ABLine, 0 |  0 );
   if (!SWIG_IsOK(res1)) {
     SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::graphics::ABLine *","stroke_width", 1, self )); 
   }
@@ -88986,7 +91804,7 @@ _wrap_ABLine_allocate(VALUE self)
 _wrap_ABLine_allocate(int argc, VALUE *argv, VALUE self)
 #endif
 {
-  VALUE vresult = SWIG_NewClassInstance(self, SWIGTYPE_p_datamunge__plot__ABLine);
+  VALUE vresult = SWIG_NewClassInstance(self, SWIGTYPE_p_datamunge__graphics__ABLine);
 #ifndef HAVE_RB_DEFINE_ALLOC_FUNC
   rb_obj_call_init(vresult, argc, argv);
 #endif
@@ -89011,7 +91829,7 @@ fail:
 
 
 SWIGINTERN void
-free_datamunge_plot_ABLine(void *self) {
+free_datamunge_graphics_ABLine(void *self) {
     datamunge::graphics::ABLine *arg1 = (datamunge::graphics::ABLine *)self;
     delete arg1;
 }
@@ -89029,7 +91847,7 @@ _wrap_LegendEntry_label_set(int argc, VALUE *argv, VALUE self) {
   if ((argc < 1) || (argc > 1)) {
     rb_raise(rb_eArgError, "wrong # of arguments(%d for 1)",argc); SWIG_fail;
   }
-  res1 = SWIG_ConvertPtr(self, &argp1,SWIGTYPE_p_datamunge__plot__LegendEntry, 0 |  0 );
+  res1 = SWIG_ConvertPtr(self, &argp1,SWIGTYPE_p_datamunge__graphics__LegendEntry, 0 |  0 );
   if (!SWIG_IsOK(res1)) {
     SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::graphics::LegendEntry *","label", 1, self )); 
   }
@@ -89065,7 +91883,7 @@ _wrap_LegendEntry_label_get(int argc, VALUE *argv, VALUE self) {
   if ((argc < 0) || (argc > 0)) {
     rb_raise(rb_eArgError, "wrong # of arguments(%d for 0)",argc); SWIG_fail;
   }
-  res1 = SWIG_ConvertPtr(self, &argp1,SWIGTYPE_p_datamunge__plot__LegendEntry, 0 |  0 );
+  res1 = SWIG_ConvertPtr(self, &argp1,SWIGTYPE_p_datamunge__graphics__LegendEntry, 0 |  0 );
   if (!SWIG_IsOK(res1)) {
     SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::graphics::LegendEntry *","label", 1, self )); 
   }
@@ -89081,7 +91899,7 @@ fail:
 SWIGINTERN VALUE
 _wrap_LegendEntry_color_set(int argc, VALUE *argv, VALUE self) {
   datamunge::graphics::LegendEntry *arg1 = 0 ;
-  datamunge::graphics::RGB *arg2 = 0 ;
+  datamunge::graphics::RGBA *arg2 = 0 ;
   void *argp1 = 0 ;
   int res1 = 0 ;
   void *argp2 = 0 ;
@@ -89090,16 +91908,16 @@ _wrap_LegendEntry_color_set(int argc, VALUE *argv, VALUE self) {
   if ((argc < 1) || (argc > 1)) {
     rb_raise(rb_eArgError, "wrong # of arguments(%d for 1)",argc); SWIG_fail;
   }
-  res1 = SWIG_ConvertPtr(self, &argp1,SWIGTYPE_p_datamunge__plot__LegendEntry, 0 |  0 );
+  res1 = SWIG_ConvertPtr(self, &argp1,SWIGTYPE_p_datamunge__graphics__LegendEntry, 0 |  0 );
   if (!SWIG_IsOK(res1)) {
     SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::graphics::LegendEntry *","color", 1, self )); 
   }
   arg1 = reinterpret_cast< datamunge::graphics::LegendEntry * >(argp1);
-  res2 = SWIG_ConvertPtr(argv[0], &argp2,SWIGTYPE_p_datamunge__plot__RGB, 0 |  0 );
+  res2 = SWIG_ConvertPtr(argv[0], &argp2,SWIGTYPE_p_datamunge__graphics__RGB, 0 |  0 );
   if (!SWIG_IsOK(res2)) {
-    SWIG_exception_fail(SWIG_ArgError(res2), Ruby_Format_TypeError( "", "datamunge::graphics::RGB *","color", 2, argv[0] )); 
+    SWIG_exception_fail(SWIG_ArgError(res2), Ruby_Format_TypeError( "", "datamunge::graphics::RGBA *","color", 2, argv[0] )); 
   }
-  arg2 = reinterpret_cast< datamunge::graphics::RGB * >(argp2);
+  arg2 = reinterpret_cast< datamunge::graphics::RGBA * >(argp2);
   if (arg1) (arg1)->color = *arg2;
   return Qnil;
 fail:
@@ -89112,19 +91930,19 @@ _wrap_LegendEntry_color_get(int argc, VALUE *argv, VALUE self) {
   datamunge::graphics::LegendEntry *arg1 = 0 ;
   void *argp1 = 0 ;
   int res1 = 0 ;
-  datamunge::graphics::RGB *result = 0 ;
+  datamunge::graphics::RGBA *result = 0 ;
   VALUE vresult = Qnil;
   
   if ((argc < 0) || (argc > 0)) {
     rb_raise(rb_eArgError, "wrong # of arguments(%d for 0)",argc); SWIG_fail;
   }
-  res1 = SWIG_ConvertPtr(self, &argp1,SWIGTYPE_p_datamunge__plot__LegendEntry, 0 |  0 );
+  res1 = SWIG_ConvertPtr(self, &argp1,SWIGTYPE_p_datamunge__graphics__LegendEntry, 0 |  0 );
   if (!SWIG_IsOK(res1)) {
     SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::graphics::LegendEntry *","color", 1, self )); 
   }
   arg1 = reinterpret_cast< datamunge::graphics::LegendEntry * >(argp1);
-  result = (datamunge::graphics::RGB *)& ((arg1)->color);
-  vresult = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__plot__RGB, 0 |  0 );
+  result = (datamunge::graphics::RGBA *)& ((arg1)->color);
+  vresult = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__graphics__RGB, 0 |  0 );
   return vresult;
 fail:
   return Qnil;
@@ -89138,7 +91956,7 @@ _wrap_LegendEntry_allocate(VALUE self)
 _wrap_LegendEntry_allocate(int argc, VALUE *argv, VALUE self)
 #endif
 {
-  VALUE vresult = SWIG_NewClassInstance(self, SWIGTYPE_p_datamunge__plot__LegendEntry);
+  VALUE vresult = SWIG_NewClassInstance(self, SWIGTYPE_p_datamunge__graphics__LegendEntry);
 #ifndef HAVE_RB_DEFINE_ALLOC_FUNC
   rb_obj_call_init(vresult, argc, argv);
 #endif
@@ -89163,7 +91981,7 @@ fail:
 
 
 SWIGINTERN void
-free_datamunge_plot_LegendEntry(void *self) {
+free_datamunge_graphics_LegendEntry(void *self) {
     datamunge::graphics::LegendEntry *arg1 = (datamunge::graphics::LegendEntry *)self;
     delete arg1;
 }
@@ -89171,7 +91989,7 @@ free_datamunge_plot_LegendEntry(void *self) {
 static swig_class SwigClassPlot;
 
 SWIGINTERN void
-free_datamunge_plot_Plot(void *self) {
+free_datamunge_graphics_Plot(void *self) {
     datamunge::graphics::Plot *arg1 = (datamunge::graphics::Plot *)self;
     delete arg1;
 }
@@ -89201,7 +92019,7 @@ _wrap_Plot_size(int argc, VALUE *argv, VALUE self) {
   if ((argc < 2) || (argc > 2)) {
     rb_raise(rb_eArgError, "wrong # of arguments(%d for 2)",argc); SWIG_fail;
   }
-  res1 = SWIG_ConvertPtr(self, &argp1,SWIGTYPE_p_datamunge__plot__Plot, 0 |  0 );
+  res1 = SWIG_ConvertPtr(self, &argp1,SWIGTYPE_p_datamunge__graphics__Plot, 0 |  0 );
   if (!SWIG_IsOK(res1)) {
     SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::graphics::Plot *","size", 1, self )); 
   }
@@ -89217,7 +92035,7 @@ _wrap_Plot_size(int argc, VALUE *argv, VALUE self) {
   } 
   arg3 = static_cast< std::size_t >(val3);
   result = (datamunge::graphics::Plot *) &(arg1)->size(SWIG_STD_MOVE(*(&arg2)),SWIG_STD_MOVE(*(&arg3)));
-  vresult = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__plot__Plot, 0 |  0 );
+  vresult = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__graphics__Plot, 0 |  0 );
   return vresult;
 fail:
   return Qnil;
@@ -89236,7 +92054,7 @@ _wrap_Plot_title(int argc, VALUE *argv, VALUE self) {
   if ((argc < 1) || (argc > 1)) {
     rb_raise(rb_eArgError, "wrong # of arguments(%d for 1)",argc); SWIG_fail;
   }
-  res1 = SWIG_ConvertPtr(self, &argp1,SWIGTYPE_p_datamunge__plot__Plot, 0 |  0 );
+  res1 = SWIG_ConvertPtr(self, &argp1,SWIGTYPE_p_datamunge__graphics__Plot, 0 |  0 );
   if (!SWIG_IsOK(res1)) {
     SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::graphics::Plot *","title", 1, self )); 
   }
@@ -89251,7 +92069,41 @@ _wrap_Plot_title(int argc, VALUE *argv, VALUE self) {
     if (SWIG_IsNewObj(res)) delete ptr;
   }
   result = (datamunge::graphics::Plot *) &(arg1)->title(SWIG_STD_MOVE(*(&arg2)));
-  vresult = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__plot__Plot, 0 |  0 );
+  vresult = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__graphics__Plot, 0 |  0 );
+  return vresult;
+fail:
+  return Qnil;
+}
+
+
+SWIGINTERN VALUE
+_wrap_Plot_subtitle(int argc, VALUE *argv, VALUE self) {
+  datamunge::graphics::Plot *arg1 = 0 ;
+  std::string arg2 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  datamunge::graphics::Plot *result = 0 ;
+  VALUE vresult = Qnil;
+  
+  if ((argc < 1) || (argc > 1)) {
+    rb_raise(rb_eArgError, "wrong # of arguments(%d for 1)",argc); SWIG_fail;
+  }
+  res1 = SWIG_ConvertPtr(self, &argp1,SWIGTYPE_p_datamunge__graphics__Plot, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::graphics::Plot *","subtitle", 1, self )); 
+  }
+  arg1 = reinterpret_cast< datamunge::graphics::Plot * >(argp1);
+  {
+    std::string *ptr = (std::string *)0;
+    int res = SWIG_AsPtr_std_string(argv[0], &ptr);
+    if (!SWIG_IsOK(res) || !ptr) {
+      SWIG_exception_fail(SWIG_ArgError((ptr ? res : SWIG_TypeError)), Ruby_Format_TypeError( "", "std::string","subtitle", 2, argv[0] )); 
+    }
+    arg2 = *ptr;
+    if (SWIG_IsNewObj(res)) delete ptr;
+  }
+  result = (datamunge::graphics::Plot *) &(arg1)->subtitle(SWIG_STD_MOVE(*(&arg2)));
+  vresult = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__graphics__Plot, 0 |  0 );
   return vresult;
 fail:
   return Qnil;
@@ -89270,7 +92122,7 @@ _wrap_Plot_x_label(int argc, VALUE *argv, VALUE self) {
   if ((argc < 1) || (argc > 1)) {
     rb_raise(rb_eArgError, "wrong # of arguments(%d for 1)",argc); SWIG_fail;
   }
-  res1 = SWIG_ConvertPtr(self, &argp1,SWIGTYPE_p_datamunge__plot__Plot, 0 |  0 );
+  res1 = SWIG_ConvertPtr(self, &argp1,SWIGTYPE_p_datamunge__graphics__Plot, 0 |  0 );
   if (!SWIG_IsOK(res1)) {
     SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::graphics::Plot *","x_label", 1, self )); 
   }
@@ -89285,7 +92137,7 @@ _wrap_Plot_x_label(int argc, VALUE *argv, VALUE self) {
     if (SWIG_IsNewObj(res)) delete ptr;
   }
   result = (datamunge::graphics::Plot *) &(arg1)->x_label(SWIG_STD_MOVE(*(&arg2)));
-  vresult = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__plot__Plot, 0 |  0 );
+  vresult = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__graphics__Plot, 0 |  0 );
   return vresult;
 fail:
   return Qnil;
@@ -89304,7 +92156,7 @@ _wrap_Plot_y_label(int argc, VALUE *argv, VALUE self) {
   if ((argc < 1) || (argc > 1)) {
     rb_raise(rb_eArgError, "wrong # of arguments(%d for 1)",argc); SWIG_fail;
   }
-  res1 = SWIG_ConvertPtr(self, &argp1,SWIGTYPE_p_datamunge__plot__Plot, 0 |  0 );
+  res1 = SWIG_ConvertPtr(self, &argp1,SWIGTYPE_p_datamunge__graphics__Plot, 0 |  0 );
   if (!SWIG_IsOK(res1)) {
     SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::graphics::Plot *","y_label", 1, self )); 
   }
@@ -89319,7 +92171,7 @@ _wrap_Plot_y_label(int argc, VALUE *argv, VALUE self) {
     if (SWIG_IsNewObj(res)) delete ptr;
   }
   result = (datamunge::graphics::Plot *) &(arg1)->y_label(SWIG_STD_MOVE(*(&arg2)));
-  vresult = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__plot__Plot, 0 |  0 );
+  vresult = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__graphics__Plot, 0 |  0 );
   return vresult;
 fail:
   return Qnil;
@@ -89329,7 +92181,7 @@ fail:
 SWIGINTERN VALUE
 _wrap_Plot_background(int argc, VALUE *argv, VALUE self) {
   datamunge::graphics::Plot *arg1 = 0 ;
-  SwigValueWrapper< datamunge::graphics::RGB > arg2 ;
+  datamunge::graphics::RGBA arg2 ;
   void *argp1 = 0 ;
   int res1 = 0 ;
   void *argp2 = 0 ;
@@ -89340,24 +92192,24 @@ _wrap_Plot_background(int argc, VALUE *argv, VALUE self) {
   if ((argc < 1) || (argc > 1)) {
     rb_raise(rb_eArgError, "wrong # of arguments(%d for 1)",argc); SWIG_fail;
   }
-  res1 = SWIG_ConvertPtr(self, &argp1,SWIGTYPE_p_datamunge__plot__Plot, 0 |  0 );
+  res1 = SWIG_ConvertPtr(self, &argp1,SWIGTYPE_p_datamunge__graphics__Plot, 0 |  0 );
   if (!SWIG_IsOK(res1)) {
     SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::graphics::Plot *","background", 1, self )); 
   }
   arg1 = reinterpret_cast< datamunge::graphics::Plot * >(argp1);
   {
-    res2 = SWIG_ConvertPtr(argv[0], &argp2, SWIGTYPE_p_datamunge__plot__RGB,  0 );
+    res2 = SWIG_ConvertPtr(argv[0], &argp2, SWIGTYPE_p_datamunge__graphics__RGB,  0 );
     if (!SWIG_IsOK(res2)) {
-      SWIG_exception_fail(SWIG_ArgError(res2), Ruby_Format_TypeError( "", "datamunge::graphics::RGB","background", 2, argv[0] )); 
+      SWIG_exception_fail(SWIG_ArgError(res2), Ruby_Format_TypeError( "", "datamunge::graphics::RGBA","background", 2, argv[0] )); 
     }  
     if (!argp2) {
-      SWIG_exception_fail(SWIG_NullReferenceError, Ruby_Format_TypeError("invalid null reference ", "datamunge::graphics::RGB","background", 2, argv[0]));
+      SWIG_exception_fail(SWIG_NullReferenceError, Ruby_Format_TypeError("invalid null reference ", "datamunge::graphics::RGBA","background", 2, argv[0]));
     } else {
-      arg2 = *(reinterpret_cast< datamunge::graphics::RGB * >(argp2));
+      arg2 = *(reinterpret_cast< datamunge::graphics::RGBA * >(argp2));
     }
   }
   result = (datamunge::graphics::Plot *) &(arg1)->background(SWIG_STD_MOVE(*(&arg2)));
-  vresult = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__plot__Plot, 0 |  0 );
+  vresult = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__graphics__Plot, 0 |  0 );
   return vresult;
 fail:
   return Qnil;
@@ -89367,7 +92219,7 @@ fail:
 SWIGINTERN VALUE
 _wrap_Plot_axis_color(int argc, VALUE *argv, VALUE self) {
   datamunge::graphics::Plot *arg1 = 0 ;
-  SwigValueWrapper< datamunge::graphics::RGB > arg2 ;
+  datamunge::graphics::RGBA arg2 ;
   void *argp1 = 0 ;
   int res1 = 0 ;
   void *argp2 = 0 ;
@@ -89378,24 +92230,24 @@ _wrap_Plot_axis_color(int argc, VALUE *argv, VALUE self) {
   if ((argc < 1) || (argc > 1)) {
     rb_raise(rb_eArgError, "wrong # of arguments(%d for 1)",argc); SWIG_fail;
   }
-  res1 = SWIG_ConvertPtr(self, &argp1,SWIGTYPE_p_datamunge__plot__Plot, 0 |  0 );
+  res1 = SWIG_ConvertPtr(self, &argp1,SWIGTYPE_p_datamunge__graphics__Plot, 0 |  0 );
   if (!SWIG_IsOK(res1)) {
     SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::graphics::Plot *","axis_color", 1, self )); 
   }
   arg1 = reinterpret_cast< datamunge::graphics::Plot * >(argp1);
   {
-    res2 = SWIG_ConvertPtr(argv[0], &argp2, SWIGTYPE_p_datamunge__plot__RGB,  0 );
+    res2 = SWIG_ConvertPtr(argv[0], &argp2, SWIGTYPE_p_datamunge__graphics__RGB,  0 );
     if (!SWIG_IsOK(res2)) {
-      SWIG_exception_fail(SWIG_ArgError(res2), Ruby_Format_TypeError( "", "datamunge::graphics::RGB","axis_color", 2, argv[0] )); 
+      SWIG_exception_fail(SWIG_ArgError(res2), Ruby_Format_TypeError( "", "datamunge::graphics::RGBA","axis_color", 2, argv[0] )); 
     }  
     if (!argp2) {
-      SWIG_exception_fail(SWIG_NullReferenceError, Ruby_Format_TypeError("invalid null reference ", "datamunge::graphics::RGB","axis_color", 2, argv[0]));
+      SWIG_exception_fail(SWIG_NullReferenceError, Ruby_Format_TypeError("invalid null reference ", "datamunge::graphics::RGBA","axis_color", 2, argv[0]));
     } else {
-      arg2 = *(reinterpret_cast< datamunge::graphics::RGB * >(argp2));
+      arg2 = *(reinterpret_cast< datamunge::graphics::RGBA * >(argp2));
     }
   }
   result = (datamunge::graphics::Plot *) &(arg1)->axis_color(SWIG_STD_MOVE(*(&arg2)));
-  vresult = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__plot__Plot, 0 |  0 );
+  vresult = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__graphics__Plot, 0 |  0 );
   return vresult;
 fail:
   return Qnil;
@@ -89405,7 +92257,7 @@ fail:
 SWIGINTERN VALUE
 _wrap_Plot_grid_color(int argc, VALUE *argv, VALUE self) {
   datamunge::graphics::Plot *arg1 = 0 ;
-  SwigValueWrapper< datamunge::graphics::RGB > arg2 ;
+  datamunge::graphics::RGBA arg2 ;
   void *argp1 = 0 ;
   int res1 = 0 ;
   void *argp2 = 0 ;
@@ -89416,24 +92268,24 @@ _wrap_Plot_grid_color(int argc, VALUE *argv, VALUE self) {
   if ((argc < 1) || (argc > 1)) {
     rb_raise(rb_eArgError, "wrong # of arguments(%d for 1)",argc); SWIG_fail;
   }
-  res1 = SWIG_ConvertPtr(self, &argp1,SWIGTYPE_p_datamunge__plot__Plot, 0 |  0 );
+  res1 = SWIG_ConvertPtr(self, &argp1,SWIGTYPE_p_datamunge__graphics__Plot, 0 |  0 );
   if (!SWIG_IsOK(res1)) {
     SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::graphics::Plot *","grid_color", 1, self )); 
   }
   arg1 = reinterpret_cast< datamunge::graphics::Plot * >(argp1);
   {
-    res2 = SWIG_ConvertPtr(argv[0], &argp2, SWIGTYPE_p_datamunge__plot__RGB,  0 );
+    res2 = SWIG_ConvertPtr(argv[0], &argp2, SWIGTYPE_p_datamunge__graphics__RGB,  0 );
     if (!SWIG_IsOK(res2)) {
-      SWIG_exception_fail(SWIG_ArgError(res2), Ruby_Format_TypeError( "", "datamunge::graphics::RGB","grid_color", 2, argv[0] )); 
+      SWIG_exception_fail(SWIG_ArgError(res2), Ruby_Format_TypeError( "", "datamunge::graphics::RGBA","grid_color", 2, argv[0] )); 
     }  
     if (!argp2) {
-      SWIG_exception_fail(SWIG_NullReferenceError, Ruby_Format_TypeError("invalid null reference ", "datamunge::graphics::RGB","grid_color", 2, argv[0]));
+      SWIG_exception_fail(SWIG_NullReferenceError, Ruby_Format_TypeError("invalid null reference ", "datamunge::graphics::RGBA","grid_color", 2, argv[0]));
     } else {
-      arg2 = *(reinterpret_cast< datamunge::graphics::RGB * >(argp2));
+      arg2 = *(reinterpret_cast< datamunge::graphics::RGBA * >(argp2));
     }
   }
   result = (datamunge::graphics::Plot *) &(arg1)->grid_color(SWIG_STD_MOVE(*(&arg2)));
-  vresult = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__plot__Plot, 0 |  0 );
+  vresult = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__graphics__Plot, 0 |  0 );
   return vresult;
 fail:
   return Qnil;
@@ -89454,7 +92306,7 @@ _wrap_Plot_show_grid__SWIG_0(int argc, VALUE *argv, VALUE self) {
   if ((argc < 1) || (argc > 1)) {
     rb_raise(rb_eArgError, "wrong # of arguments(%d for 1)",argc); SWIG_fail;
   }
-  res1 = SWIG_ConvertPtr(self, &argp1,SWIGTYPE_p_datamunge__plot__Plot, 0 |  0 );
+  res1 = SWIG_ConvertPtr(self, &argp1,SWIGTYPE_p_datamunge__graphics__Plot, 0 |  0 );
   if (!SWIG_IsOK(res1)) {
     SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::graphics::Plot *","show_grid", 1, self )); 
   }
@@ -89465,7 +92317,7 @@ _wrap_Plot_show_grid__SWIG_0(int argc, VALUE *argv, VALUE self) {
   } 
   arg2 = static_cast< bool >(val2);
   result = (datamunge::graphics::Plot *) &(arg1)->show_grid(arg2);
-  vresult = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__plot__Plot, 0 |  0 );
+  vresult = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__graphics__Plot, 0 |  0 );
   return vresult;
 fail:
   return Qnil;
@@ -89483,13 +92335,13 @@ _wrap_Plot_show_grid__SWIG_1(int argc, VALUE *argv, VALUE self) {
   if ((argc < 0) || (argc > 0)) {
     rb_raise(rb_eArgError, "wrong # of arguments(%d for 0)",argc); SWIG_fail;
   }
-  res1 = SWIG_ConvertPtr(self, &argp1,SWIGTYPE_p_datamunge__plot__Plot, 0 |  0 );
+  res1 = SWIG_ConvertPtr(self, &argp1,SWIGTYPE_p_datamunge__graphics__Plot, 0 |  0 );
   if (!SWIG_IsOK(res1)) {
     SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::graphics::Plot *","show_grid", 1, self )); 
   }
   arg1 = reinterpret_cast< datamunge::graphics::Plot * >(argp1);
   result = (datamunge::graphics::Plot *) &(arg1)->show_grid();
-  vresult = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__plot__Plot, 0 |  0 );
+  vresult = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__graphics__Plot, 0 |  0 );
   return vresult;
 fail:
   return Qnil;
@@ -89510,7 +92362,7 @@ SWIGINTERN VALUE _wrap_Plot_show_grid(int nargs, VALUE *args, VALUE self) {
   if (argc == 1) {
     int _v = 0;
     void *vptr = 0;
-    int res = SWIG_ConvertPtr(argv[0], &vptr, SWIGTYPE_p_datamunge__plot__Plot, 0);
+    int res = SWIG_ConvertPtr(argv[0], &vptr, SWIGTYPE_p_datamunge__graphics__Plot, 0);
     _v = SWIG_CheckState(res);
     if (_v) {
       return _wrap_Plot_show_grid__SWIG_1(nargs, args, self);
@@ -89519,7 +92371,7 @@ SWIGINTERN VALUE _wrap_Plot_show_grid(int nargs, VALUE *args, VALUE self) {
   if (argc == 2) {
     int _v = 0;
     void *vptr = 0;
-    int res = SWIG_ConvertPtr(argv[0], &vptr, SWIGTYPE_p_datamunge__plot__Plot, 0);
+    int res = SWIG_ConvertPtr(argv[0], &vptr, SWIGTYPE_p_datamunge__graphics__Plot, 0);
     _v = SWIG_CheckState(res);
     if (_v) {
       {
@@ -89558,7 +92410,7 @@ _wrap_Plot_x_limits(int argc, VALUE *argv, VALUE self) {
   if ((argc < 2) || (argc > 2)) {
     rb_raise(rb_eArgError, "wrong # of arguments(%d for 2)",argc); SWIG_fail;
   }
-  res1 = SWIG_ConvertPtr(self, &argp1,SWIGTYPE_p_datamunge__plot__Plot, 0 |  0 );
+  res1 = SWIG_ConvertPtr(self, &argp1,SWIGTYPE_p_datamunge__graphics__Plot, 0 |  0 );
   if (!SWIG_IsOK(res1)) {
     SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::graphics::Plot *","x_limits", 1, self )); 
   }
@@ -89574,7 +92426,7 @@ _wrap_Plot_x_limits(int argc, VALUE *argv, VALUE self) {
   } 
   arg3 = static_cast< double >(val3);
   result = (datamunge::graphics::Plot *) &(arg1)->x_limits(arg2,arg3);
-  vresult = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__plot__Plot, 0 |  0 );
+  vresult = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__graphics__Plot, 0 |  0 );
   return vresult;
 fail:
   return Qnil;
@@ -89598,7 +92450,7 @@ _wrap_Plot_y_limits(int argc, VALUE *argv, VALUE self) {
   if ((argc < 2) || (argc > 2)) {
     rb_raise(rb_eArgError, "wrong # of arguments(%d for 2)",argc); SWIG_fail;
   }
-  res1 = SWIG_ConvertPtr(self, &argp1,SWIGTYPE_p_datamunge__plot__Plot, 0 |  0 );
+  res1 = SWIG_ConvertPtr(self, &argp1,SWIGTYPE_p_datamunge__graphics__Plot, 0 |  0 );
   if (!SWIG_IsOK(res1)) {
     SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::graphics::Plot *","y_limits", 1, self )); 
   }
@@ -89614,7 +92466,7 @@ _wrap_Plot_y_limits(int argc, VALUE *argv, VALUE self) {
   } 
   arg3 = static_cast< double >(val3);
   result = (datamunge::graphics::Plot *) &(arg1)->y_limits(arg2,arg3);
-  vresult = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__plot__Plot, 0 |  0 );
+  vresult = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__graphics__Plot, 0 |  0 );
   return vresult;
 fail:
   return Qnil;
@@ -89635,7 +92487,7 @@ _wrap_Plot_hide_axes__SWIG_0(int argc, VALUE *argv, VALUE self) {
   if ((argc < 1) || (argc > 1)) {
     rb_raise(rb_eArgError, "wrong # of arguments(%d for 1)",argc); SWIG_fail;
   }
-  res1 = SWIG_ConvertPtr(self, &argp1,SWIGTYPE_p_datamunge__plot__Plot, 0 |  0 );
+  res1 = SWIG_ConvertPtr(self, &argp1,SWIGTYPE_p_datamunge__graphics__Plot, 0 |  0 );
   if (!SWIG_IsOK(res1)) {
     SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::graphics::Plot *","hide_axes", 1, self )); 
   }
@@ -89646,7 +92498,7 @@ _wrap_Plot_hide_axes__SWIG_0(int argc, VALUE *argv, VALUE self) {
   } 
   arg2 = static_cast< bool >(val2);
   result = (datamunge::graphics::Plot *) &(arg1)->hide_axes(arg2);
-  vresult = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__plot__Plot, 0 |  0 );
+  vresult = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__graphics__Plot, 0 |  0 );
   return vresult;
 fail:
   return Qnil;
@@ -89664,13 +92516,13 @@ _wrap_Plot_hide_axes__SWIG_1(int argc, VALUE *argv, VALUE self) {
   if ((argc < 0) || (argc > 0)) {
     rb_raise(rb_eArgError, "wrong # of arguments(%d for 0)",argc); SWIG_fail;
   }
-  res1 = SWIG_ConvertPtr(self, &argp1,SWIGTYPE_p_datamunge__plot__Plot, 0 |  0 );
+  res1 = SWIG_ConvertPtr(self, &argp1,SWIGTYPE_p_datamunge__graphics__Plot, 0 |  0 );
   if (!SWIG_IsOK(res1)) {
     SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::graphics::Plot *","hide_axes", 1, self )); 
   }
   arg1 = reinterpret_cast< datamunge::graphics::Plot * >(argp1);
   result = (datamunge::graphics::Plot *) &(arg1)->hide_axes();
-  vresult = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__plot__Plot, 0 |  0 );
+  vresult = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__graphics__Plot, 0 |  0 );
   return vresult;
 fail:
   return Qnil;
@@ -89691,7 +92543,7 @@ SWIGINTERN VALUE _wrap_Plot_hide_axes(int nargs, VALUE *args, VALUE self) {
   if (argc == 1) {
     int _v = 0;
     void *vptr = 0;
-    int res = SWIG_ConvertPtr(argv[0], &vptr, SWIGTYPE_p_datamunge__plot__Plot, 0);
+    int res = SWIG_ConvertPtr(argv[0], &vptr, SWIGTYPE_p_datamunge__graphics__Plot, 0);
     _v = SWIG_CheckState(res);
     if (_v) {
       return _wrap_Plot_hide_axes__SWIG_1(nargs, args, self);
@@ -89700,7 +92552,7 @@ SWIGINTERN VALUE _wrap_Plot_hide_axes(int nargs, VALUE *args, VALUE self) {
   if (argc == 2) {
     int _v = 0;
     void *vptr = 0;
-    int res = SWIG_ConvertPtr(argv[0], &vptr, SWIGTYPE_p_datamunge__plot__Plot, 0);
+    int res = SWIG_ConvertPtr(argv[0], &vptr, SWIGTYPE_p_datamunge__graphics__Plot, 0);
     _v = SWIG_CheckState(res);
     if (_v) {
       {
@@ -89734,7 +92586,7 @@ _wrap_Plot_x_tick_labels(int argc, VALUE *argv, VALUE self) {
   if ((argc < 1) || (argc > 1)) {
     rb_raise(rb_eArgError, "wrong # of arguments(%d for 1)",argc); SWIG_fail;
   }
-  res1 = SWIG_ConvertPtr(self, &argp1,SWIGTYPE_p_datamunge__plot__Plot, 0 |  0 );
+  res1 = SWIG_ConvertPtr(self, &argp1,SWIGTYPE_p_datamunge__graphics__Plot, 0 |  0 );
   if (!SWIG_IsOK(res1)) {
     SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::graphics::Plot *","x_tick_labels", 1, self )); 
   }
@@ -89749,9 +92601,320 @@ _wrap_Plot_x_tick_labels(int argc, VALUE *argv, VALUE self) {
     if (SWIG_IsNewObj(res)) delete ptr;
   }
   result = (datamunge::graphics::Plot *) &(arg1)->x_tick_labels(SWIG_STD_MOVE(*(&arg2)));
-  vresult = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__plot__Plot, 0 |  0 );
+  vresult = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__graphics__Plot, 0 |  0 );
   return vresult;
 fail:
+  return Qnil;
+}
+
+
+SWIGINTERN VALUE
+_wrap_Plot_x_ticks(int argc, VALUE *argv, VALUE self) {
+  datamunge::graphics::Plot *arg1 = 0 ;
+  std::vector< double,std::allocator< double > > arg2 ;
+  std::vector< std::string,std::allocator< std::string > > arg3 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  datamunge::graphics::Plot *result = 0 ;
+  VALUE vresult = Qnil;
+  
+  if ((argc < 2) || (argc > 2)) {
+    rb_raise(rb_eArgError, "wrong # of arguments(%d for 2)",argc); SWIG_fail;
+  }
+  res1 = SWIG_ConvertPtr(self, &argp1,SWIGTYPE_p_datamunge__graphics__Plot, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::graphics::Plot *","x_ticks", 1, self )); 
+  }
+  arg1 = reinterpret_cast< datamunge::graphics::Plot * >(argp1);
+  {
+    std::vector< double,std::allocator< double > > *ptr = (std::vector< double,std::allocator< double > > *)0;
+    int res = swig::asptr(argv[0], &ptr);
+    if (!SWIG_IsOK(res) || !ptr) {
+      SWIG_exception_fail(SWIG_ArgError((ptr ? res : SWIG_TypeError)), Ruby_Format_TypeError( "", "std::vector< double,std::allocator< double > >","x_ticks", 2, argv[0] )); 
+    }
+    arg2 = *ptr;
+    if (SWIG_IsNewObj(res)) delete ptr;
+  }
+  {
+    std::vector< std::string,std::allocator< std::string > > *ptr = (std::vector< std::string,std::allocator< std::string > > *)0;
+    int res = swig::asptr(argv[1], &ptr);
+    if (!SWIG_IsOK(res) || !ptr) {
+      SWIG_exception_fail(SWIG_ArgError((ptr ? res : SWIG_TypeError)), Ruby_Format_TypeError( "", "std::vector< std::string,std::allocator< std::string > >","x_ticks", 3, argv[1] )); 
+    }
+    arg3 = *ptr;
+    if (SWIG_IsNewObj(res)) delete ptr;
+  }
+  result = (datamunge::graphics::Plot *) &(arg1)->x_ticks(SWIG_STD_MOVE(*(&arg2)),SWIG_STD_MOVE(*(&arg3)));
+  vresult = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__graphics__Plot, 0 |  0 );
+  return vresult;
+fail:
+  return Qnil;
+}
+
+
+SWIGINTERN VALUE
+_wrap_Plot_y_tick_labels(int argc, VALUE *argv, VALUE self) {
+  datamunge::graphics::Plot *arg1 = 0 ;
+  std::vector< std::string,std::allocator< std::string > > arg2 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  datamunge::graphics::Plot *result = 0 ;
+  VALUE vresult = Qnil;
+  
+  if ((argc < 1) || (argc > 1)) {
+    rb_raise(rb_eArgError, "wrong # of arguments(%d for 1)",argc); SWIG_fail;
+  }
+  res1 = SWIG_ConvertPtr(self, &argp1,SWIGTYPE_p_datamunge__graphics__Plot, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::graphics::Plot *","y_tick_labels", 1, self )); 
+  }
+  arg1 = reinterpret_cast< datamunge::graphics::Plot * >(argp1);
+  {
+    std::vector< std::string,std::allocator< std::string > > *ptr = (std::vector< std::string,std::allocator< std::string > > *)0;
+    int res = swig::asptr(argv[0], &ptr);
+    if (!SWIG_IsOK(res) || !ptr) {
+      SWIG_exception_fail(SWIG_ArgError((ptr ? res : SWIG_TypeError)), Ruby_Format_TypeError( "", "std::vector< std::string,std::allocator< std::string > >","y_tick_labels", 2, argv[0] )); 
+    }
+    arg2 = *ptr;
+    if (SWIG_IsNewObj(res)) delete ptr;
+  }
+  result = (datamunge::graphics::Plot *) &(arg1)->y_tick_labels(SWIG_STD_MOVE(*(&arg2)));
+  vresult = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__graphics__Plot, 0 |  0 );
+  return vresult;
+fail:
+  return Qnil;
+}
+
+
+SWIGINTERN VALUE
+_wrap_Plot_y_ticks(int argc, VALUE *argv, VALUE self) {
+  datamunge::graphics::Plot *arg1 = 0 ;
+  std::vector< double,std::allocator< double > > arg2 ;
+  std::vector< std::string,std::allocator< std::string > > arg3 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  datamunge::graphics::Plot *result = 0 ;
+  VALUE vresult = Qnil;
+  
+  if ((argc < 2) || (argc > 2)) {
+    rb_raise(rb_eArgError, "wrong # of arguments(%d for 2)",argc); SWIG_fail;
+  }
+  res1 = SWIG_ConvertPtr(self, &argp1,SWIGTYPE_p_datamunge__graphics__Plot, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::graphics::Plot *","y_ticks", 1, self )); 
+  }
+  arg1 = reinterpret_cast< datamunge::graphics::Plot * >(argp1);
+  {
+    std::vector< double,std::allocator< double > > *ptr = (std::vector< double,std::allocator< double > > *)0;
+    int res = swig::asptr(argv[0], &ptr);
+    if (!SWIG_IsOK(res) || !ptr) {
+      SWIG_exception_fail(SWIG_ArgError((ptr ? res : SWIG_TypeError)), Ruby_Format_TypeError( "", "std::vector< double,std::allocator< double > >","y_ticks", 2, argv[0] )); 
+    }
+    arg2 = *ptr;
+    if (SWIG_IsNewObj(res)) delete ptr;
+  }
+  {
+    std::vector< std::string,std::allocator< std::string > > *ptr = (std::vector< std::string,std::allocator< std::string > > *)0;
+    int res = swig::asptr(argv[1], &ptr);
+    if (!SWIG_IsOK(res) || !ptr) {
+      SWIG_exception_fail(SWIG_ArgError((ptr ? res : SWIG_TypeError)), Ruby_Format_TypeError( "", "std::vector< std::string,std::allocator< std::string > >","y_ticks", 3, argv[1] )); 
+    }
+    arg3 = *ptr;
+    if (SWIG_IsNewObj(res)) delete ptr;
+  }
+  result = (datamunge::graphics::Plot *) &(arg1)->y_ticks(SWIG_STD_MOVE(*(&arg2)),SWIG_STD_MOVE(*(&arg3)));
+  vresult = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__graphics__Plot, 0 |  0 );
+  return vresult;
+fail:
+  return Qnil;
+}
+
+
+SWIGINTERN VALUE
+_wrap_Plot_margins(int argc, VALUE *argv, VALUE self) {
+  datamunge::graphics::Plot *arg1 = 0 ;
+  double arg2 ;
+  double arg3 ;
+  double arg4 ;
+  double arg5 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  double val2 ;
+  int ecode2 = 0 ;
+  double val3 ;
+  int ecode3 = 0 ;
+  double val4 ;
+  int ecode4 = 0 ;
+  double val5 ;
+  int ecode5 = 0 ;
+  datamunge::graphics::Plot *result = 0 ;
+  VALUE vresult = Qnil;
+  
+  if ((argc < 4) || (argc > 4)) {
+    rb_raise(rb_eArgError, "wrong # of arguments(%d for 4)",argc); SWIG_fail;
+  }
+  res1 = SWIG_ConvertPtr(self, &argp1,SWIGTYPE_p_datamunge__graphics__Plot, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::graphics::Plot *","margins", 1, self )); 
+  }
+  arg1 = reinterpret_cast< datamunge::graphics::Plot * >(argp1);
+  ecode2 = SWIG_AsVal_double(argv[0], &val2);
+  if (!SWIG_IsOK(ecode2)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode2), Ruby_Format_TypeError( "", "double","margins", 2, argv[0] ));
+  } 
+  arg2 = static_cast< double >(val2);
+  ecode3 = SWIG_AsVal_double(argv[1], &val3);
+  if (!SWIG_IsOK(ecode3)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode3), Ruby_Format_TypeError( "", "double","margins", 3, argv[1] ));
+  } 
+  arg3 = static_cast< double >(val3);
+  ecode4 = SWIG_AsVal_double(argv[2], &val4);
+  if (!SWIG_IsOK(ecode4)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode4), Ruby_Format_TypeError( "", "double","margins", 4, argv[2] ));
+  } 
+  arg4 = static_cast< double >(val4);
+  ecode5 = SWIG_AsVal_double(argv[3], &val5);
+  if (!SWIG_IsOK(ecode5)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode5), Ruby_Format_TypeError( "", "double","margins", 5, argv[3] ));
+  } 
+  arg5 = static_cast< double >(val5);
+  result = (datamunge::graphics::Plot *) &(arg1)->margins(arg2,arg3,arg4,arg5);
+  vresult = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__graphics__Plot, 0 |  0 );
+  return vresult;
+fail:
+  return Qnil;
+}
+
+
+SWIGINTERN VALUE
+_wrap_Plot_tick_font_size(int argc, VALUE *argv, VALUE self) {
+  datamunge::graphics::Plot *arg1 = 0 ;
+  double arg2 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  double val2 ;
+  int ecode2 = 0 ;
+  datamunge::graphics::Plot *result = 0 ;
+  VALUE vresult = Qnil;
+  
+  if ((argc < 1) || (argc > 1)) {
+    rb_raise(rb_eArgError, "wrong # of arguments(%d for 1)",argc); SWIG_fail;
+  }
+  res1 = SWIG_ConvertPtr(self, &argp1,SWIGTYPE_p_datamunge__graphics__Plot, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::graphics::Plot *","tick_font_size", 1, self )); 
+  }
+  arg1 = reinterpret_cast< datamunge::graphics::Plot * >(argp1);
+  ecode2 = SWIG_AsVal_double(argv[0], &val2);
+  if (!SWIG_IsOK(ecode2)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode2), Ruby_Format_TypeError( "", "double","tick_font_size", 2, argv[0] ));
+  } 
+  arg2 = static_cast< double >(val2);
+  result = (datamunge::graphics::Plot *) &(arg1)->tick_font_size(arg2);
+  vresult = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__graphics__Plot, 0 |  0 );
+  return vresult;
+fail:
+  return Qnil;
+}
+
+
+SWIGINTERN VALUE
+_wrap_Plot_pretty_ticks__SWIG_0(int argc, VALUE *argv, VALUE self) {
+  datamunge::graphics::Plot *arg1 = 0 ;
+  bool arg2 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  bool val2 ;
+  int ecode2 = 0 ;
+  datamunge::graphics::Plot *result = 0 ;
+  VALUE vresult = Qnil;
+  
+  if ((argc < 1) || (argc > 1)) {
+    rb_raise(rb_eArgError, "wrong # of arguments(%d for 1)",argc); SWIG_fail;
+  }
+  res1 = SWIG_ConvertPtr(self, &argp1,SWIGTYPE_p_datamunge__graphics__Plot, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::graphics::Plot *","pretty_ticks", 1, self )); 
+  }
+  arg1 = reinterpret_cast< datamunge::graphics::Plot * >(argp1);
+  ecode2 = SWIG_AsVal_bool(argv[0], &val2);
+  if (!SWIG_IsOK(ecode2)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode2), Ruby_Format_TypeError( "", "bool","pretty_ticks", 2, argv[0] ));
+  } 
+  arg2 = static_cast< bool >(val2);
+  result = (datamunge::graphics::Plot *) &(arg1)->pretty_ticks(arg2);
+  vresult = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__graphics__Plot, 0 |  0 );
+  return vresult;
+fail:
+  return Qnil;
+}
+
+
+SWIGINTERN VALUE
+_wrap_Plot_pretty_ticks__SWIG_1(int argc, VALUE *argv, VALUE self) {
+  datamunge::graphics::Plot *arg1 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  datamunge::graphics::Plot *result = 0 ;
+  VALUE vresult = Qnil;
+  
+  if ((argc < 0) || (argc > 0)) {
+    rb_raise(rb_eArgError, "wrong # of arguments(%d for 0)",argc); SWIG_fail;
+  }
+  res1 = SWIG_ConvertPtr(self, &argp1,SWIGTYPE_p_datamunge__graphics__Plot, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::graphics::Plot *","pretty_ticks", 1, self )); 
+  }
+  arg1 = reinterpret_cast< datamunge::graphics::Plot * >(argp1);
+  result = (datamunge::graphics::Plot *) &(arg1)->pretty_ticks();
+  vresult = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__graphics__Plot, 0 |  0 );
+  return vresult;
+fail:
+  return Qnil;
+}
+
+
+SWIGINTERN VALUE _wrap_Plot_pretty_ticks(int nargs, VALUE *args, VALUE self) {
+  int argc;
+  VALUE argv[3];
+  int ii;
+  
+  argc = nargs + 1;
+  argv[0] = self;
+  if (argc > 3) SWIG_fail;
+  for (ii = 1; (ii < argc); ++ii) {
+    argv[ii] = args[ii-1];
+  }
+  if (argc == 1) {
+    int _v = 0;
+    void *vptr = 0;
+    int res = SWIG_ConvertPtr(argv[0], &vptr, SWIGTYPE_p_datamunge__graphics__Plot, 0);
+    _v = SWIG_CheckState(res);
+    if (_v) {
+      return _wrap_Plot_pretty_ticks__SWIG_1(nargs, args, self);
+    }
+  }
+  if (argc == 2) {
+    int _v = 0;
+    void *vptr = 0;
+    int res = SWIG_ConvertPtr(argv[0], &vptr, SWIGTYPE_p_datamunge__graphics__Plot, 0);
+    _v = SWIG_CheckState(res);
+    if (_v) {
+      {
+        int res = SWIG_AsVal_bool(argv[1], NULL);
+        _v = SWIG_CheckState(res);
+      }
+      if (_v) {
+        return _wrap_Plot_pretty_ticks__SWIG_0(nargs, args, self);
+      }
+    }
+  }
+  
+fail:
+  Ruby_Format_OverloadedError( argc, 3, "Plot.pretty_ticks", 
+    "    datamunge::graphics::Plot Plot.pretty_ticks(bool enabled)\n"
+    "    datamunge::graphics::Plot & Plot.pretty_ticks()\n");
+  
   return Qnil;
 }
 
@@ -89767,7 +92930,7 @@ _wrap_Plot_width(int argc, VALUE *argv, VALUE self) {
   if ((argc < 0) || (argc > 0)) {
     rb_raise(rb_eArgError, "wrong # of arguments(%d for 0)",argc); SWIG_fail;
   }
-  res1 = SWIG_ConvertPtr(self, &argp1,SWIGTYPE_p_datamunge__plot__Plot, 0 |  0 );
+  res1 = SWIG_ConvertPtr(self, &argp1,SWIGTYPE_p_datamunge__graphics__Plot, 0 |  0 );
   if (!SWIG_IsOK(res1)) {
     SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::graphics::Plot const *","width", 1, self )); 
   }
@@ -89791,7 +92954,7 @@ _wrap_Plot_height(int argc, VALUE *argv, VALUE self) {
   if ((argc < 0) || (argc > 0)) {
     rb_raise(rb_eArgError, "wrong # of arguments(%d for 0)",argc); SWIG_fail;
   }
-  res1 = SWIG_ConvertPtr(self, &argp1,SWIGTYPE_p_datamunge__plot__Plot, 0 |  0 );
+  res1 = SWIG_ConvertPtr(self, &argp1,SWIGTYPE_p_datamunge__graphics__Plot, 0 |  0 );
   if (!SWIG_IsOK(res1)) {
     SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::graphics::Plot const *","height", 1, self )); 
   }
@@ -89815,12 +92978,36 @@ _wrap_Plot_title_text(int argc, VALUE *argv, VALUE self) {
   if ((argc < 0) || (argc > 0)) {
     rb_raise(rb_eArgError, "wrong # of arguments(%d for 0)",argc); SWIG_fail;
   }
-  res1 = SWIG_ConvertPtr(self, &argp1,SWIGTYPE_p_datamunge__plot__Plot, 0 |  0 );
+  res1 = SWIG_ConvertPtr(self, &argp1,SWIGTYPE_p_datamunge__graphics__Plot, 0 |  0 );
   if (!SWIG_IsOK(res1)) {
     SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::graphics::Plot const *","title_text", 1, self )); 
   }
   arg1 = reinterpret_cast< datamunge::graphics::Plot * >(argp1);
   result = (std::string *) &((datamunge::graphics::Plot const *)arg1)->title_text();
+  vresult = SWIG_From_std_string(static_cast< std::string >(*result));
+  return vresult;
+fail:
+  return Qnil;
+}
+
+
+SWIGINTERN VALUE
+_wrap_Plot_subtitle_text(int argc, VALUE *argv, VALUE self) {
+  datamunge::graphics::Plot *arg1 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  std::string *result = 0 ;
+  VALUE vresult = Qnil;
+  
+  if ((argc < 0) || (argc > 0)) {
+    rb_raise(rb_eArgError, "wrong # of arguments(%d for 0)",argc); SWIG_fail;
+  }
+  res1 = SWIG_ConvertPtr(self, &argp1,SWIGTYPE_p_datamunge__graphics__Plot, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::graphics::Plot const *","subtitle_text", 1, self )); 
+  }
+  arg1 = reinterpret_cast< datamunge::graphics::Plot * >(argp1);
+  result = (std::string *) &((datamunge::graphics::Plot const *)arg1)->subtitle_text();
   vresult = SWIG_From_std_string(static_cast< std::string >(*result));
   return vresult;
 fail:
@@ -89839,7 +93026,7 @@ _wrap_Plot_x_label_text(int argc, VALUE *argv, VALUE self) {
   if ((argc < 0) || (argc > 0)) {
     rb_raise(rb_eArgError, "wrong # of arguments(%d for 0)",argc); SWIG_fail;
   }
-  res1 = SWIG_ConvertPtr(self, &argp1,SWIGTYPE_p_datamunge__plot__Plot, 0 |  0 );
+  res1 = SWIG_ConvertPtr(self, &argp1,SWIGTYPE_p_datamunge__graphics__Plot, 0 |  0 );
   if (!SWIG_IsOK(res1)) {
     SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::graphics::Plot const *","x_label_text", 1, self )); 
   }
@@ -89863,7 +93050,7 @@ _wrap_Plot_y_label_text(int argc, VALUE *argv, VALUE self) {
   if ((argc < 0) || (argc > 0)) {
     rb_raise(rb_eArgError, "wrong # of arguments(%d for 0)",argc); SWIG_fail;
   }
-  res1 = SWIG_ConvertPtr(self, &argp1,SWIGTYPE_p_datamunge__plot__Plot, 0 |  0 );
+  res1 = SWIG_ConvertPtr(self, &argp1,SWIGTYPE_p_datamunge__graphics__Plot, 0 |  0 );
   if (!SWIG_IsOK(res1)) {
     SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::graphics::Plot const *","y_label_text", 1, self )); 
   }
@@ -89887,13 +93074,13 @@ _wrap_Plot_series(int argc, VALUE *argv, VALUE self) {
   if ((argc < 0) || (argc > 0)) {
     rb_raise(rb_eArgError, "wrong # of arguments(%d for 0)",argc); SWIG_fail;
   }
-  res1 = SWIG_ConvertPtr(self, &argp1,SWIGTYPE_p_datamunge__plot__Plot, 0 |  0 );
+  res1 = SWIG_ConvertPtr(self, &argp1,SWIGTYPE_p_datamunge__graphics__Plot, 0 |  0 );
   if (!SWIG_IsOK(res1)) {
     SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::graphics::Plot const *","series", 1, self )); 
   }
   arg1 = reinterpret_cast< datamunge::graphics::Plot * >(argp1);
   result = (std::vector< datamunge::graphics::DataSeries,std::allocator< datamunge::graphics::DataSeries > > *) &((datamunge::graphics::Plot const *)arg1)->series();
-  vresult = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_std__vectorT_datamunge__plot__DataSeries_std__allocatorT_datamunge__plot__DataSeries_t_t, 0 |  0 );
+  vresult = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_std__vectorT_datamunge__graphics__DataSeries_std__allocatorT_datamunge__graphics__DataSeries_t_t, 0 |  0 );
   return vresult;
 fail:
   return Qnil;
@@ -89905,19 +93092,19 @@ _wrap_Plot_background_color(int argc, VALUE *argv, VALUE self) {
   datamunge::graphics::Plot *arg1 = 0 ;
   void *argp1 = 0 ;
   int res1 = 0 ;
-  SwigValueWrapper< datamunge::graphics::RGB > result;
+  datamunge::graphics::RGBA result;
   VALUE vresult = Qnil;
   
   if ((argc < 0) || (argc > 0)) {
     rb_raise(rb_eArgError, "wrong # of arguments(%d for 0)",argc); SWIG_fail;
   }
-  res1 = SWIG_ConvertPtr(self, &argp1,SWIGTYPE_p_datamunge__plot__Plot, 0 |  0 );
+  res1 = SWIG_ConvertPtr(self, &argp1,SWIGTYPE_p_datamunge__graphics__Plot, 0 |  0 );
   if (!SWIG_IsOK(res1)) {
     SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::graphics::Plot const *","background_color", 1, self )); 
   }
   arg1 = reinterpret_cast< datamunge::graphics::Plot * >(argp1);
   result = ((datamunge::graphics::Plot const *)arg1)->background_color();
-  vresult = SWIG_NewPointerObj((new datamunge::graphics::RGB(result)), SWIGTYPE_p_datamunge__plot__RGB, SWIG_POINTER_OWN |  0 );
+  vresult = SWIG_NewPointerObj((new datamunge::graphics::RGBA(result)), SWIGTYPE_p_datamunge__graphics__RGB, SWIG_POINTER_OWN |  0 );
   return vresult;
 fail:
   return Qnil;
@@ -89929,19 +93116,19 @@ _wrap_Plot_axes_color(int argc, VALUE *argv, VALUE self) {
   datamunge::graphics::Plot *arg1 = 0 ;
   void *argp1 = 0 ;
   int res1 = 0 ;
-  SwigValueWrapper< datamunge::graphics::RGB > result;
+  datamunge::graphics::RGBA result;
   VALUE vresult = Qnil;
   
   if ((argc < 0) || (argc > 0)) {
     rb_raise(rb_eArgError, "wrong # of arguments(%d for 0)",argc); SWIG_fail;
   }
-  res1 = SWIG_ConvertPtr(self, &argp1,SWIGTYPE_p_datamunge__plot__Plot, 0 |  0 );
+  res1 = SWIG_ConvertPtr(self, &argp1,SWIGTYPE_p_datamunge__graphics__Plot, 0 |  0 );
   if (!SWIG_IsOK(res1)) {
     SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::graphics::Plot const *","axes_color", 1, self )); 
   }
   arg1 = reinterpret_cast< datamunge::graphics::Plot * >(argp1);
   result = ((datamunge::graphics::Plot const *)arg1)->axes_color();
-  vresult = SWIG_NewPointerObj((new datamunge::graphics::RGB(result)), SWIGTYPE_p_datamunge__plot__RGB, SWIG_POINTER_OWN |  0 );
+  vresult = SWIG_NewPointerObj((new datamunge::graphics::RGBA(result)), SWIGTYPE_p_datamunge__graphics__RGB, SWIG_POINTER_OWN |  0 );
   return vresult;
 fail:
   return Qnil;
@@ -89953,19 +93140,19 @@ _wrap_Plot_major_grid_color(int argc, VALUE *argv, VALUE self) {
   datamunge::graphics::Plot *arg1 = 0 ;
   void *argp1 = 0 ;
   int res1 = 0 ;
-  SwigValueWrapper< datamunge::graphics::RGB > result;
+  datamunge::graphics::RGBA result;
   VALUE vresult = Qnil;
   
   if ((argc < 0) || (argc > 0)) {
     rb_raise(rb_eArgError, "wrong # of arguments(%d for 0)",argc); SWIG_fail;
   }
-  res1 = SWIG_ConvertPtr(self, &argp1,SWIGTYPE_p_datamunge__plot__Plot, 0 |  0 );
+  res1 = SWIG_ConvertPtr(self, &argp1,SWIGTYPE_p_datamunge__graphics__Plot, 0 |  0 );
   if (!SWIG_IsOK(res1)) {
     SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::graphics::Plot const *","major_grid_color", 1, self )); 
   }
   arg1 = reinterpret_cast< datamunge::graphics::Plot * >(argp1);
   result = ((datamunge::graphics::Plot const *)arg1)->major_grid_color();
-  vresult = SWIG_NewPointerObj((new datamunge::graphics::RGB(result)), SWIGTYPE_p_datamunge__plot__RGB, SWIG_POINTER_OWN |  0 );
+  vresult = SWIG_NewPointerObj((new datamunge::graphics::RGBA(result)), SWIGTYPE_p_datamunge__graphics__RGB, SWIG_POINTER_OWN |  0 );
   return vresult;
 fail:
   return Qnil;
@@ -89983,7 +93170,7 @@ _wrap_Plot_grid_visible(int argc, VALUE *argv, VALUE self) {
   if ((argc < 0) || (argc > 0)) {
     rb_raise(rb_eArgError, "wrong # of arguments(%d for 0)",argc); SWIG_fail;
   }
-  res1 = SWIG_ConvertPtr(self, &argp1,SWIGTYPE_p_datamunge__plot__Plot, 0 |  0 );
+  res1 = SWIG_ConvertPtr(self, &argp1,SWIGTYPE_p_datamunge__graphics__Plot, 0 |  0 );
   if (!SWIG_IsOK(res1)) {
     SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::graphics::Plot const *","grid_visible", 1, self )); 
   }
@@ -90007,7 +93194,7 @@ _wrap_Plot_has_x_limits(int argc, VALUE *argv, VALUE self) {
   if ((argc < 0) || (argc > 0)) {
     rb_raise(rb_eArgError, "wrong # of arguments(%d for 0)",argc); SWIG_fail;
   }
-  res1 = SWIG_ConvertPtr(self, &argp1,SWIGTYPE_p_datamunge__plot__Plot, 0 |  0 );
+  res1 = SWIG_ConvertPtr(self, &argp1,SWIGTYPE_p_datamunge__graphics__Plot, 0 |  0 );
   if (!SWIG_IsOK(res1)) {
     SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::graphics::Plot const *","has_x_limits", 1, self )); 
   }
@@ -90031,7 +93218,7 @@ _wrap_Plot_has_y_limits(int argc, VALUE *argv, VALUE self) {
   if ((argc < 0) || (argc > 0)) {
     rb_raise(rb_eArgError, "wrong # of arguments(%d for 0)",argc); SWIG_fail;
   }
-  res1 = SWIG_ConvertPtr(self, &argp1,SWIGTYPE_p_datamunge__plot__Plot, 0 |  0 );
+  res1 = SWIG_ConvertPtr(self, &argp1,SWIGTYPE_p_datamunge__graphics__Plot, 0 |  0 );
   if (!SWIG_IsOK(res1)) {
     SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::graphics::Plot const *","has_y_limits", 1, self )); 
   }
@@ -90055,7 +93242,7 @@ _wrap_Plot_x_min(int argc, VALUE *argv, VALUE self) {
   if ((argc < 0) || (argc > 0)) {
     rb_raise(rb_eArgError, "wrong # of arguments(%d for 0)",argc); SWIG_fail;
   }
-  res1 = SWIG_ConvertPtr(self, &argp1,SWIGTYPE_p_datamunge__plot__Plot, 0 |  0 );
+  res1 = SWIG_ConvertPtr(self, &argp1,SWIGTYPE_p_datamunge__graphics__Plot, 0 |  0 );
   if (!SWIG_IsOK(res1)) {
     SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::graphics::Plot const *","x_min", 1, self )); 
   }
@@ -90079,7 +93266,7 @@ _wrap_Plot_x_max(int argc, VALUE *argv, VALUE self) {
   if ((argc < 0) || (argc > 0)) {
     rb_raise(rb_eArgError, "wrong # of arguments(%d for 0)",argc); SWIG_fail;
   }
-  res1 = SWIG_ConvertPtr(self, &argp1,SWIGTYPE_p_datamunge__plot__Plot, 0 |  0 );
+  res1 = SWIG_ConvertPtr(self, &argp1,SWIGTYPE_p_datamunge__graphics__Plot, 0 |  0 );
   if (!SWIG_IsOK(res1)) {
     SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::graphics::Plot const *","x_max", 1, self )); 
   }
@@ -90103,7 +93290,7 @@ _wrap_Plot_y_min(int argc, VALUE *argv, VALUE self) {
   if ((argc < 0) || (argc > 0)) {
     rb_raise(rb_eArgError, "wrong # of arguments(%d for 0)",argc); SWIG_fail;
   }
-  res1 = SWIG_ConvertPtr(self, &argp1,SWIGTYPE_p_datamunge__plot__Plot, 0 |  0 );
+  res1 = SWIG_ConvertPtr(self, &argp1,SWIGTYPE_p_datamunge__graphics__Plot, 0 |  0 );
   if (!SWIG_IsOK(res1)) {
     SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::graphics::Plot const *","y_min", 1, self )); 
   }
@@ -90127,7 +93314,7 @@ _wrap_Plot_y_max(int argc, VALUE *argv, VALUE self) {
   if ((argc < 0) || (argc > 0)) {
     rb_raise(rb_eArgError, "wrong # of arguments(%d for 0)",argc); SWIG_fail;
   }
-  res1 = SWIG_ConvertPtr(self, &argp1,SWIGTYPE_p_datamunge__plot__Plot, 0 |  0 );
+  res1 = SWIG_ConvertPtr(self, &argp1,SWIGTYPE_p_datamunge__graphics__Plot, 0 |  0 );
   if (!SWIG_IsOK(res1)) {
     SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::graphics::Plot const *","y_max", 1, self )); 
   }
@@ -90151,7 +93338,7 @@ _wrap_Plot_axes_hidden(int argc, VALUE *argv, VALUE self) {
   if ((argc < 0) || (argc > 0)) {
     rb_raise(rb_eArgError, "wrong # of arguments(%d for 0)",argc); SWIG_fail;
   }
-  res1 = SWIG_ConvertPtr(self, &argp1,SWIGTYPE_p_datamunge__plot__Plot, 0 |  0 );
+  res1 = SWIG_ConvertPtr(self, &argp1,SWIGTYPE_p_datamunge__graphics__Plot, 0 |  0 );
   if (!SWIG_IsOK(res1)) {
     SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::graphics::Plot const *","axes_hidden", 1, self )); 
   }
@@ -90175,13 +93362,85 @@ _wrap_Plot_x_tick_label_list(int argc, VALUE *argv, VALUE self) {
   if ((argc < 0) || (argc > 0)) {
     rb_raise(rb_eArgError, "wrong # of arguments(%d for 0)",argc); SWIG_fail;
   }
-  res1 = SWIG_ConvertPtr(self, &argp1,SWIGTYPE_p_datamunge__plot__Plot, 0 |  0 );
+  res1 = SWIG_ConvertPtr(self, &argp1,SWIGTYPE_p_datamunge__graphics__Plot, 0 |  0 );
   if (!SWIG_IsOK(res1)) {
     SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::graphics::Plot const *","x_tick_label_list", 1, self )); 
   }
   arg1 = reinterpret_cast< datamunge::graphics::Plot * >(argp1);
   result = (std::vector< std::string,std::allocator< std::string > > *) &((datamunge::graphics::Plot const *)arg1)->x_tick_label_list();
   vresult = swig::from(static_cast< std::vector< std::string,std::allocator< std::string > > >(*result));
+  return vresult;
+fail:
+  return Qnil;
+}
+
+
+SWIGINTERN VALUE
+_wrap_Plot_x_tick_position_list(int argc, VALUE *argv, VALUE self) {
+  datamunge::graphics::Plot *arg1 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  std::vector< double,std::allocator< double > > *result = 0 ;
+  VALUE vresult = Qnil;
+  
+  if ((argc < 0) || (argc > 0)) {
+    rb_raise(rb_eArgError, "wrong # of arguments(%d for 0)",argc); SWIG_fail;
+  }
+  res1 = SWIG_ConvertPtr(self, &argp1,SWIGTYPE_p_datamunge__graphics__Plot, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::graphics::Plot const *","x_tick_position_list", 1, self )); 
+  }
+  arg1 = reinterpret_cast< datamunge::graphics::Plot * >(argp1);
+  result = (std::vector< double,std::allocator< double > > *) &((datamunge::graphics::Plot const *)arg1)->x_tick_position_list();
+  vresult = swig::from(static_cast< std::vector< double,std::allocator< double > > >(*result));
+  return vresult;
+fail:
+  return Qnil;
+}
+
+
+SWIGINTERN VALUE
+_wrap_Plot_y_tick_label_list(int argc, VALUE *argv, VALUE self) {
+  datamunge::graphics::Plot *arg1 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  std::vector< std::string,std::allocator< std::string > > *result = 0 ;
+  VALUE vresult = Qnil;
+  
+  if ((argc < 0) || (argc > 0)) {
+    rb_raise(rb_eArgError, "wrong # of arguments(%d for 0)",argc); SWIG_fail;
+  }
+  res1 = SWIG_ConvertPtr(self, &argp1,SWIGTYPE_p_datamunge__graphics__Plot, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::graphics::Plot const *","y_tick_label_list", 1, self )); 
+  }
+  arg1 = reinterpret_cast< datamunge::graphics::Plot * >(argp1);
+  result = (std::vector< std::string,std::allocator< std::string > > *) &((datamunge::graphics::Plot const *)arg1)->y_tick_label_list();
+  vresult = swig::from(static_cast< std::vector< std::string,std::allocator< std::string > > >(*result));
+  return vresult;
+fail:
+  return Qnil;
+}
+
+
+SWIGINTERN VALUE
+_wrap_Plot_y_tick_position_list(int argc, VALUE *argv, VALUE self) {
+  datamunge::graphics::Plot *arg1 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  std::vector< double,std::allocator< double > > *result = 0 ;
+  VALUE vresult = Qnil;
+  
+  if ((argc < 0) || (argc > 0)) {
+    rb_raise(rb_eArgError, "wrong # of arguments(%d for 0)",argc); SWIG_fail;
+  }
+  res1 = SWIG_ConvertPtr(self, &argp1,SWIGTYPE_p_datamunge__graphics__Plot, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::graphics::Plot const *","y_tick_position_list", 1, self )); 
+  }
+  arg1 = reinterpret_cast< datamunge::graphics::Plot * >(argp1);
+  result = (std::vector< double,std::allocator< double > > *) &((datamunge::graphics::Plot const *)arg1)->y_tick_position_list();
+  vresult = swig::from(static_cast< std::vector< double,std::allocator< double > > >(*result));
   return vresult;
 fail:
   return Qnil;
@@ -90199,13 +93458,13 @@ _wrap_Plot_reference_lines(int argc, VALUE *argv, VALUE self) {
   if ((argc < 0) || (argc > 0)) {
     rb_raise(rb_eArgError, "wrong # of arguments(%d for 0)",argc); SWIG_fail;
   }
-  res1 = SWIG_ConvertPtr(self, &argp1,SWIGTYPE_p_datamunge__plot__Plot, 0 |  0 );
+  res1 = SWIG_ConvertPtr(self, &argp1,SWIGTYPE_p_datamunge__graphics__Plot, 0 |  0 );
   if (!SWIG_IsOK(res1)) {
     SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::graphics::Plot const *","reference_lines", 1, self )); 
   }
   arg1 = reinterpret_cast< datamunge::graphics::Plot * >(argp1);
   result = (std::vector< datamunge::graphics::ABLine,std::allocator< datamunge::graphics::ABLine > > *) &((datamunge::graphics::Plot const *)arg1)->reference_lines();
-  vresult = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_std__vectorT_datamunge__plot__ABLine_std__allocatorT_datamunge__plot__ABLine_t_t, 0 |  0 );
+  vresult = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_std__vectorT_datamunge__graphics__ABLine_std__allocatorT_datamunge__graphics__ABLine_t_t, 0 |  0 );
   return vresult;
 fail:
   return Qnil;
@@ -90223,13 +93482,181 @@ _wrap_Plot_legend_entries(int argc, VALUE *argv, VALUE self) {
   if ((argc < 0) || (argc > 0)) {
     rb_raise(rb_eArgError, "wrong # of arguments(%d for 0)",argc); SWIG_fail;
   }
-  res1 = SWIG_ConvertPtr(self, &argp1,SWIGTYPE_p_datamunge__plot__Plot, 0 |  0 );
+  res1 = SWIG_ConvertPtr(self, &argp1,SWIGTYPE_p_datamunge__graphics__Plot, 0 |  0 );
   if (!SWIG_IsOK(res1)) {
     SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::graphics::Plot const *","legend_entries", 1, self )); 
   }
   arg1 = reinterpret_cast< datamunge::graphics::Plot * >(argp1);
   result = (std::vector< datamunge::graphics::LegendEntry,std::allocator< datamunge::graphics::LegendEntry > > *) &((datamunge::graphics::Plot const *)arg1)->legend_entries();
-  vresult = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_std__vectorT_datamunge__plot__LegendEntry_std__allocatorT_datamunge__plot__LegendEntry_t_t, 0 |  0 );
+  vresult = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_std__vectorT_datamunge__graphics__LegendEntry_std__allocatorT_datamunge__graphics__LegendEntry_t_t, 0 |  0 );
+  return vresult;
+fail:
+  return Qnil;
+}
+
+
+SWIGINTERN VALUE
+_wrap_Plot_has_custom_margins(int argc, VALUE *argv, VALUE self) {
+  datamunge::graphics::Plot *arg1 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  bool result;
+  VALUE vresult = Qnil;
+  
+  if ((argc < 0) || (argc > 0)) {
+    rb_raise(rb_eArgError, "wrong # of arguments(%d for 0)",argc); SWIG_fail;
+  }
+  res1 = SWIG_ConvertPtr(self, &argp1,SWIGTYPE_p_datamunge__graphics__Plot, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::graphics::Plot const *","has_custom_margins", 1, self )); 
+  }
+  arg1 = reinterpret_cast< datamunge::graphics::Plot * >(argp1);
+  result = (bool)((datamunge::graphics::Plot const *)arg1)->has_custom_margins();
+  vresult = SWIG_From_bool(static_cast< bool >(result));
+  return vresult;
+fail:
+  return Qnil;
+}
+
+
+SWIGINTERN VALUE
+_wrap_Plot_margin_left(int argc, VALUE *argv, VALUE self) {
+  datamunge::graphics::Plot *arg1 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  double result;
+  VALUE vresult = Qnil;
+  
+  if ((argc < 0) || (argc > 0)) {
+    rb_raise(rb_eArgError, "wrong # of arguments(%d for 0)",argc); SWIG_fail;
+  }
+  res1 = SWIG_ConvertPtr(self, &argp1,SWIGTYPE_p_datamunge__graphics__Plot, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::graphics::Plot const *","margin_left", 1, self )); 
+  }
+  arg1 = reinterpret_cast< datamunge::graphics::Plot * >(argp1);
+  result = (double)((datamunge::graphics::Plot const *)arg1)->margin_left();
+  vresult = SWIG_From_double(static_cast< double >(result));
+  return vresult;
+fail:
+  return Qnil;
+}
+
+
+SWIGINTERN VALUE
+_wrap_Plot_margin_right(int argc, VALUE *argv, VALUE self) {
+  datamunge::graphics::Plot *arg1 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  double result;
+  VALUE vresult = Qnil;
+  
+  if ((argc < 0) || (argc > 0)) {
+    rb_raise(rb_eArgError, "wrong # of arguments(%d for 0)",argc); SWIG_fail;
+  }
+  res1 = SWIG_ConvertPtr(self, &argp1,SWIGTYPE_p_datamunge__graphics__Plot, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::graphics::Plot const *","margin_right", 1, self )); 
+  }
+  arg1 = reinterpret_cast< datamunge::graphics::Plot * >(argp1);
+  result = (double)((datamunge::graphics::Plot const *)arg1)->margin_right();
+  vresult = SWIG_From_double(static_cast< double >(result));
+  return vresult;
+fail:
+  return Qnil;
+}
+
+
+SWIGINTERN VALUE
+_wrap_Plot_margin_top(int argc, VALUE *argv, VALUE self) {
+  datamunge::graphics::Plot *arg1 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  double result;
+  VALUE vresult = Qnil;
+  
+  if ((argc < 0) || (argc > 0)) {
+    rb_raise(rb_eArgError, "wrong # of arguments(%d for 0)",argc); SWIG_fail;
+  }
+  res1 = SWIG_ConvertPtr(self, &argp1,SWIGTYPE_p_datamunge__graphics__Plot, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::graphics::Plot const *","margin_top", 1, self )); 
+  }
+  arg1 = reinterpret_cast< datamunge::graphics::Plot * >(argp1);
+  result = (double)((datamunge::graphics::Plot const *)arg1)->margin_top();
+  vresult = SWIG_From_double(static_cast< double >(result));
+  return vresult;
+fail:
+  return Qnil;
+}
+
+
+SWIGINTERN VALUE
+_wrap_Plot_margin_bottom(int argc, VALUE *argv, VALUE self) {
+  datamunge::graphics::Plot *arg1 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  double result;
+  VALUE vresult = Qnil;
+  
+  if ((argc < 0) || (argc > 0)) {
+    rb_raise(rb_eArgError, "wrong # of arguments(%d for 0)",argc); SWIG_fail;
+  }
+  res1 = SWIG_ConvertPtr(self, &argp1,SWIGTYPE_p_datamunge__graphics__Plot, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::graphics::Plot const *","margin_bottom", 1, self )); 
+  }
+  arg1 = reinterpret_cast< datamunge::graphics::Plot * >(argp1);
+  result = (double)((datamunge::graphics::Plot const *)arg1)->margin_bottom();
+  vresult = SWIG_From_double(static_cast< double >(result));
+  return vresult;
+fail:
+  return Qnil;
+}
+
+
+SWIGINTERN VALUE
+_wrap_Plot_tick_font_px(int argc, VALUE *argv, VALUE self) {
+  datamunge::graphics::Plot *arg1 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  double result;
+  VALUE vresult = Qnil;
+  
+  if ((argc < 0) || (argc > 0)) {
+    rb_raise(rb_eArgError, "wrong # of arguments(%d for 0)",argc); SWIG_fail;
+  }
+  res1 = SWIG_ConvertPtr(self, &argp1,SWIGTYPE_p_datamunge__graphics__Plot, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::graphics::Plot const *","tick_font_px", 1, self )); 
+  }
+  arg1 = reinterpret_cast< datamunge::graphics::Plot * >(argp1);
+  result = (double)((datamunge::graphics::Plot const *)arg1)->tick_font_px();
+  vresult = SWIG_From_double(static_cast< double >(result));
+  return vresult;
+fail:
+  return Qnil;
+}
+
+
+SWIGINTERN VALUE
+_wrap_Plot_pretty_ticks_enabled(int argc, VALUE *argv, VALUE self) {
+  datamunge::graphics::Plot *arg1 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  bool result;
+  VALUE vresult = Qnil;
+  
+  if ((argc < 0) || (argc > 0)) {
+    rb_raise(rb_eArgError, "wrong # of arguments(%d for 0)",argc); SWIG_fail;
+  }
+  res1 = SWIG_ConvertPtr(self, &argp1,SWIGTYPE_p_datamunge__graphics__Plot, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::graphics::Plot const *","pretty_ticks_enabled", 1, self )); 
+  }
+  arg1 = reinterpret_cast< datamunge::graphics::Plot * >(argp1);
+  result = (bool)((datamunge::graphics::Plot const *)arg1)->pretty_ticks_enabled();
+  vresult = SWIG_From_bool(static_cast< bool >(result));
   return vresult;
 fail:
   return Qnil;
@@ -90247,7 +93674,7 @@ _wrap_Plot_to_svg(int argc, VALUE *argv, VALUE self) {
   if ((argc < 0) || (argc > 0)) {
     rb_raise(rb_eArgError, "wrong # of arguments(%d for 0)",argc); SWIG_fail;
   }
-  res1 = SWIG_ConvertPtr(self, &argp1,SWIGTYPE_p_datamunge__plot__Plot, 0 |  0 );
+  res1 = SWIG_ConvertPtr(self, &argp1,SWIGTYPE_p_datamunge__graphics__Plot, 0 |  0 );
   if (!SWIG_IsOK(res1)) {
     SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::graphics::Plot const *","to_svg", 1, self )); 
   }
@@ -90271,7 +93698,7 @@ _wrap_Plot_save(int argc, VALUE *argv, VALUE self) {
   if ((argc < 1) || (argc > 1)) {
     rb_raise(rb_eArgError, "wrong # of arguments(%d for 1)",argc); SWIG_fail;
   }
-  res1 = SWIG_ConvertPtr(self, &argp1,SWIGTYPE_p_datamunge__plot__Plot, 0 |  0 );
+  res1 = SWIG_ConvertPtr(self, &argp1,SWIGTYPE_p_datamunge__graphics__Plot, 0 |  0 );
   if (!SWIG_IsOK(res1)) {
     SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::graphics::Plot const *","save", 1, self )); 
   }
@@ -90307,7 +93734,7 @@ _wrap_Plot_save_svg(int argc, VALUE *argv, VALUE self) {
   if ((argc < 1) || (argc > 1)) {
     rb_raise(rb_eArgError, "wrong # of arguments(%d for 1)",argc); SWIG_fail;
   }
-  res1 = SWIG_ConvertPtr(self, &argp1,SWIGTYPE_p_datamunge__plot__Plot, 0 |  0 );
+  res1 = SWIG_ConvertPtr(self, &argp1,SWIGTYPE_p_datamunge__graphics__Plot, 0 |  0 );
   if (!SWIG_IsOK(res1)) {
     SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::graphics::Plot const *","save_svg", 1, self )); 
   }
@@ -90333,6 +93760,126 @@ fail:
 
 
 SWIGINTERN VALUE
+_wrap_Plot_to_png(int argc, VALUE *argv, VALUE self) {
+  datamunge::graphics::Plot *arg1 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  SwigValueWrapper< std::vector< unsigned char,std::allocator< unsigned char > > > result;
+  VALUE vresult = Qnil;
+  
+  if ((argc < 0) || (argc > 0)) {
+    rb_raise(rb_eArgError, "wrong # of arguments(%d for 0)",argc); SWIG_fail;
+  }
+  res1 = SWIG_ConvertPtr(self, &argp1,SWIGTYPE_p_datamunge__graphics__Plot, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::graphics::Plot const *","to_png", 1, self )); 
+  }
+  arg1 = reinterpret_cast< datamunge::graphics::Plot * >(argp1);
+  result = ((datamunge::graphics::Plot const *)arg1)->to_png();
+  vresult = SWIG_NewPointerObj((new std::vector< std::uint8_t,std::allocator< std::uint8_t > >(result)), SWIGTYPE_p_std__vectorT_unsigned_char_std__allocatorT_unsigned_char_t_t, SWIG_POINTER_OWN |  0 );
+  return vresult;
+fail:
+  return Qnil;
+}
+
+
+SWIGINTERN VALUE
+_wrap_Plot_to_pdf(int argc, VALUE *argv, VALUE self) {
+  datamunge::graphics::Plot *arg1 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  SwigValueWrapper< std::vector< unsigned char,std::allocator< unsigned char > > > result;
+  VALUE vresult = Qnil;
+  
+  if ((argc < 0) || (argc > 0)) {
+    rb_raise(rb_eArgError, "wrong # of arguments(%d for 0)",argc); SWIG_fail;
+  }
+  res1 = SWIG_ConvertPtr(self, &argp1,SWIGTYPE_p_datamunge__graphics__Plot, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::graphics::Plot const *","to_pdf", 1, self )); 
+  }
+  arg1 = reinterpret_cast< datamunge::graphics::Plot * >(argp1);
+  result = ((datamunge::graphics::Plot const *)arg1)->to_pdf();
+  vresult = SWIG_NewPointerObj((new std::vector< std::uint8_t,std::allocator< std::uint8_t > >(result)), SWIGTYPE_p_std__vectorT_unsigned_char_std__allocatorT_unsigned_char_t_t, SWIG_POINTER_OWN |  0 );
+  return vresult;
+fail:
+  return Qnil;
+}
+
+
+SWIGINTERN VALUE
+_wrap_Plot_save_png(int argc, VALUE *argv, VALUE self) {
+  datamunge::graphics::Plot *arg1 = 0 ;
+  std::string *arg2 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  int res2 = SWIG_OLDOBJ ;
+  
+  if ((argc < 1) || (argc > 1)) {
+    rb_raise(rb_eArgError, "wrong # of arguments(%d for 1)",argc); SWIG_fail;
+  }
+  res1 = SWIG_ConvertPtr(self, &argp1,SWIGTYPE_p_datamunge__graphics__Plot, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::graphics::Plot const *","save_png", 1, self )); 
+  }
+  arg1 = reinterpret_cast< datamunge::graphics::Plot * >(argp1);
+  {
+    std::string *ptr = (std::string *)0;
+    res2 = SWIG_AsPtr_std_string(argv[0], &ptr);
+    if (!SWIG_IsOK(res2)) {
+      SWIG_exception_fail(SWIG_ArgError(res2), Ruby_Format_TypeError( "", "std::string const &","save_png", 2, argv[0] )); 
+    }
+    if (!ptr) {
+      SWIG_exception_fail(SWIG_NullReferenceError, Ruby_Format_TypeError("invalid null reference ", "std::string const &","save_png", 2, argv[0])); 
+    }
+    arg2 = ptr;
+  }
+  ((datamunge::graphics::Plot const *)arg1)->save_png((std::string const &)*arg2);
+  if (SWIG_IsNewObj(res2)) delete arg2;
+  return Qnil;
+fail:
+  if (SWIG_IsNewObj(res2)) delete arg2;
+  return Qnil;
+}
+
+
+SWIGINTERN VALUE
+_wrap_Plot_save_pdf(int argc, VALUE *argv, VALUE self) {
+  datamunge::graphics::Plot *arg1 = 0 ;
+  std::string *arg2 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  int res2 = SWIG_OLDOBJ ;
+  
+  if ((argc < 1) || (argc > 1)) {
+    rb_raise(rb_eArgError, "wrong # of arguments(%d for 1)",argc); SWIG_fail;
+  }
+  res1 = SWIG_ConvertPtr(self, &argp1,SWIGTYPE_p_datamunge__graphics__Plot, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::graphics::Plot const *","save_pdf", 1, self )); 
+  }
+  arg1 = reinterpret_cast< datamunge::graphics::Plot * >(argp1);
+  {
+    std::string *ptr = (std::string *)0;
+    res2 = SWIG_AsPtr_std_string(argv[0], &ptr);
+    if (!SWIG_IsOK(res2)) {
+      SWIG_exception_fail(SWIG_ArgError(res2), Ruby_Format_TypeError( "", "std::string const &","save_pdf", 2, argv[0] )); 
+    }
+    if (!ptr) {
+      SWIG_exception_fail(SWIG_NullReferenceError, Ruby_Format_TypeError("invalid null reference ", "std::string const &","save_pdf", 2, argv[0])); 
+    }
+    arg2 = ptr;
+  }
+  ((datamunge::graphics::Plot const *)arg1)->save_pdf((std::string const &)*arg2);
+  if (SWIG_IsNewObj(res2)) delete arg2;
+  return Qnil;
+fail:
+  if (SWIG_IsNewObj(res2)) delete arg2;
+  return Qnil;
+}
+
+
+SWIGINTERN VALUE
 _wrap_Plot_view__SWIG_0(int argc, VALUE *argv, VALUE self) {
   datamunge::graphics::Plot *arg1 = 0 ;
   std::string *arg2 = 0 ;
@@ -90343,7 +93890,7 @@ _wrap_Plot_view__SWIG_0(int argc, VALUE *argv, VALUE self) {
   if ((argc < 1) || (argc > 1)) {
     rb_raise(rb_eArgError, "wrong # of arguments(%d for 1)",argc); SWIG_fail;
   }
-  res1 = SWIG_ConvertPtr(self, &argp1,SWIGTYPE_p_datamunge__plot__Plot, 0 |  0 );
+  res1 = SWIG_ConvertPtr(self, &argp1,SWIGTYPE_p_datamunge__graphics__Plot, 0 |  0 );
   if (!SWIG_IsOK(res1)) {
     SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::graphics::Plot const *","view", 1, self )); 
   }
@@ -90377,7 +93924,7 @@ _wrap_Plot_view__SWIG_1(int argc, VALUE *argv, VALUE self) {
   if ((argc < 0) || (argc > 0)) {
     rb_raise(rb_eArgError, "wrong # of arguments(%d for 0)",argc); SWIG_fail;
   }
-  res1 = SWIG_ConvertPtr(self, &argp1,SWIGTYPE_p_datamunge__plot__Plot, 0 |  0 );
+  res1 = SWIG_ConvertPtr(self, &argp1,SWIGTYPE_p_datamunge__graphics__Plot, 0 |  0 );
   if (!SWIG_IsOK(res1)) {
     SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::graphics::Plot const *","view", 1, self )); 
   }
@@ -90403,7 +93950,7 @@ SWIGINTERN VALUE _wrap_Plot_view(int nargs, VALUE *args, VALUE self) {
   if (argc == 1) {
     int _v = 0;
     void *vptr = 0;
-    int res = SWIG_ConvertPtr(argv[0], &vptr, SWIGTYPE_p_datamunge__plot__Plot, 0);
+    int res = SWIG_ConvertPtr(argv[0], &vptr, SWIGTYPE_p_datamunge__graphics__Plot, 0);
     _v = SWIG_CheckState(res);
     if (_v) {
       return _wrap_Plot_view__SWIG_1(nargs, args, self);
@@ -90412,7 +93959,7 @@ SWIGINTERN VALUE _wrap_Plot_view(int nargs, VALUE *args, VALUE self) {
   if (argc == 2) {
     int _v = 0;
     void *vptr = 0;
-    int res = SWIG_ConvertPtr(argv[0], &vptr, SWIGTYPE_p_datamunge__plot__Plot, 0);
+    int res = SWIG_ConvertPtr(argv[0], &vptr, SWIGTYPE_p_datamunge__graphics__Plot, 0);
     _v = SWIG_CheckState(res);
     if (_v) {
       int res = SWIG_AsPtr_std_string(argv[1], (std::string**)(0));
@@ -90443,7 +93990,7 @@ _wrap_Plot_show__SWIG_0(int argc, VALUE *argv, VALUE self) {
   if ((argc < 1) || (argc > 1)) {
     rb_raise(rb_eArgError, "wrong # of arguments(%d for 1)",argc); SWIG_fail;
   }
-  res1 = SWIG_ConvertPtr(self, &argp1,SWIGTYPE_p_datamunge__plot__Plot, 0 |  0 );
+  res1 = SWIG_ConvertPtr(self, &argp1,SWIGTYPE_p_datamunge__graphics__Plot, 0 |  0 );
   if (!SWIG_IsOK(res1)) {
     SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::graphics::Plot const *","show", 1, self )); 
   }
@@ -90477,7 +94024,7 @@ _wrap_Plot_show__SWIG_1(int argc, VALUE *argv, VALUE self) {
   if ((argc < 0) || (argc > 0)) {
     rb_raise(rb_eArgError, "wrong # of arguments(%d for 0)",argc); SWIG_fail;
   }
-  res1 = SWIG_ConvertPtr(self, &argp1,SWIGTYPE_p_datamunge__plot__Plot, 0 |  0 );
+  res1 = SWIG_ConvertPtr(self, &argp1,SWIGTYPE_p_datamunge__graphics__Plot, 0 |  0 );
   if (!SWIG_IsOK(res1)) {
     SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::graphics::Plot const *","show", 1, self )); 
   }
@@ -90503,7 +94050,7 @@ SWIGINTERN VALUE _wrap_Plot_show(int nargs, VALUE *args, VALUE self) {
   if (argc == 1) {
     int _v = 0;
     void *vptr = 0;
-    int res = SWIG_ConvertPtr(argv[0], &vptr, SWIGTYPE_p_datamunge__plot__Plot, 0);
+    int res = SWIG_ConvertPtr(argv[0], &vptr, SWIGTYPE_p_datamunge__graphics__Plot, 0);
     _v = SWIG_CheckState(res);
     if (_v) {
       return _wrap_Plot_show__SWIG_1(nargs, args, self);
@@ -90512,7 +94059,7 @@ SWIGINTERN VALUE _wrap_Plot_show(int nargs, VALUE *args, VALUE self) {
   if (argc == 2) {
     int _v = 0;
     void *vptr = 0;
-    int res = SWIG_ConvertPtr(argv[0], &vptr, SWIGTYPE_p_datamunge__plot__Plot, 0);
+    int res = SWIG_ConvertPtr(argv[0], &vptr, SWIGTYPE_p_datamunge__graphics__Plot, 0);
     _v = SWIG_CheckState(res);
     if (_v) {
       int res = SWIG_AsPtr_std_string(argv[1], (std::string**)(0));
@@ -90539,7 +94086,7 @@ _wrap_Plot_allocate(VALUE self)
 _wrap_Plot_allocate(int argc, VALUE *argv, VALUE self)
 #endif
 {
-  VALUE vresult = SWIG_NewClassInstance(self, SWIGTYPE_p_datamunge__plot__Plot);
+  VALUE vresult = SWIG_NewClassInstance(self, SWIGTYPE_p_datamunge__graphics__Plot);
 #ifndef HAVE_RB_DEFINE_ALLOC_FUNC
   rb_obj_call_init(vresult, argc, argv);
 #endif
@@ -90566,6 +94113,108 @@ fail:
 static swig_class SwigClassRPlot;
 
 SWIGINTERN VALUE
+_wrap_new_RPlot__SWIG_0(int argc, VALUE *argv, VALUE self) {
+  const char *classname SWIGUNUSED = "Octruby::RPlot";
+  datamunge::graphics::RPlot *result = 0 ;
+  
+  if ((argc < 0) || (argc > 0)) {
+    rb_raise(rb_eArgError, "wrong # of arguments(%d for 0)",argc); SWIG_fail;
+  }
+  result = (datamunge::graphics::RPlot *)new datamunge::graphics::RPlot();
+  ((struct swig_ruby_wrapped_object *)RTYPEDDATA_GET_DATA(self))->data = result;
+  return self;
+fail:
+  return Qnil;
+}
+
+
+SWIGINTERN VALUE
+#ifdef HAVE_RB_DEFINE_ALLOC_FUNC
+_wrap_RPlot_allocate(VALUE self)
+#else
+_wrap_RPlot_allocate(int argc, VALUE *argv, VALUE self)
+#endif
+{
+  VALUE vresult = SWIG_NewClassInstance(self, SWIGTYPE_p_datamunge__graphics__RPlot);
+#ifndef HAVE_RB_DEFINE_ALLOC_FUNC
+  rb_obj_call_init(vresult, argc, argv);
+#endif
+  return vresult;
+}
+
+
+SWIGINTERN VALUE
+_wrap_new_RPlot__SWIG_1(int argc, VALUE *argv, VALUE self) {
+  std::vector< double,std::allocator< double > > arg1 ;
+  std::vector< double,std::allocator< double > > arg2 ;
+  const char *classname SWIGUNUSED = "Octruby::RPlot";
+  datamunge::graphics::RPlot *result = 0 ;
+  
+  if ((argc < 2) || (argc > 2)) {
+    rb_raise(rb_eArgError, "wrong # of arguments(%d for 2)",argc); SWIG_fail;
+  }
+  {
+    std::vector< double,std::allocator< double > > *ptr = (std::vector< double,std::allocator< double > > *)0;
+    int res = swig::asptr(argv[0], &ptr);
+    if (!SWIG_IsOK(res) || !ptr) {
+      SWIG_exception_fail(SWIG_ArgError((ptr ? res : SWIG_TypeError)), Ruby_Format_TypeError( "", "std::vector< double,std::allocator< double > >","RPlot", 1, argv[0] )); 
+    }
+    arg1 = *ptr;
+    if (SWIG_IsNewObj(res)) delete ptr;
+  }
+  {
+    std::vector< double,std::allocator< double > > *ptr = (std::vector< double,std::allocator< double > > *)0;
+    int res = swig::asptr(argv[1], &ptr);
+    if (!SWIG_IsOK(res) || !ptr) {
+      SWIG_exception_fail(SWIG_ArgError((ptr ? res : SWIG_TypeError)), Ruby_Format_TypeError( "", "std::vector< double,std::allocator< double > >","RPlot", 2, argv[1] )); 
+    }
+    arg2 = *ptr;
+    if (SWIG_IsNewObj(res)) delete ptr;
+  }
+  result = (datamunge::graphics::RPlot *)new datamunge::graphics::RPlot(SWIG_STD_MOVE(*(&arg1)),SWIG_STD_MOVE(*(&arg2)));
+  ((struct swig_ruby_wrapped_object *)RTYPEDDATA_GET_DATA(self))->data = result;
+  return self;
+fail:
+  return Qnil;
+}
+
+
+SWIGINTERN VALUE _wrap_new_RPlot(int nargs, VALUE *args, VALUE self) {
+  int argc;
+  VALUE argv[2];
+  int ii;
+  
+  argc = nargs;
+  if (argc > 2) SWIG_fail;
+  for (ii = 0; (ii < argc); ++ii) {
+    argv[ii] = args[ii];
+  }
+  if (argc == 0) {
+    return _wrap_new_RPlot__SWIG_0(nargs, args, self);
+  }
+  if (argc == 2) {
+    int _v = 0;
+    int res = swig::asptr(argv[0], (std::vector< double,std::allocator< double > >**)(0));
+    _v = SWIG_CheckState(res);
+    if (_v) {
+      int res = swig::asptr(argv[1], (std::vector< double,std::allocator< double > >**)(0));
+      _v = SWIG_CheckState(res);
+      if (_v) {
+        return _wrap_new_RPlot__SWIG_1(nargs, args, self);
+      }
+    }
+  }
+  
+fail:
+  Ruby_Format_OverloadedError( argc, 2, "RPlot.new", 
+    "    RPlot.new()\n"
+    "    RPlot.new(std::vector< double,std::allocator< double > > x, std::vector< double,std::allocator< double > > y)\n");
+  
+  return Qnil;
+}
+
+
+SWIGINTERN VALUE
 _wrap_RPlot_create(int argc, VALUE *argv, VALUE self) {
   datamunge::graphics::RPlot result;
   VALUE vresult = Qnil;
@@ -90574,7 +94223,7 @@ _wrap_RPlot_create(int argc, VALUE *argv, VALUE self) {
     rb_raise(rb_eArgError, "wrong # of arguments(%d for 0)",argc); SWIG_fail;
   }
   result = datamunge::graphics::RPlot::create();
-  vresult = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
+  vresult = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__graphics__RPlot, SWIG_POINTER_OWN |  0 );
   return vresult;
 fail:
   return Qnil;
@@ -90606,7 +94255,7 @@ _wrap_RPlot_size(int argc, VALUE *argv, VALUE self) {
   if ((argc < 2) || (argc > 2)) {
     rb_raise(rb_eArgError, "wrong # of arguments(%d for 2)",argc); SWIG_fail;
   }
-  res1 = SWIG_ConvertPtr(self, &argp1,SWIGTYPE_p_datamunge__plot__RPlot, 0 |  0 );
+  res1 = SWIG_ConvertPtr(self, &argp1,SWIGTYPE_p_datamunge__graphics__RPlot, 0 |  0 );
   if (!SWIG_IsOK(res1)) {
     SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::graphics::RPlot *","size", 1, self )); 
   }
@@ -90622,7 +94271,7 @@ _wrap_RPlot_size(int argc, VALUE *argv, VALUE self) {
   } 
   arg3 = static_cast< std::size_t >(val3);
   result = (datamunge::graphics::RPlot *) &(arg1)->size(SWIG_STD_MOVE(*(&arg2)),SWIG_STD_MOVE(*(&arg3)));
-  vresult = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__plot__RPlot, 0 |  0 );
+  vresult = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__graphics__RPlot, 0 |  0 );
   return vresult;
 fail:
   return Qnil;
@@ -90641,7 +94290,7 @@ _wrap_RPlot_title(int argc, VALUE *argv, VALUE self) {
   if ((argc < 1) || (argc > 1)) {
     rb_raise(rb_eArgError, "wrong # of arguments(%d for 1)",argc); SWIG_fail;
   }
-  res1 = SWIG_ConvertPtr(self, &argp1,SWIGTYPE_p_datamunge__plot__RPlot, 0 |  0 );
+  res1 = SWIG_ConvertPtr(self, &argp1,SWIGTYPE_p_datamunge__graphics__RPlot, 0 |  0 );
   if (!SWIG_IsOK(res1)) {
     SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::graphics::RPlot *","title", 1, self )); 
   }
@@ -90656,7 +94305,41 @@ _wrap_RPlot_title(int argc, VALUE *argv, VALUE self) {
     if (SWIG_IsNewObj(res)) delete ptr;
   }
   result = (datamunge::graphics::RPlot *) &(arg1)->title(SWIG_STD_MOVE(*(&arg2)));
-  vresult = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__plot__RPlot, 0 |  0 );
+  vresult = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__graphics__RPlot, 0 |  0 );
+  return vresult;
+fail:
+  return Qnil;
+}
+
+
+SWIGINTERN VALUE
+_wrap_RPlot_subtitle(int argc, VALUE *argv, VALUE self) {
+  datamunge::graphics::RPlot *arg1 = 0 ;
+  std::string arg2 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  datamunge::graphics::RPlot *result = 0 ;
+  VALUE vresult = Qnil;
+  
+  if ((argc < 1) || (argc > 1)) {
+    rb_raise(rb_eArgError, "wrong # of arguments(%d for 1)",argc); SWIG_fail;
+  }
+  res1 = SWIG_ConvertPtr(self, &argp1,SWIGTYPE_p_datamunge__graphics__RPlot, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::graphics::RPlot *","subtitle", 1, self )); 
+  }
+  arg1 = reinterpret_cast< datamunge::graphics::RPlot * >(argp1);
+  {
+    std::string *ptr = (std::string *)0;
+    int res = SWIG_AsPtr_std_string(argv[0], &ptr);
+    if (!SWIG_IsOK(res) || !ptr) {
+      SWIG_exception_fail(SWIG_ArgError((ptr ? res : SWIG_TypeError)), Ruby_Format_TypeError( "", "std::string","subtitle", 2, argv[0] )); 
+    }
+    arg2 = *ptr;
+    if (SWIG_IsNewObj(res)) delete ptr;
+  }
+  result = (datamunge::graphics::RPlot *) &(arg1)->subtitle(SWIG_STD_MOVE(*(&arg2)));
+  vresult = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__graphics__RPlot, 0 |  0 );
   return vresult;
 fail:
   return Qnil;
@@ -90675,7 +94358,7 @@ _wrap_RPlot_x_label(int argc, VALUE *argv, VALUE self) {
   if ((argc < 1) || (argc > 1)) {
     rb_raise(rb_eArgError, "wrong # of arguments(%d for 1)",argc); SWIG_fail;
   }
-  res1 = SWIG_ConvertPtr(self, &argp1,SWIGTYPE_p_datamunge__plot__RPlot, 0 |  0 );
+  res1 = SWIG_ConvertPtr(self, &argp1,SWIGTYPE_p_datamunge__graphics__RPlot, 0 |  0 );
   if (!SWIG_IsOK(res1)) {
     SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::graphics::RPlot *","x_label", 1, self )); 
   }
@@ -90690,7 +94373,7 @@ _wrap_RPlot_x_label(int argc, VALUE *argv, VALUE self) {
     if (SWIG_IsNewObj(res)) delete ptr;
   }
   result = (datamunge::graphics::RPlot *) &(arg1)->x_label(SWIG_STD_MOVE(*(&arg2)));
-  vresult = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__plot__RPlot, 0 |  0 );
+  vresult = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__graphics__RPlot, 0 |  0 );
   return vresult;
 fail:
   return Qnil;
@@ -90709,7 +94392,7 @@ _wrap_RPlot_y_label(int argc, VALUE *argv, VALUE self) {
   if ((argc < 1) || (argc > 1)) {
     rb_raise(rb_eArgError, "wrong # of arguments(%d for 1)",argc); SWIG_fail;
   }
-  res1 = SWIG_ConvertPtr(self, &argp1,SWIGTYPE_p_datamunge__plot__RPlot, 0 |  0 );
+  res1 = SWIG_ConvertPtr(self, &argp1,SWIGTYPE_p_datamunge__graphics__RPlot, 0 |  0 );
   if (!SWIG_IsOK(res1)) {
     SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::graphics::RPlot *","y_label", 1, self )); 
   }
@@ -90724,7 +94407,7 @@ _wrap_RPlot_y_label(int argc, VALUE *argv, VALUE self) {
     if (SWIG_IsNewObj(res)) delete ptr;
   }
   result = (datamunge::graphics::RPlot *) &(arg1)->y_label(SWIG_STD_MOVE(*(&arg2)));
-  vresult = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__plot__RPlot, 0 |  0 );
+  vresult = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__graphics__RPlot, 0 |  0 );
   return vresult;
 fail:
   return Qnil;
@@ -90743,7 +94426,7 @@ _wrap_RPlot_xlab(int argc, VALUE *argv, VALUE self) {
   if ((argc < 1) || (argc > 1)) {
     rb_raise(rb_eArgError, "wrong # of arguments(%d for 1)",argc); SWIG_fail;
   }
-  res1 = SWIG_ConvertPtr(self, &argp1,SWIGTYPE_p_datamunge__plot__RPlot, 0 |  0 );
+  res1 = SWIG_ConvertPtr(self, &argp1,SWIGTYPE_p_datamunge__graphics__RPlot, 0 |  0 );
   if (!SWIG_IsOK(res1)) {
     SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::graphics::RPlot *","xlab", 1, self )); 
   }
@@ -90758,7 +94441,7 @@ _wrap_RPlot_xlab(int argc, VALUE *argv, VALUE self) {
     if (SWIG_IsNewObj(res)) delete ptr;
   }
   result = (datamunge::graphics::RPlot *) &(arg1)->xlab(SWIG_STD_MOVE(*(&arg2)));
-  vresult = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__plot__RPlot, 0 |  0 );
+  vresult = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__graphics__RPlot, 0 |  0 );
   return vresult;
 fail:
   return Qnil;
@@ -90777,7 +94460,7 @@ _wrap_RPlot_ylab(int argc, VALUE *argv, VALUE self) {
   if ((argc < 1) || (argc > 1)) {
     rb_raise(rb_eArgError, "wrong # of arguments(%d for 1)",argc); SWIG_fail;
   }
-  res1 = SWIG_ConvertPtr(self, &argp1,SWIGTYPE_p_datamunge__plot__RPlot, 0 |  0 );
+  res1 = SWIG_ConvertPtr(self, &argp1,SWIGTYPE_p_datamunge__graphics__RPlot, 0 |  0 );
   if (!SWIG_IsOK(res1)) {
     SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::graphics::RPlot *","ylab", 1, self )); 
   }
@@ -90792,7 +94475,7 @@ _wrap_RPlot_ylab(int argc, VALUE *argv, VALUE self) {
     if (SWIG_IsNewObj(res)) delete ptr;
   }
   result = (datamunge::graphics::RPlot *) &(arg1)->ylab(SWIG_STD_MOVE(*(&arg2)));
-  vresult = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__plot__RPlot, 0 |  0 );
+  vresult = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__graphics__RPlot, 0 |  0 );
   return vresult;
 fail:
   return Qnil;
@@ -90800,9 +94483,145 @@ fail:
 
 
 SWIGINTERN VALUE
-_wrap_RPlot_background(int argc, VALUE *argv, VALUE self) {
+_wrap_RPlot_set_title(int argc, VALUE *argv, VALUE self) {
   datamunge::graphics::RPlot *arg1 = 0 ;
-  SwigValueWrapper< datamunge::graphics::RGB > arg2 ;
+  std::string arg2 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  datamunge::graphics::RPlot *result = 0 ;
+  VALUE vresult = Qnil;
+  
+  if ((argc < 1) || (argc > 1)) {
+    rb_raise(rb_eArgError, "wrong # of arguments(%d for 1)",argc); SWIG_fail;
+  }
+  res1 = SWIG_ConvertPtr(self, &argp1,SWIGTYPE_p_datamunge__graphics__RPlot, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::graphics::RPlot *","set_title", 1, self )); 
+  }
+  arg1 = reinterpret_cast< datamunge::graphics::RPlot * >(argp1);
+  {
+    std::string *ptr = (std::string *)0;
+    int res = SWIG_AsPtr_std_string(argv[0], &ptr);
+    if (!SWIG_IsOK(res) || !ptr) {
+      SWIG_exception_fail(SWIG_ArgError((ptr ? res : SWIG_TypeError)), Ruby_Format_TypeError( "", "std::string","set_title", 2, argv[0] )); 
+    }
+    arg2 = *ptr;
+    if (SWIG_IsNewObj(res)) delete ptr;
+  }
+  result = (datamunge::graphics::RPlot *) &(arg1)->set_title(SWIG_STD_MOVE(*(&arg2)));
+  vresult = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__graphics__RPlot, 0 |  0 );
+  return vresult;
+fail:
+  return Qnil;
+}
+
+
+SWIGINTERN VALUE
+_wrap_RPlot_set_subtitle(int argc, VALUE *argv, VALUE self) {
+  datamunge::graphics::RPlot *arg1 = 0 ;
+  std::string arg2 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  datamunge::graphics::RPlot *result = 0 ;
+  VALUE vresult = Qnil;
+  
+  if ((argc < 1) || (argc > 1)) {
+    rb_raise(rb_eArgError, "wrong # of arguments(%d for 1)",argc); SWIG_fail;
+  }
+  res1 = SWIG_ConvertPtr(self, &argp1,SWIGTYPE_p_datamunge__graphics__RPlot, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::graphics::RPlot *","set_subtitle", 1, self )); 
+  }
+  arg1 = reinterpret_cast< datamunge::graphics::RPlot * >(argp1);
+  {
+    std::string *ptr = (std::string *)0;
+    int res = SWIG_AsPtr_std_string(argv[0], &ptr);
+    if (!SWIG_IsOK(res) || !ptr) {
+      SWIG_exception_fail(SWIG_ArgError((ptr ? res : SWIG_TypeError)), Ruby_Format_TypeError( "", "std::string","set_subtitle", 2, argv[0] )); 
+    }
+    arg2 = *ptr;
+    if (SWIG_IsNewObj(res)) delete ptr;
+  }
+  result = (datamunge::graphics::RPlot *) &(arg1)->set_subtitle(SWIG_STD_MOVE(*(&arg2)));
+  vresult = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__graphics__RPlot, 0 |  0 );
+  return vresult;
+fail:
+  return Qnil;
+}
+
+
+SWIGINTERN VALUE
+_wrap_RPlot_set_xlab(int argc, VALUE *argv, VALUE self) {
+  datamunge::graphics::RPlot *arg1 = 0 ;
+  std::string arg2 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  datamunge::graphics::RPlot *result = 0 ;
+  VALUE vresult = Qnil;
+  
+  if ((argc < 1) || (argc > 1)) {
+    rb_raise(rb_eArgError, "wrong # of arguments(%d for 1)",argc); SWIG_fail;
+  }
+  res1 = SWIG_ConvertPtr(self, &argp1,SWIGTYPE_p_datamunge__graphics__RPlot, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::graphics::RPlot *","set_xlab", 1, self )); 
+  }
+  arg1 = reinterpret_cast< datamunge::graphics::RPlot * >(argp1);
+  {
+    std::string *ptr = (std::string *)0;
+    int res = SWIG_AsPtr_std_string(argv[0], &ptr);
+    if (!SWIG_IsOK(res) || !ptr) {
+      SWIG_exception_fail(SWIG_ArgError((ptr ? res : SWIG_TypeError)), Ruby_Format_TypeError( "", "std::string","set_xlab", 2, argv[0] )); 
+    }
+    arg2 = *ptr;
+    if (SWIG_IsNewObj(res)) delete ptr;
+  }
+  result = (datamunge::graphics::RPlot *) &(arg1)->set_xlab(SWIG_STD_MOVE(*(&arg2)));
+  vresult = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__graphics__RPlot, 0 |  0 );
+  return vresult;
+fail:
+  return Qnil;
+}
+
+
+SWIGINTERN VALUE
+_wrap_RPlot_set_ylab(int argc, VALUE *argv, VALUE self) {
+  datamunge::graphics::RPlot *arg1 = 0 ;
+  std::string arg2 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  datamunge::graphics::RPlot *result = 0 ;
+  VALUE vresult = Qnil;
+  
+  if ((argc < 1) || (argc > 1)) {
+    rb_raise(rb_eArgError, "wrong # of arguments(%d for 1)",argc); SWIG_fail;
+  }
+  res1 = SWIG_ConvertPtr(self, &argp1,SWIGTYPE_p_datamunge__graphics__RPlot, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::graphics::RPlot *","set_ylab", 1, self )); 
+  }
+  arg1 = reinterpret_cast< datamunge::graphics::RPlot * >(argp1);
+  {
+    std::string *ptr = (std::string *)0;
+    int res = SWIG_AsPtr_std_string(argv[0], &ptr);
+    if (!SWIG_IsOK(res) || !ptr) {
+      SWIG_exception_fail(SWIG_ArgError((ptr ? res : SWIG_TypeError)), Ruby_Format_TypeError( "", "std::string","set_ylab", 2, argv[0] )); 
+    }
+    arg2 = *ptr;
+    if (SWIG_IsNewObj(res)) delete ptr;
+  }
+  result = (datamunge::graphics::RPlot *) &(arg1)->set_ylab(SWIG_STD_MOVE(*(&arg2)));
+  vresult = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__graphics__RPlot, 0 |  0 );
+  return vresult;
+fail:
+  return Qnil;
+}
+
+
+SWIGINTERN VALUE
+_wrap_RPlot_set_col__SWIG_0(int argc, VALUE *argv, VALUE self) {
+  datamunge::graphics::RPlot *arg1 = 0 ;
+  datamunge::graphics::RGBA arg2 ;
   void *argp1 = 0 ;
   int res1 = 0 ;
   void *argp2 = 0 ;
@@ -90813,24 +94632,144 @@ _wrap_RPlot_background(int argc, VALUE *argv, VALUE self) {
   if ((argc < 1) || (argc > 1)) {
     rb_raise(rb_eArgError, "wrong # of arguments(%d for 1)",argc); SWIG_fail;
   }
-  res1 = SWIG_ConvertPtr(self, &argp1,SWIGTYPE_p_datamunge__plot__RPlot, 0 |  0 );
+  res1 = SWIG_ConvertPtr(self, &argp1,SWIGTYPE_p_datamunge__graphics__RPlot, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::graphics::RPlot *","set_col", 1, self )); 
+  }
+  arg1 = reinterpret_cast< datamunge::graphics::RPlot * >(argp1);
+  {
+    res2 = SWIG_ConvertPtr(argv[0], &argp2, SWIGTYPE_p_datamunge__graphics__RGB,  0 );
+    if (!SWIG_IsOK(res2)) {
+      SWIG_exception_fail(SWIG_ArgError(res2), Ruby_Format_TypeError( "", "datamunge::graphics::RGBA","set_col", 2, argv[0] )); 
+    }  
+    if (!argp2) {
+      SWIG_exception_fail(SWIG_NullReferenceError, Ruby_Format_TypeError("invalid null reference ", "datamunge::graphics::RGBA","set_col", 2, argv[0]));
+    } else {
+      arg2 = *(reinterpret_cast< datamunge::graphics::RGBA * >(argp2));
+    }
+  }
+  result = (datamunge::graphics::RPlot *) &(arg1)->set_col(SWIG_STD_MOVE(*(&arg2)));
+  vresult = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__graphics__RPlot, 0 |  0 );
+  return vresult;
+fail:
+  return Qnil;
+}
+
+
+SWIGINTERN VALUE
+_wrap_RPlot_set_col__SWIG_1(int argc, VALUE *argv, VALUE self) {
+  datamunge::graphics::RPlot *arg1 = 0 ;
+  std::string arg2 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  datamunge::graphics::RPlot *result = 0 ;
+  VALUE vresult = Qnil;
+  
+  if ((argc < 1) || (argc > 1)) {
+    rb_raise(rb_eArgError, "wrong # of arguments(%d for 1)",argc); SWIG_fail;
+  }
+  res1 = SWIG_ConvertPtr(self, &argp1,SWIGTYPE_p_datamunge__graphics__RPlot, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::graphics::RPlot *","set_col", 1, self )); 
+  }
+  arg1 = reinterpret_cast< datamunge::graphics::RPlot * >(argp1);
+  {
+    std::string *ptr = (std::string *)0;
+    int res = SWIG_AsPtr_std_string(argv[0], &ptr);
+    if (!SWIG_IsOK(res) || !ptr) {
+      SWIG_exception_fail(SWIG_ArgError((ptr ? res : SWIG_TypeError)), Ruby_Format_TypeError( "", "std::string","set_col", 2, argv[0] )); 
+    }
+    arg2 = *ptr;
+    if (SWIG_IsNewObj(res)) delete ptr;
+  }
+  result = (datamunge::graphics::RPlot *) &(arg1)->set_col(SWIG_STD_MOVE(*(&arg2)));
+  vresult = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__graphics__RPlot, 0 |  0 );
+  return vresult;
+fail:
+  return Qnil;
+}
+
+
+SWIGINTERN VALUE _wrap_RPlot_set_col(int nargs, VALUE *args, VALUE self) {
+  int argc;
+  VALUE argv[3];
+  int ii;
+  
+  argc = nargs + 1;
+  argv[0] = self;
+  if (argc > 3) SWIG_fail;
+  for (ii = 1; (ii < argc); ++ii) {
+    argv[ii] = args[ii-1];
+  }
+  if (argc == 2) {
+    int _v = 0;
+    void *vptr = 0;
+    int res = SWIG_ConvertPtr(argv[0], &vptr, SWIGTYPE_p_datamunge__graphics__RPlot, 0);
+    _v = SWIG_CheckState(res);
+    if (_v) {
+      void *vptr = 0;
+      int res = SWIG_ConvertPtr(argv[1], &vptr, SWIGTYPE_p_datamunge__graphics__RGB, SWIG_POINTER_NO_NULL);
+      _v = SWIG_CheckState(res);
+      if (_v) {
+        return _wrap_RPlot_set_col__SWIG_0(nargs, args, self);
+      }
+    }
+  }
+  if (argc == 2) {
+    int _v = 0;
+    void *vptr = 0;
+    int res = SWIG_ConvertPtr(argv[0], &vptr, SWIGTYPE_p_datamunge__graphics__RPlot, 0);
+    _v = SWIG_CheckState(res);
+    if (_v) {
+      int res = SWIG_AsPtr_std_string(argv[1], (std::string**)(0));
+      _v = SWIG_CheckState(res);
+      if (_v) {
+        return _wrap_RPlot_set_col__SWIG_1(nargs, args, self);
+      }
+    }
+  }
+  
+fail:
+  Ruby_Format_OverloadedError( argc, 3, "RPlot.set_col", 
+    "    datamunge::graphics::RPlot RPlot.set_col(datamunge::graphics::RGBA color)\n"
+    "    datamunge::graphics::RPlot & RPlot.set_col(std::string color)\n");
+  
+  return Qnil;
+}
+
+
+SWIGINTERN VALUE
+_wrap_RPlot_background(int argc, VALUE *argv, VALUE self) {
+  datamunge::graphics::RPlot *arg1 = 0 ;
+  datamunge::graphics::RGBA arg2 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  void *argp2 = 0 ;
+  int res2 = 0 ;
+  datamunge::graphics::RPlot *result = 0 ;
+  VALUE vresult = Qnil;
+  
+  if ((argc < 1) || (argc > 1)) {
+    rb_raise(rb_eArgError, "wrong # of arguments(%d for 1)",argc); SWIG_fail;
+  }
+  res1 = SWIG_ConvertPtr(self, &argp1,SWIGTYPE_p_datamunge__graphics__RPlot, 0 |  0 );
   if (!SWIG_IsOK(res1)) {
     SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::graphics::RPlot *","background", 1, self )); 
   }
   arg1 = reinterpret_cast< datamunge::graphics::RPlot * >(argp1);
   {
-    res2 = SWIG_ConvertPtr(argv[0], &argp2, SWIGTYPE_p_datamunge__plot__RGB,  0 );
+    res2 = SWIG_ConvertPtr(argv[0], &argp2, SWIGTYPE_p_datamunge__graphics__RGB,  0 );
     if (!SWIG_IsOK(res2)) {
-      SWIG_exception_fail(SWIG_ArgError(res2), Ruby_Format_TypeError( "", "datamunge::graphics::RGB","background", 2, argv[0] )); 
+      SWIG_exception_fail(SWIG_ArgError(res2), Ruby_Format_TypeError( "", "datamunge::graphics::RGBA","background", 2, argv[0] )); 
     }  
     if (!argp2) {
-      SWIG_exception_fail(SWIG_NullReferenceError, Ruby_Format_TypeError("invalid null reference ", "datamunge::graphics::RGB","background", 2, argv[0]));
+      SWIG_exception_fail(SWIG_NullReferenceError, Ruby_Format_TypeError("invalid null reference ", "datamunge::graphics::RGBA","background", 2, argv[0]));
     } else {
-      arg2 = *(reinterpret_cast< datamunge::graphics::RGB * >(argp2));
+      arg2 = *(reinterpret_cast< datamunge::graphics::RGBA * >(argp2));
     }
   }
   result = (datamunge::graphics::RPlot *) &(arg1)->background(SWIG_STD_MOVE(*(&arg2)));
-  vresult = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__plot__RPlot, 0 |  0 );
+  vresult = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__graphics__RPlot, 0 |  0 );
   return vresult;
 fail:
   return Qnil;
@@ -90840,7 +94779,7 @@ fail:
 SWIGINTERN VALUE
 _wrap_RPlot_axis_color(int argc, VALUE *argv, VALUE self) {
   datamunge::graphics::RPlot *arg1 = 0 ;
-  SwigValueWrapper< datamunge::graphics::RGB > arg2 ;
+  datamunge::graphics::RGBA arg2 ;
   void *argp1 = 0 ;
   int res1 = 0 ;
   void *argp2 = 0 ;
@@ -90851,24 +94790,24 @@ _wrap_RPlot_axis_color(int argc, VALUE *argv, VALUE self) {
   if ((argc < 1) || (argc > 1)) {
     rb_raise(rb_eArgError, "wrong # of arguments(%d for 1)",argc); SWIG_fail;
   }
-  res1 = SWIG_ConvertPtr(self, &argp1,SWIGTYPE_p_datamunge__plot__RPlot, 0 |  0 );
+  res1 = SWIG_ConvertPtr(self, &argp1,SWIGTYPE_p_datamunge__graphics__RPlot, 0 |  0 );
   if (!SWIG_IsOK(res1)) {
     SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::graphics::RPlot *","axis_color", 1, self )); 
   }
   arg1 = reinterpret_cast< datamunge::graphics::RPlot * >(argp1);
   {
-    res2 = SWIG_ConvertPtr(argv[0], &argp2, SWIGTYPE_p_datamunge__plot__RGB,  0 );
+    res2 = SWIG_ConvertPtr(argv[0], &argp2, SWIGTYPE_p_datamunge__graphics__RGB,  0 );
     if (!SWIG_IsOK(res2)) {
-      SWIG_exception_fail(SWIG_ArgError(res2), Ruby_Format_TypeError( "", "datamunge::graphics::RGB","axis_color", 2, argv[0] )); 
+      SWIG_exception_fail(SWIG_ArgError(res2), Ruby_Format_TypeError( "", "datamunge::graphics::RGBA","axis_color", 2, argv[0] )); 
     }  
     if (!argp2) {
-      SWIG_exception_fail(SWIG_NullReferenceError, Ruby_Format_TypeError("invalid null reference ", "datamunge::graphics::RGB","axis_color", 2, argv[0]));
+      SWIG_exception_fail(SWIG_NullReferenceError, Ruby_Format_TypeError("invalid null reference ", "datamunge::graphics::RGBA","axis_color", 2, argv[0]));
     } else {
-      arg2 = *(reinterpret_cast< datamunge::graphics::RGB * >(argp2));
+      arg2 = *(reinterpret_cast< datamunge::graphics::RGBA * >(argp2));
     }
   }
   result = (datamunge::graphics::RPlot *) &(arg1)->axis_color(SWIG_STD_MOVE(*(&arg2)));
-  vresult = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__plot__RPlot, 0 |  0 );
+  vresult = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__graphics__RPlot, 0 |  0 );
   return vresult;
 fail:
   return Qnil;
@@ -90878,7 +94817,7 @@ fail:
 SWIGINTERN VALUE
 _wrap_RPlot_grid_color(int argc, VALUE *argv, VALUE self) {
   datamunge::graphics::RPlot *arg1 = 0 ;
-  SwigValueWrapper< datamunge::graphics::RGB > arg2 ;
+  datamunge::graphics::RGBA arg2 ;
   void *argp1 = 0 ;
   int res1 = 0 ;
   void *argp2 = 0 ;
@@ -90889,24 +94828,24 @@ _wrap_RPlot_grid_color(int argc, VALUE *argv, VALUE self) {
   if ((argc < 1) || (argc > 1)) {
     rb_raise(rb_eArgError, "wrong # of arguments(%d for 1)",argc); SWIG_fail;
   }
-  res1 = SWIG_ConvertPtr(self, &argp1,SWIGTYPE_p_datamunge__plot__RPlot, 0 |  0 );
+  res1 = SWIG_ConvertPtr(self, &argp1,SWIGTYPE_p_datamunge__graphics__RPlot, 0 |  0 );
   if (!SWIG_IsOK(res1)) {
     SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::graphics::RPlot *","grid_color", 1, self )); 
   }
   arg1 = reinterpret_cast< datamunge::graphics::RPlot * >(argp1);
   {
-    res2 = SWIG_ConvertPtr(argv[0], &argp2, SWIGTYPE_p_datamunge__plot__RGB,  0 );
+    res2 = SWIG_ConvertPtr(argv[0], &argp2, SWIGTYPE_p_datamunge__graphics__RGB,  0 );
     if (!SWIG_IsOK(res2)) {
-      SWIG_exception_fail(SWIG_ArgError(res2), Ruby_Format_TypeError( "", "datamunge::graphics::RGB","grid_color", 2, argv[0] )); 
+      SWIG_exception_fail(SWIG_ArgError(res2), Ruby_Format_TypeError( "", "datamunge::graphics::RGBA","grid_color", 2, argv[0] )); 
     }  
     if (!argp2) {
-      SWIG_exception_fail(SWIG_NullReferenceError, Ruby_Format_TypeError("invalid null reference ", "datamunge::graphics::RGB","grid_color", 2, argv[0]));
+      SWIG_exception_fail(SWIG_NullReferenceError, Ruby_Format_TypeError("invalid null reference ", "datamunge::graphics::RGBA","grid_color", 2, argv[0]));
     } else {
-      arg2 = *(reinterpret_cast< datamunge::graphics::RGB * >(argp2));
+      arg2 = *(reinterpret_cast< datamunge::graphics::RGBA * >(argp2));
     }
   }
   result = (datamunge::graphics::RPlot *) &(arg1)->grid_color(SWIG_STD_MOVE(*(&arg2)));
-  vresult = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__plot__RPlot, 0 |  0 );
+  vresult = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__graphics__RPlot, 0 |  0 );
   return vresult;
 fail:
   return Qnil;
@@ -90927,7 +94866,7 @@ _wrap_RPlot_show_grid__SWIG_0(int argc, VALUE *argv, VALUE self) {
   if ((argc < 1) || (argc > 1)) {
     rb_raise(rb_eArgError, "wrong # of arguments(%d for 1)",argc); SWIG_fail;
   }
-  res1 = SWIG_ConvertPtr(self, &argp1,SWIGTYPE_p_datamunge__plot__RPlot, 0 |  0 );
+  res1 = SWIG_ConvertPtr(self, &argp1,SWIGTYPE_p_datamunge__graphics__RPlot, 0 |  0 );
   if (!SWIG_IsOK(res1)) {
     SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::graphics::RPlot *","show_grid", 1, self )); 
   }
@@ -90938,7 +94877,7 @@ _wrap_RPlot_show_grid__SWIG_0(int argc, VALUE *argv, VALUE self) {
   } 
   arg2 = static_cast< bool >(val2);
   result = (datamunge::graphics::RPlot *) &(arg1)->show_grid(arg2);
-  vresult = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__plot__RPlot, 0 |  0 );
+  vresult = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__graphics__RPlot, 0 |  0 );
   return vresult;
 fail:
   return Qnil;
@@ -90956,13 +94895,13 @@ _wrap_RPlot_show_grid__SWIG_1(int argc, VALUE *argv, VALUE self) {
   if ((argc < 0) || (argc > 0)) {
     rb_raise(rb_eArgError, "wrong # of arguments(%d for 0)",argc); SWIG_fail;
   }
-  res1 = SWIG_ConvertPtr(self, &argp1,SWIGTYPE_p_datamunge__plot__RPlot, 0 |  0 );
+  res1 = SWIG_ConvertPtr(self, &argp1,SWIGTYPE_p_datamunge__graphics__RPlot, 0 |  0 );
   if (!SWIG_IsOK(res1)) {
     SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::graphics::RPlot *","show_grid", 1, self )); 
   }
   arg1 = reinterpret_cast< datamunge::graphics::RPlot * >(argp1);
   result = (datamunge::graphics::RPlot *) &(arg1)->show_grid();
-  vresult = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__plot__RPlot, 0 |  0 );
+  vresult = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__graphics__RPlot, 0 |  0 );
   return vresult;
 fail:
   return Qnil;
@@ -90983,7 +94922,7 @@ SWIGINTERN VALUE _wrap_RPlot_show_grid(int nargs, VALUE *args, VALUE self) {
   if (argc == 1) {
     int _v = 0;
     void *vptr = 0;
-    int res = SWIG_ConvertPtr(argv[0], &vptr, SWIGTYPE_p_datamunge__plot__RPlot, 0);
+    int res = SWIG_ConvertPtr(argv[0], &vptr, SWIGTYPE_p_datamunge__graphics__RPlot, 0);
     _v = SWIG_CheckState(res);
     if (_v) {
       return _wrap_RPlot_show_grid__SWIG_1(nargs, args, self);
@@ -90992,7 +94931,7 @@ SWIGINTERN VALUE _wrap_RPlot_show_grid(int nargs, VALUE *args, VALUE self) {
   if (argc == 2) {
     int _v = 0;
     void *vptr = 0;
-    int res = SWIG_ConvertPtr(argv[0], &vptr, SWIGTYPE_p_datamunge__plot__RPlot, 0);
+    int res = SWIG_ConvertPtr(argv[0], &vptr, SWIGTYPE_p_datamunge__graphics__RPlot, 0);
     _v = SWIG_CheckState(res);
     if (_v) {
       {
@@ -91031,7 +94970,7 @@ _wrap_RPlot_x_limits(int argc, VALUE *argv, VALUE self) {
   if ((argc < 2) || (argc > 2)) {
     rb_raise(rb_eArgError, "wrong # of arguments(%d for 2)",argc); SWIG_fail;
   }
-  res1 = SWIG_ConvertPtr(self, &argp1,SWIGTYPE_p_datamunge__plot__RPlot, 0 |  0 );
+  res1 = SWIG_ConvertPtr(self, &argp1,SWIGTYPE_p_datamunge__graphics__RPlot, 0 |  0 );
   if (!SWIG_IsOK(res1)) {
     SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::graphics::RPlot *","x_limits", 1, self )); 
   }
@@ -91047,7 +94986,7 @@ _wrap_RPlot_x_limits(int argc, VALUE *argv, VALUE self) {
   } 
   arg3 = static_cast< double >(val3);
   result = (datamunge::graphics::RPlot *) &(arg1)->x_limits(arg2,arg3);
-  vresult = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__plot__RPlot, 0 |  0 );
+  vresult = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__graphics__RPlot, 0 |  0 );
   return vresult;
 fail:
   return Qnil;
@@ -91071,7 +95010,7 @@ _wrap_RPlot_y_limits(int argc, VALUE *argv, VALUE self) {
   if ((argc < 2) || (argc > 2)) {
     rb_raise(rb_eArgError, "wrong # of arguments(%d for 2)",argc); SWIG_fail;
   }
-  res1 = SWIG_ConvertPtr(self, &argp1,SWIGTYPE_p_datamunge__plot__RPlot, 0 |  0 );
+  res1 = SWIG_ConvertPtr(self, &argp1,SWIGTYPE_p_datamunge__graphics__RPlot, 0 |  0 );
   if (!SWIG_IsOK(res1)) {
     SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::graphics::RPlot *","y_limits", 1, self )); 
   }
@@ -91087,7 +95026,87 @@ _wrap_RPlot_y_limits(int argc, VALUE *argv, VALUE self) {
   } 
   arg3 = static_cast< double >(val3);
   result = (datamunge::graphics::RPlot *) &(arg1)->y_limits(arg2,arg3);
-  vresult = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__plot__RPlot, 0 |  0 );
+  vresult = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__graphics__RPlot, 0 |  0 );
+  return vresult;
+fail:
+  return Qnil;
+}
+
+
+SWIGINTERN VALUE
+_wrap_RPlot_xlim(int argc, VALUE *argv, VALUE self) {
+  datamunge::graphics::RPlot *arg1 = 0 ;
+  double arg2 ;
+  double arg3 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  double val2 ;
+  int ecode2 = 0 ;
+  double val3 ;
+  int ecode3 = 0 ;
+  datamunge::graphics::RPlot *result = 0 ;
+  VALUE vresult = Qnil;
+  
+  if ((argc < 2) || (argc > 2)) {
+    rb_raise(rb_eArgError, "wrong # of arguments(%d for 2)",argc); SWIG_fail;
+  }
+  res1 = SWIG_ConvertPtr(self, &argp1,SWIGTYPE_p_datamunge__graphics__RPlot, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::graphics::RPlot *","xlim", 1, self )); 
+  }
+  arg1 = reinterpret_cast< datamunge::graphics::RPlot * >(argp1);
+  ecode2 = SWIG_AsVal_double(argv[0], &val2);
+  if (!SWIG_IsOK(ecode2)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode2), Ruby_Format_TypeError( "", "double","xlim", 2, argv[0] ));
+  } 
+  arg2 = static_cast< double >(val2);
+  ecode3 = SWIG_AsVal_double(argv[1], &val3);
+  if (!SWIG_IsOK(ecode3)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode3), Ruby_Format_TypeError( "", "double","xlim", 3, argv[1] ));
+  } 
+  arg3 = static_cast< double >(val3);
+  result = (datamunge::graphics::RPlot *) &(arg1)->xlim(arg2,arg3);
+  vresult = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__graphics__RPlot, 0 |  0 );
+  return vresult;
+fail:
+  return Qnil;
+}
+
+
+SWIGINTERN VALUE
+_wrap_RPlot_ylim(int argc, VALUE *argv, VALUE self) {
+  datamunge::graphics::RPlot *arg1 = 0 ;
+  double arg2 ;
+  double arg3 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  double val2 ;
+  int ecode2 = 0 ;
+  double val3 ;
+  int ecode3 = 0 ;
+  datamunge::graphics::RPlot *result = 0 ;
+  VALUE vresult = Qnil;
+  
+  if ((argc < 2) || (argc > 2)) {
+    rb_raise(rb_eArgError, "wrong # of arguments(%d for 2)",argc); SWIG_fail;
+  }
+  res1 = SWIG_ConvertPtr(self, &argp1,SWIGTYPE_p_datamunge__graphics__RPlot, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::graphics::RPlot *","ylim", 1, self )); 
+  }
+  arg1 = reinterpret_cast< datamunge::graphics::RPlot * >(argp1);
+  ecode2 = SWIG_AsVal_double(argv[0], &val2);
+  if (!SWIG_IsOK(ecode2)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode2), Ruby_Format_TypeError( "", "double","ylim", 2, argv[0] ));
+  } 
+  arg2 = static_cast< double >(val2);
+  ecode3 = SWIG_AsVal_double(argv[1], &val3);
+  if (!SWIG_IsOK(ecode3)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode3), Ruby_Format_TypeError( "", "double","ylim", 3, argv[1] ));
+  } 
+  arg3 = static_cast< double >(val3);
+  result = (datamunge::graphics::RPlot *) &(arg1)->ylim(arg2,arg3);
+  vresult = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__graphics__RPlot, 0 |  0 );
   return vresult;
 fail:
   return Qnil;
@@ -91108,7 +95127,7 @@ _wrap_RPlot_hide_axes__SWIG_0(int argc, VALUE *argv, VALUE self) {
   if ((argc < 1) || (argc > 1)) {
     rb_raise(rb_eArgError, "wrong # of arguments(%d for 1)",argc); SWIG_fail;
   }
-  res1 = SWIG_ConvertPtr(self, &argp1,SWIGTYPE_p_datamunge__plot__RPlot, 0 |  0 );
+  res1 = SWIG_ConvertPtr(self, &argp1,SWIGTYPE_p_datamunge__graphics__RPlot, 0 |  0 );
   if (!SWIG_IsOK(res1)) {
     SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::graphics::RPlot *","hide_axes", 1, self )); 
   }
@@ -91119,7 +95138,7 @@ _wrap_RPlot_hide_axes__SWIG_0(int argc, VALUE *argv, VALUE self) {
   } 
   arg2 = static_cast< bool >(val2);
   result = (datamunge::graphics::RPlot *) &(arg1)->hide_axes(arg2);
-  vresult = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__plot__RPlot, 0 |  0 );
+  vresult = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__graphics__RPlot, 0 |  0 );
   return vresult;
 fail:
   return Qnil;
@@ -91137,13 +95156,13 @@ _wrap_RPlot_hide_axes__SWIG_1(int argc, VALUE *argv, VALUE self) {
   if ((argc < 0) || (argc > 0)) {
     rb_raise(rb_eArgError, "wrong # of arguments(%d for 0)",argc); SWIG_fail;
   }
-  res1 = SWIG_ConvertPtr(self, &argp1,SWIGTYPE_p_datamunge__plot__RPlot, 0 |  0 );
+  res1 = SWIG_ConvertPtr(self, &argp1,SWIGTYPE_p_datamunge__graphics__RPlot, 0 |  0 );
   if (!SWIG_IsOK(res1)) {
     SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::graphics::RPlot *","hide_axes", 1, self )); 
   }
   arg1 = reinterpret_cast< datamunge::graphics::RPlot * >(argp1);
   result = (datamunge::graphics::RPlot *) &(arg1)->hide_axes();
-  vresult = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__plot__RPlot, 0 |  0 );
+  vresult = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__graphics__RPlot, 0 |  0 );
   return vresult;
 fail:
   return Qnil;
@@ -91164,7 +95183,7 @@ SWIGINTERN VALUE _wrap_RPlot_hide_axes(int nargs, VALUE *args, VALUE self) {
   if (argc == 1) {
     int _v = 0;
     void *vptr = 0;
-    int res = SWIG_ConvertPtr(argv[0], &vptr, SWIGTYPE_p_datamunge__plot__RPlot, 0);
+    int res = SWIG_ConvertPtr(argv[0], &vptr, SWIGTYPE_p_datamunge__graphics__RPlot, 0);
     _v = SWIG_CheckState(res);
     if (_v) {
       return _wrap_RPlot_hide_axes__SWIG_1(nargs, args, self);
@@ -91173,7 +95192,7 @@ SWIGINTERN VALUE _wrap_RPlot_hide_axes(int nargs, VALUE *args, VALUE self) {
   if (argc == 2) {
     int _v = 0;
     void *vptr = 0;
-    int res = SWIG_ConvertPtr(argv[0], &vptr, SWIGTYPE_p_datamunge__plot__RPlot, 0);
+    int res = SWIG_ConvertPtr(argv[0], &vptr, SWIGTYPE_p_datamunge__graphics__RPlot, 0);
     _v = SWIG_CheckState(res);
     if (_v) {
       {
@@ -91207,7 +95226,7 @@ _wrap_RPlot_x_tick_labels(int argc, VALUE *argv, VALUE self) {
   if ((argc < 1) || (argc > 1)) {
     rb_raise(rb_eArgError, "wrong # of arguments(%d for 1)",argc); SWIG_fail;
   }
-  res1 = SWIG_ConvertPtr(self, &argp1,SWIGTYPE_p_datamunge__plot__RPlot, 0 |  0 );
+  res1 = SWIG_ConvertPtr(self, &argp1,SWIGTYPE_p_datamunge__graphics__RPlot, 0 |  0 );
   if (!SWIG_IsOK(res1)) {
     SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::graphics::RPlot *","x_tick_labels", 1, self )); 
   }
@@ -91222,9 +95241,320 @@ _wrap_RPlot_x_tick_labels(int argc, VALUE *argv, VALUE self) {
     if (SWIG_IsNewObj(res)) delete ptr;
   }
   result = (datamunge::graphics::RPlot *) &(arg1)->x_tick_labels(SWIG_STD_MOVE(*(&arg2)));
-  vresult = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__plot__RPlot, 0 |  0 );
+  vresult = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__graphics__RPlot, 0 |  0 );
   return vresult;
 fail:
+  return Qnil;
+}
+
+
+SWIGINTERN VALUE
+_wrap_RPlot_x_ticks(int argc, VALUE *argv, VALUE self) {
+  datamunge::graphics::RPlot *arg1 = 0 ;
+  std::vector< double,std::allocator< double > > arg2 ;
+  std::vector< std::string,std::allocator< std::string > > arg3 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  datamunge::graphics::RPlot *result = 0 ;
+  VALUE vresult = Qnil;
+  
+  if ((argc < 2) || (argc > 2)) {
+    rb_raise(rb_eArgError, "wrong # of arguments(%d for 2)",argc); SWIG_fail;
+  }
+  res1 = SWIG_ConvertPtr(self, &argp1,SWIGTYPE_p_datamunge__graphics__RPlot, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::graphics::RPlot *","x_ticks", 1, self )); 
+  }
+  arg1 = reinterpret_cast< datamunge::graphics::RPlot * >(argp1);
+  {
+    std::vector< double,std::allocator< double > > *ptr = (std::vector< double,std::allocator< double > > *)0;
+    int res = swig::asptr(argv[0], &ptr);
+    if (!SWIG_IsOK(res) || !ptr) {
+      SWIG_exception_fail(SWIG_ArgError((ptr ? res : SWIG_TypeError)), Ruby_Format_TypeError( "", "std::vector< double,std::allocator< double > >","x_ticks", 2, argv[0] )); 
+    }
+    arg2 = *ptr;
+    if (SWIG_IsNewObj(res)) delete ptr;
+  }
+  {
+    std::vector< std::string,std::allocator< std::string > > *ptr = (std::vector< std::string,std::allocator< std::string > > *)0;
+    int res = swig::asptr(argv[1], &ptr);
+    if (!SWIG_IsOK(res) || !ptr) {
+      SWIG_exception_fail(SWIG_ArgError((ptr ? res : SWIG_TypeError)), Ruby_Format_TypeError( "", "std::vector< std::string,std::allocator< std::string > >","x_ticks", 3, argv[1] )); 
+    }
+    arg3 = *ptr;
+    if (SWIG_IsNewObj(res)) delete ptr;
+  }
+  result = (datamunge::graphics::RPlot *) &(arg1)->x_ticks(SWIG_STD_MOVE(*(&arg2)),SWIG_STD_MOVE(*(&arg3)));
+  vresult = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__graphics__RPlot, 0 |  0 );
+  return vresult;
+fail:
+  return Qnil;
+}
+
+
+SWIGINTERN VALUE
+_wrap_RPlot_y_tick_labels(int argc, VALUE *argv, VALUE self) {
+  datamunge::graphics::RPlot *arg1 = 0 ;
+  std::vector< std::string,std::allocator< std::string > > arg2 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  datamunge::graphics::RPlot *result = 0 ;
+  VALUE vresult = Qnil;
+  
+  if ((argc < 1) || (argc > 1)) {
+    rb_raise(rb_eArgError, "wrong # of arguments(%d for 1)",argc); SWIG_fail;
+  }
+  res1 = SWIG_ConvertPtr(self, &argp1,SWIGTYPE_p_datamunge__graphics__RPlot, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::graphics::RPlot *","y_tick_labels", 1, self )); 
+  }
+  arg1 = reinterpret_cast< datamunge::graphics::RPlot * >(argp1);
+  {
+    std::vector< std::string,std::allocator< std::string > > *ptr = (std::vector< std::string,std::allocator< std::string > > *)0;
+    int res = swig::asptr(argv[0], &ptr);
+    if (!SWIG_IsOK(res) || !ptr) {
+      SWIG_exception_fail(SWIG_ArgError((ptr ? res : SWIG_TypeError)), Ruby_Format_TypeError( "", "std::vector< std::string,std::allocator< std::string > >","y_tick_labels", 2, argv[0] )); 
+    }
+    arg2 = *ptr;
+    if (SWIG_IsNewObj(res)) delete ptr;
+  }
+  result = (datamunge::graphics::RPlot *) &(arg1)->y_tick_labels(SWIG_STD_MOVE(*(&arg2)));
+  vresult = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__graphics__RPlot, 0 |  0 );
+  return vresult;
+fail:
+  return Qnil;
+}
+
+
+SWIGINTERN VALUE
+_wrap_RPlot_y_ticks(int argc, VALUE *argv, VALUE self) {
+  datamunge::graphics::RPlot *arg1 = 0 ;
+  std::vector< double,std::allocator< double > > arg2 ;
+  std::vector< std::string,std::allocator< std::string > > arg3 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  datamunge::graphics::RPlot *result = 0 ;
+  VALUE vresult = Qnil;
+  
+  if ((argc < 2) || (argc > 2)) {
+    rb_raise(rb_eArgError, "wrong # of arguments(%d for 2)",argc); SWIG_fail;
+  }
+  res1 = SWIG_ConvertPtr(self, &argp1,SWIGTYPE_p_datamunge__graphics__RPlot, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::graphics::RPlot *","y_ticks", 1, self )); 
+  }
+  arg1 = reinterpret_cast< datamunge::graphics::RPlot * >(argp1);
+  {
+    std::vector< double,std::allocator< double > > *ptr = (std::vector< double,std::allocator< double > > *)0;
+    int res = swig::asptr(argv[0], &ptr);
+    if (!SWIG_IsOK(res) || !ptr) {
+      SWIG_exception_fail(SWIG_ArgError((ptr ? res : SWIG_TypeError)), Ruby_Format_TypeError( "", "std::vector< double,std::allocator< double > >","y_ticks", 2, argv[0] )); 
+    }
+    arg2 = *ptr;
+    if (SWIG_IsNewObj(res)) delete ptr;
+  }
+  {
+    std::vector< std::string,std::allocator< std::string > > *ptr = (std::vector< std::string,std::allocator< std::string > > *)0;
+    int res = swig::asptr(argv[1], &ptr);
+    if (!SWIG_IsOK(res) || !ptr) {
+      SWIG_exception_fail(SWIG_ArgError((ptr ? res : SWIG_TypeError)), Ruby_Format_TypeError( "", "std::vector< std::string,std::allocator< std::string > >","y_ticks", 3, argv[1] )); 
+    }
+    arg3 = *ptr;
+    if (SWIG_IsNewObj(res)) delete ptr;
+  }
+  result = (datamunge::graphics::RPlot *) &(arg1)->y_ticks(SWIG_STD_MOVE(*(&arg2)),SWIG_STD_MOVE(*(&arg3)));
+  vresult = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__graphics__RPlot, 0 |  0 );
+  return vresult;
+fail:
+  return Qnil;
+}
+
+
+SWIGINTERN VALUE
+_wrap_RPlot_margins(int argc, VALUE *argv, VALUE self) {
+  datamunge::graphics::RPlot *arg1 = 0 ;
+  double arg2 ;
+  double arg3 ;
+  double arg4 ;
+  double arg5 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  double val2 ;
+  int ecode2 = 0 ;
+  double val3 ;
+  int ecode3 = 0 ;
+  double val4 ;
+  int ecode4 = 0 ;
+  double val5 ;
+  int ecode5 = 0 ;
+  datamunge::graphics::RPlot *result = 0 ;
+  VALUE vresult = Qnil;
+  
+  if ((argc < 4) || (argc > 4)) {
+    rb_raise(rb_eArgError, "wrong # of arguments(%d for 4)",argc); SWIG_fail;
+  }
+  res1 = SWIG_ConvertPtr(self, &argp1,SWIGTYPE_p_datamunge__graphics__RPlot, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::graphics::RPlot *","margins", 1, self )); 
+  }
+  arg1 = reinterpret_cast< datamunge::graphics::RPlot * >(argp1);
+  ecode2 = SWIG_AsVal_double(argv[0], &val2);
+  if (!SWIG_IsOK(ecode2)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode2), Ruby_Format_TypeError( "", "double","margins", 2, argv[0] ));
+  } 
+  arg2 = static_cast< double >(val2);
+  ecode3 = SWIG_AsVal_double(argv[1], &val3);
+  if (!SWIG_IsOK(ecode3)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode3), Ruby_Format_TypeError( "", "double","margins", 3, argv[1] ));
+  } 
+  arg3 = static_cast< double >(val3);
+  ecode4 = SWIG_AsVal_double(argv[2], &val4);
+  if (!SWIG_IsOK(ecode4)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode4), Ruby_Format_TypeError( "", "double","margins", 4, argv[2] ));
+  } 
+  arg4 = static_cast< double >(val4);
+  ecode5 = SWIG_AsVal_double(argv[3], &val5);
+  if (!SWIG_IsOK(ecode5)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode5), Ruby_Format_TypeError( "", "double","margins", 5, argv[3] ));
+  } 
+  arg5 = static_cast< double >(val5);
+  result = (datamunge::graphics::RPlot *) &(arg1)->margins(arg2,arg3,arg4,arg5);
+  vresult = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__graphics__RPlot, 0 |  0 );
+  return vresult;
+fail:
+  return Qnil;
+}
+
+
+SWIGINTERN VALUE
+_wrap_RPlot_tick_font_size(int argc, VALUE *argv, VALUE self) {
+  datamunge::graphics::RPlot *arg1 = 0 ;
+  double arg2 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  double val2 ;
+  int ecode2 = 0 ;
+  datamunge::graphics::RPlot *result = 0 ;
+  VALUE vresult = Qnil;
+  
+  if ((argc < 1) || (argc > 1)) {
+    rb_raise(rb_eArgError, "wrong # of arguments(%d for 1)",argc); SWIG_fail;
+  }
+  res1 = SWIG_ConvertPtr(self, &argp1,SWIGTYPE_p_datamunge__graphics__RPlot, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::graphics::RPlot *","tick_font_size", 1, self )); 
+  }
+  arg1 = reinterpret_cast< datamunge::graphics::RPlot * >(argp1);
+  ecode2 = SWIG_AsVal_double(argv[0], &val2);
+  if (!SWIG_IsOK(ecode2)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode2), Ruby_Format_TypeError( "", "double","tick_font_size", 2, argv[0] ));
+  } 
+  arg2 = static_cast< double >(val2);
+  result = (datamunge::graphics::RPlot *) &(arg1)->tick_font_size(arg2);
+  vresult = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__graphics__RPlot, 0 |  0 );
+  return vresult;
+fail:
+  return Qnil;
+}
+
+
+SWIGINTERN VALUE
+_wrap_RPlot_pretty_ticks__SWIG_0(int argc, VALUE *argv, VALUE self) {
+  datamunge::graphics::RPlot *arg1 = 0 ;
+  bool arg2 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  bool val2 ;
+  int ecode2 = 0 ;
+  datamunge::graphics::RPlot *result = 0 ;
+  VALUE vresult = Qnil;
+  
+  if ((argc < 1) || (argc > 1)) {
+    rb_raise(rb_eArgError, "wrong # of arguments(%d for 1)",argc); SWIG_fail;
+  }
+  res1 = SWIG_ConvertPtr(self, &argp1,SWIGTYPE_p_datamunge__graphics__RPlot, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::graphics::RPlot *","pretty_ticks", 1, self )); 
+  }
+  arg1 = reinterpret_cast< datamunge::graphics::RPlot * >(argp1);
+  ecode2 = SWIG_AsVal_bool(argv[0], &val2);
+  if (!SWIG_IsOK(ecode2)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode2), Ruby_Format_TypeError( "", "bool","pretty_ticks", 2, argv[0] ));
+  } 
+  arg2 = static_cast< bool >(val2);
+  result = (datamunge::graphics::RPlot *) &(arg1)->pretty_ticks(arg2);
+  vresult = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__graphics__RPlot, 0 |  0 );
+  return vresult;
+fail:
+  return Qnil;
+}
+
+
+SWIGINTERN VALUE
+_wrap_RPlot_pretty_ticks__SWIG_1(int argc, VALUE *argv, VALUE self) {
+  datamunge::graphics::RPlot *arg1 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  datamunge::graphics::RPlot *result = 0 ;
+  VALUE vresult = Qnil;
+  
+  if ((argc < 0) || (argc > 0)) {
+    rb_raise(rb_eArgError, "wrong # of arguments(%d for 0)",argc); SWIG_fail;
+  }
+  res1 = SWIG_ConvertPtr(self, &argp1,SWIGTYPE_p_datamunge__graphics__RPlot, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::graphics::RPlot *","pretty_ticks", 1, self )); 
+  }
+  arg1 = reinterpret_cast< datamunge::graphics::RPlot * >(argp1);
+  result = (datamunge::graphics::RPlot *) &(arg1)->pretty_ticks();
+  vresult = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__graphics__RPlot, 0 |  0 );
+  return vresult;
+fail:
+  return Qnil;
+}
+
+
+SWIGINTERN VALUE _wrap_RPlot_pretty_ticks(int nargs, VALUE *args, VALUE self) {
+  int argc;
+  VALUE argv[3];
+  int ii;
+  
+  argc = nargs + 1;
+  argv[0] = self;
+  if (argc > 3) SWIG_fail;
+  for (ii = 1; (ii < argc); ++ii) {
+    argv[ii] = args[ii-1];
+  }
+  if (argc == 1) {
+    int _v = 0;
+    void *vptr = 0;
+    int res = SWIG_ConvertPtr(argv[0], &vptr, SWIGTYPE_p_datamunge__graphics__RPlot, 0);
+    _v = SWIG_CheckState(res);
+    if (_v) {
+      return _wrap_RPlot_pretty_ticks__SWIG_1(nargs, args, self);
+    }
+  }
+  if (argc == 2) {
+    int _v = 0;
+    void *vptr = 0;
+    int res = SWIG_ConvertPtr(argv[0], &vptr, SWIGTYPE_p_datamunge__graphics__RPlot, 0);
+    _v = SWIG_CheckState(res);
+    if (_v) {
+      {
+        int res = SWIG_AsVal_bool(argv[1], NULL);
+        _v = SWIG_CheckState(res);
+      }
+      if (_v) {
+        return _wrap_RPlot_pretty_ticks__SWIG_0(nargs, args, self);
+      }
+    }
+  }
+  
+fail:
+  Ruby_Format_OverloadedError( argc, 3, "RPlot.pretty_ticks", 
+    "    datamunge::graphics::RPlot RPlot.pretty_ticks(bool enabled)\n"
+    "    datamunge::graphics::RPlot & RPlot.pretty_ticks()\n");
+  
   return Qnil;
 }
 
@@ -91235,7 +95565,7 @@ _wrap_RPlot_plot__SWIG_0(int argc, VALUE *argv, VALUE self) {
   std::vector< double,std::allocator< double > > arg2 ;
   std::string arg3 ;
   std::string arg4 ;
-  SwigValueWrapper< datamunge::graphics::RGB > arg5 ;
+  datamunge::graphics::RGBA arg5 ;
   void *argp5 = 0 ;
   int res5 = 0 ;
   datamunge::graphics::RPlot result;
@@ -91281,18 +95611,18 @@ _wrap_RPlot_plot__SWIG_0(int argc, VALUE *argv, VALUE self) {
     if (SWIG_IsNewObj(res)) delete ptr;
   }
   {
-    res5 = SWIG_ConvertPtr(argv[4], &argp5, SWIGTYPE_p_datamunge__plot__RGB,  0 );
+    res5 = SWIG_ConvertPtr(argv[4], &argp5, SWIGTYPE_p_datamunge__graphics__RGB,  0 );
     if (!SWIG_IsOK(res5)) {
-      SWIG_exception_fail(SWIG_ArgError(res5), Ruby_Format_TypeError( "", "datamunge::graphics::RGB","datamunge::graphics::RPlot::plot", 5, argv[4] )); 
+      SWIG_exception_fail(SWIG_ArgError(res5), Ruby_Format_TypeError( "", "datamunge::graphics::RGBA","datamunge::graphics::RPlot::plot", 5, argv[4] )); 
     }  
     if (!argp5) {
-      SWIG_exception_fail(SWIG_NullReferenceError, Ruby_Format_TypeError("invalid null reference ", "datamunge::graphics::RGB","datamunge::graphics::RPlot::plot", 5, argv[4]));
+      SWIG_exception_fail(SWIG_NullReferenceError, Ruby_Format_TypeError("invalid null reference ", "datamunge::graphics::RGBA","datamunge::graphics::RPlot::plot", 5, argv[4]));
     } else {
-      arg5 = *(reinterpret_cast< datamunge::graphics::RGB * >(argp5));
+      arg5 = *(reinterpret_cast< datamunge::graphics::RGBA * >(argp5));
     }
   }
   result = datamunge::graphics::RPlot::plot(SWIG_STD_MOVE(*(&arg1)),SWIG_STD_MOVE(*(&arg2)),SWIG_STD_MOVE(*(&arg3)),SWIG_STD_MOVE(*(&arg4)),SWIG_STD_MOVE(*(&arg5)));
-  vresult = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
+  vresult = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__graphics__RPlot, SWIG_POINTER_OWN |  0 );
   return vresult;
 fail:
   return Qnil;
@@ -91348,7 +95678,7 @@ _wrap_RPlot_plot__SWIG_1(int argc, VALUE *argv, VALUE self) {
     if (SWIG_IsNewObj(res)) delete ptr;
   }
   result = datamunge::graphics::RPlot::plot(SWIG_STD_MOVE(*(&arg1)),SWIG_STD_MOVE(*(&arg2)),SWIG_STD_MOVE(*(&arg3)),SWIG_STD_MOVE(*(&arg4)));
-  vresult = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
+  vresult = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__graphics__RPlot, SWIG_POINTER_OWN |  0 );
   return vresult;
 fail:
   return Qnil;
@@ -91394,7 +95724,7 @@ _wrap_RPlot_plot__SWIG_2(int argc, VALUE *argv, VALUE self) {
     if (SWIG_IsNewObj(res)) delete ptr;
   }
   result = datamunge::graphics::RPlot::plot(SWIG_STD_MOVE(*(&arg1)),SWIG_STD_MOVE(*(&arg2)),SWIG_STD_MOVE(*(&arg3)));
-  vresult = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
+  vresult = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__graphics__RPlot, SWIG_POINTER_OWN |  0 );
   return vresult;
 fail:
   return Qnil;
@@ -91430,7 +95760,7 @@ _wrap_RPlot_plot__SWIG_3(int argc, VALUE *argv, VALUE self) {
     if (SWIG_IsNewObj(res)) delete ptr;
   }
   result = datamunge::graphics::RPlot::plot(SWIG_STD_MOVE(*(&arg1)),SWIG_STD_MOVE(*(&arg2)));
-  vresult = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
+  vresult = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__graphics__RPlot, SWIG_POINTER_OWN |  0 );
   return vresult;
 fail:
   return Qnil;
@@ -91510,7 +95840,7 @@ SWIGINTERN VALUE _wrap_RPlot_plot(int nargs, VALUE *args, VALUE self) {
           _v = SWIG_CheckState(res);
           if (_v) {
             void *vptr = 0;
-            int res = SWIG_ConvertPtr(argv[4], &vptr, SWIGTYPE_p_datamunge__plot__RGB, SWIG_POINTER_NO_NULL);
+            int res = SWIG_ConvertPtr(argv[4], &vptr, SWIGTYPE_p_datamunge__graphics__RGB, SWIG_POINTER_NO_NULL);
             _v = SWIG_CheckState(res);
             if (_v) {
               return _wrap_RPlot_plot__SWIG_0(nargs, args, self);
@@ -91523,7 +95853,7 @@ SWIGINTERN VALUE _wrap_RPlot_plot(int nargs, VALUE *args, VALUE self) {
   
 fail:
   Ruby_Format_OverloadedError( argc, 5, "RPlot.plot", 
-    "    datamunge::graphics::RPlot RPlot.plot(std::vector< double,std::allocator< double > > x, std::vector< double,std::allocator< double > > y, std::string type, std::string label, datamunge::graphics::RGB color)\n"
+    "    datamunge::graphics::RPlot RPlot.plot(std::vector< double,std::allocator< double > > x, std::vector< double,std::allocator< double > > y, std::string type, std::string label, datamunge::graphics::RGBA color)\n"
     "    datamunge::graphics::RPlot RPlot.plot(std::vector< double,std::allocator< double > > x, std::vector< double,std::allocator< double > > y, std::string type, std::string label)\n"
     "    datamunge::graphics::RPlot RPlot.plot(std::vector< double,std::allocator< double > > x, std::vector< double,std::allocator< double > > y, std::string type)\n"
     "    datamunge::graphics::RPlot RPlot.plot(std::vector< double,std::allocator< double > > x, std::vector< double,std::allocator< double > > y)\n");
@@ -91537,7 +95867,7 @@ _wrap_RPlot_hist__SWIG_0(int argc, VALUE *argv, VALUE self) {
   std::vector< double,std::allocator< double > > arg1 ;
   std::size_t arg2 ;
   std::string arg3 ;
-  SwigValueWrapper< datamunge::graphics::RGB > arg4 ;
+  datamunge::graphics::RGBA arg4 ;
   size_t val2 ;
   int ecode2 = 0 ;
   void *argp4 = 0 ;
@@ -91572,18 +95902,18 @@ _wrap_RPlot_hist__SWIG_0(int argc, VALUE *argv, VALUE self) {
     if (SWIG_IsNewObj(res)) delete ptr;
   }
   {
-    res4 = SWIG_ConvertPtr(argv[3], &argp4, SWIGTYPE_p_datamunge__plot__RGB,  0 );
+    res4 = SWIG_ConvertPtr(argv[3], &argp4, SWIGTYPE_p_datamunge__graphics__RGB,  0 );
     if (!SWIG_IsOK(res4)) {
-      SWIG_exception_fail(SWIG_ArgError(res4), Ruby_Format_TypeError( "", "datamunge::graphics::RGB","datamunge::graphics::RPlot::hist", 4, argv[3] )); 
+      SWIG_exception_fail(SWIG_ArgError(res4), Ruby_Format_TypeError( "", "datamunge::graphics::RGBA","datamunge::graphics::RPlot::hist", 4, argv[3] )); 
     }  
     if (!argp4) {
-      SWIG_exception_fail(SWIG_NullReferenceError, Ruby_Format_TypeError("invalid null reference ", "datamunge::graphics::RGB","datamunge::graphics::RPlot::hist", 4, argv[3]));
+      SWIG_exception_fail(SWIG_NullReferenceError, Ruby_Format_TypeError("invalid null reference ", "datamunge::graphics::RGBA","datamunge::graphics::RPlot::hist", 4, argv[3]));
     } else {
-      arg4 = *(reinterpret_cast< datamunge::graphics::RGB * >(argp4));
+      arg4 = *(reinterpret_cast< datamunge::graphics::RGBA * >(argp4));
     }
   }
   result = datamunge::graphics::RPlot::hist(SWIG_STD_MOVE(*(&arg1)),SWIG_STD_MOVE(*(&arg2)),SWIG_STD_MOVE(*(&arg3)),SWIG_STD_MOVE(*(&arg4)));
-  vresult = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
+  vresult = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__graphics__RPlot, SWIG_POINTER_OWN |  0 );
   return vresult;
 fail:
   return Qnil;
@@ -91627,7 +95957,7 @@ _wrap_RPlot_hist__SWIG_1(int argc, VALUE *argv, VALUE self) {
     if (SWIG_IsNewObj(res)) delete ptr;
   }
   result = datamunge::graphics::RPlot::hist(SWIG_STD_MOVE(*(&arg1)),SWIG_STD_MOVE(*(&arg2)),SWIG_STD_MOVE(*(&arg3)));
-  vresult = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
+  vresult = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__graphics__RPlot, SWIG_POINTER_OWN |  0 );
   return vresult;
 fail:
   return Qnil;
@@ -91661,7 +95991,7 @@ _wrap_RPlot_hist__SWIG_2(int argc, VALUE *argv, VALUE self) {
   } 
   arg2 = static_cast< std::size_t >(val2);
   result = datamunge::graphics::RPlot::hist(SWIG_STD_MOVE(*(&arg1)),SWIG_STD_MOVE(*(&arg2)));
-  vresult = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
+  vresult = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__graphics__RPlot, SWIG_POINTER_OWN |  0 );
   return vresult;
 fail:
   return Qnil;
@@ -91687,7 +96017,7 @@ _wrap_RPlot_hist__SWIG_3(int argc, VALUE *argv, VALUE self) {
     if (SWIG_IsNewObj(res)) delete ptr;
   }
   result = datamunge::graphics::RPlot::hist(SWIG_STD_MOVE(*(&arg1)));
-  vresult = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
+  vresult = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__graphics__RPlot, SWIG_POINTER_OWN |  0 );
   return vresult;
 fail:
   return Qnil;
@@ -91758,7 +96088,7 @@ SWIGINTERN VALUE _wrap_RPlot_hist(int nargs, VALUE *args, VALUE self) {
         _v = SWIG_CheckState(res);
         if (_v) {
           void *vptr = 0;
-          int res = SWIG_ConvertPtr(argv[3], &vptr, SWIGTYPE_p_datamunge__plot__RGB, SWIG_POINTER_NO_NULL);
+          int res = SWIG_ConvertPtr(argv[3], &vptr, SWIGTYPE_p_datamunge__graphics__RGB, SWIG_POINTER_NO_NULL);
           _v = SWIG_CheckState(res);
           if (_v) {
             return _wrap_RPlot_hist__SWIG_0(nargs, args, self);
@@ -91770,7 +96100,7 @@ SWIGINTERN VALUE _wrap_RPlot_hist(int nargs, VALUE *args, VALUE self) {
   
 fail:
   Ruby_Format_OverloadedError( argc, 4, "RPlot.hist", 
-    "    datamunge::graphics::RPlot RPlot.hist(std::vector< double,std::allocator< double > > data, std::size_t bins, std::string label, datamunge::graphics::RGB color)\n"
+    "    datamunge::graphics::RPlot RPlot.hist(std::vector< double,std::allocator< double > > data, std::size_t bins, std::string label, datamunge::graphics::RGBA color)\n"
     "    datamunge::graphics::RPlot RPlot.hist(std::vector< double,std::allocator< double > > data, std::size_t bins, std::string label)\n"
     "    datamunge::graphics::RPlot RPlot.hist(std::vector< double,std::allocator< double > > data, std::size_t bins)\n"
     "    datamunge::graphics::RPlot RPlot.hist(std::vector< double,std::allocator< double > > data)\n");
@@ -91784,7 +96114,7 @@ _wrap_RPlot_barplot__SWIG_0(int argc, VALUE *argv, VALUE self) {
   std::vector< double,std::allocator< double > > arg1 ;
   std::vector< std::string,std::allocator< std::string > > arg2 ;
   std::string arg3 ;
-  SwigValueWrapper< datamunge::graphics::RGB > arg4 ;
+  datamunge::graphics::RGBA arg4 ;
   void *argp4 = 0 ;
   int res4 = 0 ;
   datamunge::graphics::RPlot result;
@@ -91821,18 +96151,18 @@ _wrap_RPlot_barplot__SWIG_0(int argc, VALUE *argv, VALUE self) {
     if (SWIG_IsNewObj(res)) delete ptr;
   }
   {
-    res4 = SWIG_ConvertPtr(argv[3], &argp4, SWIGTYPE_p_datamunge__plot__RGB,  0 );
+    res4 = SWIG_ConvertPtr(argv[3], &argp4, SWIGTYPE_p_datamunge__graphics__RGB,  0 );
     if (!SWIG_IsOK(res4)) {
-      SWIG_exception_fail(SWIG_ArgError(res4), Ruby_Format_TypeError( "", "datamunge::graphics::RGB","datamunge::graphics::RPlot::barplot", 4, argv[3] )); 
+      SWIG_exception_fail(SWIG_ArgError(res4), Ruby_Format_TypeError( "", "datamunge::graphics::RGBA","datamunge::graphics::RPlot::barplot", 4, argv[3] )); 
     }  
     if (!argp4) {
-      SWIG_exception_fail(SWIG_NullReferenceError, Ruby_Format_TypeError("invalid null reference ", "datamunge::graphics::RGB","datamunge::graphics::RPlot::barplot", 4, argv[3]));
+      SWIG_exception_fail(SWIG_NullReferenceError, Ruby_Format_TypeError("invalid null reference ", "datamunge::graphics::RGBA","datamunge::graphics::RPlot::barplot", 4, argv[3]));
     } else {
-      arg4 = *(reinterpret_cast< datamunge::graphics::RGB * >(argp4));
+      arg4 = *(reinterpret_cast< datamunge::graphics::RGBA * >(argp4));
     }
   }
   result = datamunge::graphics::RPlot::barplot(SWIG_STD_MOVE(*(&arg1)),SWIG_STD_MOVE(*(&arg2)),SWIG_STD_MOVE(*(&arg3)),SWIG_STD_MOVE(*(&arg4)));
-  vresult = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
+  vresult = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__graphics__RPlot, SWIG_POINTER_OWN |  0 );
   return vresult;
 fail:
   return Qnil;
@@ -91878,7 +96208,7 @@ _wrap_RPlot_barplot__SWIG_1(int argc, VALUE *argv, VALUE self) {
     if (SWIG_IsNewObj(res)) delete ptr;
   }
   result = datamunge::graphics::RPlot::barplot(SWIG_STD_MOVE(*(&arg1)),SWIG_STD_MOVE(*(&arg2)),SWIG_STD_MOVE(*(&arg3)));
-  vresult = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
+  vresult = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__graphics__RPlot, SWIG_POINTER_OWN |  0 );
   return vresult;
 fail:
   return Qnil;
@@ -91914,7 +96244,7 @@ _wrap_RPlot_barplot__SWIG_2(int argc, VALUE *argv, VALUE self) {
     if (SWIG_IsNewObj(res)) delete ptr;
   }
   result = datamunge::graphics::RPlot::barplot(SWIG_STD_MOVE(*(&arg1)),SWIG_STD_MOVE(*(&arg2)));
-  vresult = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
+  vresult = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__graphics__RPlot, SWIG_POINTER_OWN |  0 );
   return vresult;
 fail:
   return Qnil;
@@ -91940,7 +96270,7 @@ _wrap_RPlot_barplot__SWIG_3(int argc, VALUE *argv, VALUE self) {
     if (SWIG_IsNewObj(res)) delete ptr;
   }
   result = datamunge::graphics::RPlot::barplot(SWIG_STD_MOVE(*(&arg1)));
-  vresult = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
+  vresult = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__graphics__RPlot, SWIG_POINTER_OWN |  0 );
   return vresult;
 fail:
   return Qnil;
@@ -92005,7 +96335,7 @@ SWIGINTERN VALUE _wrap_RPlot_barplot(int nargs, VALUE *args, VALUE self) {
         _v = SWIG_CheckState(res);
         if (_v) {
           void *vptr = 0;
-          int res = SWIG_ConvertPtr(argv[3], &vptr, SWIGTYPE_p_datamunge__plot__RGB, SWIG_POINTER_NO_NULL);
+          int res = SWIG_ConvertPtr(argv[3], &vptr, SWIGTYPE_p_datamunge__graphics__RGB, SWIG_POINTER_NO_NULL);
           _v = SWIG_CheckState(res);
           if (_v) {
             return _wrap_RPlot_barplot__SWIG_0(nargs, args, self);
@@ -92017,7 +96347,7 @@ SWIGINTERN VALUE _wrap_RPlot_barplot(int nargs, VALUE *args, VALUE self) {
   
 fail:
   Ruby_Format_OverloadedError( argc, 4, "RPlot.barplot", 
-    "    datamunge::graphics::RPlot RPlot.barplot(std::vector< double,std::allocator< double > > heights, std::vector< std::string,std::allocator< std::string > > names, std::string label, datamunge::graphics::RGB color)\n"
+    "    datamunge::graphics::RPlot RPlot.barplot(std::vector< double,std::allocator< double > > heights, std::vector< std::string,std::allocator< std::string > > names, std::string label, datamunge::graphics::RGBA color)\n"
     "    datamunge::graphics::RPlot RPlot.barplot(std::vector< double,std::allocator< double > > heights, std::vector< std::string,std::allocator< std::string > > names, std::string label)\n"
     "    datamunge::graphics::RPlot RPlot.barplot(std::vector< double,std::allocator< double > > heights, std::vector< std::string,std::allocator< std::string > > names)\n"
     "    datamunge::graphics::RPlot RPlot.barplot(std::vector< double,std::allocator< double > > heights)\n");
@@ -92030,7 +96360,7 @@ SWIGINTERN VALUE
 _wrap_RPlot_boxplot__SWIG_0(int argc, VALUE *argv, VALUE self) {
   std::vector< std::vector< double,std::allocator< double > >,std::allocator< std::vector< double,std::allocator< double > > > > arg1 ;
   std::vector< std::string,std::allocator< std::string > > arg2 ;
-  SwigValueWrapper< datamunge::graphics::RGB > arg3 ;
+  datamunge::graphics::RGBA arg3 ;
   void *argp3 = 0 ;
   int res3 = 0 ;
   datamunge::graphics::RPlot result;
@@ -92058,18 +96388,18 @@ _wrap_RPlot_boxplot__SWIG_0(int argc, VALUE *argv, VALUE self) {
     if (SWIG_IsNewObj(res)) delete ptr;
   }
   {
-    res3 = SWIG_ConvertPtr(argv[2], &argp3, SWIGTYPE_p_datamunge__plot__RGB,  0 );
+    res3 = SWIG_ConvertPtr(argv[2], &argp3, SWIGTYPE_p_datamunge__graphics__RGB,  0 );
     if (!SWIG_IsOK(res3)) {
-      SWIG_exception_fail(SWIG_ArgError(res3), Ruby_Format_TypeError( "", "datamunge::graphics::RGB","datamunge::graphics::RPlot::boxplot", 3, argv[2] )); 
+      SWIG_exception_fail(SWIG_ArgError(res3), Ruby_Format_TypeError( "", "datamunge::graphics::RGBA","datamunge::graphics::RPlot::boxplot", 3, argv[2] )); 
     }  
     if (!argp3) {
-      SWIG_exception_fail(SWIG_NullReferenceError, Ruby_Format_TypeError("invalid null reference ", "datamunge::graphics::RGB","datamunge::graphics::RPlot::boxplot", 3, argv[2]));
+      SWIG_exception_fail(SWIG_NullReferenceError, Ruby_Format_TypeError("invalid null reference ", "datamunge::graphics::RGBA","datamunge::graphics::RPlot::boxplot", 3, argv[2]));
     } else {
-      arg3 = *(reinterpret_cast< datamunge::graphics::RGB * >(argp3));
+      arg3 = *(reinterpret_cast< datamunge::graphics::RGBA * >(argp3));
     }
   }
   result = datamunge::graphics::RPlot::boxplot(SWIG_STD_MOVE(*(&arg1)),SWIG_STD_MOVE(*(&arg2)),SWIG_STD_MOVE(*(&arg3)));
-  vresult = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
+  vresult = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__graphics__RPlot, SWIG_POINTER_OWN |  0 );
   return vresult;
 fail:
   return Qnil;
@@ -92105,7 +96435,7 @@ _wrap_RPlot_boxplot__SWIG_1(int argc, VALUE *argv, VALUE self) {
     if (SWIG_IsNewObj(res)) delete ptr;
   }
   result = datamunge::graphics::RPlot::boxplot(SWIG_STD_MOVE(*(&arg1)),SWIG_STD_MOVE(*(&arg2)));
-  vresult = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
+  vresult = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__graphics__RPlot, SWIG_POINTER_OWN |  0 );
   return vresult;
 fail:
   return Qnil;
@@ -92131,7 +96461,57 @@ _wrap_RPlot_boxplot__SWIG_2(int argc, VALUE *argv, VALUE self) {
     if (SWIG_IsNewObj(res)) delete ptr;
   }
   result = datamunge::graphics::RPlot::boxplot(SWIG_STD_MOVE(*(&arg1)));
-  vresult = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
+  vresult = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__graphics__RPlot, SWIG_POINTER_OWN |  0 );
+  return vresult;
+fail:
+  return Qnil;
+}
+
+
+SWIGINTERN VALUE
+_wrap_RPlot_boxplot__SWIG_3(int argc, VALUE *argv, VALUE self) {
+  std::vector< std::vector< double,std::allocator< double > >,std::allocator< std::vector< double,std::allocator< double > > > > arg1 ;
+  std::vector< std::string,std::allocator< std::string > > arg2 ;
+  SwigValueWrapper< std::vector< datamunge::graphics::RGB,std::allocator< datamunge::graphics::RGB > > > arg3 ;
+  void *argp3 = 0 ;
+  int res3 = 0 ;
+  datamunge::graphics::RPlot result;
+  VALUE vresult = Qnil;
+  
+  if ((argc < 3) || (argc > 3)) {
+    rb_raise(rb_eArgError, "wrong # of arguments(%d for 3)",argc); SWIG_fail;
+  }
+  {
+    std::vector< std::vector< double,std::allocator< double > >,std::allocator< std::vector< double,std::allocator< double > > > > *ptr = (std::vector< std::vector< double,std::allocator< double > >,std::allocator< std::vector< double,std::allocator< double > > > > *)0;
+    int res = swig::asptr(argv[0], &ptr);
+    if (!SWIG_IsOK(res) || !ptr) {
+      SWIG_exception_fail(SWIG_ArgError((ptr ? res : SWIG_TypeError)), Ruby_Format_TypeError( "", "std::vector< std::vector< double,std::allocator< double > >,std::allocator< std::vector< double,std::allocator< double > > > >","datamunge::graphics::RPlot::boxplot", 1, argv[0] )); 
+    }
+    arg1 = *ptr;
+    if (SWIG_IsNewObj(res)) delete ptr;
+  }
+  {
+    std::vector< std::string,std::allocator< std::string > > *ptr = (std::vector< std::string,std::allocator< std::string > > *)0;
+    int res = swig::asptr(argv[1], &ptr);
+    if (!SWIG_IsOK(res) || !ptr) {
+      SWIG_exception_fail(SWIG_ArgError((ptr ? res : SWIG_TypeError)), Ruby_Format_TypeError( "", "std::vector< std::string,std::allocator< std::string > >","datamunge::graphics::RPlot::boxplot", 2, argv[1] )); 
+    }
+    arg2 = *ptr;
+    if (SWIG_IsNewObj(res)) delete ptr;
+  }
+  {
+    res3 = SWIG_ConvertPtr(argv[2], &argp3, SWIGTYPE_p_std__vectorT_datamunge__graphics__RGB_std__allocatorT_datamunge__graphics__RGB_t_t,  0 );
+    if (!SWIG_IsOK(res3)) {
+      SWIG_exception_fail(SWIG_ArgError(res3), Ruby_Format_TypeError( "", "std::vector< datamunge::graphics::RGBA,std::allocator< datamunge::graphics::RGBA > >","datamunge::graphics::RPlot::boxplot", 3, argv[2] )); 
+    }  
+    if (!argp3) {
+      SWIG_exception_fail(SWIG_NullReferenceError, Ruby_Format_TypeError("invalid null reference ", "std::vector< datamunge::graphics::RGBA,std::allocator< datamunge::graphics::RGBA > >","datamunge::graphics::RPlot::boxplot", 3, argv[2]));
+    } else {
+      arg3 = *(reinterpret_cast< std::vector< datamunge::graphics::RGBA,std::allocator< datamunge::graphics::RGBA > > * >(argp3));
+    }
+  }
+  result = datamunge::graphics::RPlot::boxplot(SWIG_STD_MOVE(*(&arg1)),SWIG_STD_MOVE(*(&arg2)),SWIG_STD_MOVE(*(&arg3)));
+  vresult = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__graphics__RPlot, SWIG_POINTER_OWN |  0 );
   return vresult;
 fail:
   return Qnil;
@@ -92177,7 +96557,7 @@ SWIGINTERN VALUE _wrap_RPlot_boxplot(int nargs, VALUE *args, VALUE self) {
       _v = SWIG_CheckState(res);
       if (_v) {
         void *vptr = 0;
-        int res = SWIG_ConvertPtr(argv[2], &vptr, SWIGTYPE_p_datamunge__plot__RGB, SWIG_POINTER_NO_NULL);
+        int res = SWIG_ConvertPtr(argv[2], &vptr, SWIGTYPE_p_datamunge__graphics__RGB, SWIG_POINTER_NO_NULL);
         _v = SWIG_CheckState(res);
         if (_v) {
           return _wrap_RPlot_boxplot__SWIG_0(nargs, args, self);
@@ -92185,12 +96565,30 @@ SWIGINTERN VALUE _wrap_RPlot_boxplot(int nargs, VALUE *args, VALUE self) {
       }
     }
   }
+  if (argc == 3) {
+    int _v = 0;
+    int res = swig::asptr(argv[0], (std::vector< std::vector< double,std::allocator< double > >,std::allocator< std::vector< double,std::allocator< double > > > >**)(0));
+    _v = SWIG_CheckState(res);
+    if (_v) {
+      int res = swig::asptr(argv[1], (std::vector< std::string,std::allocator< std::string > >**)(0));
+      _v = SWIG_CheckState(res);
+      if (_v) {
+        void *vptr = 0;
+        int res = SWIG_ConvertPtr(argv[2], &vptr, SWIGTYPE_p_std__vectorT_datamunge__graphics__RGB_std__allocatorT_datamunge__graphics__RGB_t_t, SWIG_POINTER_NO_NULL);
+        _v = SWIG_CheckState(res);
+        if (_v) {
+          return _wrap_RPlot_boxplot__SWIG_3(nargs, args, self);
+        }
+      }
+    }
+  }
   
 fail:
   Ruby_Format_OverloadedError( argc, 3, "RPlot.boxplot", 
-    "    datamunge::graphics::RPlot RPlot.boxplot(std::vector< std::vector< double,std::allocator< double > >,std::allocator< std::vector< double,std::allocator< double > > > > groups, std::vector< std::string,std::allocator< std::string > > names, datamunge::graphics::RGB color)\n"
+    "    datamunge::graphics::RPlot RPlot.boxplot(std::vector< std::vector< double,std::allocator< double > >,std::allocator< std::vector< double,std::allocator< double > > > > groups, std::vector< std::string,std::allocator< std::string > > names, datamunge::graphics::RGBA color)\n"
     "    datamunge::graphics::RPlot RPlot.boxplot(std::vector< std::vector< double,std::allocator< double > >,std::allocator< std::vector< double,std::allocator< double > > > > groups, std::vector< std::string,std::allocator< std::string > > names)\n"
-    "    datamunge::graphics::RPlot RPlot.boxplot(std::vector< std::vector< double,std::allocator< double > >,std::allocator< std::vector< double,std::allocator< double > > > > groups)\n");
+    "    datamunge::graphics::RPlot RPlot.boxplot(std::vector< std::vector< double,std::allocator< double > >,std::allocator< std::vector< double,std::allocator< double > > > > groups)\n"
+    "    datamunge::graphics::RPlot RPlot.boxplot(std::vector< std::vector< double,std::allocator< double > >,std::allocator< std::vector< double,std::allocator< double > > > > groups, std::vector< std::string,std::allocator< std::string > > names, std::vector< datamunge::graphics::RGBA,std::allocator< datamunge::graphics::RGBA > > colors)\n");
   
   return Qnil;
 }
@@ -92228,18 +96626,18 @@ _wrap_RPlot_pie__SWIG_0(int argc, VALUE *argv, VALUE self) {
     if (SWIG_IsNewObj(res)) delete ptr;
   }
   {
-    res3 = SWIG_ConvertPtr(argv[2], &argp3, SWIGTYPE_p_std__vectorT_datamunge__plot__RGB_std__allocatorT_datamunge__plot__RGB_t_t,  0 );
+    res3 = SWIG_ConvertPtr(argv[2], &argp3, SWIGTYPE_p_std__vectorT_datamunge__graphics__RGB_std__allocatorT_datamunge__graphics__RGB_t_t,  0 );
     if (!SWIG_IsOK(res3)) {
-      SWIG_exception_fail(SWIG_ArgError(res3), Ruby_Format_TypeError( "", "std::vector< datamunge::graphics::RGB,std::allocator< datamunge::graphics::RGB > >","datamunge::graphics::RPlot::pie", 3, argv[2] )); 
+      SWIG_exception_fail(SWIG_ArgError(res3), Ruby_Format_TypeError( "", "std::vector< datamunge::graphics::RGBA,std::allocator< datamunge::graphics::RGBA > >","datamunge::graphics::RPlot::pie", 3, argv[2] )); 
     }  
     if (!argp3) {
-      SWIG_exception_fail(SWIG_NullReferenceError, Ruby_Format_TypeError("invalid null reference ", "std::vector< datamunge::graphics::RGB,std::allocator< datamunge::graphics::RGB > >","datamunge::graphics::RPlot::pie", 3, argv[2]));
+      SWIG_exception_fail(SWIG_NullReferenceError, Ruby_Format_TypeError("invalid null reference ", "std::vector< datamunge::graphics::RGBA,std::allocator< datamunge::graphics::RGBA > >","datamunge::graphics::RPlot::pie", 3, argv[2]));
     } else {
-      arg3 = *(reinterpret_cast< std::vector< datamunge::graphics::RGB,std::allocator< datamunge::graphics::RGB > > * >(argp3));
+      arg3 = *(reinterpret_cast< std::vector< datamunge::graphics::RGBA,std::allocator< datamunge::graphics::RGBA > > * >(argp3));
     }
   }
   result = datamunge::graphics::RPlot::pie(SWIG_STD_MOVE(*(&arg1)),SWIG_STD_MOVE(*(&arg2)),SWIG_STD_MOVE(*(&arg3)));
-  vresult = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
+  vresult = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__graphics__RPlot, SWIG_POINTER_OWN |  0 );
   return vresult;
 fail:
   return Qnil;
@@ -92275,7 +96673,7 @@ _wrap_RPlot_pie__SWIG_1(int argc, VALUE *argv, VALUE self) {
     if (SWIG_IsNewObj(res)) delete ptr;
   }
   result = datamunge::graphics::RPlot::pie(SWIG_STD_MOVE(*(&arg1)),SWIG_STD_MOVE(*(&arg2)));
-  vresult = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
+  vresult = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__graphics__RPlot, SWIG_POINTER_OWN |  0 );
   return vresult;
 fail:
   return Qnil;
@@ -92301,7 +96699,7 @@ _wrap_RPlot_pie__SWIG_2(int argc, VALUE *argv, VALUE self) {
     if (SWIG_IsNewObj(res)) delete ptr;
   }
   result = datamunge::graphics::RPlot::pie(SWIG_STD_MOVE(*(&arg1)));
-  vresult = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
+  vresult = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__graphics__RPlot, SWIG_POINTER_OWN |  0 );
   return vresult;
 fail:
   return Qnil;
@@ -92347,7 +96745,7 @@ SWIGINTERN VALUE _wrap_RPlot_pie(int nargs, VALUE *args, VALUE self) {
       _v = SWIG_CheckState(res);
       if (_v) {
         void *vptr = 0;
-        int res = SWIG_ConvertPtr(argv[2], &vptr, SWIGTYPE_p_std__vectorT_datamunge__plot__RGB_std__allocatorT_datamunge__plot__RGB_t_t, SWIG_POINTER_NO_NULL);
+        int res = SWIG_ConvertPtr(argv[2], &vptr, SWIGTYPE_p_std__vectorT_datamunge__graphics__RGB_std__allocatorT_datamunge__graphics__RGB_t_t, SWIG_POINTER_NO_NULL);
         _v = SWIG_CheckState(res);
         if (_v) {
           return _wrap_RPlot_pie__SWIG_0(nargs, args, self);
@@ -92358,7 +96756,7 @@ SWIGINTERN VALUE _wrap_RPlot_pie(int nargs, VALUE *args, VALUE self) {
   
 fail:
   Ruby_Format_OverloadedError( argc, 3, "RPlot.pie", 
-    "    datamunge::graphics::RPlot RPlot.pie(std::vector< double,std::allocator< double > > values, std::vector< std::string,std::allocator< std::string > > names, std::vector< datamunge::graphics::RGB,std::allocator< datamunge::graphics::RGB > > colors)\n"
+    "    datamunge::graphics::RPlot RPlot.pie(std::vector< double,std::allocator< double > > values, std::vector< std::string,std::allocator< std::string > > names, std::vector< datamunge::graphics::RGBA,std::allocator< datamunge::graphics::RGBA > > colors)\n"
     "    datamunge::graphics::RPlot RPlot.pie(std::vector< double,std::allocator< double > > values, std::vector< std::string,std::allocator< std::string > > names)\n"
     "    datamunge::graphics::RPlot RPlot.pie(std::vector< double,std::allocator< double > > values)\n");
   
@@ -92373,7 +96771,7 @@ _wrap_RPlot_curve__SWIG_0(int argc, VALUE *argv, VALUE self) {
   double arg3 ;
   std::size_t arg4 ;
   std::string arg5 ;
-  SwigValueWrapper< datamunge::graphics::RGB > arg6 ;
+  datamunge::graphics::RGBA arg6 ;
   void *argp1 = 0 ;
   int res1 = 0 ;
   double val2 ;
@@ -92423,18 +96821,18 @@ _wrap_RPlot_curve__SWIG_0(int argc, VALUE *argv, VALUE self) {
     if (SWIG_IsNewObj(res)) delete ptr;
   }
   {
-    res6 = SWIG_ConvertPtr(argv[5], &argp6, SWIGTYPE_p_datamunge__plot__RGB,  0 );
+    res6 = SWIG_ConvertPtr(argv[5], &argp6, SWIGTYPE_p_datamunge__graphics__RGB,  0 );
     if (!SWIG_IsOK(res6)) {
-      SWIG_exception_fail(SWIG_ArgError(res6), Ruby_Format_TypeError( "", "datamunge::graphics::RGB","datamunge::graphics::RPlot::curve", 6, argv[5] )); 
+      SWIG_exception_fail(SWIG_ArgError(res6), Ruby_Format_TypeError( "", "datamunge::graphics::RGBA","datamunge::graphics::RPlot::curve", 6, argv[5] )); 
     }  
     if (!argp6) {
-      SWIG_exception_fail(SWIG_NullReferenceError, Ruby_Format_TypeError("invalid null reference ", "datamunge::graphics::RGB","datamunge::graphics::RPlot::curve", 6, argv[5]));
+      SWIG_exception_fail(SWIG_NullReferenceError, Ruby_Format_TypeError("invalid null reference ", "datamunge::graphics::RGBA","datamunge::graphics::RPlot::curve", 6, argv[5]));
     } else {
-      arg6 = *(reinterpret_cast< datamunge::graphics::RGB * >(argp6));
+      arg6 = *(reinterpret_cast< datamunge::graphics::RGBA * >(argp6));
     }
   }
   result = datamunge::graphics::RPlot::curve(*arg1,arg2,arg3,SWIG_STD_MOVE(*(&arg4)),SWIG_STD_MOVE(*(&arg5)),SWIG_STD_MOVE(*(&arg6)));
-  vresult = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
+  vresult = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__graphics__RPlot, SWIG_POINTER_OWN |  0 );
   return vresult;
 fail:
   return Qnil;
@@ -92495,7 +96893,7 @@ _wrap_RPlot_curve__SWIG_1(int argc, VALUE *argv, VALUE self) {
     if (SWIG_IsNewObj(res)) delete ptr;
   }
   result = datamunge::graphics::RPlot::curve(*arg1,arg2,arg3,SWIG_STD_MOVE(*(&arg4)),SWIG_STD_MOVE(*(&arg5)));
-  vresult = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
+  vresult = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__graphics__RPlot, SWIG_POINTER_OWN |  0 );
   return vresult;
 fail:
   return Qnil;
@@ -92546,7 +96944,7 @@ _wrap_RPlot_curve__SWIG_2(int argc, VALUE *argv, VALUE self) {
   } 
   arg4 = static_cast< std::size_t >(val4);
   result = datamunge::graphics::RPlot::curve(*arg1,arg2,arg3,SWIG_STD_MOVE(*(&arg4)));
-  vresult = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
+  vresult = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__graphics__RPlot, SWIG_POINTER_OWN |  0 );
   return vresult;
 fail:
   return Qnil;
@@ -92589,7 +96987,7 @@ _wrap_RPlot_curve__SWIG_3(int argc, VALUE *argv, VALUE self) {
   } 
   arg3 = static_cast< double >(val3);
   result = datamunge::graphics::RPlot::curve(*arg1,arg2,arg3);
-  vresult = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
+  vresult = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__graphics__RPlot, SWIG_POINTER_OWN |  0 );
   return vresult;
 fail:
   return Qnil;
@@ -92710,7 +97108,7 @@ SWIGINTERN VALUE _wrap_RPlot_curve(int nargs, VALUE *args, VALUE self) {
             _v = SWIG_CheckState(res);
             if (_v) {
               void *vptr = 0;
-              int res = SWIG_ConvertPtr(argv[5], &vptr, SWIGTYPE_p_datamunge__plot__RGB, SWIG_POINTER_NO_NULL);
+              int res = SWIG_ConvertPtr(argv[5], &vptr, SWIGTYPE_p_datamunge__graphics__RGB, SWIG_POINTER_NO_NULL);
               _v = SWIG_CheckState(res);
               if (_v) {
                 return _wrap_RPlot_curve__SWIG_0(nargs, args, self);
@@ -92724,7 +97122,7 @@ SWIGINTERN VALUE _wrap_RPlot_curve(int nargs, VALUE *args, VALUE self) {
   
 fail:
   Ruby_Format_OverloadedError( argc, 6, "RPlot.curve", 
-    "    datamunge::graphics::RPlot RPlot.curve(datamunge::Callback &f, double from, double to, std::size_t n, std::string label, datamunge::graphics::RGB color)\n"
+    "    datamunge::graphics::RPlot RPlot.curve(datamunge::Callback &f, double from, double to, std::size_t n, std::string label, datamunge::graphics::RGBA color)\n"
     "    datamunge::graphics::RPlot RPlot.curve(datamunge::Callback &f, double from, double to, std::size_t n, std::string label)\n"
     "    datamunge::graphics::RPlot RPlot.curve(datamunge::Callback &f, double from, double to, std::size_t n)\n"
     "    datamunge::graphics::RPlot RPlot.curve(datamunge::Callback &f, double from, double to)\n");
@@ -92737,7 +97135,7 @@ SWIGINTERN VALUE
 _wrap_RPlot_qqnorm__SWIG_0(int argc, VALUE *argv, VALUE self) {
   std::vector< double,std::allocator< double > > arg1 ;
   std::string arg2 ;
-  SwigValueWrapper< datamunge::graphics::RGB > arg3 ;
+  datamunge::graphics::RGBA arg3 ;
   void *argp3 = 0 ;
   int res3 = 0 ;
   datamunge::graphics::RPlot result;
@@ -92765,18 +97163,18 @@ _wrap_RPlot_qqnorm__SWIG_0(int argc, VALUE *argv, VALUE self) {
     if (SWIG_IsNewObj(res)) delete ptr;
   }
   {
-    res3 = SWIG_ConvertPtr(argv[2], &argp3, SWIGTYPE_p_datamunge__plot__RGB,  0 );
+    res3 = SWIG_ConvertPtr(argv[2], &argp3, SWIGTYPE_p_datamunge__graphics__RGB,  0 );
     if (!SWIG_IsOK(res3)) {
-      SWIG_exception_fail(SWIG_ArgError(res3), Ruby_Format_TypeError( "", "datamunge::graphics::RGB","datamunge::graphics::RPlot::qqnorm", 3, argv[2] )); 
+      SWIG_exception_fail(SWIG_ArgError(res3), Ruby_Format_TypeError( "", "datamunge::graphics::RGBA","datamunge::graphics::RPlot::qqnorm", 3, argv[2] )); 
     }  
     if (!argp3) {
-      SWIG_exception_fail(SWIG_NullReferenceError, Ruby_Format_TypeError("invalid null reference ", "datamunge::graphics::RGB","datamunge::graphics::RPlot::qqnorm", 3, argv[2]));
+      SWIG_exception_fail(SWIG_NullReferenceError, Ruby_Format_TypeError("invalid null reference ", "datamunge::graphics::RGBA","datamunge::graphics::RPlot::qqnorm", 3, argv[2]));
     } else {
-      arg3 = *(reinterpret_cast< datamunge::graphics::RGB * >(argp3));
+      arg3 = *(reinterpret_cast< datamunge::graphics::RGBA * >(argp3));
     }
   }
   result = datamunge::graphics::RPlot::qqnorm(SWIG_STD_MOVE(*(&arg1)),SWIG_STD_MOVE(*(&arg2)),SWIG_STD_MOVE(*(&arg3)));
-  vresult = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
+  vresult = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__graphics__RPlot, SWIG_POINTER_OWN |  0 );
   return vresult;
 fail:
   return Qnil;
@@ -92812,7 +97210,7 @@ _wrap_RPlot_qqnorm__SWIG_1(int argc, VALUE *argv, VALUE self) {
     if (SWIG_IsNewObj(res)) delete ptr;
   }
   result = datamunge::graphics::RPlot::qqnorm(SWIG_STD_MOVE(*(&arg1)),SWIG_STD_MOVE(*(&arg2)));
-  vresult = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
+  vresult = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__graphics__RPlot, SWIG_POINTER_OWN |  0 );
   return vresult;
 fail:
   return Qnil;
@@ -92838,7 +97236,7 @@ _wrap_RPlot_qqnorm__SWIG_2(int argc, VALUE *argv, VALUE self) {
     if (SWIG_IsNewObj(res)) delete ptr;
   }
   result = datamunge::graphics::RPlot::qqnorm(SWIG_STD_MOVE(*(&arg1)));
-  vresult = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
+  vresult = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__graphics__RPlot, SWIG_POINTER_OWN |  0 );
   return vresult;
 fail:
   return Qnil;
@@ -92884,7 +97282,7 @@ SWIGINTERN VALUE _wrap_RPlot_qqnorm(int nargs, VALUE *args, VALUE self) {
       _v = SWIG_CheckState(res);
       if (_v) {
         void *vptr = 0;
-        int res = SWIG_ConvertPtr(argv[2], &vptr, SWIGTYPE_p_datamunge__plot__RGB, SWIG_POINTER_NO_NULL);
+        int res = SWIG_ConvertPtr(argv[2], &vptr, SWIGTYPE_p_datamunge__graphics__RGB, SWIG_POINTER_NO_NULL);
         _v = SWIG_CheckState(res);
         if (_v) {
           return _wrap_RPlot_qqnorm__SWIG_0(nargs, args, self);
@@ -92895,7 +97293,7 @@ SWIGINTERN VALUE _wrap_RPlot_qqnorm(int nargs, VALUE *args, VALUE self) {
   
 fail:
   Ruby_Format_OverloadedError( argc, 3, "RPlot.qqnorm", 
-    "    datamunge::graphics::RPlot RPlot.qqnorm(std::vector< double,std::allocator< double > > data, std::string label, datamunge::graphics::RGB color)\n"
+    "    datamunge::graphics::RPlot RPlot.qqnorm(std::vector< double,std::allocator< double > > data, std::string label, datamunge::graphics::RGBA color)\n"
     "    datamunge::graphics::RPlot RPlot.qqnorm(std::vector< double,std::allocator< double > > data, std::string label)\n"
     "    datamunge::graphics::RPlot RPlot.qqnorm(std::vector< double,std::allocator< double > > data)\n");
   
@@ -92909,7 +97307,7 @@ _wrap_RPlot_points__SWIG_0(int argc, VALUE *argv, VALUE self) {
   std::vector< double,std::allocator< double > > arg2 ;
   std::vector< double,std::allocator< double > > arg3 ;
   std::string arg4 ;
-  SwigValueWrapper< datamunge::graphics::RGB > arg5 ;
+  datamunge::graphics::RGBA arg5 ;
   double arg6 ;
   void *argp1 = 0 ;
   int res1 = 0 ;
@@ -92923,7 +97321,7 @@ _wrap_RPlot_points__SWIG_0(int argc, VALUE *argv, VALUE self) {
   if ((argc < 5) || (argc > 5)) {
     rb_raise(rb_eArgError, "wrong # of arguments(%d for 5)",argc); SWIG_fail;
   }
-  res1 = SWIG_ConvertPtr(self, &argp1,SWIGTYPE_p_datamunge__plot__RPlot, 0 |  0 );
+  res1 = SWIG_ConvertPtr(self, &argp1,SWIGTYPE_p_datamunge__graphics__RPlot, 0 |  0 );
   if (!SWIG_IsOK(res1)) {
     SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::graphics::RPlot *","points", 1, self )); 
   }
@@ -92956,14 +97354,14 @@ _wrap_RPlot_points__SWIG_0(int argc, VALUE *argv, VALUE self) {
     if (SWIG_IsNewObj(res)) delete ptr;
   }
   {
-    res5 = SWIG_ConvertPtr(argv[3], &argp5, SWIGTYPE_p_datamunge__plot__RGB,  0 );
+    res5 = SWIG_ConvertPtr(argv[3], &argp5, SWIGTYPE_p_datamunge__graphics__RGB,  0 );
     if (!SWIG_IsOK(res5)) {
-      SWIG_exception_fail(SWIG_ArgError(res5), Ruby_Format_TypeError( "", "datamunge::graphics::RGB","points", 5, argv[3] )); 
+      SWIG_exception_fail(SWIG_ArgError(res5), Ruby_Format_TypeError( "", "datamunge::graphics::RGBA","points", 5, argv[3] )); 
     }  
     if (!argp5) {
-      SWIG_exception_fail(SWIG_NullReferenceError, Ruby_Format_TypeError("invalid null reference ", "datamunge::graphics::RGB","points", 5, argv[3]));
+      SWIG_exception_fail(SWIG_NullReferenceError, Ruby_Format_TypeError("invalid null reference ", "datamunge::graphics::RGBA","points", 5, argv[3]));
     } else {
-      arg5 = *(reinterpret_cast< datamunge::graphics::RGB * >(argp5));
+      arg5 = *(reinterpret_cast< datamunge::graphics::RGBA * >(argp5));
     }
   }
   ecode6 = SWIG_AsVal_double(argv[4], &val6);
@@ -92972,7 +97370,7 @@ _wrap_RPlot_points__SWIG_0(int argc, VALUE *argv, VALUE self) {
   } 
   arg6 = static_cast< double >(val6);
   result = (datamunge::graphics::RPlot *) &(arg1)->points(SWIG_STD_MOVE(*(&arg2)),SWIG_STD_MOVE(*(&arg3)),SWIG_STD_MOVE(*(&arg4)),SWIG_STD_MOVE(*(&arg5)),arg6);
-  vresult = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__plot__RPlot, 0 |  0 );
+  vresult = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__graphics__RPlot, 0 |  0 );
   return vresult;
 fail:
   return Qnil;
@@ -92985,7 +97383,7 @@ _wrap_RPlot_points__SWIG_1(int argc, VALUE *argv, VALUE self) {
   std::vector< double,std::allocator< double > > arg2 ;
   std::vector< double,std::allocator< double > > arg3 ;
   std::string arg4 ;
-  SwigValueWrapper< datamunge::graphics::RGB > arg5 ;
+  datamunge::graphics::RGBA arg5 ;
   void *argp1 = 0 ;
   int res1 = 0 ;
   void *argp5 = 0 ;
@@ -92996,7 +97394,7 @@ _wrap_RPlot_points__SWIG_1(int argc, VALUE *argv, VALUE self) {
   if ((argc < 4) || (argc > 4)) {
     rb_raise(rb_eArgError, "wrong # of arguments(%d for 4)",argc); SWIG_fail;
   }
-  res1 = SWIG_ConvertPtr(self, &argp1,SWIGTYPE_p_datamunge__plot__RPlot, 0 |  0 );
+  res1 = SWIG_ConvertPtr(self, &argp1,SWIGTYPE_p_datamunge__graphics__RPlot, 0 |  0 );
   if (!SWIG_IsOK(res1)) {
     SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::graphics::RPlot *","points", 1, self )); 
   }
@@ -93029,18 +97427,18 @@ _wrap_RPlot_points__SWIG_1(int argc, VALUE *argv, VALUE self) {
     if (SWIG_IsNewObj(res)) delete ptr;
   }
   {
-    res5 = SWIG_ConvertPtr(argv[3], &argp5, SWIGTYPE_p_datamunge__plot__RGB,  0 );
+    res5 = SWIG_ConvertPtr(argv[3], &argp5, SWIGTYPE_p_datamunge__graphics__RGB,  0 );
     if (!SWIG_IsOK(res5)) {
-      SWIG_exception_fail(SWIG_ArgError(res5), Ruby_Format_TypeError( "", "datamunge::graphics::RGB","points", 5, argv[3] )); 
+      SWIG_exception_fail(SWIG_ArgError(res5), Ruby_Format_TypeError( "", "datamunge::graphics::RGBA","points", 5, argv[3] )); 
     }  
     if (!argp5) {
-      SWIG_exception_fail(SWIG_NullReferenceError, Ruby_Format_TypeError("invalid null reference ", "datamunge::graphics::RGB","points", 5, argv[3]));
+      SWIG_exception_fail(SWIG_NullReferenceError, Ruby_Format_TypeError("invalid null reference ", "datamunge::graphics::RGBA","points", 5, argv[3]));
     } else {
-      arg5 = *(reinterpret_cast< datamunge::graphics::RGB * >(argp5));
+      arg5 = *(reinterpret_cast< datamunge::graphics::RGBA * >(argp5));
     }
   }
   result = (datamunge::graphics::RPlot *) &(arg1)->points(SWIG_STD_MOVE(*(&arg2)),SWIG_STD_MOVE(*(&arg3)),SWIG_STD_MOVE(*(&arg4)),SWIG_STD_MOVE(*(&arg5)));
-  vresult = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__plot__RPlot, 0 |  0 );
+  vresult = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__graphics__RPlot, 0 |  0 );
   return vresult;
 fail:
   return Qnil;
@@ -93061,7 +97459,7 @@ _wrap_RPlot_points__SWIG_2(int argc, VALUE *argv, VALUE self) {
   if ((argc < 3) || (argc > 3)) {
     rb_raise(rb_eArgError, "wrong # of arguments(%d for 3)",argc); SWIG_fail;
   }
-  res1 = SWIG_ConvertPtr(self, &argp1,SWIGTYPE_p_datamunge__plot__RPlot, 0 |  0 );
+  res1 = SWIG_ConvertPtr(self, &argp1,SWIGTYPE_p_datamunge__graphics__RPlot, 0 |  0 );
   if (!SWIG_IsOK(res1)) {
     SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::graphics::RPlot *","points", 1, self )); 
   }
@@ -93094,7 +97492,7 @@ _wrap_RPlot_points__SWIG_2(int argc, VALUE *argv, VALUE self) {
     if (SWIG_IsNewObj(res)) delete ptr;
   }
   result = (datamunge::graphics::RPlot *) &(arg1)->points(SWIG_STD_MOVE(*(&arg2)),SWIG_STD_MOVE(*(&arg3)),SWIG_STD_MOVE(*(&arg4)));
-  vresult = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__plot__RPlot, 0 |  0 );
+  vresult = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__graphics__RPlot, 0 |  0 );
   return vresult;
 fail:
   return Qnil;
@@ -93114,7 +97512,7 @@ _wrap_RPlot_points__SWIG_3(int argc, VALUE *argv, VALUE self) {
   if ((argc < 2) || (argc > 2)) {
     rb_raise(rb_eArgError, "wrong # of arguments(%d for 2)",argc); SWIG_fail;
   }
-  res1 = SWIG_ConvertPtr(self, &argp1,SWIGTYPE_p_datamunge__plot__RPlot, 0 |  0 );
+  res1 = SWIG_ConvertPtr(self, &argp1,SWIGTYPE_p_datamunge__graphics__RPlot, 0 |  0 );
   if (!SWIG_IsOK(res1)) {
     SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::graphics::RPlot *","points", 1, self )); 
   }
@@ -93138,9 +97536,204 @@ _wrap_RPlot_points__SWIG_3(int argc, VALUE *argv, VALUE self) {
     if (SWIG_IsNewObj(res)) delete ptr;
   }
   result = (datamunge::graphics::RPlot *) &(arg1)->points(SWIG_STD_MOVE(*(&arg2)),SWIG_STD_MOVE(*(&arg3)));
-  vresult = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__plot__RPlot, 0 |  0 );
+  vresult = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__graphics__RPlot, 0 |  0 );
   return vresult;
 fail:
+  return Qnil;
+}
+
+
+SWIGINTERN VALUE
+_wrap_RPlot_points_colored__SWIG_0(int argc, VALUE *argv, VALUE self) {
+  datamunge::graphics::RPlot *arg1 = 0 ;
+  std::vector< double,std::allocator< double > > arg2 ;
+  std::vector< double,std::allocator< double > > arg3 ;
+  SwigValueWrapper< std::vector< datamunge::graphics::RGB,std::allocator< datamunge::graphics::RGB > > > arg4 ;
+  double arg5 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  void *argp4 = 0 ;
+  int res4 = 0 ;
+  double val5 ;
+  int ecode5 = 0 ;
+  datamunge::graphics::RPlot *result = 0 ;
+  VALUE vresult = Qnil;
+  
+  if ((argc < 4) || (argc > 4)) {
+    rb_raise(rb_eArgError, "wrong # of arguments(%d for 4)",argc); SWIG_fail;
+  }
+  res1 = SWIG_ConvertPtr(self, &argp1,SWIGTYPE_p_datamunge__graphics__RPlot, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::graphics::RPlot *","points_colored", 1, self )); 
+  }
+  arg1 = reinterpret_cast< datamunge::graphics::RPlot * >(argp1);
+  {
+    std::vector< double,std::allocator< double > > *ptr = (std::vector< double,std::allocator< double > > *)0;
+    int res = swig::asptr(argv[0], &ptr);
+    if (!SWIG_IsOK(res) || !ptr) {
+      SWIG_exception_fail(SWIG_ArgError((ptr ? res : SWIG_TypeError)), Ruby_Format_TypeError( "", "std::vector< double,std::allocator< double > >","points_colored", 2, argv[0] )); 
+    }
+    arg2 = *ptr;
+    if (SWIG_IsNewObj(res)) delete ptr;
+  }
+  {
+    std::vector< double,std::allocator< double > > *ptr = (std::vector< double,std::allocator< double > > *)0;
+    int res = swig::asptr(argv[1], &ptr);
+    if (!SWIG_IsOK(res) || !ptr) {
+      SWIG_exception_fail(SWIG_ArgError((ptr ? res : SWIG_TypeError)), Ruby_Format_TypeError( "", "std::vector< double,std::allocator< double > >","points_colored", 3, argv[1] )); 
+    }
+    arg3 = *ptr;
+    if (SWIG_IsNewObj(res)) delete ptr;
+  }
+  {
+    res4 = SWIG_ConvertPtr(argv[2], &argp4, SWIGTYPE_p_std__vectorT_datamunge__graphics__RGB_std__allocatorT_datamunge__graphics__RGB_t_t,  0 );
+    if (!SWIG_IsOK(res4)) {
+      SWIG_exception_fail(SWIG_ArgError(res4), Ruby_Format_TypeError( "", "std::vector< datamunge::graphics::RGBA,std::allocator< datamunge::graphics::RGBA > >","points_colored", 4, argv[2] )); 
+    }  
+    if (!argp4) {
+      SWIG_exception_fail(SWIG_NullReferenceError, Ruby_Format_TypeError("invalid null reference ", "std::vector< datamunge::graphics::RGBA,std::allocator< datamunge::graphics::RGBA > >","points_colored", 4, argv[2]));
+    } else {
+      arg4 = *(reinterpret_cast< std::vector< datamunge::graphics::RGBA,std::allocator< datamunge::graphics::RGBA > > * >(argp4));
+    }
+  }
+  ecode5 = SWIG_AsVal_double(argv[3], &val5);
+  if (!SWIG_IsOK(ecode5)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode5), Ruby_Format_TypeError( "", "double","points_colored", 5, argv[3] ));
+  } 
+  arg5 = static_cast< double >(val5);
+  result = (datamunge::graphics::RPlot *) &(arg1)->points_colored(SWIG_STD_MOVE(*(&arg2)),SWIG_STD_MOVE(*(&arg3)),SWIG_STD_MOVE(*(&arg4)),arg5);
+  vresult = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__graphics__RPlot, 0 |  0 );
+  return vresult;
+fail:
+  return Qnil;
+}
+
+
+SWIGINTERN VALUE
+_wrap_RPlot_points_colored__SWIG_1(int argc, VALUE *argv, VALUE self) {
+  datamunge::graphics::RPlot *arg1 = 0 ;
+  std::vector< double,std::allocator< double > > arg2 ;
+  std::vector< double,std::allocator< double > > arg3 ;
+  SwigValueWrapper< std::vector< datamunge::graphics::RGB,std::allocator< datamunge::graphics::RGB > > > arg4 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  void *argp4 = 0 ;
+  int res4 = 0 ;
+  datamunge::graphics::RPlot *result = 0 ;
+  VALUE vresult = Qnil;
+  
+  if ((argc < 3) || (argc > 3)) {
+    rb_raise(rb_eArgError, "wrong # of arguments(%d for 3)",argc); SWIG_fail;
+  }
+  res1 = SWIG_ConvertPtr(self, &argp1,SWIGTYPE_p_datamunge__graphics__RPlot, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::graphics::RPlot *","points_colored", 1, self )); 
+  }
+  arg1 = reinterpret_cast< datamunge::graphics::RPlot * >(argp1);
+  {
+    std::vector< double,std::allocator< double > > *ptr = (std::vector< double,std::allocator< double > > *)0;
+    int res = swig::asptr(argv[0], &ptr);
+    if (!SWIG_IsOK(res) || !ptr) {
+      SWIG_exception_fail(SWIG_ArgError((ptr ? res : SWIG_TypeError)), Ruby_Format_TypeError( "", "std::vector< double,std::allocator< double > >","points_colored", 2, argv[0] )); 
+    }
+    arg2 = *ptr;
+    if (SWIG_IsNewObj(res)) delete ptr;
+  }
+  {
+    std::vector< double,std::allocator< double > > *ptr = (std::vector< double,std::allocator< double > > *)0;
+    int res = swig::asptr(argv[1], &ptr);
+    if (!SWIG_IsOK(res) || !ptr) {
+      SWIG_exception_fail(SWIG_ArgError((ptr ? res : SWIG_TypeError)), Ruby_Format_TypeError( "", "std::vector< double,std::allocator< double > >","points_colored", 3, argv[1] )); 
+    }
+    arg3 = *ptr;
+    if (SWIG_IsNewObj(res)) delete ptr;
+  }
+  {
+    res4 = SWIG_ConvertPtr(argv[2], &argp4, SWIGTYPE_p_std__vectorT_datamunge__graphics__RGB_std__allocatorT_datamunge__graphics__RGB_t_t,  0 );
+    if (!SWIG_IsOK(res4)) {
+      SWIG_exception_fail(SWIG_ArgError(res4), Ruby_Format_TypeError( "", "std::vector< datamunge::graphics::RGBA,std::allocator< datamunge::graphics::RGBA > >","points_colored", 4, argv[2] )); 
+    }  
+    if (!argp4) {
+      SWIG_exception_fail(SWIG_NullReferenceError, Ruby_Format_TypeError("invalid null reference ", "std::vector< datamunge::graphics::RGBA,std::allocator< datamunge::graphics::RGBA > >","points_colored", 4, argv[2]));
+    } else {
+      arg4 = *(reinterpret_cast< std::vector< datamunge::graphics::RGBA,std::allocator< datamunge::graphics::RGBA > > * >(argp4));
+    }
+  }
+  result = (datamunge::graphics::RPlot *) &(arg1)->points_colored(SWIG_STD_MOVE(*(&arg2)),SWIG_STD_MOVE(*(&arg3)),SWIG_STD_MOVE(*(&arg4)));
+  vresult = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__graphics__RPlot, 0 |  0 );
+  return vresult;
+fail:
+  return Qnil;
+}
+
+
+SWIGINTERN VALUE _wrap_RPlot_points_colored(int nargs, VALUE *args, VALUE self) {
+  int argc;
+  VALUE argv[6];
+  int ii;
+  
+  argc = nargs + 1;
+  argv[0] = self;
+  if (argc > 6) SWIG_fail;
+  for (ii = 1; (ii < argc); ++ii) {
+    argv[ii] = args[ii-1];
+  }
+  if (argc == 4) {
+    int _v = 0;
+    void *vptr = 0;
+    int res = SWIG_ConvertPtr(argv[0], &vptr, SWIGTYPE_p_datamunge__graphics__RPlot, 0);
+    _v = SWIG_CheckState(res);
+    if (_v) {
+      int res = swig::asptr(argv[1], (std::vector< double,std::allocator< double > >**)(0));
+      _v = SWIG_CheckState(res);
+      if (_v) {
+        int res = swig::asptr(argv[2], (std::vector< double,std::allocator< double > >**)(0));
+        _v = SWIG_CheckState(res);
+        if (_v) {
+          void *vptr = 0;
+          int res = SWIG_ConvertPtr(argv[3], &vptr, SWIGTYPE_p_std__vectorT_datamunge__graphics__RGB_std__allocatorT_datamunge__graphics__RGB_t_t, SWIG_POINTER_NO_NULL);
+          _v = SWIG_CheckState(res);
+          if (_v) {
+            return _wrap_RPlot_points_colored__SWIG_1(nargs, args, self);
+          }
+        }
+      }
+    }
+  }
+  if (argc == 5) {
+    int _v = 0;
+    void *vptr = 0;
+    int res = SWIG_ConvertPtr(argv[0], &vptr, SWIGTYPE_p_datamunge__graphics__RPlot, 0);
+    _v = SWIG_CheckState(res);
+    if (_v) {
+      int res = swig::asptr(argv[1], (std::vector< double,std::allocator< double > >**)(0));
+      _v = SWIG_CheckState(res);
+      if (_v) {
+        int res = swig::asptr(argv[2], (std::vector< double,std::allocator< double > >**)(0));
+        _v = SWIG_CheckState(res);
+        if (_v) {
+          void *vptr = 0;
+          int res = SWIG_ConvertPtr(argv[3], &vptr, SWIGTYPE_p_std__vectorT_datamunge__graphics__RGB_std__allocatorT_datamunge__graphics__RGB_t_t, SWIG_POINTER_NO_NULL);
+          _v = SWIG_CheckState(res);
+          if (_v) {
+            {
+              int res = SWIG_AsVal_double(argv[4], NULL);
+              _v = SWIG_CheckState(res);
+            }
+            if (_v) {
+              return _wrap_RPlot_points_colored__SWIG_0(nargs, args, self);
+            }
+          }
+        }
+      }
+    }
+  }
+  
+fail:
+  Ruby_Format_OverloadedError( argc, 6, "RPlot.points_colored", 
+    "    datamunge::graphics::RPlot RPlot.points_colored(std::vector< double,std::allocator< double > > x, std::vector< double,std::allocator< double > > y, std::vector< datamunge::graphics::RGBA,std::allocator< datamunge::graphics::RGBA > > colors, double marker_size)\n"
+    "    datamunge::graphics::RPlot & RPlot.points_colored(std::vector< double,std::allocator< double > > x, std::vector< double,std::allocator< double > > y, std::vector< datamunge::graphics::RGBA,std::allocator< datamunge::graphics::RGBA > > colors)\n");
+  
   return Qnil;
 }
 
@@ -93151,7 +97744,7 @@ _wrap_RPlot_line__SWIG_0(int argc, VALUE *argv, VALUE self) {
   std::vector< double,std::allocator< double > > arg2 ;
   std::vector< double,std::allocator< double > > arg3 ;
   std::string arg4 ;
-  SwigValueWrapper< datamunge::graphics::RGB > arg5 ;
+  datamunge::graphics::RGBA arg5 ;
   double arg6 ;
   void *argp1 = 0 ;
   int res1 = 0 ;
@@ -93165,7 +97758,7 @@ _wrap_RPlot_line__SWIG_0(int argc, VALUE *argv, VALUE self) {
   if ((argc < 5) || (argc > 5)) {
     rb_raise(rb_eArgError, "wrong # of arguments(%d for 5)",argc); SWIG_fail;
   }
-  res1 = SWIG_ConvertPtr(self, &argp1,SWIGTYPE_p_datamunge__plot__RPlot, 0 |  0 );
+  res1 = SWIG_ConvertPtr(self, &argp1,SWIGTYPE_p_datamunge__graphics__RPlot, 0 |  0 );
   if (!SWIG_IsOK(res1)) {
     SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::graphics::RPlot *","line", 1, self )); 
   }
@@ -93198,14 +97791,14 @@ _wrap_RPlot_line__SWIG_0(int argc, VALUE *argv, VALUE self) {
     if (SWIG_IsNewObj(res)) delete ptr;
   }
   {
-    res5 = SWIG_ConvertPtr(argv[3], &argp5, SWIGTYPE_p_datamunge__plot__RGB,  0 );
+    res5 = SWIG_ConvertPtr(argv[3], &argp5, SWIGTYPE_p_datamunge__graphics__RGB,  0 );
     if (!SWIG_IsOK(res5)) {
-      SWIG_exception_fail(SWIG_ArgError(res5), Ruby_Format_TypeError( "", "datamunge::graphics::RGB","line", 5, argv[3] )); 
+      SWIG_exception_fail(SWIG_ArgError(res5), Ruby_Format_TypeError( "", "datamunge::graphics::RGBA","line", 5, argv[3] )); 
     }  
     if (!argp5) {
-      SWIG_exception_fail(SWIG_NullReferenceError, Ruby_Format_TypeError("invalid null reference ", "datamunge::graphics::RGB","line", 5, argv[3]));
+      SWIG_exception_fail(SWIG_NullReferenceError, Ruby_Format_TypeError("invalid null reference ", "datamunge::graphics::RGBA","line", 5, argv[3]));
     } else {
-      arg5 = *(reinterpret_cast< datamunge::graphics::RGB * >(argp5));
+      arg5 = *(reinterpret_cast< datamunge::graphics::RGBA * >(argp5));
     }
   }
   ecode6 = SWIG_AsVal_double(argv[4], &val6);
@@ -93214,7 +97807,7 @@ _wrap_RPlot_line__SWIG_0(int argc, VALUE *argv, VALUE self) {
   } 
   arg6 = static_cast< double >(val6);
   result = (datamunge::graphics::RPlot *) &(arg1)->line(SWIG_STD_MOVE(*(&arg2)),SWIG_STD_MOVE(*(&arg3)),SWIG_STD_MOVE(*(&arg4)),SWIG_STD_MOVE(*(&arg5)),arg6);
-  vresult = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__plot__RPlot, 0 |  0 );
+  vresult = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__graphics__RPlot, 0 |  0 );
   return vresult;
 fail:
   return Qnil;
@@ -93227,7 +97820,7 @@ _wrap_RPlot_line__SWIG_1(int argc, VALUE *argv, VALUE self) {
   std::vector< double,std::allocator< double > > arg2 ;
   std::vector< double,std::allocator< double > > arg3 ;
   std::string arg4 ;
-  SwigValueWrapper< datamunge::graphics::RGB > arg5 ;
+  datamunge::graphics::RGBA arg5 ;
   void *argp1 = 0 ;
   int res1 = 0 ;
   void *argp5 = 0 ;
@@ -93238,7 +97831,7 @@ _wrap_RPlot_line__SWIG_1(int argc, VALUE *argv, VALUE self) {
   if ((argc < 4) || (argc > 4)) {
     rb_raise(rb_eArgError, "wrong # of arguments(%d for 4)",argc); SWIG_fail;
   }
-  res1 = SWIG_ConvertPtr(self, &argp1,SWIGTYPE_p_datamunge__plot__RPlot, 0 |  0 );
+  res1 = SWIG_ConvertPtr(self, &argp1,SWIGTYPE_p_datamunge__graphics__RPlot, 0 |  0 );
   if (!SWIG_IsOK(res1)) {
     SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::graphics::RPlot *","line", 1, self )); 
   }
@@ -93271,18 +97864,18 @@ _wrap_RPlot_line__SWIG_1(int argc, VALUE *argv, VALUE self) {
     if (SWIG_IsNewObj(res)) delete ptr;
   }
   {
-    res5 = SWIG_ConvertPtr(argv[3], &argp5, SWIGTYPE_p_datamunge__plot__RGB,  0 );
+    res5 = SWIG_ConvertPtr(argv[3], &argp5, SWIGTYPE_p_datamunge__graphics__RGB,  0 );
     if (!SWIG_IsOK(res5)) {
-      SWIG_exception_fail(SWIG_ArgError(res5), Ruby_Format_TypeError( "", "datamunge::graphics::RGB","line", 5, argv[3] )); 
+      SWIG_exception_fail(SWIG_ArgError(res5), Ruby_Format_TypeError( "", "datamunge::graphics::RGBA","line", 5, argv[3] )); 
     }  
     if (!argp5) {
-      SWIG_exception_fail(SWIG_NullReferenceError, Ruby_Format_TypeError("invalid null reference ", "datamunge::graphics::RGB","line", 5, argv[3]));
+      SWIG_exception_fail(SWIG_NullReferenceError, Ruby_Format_TypeError("invalid null reference ", "datamunge::graphics::RGBA","line", 5, argv[3]));
     } else {
-      arg5 = *(reinterpret_cast< datamunge::graphics::RGB * >(argp5));
+      arg5 = *(reinterpret_cast< datamunge::graphics::RGBA * >(argp5));
     }
   }
   result = (datamunge::graphics::RPlot *) &(arg1)->line(SWIG_STD_MOVE(*(&arg2)),SWIG_STD_MOVE(*(&arg3)),SWIG_STD_MOVE(*(&arg4)),SWIG_STD_MOVE(*(&arg5)));
-  vresult = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__plot__RPlot, 0 |  0 );
+  vresult = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__graphics__RPlot, 0 |  0 );
   return vresult;
 fail:
   return Qnil;
@@ -93303,7 +97896,7 @@ _wrap_RPlot_line__SWIG_2(int argc, VALUE *argv, VALUE self) {
   if ((argc < 3) || (argc > 3)) {
     rb_raise(rb_eArgError, "wrong # of arguments(%d for 3)",argc); SWIG_fail;
   }
-  res1 = SWIG_ConvertPtr(self, &argp1,SWIGTYPE_p_datamunge__plot__RPlot, 0 |  0 );
+  res1 = SWIG_ConvertPtr(self, &argp1,SWIGTYPE_p_datamunge__graphics__RPlot, 0 |  0 );
   if (!SWIG_IsOK(res1)) {
     SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::graphics::RPlot *","line", 1, self )); 
   }
@@ -93336,7 +97929,7 @@ _wrap_RPlot_line__SWIG_2(int argc, VALUE *argv, VALUE self) {
     if (SWIG_IsNewObj(res)) delete ptr;
   }
   result = (datamunge::graphics::RPlot *) &(arg1)->line(SWIG_STD_MOVE(*(&arg2)),SWIG_STD_MOVE(*(&arg3)),SWIG_STD_MOVE(*(&arg4)));
-  vresult = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__plot__RPlot, 0 |  0 );
+  vresult = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__graphics__RPlot, 0 |  0 );
   return vresult;
 fail:
   return Qnil;
@@ -93356,7 +97949,7 @@ _wrap_RPlot_line__SWIG_3(int argc, VALUE *argv, VALUE self) {
   if ((argc < 2) || (argc > 2)) {
     rb_raise(rb_eArgError, "wrong # of arguments(%d for 2)",argc); SWIG_fail;
   }
-  res1 = SWIG_ConvertPtr(self, &argp1,SWIGTYPE_p_datamunge__plot__RPlot, 0 |  0 );
+  res1 = SWIG_ConvertPtr(self, &argp1,SWIGTYPE_p_datamunge__graphics__RPlot, 0 |  0 );
   if (!SWIG_IsOK(res1)) {
     SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::graphics::RPlot *","line", 1, self )); 
   }
@@ -93380,7 +97973,7 @@ _wrap_RPlot_line__SWIG_3(int argc, VALUE *argv, VALUE self) {
     if (SWIG_IsNewObj(res)) delete ptr;
   }
   result = (datamunge::graphics::RPlot *) &(arg1)->line(SWIG_STD_MOVE(*(&arg2)),SWIG_STD_MOVE(*(&arg3)));
-  vresult = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__plot__RPlot, 0 |  0 );
+  vresult = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__graphics__RPlot, 0 |  0 );
   return vresult;
 fail:
   return Qnil;
@@ -93401,7 +97994,7 @@ SWIGINTERN VALUE _wrap_RPlot_line(int nargs, VALUE *args, VALUE self) {
   if (argc == 3) {
     int _v = 0;
     void *vptr = 0;
-    int res = SWIG_ConvertPtr(argv[0], &vptr, SWIGTYPE_p_datamunge__plot__RPlot, 0);
+    int res = SWIG_ConvertPtr(argv[0], &vptr, SWIGTYPE_p_datamunge__graphics__RPlot, 0);
     _v = SWIG_CheckState(res);
     if (_v) {
       int res = swig::asptr(argv[1], (std::vector< double,std::allocator< double > >**)(0));
@@ -93418,7 +98011,7 @@ SWIGINTERN VALUE _wrap_RPlot_line(int nargs, VALUE *args, VALUE self) {
   if (argc == 4) {
     int _v = 0;
     void *vptr = 0;
-    int res = SWIG_ConvertPtr(argv[0], &vptr, SWIGTYPE_p_datamunge__plot__RPlot, 0);
+    int res = SWIG_ConvertPtr(argv[0], &vptr, SWIGTYPE_p_datamunge__graphics__RPlot, 0);
     _v = SWIG_CheckState(res);
     if (_v) {
       int res = swig::asptr(argv[1], (std::vector< double,std::allocator< double > >**)(0));
@@ -93439,7 +98032,7 @@ SWIGINTERN VALUE _wrap_RPlot_line(int nargs, VALUE *args, VALUE self) {
   if (argc == 5) {
     int _v = 0;
     void *vptr = 0;
-    int res = SWIG_ConvertPtr(argv[0], &vptr, SWIGTYPE_p_datamunge__plot__RPlot, 0);
+    int res = SWIG_ConvertPtr(argv[0], &vptr, SWIGTYPE_p_datamunge__graphics__RPlot, 0);
     _v = SWIG_CheckState(res);
     if (_v) {
       int res = swig::asptr(argv[1], (std::vector< double,std::allocator< double > >**)(0));
@@ -93452,7 +98045,7 @@ SWIGINTERN VALUE _wrap_RPlot_line(int nargs, VALUE *args, VALUE self) {
           _v = SWIG_CheckState(res);
           if (_v) {
             void *vptr = 0;
-            int res = SWIG_ConvertPtr(argv[4], &vptr, SWIGTYPE_p_datamunge__plot__RGB, SWIG_POINTER_NO_NULL);
+            int res = SWIG_ConvertPtr(argv[4], &vptr, SWIGTYPE_p_datamunge__graphics__RGB, SWIG_POINTER_NO_NULL);
             _v = SWIG_CheckState(res);
             if (_v) {
               return _wrap_RPlot_line__SWIG_1(nargs, args, self);
@@ -93465,7 +98058,7 @@ SWIGINTERN VALUE _wrap_RPlot_line(int nargs, VALUE *args, VALUE self) {
   if (argc == 6) {
     int _v = 0;
     void *vptr = 0;
-    int res = SWIG_ConvertPtr(argv[0], &vptr, SWIGTYPE_p_datamunge__plot__RPlot, 0);
+    int res = SWIG_ConvertPtr(argv[0], &vptr, SWIGTYPE_p_datamunge__graphics__RPlot, 0);
     _v = SWIG_CheckState(res);
     if (_v) {
       int res = swig::asptr(argv[1], (std::vector< double,std::allocator< double > >**)(0));
@@ -93478,7 +98071,7 @@ SWIGINTERN VALUE _wrap_RPlot_line(int nargs, VALUE *args, VALUE self) {
           _v = SWIG_CheckState(res);
           if (_v) {
             void *vptr = 0;
-            int res = SWIG_ConvertPtr(argv[4], &vptr, SWIGTYPE_p_datamunge__plot__RGB, SWIG_POINTER_NO_NULL);
+            int res = SWIG_ConvertPtr(argv[4], &vptr, SWIGTYPE_p_datamunge__graphics__RGB, SWIG_POINTER_NO_NULL);
             _v = SWIG_CheckState(res);
             if (_v) {
               {
@@ -93497,8 +98090,8 @@ SWIGINTERN VALUE _wrap_RPlot_line(int nargs, VALUE *args, VALUE self) {
   
 fail:
   Ruby_Format_OverloadedError( argc, 7, "RPlot.line", 
-    "    datamunge::graphics::RPlot RPlot.line(std::vector< double,std::allocator< double > > x, std::vector< double,std::allocator< double > > y, std::string label, datamunge::graphics::RGB color, double stroke_width)\n"
-    "    datamunge::graphics::RPlot RPlot.line(std::vector< double,std::allocator< double > > x, std::vector< double,std::allocator< double > > y, std::string label, datamunge::graphics::RGB color)\n"
+    "    datamunge::graphics::RPlot RPlot.line(std::vector< double,std::allocator< double > > x, std::vector< double,std::allocator< double > > y, std::string label, datamunge::graphics::RGBA color, double stroke_width)\n"
+    "    datamunge::graphics::RPlot RPlot.line(std::vector< double,std::allocator< double > > x, std::vector< double,std::allocator< double > > y, std::string label, datamunge::graphics::RGBA color)\n"
     "    datamunge::graphics::RPlot RPlot.line(std::vector< double,std::allocator< double > > x, std::vector< double,std::allocator< double > > y, std::string label)\n"
     "    datamunge::graphics::RPlot & RPlot.line(std::vector< double,std::allocator< double > > x, std::vector< double,std::allocator< double > > y)\n");
   
@@ -93512,7 +98105,7 @@ _wrap_RPlot_lines__SWIG_0(int argc, VALUE *argv, VALUE self) {
   std::vector< double,std::allocator< double > > arg2 ;
   std::vector< double,std::allocator< double > > arg3 ;
   std::string arg4 ;
-  SwigValueWrapper< datamunge::graphics::RGB > arg5 ;
+  datamunge::graphics::RGBA arg5 ;
   double arg6 ;
   void *argp1 = 0 ;
   int res1 = 0 ;
@@ -93526,7 +98119,7 @@ _wrap_RPlot_lines__SWIG_0(int argc, VALUE *argv, VALUE self) {
   if ((argc < 5) || (argc > 5)) {
     rb_raise(rb_eArgError, "wrong # of arguments(%d for 5)",argc); SWIG_fail;
   }
-  res1 = SWIG_ConvertPtr(self, &argp1,SWIGTYPE_p_datamunge__plot__RPlot, 0 |  0 );
+  res1 = SWIG_ConvertPtr(self, &argp1,SWIGTYPE_p_datamunge__graphics__RPlot, 0 |  0 );
   if (!SWIG_IsOK(res1)) {
     SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::graphics::RPlot *","lines", 1, self )); 
   }
@@ -93559,14 +98152,14 @@ _wrap_RPlot_lines__SWIG_0(int argc, VALUE *argv, VALUE self) {
     if (SWIG_IsNewObj(res)) delete ptr;
   }
   {
-    res5 = SWIG_ConvertPtr(argv[3], &argp5, SWIGTYPE_p_datamunge__plot__RGB,  0 );
+    res5 = SWIG_ConvertPtr(argv[3], &argp5, SWIGTYPE_p_datamunge__graphics__RGB,  0 );
     if (!SWIG_IsOK(res5)) {
-      SWIG_exception_fail(SWIG_ArgError(res5), Ruby_Format_TypeError( "", "datamunge::graphics::RGB","lines", 5, argv[3] )); 
+      SWIG_exception_fail(SWIG_ArgError(res5), Ruby_Format_TypeError( "", "datamunge::graphics::RGBA","lines", 5, argv[3] )); 
     }  
     if (!argp5) {
-      SWIG_exception_fail(SWIG_NullReferenceError, Ruby_Format_TypeError("invalid null reference ", "datamunge::graphics::RGB","lines", 5, argv[3]));
+      SWIG_exception_fail(SWIG_NullReferenceError, Ruby_Format_TypeError("invalid null reference ", "datamunge::graphics::RGBA","lines", 5, argv[3]));
     } else {
-      arg5 = *(reinterpret_cast< datamunge::graphics::RGB * >(argp5));
+      arg5 = *(reinterpret_cast< datamunge::graphics::RGBA * >(argp5));
     }
   }
   ecode6 = SWIG_AsVal_double(argv[4], &val6);
@@ -93575,7 +98168,7 @@ _wrap_RPlot_lines__SWIG_0(int argc, VALUE *argv, VALUE self) {
   } 
   arg6 = static_cast< double >(val6);
   result = (datamunge::graphics::RPlot *) &(arg1)->lines(SWIG_STD_MOVE(*(&arg2)),SWIG_STD_MOVE(*(&arg3)),SWIG_STD_MOVE(*(&arg4)),SWIG_STD_MOVE(*(&arg5)),arg6);
-  vresult = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__plot__RPlot, 0 |  0 );
+  vresult = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__graphics__RPlot, 0 |  0 );
   return vresult;
 fail:
   return Qnil;
@@ -93588,7 +98181,7 @@ _wrap_RPlot_lines__SWIG_1(int argc, VALUE *argv, VALUE self) {
   std::vector< double,std::allocator< double > > arg2 ;
   std::vector< double,std::allocator< double > > arg3 ;
   std::string arg4 ;
-  SwigValueWrapper< datamunge::graphics::RGB > arg5 ;
+  datamunge::graphics::RGBA arg5 ;
   void *argp1 = 0 ;
   int res1 = 0 ;
   void *argp5 = 0 ;
@@ -93599,7 +98192,7 @@ _wrap_RPlot_lines__SWIG_1(int argc, VALUE *argv, VALUE self) {
   if ((argc < 4) || (argc > 4)) {
     rb_raise(rb_eArgError, "wrong # of arguments(%d for 4)",argc); SWIG_fail;
   }
-  res1 = SWIG_ConvertPtr(self, &argp1,SWIGTYPE_p_datamunge__plot__RPlot, 0 |  0 );
+  res1 = SWIG_ConvertPtr(self, &argp1,SWIGTYPE_p_datamunge__graphics__RPlot, 0 |  0 );
   if (!SWIG_IsOK(res1)) {
     SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::graphics::RPlot *","lines", 1, self )); 
   }
@@ -93632,18 +98225,18 @@ _wrap_RPlot_lines__SWIG_1(int argc, VALUE *argv, VALUE self) {
     if (SWIG_IsNewObj(res)) delete ptr;
   }
   {
-    res5 = SWIG_ConvertPtr(argv[3], &argp5, SWIGTYPE_p_datamunge__plot__RGB,  0 );
+    res5 = SWIG_ConvertPtr(argv[3], &argp5, SWIGTYPE_p_datamunge__graphics__RGB,  0 );
     if (!SWIG_IsOK(res5)) {
-      SWIG_exception_fail(SWIG_ArgError(res5), Ruby_Format_TypeError( "", "datamunge::graphics::RGB","lines", 5, argv[3] )); 
+      SWIG_exception_fail(SWIG_ArgError(res5), Ruby_Format_TypeError( "", "datamunge::graphics::RGBA","lines", 5, argv[3] )); 
     }  
     if (!argp5) {
-      SWIG_exception_fail(SWIG_NullReferenceError, Ruby_Format_TypeError("invalid null reference ", "datamunge::graphics::RGB","lines", 5, argv[3]));
+      SWIG_exception_fail(SWIG_NullReferenceError, Ruby_Format_TypeError("invalid null reference ", "datamunge::graphics::RGBA","lines", 5, argv[3]));
     } else {
-      arg5 = *(reinterpret_cast< datamunge::graphics::RGB * >(argp5));
+      arg5 = *(reinterpret_cast< datamunge::graphics::RGBA * >(argp5));
     }
   }
   result = (datamunge::graphics::RPlot *) &(arg1)->lines(SWIG_STD_MOVE(*(&arg2)),SWIG_STD_MOVE(*(&arg3)),SWIG_STD_MOVE(*(&arg4)),SWIG_STD_MOVE(*(&arg5)));
-  vresult = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__plot__RPlot, 0 |  0 );
+  vresult = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__graphics__RPlot, 0 |  0 );
   return vresult;
 fail:
   return Qnil;
@@ -93664,7 +98257,7 @@ _wrap_RPlot_lines__SWIG_2(int argc, VALUE *argv, VALUE self) {
   if ((argc < 3) || (argc > 3)) {
     rb_raise(rb_eArgError, "wrong # of arguments(%d for 3)",argc); SWIG_fail;
   }
-  res1 = SWIG_ConvertPtr(self, &argp1,SWIGTYPE_p_datamunge__plot__RPlot, 0 |  0 );
+  res1 = SWIG_ConvertPtr(self, &argp1,SWIGTYPE_p_datamunge__graphics__RPlot, 0 |  0 );
   if (!SWIG_IsOK(res1)) {
     SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::graphics::RPlot *","lines", 1, self )); 
   }
@@ -93697,7 +98290,7 @@ _wrap_RPlot_lines__SWIG_2(int argc, VALUE *argv, VALUE self) {
     if (SWIG_IsNewObj(res)) delete ptr;
   }
   result = (datamunge::graphics::RPlot *) &(arg1)->lines(SWIG_STD_MOVE(*(&arg2)),SWIG_STD_MOVE(*(&arg3)),SWIG_STD_MOVE(*(&arg4)));
-  vresult = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__plot__RPlot, 0 |  0 );
+  vresult = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__graphics__RPlot, 0 |  0 );
   return vresult;
 fail:
   return Qnil;
@@ -93717,7 +98310,7 @@ _wrap_RPlot_lines__SWIG_3(int argc, VALUE *argv, VALUE self) {
   if ((argc < 2) || (argc > 2)) {
     rb_raise(rb_eArgError, "wrong # of arguments(%d for 2)",argc); SWIG_fail;
   }
-  res1 = SWIG_ConvertPtr(self, &argp1,SWIGTYPE_p_datamunge__plot__RPlot, 0 |  0 );
+  res1 = SWIG_ConvertPtr(self, &argp1,SWIGTYPE_p_datamunge__graphics__RPlot, 0 |  0 );
   if (!SWIG_IsOK(res1)) {
     SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::graphics::RPlot *","lines", 1, self )); 
   }
@@ -93741,7 +98334,7 @@ _wrap_RPlot_lines__SWIG_3(int argc, VALUE *argv, VALUE self) {
     if (SWIG_IsNewObj(res)) delete ptr;
   }
   result = (datamunge::graphics::RPlot *) &(arg1)->lines(SWIG_STD_MOVE(*(&arg2)),SWIG_STD_MOVE(*(&arg3)));
-  vresult = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__plot__RPlot, 0 |  0 );
+  vresult = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__graphics__RPlot, 0 |  0 );
   return vresult;
 fail:
   return Qnil;
@@ -93753,7 +98346,7 @@ _wrap_RPlot_points__SWIG_4(int argc, VALUE *argv, VALUE self) {
   datamunge::graphics::RPlot *arg1 = 0 ;
   std::vector< double,std::allocator< double > > arg2 ;
   std::vector< double,std::allocator< double > > arg3 ;
-  SwigValueWrapper< datamunge::graphics::RGB > arg4 ;
+  datamunge::graphics::RGBA arg4 ;
   double arg5 ;
   void *argp1 = 0 ;
   int res1 = 0 ;
@@ -93767,7 +98360,7 @@ _wrap_RPlot_points__SWIG_4(int argc, VALUE *argv, VALUE self) {
   if ((argc < 4) || (argc > 4)) {
     rb_raise(rb_eArgError, "wrong # of arguments(%d for 4)",argc); SWIG_fail;
   }
-  res1 = SWIG_ConvertPtr(self, &argp1,SWIGTYPE_p_datamunge__plot__RPlot, 0 |  0 );
+  res1 = SWIG_ConvertPtr(self, &argp1,SWIGTYPE_p_datamunge__graphics__RPlot, 0 |  0 );
   if (!SWIG_IsOK(res1)) {
     SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::graphics::RPlot *","points", 1, self )); 
   }
@@ -93791,14 +98384,14 @@ _wrap_RPlot_points__SWIG_4(int argc, VALUE *argv, VALUE self) {
     if (SWIG_IsNewObj(res)) delete ptr;
   }
   {
-    res4 = SWIG_ConvertPtr(argv[2], &argp4, SWIGTYPE_p_datamunge__plot__RGB,  0 );
+    res4 = SWIG_ConvertPtr(argv[2], &argp4, SWIGTYPE_p_datamunge__graphics__RGB,  0 );
     if (!SWIG_IsOK(res4)) {
-      SWIG_exception_fail(SWIG_ArgError(res4), Ruby_Format_TypeError( "", "datamunge::graphics::RGB","points", 4, argv[2] )); 
+      SWIG_exception_fail(SWIG_ArgError(res4), Ruby_Format_TypeError( "", "datamunge::graphics::RGBA","points", 4, argv[2] )); 
     }  
     if (!argp4) {
-      SWIG_exception_fail(SWIG_NullReferenceError, Ruby_Format_TypeError("invalid null reference ", "datamunge::graphics::RGB","points", 4, argv[2]));
+      SWIG_exception_fail(SWIG_NullReferenceError, Ruby_Format_TypeError("invalid null reference ", "datamunge::graphics::RGBA","points", 4, argv[2]));
     } else {
-      arg4 = *(reinterpret_cast< datamunge::graphics::RGB * >(argp4));
+      arg4 = *(reinterpret_cast< datamunge::graphics::RGBA * >(argp4));
     }
   }
   ecode5 = SWIG_AsVal_double(argv[3], &val5);
@@ -93807,7 +98400,7 @@ _wrap_RPlot_points__SWIG_4(int argc, VALUE *argv, VALUE self) {
   } 
   arg5 = static_cast< double >(val5);
   result = (datamunge::graphics::RPlot *) &(arg1)->points(SWIG_STD_MOVE(*(&arg2)),SWIG_STD_MOVE(*(&arg3)),SWIG_STD_MOVE(*(&arg4)),arg5);
-  vresult = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__plot__RPlot, 0 |  0 );
+  vresult = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__graphics__RPlot, 0 |  0 );
   return vresult;
 fail:
   return Qnil;
@@ -93819,7 +98412,7 @@ _wrap_RPlot_points__SWIG_5(int argc, VALUE *argv, VALUE self) {
   datamunge::graphics::RPlot *arg1 = 0 ;
   std::vector< double,std::allocator< double > > arg2 ;
   std::vector< double,std::allocator< double > > arg3 ;
-  SwigValueWrapper< datamunge::graphics::RGB > arg4 ;
+  datamunge::graphics::RGBA arg4 ;
   void *argp1 = 0 ;
   int res1 = 0 ;
   void *argp4 = 0 ;
@@ -93830,7 +98423,7 @@ _wrap_RPlot_points__SWIG_5(int argc, VALUE *argv, VALUE self) {
   if ((argc < 3) || (argc > 3)) {
     rb_raise(rb_eArgError, "wrong # of arguments(%d for 3)",argc); SWIG_fail;
   }
-  res1 = SWIG_ConvertPtr(self, &argp1,SWIGTYPE_p_datamunge__plot__RPlot, 0 |  0 );
+  res1 = SWIG_ConvertPtr(self, &argp1,SWIGTYPE_p_datamunge__graphics__RPlot, 0 |  0 );
   if (!SWIG_IsOK(res1)) {
     SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::graphics::RPlot *","points", 1, self )); 
   }
@@ -93854,18 +98447,18 @@ _wrap_RPlot_points__SWIG_5(int argc, VALUE *argv, VALUE self) {
     if (SWIG_IsNewObj(res)) delete ptr;
   }
   {
-    res4 = SWIG_ConvertPtr(argv[2], &argp4, SWIGTYPE_p_datamunge__plot__RGB,  0 );
+    res4 = SWIG_ConvertPtr(argv[2], &argp4, SWIGTYPE_p_datamunge__graphics__RGB,  0 );
     if (!SWIG_IsOK(res4)) {
-      SWIG_exception_fail(SWIG_ArgError(res4), Ruby_Format_TypeError( "", "datamunge::graphics::RGB","points", 4, argv[2] )); 
+      SWIG_exception_fail(SWIG_ArgError(res4), Ruby_Format_TypeError( "", "datamunge::graphics::RGBA","points", 4, argv[2] )); 
     }  
     if (!argp4) {
-      SWIG_exception_fail(SWIG_NullReferenceError, Ruby_Format_TypeError("invalid null reference ", "datamunge::graphics::RGB","points", 4, argv[2]));
+      SWIG_exception_fail(SWIG_NullReferenceError, Ruby_Format_TypeError("invalid null reference ", "datamunge::graphics::RGBA","points", 4, argv[2]));
     } else {
-      arg4 = *(reinterpret_cast< datamunge::graphics::RGB * >(argp4));
+      arg4 = *(reinterpret_cast< datamunge::graphics::RGBA * >(argp4));
     }
   }
   result = (datamunge::graphics::RPlot *) &(arg1)->points(SWIG_STD_MOVE(*(&arg2)),SWIG_STD_MOVE(*(&arg3)),SWIG_STD_MOVE(*(&arg4)));
-  vresult = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__plot__RPlot, 0 |  0 );
+  vresult = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__graphics__RPlot, 0 |  0 );
   return vresult;
 fail:
   return Qnil;
@@ -93886,7 +98479,7 @@ SWIGINTERN VALUE _wrap_RPlot_points(int nargs, VALUE *args, VALUE self) {
   if (argc == 3) {
     int _v = 0;
     void *vptr = 0;
-    int res = SWIG_ConvertPtr(argv[0], &vptr, SWIGTYPE_p_datamunge__plot__RPlot, 0);
+    int res = SWIG_ConvertPtr(argv[0], &vptr, SWIGTYPE_p_datamunge__graphics__RPlot, 0);
     _v = SWIG_CheckState(res);
     if (_v) {
       int res = swig::asptr(argv[1], (std::vector< double,std::allocator< double > >**)(0));
@@ -93903,7 +98496,7 @@ SWIGINTERN VALUE _wrap_RPlot_points(int nargs, VALUE *args, VALUE self) {
   if (argc == 4) {
     int _v = 0;
     void *vptr = 0;
-    int res = SWIG_ConvertPtr(argv[0], &vptr, SWIGTYPE_p_datamunge__plot__RPlot, 0);
+    int res = SWIG_ConvertPtr(argv[0], &vptr, SWIGTYPE_p_datamunge__graphics__RPlot, 0);
     _v = SWIG_CheckState(res);
     if (_v) {
       int res = swig::asptr(argv[1], (std::vector< double,std::allocator< double > >**)(0));
@@ -93913,7 +98506,7 @@ SWIGINTERN VALUE _wrap_RPlot_points(int nargs, VALUE *args, VALUE self) {
         _v = SWIG_CheckState(res);
         if (_v) {
           void *vptr = 0;
-          int res = SWIG_ConvertPtr(argv[3], &vptr, SWIGTYPE_p_datamunge__plot__RGB, SWIG_POINTER_NO_NULL);
+          int res = SWIG_ConvertPtr(argv[3], &vptr, SWIGTYPE_p_datamunge__graphics__RGB, SWIG_POINTER_NO_NULL);
           _v = SWIG_CheckState(res);
           if (_v) {
             return _wrap_RPlot_points__SWIG_5(nargs, args, self);
@@ -93925,7 +98518,7 @@ SWIGINTERN VALUE _wrap_RPlot_points(int nargs, VALUE *args, VALUE self) {
   if (argc == 4) {
     int _v = 0;
     void *vptr = 0;
-    int res = SWIG_ConvertPtr(argv[0], &vptr, SWIGTYPE_p_datamunge__plot__RPlot, 0);
+    int res = SWIG_ConvertPtr(argv[0], &vptr, SWIGTYPE_p_datamunge__graphics__RPlot, 0);
     _v = SWIG_CheckState(res);
     if (_v) {
       int res = swig::asptr(argv[1], (std::vector< double,std::allocator< double > >**)(0));
@@ -93946,7 +98539,7 @@ SWIGINTERN VALUE _wrap_RPlot_points(int nargs, VALUE *args, VALUE self) {
   if (argc == 5) {
     int _v = 0;
     void *vptr = 0;
-    int res = SWIG_ConvertPtr(argv[0], &vptr, SWIGTYPE_p_datamunge__plot__RPlot, 0);
+    int res = SWIG_ConvertPtr(argv[0], &vptr, SWIGTYPE_p_datamunge__graphics__RPlot, 0);
     _v = SWIG_CheckState(res);
     if (_v) {
       int res = swig::asptr(argv[1], (std::vector< double,std::allocator< double > >**)(0));
@@ -93956,7 +98549,7 @@ SWIGINTERN VALUE _wrap_RPlot_points(int nargs, VALUE *args, VALUE self) {
         _v = SWIG_CheckState(res);
         if (_v) {
           void *vptr = 0;
-          int res = SWIG_ConvertPtr(argv[3], &vptr, SWIGTYPE_p_datamunge__plot__RGB, SWIG_POINTER_NO_NULL);
+          int res = SWIG_ConvertPtr(argv[3], &vptr, SWIGTYPE_p_datamunge__graphics__RGB, SWIG_POINTER_NO_NULL);
           _v = SWIG_CheckState(res);
           if (_v) {
             {
@@ -93974,7 +98567,7 @@ SWIGINTERN VALUE _wrap_RPlot_points(int nargs, VALUE *args, VALUE self) {
   if (argc == 5) {
     int _v = 0;
     void *vptr = 0;
-    int res = SWIG_ConvertPtr(argv[0], &vptr, SWIGTYPE_p_datamunge__plot__RPlot, 0);
+    int res = SWIG_ConvertPtr(argv[0], &vptr, SWIGTYPE_p_datamunge__graphics__RPlot, 0);
     _v = SWIG_CheckState(res);
     if (_v) {
       int res = swig::asptr(argv[1], (std::vector< double,std::allocator< double > >**)(0));
@@ -93987,7 +98580,7 @@ SWIGINTERN VALUE _wrap_RPlot_points(int nargs, VALUE *args, VALUE self) {
           _v = SWIG_CheckState(res);
           if (_v) {
             void *vptr = 0;
-            int res = SWIG_ConvertPtr(argv[4], &vptr, SWIGTYPE_p_datamunge__plot__RGB, SWIG_POINTER_NO_NULL);
+            int res = SWIG_ConvertPtr(argv[4], &vptr, SWIGTYPE_p_datamunge__graphics__RGB, SWIG_POINTER_NO_NULL);
             _v = SWIG_CheckState(res);
             if (_v) {
               return _wrap_RPlot_points__SWIG_1(nargs, args, self);
@@ -94000,7 +98593,7 @@ SWIGINTERN VALUE _wrap_RPlot_points(int nargs, VALUE *args, VALUE self) {
   if (argc == 6) {
     int _v = 0;
     void *vptr = 0;
-    int res = SWIG_ConvertPtr(argv[0], &vptr, SWIGTYPE_p_datamunge__plot__RPlot, 0);
+    int res = SWIG_ConvertPtr(argv[0], &vptr, SWIGTYPE_p_datamunge__graphics__RPlot, 0);
     _v = SWIG_CheckState(res);
     if (_v) {
       int res = swig::asptr(argv[1], (std::vector< double,std::allocator< double > >**)(0));
@@ -94013,7 +98606,7 @@ SWIGINTERN VALUE _wrap_RPlot_points(int nargs, VALUE *args, VALUE self) {
           _v = SWIG_CheckState(res);
           if (_v) {
             void *vptr = 0;
-            int res = SWIG_ConvertPtr(argv[4], &vptr, SWIGTYPE_p_datamunge__plot__RGB, SWIG_POINTER_NO_NULL);
+            int res = SWIG_ConvertPtr(argv[4], &vptr, SWIGTYPE_p_datamunge__graphics__RGB, SWIG_POINTER_NO_NULL);
             _v = SWIG_CheckState(res);
             if (_v) {
               {
@@ -94032,12 +98625,12 @@ SWIGINTERN VALUE _wrap_RPlot_points(int nargs, VALUE *args, VALUE self) {
   
 fail:
   Ruby_Format_OverloadedError( argc, 7, "RPlot.points", 
-    "    datamunge::graphics::RPlot RPlot.points(std::vector< double,std::allocator< double > > x, std::vector< double,std::allocator< double > > y, std::string label, datamunge::graphics::RGB color, double marker_size)\n"
-    "    datamunge::graphics::RPlot RPlot.points(std::vector< double,std::allocator< double > > x, std::vector< double,std::allocator< double > > y, std::string label, datamunge::graphics::RGB color)\n"
+    "    datamunge::graphics::RPlot RPlot.points(std::vector< double,std::allocator< double > > x, std::vector< double,std::allocator< double > > y, std::string label, datamunge::graphics::RGBA color, double marker_size)\n"
+    "    datamunge::graphics::RPlot RPlot.points(std::vector< double,std::allocator< double > > x, std::vector< double,std::allocator< double > > y, std::string label, datamunge::graphics::RGBA color)\n"
     "    datamunge::graphics::RPlot RPlot.points(std::vector< double,std::allocator< double > > x, std::vector< double,std::allocator< double > > y, std::string label)\n"
     "    datamunge::graphics::RPlot RPlot.points(std::vector< double,std::allocator< double > > x, std::vector< double,std::allocator< double > > y)\n"
-    "    datamunge::graphics::RPlot RPlot.points(std::vector< double,std::allocator< double > > x, std::vector< double,std::allocator< double > > y, datamunge::graphics::RGB color, double marker_size)\n"
-    "    datamunge::graphics::RPlot & RPlot.points(std::vector< double,std::allocator< double > > x, std::vector< double,std::allocator< double > > y, datamunge::graphics::RGB color)\n");
+    "    datamunge::graphics::RPlot RPlot.points(std::vector< double,std::allocator< double > > x, std::vector< double,std::allocator< double > > y, datamunge::graphics::RGBA color, double marker_size)\n"
+    "    datamunge::graphics::RPlot & RPlot.points(std::vector< double,std::allocator< double > > x, std::vector< double,std::allocator< double > > y, datamunge::graphics::RGBA color)\n");
   
   return Qnil;
 }
@@ -94048,7 +98641,7 @@ _wrap_RPlot_lines__SWIG_4(int argc, VALUE *argv, VALUE self) {
   datamunge::graphics::RPlot *arg1 = 0 ;
   std::vector< double,std::allocator< double > > arg2 ;
   std::vector< double,std::allocator< double > > arg3 ;
-  SwigValueWrapper< datamunge::graphics::RGB > arg4 ;
+  datamunge::graphics::RGBA arg4 ;
   double arg5 ;
   void *argp1 = 0 ;
   int res1 = 0 ;
@@ -94062,7 +98655,7 @@ _wrap_RPlot_lines__SWIG_4(int argc, VALUE *argv, VALUE self) {
   if ((argc < 4) || (argc > 4)) {
     rb_raise(rb_eArgError, "wrong # of arguments(%d for 4)",argc); SWIG_fail;
   }
-  res1 = SWIG_ConvertPtr(self, &argp1,SWIGTYPE_p_datamunge__plot__RPlot, 0 |  0 );
+  res1 = SWIG_ConvertPtr(self, &argp1,SWIGTYPE_p_datamunge__graphics__RPlot, 0 |  0 );
   if (!SWIG_IsOK(res1)) {
     SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::graphics::RPlot *","lines", 1, self )); 
   }
@@ -94086,14 +98679,14 @@ _wrap_RPlot_lines__SWIG_4(int argc, VALUE *argv, VALUE self) {
     if (SWIG_IsNewObj(res)) delete ptr;
   }
   {
-    res4 = SWIG_ConvertPtr(argv[2], &argp4, SWIGTYPE_p_datamunge__plot__RGB,  0 );
+    res4 = SWIG_ConvertPtr(argv[2], &argp4, SWIGTYPE_p_datamunge__graphics__RGB,  0 );
     if (!SWIG_IsOK(res4)) {
-      SWIG_exception_fail(SWIG_ArgError(res4), Ruby_Format_TypeError( "", "datamunge::graphics::RGB","lines", 4, argv[2] )); 
+      SWIG_exception_fail(SWIG_ArgError(res4), Ruby_Format_TypeError( "", "datamunge::graphics::RGBA","lines", 4, argv[2] )); 
     }  
     if (!argp4) {
-      SWIG_exception_fail(SWIG_NullReferenceError, Ruby_Format_TypeError("invalid null reference ", "datamunge::graphics::RGB","lines", 4, argv[2]));
+      SWIG_exception_fail(SWIG_NullReferenceError, Ruby_Format_TypeError("invalid null reference ", "datamunge::graphics::RGBA","lines", 4, argv[2]));
     } else {
-      arg4 = *(reinterpret_cast< datamunge::graphics::RGB * >(argp4));
+      arg4 = *(reinterpret_cast< datamunge::graphics::RGBA * >(argp4));
     }
   }
   ecode5 = SWIG_AsVal_double(argv[3], &val5);
@@ -94102,7 +98695,7 @@ _wrap_RPlot_lines__SWIG_4(int argc, VALUE *argv, VALUE self) {
   } 
   arg5 = static_cast< double >(val5);
   result = (datamunge::graphics::RPlot *) &(arg1)->lines(SWIG_STD_MOVE(*(&arg2)),SWIG_STD_MOVE(*(&arg3)),SWIG_STD_MOVE(*(&arg4)),arg5);
-  vresult = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__plot__RPlot, 0 |  0 );
+  vresult = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__graphics__RPlot, 0 |  0 );
   return vresult;
 fail:
   return Qnil;
@@ -94114,7 +98707,7 @@ _wrap_RPlot_lines__SWIG_5(int argc, VALUE *argv, VALUE self) {
   datamunge::graphics::RPlot *arg1 = 0 ;
   std::vector< double,std::allocator< double > > arg2 ;
   std::vector< double,std::allocator< double > > arg3 ;
-  SwigValueWrapper< datamunge::graphics::RGB > arg4 ;
+  datamunge::graphics::RGBA arg4 ;
   void *argp1 = 0 ;
   int res1 = 0 ;
   void *argp4 = 0 ;
@@ -94125,7 +98718,7 @@ _wrap_RPlot_lines__SWIG_5(int argc, VALUE *argv, VALUE self) {
   if ((argc < 3) || (argc > 3)) {
     rb_raise(rb_eArgError, "wrong # of arguments(%d for 3)",argc); SWIG_fail;
   }
-  res1 = SWIG_ConvertPtr(self, &argp1,SWIGTYPE_p_datamunge__plot__RPlot, 0 |  0 );
+  res1 = SWIG_ConvertPtr(self, &argp1,SWIGTYPE_p_datamunge__graphics__RPlot, 0 |  0 );
   if (!SWIG_IsOK(res1)) {
     SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::graphics::RPlot *","lines", 1, self )); 
   }
@@ -94149,18 +98742,18 @@ _wrap_RPlot_lines__SWIG_5(int argc, VALUE *argv, VALUE self) {
     if (SWIG_IsNewObj(res)) delete ptr;
   }
   {
-    res4 = SWIG_ConvertPtr(argv[2], &argp4, SWIGTYPE_p_datamunge__plot__RGB,  0 );
+    res4 = SWIG_ConvertPtr(argv[2], &argp4, SWIGTYPE_p_datamunge__graphics__RGB,  0 );
     if (!SWIG_IsOK(res4)) {
-      SWIG_exception_fail(SWIG_ArgError(res4), Ruby_Format_TypeError( "", "datamunge::graphics::RGB","lines", 4, argv[2] )); 
+      SWIG_exception_fail(SWIG_ArgError(res4), Ruby_Format_TypeError( "", "datamunge::graphics::RGBA","lines", 4, argv[2] )); 
     }  
     if (!argp4) {
-      SWIG_exception_fail(SWIG_NullReferenceError, Ruby_Format_TypeError("invalid null reference ", "datamunge::graphics::RGB","lines", 4, argv[2]));
+      SWIG_exception_fail(SWIG_NullReferenceError, Ruby_Format_TypeError("invalid null reference ", "datamunge::graphics::RGBA","lines", 4, argv[2]));
     } else {
-      arg4 = *(reinterpret_cast< datamunge::graphics::RGB * >(argp4));
+      arg4 = *(reinterpret_cast< datamunge::graphics::RGBA * >(argp4));
     }
   }
   result = (datamunge::graphics::RPlot *) &(arg1)->lines(SWIG_STD_MOVE(*(&arg2)),SWIG_STD_MOVE(*(&arg3)),SWIG_STD_MOVE(*(&arg4)));
-  vresult = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__plot__RPlot, 0 |  0 );
+  vresult = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__graphics__RPlot, 0 |  0 );
   return vresult;
 fail:
   return Qnil;
@@ -94181,7 +98774,7 @@ SWIGINTERN VALUE _wrap_RPlot_lines(int nargs, VALUE *args, VALUE self) {
   if (argc == 3) {
     int _v = 0;
     void *vptr = 0;
-    int res = SWIG_ConvertPtr(argv[0], &vptr, SWIGTYPE_p_datamunge__plot__RPlot, 0);
+    int res = SWIG_ConvertPtr(argv[0], &vptr, SWIGTYPE_p_datamunge__graphics__RPlot, 0);
     _v = SWIG_CheckState(res);
     if (_v) {
       int res = swig::asptr(argv[1], (std::vector< double,std::allocator< double > >**)(0));
@@ -94198,7 +98791,7 @@ SWIGINTERN VALUE _wrap_RPlot_lines(int nargs, VALUE *args, VALUE self) {
   if (argc == 4) {
     int _v = 0;
     void *vptr = 0;
-    int res = SWIG_ConvertPtr(argv[0], &vptr, SWIGTYPE_p_datamunge__plot__RPlot, 0);
+    int res = SWIG_ConvertPtr(argv[0], &vptr, SWIGTYPE_p_datamunge__graphics__RPlot, 0);
     _v = SWIG_CheckState(res);
     if (_v) {
       int res = swig::asptr(argv[1], (std::vector< double,std::allocator< double > >**)(0));
@@ -94208,7 +98801,7 @@ SWIGINTERN VALUE _wrap_RPlot_lines(int nargs, VALUE *args, VALUE self) {
         _v = SWIG_CheckState(res);
         if (_v) {
           void *vptr = 0;
-          int res = SWIG_ConvertPtr(argv[3], &vptr, SWIGTYPE_p_datamunge__plot__RGB, SWIG_POINTER_NO_NULL);
+          int res = SWIG_ConvertPtr(argv[3], &vptr, SWIGTYPE_p_datamunge__graphics__RGB, SWIG_POINTER_NO_NULL);
           _v = SWIG_CheckState(res);
           if (_v) {
             return _wrap_RPlot_lines__SWIG_5(nargs, args, self);
@@ -94220,7 +98813,7 @@ SWIGINTERN VALUE _wrap_RPlot_lines(int nargs, VALUE *args, VALUE self) {
   if (argc == 4) {
     int _v = 0;
     void *vptr = 0;
-    int res = SWIG_ConvertPtr(argv[0], &vptr, SWIGTYPE_p_datamunge__plot__RPlot, 0);
+    int res = SWIG_ConvertPtr(argv[0], &vptr, SWIGTYPE_p_datamunge__graphics__RPlot, 0);
     _v = SWIG_CheckState(res);
     if (_v) {
       int res = swig::asptr(argv[1], (std::vector< double,std::allocator< double > >**)(0));
@@ -94241,7 +98834,7 @@ SWIGINTERN VALUE _wrap_RPlot_lines(int nargs, VALUE *args, VALUE self) {
   if (argc == 5) {
     int _v = 0;
     void *vptr = 0;
-    int res = SWIG_ConvertPtr(argv[0], &vptr, SWIGTYPE_p_datamunge__plot__RPlot, 0);
+    int res = SWIG_ConvertPtr(argv[0], &vptr, SWIGTYPE_p_datamunge__graphics__RPlot, 0);
     _v = SWIG_CheckState(res);
     if (_v) {
       int res = swig::asptr(argv[1], (std::vector< double,std::allocator< double > >**)(0));
@@ -94251,7 +98844,7 @@ SWIGINTERN VALUE _wrap_RPlot_lines(int nargs, VALUE *args, VALUE self) {
         _v = SWIG_CheckState(res);
         if (_v) {
           void *vptr = 0;
-          int res = SWIG_ConvertPtr(argv[3], &vptr, SWIGTYPE_p_datamunge__plot__RGB, SWIG_POINTER_NO_NULL);
+          int res = SWIG_ConvertPtr(argv[3], &vptr, SWIGTYPE_p_datamunge__graphics__RGB, SWIG_POINTER_NO_NULL);
           _v = SWIG_CheckState(res);
           if (_v) {
             {
@@ -94269,7 +98862,7 @@ SWIGINTERN VALUE _wrap_RPlot_lines(int nargs, VALUE *args, VALUE self) {
   if (argc == 5) {
     int _v = 0;
     void *vptr = 0;
-    int res = SWIG_ConvertPtr(argv[0], &vptr, SWIGTYPE_p_datamunge__plot__RPlot, 0);
+    int res = SWIG_ConvertPtr(argv[0], &vptr, SWIGTYPE_p_datamunge__graphics__RPlot, 0);
     _v = SWIG_CheckState(res);
     if (_v) {
       int res = swig::asptr(argv[1], (std::vector< double,std::allocator< double > >**)(0));
@@ -94282,7 +98875,7 @@ SWIGINTERN VALUE _wrap_RPlot_lines(int nargs, VALUE *args, VALUE self) {
           _v = SWIG_CheckState(res);
           if (_v) {
             void *vptr = 0;
-            int res = SWIG_ConvertPtr(argv[4], &vptr, SWIGTYPE_p_datamunge__plot__RGB, SWIG_POINTER_NO_NULL);
+            int res = SWIG_ConvertPtr(argv[4], &vptr, SWIGTYPE_p_datamunge__graphics__RGB, SWIG_POINTER_NO_NULL);
             _v = SWIG_CheckState(res);
             if (_v) {
               return _wrap_RPlot_lines__SWIG_1(nargs, args, self);
@@ -94295,7 +98888,7 @@ SWIGINTERN VALUE _wrap_RPlot_lines(int nargs, VALUE *args, VALUE self) {
   if (argc == 6) {
     int _v = 0;
     void *vptr = 0;
-    int res = SWIG_ConvertPtr(argv[0], &vptr, SWIGTYPE_p_datamunge__plot__RPlot, 0);
+    int res = SWIG_ConvertPtr(argv[0], &vptr, SWIGTYPE_p_datamunge__graphics__RPlot, 0);
     _v = SWIG_CheckState(res);
     if (_v) {
       int res = swig::asptr(argv[1], (std::vector< double,std::allocator< double > >**)(0));
@@ -94308,7 +98901,7 @@ SWIGINTERN VALUE _wrap_RPlot_lines(int nargs, VALUE *args, VALUE self) {
           _v = SWIG_CheckState(res);
           if (_v) {
             void *vptr = 0;
-            int res = SWIG_ConvertPtr(argv[4], &vptr, SWIGTYPE_p_datamunge__plot__RGB, SWIG_POINTER_NO_NULL);
+            int res = SWIG_ConvertPtr(argv[4], &vptr, SWIGTYPE_p_datamunge__graphics__RGB, SWIG_POINTER_NO_NULL);
             _v = SWIG_CheckState(res);
             if (_v) {
               {
@@ -94327,12 +98920,12 @@ SWIGINTERN VALUE _wrap_RPlot_lines(int nargs, VALUE *args, VALUE self) {
   
 fail:
   Ruby_Format_OverloadedError( argc, 7, "RPlot.lines", 
-    "    datamunge::graphics::RPlot RPlot.lines(std::vector< double,std::allocator< double > > x, std::vector< double,std::allocator< double > > y, std::string label, datamunge::graphics::RGB color, double stroke_width)\n"
-    "    datamunge::graphics::RPlot RPlot.lines(std::vector< double,std::allocator< double > > x, std::vector< double,std::allocator< double > > y, std::string label, datamunge::graphics::RGB color)\n"
+    "    datamunge::graphics::RPlot RPlot.lines(std::vector< double,std::allocator< double > > x, std::vector< double,std::allocator< double > > y, std::string label, datamunge::graphics::RGBA color, double stroke_width)\n"
+    "    datamunge::graphics::RPlot RPlot.lines(std::vector< double,std::allocator< double > > x, std::vector< double,std::allocator< double > > y, std::string label, datamunge::graphics::RGBA color)\n"
     "    datamunge::graphics::RPlot RPlot.lines(std::vector< double,std::allocator< double > > x, std::vector< double,std::allocator< double > > y, std::string label)\n"
     "    datamunge::graphics::RPlot RPlot.lines(std::vector< double,std::allocator< double > > x, std::vector< double,std::allocator< double > > y)\n"
-    "    datamunge::graphics::RPlot RPlot.lines(std::vector< double,std::allocator< double > > x, std::vector< double,std::allocator< double > > y, datamunge::graphics::RGB color, double stroke_width)\n"
-    "    datamunge::graphics::RPlot & RPlot.lines(std::vector< double,std::allocator< double > > x, std::vector< double,std::allocator< double > > y, datamunge::graphics::RGB color)\n");
+    "    datamunge::graphics::RPlot RPlot.lines(std::vector< double,std::allocator< double > > x, std::vector< double,std::allocator< double > > y, datamunge::graphics::RGBA color, double stroke_width)\n"
+    "    datamunge::graphics::RPlot & RPlot.lines(std::vector< double,std::allocator< double > > x, std::vector< double,std::allocator< double > > y, datamunge::graphics::RGBA color)\n");
   
   return Qnil;
 }
@@ -94344,7 +98937,7 @@ _wrap_RPlot_bars__SWIG_0(int argc, VALUE *argv, VALUE self) {
   std::vector< double,std::allocator< double > > arg2 ;
   std::vector< double,std::allocator< double > > arg3 ;
   std::string arg4 ;
-  SwigValueWrapper< datamunge::graphics::RGB > arg5 ;
+  datamunge::graphics::RGBA arg5 ;
   double arg6 ;
   void *argp1 = 0 ;
   int res1 = 0 ;
@@ -94358,7 +98951,7 @@ _wrap_RPlot_bars__SWIG_0(int argc, VALUE *argv, VALUE self) {
   if ((argc < 5) || (argc > 5)) {
     rb_raise(rb_eArgError, "wrong # of arguments(%d for 5)",argc); SWIG_fail;
   }
-  res1 = SWIG_ConvertPtr(self, &argp1,SWIGTYPE_p_datamunge__plot__RPlot, 0 |  0 );
+  res1 = SWIG_ConvertPtr(self, &argp1,SWIGTYPE_p_datamunge__graphics__RPlot, 0 |  0 );
   if (!SWIG_IsOK(res1)) {
     SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::graphics::RPlot *","bars", 1, self )); 
   }
@@ -94391,14 +98984,14 @@ _wrap_RPlot_bars__SWIG_0(int argc, VALUE *argv, VALUE self) {
     if (SWIG_IsNewObj(res)) delete ptr;
   }
   {
-    res5 = SWIG_ConvertPtr(argv[3], &argp5, SWIGTYPE_p_datamunge__plot__RGB,  0 );
+    res5 = SWIG_ConvertPtr(argv[3], &argp5, SWIGTYPE_p_datamunge__graphics__RGB,  0 );
     if (!SWIG_IsOK(res5)) {
-      SWIG_exception_fail(SWIG_ArgError(res5), Ruby_Format_TypeError( "", "datamunge::graphics::RGB","bars", 5, argv[3] )); 
+      SWIG_exception_fail(SWIG_ArgError(res5), Ruby_Format_TypeError( "", "datamunge::graphics::RGBA","bars", 5, argv[3] )); 
     }  
     if (!argp5) {
-      SWIG_exception_fail(SWIG_NullReferenceError, Ruby_Format_TypeError("invalid null reference ", "datamunge::graphics::RGB","bars", 5, argv[3]));
+      SWIG_exception_fail(SWIG_NullReferenceError, Ruby_Format_TypeError("invalid null reference ", "datamunge::graphics::RGBA","bars", 5, argv[3]));
     } else {
-      arg5 = *(reinterpret_cast< datamunge::graphics::RGB * >(argp5));
+      arg5 = *(reinterpret_cast< datamunge::graphics::RGBA * >(argp5));
     }
   }
   ecode6 = SWIG_AsVal_double(argv[4], &val6);
@@ -94407,7 +99000,7 @@ _wrap_RPlot_bars__SWIG_0(int argc, VALUE *argv, VALUE self) {
   } 
   arg6 = static_cast< double >(val6);
   result = (datamunge::graphics::RPlot *) &(arg1)->bars(SWIG_STD_MOVE(*(&arg2)),SWIG_STD_MOVE(*(&arg3)),SWIG_STD_MOVE(*(&arg4)),SWIG_STD_MOVE(*(&arg5)),arg6);
-  vresult = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__plot__RPlot, 0 |  0 );
+  vresult = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__graphics__RPlot, 0 |  0 );
   return vresult;
 fail:
   return Qnil;
@@ -94420,7 +99013,7 @@ _wrap_RPlot_bars__SWIG_1(int argc, VALUE *argv, VALUE self) {
   std::vector< double,std::allocator< double > > arg2 ;
   std::vector< double,std::allocator< double > > arg3 ;
   std::string arg4 ;
-  SwigValueWrapper< datamunge::graphics::RGB > arg5 ;
+  datamunge::graphics::RGBA arg5 ;
   void *argp1 = 0 ;
   int res1 = 0 ;
   void *argp5 = 0 ;
@@ -94431,7 +99024,7 @@ _wrap_RPlot_bars__SWIG_1(int argc, VALUE *argv, VALUE self) {
   if ((argc < 4) || (argc > 4)) {
     rb_raise(rb_eArgError, "wrong # of arguments(%d for 4)",argc); SWIG_fail;
   }
-  res1 = SWIG_ConvertPtr(self, &argp1,SWIGTYPE_p_datamunge__plot__RPlot, 0 |  0 );
+  res1 = SWIG_ConvertPtr(self, &argp1,SWIGTYPE_p_datamunge__graphics__RPlot, 0 |  0 );
   if (!SWIG_IsOK(res1)) {
     SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::graphics::RPlot *","bars", 1, self )); 
   }
@@ -94464,18 +99057,18 @@ _wrap_RPlot_bars__SWIG_1(int argc, VALUE *argv, VALUE self) {
     if (SWIG_IsNewObj(res)) delete ptr;
   }
   {
-    res5 = SWIG_ConvertPtr(argv[3], &argp5, SWIGTYPE_p_datamunge__plot__RGB,  0 );
+    res5 = SWIG_ConvertPtr(argv[3], &argp5, SWIGTYPE_p_datamunge__graphics__RGB,  0 );
     if (!SWIG_IsOK(res5)) {
-      SWIG_exception_fail(SWIG_ArgError(res5), Ruby_Format_TypeError( "", "datamunge::graphics::RGB","bars", 5, argv[3] )); 
+      SWIG_exception_fail(SWIG_ArgError(res5), Ruby_Format_TypeError( "", "datamunge::graphics::RGBA","bars", 5, argv[3] )); 
     }  
     if (!argp5) {
-      SWIG_exception_fail(SWIG_NullReferenceError, Ruby_Format_TypeError("invalid null reference ", "datamunge::graphics::RGB","bars", 5, argv[3]));
+      SWIG_exception_fail(SWIG_NullReferenceError, Ruby_Format_TypeError("invalid null reference ", "datamunge::graphics::RGBA","bars", 5, argv[3]));
     } else {
-      arg5 = *(reinterpret_cast< datamunge::graphics::RGB * >(argp5));
+      arg5 = *(reinterpret_cast< datamunge::graphics::RGBA * >(argp5));
     }
   }
   result = (datamunge::graphics::RPlot *) &(arg1)->bars(SWIG_STD_MOVE(*(&arg2)),SWIG_STD_MOVE(*(&arg3)),SWIG_STD_MOVE(*(&arg4)),SWIG_STD_MOVE(*(&arg5)));
-  vresult = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__plot__RPlot, 0 |  0 );
+  vresult = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__graphics__RPlot, 0 |  0 );
   return vresult;
 fail:
   return Qnil;
@@ -94496,7 +99089,7 @@ _wrap_RPlot_bars__SWIG_2(int argc, VALUE *argv, VALUE self) {
   if ((argc < 3) || (argc > 3)) {
     rb_raise(rb_eArgError, "wrong # of arguments(%d for 3)",argc); SWIG_fail;
   }
-  res1 = SWIG_ConvertPtr(self, &argp1,SWIGTYPE_p_datamunge__plot__RPlot, 0 |  0 );
+  res1 = SWIG_ConvertPtr(self, &argp1,SWIGTYPE_p_datamunge__graphics__RPlot, 0 |  0 );
   if (!SWIG_IsOK(res1)) {
     SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::graphics::RPlot *","bars", 1, self )); 
   }
@@ -94529,7 +99122,7 @@ _wrap_RPlot_bars__SWIG_2(int argc, VALUE *argv, VALUE self) {
     if (SWIG_IsNewObj(res)) delete ptr;
   }
   result = (datamunge::graphics::RPlot *) &(arg1)->bars(SWIG_STD_MOVE(*(&arg2)),SWIG_STD_MOVE(*(&arg3)),SWIG_STD_MOVE(*(&arg4)));
-  vresult = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__plot__RPlot, 0 |  0 );
+  vresult = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__graphics__RPlot, 0 |  0 );
   return vresult;
 fail:
   return Qnil;
@@ -94549,7 +99142,7 @@ _wrap_RPlot_bars__SWIG_3(int argc, VALUE *argv, VALUE self) {
   if ((argc < 2) || (argc > 2)) {
     rb_raise(rb_eArgError, "wrong # of arguments(%d for 2)",argc); SWIG_fail;
   }
-  res1 = SWIG_ConvertPtr(self, &argp1,SWIGTYPE_p_datamunge__plot__RPlot, 0 |  0 );
+  res1 = SWIG_ConvertPtr(self, &argp1,SWIGTYPE_p_datamunge__graphics__RPlot, 0 |  0 );
   if (!SWIG_IsOK(res1)) {
     SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::graphics::RPlot *","bars", 1, self )); 
   }
@@ -94573,7 +99166,7 @@ _wrap_RPlot_bars__SWIG_3(int argc, VALUE *argv, VALUE self) {
     if (SWIG_IsNewObj(res)) delete ptr;
   }
   result = (datamunge::graphics::RPlot *) &(arg1)->bars(SWIG_STD_MOVE(*(&arg2)),SWIG_STD_MOVE(*(&arg3)));
-  vresult = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__plot__RPlot, 0 |  0 );
+  vresult = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__graphics__RPlot, 0 |  0 );
   return vresult;
 fail:
   return Qnil;
@@ -94594,7 +99187,7 @@ SWIGINTERN VALUE _wrap_RPlot_bars(int nargs, VALUE *args, VALUE self) {
   if (argc == 3) {
     int _v = 0;
     void *vptr = 0;
-    int res = SWIG_ConvertPtr(argv[0], &vptr, SWIGTYPE_p_datamunge__plot__RPlot, 0);
+    int res = SWIG_ConvertPtr(argv[0], &vptr, SWIGTYPE_p_datamunge__graphics__RPlot, 0);
     _v = SWIG_CheckState(res);
     if (_v) {
       int res = swig::asptr(argv[1], (std::vector< double,std::allocator< double > >**)(0));
@@ -94611,7 +99204,7 @@ SWIGINTERN VALUE _wrap_RPlot_bars(int nargs, VALUE *args, VALUE self) {
   if (argc == 4) {
     int _v = 0;
     void *vptr = 0;
-    int res = SWIG_ConvertPtr(argv[0], &vptr, SWIGTYPE_p_datamunge__plot__RPlot, 0);
+    int res = SWIG_ConvertPtr(argv[0], &vptr, SWIGTYPE_p_datamunge__graphics__RPlot, 0);
     _v = SWIG_CheckState(res);
     if (_v) {
       int res = swig::asptr(argv[1], (std::vector< double,std::allocator< double > >**)(0));
@@ -94632,7 +99225,7 @@ SWIGINTERN VALUE _wrap_RPlot_bars(int nargs, VALUE *args, VALUE self) {
   if (argc == 5) {
     int _v = 0;
     void *vptr = 0;
-    int res = SWIG_ConvertPtr(argv[0], &vptr, SWIGTYPE_p_datamunge__plot__RPlot, 0);
+    int res = SWIG_ConvertPtr(argv[0], &vptr, SWIGTYPE_p_datamunge__graphics__RPlot, 0);
     _v = SWIG_CheckState(res);
     if (_v) {
       int res = swig::asptr(argv[1], (std::vector< double,std::allocator< double > >**)(0));
@@ -94645,7 +99238,7 @@ SWIGINTERN VALUE _wrap_RPlot_bars(int nargs, VALUE *args, VALUE self) {
           _v = SWIG_CheckState(res);
           if (_v) {
             void *vptr = 0;
-            int res = SWIG_ConvertPtr(argv[4], &vptr, SWIGTYPE_p_datamunge__plot__RGB, SWIG_POINTER_NO_NULL);
+            int res = SWIG_ConvertPtr(argv[4], &vptr, SWIGTYPE_p_datamunge__graphics__RGB, SWIG_POINTER_NO_NULL);
             _v = SWIG_CheckState(res);
             if (_v) {
               return _wrap_RPlot_bars__SWIG_1(nargs, args, self);
@@ -94658,7 +99251,7 @@ SWIGINTERN VALUE _wrap_RPlot_bars(int nargs, VALUE *args, VALUE self) {
   if (argc == 6) {
     int _v = 0;
     void *vptr = 0;
-    int res = SWIG_ConvertPtr(argv[0], &vptr, SWIGTYPE_p_datamunge__plot__RPlot, 0);
+    int res = SWIG_ConvertPtr(argv[0], &vptr, SWIGTYPE_p_datamunge__graphics__RPlot, 0);
     _v = SWIG_CheckState(res);
     if (_v) {
       int res = swig::asptr(argv[1], (std::vector< double,std::allocator< double > >**)(0));
@@ -94671,7 +99264,7 @@ SWIGINTERN VALUE _wrap_RPlot_bars(int nargs, VALUE *args, VALUE self) {
           _v = SWIG_CheckState(res);
           if (_v) {
             void *vptr = 0;
-            int res = SWIG_ConvertPtr(argv[4], &vptr, SWIGTYPE_p_datamunge__plot__RGB, SWIG_POINTER_NO_NULL);
+            int res = SWIG_ConvertPtr(argv[4], &vptr, SWIGTYPE_p_datamunge__graphics__RGB, SWIG_POINTER_NO_NULL);
             _v = SWIG_CheckState(res);
             if (_v) {
               {
@@ -94690,8 +99283,8 @@ SWIGINTERN VALUE _wrap_RPlot_bars(int nargs, VALUE *args, VALUE self) {
   
 fail:
   Ruby_Format_OverloadedError( argc, 7, "RPlot.bars", 
-    "    datamunge::graphics::RPlot RPlot.bars(std::vector< double,std::allocator< double > > x, std::vector< double,std::allocator< double > > y, std::string label, datamunge::graphics::RGB color, double bar_width)\n"
-    "    datamunge::graphics::RPlot RPlot.bars(std::vector< double,std::allocator< double > > x, std::vector< double,std::allocator< double > > y, std::string label, datamunge::graphics::RGB color)\n"
+    "    datamunge::graphics::RPlot RPlot.bars(std::vector< double,std::allocator< double > > x, std::vector< double,std::allocator< double > > y, std::string label, datamunge::graphics::RGBA color, double bar_width)\n"
+    "    datamunge::graphics::RPlot RPlot.bars(std::vector< double,std::allocator< double > > x, std::vector< double,std::allocator< double > > y, std::string label, datamunge::graphics::RGBA color)\n"
     "    datamunge::graphics::RPlot RPlot.bars(std::vector< double,std::allocator< double > > x, std::vector< double,std::allocator< double > > y, std::string label)\n"
     "    datamunge::graphics::RPlot & RPlot.bars(std::vector< double,std::allocator< double > > x, std::vector< double,std::allocator< double > > y)\n");
   
@@ -94709,7 +99302,7 @@ _wrap_RPlot_box__SWIG_0(int argc, VALUE *argv, VALUE self) {
   double arg6 ;
   double arg7 ;
   std::vector< double,std::allocator< double > > arg8 ;
-  SwigValueWrapper< datamunge::graphics::RGB > arg9 ;
+  datamunge::graphics::RGBA arg9 ;
   double arg10 ;
   void *argp1 = 0 ;
   int res1 = 0 ;
@@ -94735,7 +99328,7 @@ _wrap_RPlot_box__SWIG_0(int argc, VALUE *argv, VALUE self) {
   if ((argc < 9) || (argc > 9)) {
     rb_raise(rb_eArgError, "wrong # of arguments(%d for 9)",argc); SWIG_fail;
   }
-  res1 = SWIG_ConvertPtr(self, &argp1,SWIGTYPE_p_datamunge__plot__RPlot, 0 |  0 );
+  res1 = SWIG_ConvertPtr(self, &argp1,SWIGTYPE_p_datamunge__graphics__RPlot, 0 |  0 );
   if (!SWIG_IsOK(res1)) {
     SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::graphics::RPlot *","box", 1, self )); 
   }
@@ -94780,14 +99373,14 @@ _wrap_RPlot_box__SWIG_0(int argc, VALUE *argv, VALUE self) {
     if (SWIG_IsNewObj(res)) delete ptr;
   }
   {
-    res9 = SWIG_ConvertPtr(argv[7], &argp9, SWIGTYPE_p_datamunge__plot__RGB,  0 );
+    res9 = SWIG_ConvertPtr(argv[7], &argp9, SWIGTYPE_p_datamunge__graphics__RGB,  0 );
     if (!SWIG_IsOK(res9)) {
-      SWIG_exception_fail(SWIG_ArgError(res9), Ruby_Format_TypeError( "", "datamunge::graphics::RGB","box", 9, argv[7] )); 
+      SWIG_exception_fail(SWIG_ArgError(res9), Ruby_Format_TypeError( "", "datamunge::graphics::RGBA","box", 9, argv[7] )); 
     }  
     if (!argp9) {
-      SWIG_exception_fail(SWIG_NullReferenceError, Ruby_Format_TypeError("invalid null reference ", "datamunge::graphics::RGB","box", 9, argv[7]));
+      SWIG_exception_fail(SWIG_NullReferenceError, Ruby_Format_TypeError("invalid null reference ", "datamunge::graphics::RGBA","box", 9, argv[7]));
     } else {
-      arg9 = *(reinterpret_cast< datamunge::graphics::RGB * >(argp9));
+      arg9 = *(reinterpret_cast< datamunge::graphics::RGBA * >(argp9));
     }
   }
   ecode10 = SWIG_AsVal_double(argv[8], &val10);
@@ -94796,7 +99389,7 @@ _wrap_RPlot_box__SWIG_0(int argc, VALUE *argv, VALUE self) {
   } 
   arg10 = static_cast< double >(val10);
   result = (datamunge::graphics::RPlot *) &(arg1)->box(arg2,arg3,arg4,arg5,arg6,arg7,SWIG_STD_MOVE(*(&arg8)),SWIG_STD_MOVE(*(&arg9)),arg10);
-  vresult = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__plot__RPlot, 0 |  0 );
+  vresult = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__graphics__RPlot, 0 |  0 );
   return vresult;
 fail:
   return Qnil;
@@ -94813,7 +99406,7 @@ _wrap_RPlot_box__SWIG_1(int argc, VALUE *argv, VALUE self) {
   double arg6 ;
   double arg7 ;
   std::vector< double,std::allocator< double > > arg8 ;
-  SwigValueWrapper< datamunge::graphics::RGB > arg9 ;
+  datamunge::graphics::RGBA arg9 ;
   void *argp1 = 0 ;
   int res1 = 0 ;
   double val2 ;
@@ -94836,7 +99429,7 @@ _wrap_RPlot_box__SWIG_1(int argc, VALUE *argv, VALUE self) {
   if ((argc < 8) || (argc > 8)) {
     rb_raise(rb_eArgError, "wrong # of arguments(%d for 8)",argc); SWIG_fail;
   }
-  res1 = SWIG_ConvertPtr(self, &argp1,SWIGTYPE_p_datamunge__plot__RPlot, 0 |  0 );
+  res1 = SWIG_ConvertPtr(self, &argp1,SWIGTYPE_p_datamunge__graphics__RPlot, 0 |  0 );
   if (!SWIG_IsOK(res1)) {
     SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::graphics::RPlot *","box", 1, self )); 
   }
@@ -94881,18 +99474,18 @@ _wrap_RPlot_box__SWIG_1(int argc, VALUE *argv, VALUE self) {
     if (SWIG_IsNewObj(res)) delete ptr;
   }
   {
-    res9 = SWIG_ConvertPtr(argv[7], &argp9, SWIGTYPE_p_datamunge__plot__RGB,  0 );
+    res9 = SWIG_ConvertPtr(argv[7], &argp9, SWIGTYPE_p_datamunge__graphics__RGB,  0 );
     if (!SWIG_IsOK(res9)) {
-      SWIG_exception_fail(SWIG_ArgError(res9), Ruby_Format_TypeError( "", "datamunge::graphics::RGB","box", 9, argv[7] )); 
+      SWIG_exception_fail(SWIG_ArgError(res9), Ruby_Format_TypeError( "", "datamunge::graphics::RGBA","box", 9, argv[7] )); 
     }  
     if (!argp9) {
-      SWIG_exception_fail(SWIG_NullReferenceError, Ruby_Format_TypeError("invalid null reference ", "datamunge::graphics::RGB","box", 9, argv[7]));
+      SWIG_exception_fail(SWIG_NullReferenceError, Ruby_Format_TypeError("invalid null reference ", "datamunge::graphics::RGBA","box", 9, argv[7]));
     } else {
-      arg9 = *(reinterpret_cast< datamunge::graphics::RGB * >(argp9));
+      arg9 = *(reinterpret_cast< datamunge::graphics::RGBA * >(argp9));
     }
   }
   result = (datamunge::graphics::RPlot *) &(arg1)->box(arg2,arg3,arg4,arg5,arg6,arg7,SWIG_STD_MOVE(*(&arg8)),SWIG_STD_MOVE(*(&arg9)));
-  vresult = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__plot__RPlot, 0 |  0 );
+  vresult = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__graphics__RPlot, 0 |  0 );
   return vresult;
 fail:
   return Qnil;
@@ -94929,7 +99522,7 @@ _wrap_RPlot_box__SWIG_2(int argc, VALUE *argv, VALUE self) {
   if ((argc < 7) || (argc > 7)) {
     rb_raise(rb_eArgError, "wrong # of arguments(%d for 7)",argc); SWIG_fail;
   }
-  res1 = SWIG_ConvertPtr(self, &argp1,SWIGTYPE_p_datamunge__plot__RPlot, 0 |  0 );
+  res1 = SWIG_ConvertPtr(self, &argp1,SWIGTYPE_p_datamunge__graphics__RPlot, 0 |  0 );
   if (!SWIG_IsOK(res1)) {
     SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::graphics::RPlot *","box", 1, self )); 
   }
@@ -94974,7 +99567,7 @@ _wrap_RPlot_box__SWIG_2(int argc, VALUE *argv, VALUE self) {
     if (SWIG_IsNewObj(res)) delete ptr;
   }
   result = (datamunge::graphics::RPlot *) &(arg1)->box(arg2,arg3,arg4,arg5,arg6,arg7,SWIG_STD_MOVE(*(&arg8)));
-  vresult = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__plot__RPlot, 0 |  0 );
+  vresult = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__graphics__RPlot, 0 |  0 );
   return vresult;
 fail:
   return Qnil;
@@ -95010,7 +99603,7 @@ _wrap_RPlot_box__SWIG_3(int argc, VALUE *argv, VALUE self) {
   if ((argc < 6) || (argc > 6)) {
     rb_raise(rb_eArgError, "wrong # of arguments(%d for 6)",argc); SWIG_fail;
   }
-  res1 = SWIG_ConvertPtr(self, &argp1,SWIGTYPE_p_datamunge__plot__RPlot, 0 |  0 );
+  res1 = SWIG_ConvertPtr(self, &argp1,SWIGTYPE_p_datamunge__graphics__RPlot, 0 |  0 );
   if (!SWIG_IsOK(res1)) {
     SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::graphics::RPlot *","box", 1, self )); 
   }
@@ -95046,7 +99639,7 @@ _wrap_RPlot_box__SWIG_3(int argc, VALUE *argv, VALUE self) {
   } 
   arg7 = static_cast< double >(val7);
   result = (datamunge::graphics::RPlot *) &(arg1)->box(arg2,arg3,arg4,arg5,arg6,arg7);
-  vresult = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__plot__RPlot, 0 |  0 );
+  vresult = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__graphics__RPlot, 0 |  0 );
   return vresult;
 fail:
   return Qnil;
@@ -95067,7 +99660,7 @@ SWIGINTERN VALUE _wrap_RPlot_box(int nargs, VALUE *args, VALUE self) {
   if (argc == 7) {
     int _v = 0;
     void *vptr = 0;
-    int res = SWIG_ConvertPtr(argv[0], &vptr, SWIGTYPE_p_datamunge__plot__RPlot, 0);
+    int res = SWIG_ConvertPtr(argv[0], &vptr, SWIGTYPE_p_datamunge__graphics__RPlot, 0);
     _v = SWIG_CheckState(res);
     if (_v) {
       {
@@ -95112,7 +99705,7 @@ SWIGINTERN VALUE _wrap_RPlot_box(int nargs, VALUE *args, VALUE self) {
   if (argc == 8) {
     int _v = 0;
     void *vptr = 0;
-    int res = SWIG_ConvertPtr(argv[0], &vptr, SWIGTYPE_p_datamunge__plot__RPlot, 0);
+    int res = SWIG_ConvertPtr(argv[0], &vptr, SWIGTYPE_p_datamunge__graphics__RPlot, 0);
     _v = SWIG_CheckState(res);
     if (_v) {
       {
@@ -95161,7 +99754,7 @@ SWIGINTERN VALUE _wrap_RPlot_box(int nargs, VALUE *args, VALUE self) {
   if (argc == 9) {
     int _v = 0;
     void *vptr = 0;
-    int res = SWIG_ConvertPtr(argv[0], &vptr, SWIGTYPE_p_datamunge__plot__RPlot, 0);
+    int res = SWIG_ConvertPtr(argv[0], &vptr, SWIGTYPE_p_datamunge__graphics__RPlot, 0);
     _v = SWIG_CheckState(res);
     if (_v) {
       {
@@ -95198,7 +99791,7 @@ SWIGINTERN VALUE _wrap_RPlot_box(int nargs, VALUE *args, VALUE self) {
                   _v = SWIG_CheckState(res);
                   if (_v) {
                     void *vptr = 0;
-                    int res = SWIG_ConvertPtr(argv[8], &vptr, SWIGTYPE_p_datamunge__plot__RGB, SWIG_POINTER_NO_NULL);
+                    int res = SWIG_ConvertPtr(argv[8], &vptr, SWIGTYPE_p_datamunge__graphics__RGB, SWIG_POINTER_NO_NULL);
                     _v = SWIG_CheckState(res);
                     if (_v) {
                       return _wrap_RPlot_box__SWIG_1(nargs, args, self);
@@ -95215,7 +99808,7 @@ SWIGINTERN VALUE _wrap_RPlot_box(int nargs, VALUE *args, VALUE self) {
   if (argc == 10) {
     int _v = 0;
     void *vptr = 0;
-    int res = SWIG_ConvertPtr(argv[0], &vptr, SWIGTYPE_p_datamunge__plot__RPlot, 0);
+    int res = SWIG_ConvertPtr(argv[0], &vptr, SWIGTYPE_p_datamunge__graphics__RPlot, 0);
     _v = SWIG_CheckState(res);
     if (_v) {
       {
@@ -95252,7 +99845,7 @@ SWIGINTERN VALUE _wrap_RPlot_box(int nargs, VALUE *args, VALUE self) {
                   _v = SWIG_CheckState(res);
                   if (_v) {
                     void *vptr = 0;
-                    int res = SWIG_ConvertPtr(argv[8], &vptr, SWIGTYPE_p_datamunge__plot__RGB, SWIG_POINTER_NO_NULL);
+                    int res = SWIG_ConvertPtr(argv[8], &vptr, SWIGTYPE_p_datamunge__graphics__RGB, SWIG_POINTER_NO_NULL);
                     _v = SWIG_CheckState(res);
                     if (_v) {
                       {
@@ -95275,8 +99868,8 @@ SWIGINTERN VALUE _wrap_RPlot_box(int nargs, VALUE *args, VALUE self) {
   
 fail:
   Ruby_Format_OverloadedError( argc, 11, "RPlot.box", 
-    "    datamunge::graphics::RPlot RPlot.box(double position, double whisker_lo, double q1, double median, double q3, double whisker_hi, std::vector< double,std::allocator< double > > outliers, datamunge::graphics::RGB color, double width)\n"
-    "    datamunge::graphics::RPlot RPlot.box(double position, double whisker_lo, double q1, double median, double q3, double whisker_hi, std::vector< double,std::allocator< double > > outliers, datamunge::graphics::RGB color)\n"
+    "    datamunge::graphics::RPlot RPlot.box(double position, double whisker_lo, double q1, double median, double q3, double whisker_hi, std::vector< double,std::allocator< double > > outliers, datamunge::graphics::RGBA color, double width)\n"
+    "    datamunge::graphics::RPlot RPlot.box(double position, double whisker_lo, double q1, double median, double q3, double whisker_hi, std::vector< double,std::allocator< double > > outliers, datamunge::graphics::RGBA color)\n"
     "    datamunge::graphics::RPlot RPlot.box(double position, double whisker_lo, double q1, double median, double q3, double whisker_hi, std::vector< double,std::allocator< double > > outliers)\n"
     "    datamunge::graphics::RPlot & RPlot.box(double position, double whisker_lo, double q1, double median, double q3, double whisker_hi)\n");
   
@@ -95289,7 +99882,7 @@ _wrap_RPlot_abline__SWIG_0(int argc, VALUE *argv, VALUE self) {
   datamunge::graphics::RPlot *arg1 = 0 ;
   double arg2 ;
   double arg3 ;
-  SwigValueWrapper< datamunge::graphics::RGB > arg4 ;
+  datamunge::graphics::RGBA arg4 ;
   double arg5 ;
   void *argp1 = 0 ;
   int res1 = 0 ;
@@ -95307,7 +99900,7 @@ _wrap_RPlot_abline__SWIG_0(int argc, VALUE *argv, VALUE self) {
   if ((argc < 4) || (argc > 4)) {
     rb_raise(rb_eArgError, "wrong # of arguments(%d for 4)",argc); SWIG_fail;
   }
-  res1 = SWIG_ConvertPtr(self, &argp1,SWIGTYPE_p_datamunge__plot__RPlot, 0 |  0 );
+  res1 = SWIG_ConvertPtr(self, &argp1,SWIGTYPE_p_datamunge__graphics__RPlot, 0 |  0 );
   if (!SWIG_IsOK(res1)) {
     SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::graphics::RPlot *","abline", 1, self )); 
   }
@@ -95323,14 +99916,14 @@ _wrap_RPlot_abline__SWIG_0(int argc, VALUE *argv, VALUE self) {
   } 
   arg3 = static_cast< double >(val3);
   {
-    res4 = SWIG_ConvertPtr(argv[2], &argp4, SWIGTYPE_p_datamunge__plot__RGB,  0 );
+    res4 = SWIG_ConvertPtr(argv[2], &argp4, SWIGTYPE_p_datamunge__graphics__RGB,  0 );
     if (!SWIG_IsOK(res4)) {
-      SWIG_exception_fail(SWIG_ArgError(res4), Ruby_Format_TypeError( "", "datamunge::graphics::RGB","abline", 4, argv[2] )); 
+      SWIG_exception_fail(SWIG_ArgError(res4), Ruby_Format_TypeError( "", "datamunge::graphics::RGBA","abline", 4, argv[2] )); 
     }  
     if (!argp4) {
-      SWIG_exception_fail(SWIG_NullReferenceError, Ruby_Format_TypeError("invalid null reference ", "datamunge::graphics::RGB","abline", 4, argv[2]));
+      SWIG_exception_fail(SWIG_NullReferenceError, Ruby_Format_TypeError("invalid null reference ", "datamunge::graphics::RGBA","abline", 4, argv[2]));
     } else {
-      arg4 = *(reinterpret_cast< datamunge::graphics::RGB * >(argp4));
+      arg4 = *(reinterpret_cast< datamunge::graphics::RGBA * >(argp4));
     }
   }
   ecode5 = SWIG_AsVal_double(argv[3], &val5);
@@ -95339,7 +99932,7 @@ _wrap_RPlot_abline__SWIG_0(int argc, VALUE *argv, VALUE self) {
   } 
   arg5 = static_cast< double >(val5);
   result = (datamunge::graphics::RPlot *) &(arg1)->abline(arg2,arg3,SWIG_STD_MOVE(*(&arg4)),arg5);
-  vresult = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__plot__RPlot, 0 |  0 );
+  vresult = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__graphics__RPlot, 0 |  0 );
   return vresult;
 fail:
   return Qnil;
@@ -95351,7 +99944,7 @@ _wrap_RPlot_abline__SWIG_1(int argc, VALUE *argv, VALUE self) {
   datamunge::graphics::RPlot *arg1 = 0 ;
   double arg2 ;
   double arg3 ;
-  SwigValueWrapper< datamunge::graphics::RGB > arg4 ;
+  datamunge::graphics::RGBA arg4 ;
   void *argp1 = 0 ;
   int res1 = 0 ;
   double val2 ;
@@ -95366,7 +99959,7 @@ _wrap_RPlot_abline__SWIG_1(int argc, VALUE *argv, VALUE self) {
   if ((argc < 3) || (argc > 3)) {
     rb_raise(rb_eArgError, "wrong # of arguments(%d for 3)",argc); SWIG_fail;
   }
-  res1 = SWIG_ConvertPtr(self, &argp1,SWIGTYPE_p_datamunge__plot__RPlot, 0 |  0 );
+  res1 = SWIG_ConvertPtr(self, &argp1,SWIGTYPE_p_datamunge__graphics__RPlot, 0 |  0 );
   if (!SWIG_IsOK(res1)) {
     SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::graphics::RPlot *","abline", 1, self )); 
   }
@@ -95382,18 +99975,18 @@ _wrap_RPlot_abline__SWIG_1(int argc, VALUE *argv, VALUE self) {
   } 
   arg3 = static_cast< double >(val3);
   {
-    res4 = SWIG_ConvertPtr(argv[2], &argp4, SWIGTYPE_p_datamunge__plot__RGB,  0 );
+    res4 = SWIG_ConvertPtr(argv[2], &argp4, SWIGTYPE_p_datamunge__graphics__RGB,  0 );
     if (!SWIG_IsOK(res4)) {
-      SWIG_exception_fail(SWIG_ArgError(res4), Ruby_Format_TypeError( "", "datamunge::graphics::RGB","abline", 4, argv[2] )); 
+      SWIG_exception_fail(SWIG_ArgError(res4), Ruby_Format_TypeError( "", "datamunge::graphics::RGBA","abline", 4, argv[2] )); 
     }  
     if (!argp4) {
-      SWIG_exception_fail(SWIG_NullReferenceError, Ruby_Format_TypeError("invalid null reference ", "datamunge::graphics::RGB","abline", 4, argv[2]));
+      SWIG_exception_fail(SWIG_NullReferenceError, Ruby_Format_TypeError("invalid null reference ", "datamunge::graphics::RGBA","abline", 4, argv[2]));
     } else {
-      arg4 = *(reinterpret_cast< datamunge::graphics::RGB * >(argp4));
+      arg4 = *(reinterpret_cast< datamunge::graphics::RGBA * >(argp4));
     }
   }
   result = (datamunge::graphics::RPlot *) &(arg1)->abline(arg2,arg3,SWIG_STD_MOVE(*(&arg4)));
-  vresult = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__plot__RPlot, 0 |  0 );
+  vresult = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__graphics__RPlot, 0 |  0 );
   return vresult;
 fail:
   return Qnil;
@@ -95417,7 +100010,7 @@ _wrap_RPlot_abline__SWIG_2(int argc, VALUE *argv, VALUE self) {
   if ((argc < 2) || (argc > 2)) {
     rb_raise(rb_eArgError, "wrong # of arguments(%d for 2)",argc); SWIG_fail;
   }
-  res1 = SWIG_ConvertPtr(self, &argp1,SWIGTYPE_p_datamunge__plot__RPlot, 0 |  0 );
+  res1 = SWIG_ConvertPtr(self, &argp1,SWIGTYPE_p_datamunge__graphics__RPlot, 0 |  0 );
   if (!SWIG_IsOK(res1)) {
     SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::graphics::RPlot *","abline", 1, self )); 
   }
@@ -95433,7 +100026,7 @@ _wrap_RPlot_abline__SWIG_2(int argc, VALUE *argv, VALUE self) {
   } 
   arg3 = static_cast< double >(val3);
   result = (datamunge::graphics::RPlot *) &(arg1)->abline(arg2,arg3);
-  vresult = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__plot__RPlot, 0 |  0 );
+  vresult = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__graphics__RPlot, 0 |  0 );
   return vresult;
 fail:
   return Qnil;
@@ -95454,7 +100047,7 @@ SWIGINTERN VALUE _wrap_RPlot_abline(int nargs, VALUE *args, VALUE self) {
   if (argc == 3) {
     int _v = 0;
     void *vptr = 0;
-    int res = SWIG_ConvertPtr(argv[0], &vptr, SWIGTYPE_p_datamunge__plot__RPlot, 0);
+    int res = SWIG_ConvertPtr(argv[0], &vptr, SWIGTYPE_p_datamunge__graphics__RPlot, 0);
     _v = SWIG_CheckState(res);
     if (_v) {
       {
@@ -95475,7 +100068,7 @@ SWIGINTERN VALUE _wrap_RPlot_abline(int nargs, VALUE *args, VALUE self) {
   if (argc == 4) {
     int _v = 0;
     void *vptr = 0;
-    int res = SWIG_ConvertPtr(argv[0], &vptr, SWIGTYPE_p_datamunge__plot__RPlot, 0);
+    int res = SWIG_ConvertPtr(argv[0], &vptr, SWIGTYPE_p_datamunge__graphics__RPlot, 0);
     _v = SWIG_CheckState(res);
     if (_v) {
       {
@@ -95489,7 +100082,7 @@ SWIGINTERN VALUE _wrap_RPlot_abline(int nargs, VALUE *args, VALUE self) {
         }
         if (_v) {
           void *vptr = 0;
-          int res = SWIG_ConvertPtr(argv[3], &vptr, SWIGTYPE_p_datamunge__plot__RGB, SWIG_POINTER_NO_NULL);
+          int res = SWIG_ConvertPtr(argv[3], &vptr, SWIGTYPE_p_datamunge__graphics__RGB, SWIG_POINTER_NO_NULL);
           _v = SWIG_CheckState(res);
           if (_v) {
             return _wrap_RPlot_abline__SWIG_1(nargs, args, self);
@@ -95501,7 +100094,7 @@ SWIGINTERN VALUE _wrap_RPlot_abline(int nargs, VALUE *args, VALUE self) {
   if (argc == 5) {
     int _v = 0;
     void *vptr = 0;
-    int res = SWIG_ConvertPtr(argv[0], &vptr, SWIGTYPE_p_datamunge__plot__RPlot, 0);
+    int res = SWIG_ConvertPtr(argv[0], &vptr, SWIGTYPE_p_datamunge__graphics__RPlot, 0);
     _v = SWIG_CheckState(res);
     if (_v) {
       {
@@ -95515,7 +100108,7 @@ SWIGINTERN VALUE _wrap_RPlot_abline(int nargs, VALUE *args, VALUE self) {
         }
         if (_v) {
           void *vptr = 0;
-          int res = SWIG_ConvertPtr(argv[3], &vptr, SWIGTYPE_p_datamunge__plot__RGB, SWIG_POINTER_NO_NULL);
+          int res = SWIG_ConvertPtr(argv[3], &vptr, SWIGTYPE_p_datamunge__graphics__RGB, SWIG_POINTER_NO_NULL);
           _v = SWIG_CheckState(res);
           if (_v) {
             {
@@ -95533,8 +100126,8 @@ SWIGINTERN VALUE _wrap_RPlot_abline(int nargs, VALUE *args, VALUE self) {
   
 fail:
   Ruby_Format_OverloadedError( argc, 6, "RPlot.abline", 
-    "    datamunge::graphics::RPlot RPlot.abline(double intercept, double slope, datamunge::graphics::RGB color, double stroke_width)\n"
-    "    datamunge::graphics::RPlot RPlot.abline(double intercept, double slope, datamunge::graphics::RGB color)\n"
+    "    datamunge::graphics::RPlot RPlot.abline(double intercept, double slope, datamunge::graphics::RGBA color, double stroke_width)\n"
+    "    datamunge::graphics::RPlot RPlot.abline(double intercept, double slope, datamunge::graphics::RGBA color)\n"
     "    datamunge::graphics::RPlot & RPlot.abline(double intercept, double slope)\n");
   
   return Qnil;
@@ -95545,7 +100138,7 @@ SWIGINTERN VALUE
 _wrap_RPlot_abline_h__SWIG_0(int argc, VALUE *argv, VALUE self) {
   datamunge::graphics::RPlot *arg1 = 0 ;
   double arg2 ;
-  SwigValueWrapper< datamunge::graphics::RGB > arg3 ;
+  datamunge::graphics::RGBA arg3 ;
   double arg4 ;
   void *argp1 = 0 ;
   int res1 = 0 ;
@@ -95561,7 +100154,7 @@ _wrap_RPlot_abline_h__SWIG_0(int argc, VALUE *argv, VALUE self) {
   if ((argc < 3) || (argc > 3)) {
     rb_raise(rb_eArgError, "wrong # of arguments(%d for 3)",argc); SWIG_fail;
   }
-  res1 = SWIG_ConvertPtr(self, &argp1,SWIGTYPE_p_datamunge__plot__RPlot, 0 |  0 );
+  res1 = SWIG_ConvertPtr(self, &argp1,SWIGTYPE_p_datamunge__graphics__RPlot, 0 |  0 );
   if (!SWIG_IsOK(res1)) {
     SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::graphics::RPlot *","abline_h", 1, self )); 
   }
@@ -95572,14 +100165,14 @@ _wrap_RPlot_abline_h__SWIG_0(int argc, VALUE *argv, VALUE self) {
   } 
   arg2 = static_cast< double >(val2);
   {
-    res3 = SWIG_ConvertPtr(argv[1], &argp3, SWIGTYPE_p_datamunge__plot__RGB,  0 );
+    res3 = SWIG_ConvertPtr(argv[1], &argp3, SWIGTYPE_p_datamunge__graphics__RGB,  0 );
     if (!SWIG_IsOK(res3)) {
-      SWIG_exception_fail(SWIG_ArgError(res3), Ruby_Format_TypeError( "", "datamunge::graphics::RGB","abline_h", 3, argv[1] )); 
+      SWIG_exception_fail(SWIG_ArgError(res3), Ruby_Format_TypeError( "", "datamunge::graphics::RGBA","abline_h", 3, argv[1] )); 
     }  
     if (!argp3) {
-      SWIG_exception_fail(SWIG_NullReferenceError, Ruby_Format_TypeError("invalid null reference ", "datamunge::graphics::RGB","abline_h", 3, argv[1]));
+      SWIG_exception_fail(SWIG_NullReferenceError, Ruby_Format_TypeError("invalid null reference ", "datamunge::graphics::RGBA","abline_h", 3, argv[1]));
     } else {
-      arg3 = *(reinterpret_cast< datamunge::graphics::RGB * >(argp3));
+      arg3 = *(reinterpret_cast< datamunge::graphics::RGBA * >(argp3));
     }
   }
   ecode4 = SWIG_AsVal_double(argv[2], &val4);
@@ -95588,7 +100181,7 @@ _wrap_RPlot_abline_h__SWIG_0(int argc, VALUE *argv, VALUE self) {
   } 
   arg4 = static_cast< double >(val4);
   result = (datamunge::graphics::RPlot *) &(arg1)->abline_h(arg2,SWIG_STD_MOVE(*(&arg3)),arg4);
-  vresult = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__plot__RPlot, 0 |  0 );
+  vresult = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__graphics__RPlot, 0 |  0 );
   return vresult;
 fail:
   return Qnil;
@@ -95599,7 +100192,7 @@ SWIGINTERN VALUE
 _wrap_RPlot_abline_h__SWIG_1(int argc, VALUE *argv, VALUE self) {
   datamunge::graphics::RPlot *arg1 = 0 ;
   double arg2 ;
-  SwigValueWrapper< datamunge::graphics::RGB > arg3 ;
+  datamunge::graphics::RGBA arg3 ;
   void *argp1 = 0 ;
   int res1 = 0 ;
   double val2 ;
@@ -95612,7 +100205,7 @@ _wrap_RPlot_abline_h__SWIG_1(int argc, VALUE *argv, VALUE self) {
   if ((argc < 2) || (argc > 2)) {
     rb_raise(rb_eArgError, "wrong # of arguments(%d for 2)",argc); SWIG_fail;
   }
-  res1 = SWIG_ConvertPtr(self, &argp1,SWIGTYPE_p_datamunge__plot__RPlot, 0 |  0 );
+  res1 = SWIG_ConvertPtr(self, &argp1,SWIGTYPE_p_datamunge__graphics__RPlot, 0 |  0 );
   if (!SWIG_IsOK(res1)) {
     SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::graphics::RPlot *","abline_h", 1, self )); 
   }
@@ -95623,18 +100216,18 @@ _wrap_RPlot_abline_h__SWIG_1(int argc, VALUE *argv, VALUE self) {
   } 
   arg2 = static_cast< double >(val2);
   {
-    res3 = SWIG_ConvertPtr(argv[1], &argp3, SWIGTYPE_p_datamunge__plot__RGB,  0 );
+    res3 = SWIG_ConvertPtr(argv[1], &argp3, SWIGTYPE_p_datamunge__graphics__RGB,  0 );
     if (!SWIG_IsOK(res3)) {
-      SWIG_exception_fail(SWIG_ArgError(res3), Ruby_Format_TypeError( "", "datamunge::graphics::RGB","abline_h", 3, argv[1] )); 
+      SWIG_exception_fail(SWIG_ArgError(res3), Ruby_Format_TypeError( "", "datamunge::graphics::RGBA","abline_h", 3, argv[1] )); 
     }  
     if (!argp3) {
-      SWIG_exception_fail(SWIG_NullReferenceError, Ruby_Format_TypeError("invalid null reference ", "datamunge::graphics::RGB","abline_h", 3, argv[1]));
+      SWIG_exception_fail(SWIG_NullReferenceError, Ruby_Format_TypeError("invalid null reference ", "datamunge::graphics::RGBA","abline_h", 3, argv[1]));
     } else {
-      arg3 = *(reinterpret_cast< datamunge::graphics::RGB * >(argp3));
+      arg3 = *(reinterpret_cast< datamunge::graphics::RGBA * >(argp3));
     }
   }
   result = (datamunge::graphics::RPlot *) &(arg1)->abline_h(arg2,SWIG_STD_MOVE(*(&arg3)));
-  vresult = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__plot__RPlot, 0 |  0 );
+  vresult = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__graphics__RPlot, 0 |  0 );
   return vresult;
 fail:
   return Qnil;
@@ -95655,7 +100248,7 @@ _wrap_RPlot_abline_h__SWIG_2(int argc, VALUE *argv, VALUE self) {
   if ((argc < 1) || (argc > 1)) {
     rb_raise(rb_eArgError, "wrong # of arguments(%d for 1)",argc); SWIG_fail;
   }
-  res1 = SWIG_ConvertPtr(self, &argp1,SWIGTYPE_p_datamunge__plot__RPlot, 0 |  0 );
+  res1 = SWIG_ConvertPtr(self, &argp1,SWIGTYPE_p_datamunge__graphics__RPlot, 0 |  0 );
   if (!SWIG_IsOK(res1)) {
     SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::graphics::RPlot *","abline_h", 1, self )); 
   }
@@ -95666,7 +100259,7 @@ _wrap_RPlot_abline_h__SWIG_2(int argc, VALUE *argv, VALUE self) {
   } 
   arg2 = static_cast< double >(val2);
   result = (datamunge::graphics::RPlot *) &(arg1)->abline_h(arg2);
-  vresult = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__plot__RPlot, 0 |  0 );
+  vresult = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__graphics__RPlot, 0 |  0 );
   return vresult;
 fail:
   return Qnil;
@@ -95687,7 +100280,7 @@ SWIGINTERN VALUE _wrap_RPlot_abline_h(int nargs, VALUE *args, VALUE self) {
   if (argc == 2) {
     int _v = 0;
     void *vptr = 0;
-    int res = SWIG_ConvertPtr(argv[0], &vptr, SWIGTYPE_p_datamunge__plot__RPlot, 0);
+    int res = SWIG_ConvertPtr(argv[0], &vptr, SWIGTYPE_p_datamunge__graphics__RPlot, 0);
     _v = SWIG_CheckState(res);
     if (_v) {
       {
@@ -95702,7 +100295,7 @@ SWIGINTERN VALUE _wrap_RPlot_abline_h(int nargs, VALUE *args, VALUE self) {
   if (argc == 3) {
     int _v = 0;
     void *vptr = 0;
-    int res = SWIG_ConvertPtr(argv[0], &vptr, SWIGTYPE_p_datamunge__plot__RPlot, 0);
+    int res = SWIG_ConvertPtr(argv[0], &vptr, SWIGTYPE_p_datamunge__graphics__RPlot, 0);
     _v = SWIG_CheckState(res);
     if (_v) {
       {
@@ -95711,7 +100304,7 @@ SWIGINTERN VALUE _wrap_RPlot_abline_h(int nargs, VALUE *args, VALUE self) {
       }
       if (_v) {
         void *vptr = 0;
-        int res = SWIG_ConvertPtr(argv[2], &vptr, SWIGTYPE_p_datamunge__plot__RGB, SWIG_POINTER_NO_NULL);
+        int res = SWIG_ConvertPtr(argv[2], &vptr, SWIGTYPE_p_datamunge__graphics__RGB, SWIG_POINTER_NO_NULL);
         _v = SWIG_CheckState(res);
         if (_v) {
           return _wrap_RPlot_abline_h__SWIG_1(nargs, args, self);
@@ -95722,7 +100315,7 @@ SWIGINTERN VALUE _wrap_RPlot_abline_h(int nargs, VALUE *args, VALUE self) {
   if (argc == 4) {
     int _v = 0;
     void *vptr = 0;
-    int res = SWIG_ConvertPtr(argv[0], &vptr, SWIGTYPE_p_datamunge__plot__RPlot, 0);
+    int res = SWIG_ConvertPtr(argv[0], &vptr, SWIGTYPE_p_datamunge__graphics__RPlot, 0);
     _v = SWIG_CheckState(res);
     if (_v) {
       {
@@ -95731,7 +100324,7 @@ SWIGINTERN VALUE _wrap_RPlot_abline_h(int nargs, VALUE *args, VALUE self) {
       }
       if (_v) {
         void *vptr = 0;
-        int res = SWIG_ConvertPtr(argv[2], &vptr, SWIGTYPE_p_datamunge__plot__RGB, SWIG_POINTER_NO_NULL);
+        int res = SWIG_ConvertPtr(argv[2], &vptr, SWIGTYPE_p_datamunge__graphics__RGB, SWIG_POINTER_NO_NULL);
         _v = SWIG_CheckState(res);
         if (_v) {
           {
@@ -95748,8 +100341,8 @@ SWIGINTERN VALUE _wrap_RPlot_abline_h(int nargs, VALUE *args, VALUE self) {
   
 fail:
   Ruby_Format_OverloadedError( argc, 5, "RPlot.abline_h", 
-    "    datamunge::graphics::RPlot RPlot.abline_h(double y_value, datamunge::graphics::RGB color, double stroke_width)\n"
-    "    datamunge::graphics::RPlot RPlot.abline_h(double y_value, datamunge::graphics::RGB color)\n"
+    "    datamunge::graphics::RPlot RPlot.abline_h(double y_value, datamunge::graphics::RGBA color, double stroke_width)\n"
+    "    datamunge::graphics::RPlot RPlot.abline_h(double y_value, datamunge::graphics::RGBA color)\n"
     "    datamunge::graphics::RPlot & RPlot.abline_h(double y_value)\n");
   
   return Qnil;
@@ -95760,7 +100353,7 @@ SWIGINTERN VALUE
 _wrap_RPlot_abline_v__SWIG_0(int argc, VALUE *argv, VALUE self) {
   datamunge::graphics::RPlot *arg1 = 0 ;
   double arg2 ;
-  SwigValueWrapper< datamunge::graphics::RGB > arg3 ;
+  datamunge::graphics::RGBA arg3 ;
   double arg4 ;
   void *argp1 = 0 ;
   int res1 = 0 ;
@@ -95776,7 +100369,7 @@ _wrap_RPlot_abline_v__SWIG_0(int argc, VALUE *argv, VALUE self) {
   if ((argc < 3) || (argc > 3)) {
     rb_raise(rb_eArgError, "wrong # of arguments(%d for 3)",argc); SWIG_fail;
   }
-  res1 = SWIG_ConvertPtr(self, &argp1,SWIGTYPE_p_datamunge__plot__RPlot, 0 |  0 );
+  res1 = SWIG_ConvertPtr(self, &argp1,SWIGTYPE_p_datamunge__graphics__RPlot, 0 |  0 );
   if (!SWIG_IsOK(res1)) {
     SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::graphics::RPlot *","abline_v", 1, self )); 
   }
@@ -95787,14 +100380,14 @@ _wrap_RPlot_abline_v__SWIG_0(int argc, VALUE *argv, VALUE self) {
   } 
   arg2 = static_cast< double >(val2);
   {
-    res3 = SWIG_ConvertPtr(argv[1], &argp3, SWIGTYPE_p_datamunge__plot__RGB,  0 );
+    res3 = SWIG_ConvertPtr(argv[1], &argp3, SWIGTYPE_p_datamunge__graphics__RGB,  0 );
     if (!SWIG_IsOK(res3)) {
-      SWIG_exception_fail(SWIG_ArgError(res3), Ruby_Format_TypeError( "", "datamunge::graphics::RGB","abline_v", 3, argv[1] )); 
+      SWIG_exception_fail(SWIG_ArgError(res3), Ruby_Format_TypeError( "", "datamunge::graphics::RGBA","abline_v", 3, argv[1] )); 
     }  
     if (!argp3) {
-      SWIG_exception_fail(SWIG_NullReferenceError, Ruby_Format_TypeError("invalid null reference ", "datamunge::graphics::RGB","abline_v", 3, argv[1]));
+      SWIG_exception_fail(SWIG_NullReferenceError, Ruby_Format_TypeError("invalid null reference ", "datamunge::graphics::RGBA","abline_v", 3, argv[1]));
     } else {
-      arg3 = *(reinterpret_cast< datamunge::graphics::RGB * >(argp3));
+      arg3 = *(reinterpret_cast< datamunge::graphics::RGBA * >(argp3));
     }
   }
   ecode4 = SWIG_AsVal_double(argv[2], &val4);
@@ -95803,7 +100396,7 @@ _wrap_RPlot_abline_v__SWIG_0(int argc, VALUE *argv, VALUE self) {
   } 
   arg4 = static_cast< double >(val4);
   result = (datamunge::graphics::RPlot *) &(arg1)->abline_v(arg2,SWIG_STD_MOVE(*(&arg3)),arg4);
-  vresult = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__plot__RPlot, 0 |  0 );
+  vresult = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__graphics__RPlot, 0 |  0 );
   return vresult;
 fail:
   return Qnil;
@@ -95814,7 +100407,7 @@ SWIGINTERN VALUE
 _wrap_RPlot_abline_v__SWIG_1(int argc, VALUE *argv, VALUE self) {
   datamunge::graphics::RPlot *arg1 = 0 ;
   double arg2 ;
-  SwigValueWrapper< datamunge::graphics::RGB > arg3 ;
+  datamunge::graphics::RGBA arg3 ;
   void *argp1 = 0 ;
   int res1 = 0 ;
   double val2 ;
@@ -95827,7 +100420,7 @@ _wrap_RPlot_abline_v__SWIG_1(int argc, VALUE *argv, VALUE self) {
   if ((argc < 2) || (argc > 2)) {
     rb_raise(rb_eArgError, "wrong # of arguments(%d for 2)",argc); SWIG_fail;
   }
-  res1 = SWIG_ConvertPtr(self, &argp1,SWIGTYPE_p_datamunge__plot__RPlot, 0 |  0 );
+  res1 = SWIG_ConvertPtr(self, &argp1,SWIGTYPE_p_datamunge__graphics__RPlot, 0 |  0 );
   if (!SWIG_IsOK(res1)) {
     SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::graphics::RPlot *","abline_v", 1, self )); 
   }
@@ -95838,18 +100431,18 @@ _wrap_RPlot_abline_v__SWIG_1(int argc, VALUE *argv, VALUE self) {
   } 
   arg2 = static_cast< double >(val2);
   {
-    res3 = SWIG_ConvertPtr(argv[1], &argp3, SWIGTYPE_p_datamunge__plot__RGB,  0 );
+    res3 = SWIG_ConvertPtr(argv[1], &argp3, SWIGTYPE_p_datamunge__graphics__RGB,  0 );
     if (!SWIG_IsOK(res3)) {
-      SWIG_exception_fail(SWIG_ArgError(res3), Ruby_Format_TypeError( "", "datamunge::graphics::RGB","abline_v", 3, argv[1] )); 
+      SWIG_exception_fail(SWIG_ArgError(res3), Ruby_Format_TypeError( "", "datamunge::graphics::RGBA","abline_v", 3, argv[1] )); 
     }  
     if (!argp3) {
-      SWIG_exception_fail(SWIG_NullReferenceError, Ruby_Format_TypeError("invalid null reference ", "datamunge::graphics::RGB","abline_v", 3, argv[1]));
+      SWIG_exception_fail(SWIG_NullReferenceError, Ruby_Format_TypeError("invalid null reference ", "datamunge::graphics::RGBA","abline_v", 3, argv[1]));
     } else {
-      arg3 = *(reinterpret_cast< datamunge::graphics::RGB * >(argp3));
+      arg3 = *(reinterpret_cast< datamunge::graphics::RGBA * >(argp3));
     }
   }
   result = (datamunge::graphics::RPlot *) &(arg1)->abline_v(arg2,SWIG_STD_MOVE(*(&arg3)));
-  vresult = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__plot__RPlot, 0 |  0 );
+  vresult = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__graphics__RPlot, 0 |  0 );
   return vresult;
 fail:
   return Qnil;
@@ -95870,7 +100463,7 @@ _wrap_RPlot_abline_v__SWIG_2(int argc, VALUE *argv, VALUE self) {
   if ((argc < 1) || (argc > 1)) {
     rb_raise(rb_eArgError, "wrong # of arguments(%d for 1)",argc); SWIG_fail;
   }
-  res1 = SWIG_ConvertPtr(self, &argp1,SWIGTYPE_p_datamunge__plot__RPlot, 0 |  0 );
+  res1 = SWIG_ConvertPtr(self, &argp1,SWIGTYPE_p_datamunge__graphics__RPlot, 0 |  0 );
   if (!SWIG_IsOK(res1)) {
     SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::graphics::RPlot *","abline_v", 1, self )); 
   }
@@ -95881,7 +100474,7 @@ _wrap_RPlot_abline_v__SWIG_2(int argc, VALUE *argv, VALUE self) {
   } 
   arg2 = static_cast< double >(val2);
   result = (datamunge::graphics::RPlot *) &(arg1)->abline_v(arg2);
-  vresult = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__plot__RPlot, 0 |  0 );
+  vresult = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__graphics__RPlot, 0 |  0 );
   return vresult;
 fail:
   return Qnil;
@@ -95902,7 +100495,7 @@ SWIGINTERN VALUE _wrap_RPlot_abline_v(int nargs, VALUE *args, VALUE self) {
   if (argc == 2) {
     int _v = 0;
     void *vptr = 0;
-    int res = SWIG_ConvertPtr(argv[0], &vptr, SWIGTYPE_p_datamunge__plot__RPlot, 0);
+    int res = SWIG_ConvertPtr(argv[0], &vptr, SWIGTYPE_p_datamunge__graphics__RPlot, 0);
     _v = SWIG_CheckState(res);
     if (_v) {
       {
@@ -95917,7 +100510,7 @@ SWIGINTERN VALUE _wrap_RPlot_abline_v(int nargs, VALUE *args, VALUE self) {
   if (argc == 3) {
     int _v = 0;
     void *vptr = 0;
-    int res = SWIG_ConvertPtr(argv[0], &vptr, SWIGTYPE_p_datamunge__plot__RPlot, 0);
+    int res = SWIG_ConvertPtr(argv[0], &vptr, SWIGTYPE_p_datamunge__graphics__RPlot, 0);
     _v = SWIG_CheckState(res);
     if (_v) {
       {
@@ -95926,7 +100519,7 @@ SWIGINTERN VALUE _wrap_RPlot_abline_v(int nargs, VALUE *args, VALUE self) {
       }
       if (_v) {
         void *vptr = 0;
-        int res = SWIG_ConvertPtr(argv[2], &vptr, SWIGTYPE_p_datamunge__plot__RGB, SWIG_POINTER_NO_NULL);
+        int res = SWIG_ConvertPtr(argv[2], &vptr, SWIGTYPE_p_datamunge__graphics__RGB, SWIG_POINTER_NO_NULL);
         _v = SWIG_CheckState(res);
         if (_v) {
           return _wrap_RPlot_abline_v__SWIG_1(nargs, args, self);
@@ -95937,7 +100530,7 @@ SWIGINTERN VALUE _wrap_RPlot_abline_v(int nargs, VALUE *args, VALUE self) {
   if (argc == 4) {
     int _v = 0;
     void *vptr = 0;
-    int res = SWIG_ConvertPtr(argv[0], &vptr, SWIGTYPE_p_datamunge__plot__RPlot, 0);
+    int res = SWIG_ConvertPtr(argv[0], &vptr, SWIGTYPE_p_datamunge__graphics__RPlot, 0);
     _v = SWIG_CheckState(res);
     if (_v) {
       {
@@ -95946,7 +100539,7 @@ SWIGINTERN VALUE _wrap_RPlot_abline_v(int nargs, VALUE *args, VALUE self) {
       }
       if (_v) {
         void *vptr = 0;
-        int res = SWIG_ConvertPtr(argv[2], &vptr, SWIGTYPE_p_datamunge__plot__RGB, SWIG_POINTER_NO_NULL);
+        int res = SWIG_ConvertPtr(argv[2], &vptr, SWIGTYPE_p_datamunge__graphics__RGB, SWIG_POINTER_NO_NULL);
         _v = SWIG_CheckState(res);
         if (_v) {
           {
@@ -95963,8 +100556,8 @@ SWIGINTERN VALUE _wrap_RPlot_abline_v(int nargs, VALUE *args, VALUE self) {
   
 fail:
   Ruby_Format_OverloadedError( argc, 5, "RPlot.abline_v", 
-    "    datamunge::graphics::RPlot RPlot.abline_v(double x_value, datamunge::graphics::RGB color, double stroke_width)\n"
-    "    datamunge::graphics::RPlot RPlot.abline_v(double x_value, datamunge::graphics::RGB color)\n"
+    "    datamunge::graphics::RPlot RPlot.abline_v(double x_value, datamunge::graphics::RGBA color, double stroke_width)\n"
+    "    datamunge::graphics::RPlot RPlot.abline_v(double x_value, datamunge::graphics::RGBA color)\n"
     "    datamunge::graphics::RPlot & RPlot.abline_v(double x_value)\n");
   
   return Qnil;
@@ -95975,7 +100568,7 @@ SWIGINTERN VALUE
 _wrap_RPlot_qqline__SWIG_0(int argc, VALUE *argv, VALUE self) {
   datamunge::graphics::RPlot *arg1 = 0 ;
   std::vector< double,std::allocator< double > > arg2 ;
-  SwigValueWrapper< datamunge::graphics::RGB > arg3 ;
+  datamunge::graphics::RGBA arg3 ;
   double arg4 ;
   void *argp1 = 0 ;
   int res1 = 0 ;
@@ -95989,7 +100582,7 @@ _wrap_RPlot_qqline__SWIG_0(int argc, VALUE *argv, VALUE self) {
   if ((argc < 3) || (argc > 3)) {
     rb_raise(rb_eArgError, "wrong # of arguments(%d for 3)",argc); SWIG_fail;
   }
-  res1 = SWIG_ConvertPtr(self, &argp1,SWIGTYPE_p_datamunge__plot__RPlot, 0 |  0 );
+  res1 = SWIG_ConvertPtr(self, &argp1,SWIGTYPE_p_datamunge__graphics__RPlot, 0 |  0 );
   if (!SWIG_IsOK(res1)) {
     SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::graphics::RPlot *","qqline", 1, self )); 
   }
@@ -96004,14 +100597,14 @@ _wrap_RPlot_qqline__SWIG_0(int argc, VALUE *argv, VALUE self) {
     if (SWIG_IsNewObj(res)) delete ptr;
   }
   {
-    res3 = SWIG_ConvertPtr(argv[1], &argp3, SWIGTYPE_p_datamunge__plot__RGB,  0 );
+    res3 = SWIG_ConvertPtr(argv[1], &argp3, SWIGTYPE_p_datamunge__graphics__RGB,  0 );
     if (!SWIG_IsOK(res3)) {
-      SWIG_exception_fail(SWIG_ArgError(res3), Ruby_Format_TypeError( "", "datamunge::graphics::RGB","qqline", 3, argv[1] )); 
+      SWIG_exception_fail(SWIG_ArgError(res3), Ruby_Format_TypeError( "", "datamunge::graphics::RGBA","qqline", 3, argv[1] )); 
     }  
     if (!argp3) {
-      SWIG_exception_fail(SWIG_NullReferenceError, Ruby_Format_TypeError("invalid null reference ", "datamunge::graphics::RGB","qqline", 3, argv[1]));
+      SWIG_exception_fail(SWIG_NullReferenceError, Ruby_Format_TypeError("invalid null reference ", "datamunge::graphics::RGBA","qqline", 3, argv[1]));
     } else {
-      arg3 = *(reinterpret_cast< datamunge::graphics::RGB * >(argp3));
+      arg3 = *(reinterpret_cast< datamunge::graphics::RGBA * >(argp3));
     }
   }
   ecode4 = SWIG_AsVal_double(argv[2], &val4);
@@ -96020,7 +100613,7 @@ _wrap_RPlot_qqline__SWIG_0(int argc, VALUE *argv, VALUE self) {
   } 
   arg4 = static_cast< double >(val4);
   result = (datamunge::graphics::RPlot *) &(arg1)->qqline(SWIG_STD_MOVE(*(&arg2)),SWIG_STD_MOVE(*(&arg3)),arg4);
-  vresult = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__plot__RPlot, 0 |  0 );
+  vresult = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__graphics__RPlot, 0 |  0 );
   return vresult;
 fail:
   return Qnil;
@@ -96031,7 +100624,7 @@ SWIGINTERN VALUE
 _wrap_RPlot_qqline__SWIG_1(int argc, VALUE *argv, VALUE self) {
   datamunge::graphics::RPlot *arg1 = 0 ;
   std::vector< double,std::allocator< double > > arg2 ;
-  SwigValueWrapper< datamunge::graphics::RGB > arg3 ;
+  datamunge::graphics::RGBA arg3 ;
   void *argp1 = 0 ;
   int res1 = 0 ;
   void *argp3 = 0 ;
@@ -96042,7 +100635,7 @@ _wrap_RPlot_qqline__SWIG_1(int argc, VALUE *argv, VALUE self) {
   if ((argc < 2) || (argc > 2)) {
     rb_raise(rb_eArgError, "wrong # of arguments(%d for 2)",argc); SWIG_fail;
   }
-  res1 = SWIG_ConvertPtr(self, &argp1,SWIGTYPE_p_datamunge__plot__RPlot, 0 |  0 );
+  res1 = SWIG_ConvertPtr(self, &argp1,SWIGTYPE_p_datamunge__graphics__RPlot, 0 |  0 );
   if (!SWIG_IsOK(res1)) {
     SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::graphics::RPlot *","qqline", 1, self )); 
   }
@@ -96057,18 +100650,18 @@ _wrap_RPlot_qqline__SWIG_1(int argc, VALUE *argv, VALUE self) {
     if (SWIG_IsNewObj(res)) delete ptr;
   }
   {
-    res3 = SWIG_ConvertPtr(argv[1], &argp3, SWIGTYPE_p_datamunge__plot__RGB,  0 );
+    res3 = SWIG_ConvertPtr(argv[1], &argp3, SWIGTYPE_p_datamunge__graphics__RGB,  0 );
     if (!SWIG_IsOK(res3)) {
-      SWIG_exception_fail(SWIG_ArgError(res3), Ruby_Format_TypeError( "", "datamunge::graphics::RGB","qqline", 3, argv[1] )); 
+      SWIG_exception_fail(SWIG_ArgError(res3), Ruby_Format_TypeError( "", "datamunge::graphics::RGBA","qqline", 3, argv[1] )); 
     }  
     if (!argp3) {
-      SWIG_exception_fail(SWIG_NullReferenceError, Ruby_Format_TypeError("invalid null reference ", "datamunge::graphics::RGB","qqline", 3, argv[1]));
+      SWIG_exception_fail(SWIG_NullReferenceError, Ruby_Format_TypeError("invalid null reference ", "datamunge::graphics::RGBA","qqline", 3, argv[1]));
     } else {
-      arg3 = *(reinterpret_cast< datamunge::graphics::RGB * >(argp3));
+      arg3 = *(reinterpret_cast< datamunge::graphics::RGBA * >(argp3));
     }
   }
   result = (datamunge::graphics::RPlot *) &(arg1)->qqline(SWIG_STD_MOVE(*(&arg2)),SWIG_STD_MOVE(*(&arg3)));
-  vresult = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__plot__RPlot, 0 |  0 );
+  vresult = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__graphics__RPlot, 0 |  0 );
   return vresult;
 fail:
   return Qnil;
@@ -96087,7 +100680,7 @@ _wrap_RPlot_qqline__SWIG_2(int argc, VALUE *argv, VALUE self) {
   if ((argc < 1) || (argc > 1)) {
     rb_raise(rb_eArgError, "wrong # of arguments(%d for 1)",argc); SWIG_fail;
   }
-  res1 = SWIG_ConvertPtr(self, &argp1,SWIGTYPE_p_datamunge__plot__RPlot, 0 |  0 );
+  res1 = SWIG_ConvertPtr(self, &argp1,SWIGTYPE_p_datamunge__graphics__RPlot, 0 |  0 );
   if (!SWIG_IsOK(res1)) {
     SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::graphics::RPlot *","qqline", 1, self )); 
   }
@@ -96102,7 +100695,7 @@ _wrap_RPlot_qqline__SWIG_2(int argc, VALUE *argv, VALUE self) {
     if (SWIG_IsNewObj(res)) delete ptr;
   }
   result = (datamunge::graphics::RPlot *) &(arg1)->qqline(SWIG_STD_MOVE(*(&arg2)));
-  vresult = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__plot__RPlot, 0 |  0 );
+  vresult = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__graphics__RPlot, 0 |  0 );
   return vresult;
 fail:
   return Qnil;
@@ -96123,7 +100716,7 @@ SWIGINTERN VALUE _wrap_RPlot_qqline(int nargs, VALUE *args, VALUE self) {
   if (argc == 2) {
     int _v = 0;
     void *vptr = 0;
-    int res = SWIG_ConvertPtr(argv[0], &vptr, SWIGTYPE_p_datamunge__plot__RPlot, 0);
+    int res = SWIG_ConvertPtr(argv[0], &vptr, SWIGTYPE_p_datamunge__graphics__RPlot, 0);
     _v = SWIG_CheckState(res);
     if (_v) {
       int res = swig::asptr(argv[1], (std::vector< double,std::allocator< double > >**)(0));
@@ -96136,14 +100729,14 @@ SWIGINTERN VALUE _wrap_RPlot_qqline(int nargs, VALUE *args, VALUE self) {
   if (argc == 3) {
     int _v = 0;
     void *vptr = 0;
-    int res = SWIG_ConvertPtr(argv[0], &vptr, SWIGTYPE_p_datamunge__plot__RPlot, 0);
+    int res = SWIG_ConvertPtr(argv[0], &vptr, SWIGTYPE_p_datamunge__graphics__RPlot, 0);
     _v = SWIG_CheckState(res);
     if (_v) {
       int res = swig::asptr(argv[1], (std::vector< double,std::allocator< double > >**)(0));
       _v = SWIG_CheckState(res);
       if (_v) {
         void *vptr = 0;
-        int res = SWIG_ConvertPtr(argv[2], &vptr, SWIGTYPE_p_datamunge__plot__RGB, SWIG_POINTER_NO_NULL);
+        int res = SWIG_ConvertPtr(argv[2], &vptr, SWIGTYPE_p_datamunge__graphics__RGB, SWIG_POINTER_NO_NULL);
         _v = SWIG_CheckState(res);
         if (_v) {
           return _wrap_RPlot_qqline__SWIG_1(nargs, args, self);
@@ -96154,14 +100747,14 @@ SWIGINTERN VALUE _wrap_RPlot_qqline(int nargs, VALUE *args, VALUE self) {
   if (argc == 4) {
     int _v = 0;
     void *vptr = 0;
-    int res = SWIG_ConvertPtr(argv[0], &vptr, SWIGTYPE_p_datamunge__plot__RPlot, 0);
+    int res = SWIG_ConvertPtr(argv[0], &vptr, SWIGTYPE_p_datamunge__graphics__RPlot, 0);
     _v = SWIG_CheckState(res);
     if (_v) {
       int res = swig::asptr(argv[1], (std::vector< double,std::allocator< double > >**)(0));
       _v = SWIG_CheckState(res);
       if (_v) {
         void *vptr = 0;
-        int res = SWIG_ConvertPtr(argv[2], &vptr, SWIGTYPE_p_datamunge__plot__RGB, SWIG_POINTER_NO_NULL);
+        int res = SWIG_ConvertPtr(argv[2], &vptr, SWIGTYPE_p_datamunge__graphics__RGB, SWIG_POINTER_NO_NULL);
         _v = SWIG_CheckState(res);
         if (_v) {
           {
@@ -96178,8 +100771,8 @@ SWIGINTERN VALUE _wrap_RPlot_qqline(int nargs, VALUE *args, VALUE self) {
   
 fail:
   Ruby_Format_OverloadedError( argc, 5, "RPlot.qqline", 
-    "    datamunge::graphics::RPlot RPlot.qqline(std::vector< double,std::allocator< double > > data, datamunge::graphics::RGB color, double stroke_width)\n"
-    "    datamunge::graphics::RPlot RPlot.qqline(std::vector< double,std::allocator< double > > data, datamunge::graphics::RGB color)\n"
+    "    datamunge::graphics::RPlot RPlot.qqline(std::vector< double,std::allocator< double > > data, datamunge::graphics::RGBA color, double stroke_width)\n"
+    "    datamunge::graphics::RPlot RPlot.qqline(std::vector< double,std::allocator< double > > data, datamunge::graphics::RGBA color)\n"
     "    datamunge::graphics::RPlot & RPlot.qqline(std::vector< double,std::allocator< double > > data)\n");
   
   return Qnil;
@@ -96201,7 +100794,7 @@ _wrap_RPlot_legend(int argc, VALUE *argv, VALUE self) {
   if ((argc < 2) || (argc > 2)) {
     rb_raise(rb_eArgError, "wrong # of arguments(%d for 2)",argc); SWIG_fail;
   }
-  res1 = SWIG_ConvertPtr(self, &argp1,SWIGTYPE_p_datamunge__plot__RPlot, 0 |  0 );
+  res1 = SWIG_ConvertPtr(self, &argp1,SWIGTYPE_p_datamunge__graphics__RPlot, 0 |  0 );
   if (!SWIG_IsOK(res1)) {
     SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::graphics::RPlot *","legend", 1, self )); 
   }
@@ -96216,18 +100809,18 @@ _wrap_RPlot_legend(int argc, VALUE *argv, VALUE self) {
     if (SWIG_IsNewObj(res)) delete ptr;
   }
   {
-    res3 = SWIG_ConvertPtr(argv[1], &argp3, SWIGTYPE_p_std__vectorT_datamunge__plot__RGB_std__allocatorT_datamunge__plot__RGB_t_t,  0 );
+    res3 = SWIG_ConvertPtr(argv[1], &argp3, SWIGTYPE_p_std__vectorT_datamunge__graphics__RGB_std__allocatorT_datamunge__graphics__RGB_t_t,  0 );
     if (!SWIG_IsOK(res3)) {
-      SWIG_exception_fail(SWIG_ArgError(res3), Ruby_Format_TypeError( "", "std::vector< datamunge::graphics::RGB,std::allocator< datamunge::graphics::RGB > >","legend", 3, argv[1] )); 
+      SWIG_exception_fail(SWIG_ArgError(res3), Ruby_Format_TypeError( "", "std::vector< datamunge::graphics::RGBA,std::allocator< datamunge::graphics::RGBA > >","legend", 3, argv[1] )); 
     }  
     if (!argp3) {
-      SWIG_exception_fail(SWIG_NullReferenceError, Ruby_Format_TypeError("invalid null reference ", "std::vector< datamunge::graphics::RGB,std::allocator< datamunge::graphics::RGB > >","legend", 3, argv[1]));
+      SWIG_exception_fail(SWIG_NullReferenceError, Ruby_Format_TypeError("invalid null reference ", "std::vector< datamunge::graphics::RGBA,std::allocator< datamunge::graphics::RGBA > >","legend", 3, argv[1]));
     } else {
-      arg3 = *(reinterpret_cast< std::vector< datamunge::graphics::RGB,std::allocator< datamunge::graphics::RGB > > * >(argp3));
+      arg3 = *(reinterpret_cast< std::vector< datamunge::graphics::RGBA,std::allocator< datamunge::graphics::RGBA > > * >(argp3));
     }
   }
   result = (datamunge::graphics::RPlot *) &(arg1)->legend(SWIG_STD_MOVE(*(&arg2)),SWIG_STD_MOVE(*(&arg3)));
-  vresult = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__plot__RPlot, 0 |  0 );
+  vresult = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__graphics__RPlot, 0 |  0 );
   return vresult;
 fail:
   return Qnil;
@@ -96240,7 +100833,7 @@ _wrap_RPlot_text__SWIG_0(int argc, VALUE *argv, VALUE self) {
   double arg2 ;
   double arg3 ;
   std::string arg4 ;
-  SwigValueWrapper< datamunge::graphics::RGB > arg5 ;
+  datamunge::graphics::RGBA arg5 ;
   double arg6 ;
   void *argp1 = 0 ;
   int res1 = 0 ;
@@ -96258,7 +100851,7 @@ _wrap_RPlot_text__SWIG_0(int argc, VALUE *argv, VALUE self) {
   if ((argc < 5) || (argc > 5)) {
     rb_raise(rb_eArgError, "wrong # of arguments(%d for 5)",argc); SWIG_fail;
   }
-  res1 = SWIG_ConvertPtr(self, &argp1,SWIGTYPE_p_datamunge__plot__RPlot, 0 |  0 );
+  res1 = SWIG_ConvertPtr(self, &argp1,SWIGTYPE_p_datamunge__graphics__RPlot, 0 |  0 );
   if (!SWIG_IsOK(res1)) {
     SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::graphics::RPlot *","text", 1, self )); 
   }
@@ -96283,14 +100876,14 @@ _wrap_RPlot_text__SWIG_0(int argc, VALUE *argv, VALUE self) {
     if (SWIG_IsNewObj(res)) delete ptr;
   }
   {
-    res5 = SWIG_ConvertPtr(argv[3], &argp5, SWIGTYPE_p_datamunge__plot__RGB,  0 );
+    res5 = SWIG_ConvertPtr(argv[3], &argp5, SWIGTYPE_p_datamunge__graphics__RGB,  0 );
     if (!SWIG_IsOK(res5)) {
-      SWIG_exception_fail(SWIG_ArgError(res5), Ruby_Format_TypeError( "", "datamunge::graphics::RGB","text", 5, argv[3] )); 
+      SWIG_exception_fail(SWIG_ArgError(res5), Ruby_Format_TypeError( "", "datamunge::graphics::RGBA","text", 5, argv[3] )); 
     }  
     if (!argp5) {
-      SWIG_exception_fail(SWIG_NullReferenceError, Ruby_Format_TypeError("invalid null reference ", "datamunge::graphics::RGB","text", 5, argv[3]));
+      SWIG_exception_fail(SWIG_NullReferenceError, Ruby_Format_TypeError("invalid null reference ", "datamunge::graphics::RGBA","text", 5, argv[3]));
     } else {
-      arg5 = *(reinterpret_cast< datamunge::graphics::RGB * >(argp5));
+      arg5 = *(reinterpret_cast< datamunge::graphics::RGBA * >(argp5));
     }
   }
   ecode6 = SWIG_AsVal_double(argv[4], &val6);
@@ -96299,7 +100892,7 @@ _wrap_RPlot_text__SWIG_0(int argc, VALUE *argv, VALUE self) {
   } 
   arg6 = static_cast< double >(val6);
   result = (datamunge::graphics::RPlot *) &(arg1)->text(arg2,arg3,SWIG_STD_MOVE(*(&arg4)),SWIG_STD_MOVE(*(&arg5)),arg6);
-  vresult = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__plot__RPlot, 0 |  0 );
+  vresult = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__graphics__RPlot, 0 |  0 );
   return vresult;
 fail:
   return Qnil;
@@ -96312,7 +100905,7 @@ _wrap_RPlot_text__SWIG_1(int argc, VALUE *argv, VALUE self) {
   double arg2 ;
   double arg3 ;
   std::string arg4 ;
-  SwigValueWrapper< datamunge::graphics::RGB > arg5 ;
+  datamunge::graphics::RGBA arg5 ;
   void *argp1 = 0 ;
   int res1 = 0 ;
   double val2 ;
@@ -96327,7 +100920,7 @@ _wrap_RPlot_text__SWIG_1(int argc, VALUE *argv, VALUE self) {
   if ((argc < 4) || (argc > 4)) {
     rb_raise(rb_eArgError, "wrong # of arguments(%d for 4)",argc); SWIG_fail;
   }
-  res1 = SWIG_ConvertPtr(self, &argp1,SWIGTYPE_p_datamunge__plot__RPlot, 0 |  0 );
+  res1 = SWIG_ConvertPtr(self, &argp1,SWIGTYPE_p_datamunge__graphics__RPlot, 0 |  0 );
   if (!SWIG_IsOK(res1)) {
     SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::graphics::RPlot *","text", 1, self )); 
   }
@@ -96352,18 +100945,18 @@ _wrap_RPlot_text__SWIG_1(int argc, VALUE *argv, VALUE self) {
     if (SWIG_IsNewObj(res)) delete ptr;
   }
   {
-    res5 = SWIG_ConvertPtr(argv[3], &argp5, SWIGTYPE_p_datamunge__plot__RGB,  0 );
+    res5 = SWIG_ConvertPtr(argv[3], &argp5, SWIGTYPE_p_datamunge__graphics__RGB,  0 );
     if (!SWIG_IsOK(res5)) {
-      SWIG_exception_fail(SWIG_ArgError(res5), Ruby_Format_TypeError( "", "datamunge::graphics::RGB","text", 5, argv[3] )); 
+      SWIG_exception_fail(SWIG_ArgError(res5), Ruby_Format_TypeError( "", "datamunge::graphics::RGBA","text", 5, argv[3] )); 
     }  
     if (!argp5) {
-      SWIG_exception_fail(SWIG_NullReferenceError, Ruby_Format_TypeError("invalid null reference ", "datamunge::graphics::RGB","text", 5, argv[3]));
+      SWIG_exception_fail(SWIG_NullReferenceError, Ruby_Format_TypeError("invalid null reference ", "datamunge::graphics::RGBA","text", 5, argv[3]));
     } else {
-      arg5 = *(reinterpret_cast< datamunge::graphics::RGB * >(argp5));
+      arg5 = *(reinterpret_cast< datamunge::graphics::RGBA * >(argp5));
     }
   }
   result = (datamunge::graphics::RPlot *) &(arg1)->text(arg2,arg3,SWIG_STD_MOVE(*(&arg4)),SWIG_STD_MOVE(*(&arg5)));
-  vresult = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__plot__RPlot, 0 |  0 );
+  vresult = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__graphics__RPlot, 0 |  0 );
   return vresult;
 fail:
   return Qnil;
@@ -96388,7 +100981,7 @@ _wrap_RPlot_text__SWIG_2(int argc, VALUE *argv, VALUE self) {
   if ((argc < 3) || (argc > 3)) {
     rb_raise(rb_eArgError, "wrong # of arguments(%d for 3)",argc); SWIG_fail;
   }
-  res1 = SWIG_ConvertPtr(self, &argp1,SWIGTYPE_p_datamunge__plot__RPlot, 0 |  0 );
+  res1 = SWIG_ConvertPtr(self, &argp1,SWIGTYPE_p_datamunge__graphics__RPlot, 0 |  0 );
   if (!SWIG_IsOK(res1)) {
     SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::graphics::RPlot *","text", 1, self )); 
   }
@@ -96413,7 +101006,7 @@ _wrap_RPlot_text__SWIG_2(int argc, VALUE *argv, VALUE self) {
     if (SWIG_IsNewObj(res)) delete ptr;
   }
   result = (datamunge::graphics::RPlot *) &(arg1)->text(arg2,arg3,SWIG_STD_MOVE(*(&arg4)));
-  vresult = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__plot__RPlot, 0 |  0 );
+  vresult = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__graphics__RPlot, 0 |  0 );
   return vresult;
 fail:
   return Qnil;
@@ -96434,7 +101027,7 @@ SWIGINTERN VALUE _wrap_RPlot_text(int nargs, VALUE *args, VALUE self) {
   if (argc == 4) {
     int _v = 0;
     void *vptr = 0;
-    int res = SWIG_ConvertPtr(argv[0], &vptr, SWIGTYPE_p_datamunge__plot__RPlot, 0);
+    int res = SWIG_ConvertPtr(argv[0], &vptr, SWIGTYPE_p_datamunge__graphics__RPlot, 0);
     _v = SWIG_CheckState(res);
     if (_v) {
       {
@@ -96459,7 +101052,7 @@ SWIGINTERN VALUE _wrap_RPlot_text(int nargs, VALUE *args, VALUE self) {
   if (argc == 5) {
     int _v = 0;
     void *vptr = 0;
-    int res = SWIG_ConvertPtr(argv[0], &vptr, SWIGTYPE_p_datamunge__plot__RPlot, 0);
+    int res = SWIG_ConvertPtr(argv[0], &vptr, SWIGTYPE_p_datamunge__graphics__RPlot, 0);
     _v = SWIG_CheckState(res);
     if (_v) {
       {
@@ -96476,7 +101069,7 @@ SWIGINTERN VALUE _wrap_RPlot_text(int nargs, VALUE *args, VALUE self) {
           _v = SWIG_CheckState(res);
           if (_v) {
             void *vptr = 0;
-            int res = SWIG_ConvertPtr(argv[4], &vptr, SWIGTYPE_p_datamunge__plot__RGB, SWIG_POINTER_NO_NULL);
+            int res = SWIG_ConvertPtr(argv[4], &vptr, SWIGTYPE_p_datamunge__graphics__RGB, SWIG_POINTER_NO_NULL);
             _v = SWIG_CheckState(res);
             if (_v) {
               return _wrap_RPlot_text__SWIG_1(nargs, args, self);
@@ -96489,7 +101082,7 @@ SWIGINTERN VALUE _wrap_RPlot_text(int nargs, VALUE *args, VALUE self) {
   if (argc == 6) {
     int _v = 0;
     void *vptr = 0;
-    int res = SWIG_ConvertPtr(argv[0], &vptr, SWIGTYPE_p_datamunge__plot__RPlot, 0);
+    int res = SWIG_ConvertPtr(argv[0], &vptr, SWIGTYPE_p_datamunge__graphics__RPlot, 0);
     _v = SWIG_CheckState(res);
     if (_v) {
       {
@@ -96506,7 +101099,7 @@ SWIGINTERN VALUE _wrap_RPlot_text(int nargs, VALUE *args, VALUE self) {
           _v = SWIG_CheckState(res);
           if (_v) {
             void *vptr = 0;
-            int res = SWIG_ConvertPtr(argv[4], &vptr, SWIGTYPE_p_datamunge__plot__RGB, SWIG_POINTER_NO_NULL);
+            int res = SWIG_ConvertPtr(argv[4], &vptr, SWIGTYPE_p_datamunge__graphics__RGB, SWIG_POINTER_NO_NULL);
             _v = SWIG_CheckState(res);
             if (_v) {
               {
@@ -96525,8 +101118,8 @@ SWIGINTERN VALUE _wrap_RPlot_text(int nargs, VALUE *args, VALUE self) {
   
 fail:
   Ruby_Format_OverloadedError( argc, 7, "RPlot.text", 
-    "    datamunge::graphics::RPlot RPlot.text(double x, double y, std::string label, datamunge::graphics::RGB color, double font_size)\n"
-    "    datamunge::graphics::RPlot RPlot.text(double x, double y, std::string label, datamunge::graphics::RGB color)\n"
+    "    datamunge::graphics::RPlot RPlot.text(double x, double y, std::string label, datamunge::graphics::RGBA color, double font_size)\n"
+    "    datamunge::graphics::RPlot RPlot.text(double x, double y, std::string label, datamunge::graphics::RGBA color)\n"
     "    datamunge::graphics::RPlot & RPlot.text(double x, double y, std::string label)\n");
   
   return Qnil;
@@ -96538,7 +101131,7 @@ _wrap_RPlot_polygon__SWIG_0(int argc, VALUE *argv, VALUE self) {
   datamunge::graphics::RPlot *arg1 = 0 ;
   std::vector< double,std::allocator< double > > arg2 ;
   std::vector< double,std::allocator< double > > arg3 ;
-  SwigValueWrapper< datamunge::graphics::RGB > arg4 ;
+  datamunge::graphics::RGBA arg4 ;
   bool arg5 ;
   void *argp1 = 0 ;
   int res1 = 0 ;
@@ -96552,7 +101145,7 @@ _wrap_RPlot_polygon__SWIG_0(int argc, VALUE *argv, VALUE self) {
   if ((argc < 4) || (argc > 4)) {
     rb_raise(rb_eArgError, "wrong # of arguments(%d for 4)",argc); SWIG_fail;
   }
-  res1 = SWIG_ConvertPtr(self, &argp1,SWIGTYPE_p_datamunge__plot__RPlot, 0 |  0 );
+  res1 = SWIG_ConvertPtr(self, &argp1,SWIGTYPE_p_datamunge__graphics__RPlot, 0 |  0 );
   if (!SWIG_IsOK(res1)) {
     SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::graphics::RPlot *","polygon", 1, self )); 
   }
@@ -96576,14 +101169,14 @@ _wrap_RPlot_polygon__SWIG_0(int argc, VALUE *argv, VALUE self) {
     if (SWIG_IsNewObj(res)) delete ptr;
   }
   {
-    res4 = SWIG_ConvertPtr(argv[2], &argp4, SWIGTYPE_p_datamunge__plot__RGB,  0 );
+    res4 = SWIG_ConvertPtr(argv[2], &argp4, SWIGTYPE_p_datamunge__graphics__RGB,  0 );
     if (!SWIG_IsOK(res4)) {
-      SWIG_exception_fail(SWIG_ArgError(res4), Ruby_Format_TypeError( "", "datamunge::graphics::RGB","polygon", 4, argv[2] )); 
+      SWIG_exception_fail(SWIG_ArgError(res4), Ruby_Format_TypeError( "", "datamunge::graphics::RGBA","polygon", 4, argv[2] )); 
     }  
     if (!argp4) {
-      SWIG_exception_fail(SWIG_NullReferenceError, Ruby_Format_TypeError("invalid null reference ", "datamunge::graphics::RGB","polygon", 4, argv[2]));
+      SWIG_exception_fail(SWIG_NullReferenceError, Ruby_Format_TypeError("invalid null reference ", "datamunge::graphics::RGBA","polygon", 4, argv[2]));
     } else {
-      arg4 = *(reinterpret_cast< datamunge::graphics::RGB * >(argp4));
+      arg4 = *(reinterpret_cast< datamunge::graphics::RGBA * >(argp4));
     }
   }
   ecode5 = SWIG_AsVal_bool(argv[3], &val5);
@@ -96592,7 +101185,7 @@ _wrap_RPlot_polygon__SWIG_0(int argc, VALUE *argv, VALUE self) {
   } 
   arg5 = static_cast< bool >(val5);
   result = (datamunge::graphics::RPlot *) &(arg1)->polygon(SWIG_STD_MOVE(*(&arg2)),SWIG_STD_MOVE(*(&arg3)),SWIG_STD_MOVE(*(&arg4)),arg5);
-  vresult = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__plot__RPlot, 0 |  0 );
+  vresult = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__graphics__RPlot, 0 |  0 );
   return vresult;
 fail:
   return Qnil;
@@ -96604,7 +101197,7 @@ _wrap_RPlot_polygon__SWIG_1(int argc, VALUE *argv, VALUE self) {
   datamunge::graphics::RPlot *arg1 = 0 ;
   std::vector< double,std::allocator< double > > arg2 ;
   std::vector< double,std::allocator< double > > arg3 ;
-  SwigValueWrapper< datamunge::graphics::RGB > arg4 ;
+  datamunge::graphics::RGBA arg4 ;
   void *argp1 = 0 ;
   int res1 = 0 ;
   void *argp4 = 0 ;
@@ -96615,7 +101208,7 @@ _wrap_RPlot_polygon__SWIG_1(int argc, VALUE *argv, VALUE self) {
   if ((argc < 3) || (argc > 3)) {
     rb_raise(rb_eArgError, "wrong # of arguments(%d for 3)",argc); SWIG_fail;
   }
-  res1 = SWIG_ConvertPtr(self, &argp1,SWIGTYPE_p_datamunge__plot__RPlot, 0 |  0 );
+  res1 = SWIG_ConvertPtr(self, &argp1,SWIGTYPE_p_datamunge__graphics__RPlot, 0 |  0 );
   if (!SWIG_IsOK(res1)) {
     SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::graphics::RPlot *","polygon", 1, self )); 
   }
@@ -96639,18 +101232,18 @@ _wrap_RPlot_polygon__SWIG_1(int argc, VALUE *argv, VALUE self) {
     if (SWIG_IsNewObj(res)) delete ptr;
   }
   {
-    res4 = SWIG_ConvertPtr(argv[2], &argp4, SWIGTYPE_p_datamunge__plot__RGB,  0 );
+    res4 = SWIG_ConvertPtr(argv[2], &argp4, SWIGTYPE_p_datamunge__graphics__RGB,  0 );
     if (!SWIG_IsOK(res4)) {
-      SWIG_exception_fail(SWIG_ArgError(res4), Ruby_Format_TypeError( "", "datamunge::graphics::RGB","polygon", 4, argv[2] )); 
+      SWIG_exception_fail(SWIG_ArgError(res4), Ruby_Format_TypeError( "", "datamunge::graphics::RGBA","polygon", 4, argv[2] )); 
     }  
     if (!argp4) {
-      SWIG_exception_fail(SWIG_NullReferenceError, Ruby_Format_TypeError("invalid null reference ", "datamunge::graphics::RGB","polygon", 4, argv[2]));
+      SWIG_exception_fail(SWIG_NullReferenceError, Ruby_Format_TypeError("invalid null reference ", "datamunge::graphics::RGBA","polygon", 4, argv[2]));
     } else {
-      arg4 = *(reinterpret_cast< datamunge::graphics::RGB * >(argp4));
+      arg4 = *(reinterpret_cast< datamunge::graphics::RGBA * >(argp4));
     }
   }
   result = (datamunge::graphics::RPlot *) &(arg1)->polygon(SWIG_STD_MOVE(*(&arg2)),SWIG_STD_MOVE(*(&arg3)),SWIG_STD_MOVE(*(&arg4)));
-  vresult = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__plot__RPlot, 0 |  0 );
+  vresult = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__graphics__RPlot, 0 |  0 );
   return vresult;
 fail:
   return Qnil;
@@ -96670,7 +101263,7 @@ _wrap_RPlot_polygon__SWIG_2(int argc, VALUE *argv, VALUE self) {
   if ((argc < 2) || (argc > 2)) {
     rb_raise(rb_eArgError, "wrong # of arguments(%d for 2)",argc); SWIG_fail;
   }
-  res1 = SWIG_ConvertPtr(self, &argp1,SWIGTYPE_p_datamunge__plot__RPlot, 0 |  0 );
+  res1 = SWIG_ConvertPtr(self, &argp1,SWIGTYPE_p_datamunge__graphics__RPlot, 0 |  0 );
   if (!SWIG_IsOK(res1)) {
     SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::graphics::RPlot *","polygon", 1, self )); 
   }
@@ -96694,7 +101287,7 @@ _wrap_RPlot_polygon__SWIG_2(int argc, VALUE *argv, VALUE self) {
     if (SWIG_IsNewObj(res)) delete ptr;
   }
   result = (datamunge::graphics::RPlot *) &(arg1)->polygon(SWIG_STD_MOVE(*(&arg2)),SWIG_STD_MOVE(*(&arg3)));
-  vresult = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__plot__RPlot, 0 |  0 );
+  vresult = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__graphics__RPlot, 0 |  0 );
   return vresult;
 fail:
   return Qnil;
@@ -96715,7 +101308,7 @@ SWIGINTERN VALUE _wrap_RPlot_polygon(int nargs, VALUE *args, VALUE self) {
   if (argc == 3) {
     int _v = 0;
     void *vptr = 0;
-    int res = SWIG_ConvertPtr(argv[0], &vptr, SWIGTYPE_p_datamunge__plot__RPlot, 0);
+    int res = SWIG_ConvertPtr(argv[0], &vptr, SWIGTYPE_p_datamunge__graphics__RPlot, 0);
     _v = SWIG_CheckState(res);
     if (_v) {
       int res = swig::asptr(argv[1], (std::vector< double,std::allocator< double > >**)(0));
@@ -96732,7 +101325,7 @@ SWIGINTERN VALUE _wrap_RPlot_polygon(int nargs, VALUE *args, VALUE self) {
   if (argc == 4) {
     int _v = 0;
     void *vptr = 0;
-    int res = SWIG_ConvertPtr(argv[0], &vptr, SWIGTYPE_p_datamunge__plot__RPlot, 0);
+    int res = SWIG_ConvertPtr(argv[0], &vptr, SWIGTYPE_p_datamunge__graphics__RPlot, 0);
     _v = SWIG_CheckState(res);
     if (_v) {
       int res = swig::asptr(argv[1], (std::vector< double,std::allocator< double > >**)(0));
@@ -96742,7 +101335,7 @@ SWIGINTERN VALUE _wrap_RPlot_polygon(int nargs, VALUE *args, VALUE self) {
         _v = SWIG_CheckState(res);
         if (_v) {
           void *vptr = 0;
-          int res = SWIG_ConvertPtr(argv[3], &vptr, SWIGTYPE_p_datamunge__plot__RGB, SWIG_POINTER_NO_NULL);
+          int res = SWIG_ConvertPtr(argv[3], &vptr, SWIGTYPE_p_datamunge__graphics__RGB, SWIG_POINTER_NO_NULL);
           _v = SWIG_CheckState(res);
           if (_v) {
             return _wrap_RPlot_polygon__SWIG_1(nargs, args, self);
@@ -96754,7 +101347,7 @@ SWIGINTERN VALUE _wrap_RPlot_polygon(int nargs, VALUE *args, VALUE self) {
   if (argc == 5) {
     int _v = 0;
     void *vptr = 0;
-    int res = SWIG_ConvertPtr(argv[0], &vptr, SWIGTYPE_p_datamunge__plot__RPlot, 0);
+    int res = SWIG_ConvertPtr(argv[0], &vptr, SWIGTYPE_p_datamunge__graphics__RPlot, 0);
     _v = SWIG_CheckState(res);
     if (_v) {
       int res = swig::asptr(argv[1], (std::vector< double,std::allocator< double > >**)(0));
@@ -96764,7 +101357,7 @@ SWIGINTERN VALUE _wrap_RPlot_polygon(int nargs, VALUE *args, VALUE self) {
         _v = SWIG_CheckState(res);
         if (_v) {
           void *vptr = 0;
-          int res = SWIG_ConvertPtr(argv[3], &vptr, SWIGTYPE_p_datamunge__plot__RGB, SWIG_POINTER_NO_NULL);
+          int res = SWIG_ConvertPtr(argv[3], &vptr, SWIGTYPE_p_datamunge__graphics__RGB, SWIG_POINTER_NO_NULL);
           _v = SWIG_CheckState(res);
           if (_v) {
             {
@@ -96782,9 +101375,491 @@ SWIGINTERN VALUE _wrap_RPlot_polygon(int nargs, VALUE *args, VALUE self) {
   
 fail:
   Ruby_Format_OverloadedError( argc, 6, "RPlot.polygon", 
-    "    datamunge::graphics::RPlot RPlot.polygon(std::vector< double,std::allocator< double > > x, std::vector< double,std::allocator< double > > y, datamunge::graphics::RGB color, bool filled)\n"
-    "    datamunge::graphics::RPlot RPlot.polygon(std::vector< double,std::allocator< double > > x, std::vector< double,std::allocator< double > > y, datamunge::graphics::RGB color)\n"
+    "    datamunge::graphics::RPlot RPlot.polygon(std::vector< double,std::allocator< double > > x, std::vector< double,std::allocator< double > > y, datamunge::graphics::RGBA color, bool filled)\n"
+    "    datamunge::graphics::RPlot RPlot.polygon(std::vector< double,std::allocator< double > > x, std::vector< double,std::allocator< double > > y, datamunge::graphics::RGBA color)\n"
     "    datamunge::graphics::RPlot & RPlot.polygon(std::vector< double,std::allocator< double > > x, std::vector< double,std::allocator< double > > y)\n");
+  
+  return Qnil;
+}
+
+
+SWIGINTERN VALUE
+_wrap_RPlot_image__SWIG_0(int argc, VALUE *argv, VALUE self) {
+  datamunge::graphics::RPlot *arg1 = 0 ;
+  std::vector< double,std::allocator< double > > *arg2 = 0 ;
+  std::vector< double,std::allocator< double > > *arg3 = 0 ;
+  std::vector< std::vector< double,std::allocator< double > >,std::allocator< std::vector< double,std::allocator< double > > > > *arg4 = 0 ;
+  SwigValueWrapper< std::vector< datamunge::graphics::RGB,std::allocator< datamunge::graphics::RGB > > > arg5 ;
+  double arg6 ;
+  double arg7 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  int res2 = SWIG_OLDOBJ ;
+  int res3 = SWIG_OLDOBJ ;
+  int res4 = SWIG_OLDOBJ ;
+  void *argp5 = 0 ;
+  int res5 = 0 ;
+  double val6 ;
+  int ecode6 = 0 ;
+  double val7 ;
+  int ecode7 = 0 ;
+  datamunge::graphics::RPlot *result = 0 ;
+  VALUE vresult = Qnil;
+  
+  if ((argc < 6) || (argc > 6)) {
+    rb_raise(rb_eArgError, "wrong # of arguments(%d for 6)",argc); SWIG_fail;
+  }
+  res1 = SWIG_ConvertPtr(self, &argp1,SWIGTYPE_p_datamunge__graphics__RPlot, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::graphics::RPlot *","image", 1, self )); 
+  }
+  arg1 = reinterpret_cast< datamunge::graphics::RPlot * >(argp1);
+  {
+    std::vector< double,std::allocator< double > > *ptr = (std::vector< double,std::allocator< double > > *)0;
+    res2 = swig::asptr(argv[0], &ptr);
+    if (!SWIG_IsOK(res2)) {
+      SWIG_exception_fail(SWIG_ArgError(res2), Ruby_Format_TypeError( "", "std::vector< double,std::allocator< double > > const &","image", 2, argv[0] )); 
+    }
+    if (!ptr) {
+      SWIG_exception_fail(SWIG_NullReferenceError, Ruby_Format_TypeError("invalid null reference ", "std::vector< double,std::allocator< double > > const &","image", 2, argv[0])); 
+    }
+    arg2 = ptr;
+  }
+  {
+    std::vector< double,std::allocator< double > > *ptr = (std::vector< double,std::allocator< double > > *)0;
+    res3 = swig::asptr(argv[1], &ptr);
+    if (!SWIG_IsOK(res3)) {
+      SWIG_exception_fail(SWIG_ArgError(res3), Ruby_Format_TypeError( "", "std::vector< double,std::allocator< double > > const &","image", 3, argv[1] )); 
+    }
+    if (!ptr) {
+      SWIG_exception_fail(SWIG_NullReferenceError, Ruby_Format_TypeError("invalid null reference ", "std::vector< double,std::allocator< double > > const &","image", 3, argv[1])); 
+    }
+    arg3 = ptr;
+  }
+  {
+    std::vector< std::vector< double,std::allocator< double > >,std::allocator< std::vector< double,std::allocator< double > > > > *ptr = (std::vector< std::vector< double,std::allocator< double > >,std::allocator< std::vector< double,std::allocator< double > > > > *)0;
+    res4 = swig::asptr(argv[2], &ptr);
+    if (!SWIG_IsOK(res4)) {
+      SWIG_exception_fail(SWIG_ArgError(res4), Ruby_Format_TypeError( "", "std::vector< std::vector< double,std::allocator< double > >,std::allocator< std::vector< double,std::allocator< double > > > > const &","image", 4, argv[2] )); 
+    }
+    if (!ptr) {
+      SWIG_exception_fail(SWIG_NullReferenceError, Ruby_Format_TypeError("invalid null reference ", "std::vector< std::vector< double,std::allocator< double > >,std::allocator< std::vector< double,std::allocator< double > > > > const &","image", 4, argv[2])); 
+    }
+    arg4 = ptr;
+  }
+  {
+    res5 = SWIG_ConvertPtr(argv[3], &argp5, SWIGTYPE_p_std__vectorT_datamunge__graphics__RGB_std__allocatorT_datamunge__graphics__RGB_t_t,  0 );
+    if (!SWIG_IsOK(res5)) {
+      SWIG_exception_fail(SWIG_ArgError(res5), Ruby_Format_TypeError( "", "std::vector< datamunge::graphics::RGBA,std::allocator< datamunge::graphics::RGBA > >","image", 5, argv[3] )); 
+    }  
+    if (!argp5) {
+      SWIG_exception_fail(SWIG_NullReferenceError, Ruby_Format_TypeError("invalid null reference ", "std::vector< datamunge::graphics::RGBA,std::allocator< datamunge::graphics::RGBA > >","image", 5, argv[3]));
+    } else {
+      arg5 = *(reinterpret_cast< std::vector< datamunge::graphics::RGBA,std::allocator< datamunge::graphics::RGBA > > * >(argp5));
+    }
+  }
+  ecode6 = SWIG_AsVal_double(argv[4], &val6);
+  if (!SWIG_IsOK(ecode6)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode6), Ruby_Format_TypeError( "", "double","image", 6, argv[4] ));
+  } 
+  arg6 = static_cast< double >(val6);
+  ecode7 = SWIG_AsVal_double(argv[5], &val7);
+  if (!SWIG_IsOK(ecode7)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode7), Ruby_Format_TypeError( "", "double","image", 7, argv[5] ));
+  } 
+  arg7 = static_cast< double >(val7);
+  result = (datamunge::graphics::RPlot *) &(arg1)->image((std::vector< double,std::allocator< double > > const &)*arg2,(std::vector< double,std::allocator< double > > const &)*arg3,(std::vector< std::vector< double,std::allocator< double > >,std::allocator< std::vector< double,std::allocator< double > > > > const &)*arg4,SWIG_STD_MOVE(*(&arg5)),arg6,arg7);
+  vresult = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__graphics__RPlot, 0 |  0 );
+  if (SWIG_IsNewObj(res2)) delete arg2;
+  if (SWIG_IsNewObj(res3)) delete arg3;
+  if (SWIG_IsNewObj(res4)) delete arg4;
+  return vresult;
+fail:
+  if (SWIG_IsNewObj(res2)) delete arg2;
+  if (SWIG_IsNewObj(res3)) delete arg3;
+  if (SWIG_IsNewObj(res4)) delete arg4;
+  return Qnil;
+}
+
+
+SWIGINTERN VALUE
+_wrap_RPlot_image__SWIG_1(int argc, VALUE *argv, VALUE self) {
+  datamunge::graphics::RPlot *arg1 = 0 ;
+  std::vector< double,std::allocator< double > > *arg2 = 0 ;
+  std::vector< double,std::allocator< double > > *arg3 = 0 ;
+  std::vector< std::vector< double,std::allocator< double > >,std::allocator< std::vector< double,std::allocator< double > > > > *arg4 = 0 ;
+  SwigValueWrapper< std::vector< datamunge::graphics::RGB,std::allocator< datamunge::graphics::RGB > > > arg5 ;
+  double arg6 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  int res2 = SWIG_OLDOBJ ;
+  int res3 = SWIG_OLDOBJ ;
+  int res4 = SWIG_OLDOBJ ;
+  void *argp5 = 0 ;
+  int res5 = 0 ;
+  double val6 ;
+  int ecode6 = 0 ;
+  datamunge::graphics::RPlot *result = 0 ;
+  VALUE vresult = Qnil;
+  
+  if ((argc < 5) || (argc > 5)) {
+    rb_raise(rb_eArgError, "wrong # of arguments(%d for 5)",argc); SWIG_fail;
+  }
+  res1 = SWIG_ConvertPtr(self, &argp1,SWIGTYPE_p_datamunge__graphics__RPlot, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::graphics::RPlot *","image", 1, self )); 
+  }
+  arg1 = reinterpret_cast< datamunge::graphics::RPlot * >(argp1);
+  {
+    std::vector< double,std::allocator< double > > *ptr = (std::vector< double,std::allocator< double > > *)0;
+    res2 = swig::asptr(argv[0], &ptr);
+    if (!SWIG_IsOK(res2)) {
+      SWIG_exception_fail(SWIG_ArgError(res2), Ruby_Format_TypeError( "", "std::vector< double,std::allocator< double > > const &","image", 2, argv[0] )); 
+    }
+    if (!ptr) {
+      SWIG_exception_fail(SWIG_NullReferenceError, Ruby_Format_TypeError("invalid null reference ", "std::vector< double,std::allocator< double > > const &","image", 2, argv[0])); 
+    }
+    arg2 = ptr;
+  }
+  {
+    std::vector< double,std::allocator< double > > *ptr = (std::vector< double,std::allocator< double > > *)0;
+    res3 = swig::asptr(argv[1], &ptr);
+    if (!SWIG_IsOK(res3)) {
+      SWIG_exception_fail(SWIG_ArgError(res3), Ruby_Format_TypeError( "", "std::vector< double,std::allocator< double > > const &","image", 3, argv[1] )); 
+    }
+    if (!ptr) {
+      SWIG_exception_fail(SWIG_NullReferenceError, Ruby_Format_TypeError("invalid null reference ", "std::vector< double,std::allocator< double > > const &","image", 3, argv[1])); 
+    }
+    arg3 = ptr;
+  }
+  {
+    std::vector< std::vector< double,std::allocator< double > >,std::allocator< std::vector< double,std::allocator< double > > > > *ptr = (std::vector< std::vector< double,std::allocator< double > >,std::allocator< std::vector< double,std::allocator< double > > > > *)0;
+    res4 = swig::asptr(argv[2], &ptr);
+    if (!SWIG_IsOK(res4)) {
+      SWIG_exception_fail(SWIG_ArgError(res4), Ruby_Format_TypeError( "", "std::vector< std::vector< double,std::allocator< double > >,std::allocator< std::vector< double,std::allocator< double > > > > const &","image", 4, argv[2] )); 
+    }
+    if (!ptr) {
+      SWIG_exception_fail(SWIG_NullReferenceError, Ruby_Format_TypeError("invalid null reference ", "std::vector< std::vector< double,std::allocator< double > >,std::allocator< std::vector< double,std::allocator< double > > > > const &","image", 4, argv[2])); 
+    }
+    arg4 = ptr;
+  }
+  {
+    res5 = SWIG_ConvertPtr(argv[3], &argp5, SWIGTYPE_p_std__vectorT_datamunge__graphics__RGB_std__allocatorT_datamunge__graphics__RGB_t_t,  0 );
+    if (!SWIG_IsOK(res5)) {
+      SWIG_exception_fail(SWIG_ArgError(res5), Ruby_Format_TypeError( "", "std::vector< datamunge::graphics::RGBA,std::allocator< datamunge::graphics::RGBA > >","image", 5, argv[3] )); 
+    }  
+    if (!argp5) {
+      SWIG_exception_fail(SWIG_NullReferenceError, Ruby_Format_TypeError("invalid null reference ", "std::vector< datamunge::graphics::RGBA,std::allocator< datamunge::graphics::RGBA > >","image", 5, argv[3]));
+    } else {
+      arg5 = *(reinterpret_cast< std::vector< datamunge::graphics::RGBA,std::allocator< datamunge::graphics::RGBA > > * >(argp5));
+    }
+  }
+  ecode6 = SWIG_AsVal_double(argv[4], &val6);
+  if (!SWIG_IsOK(ecode6)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode6), Ruby_Format_TypeError( "", "double","image", 6, argv[4] ));
+  } 
+  arg6 = static_cast< double >(val6);
+  result = (datamunge::graphics::RPlot *) &(arg1)->image((std::vector< double,std::allocator< double > > const &)*arg2,(std::vector< double,std::allocator< double > > const &)*arg3,(std::vector< std::vector< double,std::allocator< double > >,std::allocator< std::vector< double,std::allocator< double > > > > const &)*arg4,SWIG_STD_MOVE(*(&arg5)),arg6);
+  vresult = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__graphics__RPlot, 0 |  0 );
+  if (SWIG_IsNewObj(res2)) delete arg2;
+  if (SWIG_IsNewObj(res3)) delete arg3;
+  if (SWIG_IsNewObj(res4)) delete arg4;
+  return vresult;
+fail:
+  if (SWIG_IsNewObj(res2)) delete arg2;
+  if (SWIG_IsNewObj(res3)) delete arg3;
+  if (SWIG_IsNewObj(res4)) delete arg4;
+  return Qnil;
+}
+
+
+SWIGINTERN VALUE
+_wrap_RPlot_image__SWIG_2(int argc, VALUE *argv, VALUE self) {
+  datamunge::graphics::RPlot *arg1 = 0 ;
+  std::vector< double,std::allocator< double > > *arg2 = 0 ;
+  std::vector< double,std::allocator< double > > *arg3 = 0 ;
+  std::vector< std::vector< double,std::allocator< double > >,std::allocator< std::vector< double,std::allocator< double > > > > *arg4 = 0 ;
+  SwigValueWrapper< std::vector< datamunge::graphics::RGB,std::allocator< datamunge::graphics::RGB > > > arg5 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  int res2 = SWIG_OLDOBJ ;
+  int res3 = SWIG_OLDOBJ ;
+  int res4 = SWIG_OLDOBJ ;
+  void *argp5 = 0 ;
+  int res5 = 0 ;
+  datamunge::graphics::RPlot *result = 0 ;
+  VALUE vresult = Qnil;
+  
+  if ((argc < 4) || (argc > 4)) {
+    rb_raise(rb_eArgError, "wrong # of arguments(%d for 4)",argc); SWIG_fail;
+  }
+  res1 = SWIG_ConvertPtr(self, &argp1,SWIGTYPE_p_datamunge__graphics__RPlot, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::graphics::RPlot *","image", 1, self )); 
+  }
+  arg1 = reinterpret_cast< datamunge::graphics::RPlot * >(argp1);
+  {
+    std::vector< double,std::allocator< double > > *ptr = (std::vector< double,std::allocator< double > > *)0;
+    res2 = swig::asptr(argv[0], &ptr);
+    if (!SWIG_IsOK(res2)) {
+      SWIG_exception_fail(SWIG_ArgError(res2), Ruby_Format_TypeError( "", "std::vector< double,std::allocator< double > > const &","image", 2, argv[0] )); 
+    }
+    if (!ptr) {
+      SWIG_exception_fail(SWIG_NullReferenceError, Ruby_Format_TypeError("invalid null reference ", "std::vector< double,std::allocator< double > > const &","image", 2, argv[0])); 
+    }
+    arg2 = ptr;
+  }
+  {
+    std::vector< double,std::allocator< double > > *ptr = (std::vector< double,std::allocator< double > > *)0;
+    res3 = swig::asptr(argv[1], &ptr);
+    if (!SWIG_IsOK(res3)) {
+      SWIG_exception_fail(SWIG_ArgError(res3), Ruby_Format_TypeError( "", "std::vector< double,std::allocator< double > > const &","image", 3, argv[1] )); 
+    }
+    if (!ptr) {
+      SWIG_exception_fail(SWIG_NullReferenceError, Ruby_Format_TypeError("invalid null reference ", "std::vector< double,std::allocator< double > > const &","image", 3, argv[1])); 
+    }
+    arg3 = ptr;
+  }
+  {
+    std::vector< std::vector< double,std::allocator< double > >,std::allocator< std::vector< double,std::allocator< double > > > > *ptr = (std::vector< std::vector< double,std::allocator< double > >,std::allocator< std::vector< double,std::allocator< double > > > > *)0;
+    res4 = swig::asptr(argv[2], &ptr);
+    if (!SWIG_IsOK(res4)) {
+      SWIG_exception_fail(SWIG_ArgError(res4), Ruby_Format_TypeError( "", "std::vector< std::vector< double,std::allocator< double > >,std::allocator< std::vector< double,std::allocator< double > > > > const &","image", 4, argv[2] )); 
+    }
+    if (!ptr) {
+      SWIG_exception_fail(SWIG_NullReferenceError, Ruby_Format_TypeError("invalid null reference ", "std::vector< std::vector< double,std::allocator< double > >,std::allocator< std::vector< double,std::allocator< double > > > > const &","image", 4, argv[2])); 
+    }
+    arg4 = ptr;
+  }
+  {
+    res5 = SWIG_ConvertPtr(argv[3], &argp5, SWIGTYPE_p_std__vectorT_datamunge__graphics__RGB_std__allocatorT_datamunge__graphics__RGB_t_t,  0 );
+    if (!SWIG_IsOK(res5)) {
+      SWIG_exception_fail(SWIG_ArgError(res5), Ruby_Format_TypeError( "", "std::vector< datamunge::graphics::RGBA,std::allocator< datamunge::graphics::RGBA > >","image", 5, argv[3] )); 
+    }  
+    if (!argp5) {
+      SWIG_exception_fail(SWIG_NullReferenceError, Ruby_Format_TypeError("invalid null reference ", "std::vector< datamunge::graphics::RGBA,std::allocator< datamunge::graphics::RGBA > >","image", 5, argv[3]));
+    } else {
+      arg5 = *(reinterpret_cast< std::vector< datamunge::graphics::RGBA,std::allocator< datamunge::graphics::RGBA > > * >(argp5));
+    }
+  }
+  result = (datamunge::graphics::RPlot *) &(arg1)->image((std::vector< double,std::allocator< double > > const &)*arg2,(std::vector< double,std::allocator< double > > const &)*arg3,(std::vector< std::vector< double,std::allocator< double > >,std::allocator< std::vector< double,std::allocator< double > > > > const &)*arg4,SWIG_STD_MOVE(*(&arg5)));
+  vresult = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__graphics__RPlot, 0 |  0 );
+  if (SWIG_IsNewObj(res2)) delete arg2;
+  if (SWIG_IsNewObj(res3)) delete arg3;
+  if (SWIG_IsNewObj(res4)) delete arg4;
+  return vresult;
+fail:
+  if (SWIG_IsNewObj(res2)) delete arg2;
+  if (SWIG_IsNewObj(res3)) delete arg3;
+  if (SWIG_IsNewObj(res4)) delete arg4;
+  return Qnil;
+}
+
+
+SWIGINTERN VALUE
+_wrap_RPlot_image__SWIG_3(int argc, VALUE *argv, VALUE self) {
+  datamunge::graphics::RPlot *arg1 = 0 ;
+  std::vector< double,std::allocator< double > > *arg2 = 0 ;
+  std::vector< double,std::allocator< double > > *arg3 = 0 ;
+  std::vector< std::vector< double,std::allocator< double > >,std::allocator< std::vector< double,std::allocator< double > > > > *arg4 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  int res2 = SWIG_OLDOBJ ;
+  int res3 = SWIG_OLDOBJ ;
+  int res4 = SWIG_OLDOBJ ;
+  datamunge::graphics::RPlot *result = 0 ;
+  VALUE vresult = Qnil;
+  
+  if ((argc < 3) || (argc > 3)) {
+    rb_raise(rb_eArgError, "wrong # of arguments(%d for 3)",argc); SWIG_fail;
+  }
+  res1 = SWIG_ConvertPtr(self, &argp1,SWIGTYPE_p_datamunge__graphics__RPlot, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::graphics::RPlot *","image", 1, self )); 
+  }
+  arg1 = reinterpret_cast< datamunge::graphics::RPlot * >(argp1);
+  {
+    std::vector< double,std::allocator< double > > *ptr = (std::vector< double,std::allocator< double > > *)0;
+    res2 = swig::asptr(argv[0], &ptr);
+    if (!SWIG_IsOK(res2)) {
+      SWIG_exception_fail(SWIG_ArgError(res2), Ruby_Format_TypeError( "", "std::vector< double,std::allocator< double > > const &","image", 2, argv[0] )); 
+    }
+    if (!ptr) {
+      SWIG_exception_fail(SWIG_NullReferenceError, Ruby_Format_TypeError("invalid null reference ", "std::vector< double,std::allocator< double > > const &","image", 2, argv[0])); 
+    }
+    arg2 = ptr;
+  }
+  {
+    std::vector< double,std::allocator< double > > *ptr = (std::vector< double,std::allocator< double > > *)0;
+    res3 = swig::asptr(argv[1], &ptr);
+    if (!SWIG_IsOK(res3)) {
+      SWIG_exception_fail(SWIG_ArgError(res3), Ruby_Format_TypeError( "", "std::vector< double,std::allocator< double > > const &","image", 3, argv[1] )); 
+    }
+    if (!ptr) {
+      SWIG_exception_fail(SWIG_NullReferenceError, Ruby_Format_TypeError("invalid null reference ", "std::vector< double,std::allocator< double > > const &","image", 3, argv[1])); 
+    }
+    arg3 = ptr;
+  }
+  {
+    std::vector< std::vector< double,std::allocator< double > >,std::allocator< std::vector< double,std::allocator< double > > > > *ptr = (std::vector< std::vector< double,std::allocator< double > >,std::allocator< std::vector< double,std::allocator< double > > > > *)0;
+    res4 = swig::asptr(argv[2], &ptr);
+    if (!SWIG_IsOK(res4)) {
+      SWIG_exception_fail(SWIG_ArgError(res4), Ruby_Format_TypeError( "", "std::vector< std::vector< double,std::allocator< double > >,std::allocator< std::vector< double,std::allocator< double > > > > const &","image", 4, argv[2] )); 
+    }
+    if (!ptr) {
+      SWIG_exception_fail(SWIG_NullReferenceError, Ruby_Format_TypeError("invalid null reference ", "std::vector< std::vector< double,std::allocator< double > >,std::allocator< std::vector< double,std::allocator< double > > > > const &","image", 4, argv[2])); 
+    }
+    arg4 = ptr;
+  }
+  result = (datamunge::graphics::RPlot *) &(arg1)->image((std::vector< double,std::allocator< double > > const &)*arg2,(std::vector< double,std::allocator< double > > const &)*arg3,(std::vector< std::vector< double,std::allocator< double > >,std::allocator< std::vector< double,std::allocator< double > > > > const &)*arg4);
+  vresult = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__graphics__RPlot, 0 |  0 );
+  if (SWIG_IsNewObj(res2)) delete arg2;
+  if (SWIG_IsNewObj(res3)) delete arg3;
+  if (SWIG_IsNewObj(res4)) delete arg4;
+  return vresult;
+fail:
+  if (SWIG_IsNewObj(res2)) delete arg2;
+  if (SWIG_IsNewObj(res3)) delete arg3;
+  if (SWIG_IsNewObj(res4)) delete arg4;
+  return Qnil;
+}
+
+
+SWIGINTERN VALUE _wrap_RPlot_image(int nargs, VALUE *args, VALUE self) {
+  int argc;
+  VALUE argv[8];
+  int ii;
+  
+  argc = nargs + 1;
+  argv[0] = self;
+  if (argc > 8) SWIG_fail;
+  for (ii = 1; (ii < argc); ++ii) {
+    argv[ii] = args[ii-1];
+  }
+  if (argc == 4) {
+    int _v = 0;
+    void *vptr = 0;
+    int res = SWIG_ConvertPtr(argv[0], &vptr, SWIGTYPE_p_datamunge__graphics__RPlot, 0);
+    _v = SWIG_CheckState(res);
+    if (_v) {
+      int res = swig::asptr(argv[1], (std::vector< double,std::allocator< double > >**)(0));
+      _v = SWIG_CheckState(res);
+      if (_v) {
+        int res = swig::asptr(argv[2], (std::vector< double,std::allocator< double > >**)(0));
+        _v = SWIG_CheckState(res);
+        if (_v) {
+          int res = swig::asptr(argv[3], (std::vector< std::vector< double,std::allocator< double > >,std::allocator< std::vector< double,std::allocator< double > > > >**)(0));
+          _v = SWIG_CheckState(res);
+          if (_v) {
+            return _wrap_RPlot_image__SWIG_3(nargs, args, self);
+          }
+        }
+      }
+    }
+  }
+  if (argc == 5) {
+    int _v = 0;
+    void *vptr = 0;
+    int res = SWIG_ConvertPtr(argv[0], &vptr, SWIGTYPE_p_datamunge__graphics__RPlot, 0);
+    _v = SWIG_CheckState(res);
+    if (_v) {
+      int res = swig::asptr(argv[1], (std::vector< double,std::allocator< double > >**)(0));
+      _v = SWIG_CheckState(res);
+      if (_v) {
+        int res = swig::asptr(argv[2], (std::vector< double,std::allocator< double > >**)(0));
+        _v = SWIG_CheckState(res);
+        if (_v) {
+          int res = swig::asptr(argv[3], (std::vector< std::vector< double,std::allocator< double > >,std::allocator< std::vector< double,std::allocator< double > > > >**)(0));
+          _v = SWIG_CheckState(res);
+          if (_v) {
+            void *vptr = 0;
+            int res = SWIG_ConvertPtr(argv[4], &vptr, SWIGTYPE_p_std__vectorT_datamunge__graphics__RGB_std__allocatorT_datamunge__graphics__RGB_t_t, SWIG_POINTER_NO_NULL);
+            _v = SWIG_CheckState(res);
+            if (_v) {
+              return _wrap_RPlot_image__SWIG_2(nargs, args, self);
+            }
+          }
+        }
+      }
+    }
+  }
+  if (argc == 6) {
+    int _v = 0;
+    void *vptr = 0;
+    int res = SWIG_ConvertPtr(argv[0], &vptr, SWIGTYPE_p_datamunge__graphics__RPlot, 0);
+    _v = SWIG_CheckState(res);
+    if (_v) {
+      int res = swig::asptr(argv[1], (std::vector< double,std::allocator< double > >**)(0));
+      _v = SWIG_CheckState(res);
+      if (_v) {
+        int res = swig::asptr(argv[2], (std::vector< double,std::allocator< double > >**)(0));
+        _v = SWIG_CheckState(res);
+        if (_v) {
+          int res = swig::asptr(argv[3], (std::vector< std::vector< double,std::allocator< double > >,std::allocator< std::vector< double,std::allocator< double > > > >**)(0));
+          _v = SWIG_CheckState(res);
+          if (_v) {
+            void *vptr = 0;
+            int res = SWIG_ConvertPtr(argv[4], &vptr, SWIGTYPE_p_std__vectorT_datamunge__graphics__RGB_std__allocatorT_datamunge__graphics__RGB_t_t, SWIG_POINTER_NO_NULL);
+            _v = SWIG_CheckState(res);
+            if (_v) {
+              {
+                int res = SWIG_AsVal_double(argv[5], NULL);
+                _v = SWIG_CheckState(res);
+              }
+              if (_v) {
+                return _wrap_RPlot_image__SWIG_1(nargs, args, self);
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+  if (argc == 7) {
+    int _v = 0;
+    void *vptr = 0;
+    int res = SWIG_ConvertPtr(argv[0], &vptr, SWIGTYPE_p_datamunge__graphics__RPlot, 0);
+    _v = SWIG_CheckState(res);
+    if (_v) {
+      int res = swig::asptr(argv[1], (std::vector< double,std::allocator< double > >**)(0));
+      _v = SWIG_CheckState(res);
+      if (_v) {
+        int res = swig::asptr(argv[2], (std::vector< double,std::allocator< double > >**)(0));
+        _v = SWIG_CheckState(res);
+        if (_v) {
+          int res = swig::asptr(argv[3], (std::vector< std::vector< double,std::allocator< double > >,std::allocator< std::vector< double,std::allocator< double > > > >**)(0));
+          _v = SWIG_CheckState(res);
+          if (_v) {
+            void *vptr = 0;
+            int res = SWIG_ConvertPtr(argv[4], &vptr, SWIGTYPE_p_std__vectorT_datamunge__graphics__RGB_std__allocatorT_datamunge__graphics__RGB_t_t, SWIG_POINTER_NO_NULL);
+            _v = SWIG_CheckState(res);
+            if (_v) {
+              {
+                int res = SWIG_AsVal_double(argv[5], NULL);
+                _v = SWIG_CheckState(res);
+              }
+              if (_v) {
+                {
+                  int res = SWIG_AsVal_double(argv[6], NULL);
+                  _v = SWIG_CheckState(res);
+                }
+                if (_v) {
+                  return _wrap_RPlot_image__SWIG_0(nargs, args, self);
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+  
+fail:
+  Ruby_Format_OverloadedError( argc, 8, "RPlot.image", 
+    "    datamunge::graphics::RPlot RPlot.image(std::vector< double,std::allocator< double > > const &x, std::vector< double,std::allocator< double > > const &y, std::vector< std::vector< double,std::allocator< double > >,std::allocator< std::vector< double,std::allocator< double > > > > const &z, std::vector< datamunge::graphics::RGBA,std::allocator< datamunge::graphics::RGBA > > palette, double z_min, double z_max)\n"
+    "    datamunge::graphics::RPlot RPlot.image(std::vector< double,std::allocator< double > > const &x, std::vector< double,std::allocator< double > > const &y, std::vector< std::vector< double,std::allocator< double > >,std::allocator< std::vector< double,std::allocator< double > > > > const &z, std::vector< datamunge::graphics::RGBA,std::allocator< datamunge::graphics::RGBA > > palette, double z_min)\n"
+    "    datamunge::graphics::RPlot RPlot.image(std::vector< double,std::allocator< double > > const &x, std::vector< double,std::allocator< double > > const &y, std::vector< std::vector< double,std::allocator< double > >,std::allocator< std::vector< double,std::allocator< double > > > > const &z, std::vector< datamunge::graphics::RGBA,std::allocator< datamunge::graphics::RGBA > > palette)\n"
+    "    datamunge::graphics::RPlot & RPlot.image(std::vector< double,std::allocator< double > > const &x, std::vector< double,std::allocator< double > > const &y, std::vector< std::vector< double,std::allocator< double > >,std::allocator< std::vector< double,std::allocator< double > > > > const &z)\n");
   
   return Qnil;
 }
@@ -96797,7 +101872,7 @@ _wrap_RPlot_segments__SWIG_0(int argc, VALUE *argv, VALUE self) {
   std::vector< double,std::allocator< double > > arg3 ;
   std::vector< double,std::allocator< double > > arg4 ;
   std::vector< double,std::allocator< double > > arg5 ;
-  SwigValueWrapper< datamunge::graphics::RGB > arg6 ;
+  datamunge::graphics::RGBA arg6 ;
   double arg7 ;
   void *argp1 = 0 ;
   int res1 = 0 ;
@@ -96811,7 +101886,7 @@ _wrap_RPlot_segments__SWIG_0(int argc, VALUE *argv, VALUE self) {
   if ((argc < 6) || (argc > 6)) {
     rb_raise(rb_eArgError, "wrong # of arguments(%d for 6)",argc); SWIG_fail;
   }
-  res1 = SWIG_ConvertPtr(self, &argp1,SWIGTYPE_p_datamunge__plot__RPlot, 0 |  0 );
+  res1 = SWIG_ConvertPtr(self, &argp1,SWIGTYPE_p_datamunge__graphics__RPlot, 0 |  0 );
   if (!SWIG_IsOK(res1)) {
     SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::graphics::RPlot *","segments", 1, self )); 
   }
@@ -96853,14 +101928,14 @@ _wrap_RPlot_segments__SWIG_0(int argc, VALUE *argv, VALUE self) {
     if (SWIG_IsNewObj(res)) delete ptr;
   }
   {
-    res6 = SWIG_ConvertPtr(argv[4], &argp6, SWIGTYPE_p_datamunge__plot__RGB,  0 );
+    res6 = SWIG_ConvertPtr(argv[4], &argp6, SWIGTYPE_p_datamunge__graphics__RGB,  0 );
     if (!SWIG_IsOK(res6)) {
-      SWIG_exception_fail(SWIG_ArgError(res6), Ruby_Format_TypeError( "", "datamunge::graphics::RGB","segments", 6, argv[4] )); 
+      SWIG_exception_fail(SWIG_ArgError(res6), Ruby_Format_TypeError( "", "datamunge::graphics::RGBA","segments", 6, argv[4] )); 
     }  
     if (!argp6) {
-      SWIG_exception_fail(SWIG_NullReferenceError, Ruby_Format_TypeError("invalid null reference ", "datamunge::graphics::RGB","segments", 6, argv[4]));
+      SWIG_exception_fail(SWIG_NullReferenceError, Ruby_Format_TypeError("invalid null reference ", "datamunge::graphics::RGBA","segments", 6, argv[4]));
     } else {
-      arg6 = *(reinterpret_cast< datamunge::graphics::RGB * >(argp6));
+      arg6 = *(reinterpret_cast< datamunge::graphics::RGBA * >(argp6));
     }
   }
   ecode7 = SWIG_AsVal_double(argv[5], &val7);
@@ -96869,7 +101944,7 @@ _wrap_RPlot_segments__SWIG_0(int argc, VALUE *argv, VALUE self) {
   } 
   arg7 = static_cast< double >(val7);
   result = (datamunge::graphics::RPlot *) &(arg1)->segments(SWIG_STD_MOVE(*(&arg2)),SWIG_STD_MOVE(*(&arg3)),SWIG_STD_MOVE(*(&arg4)),SWIG_STD_MOVE(*(&arg5)),SWIG_STD_MOVE(*(&arg6)),arg7);
-  vresult = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__plot__RPlot, 0 |  0 );
+  vresult = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__graphics__RPlot, 0 |  0 );
   return vresult;
 fail:
   return Qnil;
@@ -96883,7 +101958,7 @@ _wrap_RPlot_segments__SWIG_1(int argc, VALUE *argv, VALUE self) {
   std::vector< double,std::allocator< double > > arg3 ;
   std::vector< double,std::allocator< double > > arg4 ;
   std::vector< double,std::allocator< double > > arg5 ;
-  SwigValueWrapper< datamunge::graphics::RGB > arg6 ;
+  datamunge::graphics::RGBA arg6 ;
   void *argp1 = 0 ;
   int res1 = 0 ;
   void *argp6 = 0 ;
@@ -96894,7 +101969,7 @@ _wrap_RPlot_segments__SWIG_1(int argc, VALUE *argv, VALUE self) {
   if ((argc < 5) || (argc > 5)) {
     rb_raise(rb_eArgError, "wrong # of arguments(%d for 5)",argc); SWIG_fail;
   }
-  res1 = SWIG_ConvertPtr(self, &argp1,SWIGTYPE_p_datamunge__plot__RPlot, 0 |  0 );
+  res1 = SWIG_ConvertPtr(self, &argp1,SWIGTYPE_p_datamunge__graphics__RPlot, 0 |  0 );
   if (!SWIG_IsOK(res1)) {
     SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::graphics::RPlot *","segments", 1, self )); 
   }
@@ -96936,18 +102011,18 @@ _wrap_RPlot_segments__SWIG_1(int argc, VALUE *argv, VALUE self) {
     if (SWIG_IsNewObj(res)) delete ptr;
   }
   {
-    res6 = SWIG_ConvertPtr(argv[4], &argp6, SWIGTYPE_p_datamunge__plot__RGB,  0 );
+    res6 = SWIG_ConvertPtr(argv[4], &argp6, SWIGTYPE_p_datamunge__graphics__RGB,  0 );
     if (!SWIG_IsOK(res6)) {
-      SWIG_exception_fail(SWIG_ArgError(res6), Ruby_Format_TypeError( "", "datamunge::graphics::RGB","segments", 6, argv[4] )); 
+      SWIG_exception_fail(SWIG_ArgError(res6), Ruby_Format_TypeError( "", "datamunge::graphics::RGBA","segments", 6, argv[4] )); 
     }  
     if (!argp6) {
-      SWIG_exception_fail(SWIG_NullReferenceError, Ruby_Format_TypeError("invalid null reference ", "datamunge::graphics::RGB","segments", 6, argv[4]));
+      SWIG_exception_fail(SWIG_NullReferenceError, Ruby_Format_TypeError("invalid null reference ", "datamunge::graphics::RGBA","segments", 6, argv[4]));
     } else {
-      arg6 = *(reinterpret_cast< datamunge::graphics::RGB * >(argp6));
+      arg6 = *(reinterpret_cast< datamunge::graphics::RGBA * >(argp6));
     }
   }
   result = (datamunge::graphics::RPlot *) &(arg1)->segments(SWIG_STD_MOVE(*(&arg2)),SWIG_STD_MOVE(*(&arg3)),SWIG_STD_MOVE(*(&arg4)),SWIG_STD_MOVE(*(&arg5)),SWIG_STD_MOVE(*(&arg6)));
-  vresult = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__plot__RPlot, 0 |  0 );
+  vresult = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__graphics__RPlot, 0 |  0 );
   return vresult;
 fail:
   return Qnil;
@@ -96969,7 +102044,7 @@ _wrap_RPlot_segments__SWIG_2(int argc, VALUE *argv, VALUE self) {
   if ((argc < 4) || (argc > 4)) {
     rb_raise(rb_eArgError, "wrong # of arguments(%d for 4)",argc); SWIG_fail;
   }
-  res1 = SWIG_ConvertPtr(self, &argp1,SWIGTYPE_p_datamunge__plot__RPlot, 0 |  0 );
+  res1 = SWIG_ConvertPtr(self, &argp1,SWIGTYPE_p_datamunge__graphics__RPlot, 0 |  0 );
   if (!SWIG_IsOK(res1)) {
     SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::graphics::RPlot *","segments", 1, self )); 
   }
@@ -97011,7 +102086,7 @@ _wrap_RPlot_segments__SWIG_2(int argc, VALUE *argv, VALUE self) {
     if (SWIG_IsNewObj(res)) delete ptr;
   }
   result = (datamunge::graphics::RPlot *) &(arg1)->segments(SWIG_STD_MOVE(*(&arg2)),SWIG_STD_MOVE(*(&arg3)),SWIG_STD_MOVE(*(&arg4)),SWIG_STD_MOVE(*(&arg5)));
-  vresult = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__plot__RPlot, 0 |  0 );
+  vresult = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__graphics__RPlot, 0 |  0 );
   return vresult;
 fail:
   return Qnil;
@@ -97032,7 +102107,7 @@ SWIGINTERN VALUE _wrap_RPlot_segments(int nargs, VALUE *args, VALUE self) {
   if (argc == 5) {
     int _v = 0;
     void *vptr = 0;
-    int res = SWIG_ConvertPtr(argv[0], &vptr, SWIGTYPE_p_datamunge__plot__RPlot, 0);
+    int res = SWIG_ConvertPtr(argv[0], &vptr, SWIGTYPE_p_datamunge__graphics__RPlot, 0);
     _v = SWIG_CheckState(res);
     if (_v) {
       int res = swig::asptr(argv[1], (std::vector< double,std::allocator< double > >**)(0));
@@ -97057,7 +102132,7 @@ SWIGINTERN VALUE _wrap_RPlot_segments(int nargs, VALUE *args, VALUE self) {
   if (argc == 6) {
     int _v = 0;
     void *vptr = 0;
-    int res = SWIG_ConvertPtr(argv[0], &vptr, SWIGTYPE_p_datamunge__plot__RPlot, 0);
+    int res = SWIG_ConvertPtr(argv[0], &vptr, SWIGTYPE_p_datamunge__graphics__RPlot, 0);
     _v = SWIG_CheckState(res);
     if (_v) {
       int res = swig::asptr(argv[1], (std::vector< double,std::allocator< double > >**)(0));
@@ -97073,7 +102148,7 @@ SWIGINTERN VALUE _wrap_RPlot_segments(int nargs, VALUE *args, VALUE self) {
             _v = SWIG_CheckState(res);
             if (_v) {
               void *vptr = 0;
-              int res = SWIG_ConvertPtr(argv[5], &vptr, SWIGTYPE_p_datamunge__plot__RGB, SWIG_POINTER_NO_NULL);
+              int res = SWIG_ConvertPtr(argv[5], &vptr, SWIGTYPE_p_datamunge__graphics__RGB, SWIG_POINTER_NO_NULL);
               _v = SWIG_CheckState(res);
               if (_v) {
                 return _wrap_RPlot_segments__SWIG_1(nargs, args, self);
@@ -97087,7 +102162,7 @@ SWIGINTERN VALUE _wrap_RPlot_segments(int nargs, VALUE *args, VALUE self) {
   if (argc == 7) {
     int _v = 0;
     void *vptr = 0;
-    int res = SWIG_ConvertPtr(argv[0], &vptr, SWIGTYPE_p_datamunge__plot__RPlot, 0);
+    int res = SWIG_ConvertPtr(argv[0], &vptr, SWIGTYPE_p_datamunge__graphics__RPlot, 0);
     _v = SWIG_CheckState(res);
     if (_v) {
       int res = swig::asptr(argv[1], (std::vector< double,std::allocator< double > >**)(0));
@@ -97103,7 +102178,7 @@ SWIGINTERN VALUE _wrap_RPlot_segments(int nargs, VALUE *args, VALUE self) {
             _v = SWIG_CheckState(res);
             if (_v) {
               void *vptr = 0;
-              int res = SWIG_ConvertPtr(argv[5], &vptr, SWIGTYPE_p_datamunge__plot__RGB, SWIG_POINTER_NO_NULL);
+              int res = SWIG_ConvertPtr(argv[5], &vptr, SWIGTYPE_p_datamunge__graphics__RGB, SWIG_POINTER_NO_NULL);
               _v = SWIG_CheckState(res);
               if (_v) {
                 {
@@ -97123,47 +102198,16 @@ SWIGINTERN VALUE _wrap_RPlot_segments(int nargs, VALUE *args, VALUE self) {
   
 fail:
   Ruby_Format_OverloadedError( argc, 8, "RPlot.segments", 
-    "    datamunge::graphics::RPlot RPlot.segments(std::vector< double,std::allocator< double > > x0, std::vector< double,std::allocator< double > > y0, std::vector< double,std::allocator< double > > x1, std::vector< double,std::allocator< double > > y1, datamunge::graphics::RGB color, double stroke_width)\n"
-    "    datamunge::graphics::RPlot RPlot.segments(std::vector< double,std::allocator< double > > x0, std::vector< double,std::allocator< double > > y0, std::vector< double,std::allocator< double > > x1, std::vector< double,std::allocator< double > > y1, datamunge::graphics::RGB color)\n"
+    "    datamunge::graphics::RPlot RPlot.segments(std::vector< double,std::allocator< double > > x0, std::vector< double,std::allocator< double > > y0, std::vector< double,std::allocator< double > > x1, std::vector< double,std::allocator< double > > y1, datamunge::graphics::RGBA color, double stroke_width)\n"
+    "    datamunge::graphics::RPlot RPlot.segments(std::vector< double,std::allocator< double > > x0, std::vector< double,std::allocator< double > > y0, std::vector< double,std::allocator< double > > x1, std::vector< double,std::allocator< double > > y1, datamunge::graphics::RGBA color)\n"
     "    datamunge::graphics::RPlot & RPlot.segments(std::vector< double,std::allocator< double > > x0, std::vector< double,std::allocator< double > > y0, std::vector< double,std::allocator< double > > x1, std::vector< double,std::allocator< double > > y1)\n");
   
   return Qnil;
 }
 
 
-SWIGINTERN VALUE
-#ifdef HAVE_RB_DEFINE_ALLOC_FUNC
-_wrap_RPlot_allocate(VALUE self)
-#else
-_wrap_RPlot_allocate(int argc, VALUE *argv, VALUE self)
-#endif
-{
-  VALUE vresult = SWIG_NewClassInstance(self, SWIGTYPE_p_datamunge__plot__RPlot);
-#ifndef HAVE_RB_DEFINE_ALLOC_FUNC
-  rb_obj_call_init(vresult, argc, argv);
-#endif
-  return vresult;
-}
-
-
-SWIGINTERN VALUE
-_wrap_new_RPlot(int argc, VALUE *argv, VALUE self) {
-  const char *classname SWIGUNUSED = "Octruby::RPlot";
-  datamunge::graphics::RPlot *result = 0 ;
-  
-  if ((argc < 0) || (argc > 0)) {
-    rb_raise(rb_eArgError, "wrong # of arguments(%d for 0)",argc); SWIG_fail;
-  }
-  result = (datamunge::graphics::RPlot *)new datamunge::graphics::RPlot();
-  ((struct swig_ruby_wrapped_object *)RTYPEDDATA_GET_DATA(self))->data = result;
-  return self;
-fail:
-  return Qnil;
-}
-
-
 SWIGINTERN void
-free_datamunge_plot_RPlot(void *self) {
+free_datamunge_graphics_RPlot(void *self) {
     datamunge::graphics::RPlot *arg1 = (datamunge::graphics::RPlot *)self;
     delete arg1;
 }
@@ -97195,7 +102239,7 @@ _wrap_RLayout_create(int argc, VALUE *argv, VALUE self) {
   } 
   arg2 = static_cast< std::size_t >(val2);
   result = datamunge::graphics::RLayout::create(SWIG_STD_MOVE(*(&arg1)),SWIG_STD_MOVE(*(&arg2)));
-  vresult = SWIG_NewPointerObj((new datamunge::graphics::RLayout(result)), SWIGTYPE_p_datamunge__plot__RLayout, SWIG_POINTER_OWN |  0 );
+  vresult = SWIG_NewPointerObj((new datamunge::graphics::RLayout(result)), SWIGTYPE_p_datamunge__graphics__RLayout, SWIG_POINTER_OWN |  0 );
   return vresult;
 fail:
   return Qnil;
@@ -97216,12 +102260,12 @@ _wrap_RLayout_add(int argc, VALUE *argv, VALUE self) {
   if ((argc < 1) || (argc > 1)) {
     rb_raise(rb_eArgError, "wrong # of arguments(%d for 1)",argc); SWIG_fail;
   }
-  res1 = SWIG_ConvertPtr(self, &argp1,SWIGTYPE_p_datamunge__plot__RLayout, 0 |  0 );
+  res1 = SWIG_ConvertPtr(self, &argp1,SWIGTYPE_p_datamunge__graphics__RLayout, 0 |  0 );
   if (!SWIG_IsOK(res1)) {
     SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::graphics::RLayout *","add", 1, self )); 
   }
   arg1 = reinterpret_cast< datamunge::graphics::RLayout * >(argp1);
-  res2 = SWIG_ConvertPtr(argv[0], &argp2, SWIGTYPE_p_datamunge__plot__Plot,  0 );
+  res2 = SWIG_ConvertPtr(argv[0], &argp2, SWIGTYPE_p_datamunge__graphics__Plot,  0 );
   if (!SWIG_IsOK(res2)) {
     SWIG_exception_fail(SWIG_ArgError(res2), Ruby_Format_TypeError( "", "datamunge::graphics::Plot const &","add", 2, argv[0] )); 
   }
@@ -97230,7 +102274,7 @@ _wrap_RLayout_add(int argc, VALUE *argv, VALUE self) {
   }
   arg2 = reinterpret_cast< datamunge::graphics::Plot * >(argp2);
   result = (datamunge::graphics::RLayout *) &(arg1)->add((datamunge::graphics::Plot const &)*arg2);
-  vresult = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__plot__RLayout, 0 |  0 );
+  vresult = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__graphics__RLayout, 0 |  0 );
   return vresult;
 fail:
   return Qnil;
@@ -97262,7 +102306,7 @@ _wrap_RLayout_size(int argc, VALUE *argv, VALUE self) {
   if ((argc < 2) || (argc > 2)) {
     rb_raise(rb_eArgError, "wrong # of arguments(%d for 2)",argc); SWIG_fail;
   }
-  res1 = SWIG_ConvertPtr(self, &argp1,SWIGTYPE_p_datamunge__plot__RLayout, 0 |  0 );
+  res1 = SWIG_ConvertPtr(self, &argp1,SWIGTYPE_p_datamunge__graphics__RLayout, 0 |  0 );
   if (!SWIG_IsOK(res1)) {
     SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::graphics::RLayout *","size", 1, self )); 
   }
@@ -97278,7 +102322,217 @@ _wrap_RLayout_size(int argc, VALUE *argv, VALUE self) {
   } 
   arg3 = static_cast< std::size_t >(val3);
   result = (datamunge::graphics::RLayout *) &(arg1)->size(SWIG_STD_MOVE(*(&arg2)),SWIG_STD_MOVE(*(&arg3)));
-  vresult = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__plot__RLayout, 0 |  0 );
+  vresult = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__graphics__RLayout, 0 |  0 );
+  return vresult;
+fail:
+  return Qnil;
+}
+
+
+SWIGINTERN VALUE
+_wrap_RLayout_title(int argc, VALUE *argv, VALUE self) {
+  datamunge::graphics::RLayout *arg1 = 0 ;
+  std::string arg2 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  datamunge::graphics::RLayout *result = 0 ;
+  VALUE vresult = Qnil;
+  
+  if ((argc < 1) || (argc > 1)) {
+    rb_raise(rb_eArgError, "wrong # of arguments(%d for 1)",argc); SWIG_fail;
+  }
+  res1 = SWIG_ConvertPtr(self, &argp1,SWIGTYPE_p_datamunge__graphics__RLayout, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::graphics::RLayout *","title", 1, self )); 
+  }
+  arg1 = reinterpret_cast< datamunge::graphics::RLayout * >(argp1);
+  {
+    std::string *ptr = (std::string *)0;
+    int res = SWIG_AsPtr_std_string(argv[0], &ptr);
+    if (!SWIG_IsOK(res) || !ptr) {
+      SWIG_exception_fail(SWIG_ArgError((ptr ? res : SWIG_TypeError)), Ruby_Format_TypeError( "", "std::string","title", 2, argv[0] )); 
+    }
+    arg2 = *ptr;
+    if (SWIG_IsNewObj(res)) delete ptr;
+  }
+  result = (datamunge::graphics::RLayout *) &(arg1)->title(SWIG_STD_MOVE(*(&arg2)));
+  vresult = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__graphics__RLayout, 0 |  0 );
+  return vresult;
+fail:
+  return Qnil;
+}
+
+
+SWIGINTERN VALUE
+_wrap_RLayout_rows(int argc, VALUE *argv, VALUE self) {
+  datamunge::graphics::RLayout *arg1 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  std::size_t result;
+  VALUE vresult = Qnil;
+  
+  if ((argc < 0) || (argc > 0)) {
+    rb_raise(rb_eArgError, "wrong # of arguments(%d for 0)",argc); SWIG_fail;
+  }
+  res1 = SWIG_ConvertPtr(self, &argp1,SWIGTYPE_p_datamunge__graphics__RLayout, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::graphics::RLayout const *","rows", 1, self )); 
+  }
+  arg1 = reinterpret_cast< datamunge::graphics::RLayout * >(argp1);
+  result = ((datamunge::graphics::RLayout const *)arg1)->rows();
+  vresult = SWIG_From_size_t(static_cast< size_t >(result));
+  return vresult;
+fail:
+  return Qnil;
+}
+
+
+SWIGINTERN VALUE
+_wrap_RLayout_cols(int argc, VALUE *argv, VALUE self) {
+  datamunge::graphics::RLayout *arg1 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  std::size_t result;
+  VALUE vresult = Qnil;
+  
+  if ((argc < 0) || (argc > 0)) {
+    rb_raise(rb_eArgError, "wrong # of arguments(%d for 0)",argc); SWIG_fail;
+  }
+  res1 = SWIG_ConvertPtr(self, &argp1,SWIGTYPE_p_datamunge__graphics__RLayout, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::graphics::RLayout const *","cols", 1, self )); 
+  }
+  arg1 = reinterpret_cast< datamunge::graphics::RLayout * >(argp1);
+  result = ((datamunge::graphics::RLayout const *)arg1)->cols();
+  vresult = SWIG_From_size_t(static_cast< size_t >(result));
+  return vresult;
+fail:
+  return Qnil;
+}
+
+
+SWIGINTERN VALUE
+_wrap_RLayout_width(int argc, VALUE *argv, VALUE self) {
+  datamunge::graphics::RLayout *arg1 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  std::size_t result;
+  VALUE vresult = Qnil;
+  
+  if ((argc < 0) || (argc > 0)) {
+    rb_raise(rb_eArgError, "wrong # of arguments(%d for 0)",argc); SWIG_fail;
+  }
+  res1 = SWIG_ConvertPtr(self, &argp1,SWIGTYPE_p_datamunge__graphics__RLayout, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::graphics::RLayout const *","width", 1, self )); 
+  }
+  arg1 = reinterpret_cast< datamunge::graphics::RLayout * >(argp1);
+  result = ((datamunge::graphics::RLayout const *)arg1)->width();
+  vresult = SWIG_From_size_t(static_cast< size_t >(result));
+  return vresult;
+fail:
+  return Qnil;
+}
+
+
+SWIGINTERN VALUE
+_wrap_RLayout_height(int argc, VALUE *argv, VALUE self) {
+  datamunge::graphics::RLayout *arg1 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  std::size_t result;
+  VALUE vresult = Qnil;
+  
+  if ((argc < 0) || (argc > 0)) {
+    rb_raise(rb_eArgError, "wrong # of arguments(%d for 0)",argc); SWIG_fail;
+  }
+  res1 = SWIG_ConvertPtr(self, &argp1,SWIGTYPE_p_datamunge__graphics__RLayout, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::graphics::RLayout const *","height", 1, self )); 
+  }
+  arg1 = reinterpret_cast< datamunge::graphics::RLayout * >(argp1);
+  result = ((datamunge::graphics::RLayout const *)arg1)->height();
+  vresult = SWIG_From_size_t(static_cast< size_t >(result));
+  return vresult;
+fail:
+  return Qnil;
+}
+
+
+SWIGINTERN VALUE
+_wrap_RLayout_panel_count(int argc, VALUE *argv, VALUE self) {
+  datamunge::graphics::RLayout *arg1 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  std::size_t result;
+  VALUE vresult = Qnil;
+  
+  if ((argc < 0) || (argc > 0)) {
+    rb_raise(rb_eArgError, "wrong # of arguments(%d for 0)",argc); SWIG_fail;
+  }
+  res1 = SWIG_ConvertPtr(self, &argp1,SWIGTYPE_p_datamunge__graphics__RLayout, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::graphics::RLayout const *","panel_count", 1, self )); 
+  }
+  arg1 = reinterpret_cast< datamunge::graphics::RLayout * >(argp1);
+  result = ((datamunge::graphics::RLayout const *)arg1)->panel_count();
+  vresult = SWIG_From_size_t(static_cast< size_t >(result));
+  return vresult;
+fail:
+  return Qnil;
+}
+
+
+SWIGINTERN VALUE
+_wrap_RLayout_title_text(int argc, VALUE *argv, VALUE self) {
+  datamunge::graphics::RLayout *arg1 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  std::string *result = 0 ;
+  VALUE vresult = Qnil;
+  
+  if ((argc < 0) || (argc > 0)) {
+    rb_raise(rb_eArgError, "wrong # of arguments(%d for 0)",argc); SWIG_fail;
+  }
+  res1 = SWIG_ConvertPtr(self, &argp1,SWIGTYPE_p_datamunge__graphics__RLayout, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::graphics::RLayout const *","title_text", 1, self )); 
+  }
+  arg1 = reinterpret_cast< datamunge::graphics::RLayout * >(argp1);
+  result = (std::string *) &((datamunge::graphics::RLayout const *)arg1)->title_text();
+  vresult = SWIG_From_std_string(static_cast< std::string >(*result));
+  return vresult;
+fail:
+  return Qnil;
+}
+
+
+SWIGINTERN VALUE
+_wrap_RLayout_panel(int argc, VALUE *argv, VALUE self) {
+  datamunge::graphics::RLayout *arg1 = 0 ;
+  std::size_t arg2 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  size_t val2 ;
+  int ecode2 = 0 ;
+  datamunge::graphics::Plot *result = 0 ;
+  VALUE vresult = Qnil;
+  
+  if ((argc < 1) || (argc > 1)) {
+    rb_raise(rb_eArgError, "wrong # of arguments(%d for 1)",argc); SWIG_fail;
+  }
+  res1 = SWIG_ConvertPtr(self, &argp1,SWIGTYPE_p_datamunge__graphics__RLayout, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::graphics::RLayout const *","panel", 1, self )); 
+  }
+  arg1 = reinterpret_cast< datamunge::graphics::RLayout * >(argp1);
+  ecode2 = SWIG_AsVal_size_t(argv[0], &val2);
+  if (!SWIG_IsOK(ecode2)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode2), Ruby_Format_TypeError( "", "std::size_t","panel", 2, argv[0] ));
+  } 
+  arg2 = static_cast< std::size_t >(val2);
+  result = (datamunge::graphics::Plot *) &((datamunge::graphics::RLayout const *)arg1)->panel(SWIG_STD_MOVE(*(&arg2)));
+  vresult = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__graphics__Plot, 0 |  0 );
   return vresult;
 fail:
   return Qnil;
@@ -97296,7 +102550,7 @@ _wrap_RLayout_to_svg(int argc, VALUE *argv, VALUE self) {
   if ((argc < 0) || (argc > 0)) {
     rb_raise(rb_eArgError, "wrong # of arguments(%d for 0)",argc); SWIG_fail;
   }
-  res1 = SWIG_ConvertPtr(self, &argp1,SWIGTYPE_p_datamunge__plot__RLayout, 0 |  0 );
+  res1 = SWIG_ConvertPtr(self, &argp1,SWIGTYPE_p_datamunge__graphics__RLayout, 0 |  0 );
   if (!SWIG_IsOK(res1)) {
     SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::graphics::RLayout const *","to_svg", 1, self )); 
   }
@@ -97320,7 +102574,7 @@ _wrap_RLayout_save(int argc, VALUE *argv, VALUE self) {
   if ((argc < 1) || (argc > 1)) {
     rb_raise(rb_eArgError, "wrong # of arguments(%d for 1)",argc); SWIG_fail;
   }
-  res1 = SWIG_ConvertPtr(self, &argp1,SWIGTYPE_p_datamunge__plot__RLayout, 0 |  0 );
+  res1 = SWIG_ConvertPtr(self, &argp1,SWIGTYPE_p_datamunge__graphics__RLayout, 0 |  0 );
   if (!SWIG_IsOK(res1)) {
     SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::graphics::RLayout const *","save", 1, self )); 
   }
@@ -97356,7 +102610,7 @@ _wrap_RLayout_save_svg(int argc, VALUE *argv, VALUE self) {
   if ((argc < 1) || (argc > 1)) {
     rb_raise(rb_eArgError, "wrong # of arguments(%d for 1)",argc); SWIG_fail;
   }
-  res1 = SWIG_ConvertPtr(self, &argp1,SWIGTYPE_p_datamunge__plot__RLayout, 0 |  0 );
+  res1 = SWIG_ConvertPtr(self, &argp1,SWIGTYPE_p_datamunge__graphics__RLayout, 0 |  0 );
   if (!SWIG_IsOK(res1)) {
     SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::graphics::RLayout const *","save_svg", 1, self )); 
   }
@@ -97382,13 +102636,357 @@ fail:
 
 
 SWIGINTERN VALUE
+_wrap_RLayout_to_png(int argc, VALUE *argv, VALUE self) {
+  datamunge::graphics::RLayout *arg1 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  SwigValueWrapper< std::vector< unsigned char,std::allocator< unsigned char > > > result;
+  VALUE vresult = Qnil;
+  
+  if ((argc < 0) || (argc > 0)) {
+    rb_raise(rb_eArgError, "wrong # of arguments(%d for 0)",argc); SWIG_fail;
+  }
+  res1 = SWIG_ConvertPtr(self, &argp1,SWIGTYPE_p_datamunge__graphics__RLayout, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::graphics::RLayout const *","to_png", 1, self )); 
+  }
+  arg1 = reinterpret_cast< datamunge::graphics::RLayout * >(argp1);
+  result = ((datamunge::graphics::RLayout const *)arg1)->to_png();
+  vresult = SWIG_NewPointerObj((new std::vector< std::uint8_t,std::allocator< std::uint8_t > >(result)), SWIGTYPE_p_std__vectorT_unsigned_char_std__allocatorT_unsigned_char_t_t, SWIG_POINTER_OWN |  0 );
+  return vresult;
+fail:
+  return Qnil;
+}
+
+
+SWIGINTERN VALUE
+_wrap_RLayout_to_pdf(int argc, VALUE *argv, VALUE self) {
+  datamunge::graphics::RLayout *arg1 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  SwigValueWrapper< std::vector< unsigned char,std::allocator< unsigned char > > > result;
+  VALUE vresult = Qnil;
+  
+  if ((argc < 0) || (argc > 0)) {
+    rb_raise(rb_eArgError, "wrong # of arguments(%d for 0)",argc); SWIG_fail;
+  }
+  res1 = SWIG_ConvertPtr(self, &argp1,SWIGTYPE_p_datamunge__graphics__RLayout, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::graphics::RLayout const *","to_pdf", 1, self )); 
+  }
+  arg1 = reinterpret_cast< datamunge::graphics::RLayout * >(argp1);
+  result = ((datamunge::graphics::RLayout const *)arg1)->to_pdf();
+  vresult = SWIG_NewPointerObj((new std::vector< std::uint8_t,std::allocator< std::uint8_t > >(result)), SWIGTYPE_p_std__vectorT_unsigned_char_std__allocatorT_unsigned_char_t_t, SWIG_POINTER_OWN |  0 );
+  return vresult;
+fail:
+  return Qnil;
+}
+
+
+SWIGINTERN VALUE
+_wrap_RLayout_save_png(int argc, VALUE *argv, VALUE self) {
+  datamunge::graphics::RLayout *arg1 = 0 ;
+  std::string *arg2 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  int res2 = SWIG_OLDOBJ ;
+  
+  if ((argc < 1) || (argc > 1)) {
+    rb_raise(rb_eArgError, "wrong # of arguments(%d for 1)",argc); SWIG_fail;
+  }
+  res1 = SWIG_ConvertPtr(self, &argp1,SWIGTYPE_p_datamunge__graphics__RLayout, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::graphics::RLayout const *","save_png", 1, self )); 
+  }
+  arg1 = reinterpret_cast< datamunge::graphics::RLayout * >(argp1);
+  {
+    std::string *ptr = (std::string *)0;
+    res2 = SWIG_AsPtr_std_string(argv[0], &ptr);
+    if (!SWIG_IsOK(res2)) {
+      SWIG_exception_fail(SWIG_ArgError(res2), Ruby_Format_TypeError( "", "std::string const &","save_png", 2, argv[0] )); 
+    }
+    if (!ptr) {
+      SWIG_exception_fail(SWIG_NullReferenceError, Ruby_Format_TypeError("invalid null reference ", "std::string const &","save_png", 2, argv[0])); 
+    }
+    arg2 = ptr;
+  }
+  ((datamunge::graphics::RLayout const *)arg1)->save_png((std::string const &)*arg2);
+  if (SWIG_IsNewObj(res2)) delete arg2;
+  return Qnil;
+fail:
+  if (SWIG_IsNewObj(res2)) delete arg2;
+  return Qnil;
+}
+
+
+SWIGINTERN VALUE
+_wrap_RLayout_save_pdf(int argc, VALUE *argv, VALUE self) {
+  datamunge::graphics::RLayout *arg1 = 0 ;
+  std::string *arg2 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  int res2 = SWIG_OLDOBJ ;
+  
+  if ((argc < 1) || (argc > 1)) {
+    rb_raise(rb_eArgError, "wrong # of arguments(%d for 1)",argc); SWIG_fail;
+  }
+  res1 = SWIG_ConvertPtr(self, &argp1,SWIGTYPE_p_datamunge__graphics__RLayout, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::graphics::RLayout const *","save_pdf", 1, self )); 
+  }
+  arg1 = reinterpret_cast< datamunge::graphics::RLayout * >(argp1);
+  {
+    std::string *ptr = (std::string *)0;
+    res2 = SWIG_AsPtr_std_string(argv[0], &ptr);
+    if (!SWIG_IsOK(res2)) {
+      SWIG_exception_fail(SWIG_ArgError(res2), Ruby_Format_TypeError( "", "std::string const &","save_pdf", 2, argv[0] )); 
+    }
+    if (!ptr) {
+      SWIG_exception_fail(SWIG_NullReferenceError, Ruby_Format_TypeError("invalid null reference ", "std::string const &","save_pdf", 2, argv[0])); 
+    }
+    arg2 = ptr;
+  }
+  ((datamunge::graphics::RLayout const *)arg1)->save_pdf((std::string const &)*arg2);
+  if (SWIG_IsNewObj(res2)) delete arg2;
+  return Qnil;
+fail:
+  if (SWIG_IsNewObj(res2)) delete arg2;
+  return Qnil;
+}
+
+
+SWIGINTERN VALUE
+_wrap_RLayout_fit_panels(int argc, VALUE *argv, VALUE self) {
+  datamunge::graphics::RLayout *arg1 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  datamunge::graphics::RLayout *result = 0 ;
+  VALUE vresult = Qnil;
+  
+  if ((argc < 0) || (argc > 0)) {
+    rb_raise(rb_eArgError, "wrong # of arguments(%d for 0)",argc); SWIG_fail;
+  }
+  res1 = SWIG_ConvertPtr(self, &argp1,SWIGTYPE_p_datamunge__graphics__RLayout, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::graphics::RLayout *","fit_panels", 1, self )); 
+  }
+  arg1 = reinterpret_cast< datamunge::graphics::RLayout * >(argp1);
+  result = (datamunge::graphics::RLayout *) &(arg1)->fit_panels();
+  vresult = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__graphics__RLayout, 0 |  0 );
+  return vresult;
+fail:
+  return Qnil;
+}
+
+
+SWIGINTERN VALUE
+_wrap_RLayout_show__SWIG_0(int argc, VALUE *argv, VALUE self) {
+  datamunge::graphics::RLayout *arg1 = 0 ;
+  std::string *arg2 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  int res2 = SWIG_OLDOBJ ;
+  
+  if ((argc < 1) || (argc > 1)) {
+    rb_raise(rb_eArgError, "wrong # of arguments(%d for 1)",argc); SWIG_fail;
+  }
+  res1 = SWIG_ConvertPtr(self, &argp1,SWIGTYPE_p_datamunge__graphics__RLayout, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::graphics::RLayout const *","show", 1, self )); 
+  }
+  arg1 = reinterpret_cast< datamunge::graphics::RLayout * >(argp1);
+  {
+    std::string *ptr = (std::string *)0;
+    res2 = SWIG_AsPtr_std_string(argv[0], &ptr);
+    if (!SWIG_IsOK(res2)) {
+      SWIG_exception_fail(SWIG_ArgError(res2), Ruby_Format_TypeError( "", "std::string const &","show", 2, argv[0] )); 
+    }
+    if (!ptr) {
+      SWIG_exception_fail(SWIG_NullReferenceError, Ruby_Format_TypeError("invalid null reference ", "std::string const &","show", 2, argv[0])); 
+    }
+    arg2 = ptr;
+  }
+  ((datamunge::graphics::RLayout const *)arg1)->show((std::string const &)*arg2);
+  if (SWIG_IsNewObj(res2)) delete arg2;
+  return Qnil;
+fail:
+  if (SWIG_IsNewObj(res2)) delete arg2;
+  return Qnil;
+}
+
+
+SWIGINTERN VALUE
+_wrap_RLayout_show__SWIG_1(int argc, VALUE *argv, VALUE self) {
+  datamunge::graphics::RLayout *arg1 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  
+  if ((argc < 0) || (argc > 0)) {
+    rb_raise(rb_eArgError, "wrong # of arguments(%d for 0)",argc); SWIG_fail;
+  }
+  res1 = SWIG_ConvertPtr(self, &argp1,SWIGTYPE_p_datamunge__graphics__RLayout, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::graphics::RLayout const *","show", 1, self )); 
+  }
+  arg1 = reinterpret_cast< datamunge::graphics::RLayout * >(argp1);
+  ((datamunge::graphics::RLayout const *)arg1)->show();
+  return Qnil;
+fail:
+  return Qnil;
+}
+
+
+SWIGINTERN VALUE _wrap_RLayout_show(int nargs, VALUE *args, VALUE self) {
+  int argc;
+  VALUE argv[3];
+  int ii;
+  
+  argc = nargs + 1;
+  argv[0] = self;
+  if (argc > 3) SWIG_fail;
+  for (ii = 1; (ii < argc); ++ii) {
+    argv[ii] = args[ii-1];
+  }
+  if (argc == 1) {
+    int _v = 0;
+    void *vptr = 0;
+    int res = SWIG_ConvertPtr(argv[0], &vptr, SWIGTYPE_p_datamunge__graphics__RLayout, 0);
+    _v = SWIG_CheckState(res);
+    if (_v) {
+      return _wrap_RLayout_show__SWIG_1(nargs, args, self);
+    }
+  }
+  if (argc == 2) {
+    int _v = 0;
+    void *vptr = 0;
+    int res = SWIG_ConvertPtr(argv[0], &vptr, SWIGTYPE_p_datamunge__graphics__RLayout, 0);
+    _v = SWIG_CheckState(res);
+    if (_v) {
+      int res = SWIG_AsPtr_std_string(argv[1], (std::string**)(0));
+      _v = SWIG_CheckState(res);
+      if (_v) {
+        return _wrap_RLayout_show__SWIG_0(nargs, args, self);
+      }
+    }
+  }
+  
+fail:
+  Ruby_Format_OverloadedError( argc, 3, "RLayout.show", 
+    "    void RLayout.show(std::string const &title_hint)\n"
+    "    void RLayout.show()\n");
+  
+  return Qnil;
+}
+
+
+SWIGINTERN VALUE
+_wrap_RLayout_view__SWIG_0(int argc, VALUE *argv, VALUE self) {
+  datamunge::graphics::RLayout *arg1 = 0 ;
+  std::string *arg2 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  int res2 = SWIG_OLDOBJ ;
+  
+  if ((argc < 1) || (argc > 1)) {
+    rb_raise(rb_eArgError, "wrong # of arguments(%d for 1)",argc); SWIG_fail;
+  }
+  res1 = SWIG_ConvertPtr(self, &argp1,SWIGTYPE_p_datamunge__graphics__RLayout, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::graphics::RLayout const *","view", 1, self )); 
+  }
+  arg1 = reinterpret_cast< datamunge::graphics::RLayout * >(argp1);
+  {
+    std::string *ptr = (std::string *)0;
+    res2 = SWIG_AsPtr_std_string(argv[0], &ptr);
+    if (!SWIG_IsOK(res2)) {
+      SWIG_exception_fail(SWIG_ArgError(res2), Ruby_Format_TypeError( "", "std::string const &","view", 2, argv[0] )); 
+    }
+    if (!ptr) {
+      SWIG_exception_fail(SWIG_NullReferenceError, Ruby_Format_TypeError("invalid null reference ", "std::string const &","view", 2, argv[0])); 
+    }
+    arg2 = ptr;
+  }
+  ((datamunge::graphics::RLayout const *)arg1)->view((std::string const &)*arg2);
+  if (SWIG_IsNewObj(res2)) delete arg2;
+  return Qnil;
+fail:
+  if (SWIG_IsNewObj(res2)) delete arg2;
+  return Qnil;
+}
+
+
+SWIGINTERN VALUE
+_wrap_RLayout_view__SWIG_1(int argc, VALUE *argv, VALUE self) {
+  datamunge::graphics::RLayout *arg1 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  
+  if ((argc < 0) || (argc > 0)) {
+    rb_raise(rb_eArgError, "wrong # of arguments(%d for 0)",argc); SWIG_fail;
+  }
+  res1 = SWIG_ConvertPtr(self, &argp1,SWIGTYPE_p_datamunge__graphics__RLayout, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::graphics::RLayout const *","view", 1, self )); 
+  }
+  arg1 = reinterpret_cast< datamunge::graphics::RLayout * >(argp1);
+  ((datamunge::graphics::RLayout const *)arg1)->view();
+  return Qnil;
+fail:
+  return Qnil;
+}
+
+
+SWIGINTERN VALUE _wrap_RLayout_view(int nargs, VALUE *args, VALUE self) {
+  int argc;
+  VALUE argv[3];
+  int ii;
+  
+  argc = nargs + 1;
+  argv[0] = self;
+  if (argc > 3) SWIG_fail;
+  for (ii = 1; (ii < argc); ++ii) {
+    argv[ii] = args[ii-1];
+  }
+  if (argc == 1) {
+    int _v = 0;
+    void *vptr = 0;
+    int res = SWIG_ConvertPtr(argv[0], &vptr, SWIGTYPE_p_datamunge__graphics__RLayout, 0);
+    _v = SWIG_CheckState(res);
+    if (_v) {
+      return _wrap_RLayout_view__SWIG_1(nargs, args, self);
+    }
+  }
+  if (argc == 2) {
+    int _v = 0;
+    void *vptr = 0;
+    int res = SWIG_ConvertPtr(argv[0], &vptr, SWIGTYPE_p_datamunge__graphics__RLayout, 0);
+    _v = SWIG_CheckState(res);
+    if (_v) {
+      int res = SWIG_AsPtr_std_string(argv[1], (std::string**)(0));
+      _v = SWIG_CheckState(res);
+      if (_v) {
+        return _wrap_RLayout_view__SWIG_0(nargs, args, self);
+      }
+    }
+  }
+  
+fail:
+  Ruby_Format_OverloadedError( argc, 3, "RLayout.view", 
+    "    void RLayout.view(std::string const &title_hint)\n"
+    "    void RLayout.view()\n");
+  
+  return Qnil;
+}
+
+
+SWIGINTERN VALUE
 #ifdef HAVE_RB_DEFINE_ALLOC_FUNC
 _wrap_RLayout_allocate(VALUE self)
 #else
 _wrap_RLayout_allocate(int argc, VALUE *argv, VALUE self)
 #endif
 {
-  VALUE vresult = SWIG_NewClassInstance(self, SWIGTYPE_p_datamunge__plot__RLayout);
+  VALUE vresult = SWIG_NewClassInstance(self, SWIGTYPE_p_datamunge__graphics__RLayout);
 #ifndef HAVE_RB_DEFINE_ALLOC_FUNC
   rb_obj_call_init(vresult, argc, argv);
 #endif
@@ -97413,10 +103011,359 @@ fail:
 
 
 SWIGINTERN void
-free_datamunge_plot_RLayout(void *self) {
+free_datamunge_graphics_RLayout(void *self) {
     datamunge::graphics::RLayout *arg1 = (datamunge::graphics::RLayout *)self;
     delete arg1;
 }
+
+SWIGINTERN VALUE
+_wrap_terrain_colors(int argc, VALUE *argv, VALUE self) {
+  std::size_t arg1 ;
+  size_t val1 ;
+  int ecode1 = 0 ;
+  SwigValueWrapper< std::vector< datamunge::graphics::RGB,std::allocator< datamunge::graphics::RGB > > > result;
+  VALUE vresult = Qnil;
+  
+  if ((argc < 1) || (argc > 1)) {
+    rb_raise(rb_eArgError, "wrong # of arguments(%d for 1)",argc); SWIG_fail;
+  }
+  ecode1 = SWIG_AsVal_size_t(argv[0], &val1);
+  if (!SWIG_IsOK(ecode1)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode1), Ruby_Format_TypeError( "", "std::size_t","datamunge::graphics::terrain_colors", 1, argv[0] ));
+  } 
+  arg1 = static_cast< std::size_t >(val1);
+  result = datamunge::graphics::terrain_colors(SWIG_STD_MOVE(*(&arg1)));
+  vresult = SWIG_NewPointerObj((new std::vector< datamunge::graphics::RGBA,std::allocator< datamunge::graphics::RGBA > >(result)), SWIGTYPE_p_std__vectorT_datamunge__graphics__RGB_std__allocatorT_datamunge__graphics__RGB_t_t, SWIG_POINTER_OWN |  0 );
+  return vresult;
+fail:
+  return Qnil;
+}
+
+
+SWIGINTERN VALUE
+_wrap_diverging_colors(int argc, VALUE *argv, VALUE self) {
+  std::size_t arg1 ;
+  size_t val1 ;
+  int ecode1 = 0 ;
+  SwigValueWrapper< std::vector< datamunge::graphics::RGB,std::allocator< datamunge::graphics::RGB > > > result;
+  VALUE vresult = Qnil;
+  
+  if ((argc < 1) || (argc > 1)) {
+    rb_raise(rb_eArgError, "wrong # of arguments(%d for 1)",argc); SWIG_fail;
+  }
+  ecode1 = SWIG_AsVal_size_t(argv[0], &val1);
+  if (!SWIG_IsOK(ecode1)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode1), Ruby_Format_TypeError( "", "std::size_t","datamunge::graphics::diverging_colors", 1, argv[0] ));
+  } 
+  arg1 = static_cast< std::size_t >(val1);
+  result = datamunge::graphics::diverging_colors(SWIG_STD_MOVE(*(&arg1)));
+  vresult = SWIG_NewPointerObj((new std::vector< datamunge::graphics::RGBA,std::allocator< datamunge::graphics::RGBA > >(result)), SWIGTYPE_p_std__vectorT_datamunge__graphics__RGB_std__allocatorT_datamunge__graphics__RGB_t_t, SWIG_POINTER_OWN |  0 );
+  return vresult;
+fail:
+  return Qnil;
+}
+
+
+SWIGINTERN VALUE
+_wrap_viridis_colors(int argc, VALUE *argv, VALUE self) {
+  std::size_t arg1 ;
+  size_t val1 ;
+  int ecode1 = 0 ;
+  SwigValueWrapper< std::vector< datamunge::graphics::RGB,std::allocator< datamunge::graphics::RGB > > > result;
+  VALUE vresult = Qnil;
+  
+  if ((argc < 1) || (argc > 1)) {
+    rb_raise(rb_eArgError, "wrong # of arguments(%d for 1)",argc); SWIG_fail;
+  }
+  ecode1 = SWIG_AsVal_size_t(argv[0], &val1);
+  if (!SWIG_IsOK(ecode1)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode1), Ruby_Format_TypeError( "", "std::size_t","datamunge::graphics::viridis_colors", 1, argv[0] ));
+  } 
+  arg1 = static_cast< std::size_t >(val1);
+  result = datamunge::graphics::viridis_colors(SWIG_STD_MOVE(*(&arg1)));
+  vresult = SWIG_NewPointerObj((new std::vector< datamunge::graphics::RGBA,std::allocator< datamunge::graphics::RGBA > >(result)), SWIGTYPE_p_std__vectorT_datamunge__graphics__RGB_std__allocatorT_datamunge__graphics__RGB_t_t, SWIG_POINTER_OWN |  0 );
+  return vresult;
+fail:
+  return Qnil;
+}
+
+
+SWIGINTERN VALUE
+_wrap_value_colors__SWIG_0(int argc, VALUE *argv, VALUE self) {
+  std::vector< double,std::allocator< double > > *arg1 = 0 ;
+  SwigValueWrapper< std::vector< datamunge::graphics::RGB,std::allocator< datamunge::graphics::RGB > > > arg2 ;
+  double arg3 ;
+  double arg4 ;
+  int res1 = SWIG_OLDOBJ ;
+  void *argp2 = 0 ;
+  int res2 = 0 ;
+  double val3 ;
+  int ecode3 = 0 ;
+  double val4 ;
+  int ecode4 = 0 ;
+  SwigValueWrapper< std::vector< datamunge::graphics::RGB,std::allocator< datamunge::graphics::RGB > > > result;
+  VALUE vresult = Qnil;
+  
+  if ((argc < 4) || (argc > 4)) {
+    rb_raise(rb_eArgError, "wrong # of arguments(%d for 4)",argc); SWIG_fail;
+  }
+  {
+    std::vector< double,std::allocator< double > > *ptr = (std::vector< double,std::allocator< double > > *)0;
+    res1 = swig::asptr(argv[0], &ptr);
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "std::vector< double,std::allocator< double > > const &","datamunge::graphics::value_colors", 1, argv[0] )); 
+    }
+    if (!ptr) {
+      SWIG_exception_fail(SWIG_NullReferenceError, Ruby_Format_TypeError("invalid null reference ", "std::vector< double,std::allocator< double > > const &","datamunge::graphics::value_colors", 1, argv[0])); 
+    }
+    arg1 = ptr;
+  }
+  {
+    res2 = SWIG_ConvertPtr(argv[1], &argp2, SWIGTYPE_p_std__vectorT_datamunge__graphics__RGB_std__allocatorT_datamunge__graphics__RGB_t_t,  0 );
+    if (!SWIG_IsOK(res2)) {
+      SWIG_exception_fail(SWIG_ArgError(res2), Ruby_Format_TypeError( "", "std::vector< datamunge::graphics::RGBA,std::allocator< datamunge::graphics::RGBA > >","datamunge::graphics::value_colors", 2, argv[1] )); 
+    }  
+    if (!argp2) {
+      SWIG_exception_fail(SWIG_NullReferenceError, Ruby_Format_TypeError("invalid null reference ", "std::vector< datamunge::graphics::RGBA,std::allocator< datamunge::graphics::RGBA > >","datamunge::graphics::value_colors", 2, argv[1]));
+    } else {
+      arg2 = *(reinterpret_cast< std::vector< datamunge::graphics::RGBA,std::allocator< datamunge::graphics::RGBA > > * >(argp2));
+    }
+  }
+  ecode3 = SWIG_AsVal_double(argv[2], &val3);
+  if (!SWIG_IsOK(ecode3)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode3), Ruby_Format_TypeError( "", "double","datamunge::graphics::value_colors", 3, argv[2] ));
+  } 
+  arg3 = static_cast< double >(val3);
+  ecode4 = SWIG_AsVal_double(argv[3], &val4);
+  if (!SWIG_IsOK(ecode4)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode4), Ruby_Format_TypeError( "", "double","datamunge::graphics::value_colors", 4, argv[3] ));
+  } 
+  arg4 = static_cast< double >(val4);
+  result = datamunge::graphics::value_colors((std::vector< double,std::allocator< double > > const &)*arg1,SWIG_STD_MOVE(*(&arg2)),arg3,arg4);
+  vresult = SWIG_NewPointerObj((new std::vector< datamunge::graphics::RGBA,std::allocator< datamunge::graphics::RGBA > >(result)), SWIGTYPE_p_std__vectorT_datamunge__graphics__RGB_std__allocatorT_datamunge__graphics__RGB_t_t, SWIG_POINTER_OWN |  0 );
+  if (SWIG_IsNewObj(res1)) delete arg1;
+  return vresult;
+fail:
+  if (SWIG_IsNewObj(res1)) delete arg1;
+  return Qnil;
+}
+
+
+SWIGINTERN VALUE
+_wrap_value_colors__SWIG_1(int argc, VALUE *argv, VALUE self) {
+  std::vector< double,std::allocator< double > > *arg1 = 0 ;
+  SwigValueWrapper< std::vector< datamunge::graphics::RGB,std::allocator< datamunge::graphics::RGB > > > arg2 ;
+  double arg3 ;
+  int res1 = SWIG_OLDOBJ ;
+  void *argp2 = 0 ;
+  int res2 = 0 ;
+  double val3 ;
+  int ecode3 = 0 ;
+  SwigValueWrapper< std::vector< datamunge::graphics::RGB,std::allocator< datamunge::graphics::RGB > > > result;
+  VALUE vresult = Qnil;
+  
+  if ((argc < 3) || (argc > 3)) {
+    rb_raise(rb_eArgError, "wrong # of arguments(%d for 3)",argc); SWIG_fail;
+  }
+  {
+    std::vector< double,std::allocator< double > > *ptr = (std::vector< double,std::allocator< double > > *)0;
+    res1 = swig::asptr(argv[0], &ptr);
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "std::vector< double,std::allocator< double > > const &","datamunge::graphics::value_colors", 1, argv[0] )); 
+    }
+    if (!ptr) {
+      SWIG_exception_fail(SWIG_NullReferenceError, Ruby_Format_TypeError("invalid null reference ", "std::vector< double,std::allocator< double > > const &","datamunge::graphics::value_colors", 1, argv[0])); 
+    }
+    arg1 = ptr;
+  }
+  {
+    res2 = SWIG_ConvertPtr(argv[1], &argp2, SWIGTYPE_p_std__vectorT_datamunge__graphics__RGB_std__allocatorT_datamunge__graphics__RGB_t_t,  0 );
+    if (!SWIG_IsOK(res2)) {
+      SWIG_exception_fail(SWIG_ArgError(res2), Ruby_Format_TypeError( "", "std::vector< datamunge::graphics::RGBA,std::allocator< datamunge::graphics::RGBA > >","datamunge::graphics::value_colors", 2, argv[1] )); 
+    }  
+    if (!argp2) {
+      SWIG_exception_fail(SWIG_NullReferenceError, Ruby_Format_TypeError("invalid null reference ", "std::vector< datamunge::graphics::RGBA,std::allocator< datamunge::graphics::RGBA > >","datamunge::graphics::value_colors", 2, argv[1]));
+    } else {
+      arg2 = *(reinterpret_cast< std::vector< datamunge::graphics::RGBA,std::allocator< datamunge::graphics::RGBA > > * >(argp2));
+    }
+  }
+  ecode3 = SWIG_AsVal_double(argv[2], &val3);
+  if (!SWIG_IsOK(ecode3)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode3), Ruby_Format_TypeError( "", "double","datamunge::graphics::value_colors", 3, argv[2] ));
+  } 
+  arg3 = static_cast< double >(val3);
+  result = datamunge::graphics::value_colors((std::vector< double,std::allocator< double > > const &)*arg1,SWIG_STD_MOVE(*(&arg2)),arg3);
+  vresult = SWIG_NewPointerObj((new std::vector< datamunge::graphics::RGBA,std::allocator< datamunge::graphics::RGBA > >(result)), SWIGTYPE_p_std__vectorT_datamunge__graphics__RGB_std__allocatorT_datamunge__graphics__RGB_t_t, SWIG_POINTER_OWN |  0 );
+  if (SWIG_IsNewObj(res1)) delete arg1;
+  return vresult;
+fail:
+  if (SWIG_IsNewObj(res1)) delete arg1;
+  return Qnil;
+}
+
+
+SWIGINTERN VALUE
+_wrap_value_colors__SWIG_2(int argc, VALUE *argv, VALUE self) {
+  std::vector< double,std::allocator< double > > *arg1 = 0 ;
+  SwigValueWrapper< std::vector< datamunge::graphics::RGB,std::allocator< datamunge::graphics::RGB > > > arg2 ;
+  int res1 = SWIG_OLDOBJ ;
+  void *argp2 = 0 ;
+  int res2 = 0 ;
+  SwigValueWrapper< std::vector< datamunge::graphics::RGB,std::allocator< datamunge::graphics::RGB > > > result;
+  VALUE vresult = Qnil;
+  
+  if ((argc < 2) || (argc > 2)) {
+    rb_raise(rb_eArgError, "wrong # of arguments(%d for 2)",argc); SWIG_fail;
+  }
+  {
+    std::vector< double,std::allocator< double > > *ptr = (std::vector< double,std::allocator< double > > *)0;
+    res1 = swig::asptr(argv[0], &ptr);
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "std::vector< double,std::allocator< double > > const &","datamunge::graphics::value_colors", 1, argv[0] )); 
+    }
+    if (!ptr) {
+      SWIG_exception_fail(SWIG_NullReferenceError, Ruby_Format_TypeError("invalid null reference ", "std::vector< double,std::allocator< double > > const &","datamunge::graphics::value_colors", 1, argv[0])); 
+    }
+    arg1 = ptr;
+  }
+  {
+    res2 = SWIG_ConvertPtr(argv[1], &argp2, SWIGTYPE_p_std__vectorT_datamunge__graphics__RGB_std__allocatorT_datamunge__graphics__RGB_t_t,  0 );
+    if (!SWIG_IsOK(res2)) {
+      SWIG_exception_fail(SWIG_ArgError(res2), Ruby_Format_TypeError( "", "std::vector< datamunge::graphics::RGBA,std::allocator< datamunge::graphics::RGBA > >","datamunge::graphics::value_colors", 2, argv[1] )); 
+    }  
+    if (!argp2) {
+      SWIG_exception_fail(SWIG_NullReferenceError, Ruby_Format_TypeError("invalid null reference ", "std::vector< datamunge::graphics::RGBA,std::allocator< datamunge::graphics::RGBA > >","datamunge::graphics::value_colors", 2, argv[1]));
+    } else {
+      arg2 = *(reinterpret_cast< std::vector< datamunge::graphics::RGBA,std::allocator< datamunge::graphics::RGBA > > * >(argp2));
+    }
+  }
+  result = datamunge::graphics::value_colors((std::vector< double,std::allocator< double > > const &)*arg1,SWIG_STD_MOVE(*(&arg2)));
+  vresult = SWIG_NewPointerObj((new std::vector< datamunge::graphics::RGBA,std::allocator< datamunge::graphics::RGBA > >(result)), SWIGTYPE_p_std__vectorT_datamunge__graphics__RGB_std__allocatorT_datamunge__graphics__RGB_t_t, SWIG_POINTER_OWN |  0 );
+  if (SWIG_IsNewObj(res1)) delete arg1;
+  return vresult;
+fail:
+  if (SWIG_IsNewObj(res1)) delete arg1;
+  return Qnil;
+}
+
+
+SWIGINTERN VALUE
+_wrap_value_colors__SWIG_3(int argc, VALUE *argv, VALUE self) {
+  std::vector< double,std::allocator< double > > *arg1 = 0 ;
+  int res1 = SWIG_OLDOBJ ;
+  SwigValueWrapper< std::vector< datamunge::graphics::RGB,std::allocator< datamunge::graphics::RGB > > > result;
+  VALUE vresult = Qnil;
+  
+  if ((argc < 1) || (argc > 1)) {
+    rb_raise(rb_eArgError, "wrong # of arguments(%d for 1)",argc); SWIG_fail;
+  }
+  {
+    std::vector< double,std::allocator< double > > *ptr = (std::vector< double,std::allocator< double > > *)0;
+    res1 = swig::asptr(argv[0], &ptr);
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "std::vector< double,std::allocator< double > > const &","datamunge::graphics::value_colors", 1, argv[0] )); 
+    }
+    if (!ptr) {
+      SWIG_exception_fail(SWIG_NullReferenceError, Ruby_Format_TypeError("invalid null reference ", "std::vector< double,std::allocator< double > > const &","datamunge::graphics::value_colors", 1, argv[0])); 
+    }
+    arg1 = ptr;
+  }
+  result = datamunge::graphics::value_colors((std::vector< double,std::allocator< double > > const &)*arg1);
+  vresult = SWIG_NewPointerObj((new std::vector< datamunge::graphics::RGBA,std::allocator< datamunge::graphics::RGBA > >(result)), SWIGTYPE_p_std__vectorT_datamunge__graphics__RGB_std__allocatorT_datamunge__graphics__RGB_t_t, SWIG_POINTER_OWN |  0 );
+  if (SWIG_IsNewObj(res1)) delete arg1;
+  return vresult;
+fail:
+  if (SWIG_IsNewObj(res1)) delete arg1;
+  return Qnil;
+}
+
+
+SWIGINTERN VALUE _wrap_value_colors(int nargs, VALUE *args, VALUE self) {
+  int argc;
+  VALUE argv[4];
+  int ii;
+  
+  argc = nargs;
+  if (argc > 4) SWIG_fail;
+  for (ii = 0; (ii < argc); ++ii) {
+    argv[ii] = args[ii];
+  }
+  if (argc == 1) {
+    int _v = 0;
+    int res = swig::asptr(argv[0], (std::vector< double,std::allocator< double > >**)(0));
+    _v = SWIG_CheckState(res);
+    if (_v) {
+      return _wrap_value_colors__SWIG_3(nargs, args, self);
+    }
+  }
+  if (argc == 2) {
+    int _v = 0;
+    int res = swig::asptr(argv[0], (std::vector< double,std::allocator< double > >**)(0));
+    _v = SWIG_CheckState(res);
+    if (_v) {
+      void *vptr = 0;
+      int res = SWIG_ConvertPtr(argv[1], &vptr, SWIGTYPE_p_std__vectorT_datamunge__graphics__RGB_std__allocatorT_datamunge__graphics__RGB_t_t, SWIG_POINTER_NO_NULL);
+      _v = SWIG_CheckState(res);
+      if (_v) {
+        return _wrap_value_colors__SWIG_2(nargs, args, self);
+      }
+    }
+  }
+  if (argc == 3) {
+    int _v = 0;
+    int res = swig::asptr(argv[0], (std::vector< double,std::allocator< double > >**)(0));
+    _v = SWIG_CheckState(res);
+    if (_v) {
+      void *vptr = 0;
+      int res = SWIG_ConvertPtr(argv[1], &vptr, SWIGTYPE_p_std__vectorT_datamunge__graphics__RGB_std__allocatorT_datamunge__graphics__RGB_t_t, SWIG_POINTER_NO_NULL);
+      _v = SWIG_CheckState(res);
+      if (_v) {
+        {
+          int res = SWIG_AsVal_double(argv[2], NULL);
+          _v = SWIG_CheckState(res);
+        }
+        if (_v) {
+          return _wrap_value_colors__SWIG_1(nargs, args, self);
+        }
+      }
+    }
+  }
+  if (argc == 4) {
+    int _v = 0;
+    int res = swig::asptr(argv[0], (std::vector< double,std::allocator< double > >**)(0));
+    _v = SWIG_CheckState(res);
+    if (_v) {
+      void *vptr = 0;
+      int res = SWIG_ConvertPtr(argv[1], &vptr, SWIGTYPE_p_std__vectorT_datamunge__graphics__RGB_std__allocatorT_datamunge__graphics__RGB_t_t, SWIG_POINTER_NO_NULL);
+      _v = SWIG_CheckState(res);
+      if (_v) {
+        {
+          int res = SWIG_AsVal_double(argv[2], NULL);
+          _v = SWIG_CheckState(res);
+        }
+        if (_v) {
+          {
+            int res = SWIG_AsVal_double(argv[3], NULL);
+            _v = SWIG_CheckState(res);
+          }
+          if (_v) {
+            return _wrap_value_colors__SWIG_0(nargs, args, self);
+          }
+        }
+      }
+    }
+  }
+  
+fail:
+  Ruby_Format_OverloadedError( argc, 4, "value_colors", 
+    "    std::vector< datamunge::graphics::RGBA,std::allocator< datamunge::graphics::RGBA > > value_colors(std::vector< double,std::allocator< double > > const &values, std::vector< datamunge::graphics::RGBA,std::allocator< datamunge::graphics::RGBA > > palette, double z_min, double z_max)\n"
+    "    std::vector< datamunge::graphics::RGBA,std::allocator< datamunge::graphics::RGBA > > value_colors(std::vector< double,std::allocator< double > > const &values, std::vector< datamunge::graphics::RGBA,std::allocator< datamunge::graphics::RGBA > > palette, double z_min)\n"
+    "    std::vector< datamunge::graphics::RGBA,std::allocator< datamunge::graphics::RGBA > > value_colors(std::vector< double,std::allocator< double > > const &values, std::vector< datamunge::graphics::RGBA,std::allocator< datamunge::graphics::RGBA > > palette)\n"
+    "    std::vector< datamunge::graphics::RGBA,std::allocator< datamunge::graphics::RGBA > > value_colors(std::vector< double,std::allocator< double > > const &values)\n");
+  
+  return Qnil;
+}
+
 
 SWIGINTERN VALUE
 _wrap_set_seed(int argc, VALUE *argv, VALUE self) {
@@ -97472,6 +103419,46 @@ _wrap_unif(int argc, VALUE *argv, VALUE self) {
   } 
   arg3 = static_cast< std::size_t >(val3);
   result = datamunge::unif(arg1,arg2,SWIG_STD_MOVE(*(&arg3)));
+  vresult = swig::from(static_cast< std::vector< double,std::allocator< double > > >(result));
+  return vresult;
+fail:
+  return Qnil;
+}
+
+
+SWIGINTERN VALUE
+_wrap_runif(int argc, VALUE *argv, VALUE self) {
+  double arg1 ;
+  double arg2 ;
+  std::size_t arg3 ;
+  double val1 ;
+  int ecode1 = 0 ;
+  double val2 ;
+  int ecode2 = 0 ;
+  size_t val3 ;
+  int ecode3 = 0 ;
+  std::vector< double,std::allocator< double > > result;
+  VALUE vresult = Qnil;
+  
+  if ((argc < 3) || (argc > 3)) {
+    rb_raise(rb_eArgError, "wrong # of arguments(%d for 3)",argc); SWIG_fail;
+  }
+  ecode1 = SWIG_AsVal_double(argv[0], &val1);
+  if (!SWIG_IsOK(ecode1)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode1), Ruby_Format_TypeError( "", "double","datamunge::runif", 1, argv[0] ));
+  } 
+  arg1 = static_cast< double >(val1);
+  ecode2 = SWIG_AsVal_double(argv[1], &val2);
+  if (!SWIG_IsOK(ecode2)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode2), Ruby_Format_TypeError( "", "double","datamunge::runif", 2, argv[1] ));
+  } 
+  arg2 = static_cast< double >(val2);
+  ecode3 = SWIG_AsVal_size_t(argv[2], &val3);
+  if (!SWIG_IsOK(ecode3)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode3), Ruby_Format_TypeError( "", "std::size_t","datamunge::runif", 3, argv[2] ));
+  } 
+  arg3 = static_cast< std::size_t >(val3);
+  result = datamunge::runif(arg1,arg2,SWIG_STD_MOVE(*(&arg3)));
   vresult = swig::from(static_cast< std::vector< double,std::allocator< double > > >(result));
   return vresult;
 fail:
@@ -100423,6 +106410,86 @@ _wrap_ARIMA_forecast(int argc, VALUE *argv, VALUE self) {
   } 
   arg2 = static_cast< std::size_t >(val2);
   result = ((datamunge::stats::ARIMA const *)arg1)->forecast(SWIG_STD_MOVE(*(&arg2)));
+  vresult = swig::from(static_cast< std::vector< double,std::allocator< double > > >(result));
+  return vresult;
+fail:
+  return Qnil;
+}
+
+
+SWIGINTERN VALUE
+_wrap_ARIMA_expanded_ar_coefficients(int argc, VALUE *argv, VALUE self) {
+  datamunge::stats::ARIMA *arg1 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  std::vector< double,std::allocator< double > > *result = 0 ;
+  VALUE vresult = Qnil;
+  
+  if ((argc < 0) || (argc > 0)) {
+    rb_raise(rb_eArgError, "wrong # of arguments(%d for 0)",argc); SWIG_fail;
+  }
+  res1 = SWIG_ConvertPtr(self, &argp1,SWIGTYPE_p_datamunge__stats__ARIMA, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::stats::ARIMA const *","expanded_ar_coefficients", 1, self )); 
+  }
+  arg1 = reinterpret_cast< datamunge::stats::ARIMA * >(argp1);
+  result = (std::vector< double,std::allocator< double > > *) &((datamunge::stats::ARIMA const *)arg1)->expanded_ar_coefficients();
+  vresult = swig::from(static_cast< std::vector< double,std::allocator< double > > >(*result));
+  return vresult;
+fail:
+  return Qnil;
+}
+
+
+SWIGINTERN VALUE
+_wrap_ARIMA_expanded_ma_coefficients(int argc, VALUE *argv, VALUE self) {
+  datamunge::stats::ARIMA *arg1 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  std::vector< double,std::allocator< double > > *result = 0 ;
+  VALUE vresult = Qnil;
+  
+  if ((argc < 0) || (argc > 0)) {
+    rb_raise(rb_eArgError, "wrong # of arguments(%d for 0)",argc); SWIG_fail;
+  }
+  res1 = SWIG_ConvertPtr(self, &argp1,SWIGTYPE_p_datamunge__stats__ARIMA, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::stats::ARIMA const *","expanded_ma_coefficients", 1, self )); 
+  }
+  arg1 = reinterpret_cast< datamunge::stats::ARIMA * >(argp1);
+  result = (std::vector< double,std::allocator< double > > *) &((datamunge::stats::ARIMA const *)arg1)->expanded_ma_coefficients();
+  vresult = swig::from(static_cast< std::vector< double,std::allocator< double > > >(*result));
+  return vresult;
+fail:
+  return Qnil;
+}
+
+
+SWIGINTERN VALUE
+_wrap_ARIMA_psi_weights(int argc, VALUE *argv, VALUE self) {
+  datamunge::stats::ARIMA *arg1 = 0 ;
+  std::size_t arg2 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  size_t val2 ;
+  int ecode2 = 0 ;
+  std::vector< double,std::allocator< double > > result;
+  VALUE vresult = Qnil;
+  
+  if ((argc < 1) || (argc > 1)) {
+    rb_raise(rb_eArgError, "wrong # of arguments(%d for 1)",argc); SWIG_fail;
+  }
+  res1 = SWIG_ConvertPtr(self, &argp1,SWIGTYPE_p_datamunge__stats__ARIMA, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::stats::ARIMA const *","psi_weights", 1, self )); 
+  }
+  arg1 = reinterpret_cast< datamunge::stats::ARIMA * >(argp1);
+  ecode2 = SWIG_AsVal_size_t(argv[0], &val2);
+  if (!SWIG_IsOK(ecode2)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode2), Ruby_Format_TypeError( "", "std::size_t","psi_weights", 2, argv[0] ));
+  } 
+  arg2 = static_cast< std::size_t >(val2);
+  result = ((datamunge::stats::ARIMA const *)arg1)->psi_weights(SWIG_STD_MOVE(*(&arg2)));
   vresult = swig::from(static_cast< std::vector< double,std::allocator< double > > >(result));
   return vresult;
 fail:
@@ -103580,6 +109647,268 @@ fail:
 
 
 SWIGINTERN VALUE
+_wrap_ks_test_one_sample_uniform__SWIG_0(int argc, VALUE *argv, VALUE self) {
+  std::vector< double,std::allocator< double > > *arg1 = 0 ;
+  double arg2 ;
+  double arg3 ;
+  datamunge::stats::Alternative arg4 ;
+  int res1 = SWIG_OLDOBJ ;
+  double val2 ;
+  int ecode2 = 0 ;
+  double val3 ;
+  int ecode3 = 0 ;
+  int val4 ;
+  int ecode4 = 0 ;
+  datamunge::stats::HypothesisTestResult result;
+  VALUE vresult = Qnil;
+  
+  if ((argc < 4) || (argc > 4)) {
+    rb_raise(rb_eArgError, "wrong # of arguments(%d for 4)",argc); SWIG_fail;
+  }
+  {
+    std::vector< double,std::allocator< double > > *ptr = (std::vector< double,std::allocator< double > > *)0;
+    res1 = swig::asptr(argv[0], &ptr);
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "std::vector< double,std::allocator< double > > const &","datamunge::stats::ks_test_one_sample_uniform", 1, argv[0] )); 
+    }
+    if (!ptr) {
+      SWIG_exception_fail(SWIG_NullReferenceError, Ruby_Format_TypeError("invalid null reference ", "std::vector< double,std::allocator< double > > const &","datamunge::stats::ks_test_one_sample_uniform", 1, argv[0])); 
+    }
+    arg1 = ptr;
+  }
+  ecode2 = SWIG_AsVal_double(argv[1], &val2);
+  if (!SWIG_IsOK(ecode2)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode2), Ruby_Format_TypeError( "", "double","datamunge::stats::ks_test_one_sample_uniform", 2, argv[1] ));
+  } 
+  arg2 = static_cast< double >(val2);
+  ecode3 = SWIG_AsVal_double(argv[2], &val3);
+  if (!SWIG_IsOK(ecode3)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode3), Ruby_Format_TypeError( "", "double","datamunge::stats::ks_test_one_sample_uniform", 3, argv[2] ));
+  } 
+  arg3 = static_cast< double >(val3);
+  ecode4 = SWIG_AsVal_int(argv[3], &val4);
+  if (!SWIG_IsOK(ecode4)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode4), Ruby_Format_TypeError( "", "datamunge::stats::Alternative","datamunge::stats::ks_test_one_sample_uniform", 4, argv[3] ));
+  } 
+  arg4 = static_cast< datamunge::stats::Alternative >(val4);
+  result = datamunge::stats::ks_test_one_sample_uniform((std::vector< double,std::allocator< double > > const &)*arg1,arg2,arg3,arg4);
+  vresult = SWIG_NewPointerObj((new datamunge::stats::HypothesisTestResult(result)), SWIGTYPE_p_datamunge__stats__HypothesisTestResult, SWIG_POINTER_OWN |  0 );
+  if (SWIG_IsNewObj(res1)) delete arg1;
+  return vresult;
+fail:
+  if (SWIG_IsNewObj(res1)) delete arg1;
+  return Qnil;
+}
+
+
+SWIGINTERN VALUE
+_wrap_ks_test_one_sample_uniform__SWIG_1(int argc, VALUE *argv, VALUE self) {
+  std::vector< double,std::allocator< double > > *arg1 = 0 ;
+  double arg2 ;
+  double arg3 ;
+  int res1 = SWIG_OLDOBJ ;
+  double val2 ;
+  int ecode2 = 0 ;
+  double val3 ;
+  int ecode3 = 0 ;
+  datamunge::stats::HypothesisTestResult result;
+  VALUE vresult = Qnil;
+  
+  if ((argc < 3) || (argc > 3)) {
+    rb_raise(rb_eArgError, "wrong # of arguments(%d for 3)",argc); SWIG_fail;
+  }
+  {
+    std::vector< double,std::allocator< double > > *ptr = (std::vector< double,std::allocator< double > > *)0;
+    res1 = swig::asptr(argv[0], &ptr);
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "std::vector< double,std::allocator< double > > const &","datamunge::stats::ks_test_one_sample_uniform", 1, argv[0] )); 
+    }
+    if (!ptr) {
+      SWIG_exception_fail(SWIG_NullReferenceError, Ruby_Format_TypeError("invalid null reference ", "std::vector< double,std::allocator< double > > const &","datamunge::stats::ks_test_one_sample_uniform", 1, argv[0])); 
+    }
+    arg1 = ptr;
+  }
+  ecode2 = SWIG_AsVal_double(argv[1], &val2);
+  if (!SWIG_IsOK(ecode2)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode2), Ruby_Format_TypeError( "", "double","datamunge::stats::ks_test_one_sample_uniform", 2, argv[1] ));
+  } 
+  arg2 = static_cast< double >(val2);
+  ecode3 = SWIG_AsVal_double(argv[2], &val3);
+  if (!SWIG_IsOK(ecode3)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode3), Ruby_Format_TypeError( "", "double","datamunge::stats::ks_test_one_sample_uniform", 3, argv[2] ));
+  } 
+  arg3 = static_cast< double >(val3);
+  result = datamunge::stats::ks_test_one_sample_uniform((std::vector< double,std::allocator< double > > const &)*arg1,arg2,arg3);
+  vresult = SWIG_NewPointerObj((new datamunge::stats::HypothesisTestResult(result)), SWIGTYPE_p_datamunge__stats__HypothesisTestResult, SWIG_POINTER_OWN |  0 );
+  if (SWIG_IsNewObj(res1)) delete arg1;
+  return vresult;
+fail:
+  if (SWIG_IsNewObj(res1)) delete arg1;
+  return Qnil;
+}
+
+
+SWIGINTERN VALUE
+_wrap_ks_test_one_sample_uniform__SWIG_2(int argc, VALUE *argv, VALUE self) {
+  std::vector< double,std::allocator< double > > *arg1 = 0 ;
+  double arg2 ;
+  int res1 = SWIG_OLDOBJ ;
+  double val2 ;
+  int ecode2 = 0 ;
+  datamunge::stats::HypothesisTestResult result;
+  VALUE vresult = Qnil;
+  
+  if ((argc < 2) || (argc > 2)) {
+    rb_raise(rb_eArgError, "wrong # of arguments(%d for 2)",argc); SWIG_fail;
+  }
+  {
+    std::vector< double,std::allocator< double > > *ptr = (std::vector< double,std::allocator< double > > *)0;
+    res1 = swig::asptr(argv[0], &ptr);
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "std::vector< double,std::allocator< double > > const &","datamunge::stats::ks_test_one_sample_uniform", 1, argv[0] )); 
+    }
+    if (!ptr) {
+      SWIG_exception_fail(SWIG_NullReferenceError, Ruby_Format_TypeError("invalid null reference ", "std::vector< double,std::allocator< double > > const &","datamunge::stats::ks_test_one_sample_uniform", 1, argv[0])); 
+    }
+    arg1 = ptr;
+  }
+  ecode2 = SWIG_AsVal_double(argv[1], &val2);
+  if (!SWIG_IsOK(ecode2)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode2), Ruby_Format_TypeError( "", "double","datamunge::stats::ks_test_one_sample_uniform", 2, argv[1] ));
+  } 
+  arg2 = static_cast< double >(val2);
+  result = datamunge::stats::ks_test_one_sample_uniform((std::vector< double,std::allocator< double > > const &)*arg1,arg2);
+  vresult = SWIG_NewPointerObj((new datamunge::stats::HypothesisTestResult(result)), SWIGTYPE_p_datamunge__stats__HypothesisTestResult, SWIG_POINTER_OWN |  0 );
+  if (SWIG_IsNewObj(res1)) delete arg1;
+  return vresult;
+fail:
+  if (SWIG_IsNewObj(res1)) delete arg1;
+  return Qnil;
+}
+
+
+SWIGINTERN VALUE
+_wrap_ks_test_one_sample_uniform__SWIG_3(int argc, VALUE *argv, VALUE self) {
+  std::vector< double,std::allocator< double > > *arg1 = 0 ;
+  int res1 = SWIG_OLDOBJ ;
+  datamunge::stats::HypothesisTestResult result;
+  VALUE vresult = Qnil;
+  
+  if ((argc < 1) || (argc > 1)) {
+    rb_raise(rb_eArgError, "wrong # of arguments(%d for 1)",argc); SWIG_fail;
+  }
+  {
+    std::vector< double,std::allocator< double > > *ptr = (std::vector< double,std::allocator< double > > *)0;
+    res1 = swig::asptr(argv[0], &ptr);
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "std::vector< double,std::allocator< double > > const &","datamunge::stats::ks_test_one_sample_uniform", 1, argv[0] )); 
+    }
+    if (!ptr) {
+      SWIG_exception_fail(SWIG_NullReferenceError, Ruby_Format_TypeError("invalid null reference ", "std::vector< double,std::allocator< double > > const &","datamunge::stats::ks_test_one_sample_uniform", 1, argv[0])); 
+    }
+    arg1 = ptr;
+  }
+  result = datamunge::stats::ks_test_one_sample_uniform((std::vector< double,std::allocator< double > > const &)*arg1);
+  vresult = SWIG_NewPointerObj((new datamunge::stats::HypothesisTestResult(result)), SWIGTYPE_p_datamunge__stats__HypothesisTestResult, SWIG_POINTER_OWN |  0 );
+  if (SWIG_IsNewObj(res1)) delete arg1;
+  return vresult;
+fail:
+  if (SWIG_IsNewObj(res1)) delete arg1;
+  return Qnil;
+}
+
+
+SWIGINTERN VALUE _wrap_ks_test_one_sample_uniform(int nargs, VALUE *args, VALUE self) {
+  int argc;
+  VALUE argv[4];
+  int ii;
+  
+  argc = nargs;
+  if (argc > 4) SWIG_fail;
+  for (ii = 0; (ii < argc); ++ii) {
+    argv[ii] = args[ii];
+  }
+  if (argc == 1) {
+    int _v = 0;
+    int res = swig::asptr(argv[0], (std::vector< double,std::allocator< double > >**)(0));
+    _v = SWIG_CheckState(res);
+    if (_v) {
+      return _wrap_ks_test_one_sample_uniform__SWIG_3(nargs, args, self);
+    }
+  }
+  if (argc == 2) {
+    int _v = 0;
+    int res = swig::asptr(argv[0], (std::vector< double,std::allocator< double > >**)(0));
+    _v = SWIG_CheckState(res);
+    if (_v) {
+      {
+        int res = SWIG_AsVal_double(argv[1], NULL);
+        _v = SWIG_CheckState(res);
+      }
+      if (_v) {
+        return _wrap_ks_test_one_sample_uniform__SWIG_2(nargs, args, self);
+      }
+    }
+  }
+  if (argc == 3) {
+    int _v = 0;
+    int res = swig::asptr(argv[0], (std::vector< double,std::allocator< double > >**)(0));
+    _v = SWIG_CheckState(res);
+    if (_v) {
+      {
+        int res = SWIG_AsVal_double(argv[1], NULL);
+        _v = SWIG_CheckState(res);
+      }
+      if (_v) {
+        {
+          int res = SWIG_AsVal_double(argv[2], NULL);
+          _v = SWIG_CheckState(res);
+        }
+        if (_v) {
+          return _wrap_ks_test_one_sample_uniform__SWIG_1(nargs, args, self);
+        }
+      }
+    }
+  }
+  if (argc == 4) {
+    int _v = 0;
+    int res = swig::asptr(argv[0], (std::vector< double,std::allocator< double > >**)(0));
+    _v = SWIG_CheckState(res);
+    if (_v) {
+      {
+        int res = SWIG_AsVal_double(argv[1], NULL);
+        _v = SWIG_CheckState(res);
+      }
+      if (_v) {
+        {
+          int res = SWIG_AsVal_double(argv[2], NULL);
+          _v = SWIG_CheckState(res);
+        }
+        if (_v) {
+          {
+            int res = SWIG_AsVal_int(argv[3], NULL);
+            _v = SWIG_CheckState(res);
+          }
+          if (_v) {
+            return _wrap_ks_test_one_sample_uniform__SWIG_0(nargs, args, self);
+          }
+        }
+      }
+    }
+  }
+  
+fail:
+  Ruby_Format_OverloadedError( argc, 4, "ks_test_one_sample_uniform", 
+    "    datamunge::stats::HypothesisTestResult ks_test_one_sample_uniform(std::vector< double,std::allocator< double > > const &x, double lower, double upper, datamunge::stats::Alternative alternative)\n"
+    "    datamunge::stats::HypothesisTestResult ks_test_one_sample_uniform(std::vector< double,std::allocator< double > > const &x, double lower, double upper)\n"
+    "    datamunge::stats::HypothesisTestResult ks_test_one_sample_uniform(std::vector< double,std::allocator< double > > const &x, double lower)\n"
+    "    datamunge::stats::HypothesisTestResult ks_test_one_sample_uniform(std::vector< double,std::allocator< double > > const &x)\n");
+  
+  return Qnil;
+}
+
+
+SWIGINTERN VALUE
 _wrap_ks_test_two_sample__SWIG_0(int argc, VALUE *argv, VALUE self) {
   std::vector< double,std::allocator< double > > *arg1 = 0 ;
   std::vector< double,std::allocator< double > > *arg2 = 0 ;
@@ -104489,6 +110818,462 @@ fail:
     "    datamunge::stats::HypothesisTestResult spearman_correlation_test(std::vector< double,std::allocator< double > > const &x, std::vector< double,std::allocator< double > > const &y, datamunge::stats::Alternative alternative)\n"
     "    datamunge::stats::HypothesisTestResult spearman_correlation_test(std::vector< double,std::allocator< double > > const &x, std::vector< double,std::allocator< double > > const &y)\n");
   
+  return Qnil;
+}
+
+
+static swig_class SwigClassKendallTau;
+
+SWIGINTERN VALUE
+_wrap_KendallTau_concordant_set(int argc, VALUE *argv, VALUE self) {
+  datamunge::stats::KendallTau *arg1 = 0 ;
+  long long arg2 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  long long val2 ;
+  int ecode2 = 0 ;
+  
+  if ((argc < 1) || (argc > 1)) {
+    rb_raise(rb_eArgError, "wrong # of arguments(%d for 1)",argc); SWIG_fail;
+  }
+  res1 = SWIG_ConvertPtr(self, &argp1,SWIGTYPE_p_datamunge__stats__KendallTau, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::stats::KendallTau *","concordant", 1, self )); 
+  }
+  arg1 = reinterpret_cast< datamunge::stats::KendallTau * >(argp1);
+  ecode2 = SWIG_AsVal_long_SS_long(argv[0], &val2);
+  if (!SWIG_IsOK(ecode2)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode2), Ruby_Format_TypeError( "", "long long","concordant", 2, argv[0] ));
+  } 
+  arg2 = static_cast< long long >(val2);
+  if (arg1) (arg1)->concordant = arg2;
+  return Qnil;
+fail:
+  return Qnil;
+}
+
+
+SWIGINTERN VALUE
+_wrap_KendallTau_concordant_get(int argc, VALUE *argv, VALUE self) {
+  datamunge::stats::KendallTau *arg1 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  long long result;
+  VALUE vresult = Qnil;
+  
+  if ((argc < 0) || (argc > 0)) {
+    rb_raise(rb_eArgError, "wrong # of arguments(%d for 0)",argc); SWIG_fail;
+  }
+  res1 = SWIG_ConvertPtr(self, &argp1,SWIGTYPE_p_datamunge__stats__KendallTau, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::stats::KendallTau *","concordant", 1, self )); 
+  }
+  arg1 = reinterpret_cast< datamunge::stats::KendallTau * >(argp1);
+  result = (long long) ((arg1)->concordant);
+  vresult = SWIG_From_long_SS_long(static_cast< long long >(result));
+  return vresult;
+fail:
+  return Qnil;
+}
+
+
+SWIGINTERN VALUE
+_wrap_KendallTau_discordant_set(int argc, VALUE *argv, VALUE self) {
+  datamunge::stats::KendallTau *arg1 = 0 ;
+  long long arg2 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  long long val2 ;
+  int ecode2 = 0 ;
+  
+  if ((argc < 1) || (argc > 1)) {
+    rb_raise(rb_eArgError, "wrong # of arguments(%d for 1)",argc); SWIG_fail;
+  }
+  res1 = SWIG_ConvertPtr(self, &argp1,SWIGTYPE_p_datamunge__stats__KendallTau, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::stats::KendallTau *","discordant", 1, self )); 
+  }
+  arg1 = reinterpret_cast< datamunge::stats::KendallTau * >(argp1);
+  ecode2 = SWIG_AsVal_long_SS_long(argv[0], &val2);
+  if (!SWIG_IsOK(ecode2)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode2), Ruby_Format_TypeError( "", "long long","discordant", 2, argv[0] ));
+  } 
+  arg2 = static_cast< long long >(val2);
+  if (arg1) (arg1)->discordant = arg2;
+  return Qnil;
+fail:
+  return Qnil;
+}
+
+
+SWIGINTERN VALUE
+_wrap_KendallTau_discordant_get(int argc, VALUE *argv, VALUE self) {
+  datamunge::stats::KendallTau *arg1 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  long long result;
+  VALUE vresult = Qnil;
+  
+  if ((argc < 0) || (argc > 0)) {
+    rb_raise(rb_eArgError, "wrong # of arguments(%d for 0)",argc); SWIG_fail;
+  }
+  res1 = SWIG_ConvertPtr(self, &argp1,SWIGTYPE_p_datamunge__stats__KendallTau, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::stats::KendallTau *","discordant", 1, self )); 
+  }
+  arg1 = reinterpret_cast< datamunge::stats::KendallTau * >(argp1);
+  result = (long long) ((arg1)->discordant);
+  vresult = SWIG_From_long_SS_long(static_cast< long long >(result));
+  return vresult;
+fail:
+  return Qnil;
+}
+
+
+SWIGINTERN VALUE
+_wrap_KendallTau_ties_x_set(int argc, VALUE *argv, VALUE self) {
+  datamunge::stats::KendallTau *arg1 = 0 ;
+  long long arg2 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  long long val2 ;
+  int ecode2 = 0 ;
+  
+  if ((argc < 1) || (argc > 1)) {
+    rb_raise(rb_eArgError, "wrong # of arguments(%d for 1)",argc); SWIG_fail;
+  }
+  res1 = SWIG_ConvertPtr(self, &argp1,SWIGTYPE_p_datamunge__stats__KendallTau, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::stats::KendallTau *","ties_x", 1, self )); 
+  }
+  arg1 = reinterpret_cast< datamunge::stats::KendallTau * >(argp1);
+  ecode2 = SWIG_AsVal_long_SS_long(argv[0], &val2);
+  if (!SWIG_IsOK(ecode2)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode2), Ruby_Format_TypeError( "", "long long","ties_x", 2, argv[0] ));
+  } 
+  arg2 = static_cast< long long >(val2);
+  if (arg1) (arg1)->ties_x = arg2;
+  return Qnil;
+fail:
+  return Qnil;
+}
+
+
+SWIGINTERN VALUE
+_wrap_KendallTau_ties_x_get(int argc, VALUE *argv, VALUE self) {
+  datamunge::stats::KendallTau *arg1 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  long long result;
+  VALUE vresult = Qnil;
+  
+  if ((argc < 0) || (argc > 0)) {
+    rb_raise(rb_eArgError, "wrong # of arguments(%d for 0)",argc); SWIG_fail;
+  }
+  res1 = SWIG_ConvertPtr(self, &argp1,SWIGTYPE_p_datamunge__stats__KendallTau, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::stats::KendallTau *","ties_x", 1, self )); 
+  }
+  arg1 = reinterpret_cast< datamunge::stats::KendallTau * >(argp1);
+  result = (long long) ((arg1)->ties_x);
+  vresult = SWIG_From_long_SS_long(static_cast< long long >(result));
+  return vresult;
+fail:
+  return Qnil;
+}
+
+
+SWIGINTERN VALUE
+_wrap_KendallTau_ties_y_set(int argc, VALUE *argv, VALUE self) {
+  datamunge::stats::KendallTau *arg1 = 0 ;
+  long long arg2 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  long long val2 ;
+  int ecode2 = 0 ;
+  
+  if ((argc < 1) || (argc > 1)) {
+    rb_raise(rb_eArgError, "wrong # of arguments(%d for 1)",argc); SWIG_fail;
+  }
+  res1 = SWIG_ConvertPtr(self, &argp1,SWIGTYPE_p_datamunge__stats__KendallTau, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::stats::KendallTau *","ties_y", 1, self )); 
+  }
+  arg1 = reinterpret_cast< datamunge::stats::KendallTau * >(argp1);
+  ecode2 = SWIG_AsVal_long_SS_long(argv[0], &val2);
+  if (!SWIG_IsOK(ecode2)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode2), Ruby_Format_TypeError( "", "long long","ties_y", 2, argv[0] ));
+  } 
+  arg2 = static_cast< long long >(val2);
+  if (arg1) (arg1)->ties_y = arg2;
+  return Qnil;
+fail:
+  return Qnil;
+}
+
+
+SWIGINTERN VALUE
+_wrap_KendallTau_ties_y_get(int argc, VALUE *argv, VALUE self) {
+  datamunge::stats::KendallTau *arg1 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  long long result;
+  VALUE vresult = Qnil;
+  
+  if ((argc < 0) || (argc > 0)) {
+    rb_raise(rb_eArgError, "wrong # of arguments(%d for 0)",argc); SWIG_fail;
+  }
+  res1 = SWIG_ConvertPtr(self, &argp1,SWIGTYPE_p_datamunge__stats__KendallTau, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::stats::KendallTau *","ties_y", 1, self )); 
+  }
+  arg1 = reinterpret_cast< datamunge::stats::KendallTau * >(argp1);
+  result = (long long) ((arg1)->ties_y);
+  vresult = SWIG_From_long_SS_long(static_cast< long long >(result));
+  return vresult;
+fail:
+  return Qnil;
+}
+
+
+SWIGINTERN VALUE
+_wrap_KendallTau_ties_xy_set(int argc, VALUE *argv, VALUE self) {
+  datamunge::stats::KendallTau *arg1 = 0 ;
+  long long arg2 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  long long val2 ;
+  int ecode2 = 0 ;
+  
+  if ((argc < 1) || (argc > 1)) {
+    rb_raise(rb_eArgError, "wrong # of arguments(%d for 1)",argc); SWIG_fail;
+  }
+  res1 = SWIG_ConvertPtr(self, &argp1,SWIGTYPE_p_datamunge__stats__KendallTau, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::stats::KendallTau *","ties_xy", 1, self )); 
+  }
+  arg1 = reinterpret_cast< datamunge::stats::KendallTau * >(argp1);
+  ecode2 = SWIG_AsVal_long_SS_long(argv[0], &val2);
+  if (!SWIG_IsOK(ecode2)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode2), Ruby_Format_TypeError( "", "long long","ties_xy", 2, argv[0] ));
+  } 
+  arg2 = static_cast< long long >(val2);
+  if (arg1) (arg1)->ties_xy = arg2;
+  return Qnil;
+fail:
+  return Qnil;
+}
+
+
+SWIGINTERN VALUE
+_wrap_KendallTau_ties_xy_get(int argc, VALUE *argv, VALUE self) {
+  datamunge::stats::KendallTau *arg1 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  long long result;
+  VALUE vresult = Qnil;
+  
+  if ((argc < 0) || (argc > 0)) {
+    rb_raise(rb_eArgError, "wrong # of arguments(%d for 0)",argc); SWIG_fail;
+  }
+  res1 = SWIG_ConvertPtr(self, &argp1,SWIGTYPE_p_datamunge__stats__KendallTau, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::stats::KendallTau *","ties_xy", 1, self )); 
+  }
+  arg1 = reinterpret_cast< datamunge::stats::KendallTau * >(argp1);
+  result = (long long) ((arg1)->ties_xy);
+  vresult = SWIG_From_long_SS_long(static_cast< long long >(result));
+  return vresult;
+fail:
+  return Qnil;
+}
+
+
+SWIGINTERN VALUE
+_wrap_KendallTau_tau_a_set(int argc, VALUE *argv, VALUE self) {
+  datamunge::stats::KendallTau *arg1 = 0 ;
+  double arg2 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  double val2 ;
+  int ecode2 = 0 ;
+  
+  if ((argc < 1) || (argc > 1)) {
+    rb_raise(rb_eArgError, "wrong # of arguments(%d for 1)",argc); SWIG_fail;
+  }
+  res1 = SWIG_ConvertPtr(self, &argp1,SWIGTYPE_p_datamunge__stats__KendallTau, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::stats::KendallTau *","tau_a", 1, self )); 
+  }
+  arg1 = reinterpret_cast< datamunge::stats::KendallTau * >(argp1);
+  ecode2 = SWIG_AsVal_double(argv[0], &val2);
+  if (!SWIG_IsOK(ecode2)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode2), Ruby_Format_TypeError( "", "double","tau_a", 2, argv[0] ));
+  } 
+  arg2 = static_cast< double >(val2);
+  if (arg1) (arg1)->tau_a = arg2;
+  return Qnil;
+fail:
+  return Qnil;
+}
+
+
+SWIGINTERN VALUE
+_wrap_KendallTau_tau_a_get(int argc, VALUE *argv, VALUE self) {
+  datamunge::stats::KendallTau *arg1 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  double result;
+  VALUE vresult = Qnil;
+  
+  if ((argc < 0) || (argc > 0)) {
+    rb_raise(rb_eArgError, "wrong # of arguments(%d for 0)",argc); SWIG_fail;
+  }
+  res1 = SWIG_ConvertPtr(self, &argp1,SWIGTYPE_p_datamunge__stats__KendallTau, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::stats::KendallTau *","tau_a", 1, self )); 
+  }
+  arg1 = reinterpret_cast< datamunge::stats::KendallTau * >(argp1);
+  result = (double) ((arg1)->tau_a);
+  vresult = SWIG_From_double(static_cast< double >(result));
+  return vresult;
+fail:
+  return Qnil;
+}
+
+
+SWIGINTERN VALUE
+_wrap_KendallTau_tau_b_set(int argc, VALUE *argv, VALUE self) {
+  datamunge::stats::KendallTau *arg1 = 0 ;
+  double arg2 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  double val2 ;
+  int ecode2 = 0 ;
+  
+  if ((argc < 1) || (argc > 1)) {
+    rb_raise(rb_eArgError, "wrong # of arguments(%d for 1)",argc); SWIG_fail;
+  }
+  res1 = SWIG_ConvertPtr(self, &argp1,SWIGTYPE_p_datamunge__stats__KendallTau, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::stats::KendallTau *","tau_b", 1, self )); 
+  }
+  arg1 = reinterpret_cast< datamunge::stats::KendallTau * >(argp1);
+  ecode2 = SWIG_AsVal_double(argv[0], &val2);
+  if (!SWIG_IsOK(ecode2)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode2), Ruby_Format_TypeError( "", "double","tau_b", 2, argv[0] ));
+  } 
+  arg2 = static_cast< double >(val2);
+  if (arg1) (arg1)->tau_b = arg2;
+  return Qnil;
+fail:
+  return Qnil;
+}
+
+
+SWIGINTERN VALUE
+_wrap_KendallTau_tau_b_get(int argc, VALUE *argv, VALUE self) {
+  datamunge::stats::KendallTau *arg1 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  double result;
+  VALUE vresult = Qnil;
+  
+  if ((argc < 0) || (argc > 0)) {
+    rb_raise(rb_eArgError, "wrong # of arguments(%d for 0)",argc); SWIG_fail;
+  }
+  res1 = SWIG_ConvertPtr(self, &argp1,SWIGTYPE_p_datamunge__stats__KendallTau, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::stats::KendallTau *","tau_b", 1, self )); 
+  }
+  arg1 = reinterpret_cast< datamunge::stats::KendallTau * >(argp1);
+  result = (double) ((arg1)->tau_b);
+  vresult = SWIG_From_double(static_cast< double >(result));
+  return vresult;
+fail:
+  return Qnil;
+}
+
+
+SWIGINTERN VALUE
+#ifdef HAVE_RB_DEFINE_ALLOC_FUNC
+_wrap_KendallTau_allocate(VALUE self)
+#else
+_wrap_KendallTau_allocate(int argc, VALUE *argv, VALUE self)
+#endif
+{
+  VALUE vresult = SWIG_NewClassInstance(self, SWIGTYPE_p_datamunge__stats__KendallTau);
+#ifndef HAVE_RB_DEFINE_ALLOC_FUNC
+  rb_obj_call_init(vresult, argc, argv);
+#endif
+  return vresult;
+}
+
+
+SWIGINTERN VALUE
+_wrap_new_KendallTau(int argc, VALUE *argv, VALUE self) {
+  const char *classname SWIGUNUSED = "Octruby::KendallTau";
+  datamunge::stats::KendallTau *result = 0 ;
+  
+  if ((argc < 0) || (argc > 0)) {
+    rb_raise(rb_eArgError, "wrong # of arguments(%d for 0)",argc); SWIG_fail;
+  }
+  result = (datamunge::stats::KendallTau *)new datamunge::stats::KendallTau();
+  ((struct swig_ruby_wrapped_object *)RTYPEDDATA_GET_DATA(self))->data = result;
+  return self;
+fail:
+  return Qnil;
+}
+
+
+SWIGINTERN void
+free_datamunge_stats_KendallTau(void *self) {
+    datamunge::stats::KendallTau *arg1 = (datamunge::stats::KendallTau *)self;
+    delete arg1;
+}
+
+SWIGINTERN VALUE
+_wrap_kendall_tau(int argc, VALUE *argv, VALUE self) {
+  std::vector< double,std::allocator< double > > *arg1 = 0 ;
+  std::vector< double,std::allocator< double > > *arg2 = 0 ;
+  int res1 = SWIG_OLDOBJ ;
+  int res2 = SWIG_OLDOBJ ;
+  datamunge::stats::KendallTau result;
+  VALUE vresult = Qnil;
+  
+  if ((argc < 2) || (argc > 2)) {
+    rb_raise(rb_eArgError, "wrong # of arguments(%d for 2)",argc); SWIG_fail;
+  }
+  {
+    std::vector< double,std::allocator< double > > *ptr = (std::vector< double,std::allocator< double > > *)0;
+    res1 = swig::asptr(argv[0], &ptr);
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "std::vector< double,std::allocator< double > > const &","datamunge::stats::kendall_tau", 1, argv[0] )); 
+    }
+    if (!ptr) {
+      SWIG_exception_fail(SWIG_NullReferenceError, Ruby_Format_TypeError("invalid null reference ", "std::vector< double,std::allocator< double > > const &","datamunge::stats::kendall_tau", 1, argv[0])); 
+    }
+    arg1 = ptr;
+  }
+  {
+    std::vector< double,std::allocator< double > > *ptr = (std::vector< double,std::allocator< double > > *)0;
+    res2 = swig::asptr(argv[1], &ptr);
+    if (!SWIG_IsOK(res2)) {
+      SWIG_exception_fail(SWIG_ArgError(res2), Ruby_Format_TypeError( "", "std::vector< double,std::allocator< double > > const &","datamunge::stats::kendall_tau", 2, argv[1] )); 
+    }
+    if (!ptr) {
+      SWIG_exception_fail(SWIG_NullReferenceError, Ruby_Format_TypeError("invalid null reference ", "std::vector< double,std::allocator< double > > const &","datamunge::stats::kendall_tau", 2, argv[1])); 
+    }
+    arg2 = ptr;
+  }
+  result = datamunge::stats::kendall_tau((std::vector< double,std::allocator< double > > const &)*arg1,(std::vector< double,std::allocator< double > > const &)*arg2);
+  vresult = SWIG_NewPointerObj((new datamunge::stats::KendallTau(result)), SWIGTYPE_p_datamunge__stats__KendallTau, SWIG_POINTER_OWN |  0 );
+  if (SWIG_IsNewObj(res1)) delete arg1;
+  if (SWIG_IsNewObj(res2)) delete arg2;
+  return vresult;
+fail:
+  if (SWIG_IsNewObj(res1)) delete arg1;
+  if (SWIG_IsNewObj(res2)) delete arg2;
   return Qnil;
 }
 
@@ -108249,6 +115034,30 @@ fail:
 }
 
 
+SWIGINTERN VALUE
+_wrap_GradientDescent_options(int argc, VALUE *argv, VALUE self) {
+  datamunge::optim::GradientDescent *arg1 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  datamunge::optim::GradientDescentOptions *result = 0 ;
+  VALUE vresult = Qnil;
+  
+  if ((argc < 0) || (argc > 0)) {
+    rb_raise(rb_eArgError, "wrong # of arguments(%d for 0)",argc); SWIG_fail;
+  }
+  res1 = SWIG_ConvertPtr(self, &argp1,SWIGTYPE_p_datamunge__optim__GradientDescent, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::optim::GradientDescent const *","options", 1, self )); 
+  }
+  arg1 = reinterpret_cast< datamunge::optim::GradientDescent * >(argp1);
+  result = (datamunge::optim::GradientDescentOptions *) &((datamunge::optim::GradientDescent const *)arg1)->options();
+  vresult = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__optim__GradientDescentOptions, 0 |  0 );
+  return vresult;
+fail:
+  return Qnil;
+}
+
+
 SWIGINTERN void
 free_datamunge_optim_GradientDescent(void *self) {
     datamunge::optim::GradientDescent *arg1 = (datamunge::optim::GradientDescent *)self;
@@ -108753,6 +115562,30 @@ fail:
 }
 
 
+SWIGINTERN VALUE
+_wrap_Adam_options(int argc, VALUE *argv, VALUE self) {
+  datamunge::optim::Adam *arg1 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  datamunge::optim::AdamOptions *result = 0 ;
+  VALUE vresult = Qnil;
+  
+  if ((argc < 0) || (argc > 0)) {
+    rb_raise(rb_eArgError, "wrong # of arguments(%d for 0)",argc); SWIG_fail;
+  }
+  res1 = SWIG_ConvertPtr(self, &argp1,SWIGTYPE_p_datamunge__optim__Adam, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::optim::Adam const *","options", 1, self )); 
+  }
+  arg1 = reinterpret_cast< datamunge::optim::Adam * >(argp1);
+  result = (datamunge::optim::AdamOptions *) &((datamunge::optim::Adam const *)arg1)->options();
+  vresult = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__optim__AdamOptions, 0 |  0 );
+  return vresult;
+fail:
+  return Qnil;
+}
+
+
 SWIGINTERN void
 free_datamunge_optim_Adam(void *self) {
     datamunge::optim::Adam *arg1 = (datamunge::optim::Adam *)self;
@@ -109151,6 +115984,30 @@ fail:
 }
 
 
+SWIGINTERN VALUE
+_wrap_AdaGrad_options(int argc, VALUE *argv, VALUE self) {
+  datamunge::optim::AdaGrad *arg1 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  datamunge::optim::AdaGradOptions *result = 0 ;
+  VALUE vresult = Qnil;
+  
+  if ((argc < 0) || (argc > 0)) {
+    rb_raise(rb_eArgError, "wrong # of arguments(%d for 0)",argc); SWIG_fail;
+  }
+  res1 = SWIG_ConvertPtr(self, &argp1,SWIGTYPE_p_datamunge__optim__AdaGrad, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::optim::AdaGrad const *","options", 1, self )); 
+  }
+  arg1 = reinterpret_cast< datamunge::optim::AdaGrad * >(argp1);
+  result = (datamunge::optim::AdaGradOptions *) &((datamunge::optim::AdaGrad const *)arg1)->options();
+  vresult = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__optim__AdaGradOptions, 0 |  0 );
+  return vresult;
+fail:
+  return Qnil;
+}
+
+
 SWIGINTERN void
 free_datamunge_optim_AdaGrad(void *self) {
     datamunge::optim::AdaGrad *arg1 = (datamunge::optim::AdaGrad *)self;
@@ -109543,6 +116400,30 @@ _wrap_AdaDelta_optimize(int argc, VALUE *argv, VALUE self) {
   arg3 = reinterpret_cast< std::vector< double,std::allocator< double > > * >(argp3);
   result = (double)((datamunge::optim::AdaDelta const *)arg1)->optimize(*arg2,*arg3);
   vresult = SWIG_From_double(static_cast< double >(result));
+  return vresult;
+fail:
+  return Qnil;
+}
+
+
+SWIGINTERN VALUE
+_wrap_AdaDelta_options(int argc, VALUE *argv, VALUE self) {
+  datamunge::optim::AdaDelta *arg1 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  datamunge::optim::AdaDeltaOptions *result = 0 ;
+  VALUE vresult = Qnil;
+  
+  if ((argc < 0) || (argc > 0)) {
+    rb_raise(rb_eArgError, "wrong # of arguments(%d for 0)",argc); SWIG_fail;
+  }
+  res1 = SWIG_ConvertPtr(self, &argp1,SWIGTYPE_p_datamunge__optim__AdaDelta, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::optim::AdaDelta const *","options", 1, self )); 
+  }
+  arg1 = reinterpret_cast< datamunge::optim::AdaDelta * >(argp1);
+  result = (datamunge::optim::AdaDeltaOptions *) &((datamunge::optim::AdaDelta const *)arg1)->options();
+  vresult = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__optim__AdaDeltaOptions, 0 |  0 );
   return vresult;
 fail:
   return Qnil;
@@ -110053,6 +116934,30 @@ fail:
 }
 
 
+SWIGINTERN VALUE
+_wrap_AMSGrad_options(int argc, VALUE *argv, VALUE self) {
+  datamunge::optim::AMSGrad *arg1 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  datamunge::optim::AMSGradOptions *result = 0 ;
+  VALUE vresult = Qnil;
+  
+  if ((argc < 0) || (argc > 0)) {
+    rb_raise(rb_eArgError, "wrong # of arguments(%d for 0)",argc); SWIG_fail;
+  }
+  res1 = SWIG_ConvertPtr(self, &argp1,SWIGTYPE_p_datamunge__optim__AMSGrad, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::optim::AMSGrad const *","options", 1, self )); 
+  }
+  arg1 = reinterpret_cast< datamunge::optim::AMSGrad * >(argp1);
+  result = (datamunge::optim::AMSGradOptions *) &((datamunge::optim::AMSGrad const *)arg1)->options();
+  vresult = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__optim__AMSGradOptions, 0 |  0 );
+  return vresult;
+fail:
+  return Qnil;
+}
+
+
 SWIGINTERN void
 free_datamunge_optim_AMSGrad(void *self) {
     datamunge::optim::AMSGrad *arg1 = (datamunge::optim::AMSGrad *)self;
@@ -110557,6 +117462,30 @@ fail:
 }
 
 
+SWIGINTERN VALUE
+_wrap_Nadam_options(int argc, VALUE *argv, VALUE self) {
+  datamunge::optim::Nadam *arg1 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  datamunge::optim::NadamOptions *result = 0 ;
+  VALUE vresult = Qnil;
+  
+  if ((argc < 0) || (argc > 0)) {
+    rb_raise(rb_eArgError, "wrong # of arguments(%d for 0)",argc); SWIG_fail;
+  }
+  res1 = SWIG_ConvertPtr(self, &argp1,SWIGTYPE_p_datamunge__optim__Nadam, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::optim::Nadam const *","options", 1, self )); 
+  }
+  arg1 = reinterpret_cast< datamunge::optim::Nadam * >(argp1);
+  result = (datamunge::optim::NadamOptions *) &((datamunge::optim::Nadam const *)arg1)->options();
+  vresult = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__optim__NadamOptions, 0 |  0 );
+  return vresult;
+fail:
+  return Qnil;
+}
+
+
 SWIGINTERN void
 free_datamunge_optim_Nadam(void *self) {
     datamunge::optim::Nadam *arg1 = (datamunge::optim::Nadam *)self;
@@ -111002,6 +117931,30 @@ _wrap_RMSProp_optimize(int argc, VALUE *argv, VALUE self) {
   arg3 = reinterpret_cast< std::vector< double,std::allocator< double > > * >(argp3);
   result = (double)((datamunge::optim::RMSProp const *)arg1)->optimize(*arg2,*arg3);
   vresult = SWIG_From_double(static_cast< double >(result));
+  return vresult;
+fail:
+  return Qnil;
+}
+
+
+SWIGINTERN VALUE
+_wrap_RMSProp_options(int argc, VALUE *argv, VALUE self) {
+  datamunge::optim::RMSProp *arg1 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  datamunge::optim::RMSPropOptions *result = 0 ;
+  VALUE vresult = Qnil;
+  
+  if ((argc < 0) || (argc > 0)) {
+    rb_raise(rb_eArgError, "wrong # of arguments(%d for 0)",argc); SWIG_fail;
+  }
+  res1 = SWIG_ConvertPtr(self, &argp1,SWIGTYPE_p_datamunge__optim__RMSProp, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::optim::RMSProp const *","options", 1, self )); 
+  }
+  arg1 = reinterpret_cast< datamunge::optim::RMSProp * >(argp1);
+  result = (datamunge::optim::RMSPropOptions *) &((datamunge::optim::RMSProp const *)arg1)->options();
+  vresult = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__optim__RMSPropOptions, 0 |  0 );
   return vresult;
 fail:
   return Qnil;
@@ -111506,6 +118459,30 @@ _wrap_LBFGS_optimize(int argc, VALUE *argv, VALUE self) {
   arg3 = reinterpret_cast< std::vector< double,std::allocator< double > > * >(argp3);
   result = (double)((datamunge::optim::LBFGS const *)arg1)->optimize(*arg2,*arg3);
   vresult = SWIG_From_double(static_cast< double >(result));
+  return vresult;
+fail:
+  return Qnil;
+}
+
+
+SWIGINTERN VALUE
+_wrap_LBFGS_options(int argc, VALUE *argv, VALUE self) {
+  datamunge::optim::LBFGS *arg1 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  datamunge::optim::LBFGSOptions *result = 0 ;
+  VALUE vresult = Qnil;
+  
+  if ((argc < 0) || (argc > 0)) {
+    rb_raise(rb_eArgError, "wrong # of arguments(%d for 0)",argc); SWIG_fail;
+  }
+  res1 = SWIG_ConvertPtr(self, &argp1,SWIGTYPE_p_datamunge__optim__LBFGS, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::optim::LBFGS const *","options", 1, self )); 
+  }
+  arg1 = reinterpret_cast< datamunge::optim::LBFGS * >(argp1);
+  result = (datamunge::optim::LBFGSOptions *) &((datamunge::optim::LBFGS const *)arg1)->options();
+  vresult = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__optim__LBFGSOptions, 0 |  0 );
   return vresult;
 fail:
   return Qnil;
@@ -112069,6 +119046,30 @@ fail:
 }
 
 
+SWIGINTERN VALUE
+_wrap_NelderMead_options(int argc, VALUE *argv, VALUE self) {
+  datamunge::optim::NelderMead *arg1 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  datamunge::optim::NelderMeadOptions *result = 0 ;
+  VALUE vresult = Qnil;
+  
+  if ((argc < 0) || (argc > 0)) {
+    rb_raise(rb_eArgError, "wrong # of arguments(%d for 0)",argc); SWIG_fail;
+  }
+  res1 = SWIG_ConvertPtr(self, &argp1,SWIGTYPE_p_datamunge__optim__NelderMead, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::optim::NelderMead const *","options", 1, self )); 
+  }
+  arg1 = reinterpret_cast< datamunge::optim::NelderMead * >(argp1);
+  result = (datamunge::optim::NelderMeadOptions *) &((datamunge::optim::NelderMead const *)arg1)->options();
+  vresult = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__optim__NelderMeadOptions, 0 |  0 );
+  return vresult;
+fail:
+  return Qnil;
+}
+
+
 SWIGINTERN void
 free_datamunge_optim_NelderMead(void *self) {
     datamunge::optim::NelderMead *arg1 = (datamunge::optim::NelderMead *)self;
@@ -112573,6 +119574,30 @@ fail:
 }
 
 
+SWIGINTERN VALUE
+_wrap_SGD_options(int argc, VALUE *argv, VALUE self) {
+  datamunge::optim::SGD *arg1 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  datamunge::optim::SGDOptions *result = 0 ;
+  VALUE vresult = Qnil;
+  
+  if ((argc < 0) || (argc > 0)) {
+    rb_raise(rb_eArgError, "wrong # of arguments(%d for 0)",argc); SWIG_fail;
+  }
+  res1 = SWIG_ConvertPtr(self, &argp1,SWIGTYPE_p_datamunge__optim__SGD, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::optim::SGD const *","options", 1, self )); 
+  }
+  arg1 = reinterpret_cast< datamunge::optim::SGD * >(argp1);
+  result = (datamunge::optim::SGDOptions *) &((datamunge::optim::SGD const *)arg1)->options();
+  vresult = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__optim__SGDOptions, 0 |  0 );
+  return vresult;
+fail:
+  return Qnil;
+}
+
+
 SWIGINTERN void
 free_datamunge_optim_SGD(void *self) {
     datamunge::optim::SGD *arg1 = (datamunge::optim::SGD *)self;
@@ -113024,6 +120049,30 @@ fail:
 }
 
 
+SWIGINTERN VALUE
+_wrap_SVRG_options(int argc, VALUE *argv, VALUE self) {
+  datamunge::optim::SVRG *arg1 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  datamunge::optim::SVRGOptions *result = 0 ;
+  VALUE vresult = Qnil;
+  
+  if ((argc < 0) || (argc > 0)) {
+    rb_raise(rb_eArgError, "wrong # of arguments(%d for 0)",argc); SWIG_fail;
+  }
+  res1 = SWIG_ConvertPtr(self, &argp1,SWIGTYPE_p_datamunge__optim__SVRG, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::optim::SVRG const *","options", 1, self )); 
+  }
+  arg1 = reinterpret_cast< datamunge::optim::SVRG * >(argp1);
+  result = (datamunge::optim::SVRGOptions *) &((datamunge::optim::SVRG const *)arg1)->options();
+  vresult = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__optim__SVRGOptions, 0 |  0 );
+  return vresult;
+fail:
+  return Qnil;
+}
+
+
 SWIGINTERN void
 free_datamunge_optim_SVRG(void *self) {
     datamunge::optim::SVRG *arg1 = (datamunge::optim::SVRG *)self;
@@ -113416,6 +120465,30 @@ _wrap_SAGA_optimize(int argc, VALUE *argv, VALUE self) {
   arg3 = reinterpret_cast< std::vector< double,std::allocator< double > > * >(argp3);
   result = (double)((datamunge::optim::SAGA const *)arg1)->optimize(*arg2,*arg3);
   vresult = SWIG_From_double(static_cast< double >(result));
+  return vresult;
+fail:
+  return Qnil;
+}
+
+
+SWIGINTERN VALUE
+_wrap_SAGA_options(int argc, VALUE *argv, VALUE self) {
+  datamunge::optim::SAGA *arg1 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  datamunge::optim::SAGAOptions *result = 0 ;
+  VALUE vresult = Qnil;
+  
+  if ((argc < 0) || (argc > 0)) {
+    rb_raise(rb_eArgError, "wrong # of arguments(%d for 0)",argc); SWIG_fail;
+  }
+  res1 = SWIG_ConvertPtr(self, &argp1,SWIGTYPE_p_datamunge__optim__SAGA, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::optim::SAGA const *","options", 1, self )); 
+  }
+  arg1 = reinterpret_cast< datamunge::optim::SAGA * >(argp1);
+  result = (datamunge::optim::SAGAOptions *) &((datamunge::optim::SAGA const *)arg1)->options();
+  vresult = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__optim__SAGAOptions, 0 |  0 );
   return vresult;
 fail:
   return Qnil;
@@ -113920,6 +120993,30 @@ _wrap_CoordinateDescent_optimize(int argc, VALUE *argv, VALUE self) {
   arg3 = reinterpret_cast< std::vector< double,std::allocator< double > > * >(argp3);
   result = (double)((datamunge::optim::CoordinateDescent const *)arg1)->optimize(*arg2,*arg3);
   vresult = SWIG_From_double(static_cast< double >(result));
+  return vresult;
+fail:
+  return Qnil;
+}
+
+
+SWIGINTERN VALUE
+_wrap_CoordinateDescent_options(int argc, VALUE *argv, VALUE self) {
+  datamunge::optim::CoordinateDescent *arg1 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  datamunge::optim::CoordinateDescentOptions *result = 0 ;
+  VALUE vresult = Qnil;
+  
+  if ((argc < 0) || (argc > 0)) {
+    rb_raise(rb_eArgError, "wrong # of arguments(%d for 0)",argc); SWIG_fail;
+  }
+  res1 = SWIG_ConvertPtr(self, &argp1,SWIGTYPE_p_datamunge__optim__CoordinateDescent, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::optim::CoordinateDescent const *","options", 1, self )); 
+  }
+  arg1 = reinterpret_cast< datamunge::optim::CoordinateDescent * >(argp1);
+  result = (datamunge::optim::CoordinateDescentOptions *) &((datamunge::optim::CoordinateDescent const *)arg1)->options();
+  vresult = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__optim__CoordinateDescentOptions, 0 |  0 );
   return vresult;
 fail:
   return Qnil;
@@ -114536,6 +121633,30 @@ fail:
 }
 
 
+SWIGINTERN VALUE
+_wrap_RandomizedBlockCoordinateDescent_options(int argc, VALUE *argv, VALUE self) {
+  datamunge::optim::RandomizedBlockCoordinateDescent *arg1 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  datamunge::optim::RandomizedBlockCoordinateDescentOptions *result = 0 ;
+  VALUE vresult = Qnil;
+  
+  if ((argc < 0) || (argc > 0)) {
+    rb_raise(rb_eArgError, "wrong # of arguments(%d for 0)",argc); SWIG_fail;
+  }
+  res1 = SWIG_ConvertPtr(self, &argp1,SWIGTYPE_p_datamunge__optim__RandomizedBlockCoordinateDescent, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::optim::RandomizedBlockCoordinateDescent const *","options", 1, self )); 
+  }
+  arg1 = reinterpret_cast< datamunge::optim::RandomizedBlockCoordinateDescent * >(argp1);
+  result = (datamunge::optim::RandomizedBlockCoordinateDescentOptions *) &((datamunge::optim::RandomizedBlockCoordinateDescent const *)arg1)->options();
+  vresult = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__optim__RandomizedBlockCoordinateDescentOptions, 0 |  0 );
+  return vresult;
+fail:
+  return Qnil;
+}
+
+
 SWIGINTERN void
 free_datamunge_optim_RandomizedBlockCoordinateDescent(void *self) {
     datamunge::optim::RandomizedBlockCoordinateDescent *arg1 = (datamunge::optim::RandomizedBlockCoordinateDescent *)self;
@@ -114928,6 +122049,30 @@ _wrap_NesterovAcceleratedGradient_optimize(int argc, VALUE *argv, VALUE self) {
   arg3 = reinterpret_cast< std::vector< double,std::allocator< double > > * >(argp3);
   result = (double)((datamunge::optim::NesterovAcceleratedGradient const *)arg1)->optimize(*arg2,*arg3);
   vresult = SWIG_From_double(static_cast< double >(result));
+  return vresult;
+fail:
+  return Qnil;
+}
+
+
+SWIGINTERN VALUE
+_wrap_NesterovAcceleratedGradient_options(int argc, VALUE *argv, VALUE self) {
+  datamunge::optim::NesterovAcceleratedGradient *arg1 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  datamunge::optim::NesterovAcceleratedGradientOptions *result = 0 ;
+  VALUE vresult = Qnil;
+  
+  if ((argc < 0) || (argc > 0)) {
+    rb_raise(rb_eArgError, "wrong # of arguments(%d for 0)",argc); SWIG_fail;
+  }
+  res1 = SWIG_ConvertPtr(self, &argp1,SWIGTYPE_p_datamunge__optim__NesterovAcceleratedGradient, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::optim::NesterovAcceleratedGradient const *","options", 1, self )); 
+  }
+  arg1 = reinterpret_cast< datamunge::optim::NesterovAcceleratedGradient * >(argp1);
+  result = (datamunge::optim::NesterovAcceleratedGradientOptions *) &((datamunge::optim::NesterovAcceleratedGradient const *)arg1)->options();
+  vresult = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__optim__NesterovAcceleratedGradientOptions, 0 |  0 );
   return vresult;
 fail:
   return Qnil;
@@ -115385,6 +122530,30 @@ fail:
 }
 
 
+SWIGINTERN VALUE
+_wrap_ConjugateGradient_options(int argc, VALUE *argv, VALUE self) {
+  datamunge::optim::ConjugateGradient *arg1 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  datamunge::optim::ConjugateGradientOptions *result = 0 ;
+  VALUE vresult = Qnil;
+  
+  if ((argc < 0) || (argc > 0)) {
+    rb_raise(rb_eArgError, "wrong # of arguments(%d for 0)",argc); SWIG_fail;
+  }
+  res1 = SWIG_ConvertPtr(self, &argp1,SWIGTYPE_p_datamunge__optim__ConjugateGradient, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::optim::ConjugateGradient const *","options", 1, self )); 
+  }
+  arg1 = reinterpret_cast< datamunge::optim::ConjugateGradient * >(argp1);
+  result = (datamunge::optim::ConjugateGradientOptions *) &((datamunge::optim::ConjugateGradient const *)arg1)->options();
+  vresult = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__optim__ConjugateGradientOptions, 0 |  0 );
+  return vresult;
+fail:
+  return Qnil;
+}
+
+
 SWIGINTERN void
 free_datamunge_optim_ConjugateGradient(void *self) {
     datamunge::optim::ConjugateGradient *arg1 = (datamunge::optim::ConjugateGradient *)self;
@@ -115836,6 +123005,30 @@ fail:
 }
 
 
+SWIGINTERN VALUE
+_wrap_CMAES_options(int argc, VALUE *argv, VALUE self) {
+  datamunge::optim::CMAES *arg1 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  datamunge::optim::CMAESOptions *result = 0 ;
+  VALUE vresult = Qnil;
+  
+  if ((argc < 0) || (argc > 0)) {
+    rb_raise(rb_eArgError, "wrong # of arguments(%d for 0)",argc); SWIG_fail;
+  }
+  res1 = SWIG_ConvertPtr(self, &argp1,SWIGTYPE_p_datamunge__optim__CMAES, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::optim::CMAES const *","options", 1, self )); 
+  }
+  arg1 = reinterpret_cast< datamunge::optim::CMAES * >(argp1);
+  result = (datamunge::optim::CMAESOptions *) &((datamunge::optim::CMAES const *)arg1)->options();
+  vresult = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__optim__CMAESOptions, 0 |  0 );
+  return vresult;
+fail:
+  return Qnil;
+}
+
+
 SWIGINTERN void
 free_datamunge_optim_CMAES(void *self) {
     datamunge::optim::CMAES *arg1 = (datamunge::optim::CMAES *)self;
@@ -116281,6 +123474,30 @@ _wrap_SimulatedAnnealing_optimize(int argc, VALUE *argv, VALUE self) {
   arg3 = reinterpret_cast< std::vector< double,std::allocator< double > > * >(argp3);
   result = (double)((datamunge::optim::SimulatedAnnealing const *)arg1)->optimize(*arg2,*arg3);
   vresult = SWIG_From_double(static_cast< double >(result));
+  return vresult;
+fail:
+  return Qnil;
+}
+
+
+SWIGINTERN VALUE
+_wrap_SimulatedAnnealing_options(int argc, VALUE *argv, VALUE self) {
+  datamunge::optim::SimulatedAnnealing *arg1 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  datamunge::optim::SimulatedAnnealingOptions *result = 0 ;
+  VALUE vresult = Qnil;
+  
+  if ((argc < 0) || (argc > 0)) {
+    rb_raise(rb_eArgError, "wrong # of arguments(%d for 0)",argc); SWIG_fail;
+  }
+  res1 = SWIG_ConvertPtr(self, &argp1,SWIGTYPE_p_datamunge__optim__SimulatedAnnealing, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::optim::SimulatedAnnealing const *","options", 1, self )); 
+  }
+  arg1 = reinterpret_cast< datamunge::optim::SimulatedAnnealing * >(argp1);
+  result = (datamunge::optim::SimulatedAnnealingOptions *) &((datamunge::optim::SimulatedAnnealing const *)arg1)->options();
+  vresult = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__optim__SimulatedAnnealingOptions, 0 |  0 );
   return vresult;
 fail:
   return Qnil;
@@ -117100,6 +124317,30 @@ fail:
 }
 
 
+SWIGINTERN VALUE
+_wrap_PSO_options(int argc, VALUE *argv, VALUE self) {
+  datamunge::optim::PSO *arg1 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  datamunge::optim::PSOOptions *result = 0 ;
+  VALUE vresult = Qnil;
+  
+  if ((argc < 0) || (argc > 0)) {
+    rb_raise(rb_eArgError, "wrong # of arguments(%d for 0)",argc); SWIG_fail;
+  }
+  res1 = SWIG_ConvertPtr(self, &argp1,SWIGTYPE_p_datamunge__optim__PSO, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::optim::PSO const *","options", 1, self )); 
+  }
+  arg1 = reinterpret_cast< datamunge::optim::PSO * >(argp1);
+  result = (datamunge::optim::PSOOptions *) &((datamunge::optim::PSO const *)arg1)->options();
+  vresult = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__optim__PSOOptions, 0 |  0 );
+  return vresult;
+fail:
+  return Qnil;
+}
+
+
 SWIGINTERN void
 free_datamunge_optim_PSO(void *self) {
     datamunge::optim::PSO *arg1 = (datamunge::optim::PSO *)self;
@@ -117750,6 +124991,30 @@ _wrap_DifferentialEvolution_optimize(int argc, VALUE *argv, VALUE self) {
 fail:
   if (SWIG_IsNewObj(res4)) delete arg4;
   if (SWIG_IsNewObj(res5)) delete arg5;
+  return Qnil;
+}
+
+
+SWIGINTERN VALUE
+_wrap_DifferentialEvolution_options(int argc, VALUE *argv, VALUE self) {
+  datamunge::optim::DifferentialEvolution *arg1 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  datamunge::optim::DEOptions *result = 0 ;
+  VALUE vresult = Qnil;
+  
+  if ((argc < 0) || (argc > 0)) {
+    rb_raise(rb_eArgError, "wrong # of arguments(%d for 0)",argc); SWIG_fail;
+  }
+  res1 = SWIG_ConvertPtr(self, &argp1,SWIGTYPE_p_datamunge__optim__DifferentialEvolution, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::optim::DifferentialEvolution const *","options", 1, self )); 
+  }
+  arg1 = reinterpret_cast< datamunge::optim::DifferentialEvolution * >(argp1);
+  result = (datamunge::optim::DEOptions *) &((datamunge::optim::DifferentialEvolution const *)arg1)->options();
+  vresult = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__optim__DEOptions, 0 |  0 );
+  return vresult;
+fail:
   return Qnil;
 }
 
@@ -118673,6 +125938,30 @@ fail:
 }
 
 
+SWIGINTERN VALUE
+_wrap_GeneticAlgorithm_options(int argc, VALUE *argv, VALUE self) {
+  datamunge::optim::GeneticAlgorithm *arg1 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  datamunge::optim::GAOptions *result = 0 ;
+  VALUE vresult = Qnil;
+  
+  if ((argc < 0) || (argc > 0)) {
+    rb_raise(rb_eArgError, "wrong # of arguments(%d for 0)",argc); SWIG_fail;
+  }
+  res1 = SWIG_ConvertPtr(self, &argp1,SWIGTYPE_p_datamunge__optim__GeneticAlgorithm, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::optim::GeneticAlgorithm const *","options", 1, self )); 
+  }
+  arg1 = reinterpret_cast< datamunge::optim::GeneticAlgorithm * >(argp1);
+  result = (datamunge::optim::GAOptions *) &((datamunge::optim::GeneticAlgorithm const *)arg1)->options();
+  vresult = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__optim__GAOptions, 0 |  0 );
+  return vresult;
+fail:
+  return Qnil;
+}
+
+
 SWIGINTERN void
 free_datamunge_optim_GeneticAlgorithm(void *self) {
     datamunge::optim::GeneticAlgorithm *arg1 = (datamunge::optim::GeneticAlgorithm *)self;
@@ -119260,6 +126549,30 @@ fail:
 }
 
 
+SWIGINTERN VALUE
+_wrap_ACOR_options(int argc, VALUE *argv, VALUE self) {
+  datamunge::optim::ACOR *arg1 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  datamunge::optim::ACOROptions *result = 0 ;
+  VALUE vresult = Qnil;
+  
+  if ((argc < 0) || (argc > 0)) {
+    rb_raise(rb_eArgError, "wrong # of arguments(%d for 0)",argc); SWIG_fail;
+  }
+  res1 = SWIG_ConvertPtr(self, &argp1,SWIGTYPE_p_datamunge__optim__ACOR, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::optim::ACOR const *","options", 1, self )); 
+  }
+  arg1 = reinterpret_cast< datamunge::optim::ACOR * >(argp1);
+  result = (datamunge::optim::ACOROptions *) &((datamunge::optim::ACOR const *)arg1)->options();
+  vresult = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__optim__ACOROptions, 0 |  0 );
+  return vresult;
+fail:
+  return Qnil;
+}
+
+
 SWIGINTERN void
 free_datamunge_optim_ACOR(void *self) {
     datamunge::optim::ACOR *arg1 = (datamunge::optim::ACOR *)self;
@@ -119737,6 +127050,30 @@ _wrap_ArtificialBeeColony_optimize(int argc, VALUE *argv, VALUE self) {
 fail:
   if (SWIG_IsNewObj(res4)) delete arg4;
   if (SWIG_IsNewObj(res5)) delete arg5;
+  return Qnil;
+}
+
+
+SWIGINTERN VALUE
+_wrap_ArtificialBeeColony_options(int argc, VALUE *argv, VALUE self) {
+  datamunge::optim::ArtificialBeeColony *arg1 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  datamunge::optim::ArtificialBeeColonyOptions *result = 0 ;
+  VALUE vresult = Qnil;
+  
+  if ((argc < 0) || (argc > 0)) {
+    rb_raise(rb_eArgError, "wrong # of arguments(%d for 0)",argc); SWIG_fail;
+  }
+  res1 = SWIG_ConvertPtr(self, &argp1,SWIGTYPE_p_datamunge__optim__ArtificialBeeColony, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::optim::ArtificialBeeColony const *","options", 1, self )); 
+  }
+  arg1 = reinterpret_cast< datamunge::optim::ArtificialBeeColony * >(argp1);
+  result = (datamunge::optim::ArtificialBeeColonyOptions *) &((datamunge::optim::ArtificialBeeColony const *)arg1)->options();
+  vresult = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__optim__ArtificialBeeColonyOptions, 0 |  0 );
+  return vresult;
+fail:
   return Qnil;
 }
 
@@ -120328,6 +127665,30 @@ fail:
 }
 
 
+SWIGINTERN VALUE
+_wrap_CrossEntropyMethod_options(int argc, VALUE *argv, VALUE self) {
+  datamunge::optim::CrossEntropyMethod *arg1 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  datamunge::optim::CrossEntropyMethodOptions *result = 0 ;
+  VALUE vresult = Qnil;
+  
+  if ((argc < 0) || (argc > 0)) {
+    rb_raise(rb_eArgError, "wrong # of arguments(%d for 0)",argc); SWIG_fail;
+  }
+  res1 = SWIG_ConvertPtr(self, &argp1,SWIGTYPE_p_datamunge__optim__CrossEntropyMethod, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::optim::CrossEntropyMethod const *","options", 1, self )); 
+  }
+  arg1 = reinterpret_cast< datamunge::optim::CrossEntropyMethod * >(argp1);
+  result = (datamunge::optim::CrossEntropyMethodOptions *) &((datamunge::optim::CrossEntropyMethod const *)arg1)->options();
+  vresult = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__optim__CrossEntropyMethodOptions, 0 |  0 );
+  return vresult;
+fail:
+  return Qnil;
+}
+
+
 SWIGINTERN void
 free_datamunge_optim_CrossEntropyMethod(void *self) {
     datamunge::optim::CrossEntropyMethod *arg1 = (datamunge::optim::CrossEntropyMethod *)self;
@@ -120915,6 +128276,30 @@ fail:
 }
 
 
+SWIGINTERN VALUE
+_wrap_CuckooSearch_options(int argc, VALUE *argv, VALUE self) {
+  datamunge::optim::CuckooSearch *arg1 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  datamunge::optim::CuckooSearchOptions *result = 0 ;
+  VALUE vresult = Qnil;
+  
+  if ((argc < 0) || (argc > 0)) {
+    rb_raise(rb_eArgError, "wrong # of arguments(%d for 0)",argc); SWIG_fail;
+  }
+  res1 = SWIG_ConvertPtr(self, &argp1,SWIGTYPE_p_datamunge__optim__CuckooSearch, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::optim::CuckooSearch const *","options", 1, self )); 
+  }
+  arg1 = reinterpret_cast< datamunge::optim::CuckooSearch * >(argp1);
+  result = (datamunge::optim::CuckooSearchOptions *) &((datamunge::optim::CuckooSearch const *)arg1)->options();
+  vresult = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__optim__CuckooSearchOptions, 0 |  0 );
+  return vresult;
+fail:
+  return Qnil;
+}
+
+
 SWIGINTERN void
 free_datamunge_optim_CuckooSearch(void *self) {
     datamunge::optim::CuckooSearch *arg1 = (datamunge::optim::CuckooSearch *)self;
@@ -121498,6 +128883,30 @@ _wrap_EstimationOfDistribution_optimize(int argc, VALUE *argv, VALUE self) {
 fail:
   if (SWIG_IsNewObj(res4)) delete arg4;
   if (SWIG_IsNewObj(res5)) delete arg5;
+  return Qnil;
+}
+
+
+SWIGINTERN VALUE
+_wrap_EstimationOfDistribution_options(int argc, VALUE *argv, VALUE self) {
+  datamunge::optim::EstimationOfDistribution *arg1 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  datamunge::optim::EstimationOfDistributionOptions *result = 0 ;
+  VALUE vresult = Qnil;
+  
+  if ((argc < 0) || (argc > 0)) {
+    rb_raise(rb_eArgError, "wrong # of arguments(%d for 0)",argc); SWIG_fail;
+  }
+  res1 = SWIG_ConvertPtr(self, &argp1,SWIGTYPE_p_datamunge__optim__EstimationOfDistribution, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::optim::EstimationOfDistribution const *","options", 1, self )); 
+  }
+  arg1 = reinterpret_cast< datamunge::optim::EstimationOfDistribution * >(argp1);
+  result = (datamunge::optim::EstimationOfDistributionOptions *) &((datamunge::optim::EstimationOfDistribution const *)arg1)->options();
+  vresult = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__optim__EstimationOfDistributionOptions, 0 |  0 );
+  return vresult;
+fail:
   return Qnil;
 }
 
@@ -122092,6 +129501,30 @@ _wrap_EvolutionStrategy_optimize(int argc, VALUE *argv, VALUE self) {
 fail:
   if (SWIG_IsNewObj(res4)) delete arg4;
   if (SWIG_IsNewObj(res5)) delete arg5;
+  return Qnil;
+}
+
+
+SWIGINTERN VALUE
+_wrap_EvolutionStrategy_options(int argc, VALUE *argv, VALUE self) {
+  datamunge::optim::EvolutionStrategy *arg1 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  datamunge::optim::EvolutionStrategyOptions *result = 0 ;
+  VALUE vresult = Qnil;
+  
+  if ((argc < 0) || (argc > 0)) {
+    rb_raise(rb_eArgError, "wrong # of arguments(%d for 0)",argc); SWIG_fail;
+  }
+  res1 = SWIG_ConvertPtr(self, &argp1,SWIGTYPE_p_datamunge__optim__EvolutionStrategy, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::optim::EvolutionStrategy const *","options", 1, self )); 
+  }
+  arg1 = reinterpret_cast< datamunge::optim::EvolutionStrategy * >(argp1);
+  result = (datamunge::optim::EvolutionStrategyOptions *) &((datamunge::optim::EvolutionStrategy const *)arg1)->options();
+  vresult = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__optim__EvolutionStrategyOptions, 0 |  0 );
+  return vresult;
+fail:
   return Qnil;
 }
 
@@ -122736,6 +130169,30 @@ fail:
 }
 
 
+SWIGINTERN VALUE
+_wrap_FireflyAlgorithm_options(int argc, VALUE *argv, VALUE self) {
+  datamunge::optim::FireflyAlgorithm *arg1 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  datamunge::optim::FireflyAlgorithmOptions *result = 0 ;
+  VALUE vresult = Qnil;
+  
+  if ((argc < 0) || (argc > 0)) {
+    rb_raise(rb_eArgError, "wrong # of arguments(%d for 0)",argc); SWIG_fail;
+  }
+  res1 = SWIG_ConvertPtr(self, &argp1,SWIGTYPE_p_datamunge__optim__FireflyAlgorithm, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::optim::FireflyAlgorithm const *","options", 1, self )); 
+  }
+  arg1 = reinterpret_cast< datamunge::optim::FireflyAlgorithm * >(argp1);
+  result = (datamunge::optim::FireflyAlgorithmOptions *) &((datamunge::optim::FireflyAlgorithm const *)arg1)->options();
+  vresult = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__optim__FireflyAlgorithmOptions, 0 |  0 );
+  return vresult;
+fail:
+  return Qnil;
+}
+
+
 SWIGINTERN void
 free_datamunge_optim_FireflyAlgorithm(void *self) {
     datamunge::optim::FireflyAlgorithm *arg1 = (datamunge::optim::FireflyAlgorithm *)self;
@@ -123160,6 +130617,30 @@ _wrap_GreyWolfOptimizer_optimize(int argc, VALUE *argv, VALUE self) {
 fail:
   if (SWIG_IsNewObj(res4)) delete arg4;
   if (SWIG_IsNewObj(res5)) delete arg5;
+  return Qnil;
+}
+
+
+SWIGINTERN VALUE
+_wrap_GreyWolfOptimizer_options(int argc, VALUE *argv, VALUE self) {
+  datamunge::optim::GreyWolfOptimizer *arg1 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  datamunge::optim::GreyWolfOptimizerOptions *result = 0 ;
+  VALUE vresult = Qnil;
+  
+  if ((argc < 0) || (argc > 0)) {
+    rb_raise(rb_eArgError, "wrong # of arguments(%d for 0)",argc); SWIG_fail;
+  }
+  res1 = SWIG_ConvertPtr(self, &argp1,SWIGTYPE_p_datamunge__optim__GreyWolfOptimizer, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::optim::GreyWolfOptimizer const *","options", 1, self )); 
+  }
+  arg1 = reinterpret_cast< datamunge::optim::GreyWolfOptimizer * >(argp1);
+  result = (datamunge::optim::GreyWolfOptimizerOptions *) &((datamunge::optim::GreyWolfOptimizer const *)arg1)->options();
+  vresult = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__optim__GreyWolfOptimizerOptions, 0 |  0 );
+  return vresult;
+fail:
   return Qnil;
 }
 
@@ -123751,6 +131232,30 @@ fail:
 }
 
 
+SWIGINTERN VALUE
+_wrap_HarmonySearch_options(int argc, VALUE *argv, VALUE self) {
+  datamunge::optim::HarmonySearch *arg1 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  datamunge::optim::HarmonySearchOptions *result = 0 ;
+  VALUE vresult = Qnil;
+  
+  if ((argc < 0) || (argc > 0)) {
+    rb_raise(rb_eArgError, "wrong # of arguments(%d for 0)",argc); SWIG_fail;
+  }
+  res1 = SWIG_ConvertPtr(self, &argp1,SWIGTYPE_p_datamunge__optim__HarmonySearch, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::optim::HarmonySearch const *","options", 1, self )); 
+  }
+  arg1 = reinterpret_cast< datamunge::optim::HarmonySearch * >(argp1);
+  result = (datamunge::optim::HarmonySearchOptions *) &((datamunge::optim::HarmonySearch const *)arg1)->options();
+  vresult = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__optim__HarmonySearchOptions, 0 |  0 );
+  return vresult;
+fail:
+  return Qnil;
+}
+
+
 SWIGINTERN void
 free_datamunge_optim_HarmonySearch(void *self) {
     datamunge::optim::HarmonySearch *arg1 = (datamunge::optim::HarmonySearch *)self;
@@ -124308,6 +131813,30 @@ fail:
 }
 
 
+SWIGINTERN VALUE
+_wrap_ParallelTempering_options(int argc, VALUE *argv, VALUE self) {
+  datamunge::optim::ParallelTempering *arg1 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  datamunge::optim::ParallelTemperingOptions *result = 0 ;
+  VALUE vresult = Qnil;
+  
+  if ((argc < 0) || (argc > 0)) {
+    rb_raise(rb_eArgError, "wrong # of arguments(%d for 0)",argc); SWIG_fail;
+  }
+  res1 = SWIG_ConvertPtr(self, &argp1,SWIGTYPE_p_datamunge__optim__ParallelTempering, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::optim::ParallelTempering const *","options", 1, self )); 
+  }
+  arg1 = reinterpret_cast< datamunge::optim::ParallelTempering * >(argp1);
+  result = (datamunge::optim::ParallelTemperingOptions *) &((datamunge::optim::ParallelTempering const *)arg1)->options();
+  vresult = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__optim__ParallelTemperingOptions, 0 |  0 );
+  return vresult;
+fail:
+  return Qnil;
+}
+
+
 SWIGINTERN void
 free_datamunge_optim_ParallelTempering(void *self) {
     datamunge::optim::ParallelTempering *arg1 = (datamunge::optim::ParallelTempering *)self;
@@ -124789,6 +132318,30 @@ fail:
 }
 
 
+SWIGINTERN VALUE
+_wrap_WhaleOptimization_options(int argc, VALUE *argv, VALUE self) {
+  datamunge::optim::WhaleOptimization *arg1 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  datamunge::optim::WhaleOptimizationOptions *result = 0 ;
+  VALUE vresult = Qnil;
+  
+  if ((argc < 0) || (argc > 0)) {
+    rb_raise(rb_eArgError, "wrong # of arguments(%d for 0)",argc); SWIG_fail;
+  }
+  res1 = SWIG_ConvertPtr(self, &argp1,SWIGTYPE_p_datamunge__optim__WhaleOptimization, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::optim::WhaleOptimization const *","options", 1, self )); 
+  }
+  arg1 = reinterpret_cast< datamunge::optim::WhaleOptimization * >(argp1);
+  result = (datamunge::optim::WhaleOptimizationOptions *) &((datamunge::optim::WhaleOptimization const *)arg1)->options();
+  vresult = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__optim__WhaleOptimizationOptions, 0 |  0 );
+  return vresult;
+fail:
+  return Qnil;
+}
+
+
 SWIGINTERN void
 free_datamunge_optim_WhaleOptimization(void *self) {
     datamunge::optim::WhaleOptimization *arg1 = (datamunge::optim::WhaleOptimization *)self;
@@ -125128,6 +132681,30 @@ _wrap_FISTA_optimize(int argc, VALUE *argv, VALUE self) {
   arg3 = reinterpret_cast< std::vector< double,std::allocator< double > > * >(argp3);
   result = (double)((datamunge::optim::FISTA const *)arg1)->optimize(*arg2,*arg3);
   vresult = SWIG_From_double(static_cast< double >(result));
+  return vresult;
+fail:
+  return Qnil;
+}
+
+
+SWIGINTERN VALUE
+_wrap_FISTA_options(int argc, VALUE *argv, VALUE self) {
+  datamunge::optim::FISTA *arg1 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  datamunge::optim::FISTAOptions *result = 0 ;
+  VALUE vresult = Qnil;
+  
+  if ((argc < 0) || (argc > 0)) {
+    rb_raise(rb_eArgError, "wrong # of arguments(%d for 0)",argc); SWIG_fail;
+  }
+  res1 = SWIG_ConvertPtr(self, &argp1,SWIGTYPE_p_datamunge__optim__FISTA, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::optim::FISTA const *","options", 1, self )); 
+  }
+  arg1 = reinterpret_cast< datamunge::optim::FISTA * >(argp1);
+  result = (datamunge::optim::FISTAOptions *) &((datamunge::optim::FISTA const *)arg1)->options();
+  vresult = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__optim__FISTAOptions, 0 |  0 );
   return vresult;
 fail:
   return Qnil;
@@ -125479,6 +133056,30 @@ fail:
 }
 
 
+SWIGINTERN VALUE
+_wrap_ProximalGradient_options(int argc, VALUE *argv, VALUE self) {
+  datamunge::optim::ProximalGradient *arg1 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  datamunge::optim::ProximalGradientOptions *result = 0 ;
+  VALUE vresult = Qnil;
+  
+  if ((argc < 0) || (argc > 0)) {
+    rb_raise(rb_eArgError, "wrong # of arguments(%d for 0)",argc); SWIG_fail;
+  }
+  res1 = SWIG_ConvertPtr(self, &argp1,SWIGTYPE_p_datamunge__optim__ProximalGradient, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::optim::ProximalGradient const *","options", 1, self )); 
+  }
+  arg1 = reinterpret_cast< datamunge::optim::ProximalGradient * >(argp1);
+  result = (datamunge::optim::ProximalGradientOptions *) &((datamunge::optim::ProximalGradient const *)arg1)->options();
+  vresult = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__optim__ProximalGradientOptions, 0 |  0 );
+  return vresult;
+fail:
+  return Qnil;
+}
+
+
 SWIGINTERN void
 free_datamunge_optim_ProximalGradient(void *self) {
     datamunge::optim::ProximalGradient *arg1 = (datamunge::optim::ProximalGradient *)self;
@@ -125824,6 +133425,30 @@ fail:
 }
 
 
+SWIGINTERN VALUE
+_wrap_LevenbergMarquardt_options(int argc, VALUE *argv, VALUE self) {
+  datamunge::optim::LevenbergMarquardt *arg1 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  datamunge::optim::LevenbergMarquardtOptions *result = 0 ;
+  VALUE vresult = Qnil;
+  
+  if ((argc < 0) || (argc > 0)) {
+    rb_raise(rb_eArgError, "wrong # of arguments(%d for 0)",argc); SWIG_fail;
+  }
+  res1 = SWIG_ConvertPtr(self, &argp1,SWIGTYPE_p_datamunge__optim__LevenbergMarquardt, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::optim::LevenbergMarquardt const *","options", 1, self )); 
+  }
+  arg1 = reinterpret_cast< datamunge::optim::LevenbergMarquardt * >(argp1);
+  result = (datamunge::optim::LevenbergMarquardtOptions *) &((datamunge::optim::LevenbergMarquardt const *)arg1)->options();
+  vresult = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__optim__LevenbergMarquardtOptions, 0 |  0 );
+  return vresult;
+fail:
+  return Qnil;
+}
+
+
 SWIGINTERN void
 free_datamunge_optim_LevenbergMarquardt(void *self) {
     datamunge::optim::LevenbergMarquardt *arg1 = (datamunge::optim::LevenbergMarquardt *)self;
@@ -126163,6 +133788,30 @@ _wrap_Newton_optimize(int argc, VALUE *argv, VALUE self) {
   arg3 = reinterpret_cast< std::vector< double,std::allocator< double > > * >(argp3);
   result = (double)((datamunge::optim::Newton const *)arg1)->optimize(*arg2,*arg3);
   vresult = SWIG_From_double(static_cast< double >(result));
+  return vresult;
+fail:
+  return Qnil;
+}
+
+
+SWIGINTERN VALUE
+_wrap_Newton_options(int argc, VALUE *argv, VALUE self) {
+  datamunge::optim::Newton *arg1 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  datamunge::optim::NewtonOptions *result = 0 ;
+  VALUE vresult = Qnil;
+  
+  if ((argc < 0) || (argc > 0)) {
+    rb_raise(rb_eArgError, "wrong # of arguments(%d for 0)",argc); SWIG_fail;
+  }
+  res1 = SWIG_ConvertPtr(self, &argp1,SWIGTYPE_p_datamunge__optim__Newton, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::optim::Newton const *","options", 1, self )); 
+  }
+  arg1 = reinterpret_cast< datamunge::optim::Newton * >(argp1);
+  result = (datamunge::optim::NewtonOptions *) &((datamunge::optim::Newton const *)arg1)->options();
+  vresult = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__optim__NewtonOptions, 0 |  0 );
   return vresult;
 fail:
   return Qnil;
@@ -126561,6 +134210,30 @@ _wrap_TrustRegionNewton_optimize(int argc, VALUE *argv, VALUE self) {
   arg3 = reinterpret_cast< std::vector< double,std::allocator< double > > * >(argp3);
   result = (double)((datamunge::optim::TrustRegionNewton const *)arg1)->optimize(*arg2,*arg3);
   vresult = SWIG_From_double(static_cast< double >(result));
+  return vresult;
+fail:
+  return Qnil;
+}
+
+
+SWIGINTERN VALUE
+_wrap_TrustRegionNewton_options(int argc, VALUE *argv, VALUE self) {
+  datamunge::optim::TrustRegionNewton *arg1 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  datamunge::optim::TrustRegionNewtonOptions *result = 0 ;
+  VALUE vresult = Qnil;
+  
+  if ((argc < 0) || (argc > 0)) {
+    rb_raise(rb_eArgError, "wrong # of arguments(%d for 0)",argc); SWIG_fail;
+  }
+  res1 = SWIG_ConvertPtr(self, &argp1,SWIGTYPE_p_datamunge__optim__TrustRegionNewton, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::optim::TrustRegionNewton const *","options", 1, self )); 
+  }
+  arg1 = reinterpret_cast< datamunge::optim::TrustRegionNewton * >(argp1);
+  result = (datamunge::optim::TrustRegionNewtonOptions *) &((datamunge::optim::TrustRegionNewton const *)arg1)->options();
+  vresult = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__optim__TrustRegionNewtonOptions, 0 |  0 );
   return vresult;
 fail:
   return Qnil;
@@ -127018,6 +134691,30 @@ fail:
 }
 
 
+SWIGINTERN VALUE
+_wrap_AugmentedLagrangian_options(int argc, VALUE *argv, VALUE self) {
+  datamunge::optim::AugmentedLagrangian *arg1 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  datamunge::optim::AugmentedLagrangianOptions *result = 0 ;
+  VALUE vresult = Qnil;
+  
+  if ((argc < 0) || (argc > 0)) {
+    rb_raise(rb_eArgError, "wrong # of arguments(%d for 0)",argc); SWIG_fail;
+  }
+  res1 = SWIG_ConvertPtr(self, &argp1,SWIGTYPE_p_datamunge__optim__AugmentedLagrangian, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::optim::AugmentedLagrangian const *","options", 1, self )); 
+  }
+  arg1 = reinterpret_cast< datamunge::optim::AugmentedLagrangian * >(argp1);
+  result = (datamunge::optim::AugmentedLagrangianOptions *) &((datamunge::optim::AugmentedLagrangian const *)arg1)->options();
+  vresult = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__optim__AugmentedLagrangianOptions, 0 |  0 );
+  return vresult;
+fail:
+  return Qnil;
+}
+
+
 SWIGINTERN void
 free_datamunge_optim_AugmentedLagrangian(void *self) {
     datamunge::optim::AugmentedLagrangian *arg1 = (datamunge::optim::AugmentedLagrangian *)self;
@@ -127410,6 +135107,30 @@ _wrap_SQP_optimize(int argc, VALUE *argv, VALUE self) {
   arg3 = reinterpret_cast< std::vector< double,std::allocator< double > > * >(argp3);
   result = (double)((datamunge::optim::SQP const *)arg1)->optimize(*arg2,*arg3);
   vresult = SWIG_From_double(static_cast< double >(result));
+  return vresult;
+fail:
+  return Qnil;
+}
+
+
+SWIGINTERN VALUE
+_wrap_SQP_options(int argc, VALUE *argv, VALUE self) {
+  datamunge::optim::SQP *arg1 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  datamunge::optim::SQPOptions *result = 0 ;
+  VALUE vresult = Qnil;
+  
+  if ((argc < 0) || (argc > 0)) {
+    rb_raise(rb_eArgError, "wrong # of arguments(%d for 0)",argc); SWIG_fail;
+  }
+  res1 = SWIG_ConvertPtr(self, &argp1,SWIGTYPE_p_datamunge__optim__SQP, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::optim::SQP const *","options", 1, self )); 
+  }
+  arg1 = reinterpret_cast< datamunge::optim::SQP * >(argp1);
+  result = (datamunge::optim::SQPOptions *) &((datamunge::optim::SQP const *)arg1)->options();
+  vresult = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__optim__SQPOptions, 0 |  0 );
   return vresult;
 fail:
   return Qnil;
@@ -127867,6 +135588,30 @@ fail:
 }
 
 
+SWIGINTERN VALUE
+_wrap_InteriorPoint_options(int argc, VALUE *argv, VALUE self) {
+  datamunge::optim::InteriorPoint *arg1 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  datamunge::optim::InteriorPointOptions *result = 0 ;
+  VALUE vresult = Qnil;
+  
+  if ((argc < 0) || (argc > 0)) {
+    rb_raise(rb_eArgError, "wrong # of arguments(%d for 0)",argc); SWIG_fail;
+  }
+  res1 = SWIG_ConvertPtr(self, &argp1,SWIGTYPE_p_datamunge__optim__InteriorPoint, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::optim::InteriorPoint const *","options", 1, self )); 
+  }
+  arg1 = reinterpret_cast< datamunge::optim::InteriorPoint * >(argp1);
+  result = (datamunge::optim::InteriorPointOptions *) &((datamunge::optim::InteriorPoint const *)arg1)->options();
+  vresult = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__optim__InteriorPointOptions, 0 |  0 );
+  return vresult;
+fail:
+  return Qnil;
+}
+
+
 SWIGINTERN void
 free_datamunge_optim_InteriorPoint(void *self) {
     datamunge::optim::InteriorPoint *arg1 = (datamunge::optim::InteriorPoint *)self;
@@ -128232,6 +135977,112 @@ fail:
 
 
 SWIGINTERN VALUE
+_wrap_BayesianOptimizationOptions_candidates_set(int argc, VALUE *argv, VALUE self) {
+  datamunge::optim::BayesianOptimizationOptions *arg1 = 0 ;
+  std::size_t arg2 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  size_t val2 ;
+  int ecode2 = 0 ;
+  
+  if ((argc < 1) || (argc > 1)) {
+    rb_raise(rb_eArgError, "wrong # of arguments(%d for 1)",argc); SWIG_fail;
+  }
+  res1 = SWIG_ConvertPtr(self, &argp1,SWIGTYPE_p_datamunge__optim__BayesianOptimizationOptions, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::optim::BayesianOptimizationOptions *","candidates", 1, self )); 
+  }
+  arg1 = reinterpret_cast< datamunge::optim::BayesianOptimizationOptions * >(argp1);
+  ecode2 = SWIG_AsVal_size_t(argv[0], &val2);
+  if (!SWIG_IsOK(ecode2)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode2), Ruby_Format_TypeError( "", "std::size_t","candidates", 2, argv[0] ));
+  } 
+  arg2 = static_cast< std::size_t >(val2);
+  if (arg1) (arg1)->candidates = arg2;
+  return Qnil;
+fail:
+  return Qnil;
+}
+
+
+SWIGINTERN VALUE
+_wrap_BayesianOptimizationOptions_candidates_get(int argc, VALUE *argv, VALUE self) {
+  datamunge::optim::BayesianOptimizationOptions *arg1 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  std::size_t result;
+  VALUE vresult = Qnil;
+  
+  if ((argc < 0) || (argc > 0)) {
+    rb_raise(rb_eArgError, "wrong # of arguments(%d for 0)",argc); SWIG_fail;
+  }
+  res1 = SWIG_ConvertPtr(self, &argp1,SWIGTYPE_p_datamunge__optim__BayesianOptimizationOptions, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::optim::BayesianOptimizationOptions *","candidates", 1, self )); 
+  }
+  arg1 = reinterpret_cast< datamunge::optim::BayesianOptimizationOptions * >(argp1);
+  result =  ((arg1)->candidates);
+  vresult = SWIG_From_size_t(static_cast< size_t >(result));
+  return vresult;
+fail:
+  return Qnil;
+}
+
+
+SWIGINTERN VALUE
+_wrap_BayesianOptimizationOptions_refine_iterations_set(int argc, VALUE *argv, VALUE self) {
+  datamunge::optim::BayesianOptimizationOptions *arg1 = 0 ;
+  std::size_t arg2 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  size_t val2 ;
+  int ecode2 = 0 ;
+  
+  if ((argc < 1) || (argc > 1)) {
+    rb_raise(rb_eArgError, "wrong # of arguments(%d for 1)",argc); SWIG_fail;
+  }
+  res1 = SWIG_ConvertPtr(self, &argp1,SWIGTYPE_p_datamunge__optim__BayesianOptimizationOptions, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::optim::BayesianOptimizationOptions *","refine_iterations", 1, self )); 
+  }
+  arg1 = reinterpret_cast< datamunge::optim::BayesianOptimizationOptions * >(argp1);
+  ecode2 = SWIG_AsVal_size_t(argv[0], &val2);
+  if (!SWIG_IsOK(ecode2)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode2), Ruby_Format_TypeError( "", "std::size_t","refine_iterations", 2, argv[0] ));
+  } 
+  arg2 = static_cast< std::size_t >(val2);
+  if (arg1) (arg1)->refine_iterations = arg2;
+  return Qnil;
+fail:
+  return Qnil;
+}
+
+
+SWIGINTERN VALUE
+_wrap_BayesianOptimizationOptions_refine_iterations_get(int argc, VALUE *argv, VALUE self) {
+  datamunge::optim::BayesianOptimizationOptions *arg1 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  std::size_t result;
+  VALUE vresult = Qnil;
+  
+  if ((argc < 0) || (argc > 0)) {
+    rb_raise(rb_eArgError, "wrong # of arguments(%d for 0)",argc); SWIG_fail;
+  }
+  res1 = SWIG_ConvertPtr(self, &argp1,SWIGTYPE_p_datamunge__optim__BayesianOptimizationOptions, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::optim::BayesianOptimizationOptions *","refine_iterations", 1, self )); 
+  }
+  arg1 = reinterpret_cast< datamunge::optim::BayesianOptimizationOptions * >(argp1);
+  result =  ((arg1)->refine_iterations);
+  vresult = SWIG_From_size_t(static_cast< size_t >(result));
+  return vresult;
+fail:
+  return Qnil;
+}
+
+
+SWIGINTERN VALUE
 #ifdef HAVE_RB_DEFINE_ALLOC_FUNC
 _wrap_BayesianOptimizationOptions_allocate(VALUE self)
 #else
@@ -128265,6 +136116,379 @@ fail:
 SWIGINTERN void
 free_datamunge_optim_BayesianOptimizationOptions(void *self) {
     datamunge::optim::BayesianOptimizationOptions *arg1 = (datamunge::optim::BayesianOptimizationOptions *)self;
+    delete arg1;
+}
+
+static swig_class SwigClassBayesianOptimizationResult;
+
+SWIGINTERN VALUE
+_wrap_BayesianOptimizationResult_best_point_set(int argc, VALUE *argv, VALUE self) {
+  datamunge::optim::BayesianOptimizationResult *arg1 = 0 ;
+  std::vector< double,std::allocator< double > > *arg2 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  void *argp2 = 0 ;
+  int res2 = 0 ;
+  
+  if ((argc < 1) || (argc > 1)) {
+    rb_raise(rb_eArgError, "wrong # of arguments(%d for 1)",argc); SWIG_fail;
+  }
+  res1 = SWIG_ConvertPtr(self, &argp1,SWIGTYPE_p_datamunge__optim__BayesianOptimizationResult, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::optim::BayesianOptimizationResult *","best_point", 1, self )); 
+  }
+  arg1 = reinterpret_cast< datamunge::optim::BayesianOptimizationResult * >(argp1);
+  res2 = SWIG_ConvertPtr(argv[0], &argp2,SWIGTYPE_p_std__vectorT_double_t, 0 |  0 );
+  if (!SWIG_IsOK(res2)) {
+    SWIG_exception_fail(SWIG_ArgError(res2), Ruby_Format_TypeError( "", "std::vector< double,std::allocator< double > > *","best_point", 2, argv[0] )); 
+  }
+  arg2 = reinterpret_cast< std::vector< double,std::allocator< double > > * >(argp2);
+  if (arg1) (arg1)->best_point = *arg2;
+  return Qnil;
+fail:
+  return Qnil;
+}
+
+
+SWIGINTERN VALUE
+_wrap_BayesianOptimizationResult_best_point_get(int argc, VALUE *argv, VALUE self) {
+  datamunge::optim::BayesianOptimizationResult *arg1 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  std::vector< double,std::allocator< double > > *result = 0 ;
+  VALUE vresult = Qnil;
+  
+  if ((argc < 0) || (argc > 0)) {
+    rb_raise(rb_eArgError, "wrong # of arguments(%d for 0)",argc); SWIG_fail;
+  }
+  res1 = SWIG_ConvertPtr(self, &argp1,SWIGTYPE_p_datamunge__optim__BayesianOptimizationResult, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::optim::BayesianOptimizationResult *","best_point", 1, self )); 
+  }
+  arg1 = reinterpret_cast< datamunge::optim::BayesianOptimizationResult * >(argp1);
+  result = (std::vector< double,std::allocator< double > > *)& ((arg1)->best_point);
+  vresult = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_std__vectorT_double_t, 0 |  0 );
+  return vresult;
+fail:
+  return Qnil;
+}
+
+
+SWIGINTERN VALUE
+_wrap_BayesianOptimizationResult_best_value_set(int argc, VALUE *argv, VALUE self) {
+  datamunge::optim::BayesianOptimizationResult *arg1 = 0 ;
+  double arg2 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  double val2 ;
+  int ecode2 = 0 ;
+  
+  if ((argc < 1) || (argc > 1)) {
+    rb_raise(rb_eArgError, "wrong # of arguments(%d for 1)",argc); SWIG_fail;
+  }
+  res1 = SWIG_ConvertPtr(self, &argp1,SWIGTYPE_p_datamunge__optim__BayesianOptimizationResult, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::optim::BayesianOptimizationResult *","best_value", 1, self )); 
+  }
+  arg1 = reinterpret_cast< datamunge::optim::BayesianOptimizationResult * >(argp1);
+  ecode2 = SWIG_AsVal_double(argv[0], &val2);
+  if (!SWIG_IsOK(ecode2)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode2), Ruby_Format_TypeError( "", "double","best_value", 2, argv[0] ));
+  } 
+  arg2 = static_cast< double >(val2);
+  if (arg1) (arg1)->best_value = arg2;
+  return Qnil;
+fail:
+  return Qnil;
+}
+
+
+SWIGINTERN VALUE
+_wrap_BayesianOptimizationResult_best_value_get(int argc, VALUE *argv, VALUE self) {
+  datamunge::optim::BayesianOptimizationResult *arg1 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  double result;
+  VALUE vresult = Qnil;
+  
+  if ((argc < 0) || (argc > 0)) {
+    rb_raise(rb_eArgError, "wrong # of arguments(%d for 0)",argc); SWIG_fail;
+  }
+  res1 = SWIG_ConvertPtr(self, &argp1,SWIGTYPE_p_datamunge__optim__BayesianOptimizationResult, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::optim::BayesianOptimizationResult *","best_value", 1, self )); 
+  }
+  arg1 = reinterpret_cast< datamunge::optim::BayesianOptimizationResult * >(argp1);
+  result = (double) ((arg1)->best_value);
+  vresult = SWIG_From_double(static_cast< double >(result));
+  return vresult;
+fail:
+  return Qnil;
+}
+
+
+SWIGINTERN VALUE
+_wrap_BayesianOptimizationResult_points_set(int argc, VALUE *argv, VALUE self) {
+  datamunge::optim::BayesianOptimizationResult *arg1 = 0 ;
+  std::vector< std::vector< double,std::allocator< double > >,std::allocator< std::vector< double,std::allocator< double > > > > *arg2 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  void *argp2 = 0 ;
+  int res2 = 0 ;
+  
+  if ((argc < 1) || (argc > 1)) {
+    rb_raise(rb_eArgError, "wrong # of arguments(%d for 1)",argc); SWIG_fail;
+  }
+  res1 = SWIG_ConvertPtr(self, &argp1,SWIGTYPE_p_datamunge__optim__BayesianOptimizationResult, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::optim::BayesianOptimizationResult *","points", 1, self )); 
+  }
+  arg1 = reinterpret_cast< datamunge::optim::BayesianOptimizationResult * >(argp1);
+  res2 = SWIG_ConvertPtr(argv[0], &argp2,SWIGTYPE_p_std__vectorT_std__vectorT_double_t_t, 0 |  0 );
+  if (!SWIG_IsOK(res2)) {
+    SWIG_exception_fail(SWIG_ArgError(res2), Ruby_Format_TypeError( "", "std::vector< std::vector< double,std::allocator< double > >,std::allocator< std::vector< double,std::allocator< double > > > > *","points", 2, argv[0] )); 
+  }
+  arg2 = reinterpret_cast< std::vector< std::vector< double,std::allocator< double > >,std::allocator< std::vector< double,std::allocator< double > > > > * >(argp2);
+  if (arg1) (arg1)->points = *arg2;
+  return Qnil;
+fail:
+  return Qnil;
+}
+
+
+SWIGINTERN VALUE
+_wrap_BayesianOptimizationResult_points_get(int argc, VALUE *argv, VALUE self) {
+  datamunge::optim::BayesianOptimizationResult *arg1 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  std::vector< std::vector< double,std::allocator< double > >,std::allocator< std::vector< double,std::allocator< double > > > > *result = 0 ;
+  VALUE vresult = Qnil;
+  
+  if ((argc < 0) || (argc > 0)) {
+    rb_raise(rb_eArgError, "wrong # of arguments(%d for 0)",argc); SWIG_fail;
+  }
+  res1 = SWIG_ConvertPtr(self, &argp1,SWIGTYPE_p_datamunge__optim__BayesianOptimizationResult, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::optim::BayesianOptimizationResult *","points", 1, self )); 
+  }
+  arg1 = reinterpret_cast< datamunge::optim::BayesianOptimizationResult * >(argp1);
+  result = (std::vector< std::vector< double,std::allocator< double > >,std::allocator< std::vector< double,std::allocator< double > > > > *)& ((arg1)->points);
+  vresult = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_std__vectorT_std__vectorT_double_t_t, 0 |  0 );
+  return vresult;
+fail:
+  return Qnil;
+}
+
+
+/*
+  Document-method: Octruby::BayesianOptimizationResult.values
+
+  call-seq:
+    values -> DVector
+
+Return an Array of value elements.
+*/
+/*
+  Document-method: Octruby::BayesianOptimizationResult.values=
+
+  call-seq:
+    values=(x) -> DVector
+
+Return an Array of value elements.
+*/
+SWIGINTERN VALUE
+_wrap_BayesianOptimizationResult_values_set(int argc, VALUE *argv, VALUE self) {
+  datamunge::optim::BayesianOptimizationResult *arg1 = 0 ;
+  std::vector< double,std::allocator< double > > *arg2 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  void *argp2 = 0 ;
+  int res2 = 0 ;
+  
+  if ((argc < 1) || (argc > 1)) {
+    rb_raise(rb_eArgError, "wrong # of arguments(%d for 1)",argc); SWIG_fail;
+  }
+  res1 = SWIG_ConvertPtr(self, &argp1,SWIGTYPE_p_datamunge__optim__BayesianOptimizationResult, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::optim::BayesianOptimizationResult *","values", 1, self )); 
+  }
+  arg1 = reinterpret_cast< datamunge::optim::BayesianOptimizationResult * >(argp1);
+  res2 = SWIG_ConvertPtr(argv[0], &argp2,SWIGTYPE_p_std__vectorT_double_t, 0 |  0 );
+  if (!SWIG_IsOK(res2)) {
+    SWIG_exception_fail(SWIG_ArgError(res2), Ruby_Format_TypeError( "", "std::vector< double,std::allocator< double > > *","values", 2, argv[0] )); 
+  }
+  arg2 = reinterpret_cast< std::vector< double,std::allocator< double > > * >(argp2);
+  if (arg1) (arg1)->values = *arg2;
+  return Qnil;
+fail:
+  return Qnil;
+}
+
+
+SWIGINTERN VALUE
+_wrap_BayesianOptimizationResult_values_get(int argc, VALUE *argv, VALUE self) {
+  datamunge::optim::BayesianOptimizationResult *arg1 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  std::vector< double,std::allocator< double > > *result = 0 ;
+  VALUE vresult = Qnil;
+  
+  if ((argc < 0) || (argc > 0)) {
+    rb_raise(rb_eArgError, "wrong # of arguments(%d for 0)",argc); SWIG_fail;
+  }
+  res1 = SWIG_ConvertPtr(self, &argp1,SWIGTYPE_p_datamunge__optim__BayesianOptimizationResult, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::optim::BayesianOptimizationResult *","values", 1, self )); 
+  }
+  arg1 = reinterpret_cast< datamunge::optim::BayesianOptimizationResult * >(argp1);
+  result = (std::vector< double,std::allocator< double > > *)& ((arg1)->values);
+  vresult = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_std__vectorT_double_t, 0 |  0 );
+  return vresult;
+fail:
+  return Qnil;
+}
+
+
+SWIGINTERN VALUE
+_wrap_BayesianOptimizationResult_best_values_set(int argc, VALUE *argv, VALUE self) {
+  datamunge::optim::BayesianOptimizationResult *arg1 = 0 ;
+  std::vector< double,std::allocator< double > > *arg2 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  void *argp2 = 0 ;
+  int res2 = 0 ;
+  
+  if ((argc < 1) || (argc > 1)) {
+    rb_raise(rb_eArgError, "wrong # of arguments(%d for 1)",argc); SWIG_fail;
+  }
+  res1 = SWIG_ConvertPtr(self, &argp1,SWIGTYPE_p_datamunge__optim__BayesianOptimizationResult, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::optim::BayesianOptimizationResult *","best_values", 1, self )); 
+  }
+  arg1 = reinterpret_cast< datamunge::optim::BayesianOptimizationResult * >(argp1);
+  res2 = SWIG_ConvertPtr(argv[0], &argp2,SWIGTYPE_p_std__vectorT_double_t, 0 |  0 );
+  if (!SWIG_IsOK(res2)) {
+    SWIG_exception_fail(SWIG_ArgError(res2), Ruby_Format_TypeError( "", "std::vector< double,std::allocator< double > > *","best_values", 2, argv[0] )); 
+  }
+  arg2 = reinterpret_cast< std::vector< double,std::allocator< double > > * >(argp2);
+  if (arg1) (arg1)->best_values = *arg2;
+  return Qnil;
+fail:
+  return Qnil;
+}
+
+
+SWIGINTERN VALUE
+_wrap_BayesianOptimizationResult_best_values_get(int argc, VALUE *argv, VALUE self) {
+  datamunge::optim::BayesianOptimizationResult *arg1 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  std::vector< double,std::allocator< double > > *result = 0 ;
+  VALUE vresult = Qnil;
+  
+  if ((argc < 0) || (argc > 0)) {
+    rb_raise(rb_eArgError, "wrong # of arguments(%d for 0)",argc); SWIG_fail;
+  }
+  res1 = SWIG_ConvertPtr(self, &argp1,SWIGTYPE_p_datamunge__optim__BayesianOptimizationResult, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::optim::BayesianOptimizationResult *","best_values", 1, self )); 
+  }
+  arg1 = reinterpret_cast< datamunge::optim::BayesianOptimizationResult * >(argp1);
+  result = (std::vector< double,std::allocator< double > > *)& ((arg1)->best_values);
+  vresult = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_std__vectorT_double_t, 0 |  0 );
+  return vresult;
+fail:
+  return Qnil;
+}
+
+
+SWIGINTERN VALUE
+_wrap_BayesianOptimizationResult_acquisition_values_set(int argc, VALUE *argv, VALUE self) {
+  datamunge::optim::BayesianOptimizationResult *arg1 = 0 ;
+  std::vector< double,std::allocator< double > > *arg2 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  void *argp2 = 0 ;
+  int res2 = 0 ;
+  
+  if ((argc < 1) || (argc > 1)) {
+    rb_raise(rb_eArgError, "wrong # of arguments(%d for 1)",argc); SWIG_fail;
+  }
+  res1 = SWIG_ConvertPtr(self, &argp1,SWIGTYPE_p_datamunge__optim__BayesianOptimizationResult, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::optim::BayesianOptimizationResult *","acquisition_values", 1, self )); 
+  }
+  arg1 = reinterpret_cast< datamunge::optim::BayesianOptimizationResult * >(argp1);
+  res2 = SWIG_ConvertPtr(argv[0], &argp2,SWIGTYPE_p_std__vectorT_double_t, 0 |  0 );
+  if (!SWIG_IsOK(res2)) {
+    SWIG_exception_fail(SWIG_ArgError(res2), Ruby_Format_TypeError( "", "std::vector< double,std::allocator< double > > *","acquisition_values", 2, argv[0] )); 
+  }
+  arg2 = reinterpret_cast< std::vector< double,std::allocator< double > > * >(argp2);
+  if (arg1) (arg1)->acquisition_values = *arg2;
+  return Qnil;
+fail:
+  return Qnil;
+}
+
+
+SWIGINTERN VALUE
+_wrap_BayesianOptimizationResult_acquisition_values_get(int argc, VALUE *argv, VALUE self) {
+  datamunge::optim::BayesianOptimizationResult *arg1 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  std::vector< double,std::allocator< double > > *result = 0 ;
+  VALUE vresult = Qnil;
+  
+  if ((argc < 0) || (argc > 0)) {
+    rb_raise(rb_eArgError, "wrong # of arguments(%d for 0)",argc); SWIG_fail;
+  }
+  res1 = SWIG_ConvertPtr(self, &argp1,SWIGTYPE_p_datamunge__optim__BayesianOptimizationResult, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::optim::BayesianOptimizationResult *","acquisition_values", 1, self )); 
+  }
+  arg1 = reinterpret_cast< datamunge::optim::BayesianOptimizationResult * >(argp1);
+  result = (std::vector< double,std::allocator< double > > *)& ((arg1)->acquisition_values);
+  vresult = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_std__vectorT_double_t, 0 |  0 );
+  return vresult;
+fail:
+  return Qnil;
+}
+
+
+SWIGINTERN VALUE
+#ifdef HAVE_RB_DEFINE_ALLOC_FUNC
+_wrap_BayesianOptimizationResult_allocate(VALUE self)
+#else
+_wrap_BayesianOptimizationResult_allocate(int argc, VALUE *argv, VALUE self)
+#endif
+{
+  VALUE vresult = SWIG_NewClassInstance(self, SWIGTYPE_p_datamunge__optim__BayesianOptimizationResult);
+#ifndef HAVE_RB_DEFINE_ALLOC_FUNC
+  rb_obj_call_init(vresult, argc, argv);
+#endif
+  return vresult;
+}
+
+
+SWIGINTERN VALUE
+_wrap_new_BayesianOptimizationResult(int argc, VALUE *argv, VALUE self) {
+  const char *classname SWIGUNUSED = "Octruby::BayesianOptimizationResult";
+  datamunge::optim::BayesianOptimizationResult *result = 0 ;
+  
+  if ((argc < 0) || (argc > 0)) {
+    rb_raise(rb_eArgError, "wrong # of arguments(%d for 0)",argc); SWIG_fail;
+  }
+  result = (datamunge::optim::BayesianOptimizationResult *)new datamunge::optim::BayesianOptimizationResult();
+  ((struct swig_ruby_wrapped_object *)RTYPEDDATA_GET_DATA(self))->data = result;
+  return self;
+fail:
+  return Qnil;
+}
+
+
+SWIGINTERN void
+free_datamunge_optim_BayesianOptimizationResult(void *self) {
+    datamunge::optim::BayesianOptimizationResult *arg1 = (datamunge::optim::BayesianOptimizationResult *)self;
     delete arg1;
 }
 
@@ -128364,6 +136588,82 @@ fail:
 
 
 SWIGINTERN VALUE
+_wrap_BayesianOptimization_run(int argc, VALUE *argv, VALUE self) {
+  datamunge::optim::BayesianOptimization *arg1 = 0 ;
+  datamunge::optim::ArbitraryFunction *arg2 = 0 ;
+  std::vector< double,std::allocator< double > > *arg3 = 0 ;
+  std::vector< double,std::allocator< double > > *arg4 = 0 ;
+  datamunge::optim::BayesianSurrogate *arg5 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  void *argp2 = 0 ;
+  int res2 = 0 ;
+  int res3 = SWIG_OLDOBJ ;
+  int res4 = SWIG_OLDOBJ ;
+  void *argp5 = 0 ;
+  int res5 = 0 ;
+  datamunge::optim::BayesianOptimizationResult result;
+  VALUE vresult = Qnil;
+  
+  if ((argc < 4) || (argc > 4)) {
+    rb_raise(rb_eArgError, "wrong # of arguments(%d for 4)",argc); SWIG_fail;
+  }
+  res1 = SWIG_ConvertPtr(self, &argp1,SWIGTYPE_p_datamunge__optim__BayesianOptimization, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::optim::BayesianOptimization const *","run", 1, self )); 
+  }
+  arg1 = reinterpret_cast< datamunge::optim::BayesianOptimization * >(argp1);
+  res2 = SWIG_ConvertPtr(argv[0], &argp2, SWIGTYPE_p_datamunge__optim__ArbitraryFunction,  0 );
+  if (!SWIG_IsOK(res2)) {
+    SWIG_exception_fail(SWIG_ArgError(res2), Ruby_Format_TypeError( "", "datamunge::optim::ArbitraryFunction &","run", 2, argv[0] )); 
+  }
+  if (!argp2) {
+    SWIG_exception_fail(SWIG_NullReferenceError, Ruby_Format_TypeError("invalid null reference ", "datamunge::optim::ArbitraryFunction &","run", 2, argv[0])); 
+  }
+  arg2 = reinterpret_cast< datamunge::optim::ArbitraryFunction * >(argp2);
+  {
+    std::vector< double,std::allocator< double > > *ptr = (std::vector< double,std::allocator< double > > *)0;
+    res3 = swig::asptr(argv[1], &ptr);
+    if (!SWIG_IsOK(res3)) {
+      SWIG_exception_fail(SWIG_ArgError(res3), Ruby_Format_TypeError( "", "std::vector< double,std::allocator< double > > const &","run", 3, argv[1] )); 
+    }
+    if (!ptr) {
+      SWIG_exception_fail(SWIG_NullReferenceError, Ruby_Format_TypeError("invalid null reference ", "std::vector< double,std::allocator< double > > const &","run", 3, argv[1])); 
+    }
+    arg3 = ptr;
+  }
+  {
+    std::vector< double,std::allocator< double > > *ptr = (std::vector< double,std::allocator< double > > *)0;
+    res4 = swig::asptr(argv[2], &ptr);
+    if (!SWIG_IsOK(res4)) {
+      SWIG_exception_fail(SWIG_ArgError(res4), Ruby_Format_TypeError( "", "std::vector< double,std::allocator< double > > const &","run", 4, argv[2] )); 
+    }
+    if (!ptr) {
+      SWIG_exception_fail(SWIG_NullReferenceError, Ruby_Format_TypeError("invalid null reference ", "std::vector< double,std::allocator< double > > const &","run", 4, argv[2])); 
+    }
+    arg4 = ptr;
+  }
+  res5 = SWIG_ConvertPtr(argv[3], &argp5, SWIGTYPE_p_datamunge__optim__BayesianSurrogate,  0 );
+  if (!SWIG_IsOK(res5)) {
+    SWIG_exception_fail(SWIG_ArgError(res5), Ruby_Format_TypeError( "", "datamunge::optim::BayesianSurrogate &","run", 5, argv[3] )); 
+  }
+  if (!argp5) {
+    SWIG_exception_fail(SWIG_NullReferenceError, Ruby_Format_TypeError("invalid null reference ", "datamunge::optim::BayesianSurrogate &","run", 5, argv[3])); 
+  }
+  arg5 = reinterpret_cast< datamunge::optim::BayesianSurrogate * >(argp5);
+  result = ((datamunge::optim::BayesianOptimization const *)arg1)->run(*arg2,(std::vector< double,std::allocator< double > > const &)*arg3,(std::vector< double,std::allocator< double > > const &)*arg4,*arg5);
+  vresult = SWIG_NewPointerObj((new datamunge::optim::BayesianOptimizationResult(result)), SWIGTYPE_p_datamunge__optim__BayesianOptimizationResult, SWIG_POINTER_OWN |  0 );
+  if (SWIG_IsNewObj(res3)) delete arg3;
+  if (SWIG_IsNewObj(res4)) delete arg4;
+  return vresult;
+fail:
+  if (SWIG_IsNewObj(res3)) delete arg3;
+  if (SWIG_IsNewObj(res4)) delete arg4;
+  return Qnil;
+}
+
+
+SWIGINTERN VALUE
 _wrap_BayesianOptimization_optimize(int argc, VALUE *argv, VALUE self) {
   datamunge::optim::BayesianOptimization *arg1 = 0 ;
   datamunge::optim::ArbitraryFunction *arg2 = 0 ;
@@ -128450,9 +136750,494 @@ fail:
 }
 
 
+SWIGINTERN VALUE
+_wrap_BayesianOptimization_options(int argc, VALUE *argv, VALUE self) {
+  datamunge::optim::BayesianOptimization *arg1 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  datamunge::optim::BayesianOptimizationOptions *result = 0 ;
+  VALUE vresult = Qnil;
+  
+  if ((argc < 0) || (argc > 0)) {
+    rb_raise(rb_eArgError, "wrong # of arguments(%d for 0)",argc); SWIG_fail;
+  }
+  res1 = SWIG_ConvertPtr(self, &argp1,SWIGTYPE_p_datamunge__optim__BayesianOptimization, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::optim::BayesianOptimization const *","options", 1, self )); 
+  }
+  arg1 = reinterpret_cast< datamunge::optim::BayesianOptimization * >(argp1);
+  result = (datamunge::optim::BayesianOptimizationOptions *) &((datamunge::optim::BayesianOptimization const *)arg1)->options();
+  vresult = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__optim__BayesianOptimizationOptions, 0 |  0 );
+  return vresult;
+fail:
+  return Qnil;
+}
+
+
 SWIGINTERN void
 free_datamunge_optim_BayesianOptimization(void *self) {
     datamunge::optim::BayesianOptimization *arg1 = (datamunge::optim::BayesianOptimization *)self;
+    delete arg1;
+}
+
+SWIGINTERN VALUE
+_wrap_expected_improvement__SWIG_0(int argc, VALUE *argv, VALUE self) {
+  double arg1 ;
+  double arg2 ;
+  double arg3 ;
+  double arg4 ;
+  double val1 ;
+  int ecode1 = 0 ;
+  double val2 ;
+  int ecode2 = 0 ;
+  double val3 ;
+  int ecode3 = 0 ;
+  double val4 ;
+  int ecode4 = 0 ;
+  double result;
+  VALUE vresult = Qnil;
+  
+  if ((argc < 4) || (argc > 4)) {
+    rb_raise(rb_eArgError, "wrong # of arguments(%d for 4)",argc); SWIG_fail;
+  }
+  ecode1 = SWIG_AsVal_double(argv[0], &val1);
+  if (!SWIG_IsOK(ecode1)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode1), Ruby_Format_TypeError( "", "double","datamunge::optim::expected_improvement", 1, argv[0] ));
+  } 
+  arg1 = static_cast< double >(val1);
+  ecode2 = SWIG_AsVal_double(argv[1], &val2);
+  if (!SWIG_IsOK(ecode2)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode2), Ruby_Format_TypeError( "", "double","datamunge::optim::expected_improvement", 2, argv[1] ));
+  } 
+  arg2 = static_cast< double >(val2);
+  ecode3 = SWIG_AsVal_double(argv[2], &val3);
+  if (!SWIG_IsOK(ecode3)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode3), Ruby_Format_TypeError( "", "double","datamunge::optim::expected_improvement", 3, argv[2] ));
+  } 
+  arg3 = static_cast< double >(val3);
+  ecode4 = SWIG_AsVal_double(argv[3], &val4);
+  if (!SWIG_IsOK(ecode4)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode4), Ruby_Format_TypeError( "", "double","datamunge::optim::expected_improvement", 4, argv[3] ));
+  } 
+  arg4 = static_cast< double >(val4);
+  result = (double)datamunge::optim::expected_improvement(arg1,arg2,arg3,arg4);
+  vresult = SWIG_From_double(static_cast< double >(result));
+  return vresult;
+fail:
+  return Qnil;
+}
+
+
+SWIGINTERN VALUE
+_wrap_expected_improvement__SWIG_1(int argc, VALUE *argv, VALUE self) {
+  double arg1 ;
+  double arg2 ;
+  double arg3 ;
+  double val1 ;
+  int ecode1 = 0 ;
+  double val2 ;
+  int ecode2 = 0 ;
+  double val3 ;
+  int ecode3 = 0 ;
+  double result;
+  VALUE vresult = Qnil;
+  
+  if ((argc < 3) || (argc > 3)) {
+    rb_raise(rb_eArgError, "wrong # of arguments(%d for 3)",argc); SWIG_fail;
+  }
+  ecode1 = SWIG_AsVal_double(argv[0], &val1);
+  if (!SWIG_IsOK(ecode1)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode1), Ruby_Format_TypeError( "", "double","datamunge::optim::expected_improvement", 1, argv[0] ));
+  } 
+  arg1 = static_cast< double >(val1);
+  ecode2 = SWIG_AsVal_double(argv[1], &val2);
+  if (!SWIG_IsOK(ecode2)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode2), Ruby_Format_TypeError( "", "double","datamunge::optim::expected_improvement", 2, argv[1] ));
+  } 
+  arg2 = static_cast< double >(val2);
+  ecode3 = SWIG_AsVal_double(argv[2], &val3);
+  if (!SWIG_IsOK(ecode3)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode3), Ruby_Format_TypeError( "", "double","datamunge::optim::expected_improvement", 3, argv[2] ));
+  } 
+  arg3 = static_cast< double >(val3);
+  result = (double)datamunge::optim::expected_improvement(arg1,arg2,arg3);
+  vresult = SWIG_From_double(static_cast< double >(result));
+  return vresult;
+fail:
+  return Qnil;
+}
+
+
+SWIGINTERN VALUE _wrap_expected_improvement(int nargs, VALUE *args, VALUE self) {
+  int argc;
+  VALUE argv[4];
+  int ii;
+  
+  argc = nargs;
+  if (argc > 4) SWIG_fail;
+  for (ii = 0; (ii < argc); ++ii) {
+    argv[ii] = args[ii];
+  }
+  if (argc == 3) {
+    int _v = 0;
+    {
+      int res = SWIG_AsVal_double(argv[0], NULL);
+      _v = SWIG_CheckState(res);
+    }
+    if (_v) {
+      {
+        int res = SWIG_AsVal_double(argv[1], NULL);
+        _v = SWIG_CheckState(res);
+      }
+      if (_v) {
+        {
+          int res = SWIG_AsVal_double(argv[2], NULL);
+          _v = SWIG_CheckState(res);
+        }
+        if (_v) {
+          return _wrap_expected_improvement__SWIG_1(nargs, args, self);
+        }
+      }
+    }
+  }
+  if (argc == 4) {
+    int _v = 0;
+    {
+      int res = SWIG_AsVal_double(argv[0], NULL);
+      _v = SWIG_CheckState(res);
+    }
+    if (_v) {
+      {
+        int res = SWIG_AsVal_double(argv[1], NULL);
+        _v = SWIG_CheckState(res);
+      }
+      if (_v) {
+        {
+          int res = SWIG_AsVal_double(argv[2], NULL);
+          _v = SWIG_CheckState(res);
+        }
+        if (_v) {
+          {
+            int res = SWIG_AsVal_double(argv[3], NULL);
+            _v = SWIG_CheckState(res);
+          }
+          if (_v) {
+            return _wrap_expected_improvement__SWIG_0(nargs, args, self);
+          }
+        }
+      }
+    }
+  }
+  
+fail:
+  Ruby_Format_OverloadedError( argc, 4, "expected_improvement", 
+    "    double expected_improvement(double mean, double sd, double incumbent, double exploration)\n"
+    "    double expected_improvement(double mean, double sd, double incumbent)\n");
+  
+  return Qnil;
+}
+
+
+SWIGINTERN VALUE
+_wrap_probability_of_improvement__SWIG_0(int argc, VALUE *argv, VALUE self) {
+  double arg1 ;
+  double arg2 ;
+  double arg3 ;
+  double arg4 ;
+  double val1 ;
+  int ecode1 = 0 ;
+  double val2 ;
+  int ecode2 = 0 ;
+  double val3 ;
+  int ecode3 = 0 ;
+  double val4 ;
+  int ecode4 = 0 ;
+  double result;
+  VALUE vresult = Qnil;
+  
+  if ((argc < 4) || (argc > 4)) {
+    rb_raise(rb_eArgError, "wrong # of arguments(%d for 4)",argc); SWIG_fail;
+  }
+  ecode1 = SWIG_AsVal_double(argv[0], &val1);
+  if (!SWIG_IsOK(ecode1)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode1), Ruby_Format_TypeError( "", "double","datamunge::optim::probability_of_improvement", 1, argv[0] ));
+  } 
+  arg1 = static_cast< double >(val1);
+  ecode2 = SWIG_AsVal_double(argv[1], &val2);
+  if (!SWIG_IsOK(ecode2)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode2), Ruby_Format_TypeError( "", "double","datamunge::optim::probability_of_improvement", 2, argv[1] ));
+  } 
+  arg2 = static_cast< double >(val2);
+  ecode3 = SWIG_AsVal_double(argv[2], &val3);
+  if (!SWIG_IsOK(ecode3)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode3), Ruby_Format_TypeError( "", "double","datamunge::optim::probability_of_improvement", 3, argv[2] ));
+  } 
+  arg3 = static_cast< double >(val3);
+  ecode4 = SWIG_AsVal_double(argv[3], &val4);
+  if (!SWIG_IsOK(ecode4)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode4), Ruby_Format_TypeError( "", "double","datamunge::optim::probability_of_improvement", 4, argv[3] ));
+  } 
+  arg4 = static_cast< double >(val4);
+  result = (double)datamunge::optim::probability_of_improvement(arg1,arg2,arg3,arg4);
+  vresult = SWIG_From_double(static_cast< double >(result));
+  return vresult;
+fail:
+  return Qnil;
+}
+
+
+SWIGINTERN VALUE
+_wrap_probability_of_improvement__SWIG_1(int argc, VALUE *argv, VALUE self) {
+  double arg1 ;
+  double arg2 ;
+  double arg3 ;
+  double val1 ;
+  int ecode1 = 0 ;
+  double val2 ;
+  int ecode2 = 0 ;
+  double val3 ;
+  int ecode3 = 0 ;
+  double result;
+  VALUE vresult = Qnil;
+  
+  if ((argc < 3) || (argc > 3)) {
+    rb_raise(rb_eArgError, "wrong # of arguments(%d for 3)",argc); SWIG_fail;
+  }
+  ecode1 = SWIG_AsVal_double(argv[0], &val1);
+  if (!SWIG_IsOK(ecode1)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode1), Ruby_Format_TypeError( "", "double","datamunge::optim::probability_of_improvement", 1, argv[0] ));
+  } 
+  arg1 = static_cast< double >(val1);
+  ecode2 = SWIG_AsVal_double(argv[1], &val2);
+  if (!SWIG_IsOK(ecode2)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode2), Ruby_Format_TypeError( "", "double","datamunge::optim::probability_of_improvement", 2, argv[1] ));
+  } 
+  arg2 = static_cast< double >(val2);
+  ecode3 = SWIG_AsVal_double(argv[2], &val3);
+  if (!SWIG_IsOK(ecode3)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode3), Ruby_Format_TypeError( "", "double","datamunge::optim::probability_of_improvement", 3, argv[2] ));
+  } 
+  arg3 = static_cast< double >(val3);
+  result = (double)datamunge::optim::probability_of_improvement(arg1,arg2,arg3);
+  vresult = SWIG_From_double(static_cast< double >(result));
+  return vresult;
+fail:
+  return Qnil;
+}
+
+
+SWIGINTERN VALUE _wrap_probability_of_improvement(int nargs, VALUE *args, VALUE self) {
+  int argc;
+  VALUE argv[4];
+  int ii;
+  
+  argc = nargs;
+  if (argc > 4) SWIG_fail;
+  for (ii = 0; (ii < argc); ++ii) {
+    argv[ii] = args[ii];
+  }
+  if (argc == 3) {
+    int _v = 0;
+    {
+      int res = SWIG_AsVal_double(argv[0], NULL);
+      _v = SWIG_CheckState(res);
+    }
+    if (_v) {
+      {
+        int res = SWIG_AsVal_double(argv[1], NULL);
+        _v = SWIG_CheckState(res);
+      }
+      if (_v) {
+        {
+          int res = SWIG_AsVal_double(argv[2], NULL);
+          _v = SWIG_CheckState(res);
+        }
+        if (_v) {
+          return _wrap_probability_of_improvement__SWIG_1(nargs, args, self);
+        }
+      }
+    }
+  }
+  if (argc == 4) {
+    int _v = 0;
+    {
+      int res = SWIG_AsVal_double(argv[0], NULL);
+      _v = SWIG_CheckState(res);
+    }
+    if (_v) {
+      {
+        int res = SWIG_AsVal_double(argv[1], NULL);
+        _v = SWIG_CheckState(res);
+      }
+      if (_v) {
+        {
+          int res = SWIG_AsVal_double(argv[2], NULL);
+          _v = SWIG_CheckState(res);
+        }
+        if (_v) {
+          {
+            int res = SWIG_AsVal_double(argv[3], NULL);
+            _v = SWIG_CheckState(res);
+          }
+          if (_v) {
+            return _wrap_probability_of_improvement__SWIG_0(nargs, args, self);
+          }
+        }
+      }
+    }
+  }
+  
+fail:
+  Ruby_Format_OverloadedError( argc, 4, "probability_of_improvement", 
+    "    double probability_of_improvement(double mean, double sd, double incumbent, double exploration)\n"
+    "    double probability_of_improvement(double mean, double sd, double incumbent)\n");
+  
+  return Qnil;
+}
+
+
+static swig_class SwigClassSurrogatePrediction;
+
+SWIGINTERN VALUE
+_wrap_SurrogatePrediction_mean_set(int argc, VALUE *argv, VALUE self) {
+  datamunge::optim::SurrogatePrediction *arg1 = 0 ;
+  double arg2 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  double val2 ;
+  int ecode2 = 0 ;
+  
+  if ((argc < 1) || (argc > 1)) {
+    rb_raise(rb_eArgError, "wrong # of arguments(%d for 1)",argc); SWIG_fail;
+  }
+  res1 = SWIG_ConvertPtr(self, &argp1,SWIGTYPE_p_datamunge__optim__SurrogatePrediction, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::optim::SurrogatePrediction *","mean", 1, self )); 
+  }
+  arg1 = reinterpret_cast< datamunge::optim::SurrogatePrediction * >(argp1);
+  ecode2 = SWIG_AsVal_double(argv[0], &val2);
+  if (!SWIG_IsOK(ecode2)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode2), Ruby_Format_TypeError( "", "double","mean", 2, argv[0] ));
+  } 
+  arg2 = static_cast< double >(val2);
+  if (arg1) (arg1)->mean = arg2;
+  return Qnil;
+fail:
+  return Qnil;
+}
+
+
+SWIGINTERN VALUE
+_wrap_SurrogatePrediction_mean_get(int argc, VALUE *argv, VALUE self) {
+  datamunge::optim::SurrogatePrediction *arg1 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  double result;
+  VALUE vresult = Qnil;
+  
+  if ((argc < 0) || (argc > 0)) {
+    rb_raise(rb_eArgError, "wrong # of arguments(%d for 0)",argc); SWIG_fail;
+  }
+  res1 = SWIG_ConvertPtr(self, &argp1,SWIGTYPE_p_datamunge__optim__SurrogatePrediction, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::optim::SurrogatePrediction *","mean", 1, self )); 
+  }
+  arg1 = reinterpret_cast< datamunge::optim::SurrogatePrediction * >(argp1);
+  result = (double) ((arg1)->mean);
+  vresult = SWIG_From_double(static_cast< double >(result));
+  return vresult;
+fail:
+  return Qnil;
+}
+
+
+SWIGINTERN VALUE
+_wrap_SurrogatePrediction_sd_set(int argc, VALUE *argv, VALUE self) {
+  datamunge::optim::SurrogatePrediction *arg1 = 0 ;
+  double arg2 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  double val2 ;
+  int ecode2 = 0 ;
+  
+  if ((argc < 1) || (argc > 1)) {
+    rb_raise(rb_eArgError, "wrong # of arguments(%d for 1)",argc); SWIG_fail;
+  }
+  res1 = SWIG_ConvertPtr(self, &argp1,SWIGTYPE_p_datamunge__optim__SurrogatePrediction, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::optim::SurrogatePrediction *","sd", 1, self )); 
+  }
+  arg1 = reinterpret_cast< datamunge::optim::SurrogatePrediction * >(argp1);
+  ecode2 = SWIG_AsVal_double(argv[0], &val2);
+  if (!SWIG_IsOK(ecode2)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode2), Ruby_Format_TypeError( "", "double","sd", 2, argv[0] ));
+  } 
+  arg2 = static_cast< double >(val2);
+  if (arg1) (arg1)->sd = arg2;
+  return Qnil;
+fail:
+  return Qnil;
+}
+
+
+SWIGINTERN VALUE
+_wrap_SurrogatePrediction_sd_get(int argc, VALUE *argv, VALUE self) {
+  datamunge::optim::SurrogatePrediction *arg1 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  double result;
+  VALUE vresult = Qnil;
+  
+  if ((argc < 0) || (argc > 0)) {
+    rb_raise(rb_eArgError, "wrong # of arguments(%d for 0)",argc); SWIG_fail;
+  }
+  res1 = SWIG_ConvertPtr(self, &argp1,SWIGTYPE_p_datamunge__optim__SurrogatePrediction, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::optim::SurrogatePrediction *","sd", 1, self )); 
+  }
+  arg1 = reinterpret_cast< datamunge::optim::SurrogatePrediction * >(argp1);
+  result = (double) ((arg1)->sd);
+  vresult = SWIG_From_double(static_cast< double >(result));
+  return vresult;
+fail:
+  return Qnil;
+}
+
+
+SWIGINTERN VALUE
+#ifdef HAVE_RB_DEFINE_ALLOC_FUNC
+_wrap_SurrogatePrediction_allocate(VALUE self)
+#else
+_wrap_SurrogatePrediction_allocate(int argc, VALUE *argv, VALUE self)
+#endif
+{
+  VALUE vresult = SWIG_NewClassInstance(self, SWIGTYPE_p_datamunge__optim__SurrogatePrediction);
+#ifndef HAVE_RB_DEFINE_ALLOC_FUNC
+  rb_obj_call_init(vresult, argc, argv);
+#endif
+  return vresult;
+}
+
+
+SWIGINTERN VALUE
+_wrap_new_SurrogatePrediction(int argc, VALUE *argv, VALUE self) {
+  const char *classname SWIGUNUSED = "Octruby::SurrogatePrediction";
+  datamunge::optim::SurrogatePrediction *result = 0 ;
+  
+  if ((argc < 0) || (argc > 0)) {
+    rb_raise(rb_eArgError, "wrong # of arguments(%d for 0)",argc); SWIG_fail;
+  }
+  result = (datamunge::optim::SurrogatePrediction *)new datamunge::optim::SurrogatePrediction();
+  ((struct swig_ruby_wrapped_object *)RTYPEDDATA_GET_DATA(self))->data = result;
+  return self;
+fail:
+  return Qnil;
+}
+
+
+SWIGINTERN void
+free_datamunge_optim_SurrogatePrediction(void *self) {
+    datamunge::optim::SurrogatePrediction *arg1 = (datamunge::optim::SurrogatePrediction *)self;
     delete arg1;
 }
 
@@ -128689,6 +137474,245 @@ _wrap_RBFGaussianProcessSurrogate_acquisition(int argc, VALUE *argv, VALUE self)
   return vresult;
 fail:
   if (SWIG_IsNewObj(res2)) delete arg2;
+  return Qnil;
+}
+
+
+SWIGINTERN VALUE
+_wrap_RBFGaussianProcessSurrogate_predict(int argc, VALUE *argv, VALUE self) {
+  datamunge::optim::RBFGaussianProcessSurrogate *arg1 = 0 ;
+  std::vector< double,std::allocator< double > > *arg2 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  int res2 = SWIG_OLDOBJ ;
+  datamunge::optim::SurrogatePrediction result;
+  VALUE vresult = Qnil;
+  
+  if ((argc < 1) || (argc > 1)) {
+    rb_raise(rb_eArgError, "wrong # of arguments(%d for 1)",argc); SWIG_fail;
+  }
+  res1 = SWIG_ConvertPtr(self, &argp1,SWIGTYPE_p_datamunge__optim__RBFGaussianProcessSurrogate, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::optim::RBFGaussianProcessSurrogate const *","predict", 1, self )); 
+  }
+  arg1 = reinterpret_cast< datamunge::optim::RBFGaussianProcessSurrogate * >(argp1);
+  {
+    std::vector< double,std::allocator< double > > *ptr = (std::vector< double,std::allocator< double > > *)0;
+    res2 = swig::asptr(argv[0], &ptr);
+    if (!SWIG_IsOK(res2)) {
+      SWIG_exception_fail(SWIG_ArgError(res2), Ruby_Format_TypeError( "", "std::vector< double,std::allocator< double > > const &","predict", 2, argv[0] )); 
+    }
+    if (!ptr) {
+      SWIG_exception_fail(SWIG_NullReferenceError, Ruby_Format_TypeError("invalid null reference ", "std::vector< double,std::allocator< double > > const &","predict", 2, argv[0])); 
+    }
+    arg2 = ptr;
+  }
+  result = ((datamunge::optim::RBFGaussianProcessSurrogate const *)arg1)->predict((std::vector< double,std::allocator< double > > const &)*arg2);
+  vresult = SWIG_NewPointerObj((new datamunge::optim::SurrogatePrediction(result)), SWIGTYPE_p_datamunge__optim__SurrogatePrediction, SWIG_POINTER_OWN |  0 );
+  if (SWIG_IsNewObj(res2)) delete arg2;
+  return vresult;
+fail:
+  if (SWIG_IsNewObj(res2)) delete arg2;
+  return Qnil;
+}
+
+
+SWIGINTERN VALUE
+_wrap_RBFGaussianProcessSurrogate_log_marginal_likelihood(int argc, VALUE *argv, VALUE self) {
+  datamunge::optim::RBFGaussianProcessSurrogate *arg1 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  double result;
+  VALUE vresult = Qnil;
+  
+  if ((argc < 0) || (argc > 0)) {
+    rb_raise(rb_eArgError, "wrong # of arguments(%d for 0)",argc); SWIG_fail;
+  }
+  res1 = SWIG_ConvertPtr(self, &argp1,SWIGTYPE_p_datamunge__optim__RBFGaussianProcessSurrogate, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::optim::RBFGaussianProcessSurrogate const *","log_marginal_likelihood", 1, self )); 
+  }
+  arg1 = reinterpret_cast< datamunge::optim::RBFGaussianProcessSurrogate * >(argp1);
+  result = (double)((datamunge::optim::RBFGaussianProcessSurrogate const *)arg1)->log_marginal_likelihood();
+  vresult = SWIG_From_double(static_cast< double >(result));
+  return vresult;
+fail:
+  return Qnil;
+}
+
+
+SWIGINTERN VALUE
+_wrap_RBFGaussianProcessSurrogate_length_scale(int argc, VALUE *argv, VALUE self) {
+  datamunge::optim::RBFGaussianProcessSurrogate *arg1 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  double result;
+  VALUE vresult = Qnil;
+  
+  if ((argc < 0) || (argc > 0)) {
+    rb_raise(rb_eArgError, "wrong # of arguments(%d for 0)",argc); SWIG_fail;
+  }
+  res1 = SWIG_ConvertPtr(self, &argp1,SWIGTYPE_p_datamunge__optim__RBFGaussianProcessSurrogate, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::optim::RBFGaussianProcessSurrogate const *","length_scale", 1, self )); 
+  }
+  arg1 = reinterpret_cast< datamunge::optim::RBFGaussianProcessSurrogate * >(argp1);
+  result = (double)((datamunge::optim::RBFGaussianProcessSurrogate const *)arg1)->length_scale();
+  vresult = SWIG_From_double(static_cast< double >(result));
+  return vresult;
+fail:
+  return Qnil;
+}
+
+
+SWIGINTERN VALUE
+_wrap_RBFGaussianProcessSurrogate_noise(int argc, VALUE *argv, VALUE self) {
+  datamunge::optim::RBFGaussianProcessSurrogate *arg1 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  double result;
+  VALUE vresult = Qnil;
+  
+  if ((argc < 0) || (argc > 0)) {
+    rb_raise(rb_eArgError, "wrong # of arguments(%d for 0)",argc); SWIG_fail;
+  }
+  res1 = SWIG_ConvertPtr(self, &argp1,SWIGTYPE_p_datamunge__optim__RBFGaussianProcessSurrogate, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::optim::RBFGaussianProcessSurrogate const *","noise", 1, self )); 
+  }
+  arg1 = reinterpret_cast< datamunge::optim::RBFGaussianProcessSurrogate * >(argp1);
+  result = (double)((datamunge::optim::RBFGaussianProcessSurrogate const *)arg1)->noise();
+  vresult = SWIG_From_double(static_cast< double >(result));
+  return vresult;
+fail:
+  return Qnil;
+}
+
+
+SWIGINTERN VALUE
+_wrap_RBFGaussianProcessSurrogate_signal_variance(int argc, VALUE *argv, VALUE self) {
+  datamunge::optim::RBFGaussianProcessSurrogate *arg1 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  double result;
+  VALUE vresult = Qnil;
+  
+  if ((argc < 0) || (argc > 0)) {
+    rb_raise(rb_eArgError, "wrong # of arguments(%d for 0)",argc); SWIG_fail;
+  }
+  res1 = SWIG_ConvertPtr(self, &argp1,SWIGTYPE_p_datamunge__optim__RBFGaussianProcessSurrogate, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::optim::RBFGaussianProcessSurrogate const *","signal_variance", 1, self )); 
+  }
+  arg1 = reinterpret_cast< datamunge::optim::RBFGaussianProcessSurrogate * >(argp1);
+  result = (double)((datamunge::optim::RBFGaussianProcessSurrogate const *)arg1)->signal_variance();
+  vresult = SWIG_From_double(static_cast< double >(result));
+  return vresult;
+fail:
+  return Qnil;
+}
+
+
+SWIGINTERN VALUE
+_wrap_RBFGaussianProcessSurrogate_prior_mean(int argc, VALUE *argv, VALUE self) {
+  datamunge::optim::RBFGaussianProcessSurrogate *arg1 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  double result;
+  VALUE vresult = Qnil;
+  
+  if ((argc < 0) || (argc > 0)) {
+    rb_raise(rb_eArgError, "wrong # of arguments(%d for 0)",argc); SWIG_fail;
+  }
+  res1 = SWIG_ConvertPtr(self, &argp1,SWIGTYPE_p_datamunge__optim__RBFGaussianProcessSurrogate, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::optim::RBFGaussianProcessSurrogate const *","prior_mean", 1, self )); 
+  }
+  arg1 = reinterpret_cast< datamunge::optim::RBFGaussianProcessSurrogate * >(argp1);
+  result = (double)((datamunge::optim::RBFGaussianProcessSurrogate const *)arg1)->prior_mean();
+  vresult = SWIG_From_double(static_cast< double >(result));
+  return vresult;
+fail:
+  return Qnil;
+}
+
+
+SWIGINTERN VALUE
+_wrap_RBFGaussianProcessSurrogate_value_scale(int argc, VALUE *argv, VALUE self) {
+  datamunge::optim::RBFGaussianProcessSurrogate *arg1 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  double result;
+  VALUE vresult = Qnil;
+  
+  if ((argc < 0) || (argc > 0)) {
+    rb_raise(rb_eArgError, "wrong # of arguments(%d for 0)",argc); SWIG_fail;
+  }
+  res1 = SWIG_ConvertPtr(self, &argp1,SWIGTYPE_p_datamunge__optim__RBFGaussianProcessSurrogate, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::optim::RBFGaussianProcessSurrogate const *","value_scale", 1, self )); 
+  }
+  arg1 = reinterpret_cast< datamunge::optim::RBFGaussianProcessSurrogate * >(argp1);
+  result = (double)((datamunge::optim::RBFGaussianProcessSurrogate const *)arg1)->value_scale();
+  vresult = SWIG_From_double(static_cast< double >(result));
+  return vresult;
+fail:
+  return Qnil;
+}
+
+
+SWIGINTERN VALUE
+_wrap_RBFGaussianProcessSurrogate_points(int argc, VALUE *argv, VALUE self) {
+  datamunge::optim::RBFGaussianProcessSurrogate *arg1 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  std::vector< std::vector< double,std::allocator< double > >,std::allocator< std::vector< double,std::allocator< double > > > > *result = 0 ;
+  VALUE vresult = Qnil;
+  
+  if ((argc < 0) || (argc > 0)) {
+    rb_raise(rb_eArgError, "wrong # of arguments(%d for 0)",argc); SWIG_fail;
+  }
+  res1 = SWIG_ConvertPtr(self, &argp1,SWIGTYPE_p_datamunge__optim__RBFGaussianProcessSurrogate, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::optim::RBFGaussianProcessSurrogate const *","points", 1, self )); 
+  }
+  arg1 = reinterpret_cast< datamunge::optim::RBFGaussianProcessSurrogate * >(argp1);
+  result = (std::vector< std::vector< double,std::allocator< double > >,std::allocator< std::vector< double,std::allocator< double > > > > *) &((datamunge::optim::RBFGaussianProcessSurrogate const *)arg1)->points();
+  vresult = swig::from(static_cast< std::vector< std::vector< double,std::allocator< double > >,std::allocator< std::vector< double,std::allocator< double > > > > >(*result));
+  return vresult;
+fail:
+  return Qnil;
+}
+
+
+/*
+  Document-method: Octruby::RBFGaussianProcessSurrogate.values
+
+  call-seq:
+    values -> DVector
+
+Return an Array of value elements.
+*/
+SWIGINTERN VALUE
+_wrap_RBFGaussianProcessSurrogate_values(int argc, VALUE *argv, VALUE self) {
+  datamunge::optim::RBFGaussianProcessSurrogate *arg1 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  std::vector< double,std::allocator< double > > *result = 0 ;
+  VALUE vresult = Qnil;
+  
+  if ((argc < 0) || (argc > 0)) {
+    rb_raise(rb_eArgError, "wrong # of arguments(%d for 0)",argc); SWIG_fail;
+  }
+  res1 = SWIG_ConvertPtr(self, &argp1,SWIGTYPE_p_datamunge__optim__RBFGaussianProcessSurrogate, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::optim::RBFGaussianProcessSurrogate const *","values", 1, self )); 
+  }
+  arg1 = reinterpret_cast< datamunge::optim::RBFGaussianProcessSurrogate * >(argp1);
+  result = (std::vector< double,std::allocator< double > > *) &((datamunge::optim::RBFGaussianProcessSurrogate const *)arg1)->values();
+  vresult = swig::from(static_cast< std::vector< double,std::allocator< double > > >(*result));
+  return vresult;
+fail:
   return Qnil;
 }
 
@@ -129032,6 +138056,30 @@ _wrap_MAP_optimize(int argc, VALUE *argv, VALUE self) {
   arg3 = reinterpret_cast< std::vector< double,std::allocator< double > > * >(argp3);
   result = (double)((datamunge::bayes::MAP const *)arg1)->optimize(*arg2,*arg3);
   vresult = SWIG_From_double(static_cast< double >(result));
+  return vresult;
+fail:
+  return Qnil;
+}
+
+
+SWIGINTERN VALUE
+_wrap_MAP_options(int argc, VALUE *argv, VALUE self) {
+  datamunge::bayes::MAP *arg1 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  datamunge::bayes::MAPOptions *result = 0 ;
+  VALUE vresult = Qnil;
+  
+  if ((argc < 0) || (argc > 0)) {
+    rb_raise(rb_eArgError, "wrong # of arguments(%d for 0)",argc); SWIG_fail;
+  }
+  res1 = SWIG_ConvertPtr(self, &argp1,SWIGTYPE_p_datamunge__bayes__MAP, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::bayes::MAP const *","options", 1, self )); 
+  }
+  arg1 = reinterpret_cast< datamunge::bayes::MAP * >(argp1);
+  result = (datamunge::bayes::MAPOptions *) &((datamunge::bayes::MAP const *)arg1)->options();
+  vresult = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__bayes__MAPOptions, 0 |  0 );
   return vresult;
 fail:
   return Qnil;
@@ -129744,11 +138792,193 @@ fail:
 }
 
 
+SWIGINTERN VALUE
+_wrap_HMC_options(int argc, VALUE *argv, VALUE self) {
+  datamunge::bayes::HMC *arg1 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  datamunge::bayes::HMCOptions *result = 0 ;
+  VALUE vresult = Qnil;
+  
+  if ((argc < 0) || (argc > 0)) {
+    rb_raise(rb_eArgError, "wrong # of arguments(%d for 0)",argc); SWIG_fail;
+  }
+  res1 = SWIG_ConvertPtr(self, &argp1,SWIGTYPE_p_datamunge__bayes__HMC, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::bayes::HMC const *","options", 1, self )); 
+  }
+  arg1 = reinterpret_cast< datamunge::bayes::HMC * >(argp1);
+  result = (datamunge::bayes::HMCOptions *) &((datamunge::bayes::HMC const *)arg1)->options();
+  vresult = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__bayes__HMCOptions, 0 |  0 );
+  return vresult;
+fail:
+  return Qnil;
+}
+
+
 SWIGINTERN void
 free_datamunge_bayes_HMC(void *self) {
     datamunge::bayes::HMC *arg1 = (datamunge::bayes::HMC *)self;
     delete arg1;
 }
+
+SWIGINTERN VALUE
+_wrap_leapfrog_gaussian_acceptance__SWIG_0(int argc, VALUE *argv, VALUE self) {
+  double arg1 ;
+  std::size_t arg2 ;
+  double arg3 ;
+  std::size_t arg4 ;
+  double val1 ;
+  int ecode1 = 0 ;
+  size_t val2 ;
+  int ecode2 = 0 ;
+  double val3 ;
+  int ecode3 = 0 ;
+  size_t val4 ;
+  int ecode4 = 0 ;
+  double result;
+  VALUE vresult = Qnil;
+  
+  if ((argc < 4) || (argc > 4)) {
+    rb_raise(rb_eArgError, "wrong # of arguments(%d for 4)",argc); SWIG_fail;
+  }
+  ecode1 = SWIG_AsVal_double(argv[0], &val1);
+  if (!SWIG_IsOK(ecode1)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode1), Ruby_Format_TypeError( "", "double","datamunge::bayes::leapfrog_gaussian_acceptance", 1, argv[0] ));
+  } 
+  arg1 = static_cast< double >(val1);
+  ecode2 = SWIG_AsVal_size_t(argv[1], &val2);
+  if (!SWIG_IsOK(ecode2)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode2), Ruby_Format_TypeError( "", "std::size_t","datamunge::bayes::leapfrog_gaussian_acceptance", 2, argv[1] ));
+  } 
+  arg2 = static_cast< std::size_t >(val2);
+  ecode3 = SWIG_AsVal_double(argv[2], &val3);
+  if (!SWIG_IsOK(ecode3)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode3), Ruby_Format_TypeError( "", "double","datamunge::bayes::leapfrog_gaussian_acceptance", 3, argv[2] ));
+  } 
+  arg3 = static_cast< double >(val3);
+  ecode4 = SWIG_AsVal_size_t(argv[3], &val4);
+  if (!SWIG_IsOK(ecode4)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode4), Ruby_Format_TypeError( "", "std::size_t","datamunge::bayes::leapfrog_gaussian_acceptance", 4, argv[3] ));
+  } 
+  arg4 = static_cast< std::size_t >(val4);
+  result = (double)datamunge::bayes::leapfrog_gaussian_acceptance(arg1,SWIG_STD_MOVE(*(&arg2)),arg3,SWIG_STD_MOVE(*(&arg4)));
+  vresult = SWIG_From_double(static_cast< double >(result));
+  return vresult;
+fail:
+  return Qnil;
+}
+
+
+SWIGINTERN VALUE
+_wrap_leapfrog_gaussian_acceptance__SWIG_1(int argc, VALUE *argv, VALUE self) {
+  double arg1 ;
+  std::size_t arg2 ;
+  double arg3 ;
+  double val1 ;
+  int ecode1 = 0 ;
+  size_t val2 ;
+  int ecode2 = 0 ;
+  double val3 ;
+  int ecode3 = 0 ;
+  double result;
+  VALUE vresult = Qnil;
+  
+  if ((argc < 3) || (argc > 3)) {
+    rb_raise(rb_eArgError, "wrong # of arguments(%d for 3)",argc); SWIG_fail;
+  }
+  ecode1 = SWIG_AsVal_double(argv[0], &val1);
+  if (!SWIG_IsOK(ecode1)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode1), Ruby_Format_TypeError( "", "double","datamunge::bayes::leapfrog_gaussian_acceptance", 1, argv[0] ));
+  } 
+  arg1 = static_cast< double >(val1);
+  ecode2 = SWIG_AsVal_size_t(argv[1], &val2);
+  if (!SWIG_IsOK(ecode2)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode2), Ruby_Format_TypeError( "", "std::size_t","datamunge::bayes::leapfrog_gaussian_acceptance", 2, argv[1] ));
+  } 
+  arg2 = static_cast< std::size_t >(val2);
+  ecode3 = SWIG_AsVal_double(argv[2], &val3);
+  if (!SWIG_IsOK(ecode3)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode3), Ruby_Format_TypeError( "", "double","datamunge::bayes::leapfrog_gaussian_acceptance", 3, argv[2] ));
+  } 
+  arg3 = static_cast< double >(val3);
+  result = (double)datamunge::bayes::leapfrog_gaussian_acceptance(arg1,SWIG_STD_MOVE(*(&arg2)),arg3);
+  vresult = SWIG_From_double(static_cast< double >(result));
+  return vresult;
+fail:
+  return Qnil;
+}
+
+
+SWIGINTERN VALUE _wrap_leapfrog_gaussian_acceptance(int nargs, VALUE *args, VALUE self) {
+  int argc;
+  VALUE argv[4];
+  int ii;
+  
+  argc = nargs;
+  if (argc > 4) SWIG_fail;
+  for (ii = 0; (ii < argc); ++ii) {
+    argv[ii] = args[ii];
+  }
+  if (argc == 3) {
+    int _v = 0;
+    {
+      int res = SWIG_AsVal_double(argv[0], NULL);
+      _v = SWIG_CheckState(res);
+    }
+    if (_v) {
+      {
+        int res = SWIG_AsVal_size_t(argv[1], NULL);
+        _v = SWIG_CheckState(res);
+      }
+      if (_v) {
+        {
+          int res = SWIG_AsVal_double(argv[2], NULL);
+          _v = SWIG_CheckState(res);
+        }
+        if (_v) {
+          return _wrap_leapfrog_gaussian_acceptance__SWIG_1(nargs, args, self);
+        }
+      }
+    }
+  }
+  if (argc == 4) {
+    int _v = 0;
+    {
+      int res = SWIG_AsVal_double(argv[0], NULL);
+      _v = SWIG_CheckState(res);
+    }
+    if (_v) {
+      {
+        int res = SWIG_AsVal_size_t(argv[1], NULL);
+        _v = SWIG_CheckState(res);
+      }
+      if (_v) {
+        {
+          int res = SWIG_AsVal_double(argv[2], NULL);
+          _v = SWIG_CheckState(res);
+        }
+        if (_v) {
+          {
+            int res = SWIG_AsVal_size_t(argv[3], NULL);
+            _v = SWIG_CheckState(res);
+          }
+          if (_v) {
+            return _wrap_leapfrog_gaussian_acceptance__SWIG_0(nargs, args, self);
+          }
+        }
+      }
+    }
+  }
+  
+fail:
+  Ruby_Format_OverloadedError( argc, 4, "leapfrog_gaussian_acceptance", 
+    "    double leapfrog_gaussian_acceptance(double step_size, std::size_t num_steps, double sd, std::size_t angles)\n"
+    "    double leapfrog_gaussian_acceptance(double step_size, std::size_t num_steps, double sd)\n");
+  
+  return Qnil;
+}
+
 
 static swig_class SwigClassNUTSOptions;
 
@@ -130375,6 +139605,218 @@ fail:
 
 
 SWIGINTERN VALUE
+_wrap_NUTSResult_divergent_set(int argc, VALUE *argv, VALUE self) {
+  datamunge::bayes::NUTSResult *arg1 = 0 ;
+  std::vector< int,std::allocator< int > > *arg2 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  void *argp2 = 0 ;
+  int res2 = 0 ;
+  
+  if ((argc < 1) || (argc > 1)) {
+    rb_raise(rb_eArgError, "wrong # of arguments(%d for 1)",argc); SWIG_fail;
+  }
+  res1 = SWIG_ConvertPtr(self, &argp1,SWIGTYPE_p_datamunge__bayes__NUTSResult, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::bayes::NUTSResult *","divergent", 1, self )); 
+  }
+  arg1 = reinterpret_cast< datamunge::bayes::NUTSResult * >(argp1);
+  res2 = SWIG_ConvertPtr(argv[0], &argp2,SWIGTYPE_p_std__vectorT_int_t, 0 |  0 );
+  if (!SWIG_IsOK(res2)) {
+    SWIG_exception_fail(SWIG_ArgError(res2), Ruby_Format_TypeError( "", "std::vector< int,std::allocator< int > > *","divergent", 2, argv[0] )); 
+  }
+  arg2 = reinterpret_cast< std::vector< int,std::allocator< int > > * >(argp2);
+  if (arg1) (arg1)->divergent = *arg2;
+  return Qnil;
+fail:
+  return Qnil;
+}
+
+
+SWIGINTERN VALUE
+_wrap_NUTSResult_divergent_get(int argc, VALUE *argv, VALUE self) {
+  datamunge::bayes::NUTSResult *arg1 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  std::vector< int,std::allocator< int > > *result = 0 ;
+  VALUE vresult = Qnil;
+  
+  if ((argc < 0) || (argc > 0)) {
+    rb_raise(rb_eArgError, "wrong # of arguments(%d for 0)",argc); SWIG_fail;
+  }
+  res1 = SWIG_ConvertPtr(self, &argp1,SWIGTYPE_p_datamunge__bayes__NUTSResult, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::bayes::NUTSResult *","divergent", 1, self )); 
+  }
+  arg1 = reinterpret_cast< datamunge::bayes::NUTSResult * >(argp1);
+  result = (std::vector< int,std::allocator< int > > *)& ((arg1)->divergent);
+  vresult = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_std__vectorT_int_t, 0 |  0 );
+  return vresult;
+fail:
+  return Qnil;
+}
+
+
+SWIGINTERN VALUE
+_wrap_NUTSResult_tree_depth_set(int argc, VALUE *argv, VALUE self) {
+  datamunge::bayes::NUTSResult *arg1 = 0 ;
+  std::vector< int,std::allocator< int > > *arg2 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  void *argp2 = 0 ;
+  int res2 = 0 ;
+  
+  if ((argc < 1) || (argc > 1)) {
+    rb_raise(rb_eArgError, "wrong # of arguments(%d for 1)",argc); SWIG_fail;
+  }
+  res1 = SWIG_ConvertPtr(self, &argp1,SWIGTYPE_p_datamunge__bayes__NUTSResult, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::bayes::NUTSResult *","tree_depth", 1, self )); 
+  }
+  arg1 = reinterpret_cast< datamunge::bayes::NUTSResult * >(argp1);
+  res2 = SWIG_ConvertPtr(argv[0], &argp2,SWIGTYPE_p_std__vectorT_int_t, 0 |  0 );
+  if (!SWIG_IsOK(res2)) {
+    SWIG_exception_fail(SWIG_ArgError(res2), Ruby_Format_TypeError( "", "std::vector< int,std::allocator< int > > *","tree_depth", 2, argv[0] )); 
+  }
+  arg2 = reinterpret_cast< std::vector< int,std::allocator< int > > * >(argp2);
+  if (arg1) (arg1)->tree_depth = *arg2;
+  return Qnil;
+fail:
+  return Qnil;
+}
+
+
+SWIGINTERN VALUE
+_wrap_NUTSResult_tree_depth_get(int argc, VALUE *argv, VALUE self) {
+  datamunge::bayes::NUTSResult *arg1 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  std::vector< int,std::allocator< int > > *result = 0 ;
+  VALUE vresult = Qnil;
+  
+  if ((argc < 0) || (argc > 0)) {
+    rb_raise(rb_eArgError, "wrong # of arguments(%d for 0)",argc); SWIG_fail;
+  }
+  res1 = SWIG_ConvertPtr(self, &argp1,SWIGTYPE_p_datamunge__bayes__NUTSResult, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::bayes::NUTSResult *","tree_depth", 1, self )); 
+  }
+  arg1 = reinterpret_cast< datamunge::bayes::NUTSResult * >(argp1);
+  result = (std::vector< int,std::allocator< int > > *)& ((arg1)->tree_depth);
+  vresult = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_std__vectorT_int_t, 0 |  0 );
+  return vresult;
+fail:
+  return Qnil;
+}
+
+
+SWIGINTERN VALUE
+_wrap_NUTSResult_n_leapfrog_set(int argc, VALUE *argv, VALUE self) {
+  datamunge::bayes::NUTSResult *arg1 = 0 ;
+  std::vector< int,std::allocator< int > > *arg2 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  void *argp2 = 0 ;
+  int res2 = 0 ;
+  
+  if ((argc < 1) || (argc > 1)) {
+    rb_raise(rb_eArgError, "wrong # of arguments(%d for 1)",argc); SWIG_fail;
+  }
+  res1 = SWIG_ConvertPtr(self, &argp1,SWIGTYPE_p_datamunge__bayes__NUTSResult, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::bayes::NUTSResult *","n_leapfrog", 1, self )); 
+  }
+  arg1 = reinterpret_cast< datamunge::bayes::NUTSResult * >(argp1);
+  res2 = SWIG_ConvertPtr(argv[0], &argp2,SWIGTYPE_p_std__vectorT_int_t, 0 |  0 );
+  if (!SWIG_IsOK(res2)) {
+    SWIG_exception_fail(SWIG_ArgError(res2), Ruby_Format_TypeError( "", "std::vector< int,std::allocator< int > > *","n_leapfrog", 2, argv[0] )); 
+  }
+  arg2 = reinterpret_cast< std::vector< int,std::allocator< int > > * >(argp2);
+  if (arg1) (arg1)->n_leapfrog = *arg2;
+  return Qnil;
+fail:
+  return Qnil;
+}
+
+
+SWIGINTERN VALUE
+_wrap_NUTSResult_n_leapfrog_get(int argc, VALUE *argv, VALUE self) {
+  datamunge::bayes::NUTSResult *arg1 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  std::vector< int,std::allocator< int > > *result = 0 ;
+  VALUE vresult = Qnil;
+  
+  if ((argc < 0) || (argc > 0)) {
+    rb_raise(rb_eArgError, "wrong # of arguments(%d for 0)",argc); SWIG_fail;
+  }
+  res1 = SWIG_ConvertPtr(self, &argp1,SWIGTYPE_p_datamunge__bayes__NUTSResult, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::bayes::NUTSResult *","n_leapfrog", 1, self )); 
+  }
+  arg1 = reinterpret_cast< datamunge::bayes::NUTSResult * >(argp1);
+  result = (std::vector< int,std::allocator< int > > *)& ((arg1)->n_leapfrog);
+  vresult = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_std__vectorT_int_t, 0 |  0 );
+  return vresult;
+fail:
+  return Qnil;
+}
+
+
+SWIGINTERN VALUE
+_wrap_NUTSResult_energy_set(int argc, VALUE *argv, VALUE self) {
+  datamunge::bayes::NUTSResult *arg1 = 0 ;
+  std::vector< double,std::allocator< double > > *arg2 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  void *argp2 = 0 ;
+  int res2 = 0 ;
+  
+  if ((argc < 1) || (argc > 1)) {
+    rb_raise(rb_eArgError, "wrong # of arguments(%d for 1)",argc); SWIG_fail;
+  }
+  res1 = SWIG_ConvertPtr(self, &argp1,SWIGTYPE_p_datamunge__bayes__NUTSResult, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::bayes::NUTSResult *","energy", 1, self )); 
+  }
+  arg1 = reinterpret_cast< datamunge::bayes::NUTSResult * >(argp1);
+  res2 = SWIG_ConvertPtr(argv[0], &argp2,SWIGTYPE_p_std__vectorT_double_t, 0 |  0 );
+  if (!SWIG_IsOK(res2)) {
+    SWIG_exception_fail(SWIG_ArgError(res2), Ruby_Format_TypeError( "", "std::vector< double,std::allocator< double > > *","energy", 2, argv[0] )); 
+  }
+  arg2 = reinterpret_cast< std::vector< double,std::allocator< double > > * >(argp2);
+  if (arg1) (arg1)->energy = *arg2;
+  return Qnil;
+fail:
+  return Qnil;
+}
+
+
+SWIGINTERN VALUE
+_wrap_NUTSResult_energy_get(int argc, VALUE *argv, VALUE self) {
+  datamunge::bayes::NUTSResult *arg1 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  std::vector< double,std::allocator< double > > *result = 0 ;
+  VALUE vresult = Qnil;
+  
+  if ((argc < 0) || (argc > 0)) {
+    rb_raise(rb_eArgError, "wrong # of arguments(%d for 0)",argc); SWIG_fail;
+  }
+  res1 = SWIG_ConvertPtr(self, &argp1,SWIGTYPE_p_datamunge__bayes__NUTSResult, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::bayes::NUTSResult *","energy", 1, self )); 
+  }
+  arg1 = reinterpret_cast< datamunge::bayes::NUTSResult * >(argp1);
+  result = (std::vector< double,std::allocator< double > > *)& ((arg1)->energy);
+  vresult = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_std__vectorT_double_t, 0 |  0 );
+  return vresult;
+fail:
+  return Qnil;
+}
+
+
+SWIGINTERN VALUE
 #ifdef HAVE_RB_DEFINE_ALLOC_FUNC
 _wrap_NUTSResult_allocate(VALUE self)
 #else
@@ -130552,6 +139994,30 @@ _wrap_NUTS_sample(int argc, VALUE *argv, VALUE self) {
   return vresult;
 fail:
   if (SWIG_IsNewObj(res3)) delete arg3;
+  return Qnil;
+}
+
+
+SWIGINTERN VALUE
+_wrap_NUTS_options(int argc, VALUE *argv, VALUE self) {
+  datamunge::bayes::NUTS *arg1 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  datamunge::bayes::NUTSOptions *result = 0 ;
+  VALUE vresult = Qnil;
+  
+  if ((argc < 0) || (argc > 0)) {
+    rb_raise(rb_eArgError, "wrong # of arguments(%d for 0)",argc); SWIG_fail;
+  }
+  res1 = SWIG_ConvertPtr(self, &argp1,SWIGTYPE_p_datamunge__bayes__NUTS, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::bayes::NUTS const *","options", 1, self )); 
+  }
+  arg1 = reinterpret_cast< datamunge::bayes::NUTS * >(argp1);
+  result = (datamunge::bayes::NUTSOptions *) &((datamunge::bayes::NUTS const *)arg1)->options();
+  vresult = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__bayes__NUTSOptions, 0 |  0 );
+  return vresult;
+fail:
   return Qnil;
 }
 
@@ -130830,6 +140296,59 @@ fail:
 
 
 SWIGINTERN VALUE
+_wrap_RWMOptions_adapt_covariance_set(int argc, VALUE *argv, VALUE self) {
+  datamunge::bayes::RWMOptions *arg1 = 0 ;
+  bool arg2 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  bool val2 ;
+  int ecode2 = 0 ;
+  
+  if ((argc < 1) || (argc > 1)) {
+    rb_raise(rb_eArgError, "wrong # of arguments(%d for 1)",argc); SWIG_fail;
+  }
+  res1 = SWIG_ConvertPtr(self, &argp1,SWIGTYPE_p_datamunge__bayes__RWMOptions, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::bayes::RWMOptions *","adapt_covariance", 1, self )); 
+  }
+  arg1 = reinterpret_cast< datamunge::bayes::RWMOptions * >(argp1);
+  ecode2 = SWIG_AsVal_bool(argv[0], &val2);
+  if (!SWIG_IsOK(ecode2)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode2), Ruby_Format_TypeError( "", "bool","adapt_covariance", 2, argv[0] ));
+  } 
+  arg2 = static_cast< bool >(val2);
+  if (arg1) (arg1)->adapt_covariance = arg2;
+  return Qnil;
+fail:
+  return Qnil;
+}
+
+
+SWIGINTERN VALUE
+_wrap_RWMOptions_adapt_covariance_get(int argc, VALUE *argv, VALUE self) {
+  datamunge::bayes::RWMOptions *arg1 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  bool result;
+  VALUE vresult = Qnil;
+  
+  if ((argc < 0) || (argc > 0)) {
+    rb_raise(rb_eArgError, "wrong # of arguments(%d for 0)",argc); SWIG_fail;
+  }
+  res1 = SWIG_ConvertPtr(self, &argp1,SWIGTYPE_p_datamunge__bayes__RWMOptions, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::bayes::RWMOptions *","adapt_covariance", 1, self )); 
+  }
+  arg1 = reinterpret_cast< datamunge::bayes::RWMOptions * >(argp1);
+  result = (bool) ((arg1)->adapt_covariance);
+  vresult = SWIG_From_bool(static_cast< bool >(result));
+  return vresult;
+fail:
+  return Qnil;
+}
+
+
+SWIGINTERN VALUE
 #ifdef HAVE_RB_DEFINE_ALLOC_FUNC
 _wrap_RWMOptions_allocate(VALUE self)
 #else
@@ -131028,6 +140547,59 @@ fail:
 
 
 SWIGINTERN VALUE
+_wrap_RWMResult_proposal_covariance_set(int argc, VALUE *argv, VALUE self) {
+  datamunge::bayes::RWMResult *arg1 = 0 ;
+  std::vector< std::vector< double,std::allocator< double > >,std::allocator< std::vector< double,std::allocator< double > > > > *arg2 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  void *argp2 = 0 ;
+  int res2 = 0 ;
+  
+  if ((argc < 1) || (argc > 1)) {
+    rb_raise(rb_eArgError, "wrong # of arguments(%d for 1)",argc); SWIG_fail;
+  }
+  res1 = SWIG_ConvertPtr(self, &argp1,SWIGTYPE_p_datamunge__bayes__RWMResult, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::bayes::RWMResult *","proposal_covariance", 1, self )); 
+  }
+  arg1 = reinterpret_cast< datamunge::bayes::RWMResult * >(argp1);
+  res2 = SWIG_ConvertPtr(argv[0], &argp2,SWIGTYPE_p_std__vectorT_std__vectorT_double_t_t, 0 |  0 );
+  if (!SWIG_IsOK(res2)) {
+    SWIG_exception_fail(SWIG_ArgError(res2), Ruby_Format_TypeError( "", "std::vector< std::vector< double,std::allocator< double > >,std::allocator< std::vector< double,std::allocator< double > > > > *","proposal_covariance", 2, argv[0] )); 
+  }
+  arg2 = reinterpret_cast< std::vector< std::vector< double,std::allocator< double > >,std::allocator< std::vector< double,std::allocator< double > > > > * >(argp2);
+  if (arg1) (arg1)->proposal_covariance = *arg2;
+  return Qnil;
+fail:
+  return Qnil;
+}
+
+
+SWIGINTERN VALUE
+_wrap_RWMResult_proposal_covariance_get(int argc, VALUE *argv, VALUE self) {
+  datamunge::bayes::RWMResult *arg1 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  std::vector< std::vector< double,std::allocator< double > >,std::allocator< std::vector< double,std::allocator< double > > > > *result = 0 ;
+  VALUE vresult = Qnil;
+  
+  if ((argc < 0) || (argc > 0)) {
+    rb_raise(rb_eArgError, "wrong # of arguments(%d for 0)",argc); SWIG_fail;
+  }
+  res1 = SWIG_ConvertPtr(self, &argp1,SWIGTYPE_p_datamunge__bayes__RWMResult, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::bayes::RWMResult *","proposal_covariance", 1, self )); 
+  }
+  arg1 = reinterpret_cast< datamunge::bayes::RWMResult * >(argp1);
+  result = (std::vector< std::vector< double,std::allocator< double > >,std::allocator< std::vector< double,std::allocator< double > > > > *)& ((arg1)->proposal_covariance);
+  vresult = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_std__vectorT_std__vectorT_double_t_t, 0 |  0 );
+  return vresult;
+fail:
+  return Qnil;
+}
+
+
+SWIGINTERN VALUE
 #ifdef HAVE_RB_DEFINE_ALLOC_FUNC
 _wrap_RWMResult_allocate(VALUE self)
 #else
@@ -131205,6 +140777,30 @@ _wrap_RandomWalkMetropolis_sample(int argc, VALUE *argv, VALUE self) {
   return vresult;
 fail:
   if (SWIG_IsNewObj(res3)) delete arg3;
+  return Qnil;
+}
+
+
+SWIGINTERN VALUE
+_wrap_RandomWalkMetropolis_options(int argc, VALUE *argv, VALUE self) {
+  datamunge::bayes::RandomWalkMetropolis *arg1 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  datamunge::bayes::RWMOptions *result = 0 ;
+  VALUE vresult = Qnil;
+  
+  if ((argc < 0) || (argc > 0)) {
+    rb_raise(rb_eArgError, "wrong # of arguments(%d for 0)",argc); SWIG_fail;
+  }
+  res1 = SWIG_ConvertPtr(self, &argp1,SWIGTYPE_p_datamunge__bayes__RandomWalkMetropolis, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::bayes::RandomWalkMetropolis const *","options", 1, self )); 
+  }
+  arg1 = reinterpret_cast< datamunge::bayes::RandomWalkMetropolis * >(argp1);
+  result = (datamunge::bayes::RWMOptions *) &((datamunge::bayes::RandomWalkMetropolis const *)arg1)->options();
+  vresult = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__bayes__RWMOptions, 0 |  0 );
+  return vresult;
+fail:
   return Qnil;
 }
 
@@ -131862,6 +141458,30 @@ fail:
 }
 
 
+SWIGINTERN VALUE
+_wrap_GibbsSampler_options(int argc, VALUE *argv, VALUE self) {
+  datamunge::bayes::GibbsSampler *arg1 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  datamunge::bayes::GibbsOptions *result = 0 ;
+  VALUE vresult = Qnil;
+  
+  if ((argc < 0) || (argc > 0)) {
+    rb_raise(rb_eArgError, "wrong # of arguments(%d for 0)",argc); SWIG_fail;
+  }
+  res1 = SWIG_ConvertPtr(self, &argp1,SWIGTYPE_p_datamunge__bayes__GibbsSampler, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::bayes::GibbsSampler const *","options", 1, self )); 
+  }
+  arg1 = reinterpret_cast< datamunge::bayes::GibbsSampler * >(argp1);
+  result = (datamunge::bayes::GibbsOptions *) &((datamunge::bayes::GibbsSampler const *)arg1)->options();
+  vresult = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__bayes__GibbsOptions, 0 |  0 );
+  return vresult;
+fail:
+  return Qnil;
+}
+
+
 SWIGINTERN void
 free_datamunge_bayes_GibbsSampler(void *self) {
     datamunge::bayes::GibbsSampler *arg1 = (datamunge::bayes::GibbsSampler *)self;
@@ -132424,11 +142044,67 @@ fail:
 }
 
 
+SWIGINTERN VALUE
+_wrap_ImportanceSampling_options(int argc, VALUE *argv, VALUE self) {
+  datamunge::bayes::ImportanceSampling *arg1 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  datamunge::bayes::ImportanceSamplingOptions *result = 0 ;
+  VALUE vresult = Qnil;
+  
+  if ((argc < 0) || (argc > 0)) {
+    rb_raise(rb_eArgError, "wrong # of arguments(%d for 0)",argc); SWIG_fail;
+  }
+  res1 = SWIG_ConvertPtr(self, &argp1,SWIGTYPE_p_datamunge__bayes__ImportanceSampling, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::bayes::ImportanceSampling const *","options", 1, self )); 
+  }
+  arg1 = reinterpret_cast< datamunge::bayes::ImportanceSampling * >(argp1);
+  result = (datamunge::bayes::ImportanceSamplingOptions *) &((datamunge::bayes::ImportanceSampling const *)arg1)->options();
+  vresult = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__bayes__ImportanceSamplingOptions, 0 |  0 );
+  return vresult;
+fail:
+  return Qnil;
+}
+
+
 SWIGINTERN void
 free_datamunge_bayes_ImportanceSampling(void *self) {
     datamunge::bayes::ImportanceSampling *arg1 = (datamunge::bayes::ImportanceSampling *)self;
     delete arg1;
 }
+
+SWIGINTERN VALUE
+_wrap_gaussian_importance_efficiency(int argc, VALUE *argv, VALUE self) {
+  double arg1 ;
+  int arg2 ;
+  double val1 ;
+  int ecode1 = 0 ;
+  int val2 ;
+  int ecode2 = 0 ;
+  double result;
+  VALUE vresult = Qnil;
+  
+  if ((argc < 2) || (argc > 2)) {
+    rb_raise(rb_eArgError, "wrong # of arguments(%d for 2)",argc); SWIG_fail;
+  }
+  ecode1 = SWIG_AsVal_double(argv[0], &val1);
+  if (!SWIG_IsOK(ecode1)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode1), Ruby_Format_TypeError( "", "double","datamunge::bayes::gaussian_importance_efficiency", 1, argv[0] ));
+  } 
+  arg1 = static_cast< double >(val1);
+  ecode2 = SWIG_AsVal_int(argv[1], &val2);
+  if (!SWIG_IsOK(ecode2)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode2), Ruby_Format_TypeError( "", "int","datamunge::bayes::gaussian_importance_efficiency", 2, argv[1] ));
+  } 
+  arg2 = static_cast< int >(val2);
+  result = (double)datamunge::bayes::gaussian_importance_efficiency(arg1,arg2);
+  vresult = SWIG_From_double(static_cast< double >(result));
+  return vresult;
+fail:
+  return Qnil;
+}
+
 
 static swig_class SwigClassRHS;
 
@@ -133329,6 +143005,30 @@ fail:
 }
 
 
+SWIGINTERN VALUE
+_wrap_ODESolver_options(int argc, VALUE *argv, VALUE self) {
+  datamunge::ode::ODESolver *arg1 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  datamunge::ode::ODEOptions *result = 0 ;
+  VALUE vresult = Qnil;
+  
+  if ((argc < 0) || (argc > 0)) {
+    rb_raise(rb_eArgError, "wrong # of arguments(%d for 0)",argc); SWIG_fail;
+  }
+  res1 = SWIG_ConvertPtr(self, &argp1,SWIGTYPE_p_datamunge__ode__ODESolver, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::ode::ODESolver const *","options", 1, self )); 
+  }
+  arg1 = reinterpret_cast< datamunge::ode::ODESolver * >(argp1);
+  result = (datamunge::ode::ODEOptions *) &((datamunge::ode::ODESolver const *)arg1)->options();
+  vresult = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__ode__ODEOptions, 0 |  0 );
+  return vresult;
+fail:
+  return Qnil;
+}
+
+
 SWIGINTERN void
 free_datamunge_ode_ODESolver(void *self) {
     datamunge::ode::ODESolver *arg1 = (datamunge::ode::ODESolver *)self;
@@ -133338,6 +143038,9 @@ free_datamunge_ode_ODESolver(void *self) {
 
 /* -------- TYPE CONVERSION AND EQUIVALENCE RULES (BEGIN) -------- */
 
+static void *_p_datamunge__graphics__RPlotTo_p_datamunge__graphics__Plot(void *x, int *SWIGUNUSEDPARM(newmemory)) {
+    return (void *)((datamunge::graphics::Plot *)  ((datamunge::graphics::RPlot *) x));
+}
 static void *_p_datamunge__optim__DifferentiableFunctionTo_p_datamunge__optim__ArbitraryFunction(void *x, int *SWIGUNUSEDPARM(newmemory)) {
     return (void *)((datamunge::optim::ArbitraryFunction *)  ((datamunge::optim::DifferentiableFunction *) x));
 }
@@ -133377,9 +143080,6 @@ static void *_p_datamunge__optim__InequalityConstrainedFunctionTo_p_datamunge__o
 static void *_p_datamunge__optim__ProximalFunctionTo_p_datamunge__optim__DifferentiableFunction(void *x, int *SWIGUNUSEDPARM(newmemory)) {
     return (void *)((datamunge::optim::DifferentiableFunction *)  ((datamunge::optim::ProximalFunction *) x));
 }
-static void *_p_datamunge__plot__RPlotTo_p_datamunge__plot__Plot(void *x, int *SWIGUNUSEDPARM(newmemory)) {
-    return (void *)((datamunge::graphics::Plot *)  ((datamunge::graphics::RPlot *) x));
-}
 static void *_p_swig__IteratorTo_p_swig__ConstIterator(void *x, int *SWIGUNUSEDPARM(newmemory)) {
     return (void *)((swig::ConstIterator *)  ((swig::Iterator *) x));
 }
@@ -133388,6 +143088,7 @@ static swig_type_info _swigt__p_char = {"_p_char", "char *", 0, 0, (void*)0, 0};
 static swig_type_info _swigt__p_datamunge__AgglomerativeClustering = {"_p_datamunge__AgglomerativeClustering", "datamunge::AgglomerativeClustering *", 0, 0, (void*)0, 0};
 static swig_type_info _swigt__p_datamunge__BSplineRegression = {"_p_datamunge__BSplineRegression", "datamunge::BSplineRegression *", 0, 0, (void*)0, 0};
 static swig_type_info _swigt__p_datamunge__Callback = {"_p_datamunge__Callback", "datamunge::Callback *", 0, 0, (void*)0, 0};
+static swig_type_info _swigt__p_datamunge__CsvReader = {"_p_datamunge__CsvReader", "datamunge::CsvReader *", 0, 0, (void*)0, 0};
 static swig_type_info _swigt__p_datamunge__DBSCAN = {"_p_datamunge__DBSCAN", "datamunge::DBSCAN *", 0, 0, (void*)0, 0};
 static swig_type_info _swigt__p_datamunge__DataFrame = {"_p_datamunge__DataFrame", "datamunge::DataFrame *", 0, 0, (void*)0, 0};
 static swig_type_info _swigt__p_datamunge__DecisionTreeClassifier = {"_p_datamunge__DecisionTreeClassifier", "datamunge::DecisionTreeClassifier *", 0, 0, (void*)0, 0};
@@ -133425,6 +143126,7 @@ static swig_type_info _swigt__p_datamunge__Ridge = {"_p_datamunge__Ridge", "data
 static swig_type_info _swigt__p_datamunge__SVM = {"_p_datamunge__SVM", "datamunge::SVM *", 0, 0, (void*)0, 0};
 static swig_type_info _swigt__p_datamunge__SammonMapping = {"_p_datamunge__SammonMapping", "datamunge::SammonMapping *", 0, 0, (void*)0, 0};
 static swig_type_info _swigt__p_datamunge__ShapeLayer = {"_p_datamunge__ShapeLayer", "datamunge::ShapeLayer *", 0, 0, (void*)0, 0};
+static swig_type_info _swigt__p_datamunge__Splom = {"_p_datamunge__Splom", "datamunge::Splom *", 0, 0, (void*)0, 0};
 static swig_type_info _swigt__p_datamunge__TSNE = {"_p_datamunge__TSNE", "datamunge::TSNE *", 0, 0, (void*)0, 0};
 static swig_type_info _swigt__p_datamunge__Tape = {"_p_datamunge__Tape", "datamunge::Tape *", 0, 0, (void*)0, 0};
 static swig_type_info _swigt__p_datamunge__Tensor = {"_p_datamunge__Tensor", "datamunge::Tensor *", 0, 0, (void*)0, 0};
@@ -133449,6 +143151,14 @@ static swig_type_info _swigt__p_datamunge__bayes__NUTSResult = {"_p_datamunge__b
 static swig_type_info _swigt__p_datamunge__bayes__RWMOptions = {"_p_datamunge__bayes__RWMOptions", "datamunge::bayes::RWMOptions *", 0, 0, (void*)0, 0};
 static swig_type_info _swigt__p_datamunge__bayes__RWMResult = {"_p_datamunge__bayes__RWMResult", "datamunge::bayes::RWMResult *", 0, 0, (void*)0, 0};
 static swig_type_info _swigt__p_datamunge__bayes__RandomWalkMetropolis = {"_p_datamunge__bayes__RandomWalkMetropolis", "datamunge::bayes::RandomWalkMetropolis *", 0, 0, (void*)0, 0};
+static swig_type_info _swigt__p_datamunge__datasets__ImageBatch = {"_p_datamunge__datasets__ImageBatch", "datamunge::datasets::ImageBatch *", 0, 0, (void*)0, 0};
+static swig_type_info _swigt__p_datamunge__graphics__ABLine = {"_p_datamunge__graphics__ABLine", "datamunge::graphics::ABLine *", 0, 0, (void*)0, 0};
+static swig_type_info _swigt__p_datamunge__graphics__DataSeries = {"_p_datamunge__graphics__DataSeries", "datamunge::graphics::DataSeries *", 0, 0, (void*)0, 0};
+static swig_type_info _swigt__p_datamunge__graphics__LegendEntry = {"_p_datamunge__graphics__LegendEntry", "datamunge::graphics::LegendEntry *", 0, 0, (void*)0, 0};
+static swig_type_info _swigt__p_datamunge__graphics__Plot = {"_p_datamunge__graphics__Plot", "datamunge::graphics::Plot *", 0, 0, (void*)0, 0};
+static swig_type_info _swigt__p_datamunge__graphics__RGB = {"_p_datamunge__graphics__RGB", "datamunge::graphics::RGBA *|datamunge::graphics::RGB *", 0, 0, (void*)0, 0};
+static swig_type_info _swigt__p_datamunge__graphics__RLayout = {"_p_datamunge__graphics__RLayout", "datamunge::graphics::RLayout *", 0, 0, (void*)0, 0};
+static swig_type_info _swigt__p_datamunge__graphics__RPlot = {"_p_datamunge__graphics__RPlot", "datamunge::graphics::RPlot *", 0, 0, (void*)0, 0};
 static swig_type_info _swigt__p_datamunge__image__Image = {"_p_datamunge__image__Image", "datamunge::image::Image *", 0, 0, (void*)0, 0};
 static swig_type_info _swigt__p_datamunge__ode__ODEOptions = {"_p_datamunge__ode__ODEOptions", "datamunge::ode::ODEOptions *", 0, 0, (void*)0, 0};
 static swig_type_info _swigt__p_datamunge__ode__ODESolution = {"_p_datamunge__ode__ODESolution", "datamunge::ode::ODESolution *", 0, 0, (void*)0, 0};
@@ -133471,6 +143181,7 @@ static swig_type_info _swigt__p_datamunge__optim__AugmentedLagrangian = {"_p_dat
 static swig_type_info _swigt__p_datamunge__optim__AugmentedLagrangianOptions = {"_p_datamunge__optim__AugmentedLagrangianOptions", "datamunge::optim::AugmentedLagrangianOptions *", 0, 0, (void*)0, 0};
 static swig_type_info _swigt__p_datamunge__optim__BayesianOptimization = {"_p_datamunge__optim__BayesianOptimization", "datamunge::optim::BayesianOptimization *", 0, 0, (void*)0, 0};
 static swig_type_info _swigt__p_datamunge__optim__BayesianOptimizationOptions = {"_p_datamunge__optim__BayesianOptimizationOptions", "datamunge::optim::BayesianOptimizationOptions *", 0, 0, (void*)0, 0};
+static swig_type_info _swigt__p_datamunge__optim__BayesianOptimizationResult = {"_p_datamunge__optim__BayesianOptimizationResult", "datamunge::optim::BayesianOptimizationResult *", 0, 0, (void*)0, 0};
 static swig_type_info _swigt__p_datamunge__optim__BayesianSurrogate = {"_p_datamunge__optim__BayesianSurrogate", "datamunge::optim::BayesianSurrogate *", 0, 0, (void*)0, 0};
 static swig_type_info _swigt__p_datamunge__optim__CMAES = {"_p_datamunge__optim__CMAES", "datamunge::optim::CMAES *", 0, 0, (void*)0, 0};
 static swig_type_info _swigt__p_datamunge__optim__CMAESOptions = {"_p_datamunge__optim__CMAESOptions", "datamunge::optim::CMAESOptions *", 0, 0, (void*)0, 0};
@@ -133543,22 +143254,17 @@ static swig_type_info _swigt__p_datamunge__optim__SVRGOptions = {"_p_datamunge__
 static swig_type_info _swigt__p_datamunge__optim__SeparableFunction = {"_p_datamunge__optim__SeparableFunction", "datamunge::optim::SeparableFunction *", 0, 0, (void*)0, 0};
 static swig_type_info _swigt__p_datamunge__optim__SimulatedAnnealing = {"_p_datamunge__optim__SimulatedAnnealing", "datamunge::optim::SimulatedAnnealing *", 0, 0, (void*)0, 0};
 static swig_type_info _swigt__p_datamunge__optim__SimulatedAnnealingOptions = {"_p_datamunge__optim__SimulatedAnnealingOptions", "datamunge::optim::SimulatedAnnealingOptions *", 0, 0, (void*)0, 0};
+static swig_type_info _swigt__p_datamunge__optim__SurrogatePrediction = {"_p_datamunge__optim__SurrogatePrediction", "datamunge::optim::SurrogatePrediction *", 0, 0, (void*)0, 0};
 static swig_type_info _swigt__p_datamunge__optim__TrustRegionNewton = {"_p_datamunge__optim__TrustRegionNewton", "datamunge::optim::TrustRegionNewton *", 0, 0, (void*)0, 0};
 static swig_type_info _swigt__p_datamunge__optim__TrustRegionNewtonOptions = {"_p_datamunge__optim__TrustRegionNewtonOptions", "datamunge::optim::TrustRegionNewtonOptions *", 0, 0, (void*)0, 0};
 static swig_type_info _swigt__p_datamunge__optim__WhaleOptimization = {"_p_datamunge__optim__WhaleOptimization", "datamunge::optim::WhaleOptimization *", 0, 0, (void*)0, 0};
 static swig_type_info _swigt__p_datamunge__optim__WhaleOptimizationOptions = {"_p_datamunge__optim__WhaleOptimizationOptions", "datamunge::optim::WhaleOptimizationOptions *", 0, 0, (void*)0, 0};
-static swig_type_info _swigt__p_datamunge__plot__ABLine = {"_p_datamunge__plot__ABLine", "datamunge::graphics::ABLine *", 0, 0, (void*)0, 0};
-static swig_type_info _swigt__p_datamunge__plot__DataSeries = {"_p_datamunge__plot__DataSeries", "datamunge::graphics::DataSeries *", 0, 0, (void*)0, 0};
-static swig_type_info _swigt__p_datamunge__plot__LegendEntry = {"_p_datamunge__plot__LegendEntry", "datamunge::graphics::LegendEntry *", 0, 0, (void*)0, 0};
-static swig_type_info _swigt__p_datamunge__plot__Plot = {"_p_datamunge__plot__Plot", "datamunge::graphics::Plot *", 0, 0, (void*)0, 0};
-static swig_type_info _swigt__p_datamunge__plot__RGB = {"_p_datamunge__plot__RGB", "datamunge::graphics::RGBA *|datamunge::graphics::RGB *", 0, 0, (void*)0, 0};
-static swig_type_info _swigt__p_datamunge__plot__RLayout = {"_p_datamunge__plot__RLayout", "datamunge::graphics::RLayout *", 0, 0, (void*)0, 0};
-static swig_type_info _swigt__p_datamunge__plot__RPlot = {"_p_datamunge__plot__RPlot", "datamunge::graphics::RPlot *", 0, 0, (void*)0, 0};
 static swig_type_info _swigt__p_datamunge__stats__ARIMA = {"_p_datamunge__stats__ARIMA", "datamunge::stats::ARIMA *", 0, 0, (void*)0, 0};
 static swig_type_info _swigt__p_datamunge__stats__ARIMAOptions = {"_p_datamunge__stats__ARIMAOptions", "datamunge::stats::ARIMAOptions *", 0, 0, (void*)0, 0};
 static swig_type_info _swigt__p_datamunge__stats__ExponentialSmoothing = {"_p_datamunge__stats__ExponentialSmoothing", "datamunge::stats::ExponentialSmoothing *", 0, 0, (void*)0, 0};
 static swig_type_info _swigt__p_datamunge__stats__ExponentialSmoothingOptions = {"_p_datamunge__stats__ExponentialSmoothingOptions", "datamunge::stats::ExponentialSmoothingOptions *", 0, 0, (void*)0, 0};
 static swig_type_info _swigt__p_datamunge__stats__HypothesisTestResult = {"_p_datamunge__stats__HypothesisTestResult", "datamunge::stats::HypothesisTestResult *", 0, 0, (void*)0, 0};
+static swig_type_info _swigt__p_datamunge__stats__KendallTau = {"_p_datamunge__stats__KendallTau", "datamunge::stats::KendallTau *", 0, 0, (void*)0, 0};
 static swig_type_info _swigt__p_difference_type = {"_p_difference_type", "difference_type *", 0, 0, (void*)0, 0};
 static swig_type_info _swigt__p_first_type = {"_p_first_type", "first_type *", 0, 0, (void*)0, 0};
 static swig_type_info _swigt__p_int = {"_p_int", "int32_t *|int_fast16_t *|int_fast32_t *|int_least32_t *|intptr_t *|int *", 0, 0, (void*)0, 0};
@@ -133577,15 +143283,16 @@ static swig_type_info _swigt__p_std__pairT_double_double_t = {"_p_std__pairT_dou
 static swig_type_info _swigt__p_std__pairT_int_int_t = {"_p_std__pairT_int_int_t", "std::pair< int,int > *", 0, 0, (void*)0, 0};
 static swig_type_info _swigt__p_std__pairT_std__string_std__string_t = {"_p_std__pairT_std__string_std__string_t", "std::pair< std::string,std::string > *", 0, 0, (void*)0, 0};
 static swig_type_info _swigt__p_std__pairT_std__vectorT_double_t_std__vectorT_double_t_t = {"_p_std__pairT_std__vectorT_double_t_std__vectorT_double_t_t", "std::pair< std::vector< double,std::allocator< double > >,std::vector< double,std::allocator< double > > > *|std::pair< std::vector< double >,std::vector< double > > *", 0, 0, (void*)0, 0};
-static swig_type_info _swigt__p_std__vectorT_datamunge__plot__ABLine_std__allocatorT_datamunge__plot__ABLine_t_t = {"_p_std__vectorT_datamunge__plot__ABLine_std__allocatorT_datamunge__plot__ABLine_t_t", "std::vector< datamunge::graphics::ABLine,std::allocator< datamunge::graphics::ABLine > > *", 0, 0, (void*)0, 0};
-static swig_type_info _swigt__p_std__vectorT_datamunge__plot__DataSeries_std__allocatorT_datamunge__plot__DataSeries_t_t = {"_p_std__vectorT_datamunge__plot__DataSeries_std__allocatorT_datamunge__plot__DataSeries_t_t", "std::vector< datamunge::graphics::DataSeries,std::allocator< datamunge::graphics::DataSeries > > *", 0, 0, (void*)0, 0};
-static swig_type_info _swigt__p_std__vectorT_datamunge__plot__LegendEntry_std__allocatorT_datamunge__plot__LegendEntry_t_t = {"_p_std__vectorT_datamunge__plot__LegendEntry_std__allocatorT_datamunge__plot__LegendEntry_t_t", "std::vector< datamunge::graphics::LegendEntry,std::allocator< datamunge::graphics::LegendEntry > > *", 0, 0, (void*)0, 0};
-static swig_type_info _swigt__p_std__vectorT_datamunge__plot__RGB_std__allocatorT_datamunge__plot__RGB_t_t = {"_p_std__vectorT_datamunge__plot__RGB_std__allocatorT_datamunge__plot__RGB_t_t", "std::vector< datamunge::graphics::RGB,std::allocator< datamunge::graphics::RGB > > *", 0, 0, (void*)0, 0};
+static swig_type_info _swigt__p_std__vectorT_datamunge__graphics__ABLine_std__allocatorT_datamunge__graphics__ABLine_t_t = {"_p_std__vectorT_datamunge__graphics__ABLine_std__allocatorT_datamunge__graphics__ABLine_t_t", "std::vector< datamunge::graphics::ABLine,std::allocator< datamunge::graphics::ABLine > > *", 0, 0, (void*)0, 0};
+static swig_type_info _swigt__p_std__vectorT_datamunge__graphics__DataSeries_std__allocatorT_datamunge__graphics__DataSeries_t_t = {"_p_std__vectorT_datamunge__graphics__DataSeries_std__allocatorT_datamunge__graphics__DataSeries_t_t", "std::vector< datamunge::graphics::DataSeries,std::allocator< datamunge::graphics::DataSeries > > *", 0, 0, (void*)0, 0};
+static swig_type_info _swigt__p_std__vectorT_datamunge__graphics__LegendEntry_std__allocatorT_datamunge__graphics__LegendEntry_t_t = {"_p_std__vectorT_datamunge__graphics__LegendEntry_std__allocatorT_datamunge__graphics__LegendEntry_t_t", "std::vector< datamunge::graphics::LegendEntry,std::allocator< datamunge::graphics::LegendEntry > > *", 0, 0, (void*)0, 0};
+static swig_type_info _swigt__p_std__vectorT_datamunge__graphics__RGB_std__allocatorT_datamunge__graphics__RGB_t_t = {"_p_std__vectorT_datamunge__graphics__RGB_std__allocatorT_datamunge__graphics__RGB_t_t", "std::vector< datamunge::graphics::RGBA,std::allocator< datamunge::graphics::RGBA > > *|std::vector< datamunge::graphics::RGB,std::allocator< datamunge::graphics::RGB > > *", 0, 0, (void*)0, 0};
 static swig_type_info _swigt__p_std__vectorT_double_t = {"_p_std__vectorT_double_t", "std::vector< double,std::allocator< double > > *|std::vector< double > *", 0, 0, (void*)0, 0};
 static swig_type_info _swigt__p_std__vectorT_int_t = {"_p_std__vectorT_int_t", "std::vector< int,std::allocator< int > > *|std::vector< int > *", 0, 0, (void*)0, 0};
 static swig_type_info _swigt__p_std__vectorT_size_t_t = {"_p_std__vectorT_size_t_t", "std::vector< size_t,std::allocator< size_t > > *|std::vector< size_t > *", 0, 0, (void*)0, 0};
 static swig_type_info _swigt__p_std__vectorT_std__string_t = {"_p_std__vectorT_std__string_t", "std::vector< std::string,std::allocator< std::string > > *|std::vector< std::string > *", 0, 0, (void*)0, 0};
 static swig_type_info _swigt__p_std__vectorT_std__vectorT_double_t_t = {"_p_std__vectorT_std__vectorT_double_t_t", "std::vector< std::vector< double,std::allocator< double > > > *|std::vector< std::vector< double,std::allocator< double > >,std::allocator< std::vector< double,std::allocator< double > > > > *|std::vector< std::vector< double > > *", 0, 0, (void*)0, 0};
+static swig_type_info _swigt__p_std__vectorT_unsigned_char_std__allocatorT_unsigned_char_t_t = {"_p_std__vectorT_unsigned_char_std__allocatorT_unsigned_char_t_t", "std::vector< std::uint8_t,std::allocator< std::uint8_t > > *|std::vector< unsigned char,std::allocator< unsigned char > > *", 0, 0, (void*)0, 0};
 static swig_type_info _swigt__p_swig__ConstIterator = {"_p_swig__ConstIterator", "swig::ConstIterator *", 0, 0, (void*)0, 0};
 static swig_type_info _swigt__p_swig__GC_VALUE = {"_p_swig__GC_VALUE", "swig::GC_VALUE *", 0, 0, (void*)0, 0};
 static swig_type_info _swigt__p_swig__Iterator = {"_p_swig__Iterator", "swig::Iterator *", 0, 0, (void*)0, 0};
@@ -133602,6 +143309,7 @@ static swig_type_info *swig_type_initial[] = {
   &_swigt__p_datamunge__AgglomerativeClustering,
   &_swigt__p_datamunge__BSplineRegression,
   &_swigt__p_datamunge__Callback,
+  &_swigt__p_datamunge__CsvReader,
   &_swigt__p_datamunge__DBSCAN,
   &_swigt__p_datamunge__DataFrame,
   &_swigt__p_datamunge__DecisionTreeClassifier,
@@ -133639,6 +143347,7 @@ static swig_type_info *swig_type_initial[] = {
   &_swigt__p_datamunge__SVM,
   &_swigt__p_datamunge__SammonMapping,
   &_swigt__p_datamunge__ShapeLayer,
+  &_swigt__p_datamunge__Splom,
   &_swigt__p_datamunge__TSNE,
   &_swigt__p_datamunge__Tape,
   &_swigt__p_datamunge__Tensor,
@@ -133663,6 +143372,14 @@ static swig_type_info *swig_type_initial[] = {
   &_swigt__p_datamunge__bayes__RWMOptions,
   &_swigt__p_datamunge__bayes__RWMResult,
   &_swigt__p_datamunge__bayes__RandomWalkMetropolis,
+  &_swigt__p_datamunge__datasets__ImageBatch,
+  &_swigt__p_datamunge__graphics__ABLine,
+  &_swigt__p_datamunge__graphics__DataSeries,
+  &_swigt__p_datamunge__graphics__LegendEntry,
+  &_swigt__p_datamunge__graphics__Plot,
+  &_swigt__p_datamunge__graphics__RGB,
+  &_swigt__p_datamunge__graphics__RLayout,
+  &_swigt__p_datamunge__graphics__RPlot,
   &_swigt__p_datamunge__image__Image,
   &_swigt__p_datamunge__ode__ODEOptions,
   &_swigt__p_datamunge__ode__ODESolution,
@@ -133685,6 +143402,7 @@ static swig_type_info *swig_type_initial[] = {
   &_swigt__p_datamunge__optim__AugmentedLagrangianOptions,
   &_swigt__p_datamunge__optim__BayesianOptimization,
   &_swigt__p_datamunge__optim__BayesianOptimizationOptions,
+  &_swigt__p_datamunge__optim__BayesianOptimizationResult,
   &_swigt__p_datamunge__optim__BayesianSurrogate,
   &_swigt__p_datamunge__optim__CMAES,
   &_swigt__p_datamunge__optim__CMAESOptions,
@@ -133757,22 +143475,17 @@ static swig_type_info *swig_type_initial[] = {
   &_swigt__p_datamunge__optim__SeparableFunction,
   &_swigt__p_datamunge__optim__SimulatedAnnealing,
   &_swigt__p_datamunge__optim__SimulatedAnnealingOptions,
+  &_swigt__p_datamunge__optim__SurrogatePrediction,
   &_swigt__p_datamunge__optim__TrustRegionNewton,
   &_swigt__p_datamunge__optim__TrustRegionNewtonOptions,
   &_swigt__p_datamunge__optim__WhaleOptimization,
   &_swigt__p_datamunge__optim__WhaleOptimizationOptions,
-  &_swigt__p_datamunge__plot__ABLine,
-  &_swigt__p_datamunge__plot__DataSeries,
-  &_swigt__p_datamunge__plot__LegendEntry,
-  &_swigt__p_datamunge__plot__Plot,
-  &_swigt__p_datamunge__plot__RGB,
-  &_swigt__p_datamunge__plot__RLayout,
-  &_swigt__p_datamunge__plot__RPlot,
   &_swigt__p_datamunge__stats__ARIMA,
   &_swigt__p_datamunge__stats__ARIMAOptions,
   &_swigt__p_datamunge__stats__ExponentialSmoothing,
   &_swigt__p_datamunge__stats__ExponentialSmoothingOptions,
   &_swigt__p_datamunge__stats__HypothesisTestResult,
+  &_swigt__p_datamunge__stats__KendallTau,
   &_swigt__p_difference_type,
   &_swigt__p_first_type,
   &_swigt__p_int,
@@ -133791,15 +143504,16 @@ static swig_type_info *swig_type_initial[] = {
   &_swigt__p_std__pairT_int_int_t,
   &_swigt__p_std__pairT_std__string_std__string_t,
   &_swigt__p_std__pairT_std__vectorT_double_t_std__vectorT_double_t_t,
-  &_swigt__p_std__vectorT_datamunge__plot__ABLine_std__allocatorT_datamunge__plot__ABLine_t_t,
-  &_swigt__p_std__vectorT_datamunge__plot__DataSeries_std__allocatorT_datamunge__plot__DataSeries_t_t,
-  &_swigt__p_std__vectorT_datamunge__plot__LegendEntry_std__allocatorT_datamunge__plot__LegendEntry_t_t,
-  &_swigt__p_std__vectorT_datamunge__plot__RGB_std__allocatorT_datamunge__plot__RGB_t_t,
+  &_swigt__p_std__vectorT_datamunge__graphics__ABLine_std__allocatorT_datamunge__graphics__ABLine_t_t,
+  &_swigt__p_std__vectorT_datamunge__graphics__DataSeries_std__allocatorT_datamunge__graphics__DataSeries_t_t,
+  &_swigt__p_std__vectorT_datamunge__graphics__LegendEntry_std__allocatorT_datamunge__graphics__LegendEntry_t_t,
+  &_swigt__p_std__vectorT_datamunge__graphics__RGB_std__allocatorT_datamunge__graphics__RGB_t_t,
   &_swigt__p_std__vectorT_double_t,
   &_swigt__p_std__vectorT_int_t,
   &_swigt__p_std__vectorT_size_t_t,
   &_swigt__p_std__vectorT_std__string_t,
   &_swigt__p_std__vectorT_std__vectorT_double_t_t,
+  &_swigt__p_std__vectorT_unsigned_char_std__allocatorT_unsigned_char_t_t,
   &_swigt__p_swig__ConstIterator,
   &_swigt__p_swig__GC_VALUE,
   &_swigt__p_swig__Iterator,
@@ -133816,6 +143530,7 @@ static swig_cast_info _swigc__p_char[] = {  {&_swigt__p_char, 0, 0, 0},{0, 0, 0,
 static swig_cast_info _swigc__p_datamunge__AgglomerativeClustering[] = {  {&_swigt__p_datamunge__AgglomerativeClustering, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_datamunge__BSplineRegression[] = {  {&_swigt__p_datamunge__BSplineRegression, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_datamunge__Callback[] = {  {&_swigt__p_datamunge__Callback, 0, 0, 0},{0, 0, 0, 0}};
+static swig_cast_info _swigc__p_datamunge__CsvReader[] = {  {&_swigt__p_datamunge__CsvReader, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_datamunge__DBSCAN[] = {  {&_swigt__p_datamunge__DBSCAN, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_datamunge__DataFrame[] = {  {&_swigt__p_datamunge__DataFrame, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_datamunge__DecisionTreeClassifier[] = {  {&_swigt__p_datamunge__DecisionTreeClassifier, 0, 0, 0},{0, 0, 0, 0}};
@@ -133853,6 +143568,7 @@ static swig_cast_info _swigc__p_datamunge__Ridge[] = {  {&_swigt__p_datamunge__R
 static swig_cast_info _swigc__p_datamunge__SVM[] = {  {&_swigt__p_datamunge__SVM, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_datamunge__SammonMapping[] = {  {&_swigt__p_datamunge__SammonMapping, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_datamunge__ShapeLayer[] = {  {&_swigt__p_datamunge__ShapeLayer, 0, 0, 0},{0, 0, 0, 0}};
+static swig_cast_info _swigc__p_datamunge__Splom[] = {  {&_swigt__p_datamunge__Splom, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_datamunge__TSNE[] = {  {&_swigt__p_datamunge__TSNE, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_datamunge__Tape[] = {  {&_swigt__p_datamunge__Tape, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_datamunge__Tensor[] = {  {&_swigt__p_datamunge__Tensor, 0, 0, 0},{0, 0, 0, 0}};
@@ -133877,6 +143593,14 @@ static swig_cast_info _swigc__p_datamunge__bayes__NUTSResult[] = {  {&_swigt__p_
 static swig_cast_info _swigc__p_datamunge__bayes__RWMOptions[] = {  {&_swigt__p_datamunge__bayes__RWMOptions, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_datamunge__bayes__RWMResult[] = {  {&_swigt__p_datamunge__bayes__RWMResult, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_datamunge__bayes__RandomWalkMetropolis[] = {  {&_swigt__p_datamunge__bayes__RandomWalkMetropolis, 0, 0, 0},{0, 0, 0, 0}};
+static swig_cast_info _swigc__p_datamunge__datasets__ImageBatch[] = {  {&_swigt__p_datamunge__datasets__ImageBatch, 0, 0, 0},{0, 0, 0, 0}};
+static swig_cast_info _swigc__p_datamunge__graphics__ABLine[] = {  {&_swigt__p_datamunge__graphics__ABLine, 0, 0, 0},{0, 0, 0, 0}};
+static swig_cast_info _swigc__p_datamunge__graphics__DataSeries[] = {  {&_swigt__p_datamunge__graphics__DataSeries, 0, 0, 0},{0, 0, 0, 0}};
+static swig_cast_info _swigc__p_datamunge__graphics__LegendEntry[] = {  {&_swigt__p_datamunge__graphics__LegendEntry, 0, 0, 0},{0, 0, 0, 0}};
+static swig_cast_info _swigc__p_datamunge__graphics__Plot[] = {  {&_swigt__p_datamunge__graphics__Plot, 0, 0, 0},  {&_swigt__p_datamunge__graphics__RPlot, _p_datamunge__graphics__RPlotTo_p_datamunge__graphics__Plot, 0, 0},{0, 0, 0, 0}};
+static swig_cast_info _swigc__p_datamunge__graphics__RGB[] = {  {&_swigt__p_datamunge__graphics__RGB, 0, 0, 0},{0, 0, 0, 0}};
+static swig_cast_info _swigc__p_datamunge__graphics__RLayout[] = {  {&_swigt__p_datamunge__graphics__RLayout, 0, 0, 0},{0, 0, 0, 0}};
+static swig_cast_info _swigc__p_datamunge__graphics__RPlot[] = {  {&_swigt__p_datamunge__graphics__RPlot, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_datamunge__image__Image[] = {  {&_swigt__p_datamunge__image__Image, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_datamunge__ode__ODEOptions[] = {  {&_swigt__p_datamunge__ode__ODEOptions, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_datamunge__ode__ODESolution[] = {  {&_swigt__p_datamunge__ode__ODESolution, 0, 0, 0},{0, 0, 0, 0}};
@@ -133899,6 +143623,7 @@ static swig_cast_info _swigc__p_datamunge__optim__AugmentedLagrangian[] = {  {&_
 static swig_cast_info _swigc__p_datamunge__optim__AugmentedLagrangianOptions[] = {  {&_swigt__p_datamunge__optim__AugmentedLagrangianOptions, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_datamunge__optim__BayesianOptimization[] = {  {&_swigt__p_datamunge__optim__BayesianOptimization, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_datamunge__optim__BayesianOptimizationOptions[] = {  {&_swigt__p_datamunge__optim__BayesianOptimizationOptions, 0, 0, 0},{0, 0, 0, 0}};
+static swig_cast_info _swigc__p_datamunge__optim__BayesianOptimizationResult[] = {  {&_swigt__p_datamunge__optim__BayesianOptimizationResult, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_datamunge__optim__BayesianSurrogate[] = {  {&_swigt__p_datamunge__optim__BayesianSurrogate, 0, 0, 0},  {&_swigt__p_datamunge__optim__RBFGaussianProcessSurrogate, _p_datamunge__optim__RBFGaussianProcessSurrogateTo_p_datamunge__optim__BayesianSurrogate, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_datamunge__optim__CMAES[] = {  {&_swigt__p_datamunge__optim__CMAES, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_datamunge__optim__CMAESOptions[] = {  {&_swigt__p_datamunge__optim__CMAESOptions, 0, 0, 0},{0, 0, 0, 0}};
@@ -133971,22 +143696,17 @@ static swig_cast_info _swigc__p_datamunge__optim__SVRGOptions[] = {  {&_swigt__p
 static swig_cast_info _swigc__p_datamunge__optim__SeparableFunction[] = {  {&_swigt__p_datamunge__optim__SeparableFunction, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_datamunge__optim__SimulatedAnnealing[] = {  {&_swigt__p_datamunge__optim__SimulatedAnnealing, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_datamunge__optim__SimulatedAnnealingOptions[] = {  {&_swigt__p_datamunge__optim__SimulatedAnnealingOptions, 0, 0, 0},{0, 0, 0, 0}};
+static swig_cast_info _swigc__p_datamunge__optim__SurrogatePrediction[] = {  {&_swigt__p_datamunge__optim__SurrogatePrediction, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_datamunge__optim__TrustRegionNewton[] = {  {&_swigt__p_datamunge__optim__TrustRegionNewton, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_datamunge__optim__TrustRegionNewtonOptions[] = {  {&_swigt__p_datamunge__optim__TrustRegionNewtonOptions, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_datamunge__optim__WhaleOptimization[] = {  {&_swigt__p_datamunge__optim__WhaleOptimization, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_datamunge__optim__WhaleOptimizationOptions[] = {  {&_swigt__p_datamunge__optim__WhaleOptimizationOptions, 0, 0, 0},{0, 0, 0, 0}};
-static swig_cast_info _swigc__p_datamunge__plot__ABLine[] = {  {&_swigt__p_datamunge__plot__ABLine, 0, 0, 0},{0, 0, 0, 0}};
-static swig_cast_info _swigc__p_datamunge__plot__DataSeries[] = {  {&_swigt__p_datamunge__plot__DataSeries, 0, 0, 0},{0, 0, 0, 0}};
-static swig_cast_info _swigc__p_datamunge__plot__LegendEntry[] = {  {&_swigt__p_datamunge__plot__LegendEntry, 0, 0, 0},{0, 0, 0, 0}};
-static swig_cast_info _swigc__p_datamunge__plot__Plot[] = {  {&_swigt__p_datamunge__plot__Plot, 0, 0, 0},  {&_swigt__p_datamunge__plot__RPlot, _p_datamunge__plot__RPlotTo_p_datamunge__plot__Plot, 0, 0},{0, 0, 0, 0}};
-static swig_cast_info _swigc__p_datamunge__plot__RGB[] = {  {&_swigt__p_datamunge__plot__RGB, 0, 0, 0},{0, 0, 0, 0}};
-static swig_cast_info _swigc__p_datamunge__plot__RLayout[] = {  {&_swigt__p_datamunge__plot__RLayout, 0, 0, 0},{0, 0, 0, 0}};
-static swig_cast_info _swigc__p_datamunge__plot__RPlot[] = {  {&_swigt__p_datamunge__plot__RPlot, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_datamunge__stats__ARIMA[] = {  {&_swigt__p_datamunge__stats__ARIMA, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_datamunge__stats__ARIMAOptions[] = {  {&_swigt__p_datamunge__stats__ARIMAOptions, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_datamunge__stats__ExponentialSmoothing[] = {  {&_swigt__p_datamunge__stats__ExponentialSmoothing, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_datamunge__stats__ExponentialSmoothingOptions[] = {  {&_swigt__p_datamunge__stats__ExponentialSmoothingOptions, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_datamunge__stats__HypothesisTestResult[] = {  {&_swigt__p_datamunge__stats__HypothesisTestResult, 0, 0, 0},{0, 0, 0, 0}};
+static swig_cast_info _swigc__p_datamunge__stats__KendallTau[] = {  {&_swigt__p_datamunge__stats__KendallTau, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_difference_type[] = {  {&_swigt__p_difference_type, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_first_type[] = {  {&_swigt__p_first_type, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_int[] = {  {&_swigt__p_int, 0, 0, 0},{0, 0, 0, 0}};
@@ -134005,15 +143725,16 @@ static swig_cast_info _swigc__p_std__pairT_double_double_t[] = {  {&_swigt__p_st
 static swig_cast_info _swigc__p_std__pairT_int_int_t[] = {  {&_swigt__p_std__pairT_int_int_t, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_std__pairT_std__string_std__string_t[] = {  {&_swigt__p_std__pairT_std__string_std__string_t, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_std__pairT_std__vectorT_double_t_std__vectorT_double_t_t[] = {  {&_swigt__p_std__pairT_std__vectorT_double_t_std__vectorT_double_t_t, 0, 0, 0},{0, 0, 0, 0}};
-static swig_cast_info _swigc__p_std__vectorT_datamunge__plot__ABLine_std__allocatorT_datamunge__plot__ABLine_t_t[] = {  {&_swigt__p_std__vectorT_datamunge__plot__ABLine_std__allocatorT_datamunge__plot__ABLine_t_t, 0, 0, 0},{0, 0, 0, 0}};
-static swig_cast_info _swigc__p_std__vectorT_datamunge__plot__DataSeries_std__allocatorT_datamunge__plot__DataSeries_t_t[] = {  {&_swigt__p_std__vectorT_datamunge__plot__DataSeries_std__allocatorT_datamunge__plot__DataSeries_t_t, 0, 0, 0},{0, 0, 0, 0}};
-static swig_cast_info _swigc__p_std__vectorT_datamunge__plot__LegendEntry_std__allocatorT_datamunge__plot__LegendEntry_t_t[] = {  {&_swigt__p_std__vectorT_datamunge__plot__LegendEntry_std__allocatorT_datamunge__plot__LegendEntry_t_t, 0, 0, 0},{0, 0, 0, 0}};
-static swig_cast_info _swigc__p_std__vectorT_datamunge__plot__RGB_std__allocatorT_datamunge__plot__RGB_t_t[] = {  {&_swigt__p_std__vectorT_datamunge__plot__RGB_std__allocatorT_datamunge__plot__RGB_t_t, 0, 0, 0},{0, 0, 0, 0}};
+static swig_cast_info _swigc__p_std__vectorT_datamunge__graphics__ABLine_std__allocatorT_datamunge__graphics__ABLine_t_t[] = {  {&_swigt__p_std__vectorT_datamunge__graphics__ABLine_std__allocatorT_datamunge__graphics__ABLine_t_t, 0, 0, 0},{0, 0, 0, 0}};
+static swig_cast_info _swigc__p_std__vectorT_datamunge__graphics__DataSeries_std__allocatorT_datamunge__graphics__DataSeries_t_t[] = {  {&_swigt__p_std__vectorT_datamunge__graphics__DataSeries_std__allocatorT_datamunge__graphics__DataSeries_t_t, 0, 0, 0},{0, 0, 0, 0}};
+static swig_cast_info _swigc__p_std__vectorT_datamunge__graphics__LegendEntry_std__allocatorT_datamunge__graphics__LegendEntry_t_t[] = {  {&_swigt__p_std__vectorT_datamunge__graphics__LegendEntry_std__allocatorT_datamunge__graphics__LegendEntry_t_t, 0, 0, 0},{0, 0, 0, 0}};
+static swig_cast_info _swigc__p_std__vectorT_datamunge__graphics__RGB_std__allocatorT_datamunge__graphics__RGB_t_t[] = {  {&_swigt__p_std__vectorT_datamunge__graphics__RGB_std__allocatorT_datamunge__graphics__RGB_t_t, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_std__vectorT_double_t[] = {  {&_swigt__p_std__vectorT_double_t, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_std__vectorT_int_t[] = {  {&_swigt__p_std__vectorT_int_t, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_std__vectorT_size_t_t[] = {  {&_swigt__p_std__vectorT_size_t_t, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_std__vectorT_std__string_t[] = {  {&_swigt__p_std__vectorT_std__string_t, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_std__vectorT_std__vectorT_double_t_t[] = {  {&_swigt__p_std__vectorT_std__vectorT_double_t_t, 0, 0, 0},{0, 0, 0, 0}};
+static swig_cast_info _swigc__p_std__vectorT_unsigned_char_std__allocatorT_unsigned_char_t_t[] = {  {&_swigt__p_std__vectorT_unsigned_char_std__allocatorT_unsigned_char_t_t, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_swig__ConstIterator[] = {  {&_swigt__p_swig__ConstIterator, 0, 0, 0},  {&_swigt__p_swig__Iterator, _p_swig__IteratorTo_p_swig__ConstIterator, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_swig__GC_VALUE[] = {  {&_swigt__p_swig__GC_VALUE, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_swig__Iterator[] = {  {&_swigt__p_swig__Iterator, 0, 0, 0},{0, 0, 0, 0}};
@@ -134030,6 +143751,7 @@ static swig_cast_info *swig_cast_initial[] = {
   _swigc__p_datamunge__AgglomerativeClustering,
   _swigc__p_datamunge__BSplineRegression,
   _swigc__p_datamunge__Callback,
+  _swigc__p_datamunge__CsvReader,
   _swigc__p_datamunge__DBSCAN,
   _swigc__p_datamunge__DataFrame,
   _swigc__p_datamunge__DecisionTreeClassifier,
@@ -134067,6 +143789,7 @@ static swig_cast_info *swig_cast_initial[] = {
   _swigc__p_datamunge__SVM,
   _swigc__p_datamunge__SammonMapping,
   _swigc__p_datamunge__ShapeLayer,
+  _swigc__p_datamunge__Splom,
   _swigc__p_datamunge__TSNE,
   _swigc__p_datamunge__Tape,
   _swigc__p_datamunge__Tensor,
@@ -134091,6 +143814,14 @@ static swig_cast_info *swig_cast_initial[] = {
   _swigc__p_datamunge__bayes__RWMOptions,
   _swigc__p_datamunge__bayes__RWMResult,
   _swigc__p_datamunge__bayes__RandomWalkMetropolis,
+  _swigc__p_datamunge__datasets__ImageBatch,
+  _swigc__p_datamunge__graphics__ABLine,
+  _swigc__p_datamunge__graphics__DataSeries,
+  _swigc__p_datamunge__graphics__LegendEntry,
+  _swigc__p_datamunge__graphics__Plot,
+  _swigc__p_datamunge__graphics__RGB,
+  _swigc__p_datamunge__graphics__RLayout,
+  _swigc__p_datamunge__graphics__RPlot,
   _swigc__p_datamunge__image__Image,
   _swigc__p_datamunge__ode__ODEOptions,
   _swigc__p_datamunge__ode__ODESolution,
@@ -134113,6 +143844,7 @@ static swig_cast_info *swig_cast_initial[] = {
   _swigc__p_datamunge__optim__AugmentedLagrangianOptions,
   _swigc__p_datamunge__optim__BayesianOptimization,
   _swigc__p_datamunge__optim__BayesianOptimizationOptions,
+  _swigc__p_datamunge__optim__BayesianOptimizationResult,
   _swigc__p_datamunge__optim__BayesianSurrogate,
   _swigc__p_datamunge__optim__CMAES,
   _swigc__p_datamunge__optim__CMAESOptions,
@@ -134185,22 +143917,17 @@ static swig_cast_info *swig_cast_initial[] = {
   _swigc__p_datamunge__optim__SeparableFunction,
   _swigc__p_datamunge__optim__SimulatedAnnealing,
   _swigc__p_datamunge__optim__SimulatedAnnealingOptions,
+  _swigc__p_datamunge__optim__SurrogatePrediction,
   _swigc__p_datamunge__optim__TrustRegionNewton,
   _swigc__p_datamunge__optim__TrustRegionNewtonOptions,
   _swigc__p_datamunge__optim__WhaleOptimization,
   _swigc__p_datamunge__optim__WhaleOptimizationOptions,
-  _swigc__p_datamunge__plot__ABLine,
-  _swigc__p_datamunge__plot__DataSeries,
-  _swigc__p_datamunge__plot__LegendEntry,
-  _swigc__p_datamunge__plot__Plot,
-  _swigc__p_datamunge__plot__RGB,
-  _swigc__p_datamunge__plot__RLayout,
-  _swigc__p_datamunge__plot__RPlot,
   _swigc__p_datamunge__stats__ARIMA,
   _swigc__p_datamunge__stats__ARIMAOptions,
   _swigc__p_datamunge__stats__ExponentialSmoothing,
   _swigc__p_datamunge__stats__ExponentialSmoothingOptions,
   _swigc__p_datamunge__stats__HypothesisTestResult,
+  _swigc__p_datamunge__stats__KendallTau,
   _swigc__p_difference_type,
   _swigc__p_first_type,
   _swigc__p_int,
@@ -134219,15 +143946,16 @@ static swig_cast_info *swig_cast_initial[] = {
   _swigc__p_std__pairT_int_int_t,
   _swigc__p_std__pairT_std__string_std__string_t,
   _swigc__p_std__pairT_std__vectorT_double_t_std__vectorT_double_t_t,
-  _swigc__p_std__vectorT_datamunge__plot__ABLine_std__allocatorT_datamunge__plot__ABLine_t_t,
-  _swigc__p_std__vectorT_datamunge__plot__DataSeries_std__allocatorT_datamunge__plot__DataSeries_t_t,
-  _swigc__p_std__vectorT_datamunge__plot__LegendEntry_std__allocatorT_datamunge__plot__LegendEntry_t_t,
-  _swigc__p_std__vectorT_datamunge__plot__RGB_std__allocatorT_datamunge__plot__RGB_t_t,
+  _swigc__p_std__vectorT_datamunge__graphics__ABLine_std__allocatorT_datamunge__graphics__ABLine_t_t,
+  _swigc__p_std__vectorT_datamunge__graphics__DataSeries_std__allocatorT_datamunge__graphics__DataSeries_t_t,
+  _swigc__p_std__vectorT_datamunge__graphics__LegendEntry_std__allocatorT_datamunge__graphics__LegendEntry_t_t,
+  _swigc__p_std__vectorT_datamunge__graphics__RGB_std__allocatorT_datamunge__graphics__RGB_t_t,
   _swigc__p_std__vectorT_double_t,
   _swigc__p_std__vectorT_int_t,
   _swigc__p_std__vectorT_size_t_t,
   _swigc__p_std__vectorT_std__string_t,
   _swigc__p_std__vectorT_std__vectorT_double_t_t,
+  _swigc__p_std__vectorT_unsigned_char_std__allocatorT_unsigned_char_t_t,
   _swigc__p_swig__ConstIterator,
   _swigc__p_swig__GC_VALUE,
   _swigc__p_swig__Iterator,
@@ -135158,12 +144886,14 @@ SWIGEXPORT void Init_octruby(void) {
   rb_define_method(SwigClassDataFrame.klass, "numeric_min", VALUEFUNC(_wrap_DataFrame_numeric_min), -1);
   rb_define_method(SwigClassDataFrame.klass, "numeric_max", VALUEFUNC(_wrap_DataFrame_numeric_max), -1);
   rb_define_method(SwigClassDataFrame.klass, "to_string", VALUEFUNC(_wrap_DataFrame_to_string), -1);
+  rb_define_method(SwigClassDataFrame.klass, "to_md", VALUEFUNC(_wrap_DataFrame_to_md), -1);
   rb_define_method(SwigClassDataFrame.klass, "is_numeric_column", VALUEFUNC(_wrap_DataFrame_is_numeric_column), -1);
   rb_define_method(SwigClassDataFrame.klass, "is_null", VALUEFUNC(_wrap_DataFrame_is_null), -1);
   rb_define_method(SwigClassDataFrame.klass, "numeric_at", VALUEFUNC(_wrap_DataFrame_numeric_at), -1);
   rb_define_method(SwigClassDataFrame.klass, "string_at", VALUEFUNC(_wrap_DataFrame_string_at), -1);
-  rb_define_singleton_method(SwigClassDataFrame.klass, "iris", VALUEFUNC(_wrap_DataFrame_iris), -1);
-  rb_define_singleton_method(SwigClassDataFrame.klass, "penguins", VALUEFUNC(_wrap_DataFrame_penguins), -1);
+  rb_define_singleton_method(SwigClassDataFrame.klass, "read_csv", VALUEFUNC(_wrap_DataFrame_read_csv), -1);
+  rb_define_singleton_method(SwigClassDataFrame.klass, "parse_csv", VALUEFUNC(_wrap_DataFrame_parse_csv), -1);
+  rb_define_singleton_method(SwigClassDataFrame.klass, "from_image_batch", VALUEFUNC(_wrap_DataFrame_from_image_batch), -1);
   SwigClassDataFrame.cext_type.wrap_struct_name = "C++ class datamunge::DataFrame";
   SwigClassDataFrame.cext_type.function.dmark = SWIG_Ruby_mark_swig_type;
   SwigClassDataFrame.cext_type.function.dfree = SWIG_Ruby_free_swig_type;
@@ -135173,6 +144903,45 @@ SWIGEXPORT void Init_octruby(void) {
   SwigClassDataFrame.mark = 0;
   SwigClassDataFrame.destroy = (void (*)(void *)) free_datamunge_DataFrame;
   SwigClassDataFrame.trackObjects = 0;
+  rb_define_module_function(mOctruby, "data_iris", VALUEFUNC(_wrap_data_iris), -1);
+  rb_define_module_function(mOctruby, "data_penguins", VALUEFUNC(_wrap_data_penguins), -1);
+  rb_define_module_function(mOctruby, "data_tooth_growth", VALUEFUNC(_wrap_data_tooth_growth), -1);
+  rb_define_module_function(mOctruby, "data_wine", VALUEFUNC(_wrap_data_wine), -1);
+  rb_define_module_function(mOctruby, "data_titanic", VALUEFUNC(_wrap_data_titanic), -1);
+  rb_define_module_function(mOctruby, "data_eight_schools", VALUEFUNC(_wrap_data_eight_schools), -1);
+  rb_define_module_function(mOctruby, "data_air_passengers", VALUEFUNC(_wrap_data_air_passengers), -1);
+  rb_define_module_function(mOctruby, "data_volcano", VALUEFUNC(_wrap_data_volcano), -1);
+  rb_define_module_function(mOctruby, "data_faithful", VALUEFUNC(_wrap_data_faithful), -1);
+  rb_define_module_function(mOctruby, "data_mtcars", VALUEFUNC(_wrap_data_mtcars), -1);
+  rb_define_module_function(mOctruby, "data_airquality", VALUEFUNC(_wrap_data_airquality), -1);
+  rb_define_module_function(mOctruby, "data_breast_cancer", VALUEFUNC(_wrap_data_breast_cancer), -1);
+  rb_define_module_function(mOctruby, "data_diabetes", VALUEFUNC(_wrap_data_diabetes), -1);
+  rb_define_module_function(mOctruby, "data_digits", VALUEFUNC(_wrap_data_digits), -1);
+  rb_define_module_function(mOctruby, "data_diamonds", VALUEFUNC(_wrap_data_diamonds), -1);
+  rb_define_module_function(mOctruby, "data_california_housing", VALUEFUNC(_wrap_data_california_housing), -1);
+  rb_define_module_function(mOctruby, "data_load", VALUEFUNC(_wrap_data_load), -1);
+  rb_define_module_function(mOctruby, "data_catalog", VALUEFUNC(_wrap_data_catalog), -1);
+  
+  SwigClassCsvReader.klass = rb_define_class_under(mOctruby, "CsvReader", rb_cObject);
+  SWIG_TypeClientData(SWIGTYPE_p_datamunge__CsvReader, (void *) &SwigClassCsvReader);
+  rb_define_alloc_func(SwigClassCsvReader.klass, _wrap_CsvReader_allocate);
+  rb_define_method(SwigClassCsvReader.klass, "initialize", VALUEFUNC(_wrap_new_CsvReader), -1);
+  rb_define_method(SwigClassCsvReader.klass, "has_next", VALUEFUNC(_wrap_CsvReader_has_next), -1);
+  rb_define_method(SwigClassCsvReader.klass, "next", VALUEFUNC(_wrap_CsvReader_next), -1);
+  rb_define_method(SwigClassCsvReader.klass, "reset", VALUEFUNC(_wrap_CsvReader_reset), -1);
+  rb_define_method(SwigClassCsvReader.klass, "batch_size", VALUEFUNC(_wrap_CsvReader_batch_size), -1);
+  rb_define_method(SwigClassCsvReader.klass, "set_batch_size", VALUEFUNC(_wrap_CsvReader_set_batch_size), -1);
+  rb_define_method(SwigClassCsvReader.klass, "column_names", VALUEFUNC(_wrap_CsvReader_column_names), -1);
+  rb_define_method(SwigClassCsvReader.klass, "rows_read", VALUEFUNC(_wrap_CsvReader_rows_read), -1);
+  SwigClassCsvReader.cext_type.wrap_struct_name = "C++ class datamunge::CsvReader";
+  SwigClassCsvReader.cext_type.function.dmark = SWIG_Ruby_mark_swig_type;
+  SwigClassCsvReader.cext_type.function.dfree = SWIG_Ruby_free_swig_type;
+#ifdef RUBY_TYPED_FREE_IMMEDIATELY
+  SwigClassCsvReader.cext_type.flags = SWIG_RUBY_TYPED_DATA_FLAGS;
+#endif
+  SwigClassCsvReader.mark = 0;
+  SwigClassCsvReader.destroy = (void (*)(void *)) free_datamunge_CsvReader;
+  SwigClassCsvReader.trackObjects = 0;
   
   SwigClassShapeLayer.klass = rb_define_class_under(mOctruby, "ShapeLayer", rb_cObject);
   SWIG_TypeClientData(SWIGTYPE_p_datamunge__ShapeLayer, (void *) &SwigClassShapeLayer);
@@ -135223,6 +144992,17 @@ SWIGEXPORT void Init_octruby(void) {
   rb_define_method(SwigClassGGPlot.klass, "save", VALUEFUNC(_wrap_GGPlot_save), -1);
   rb_define_method(SwigClassGGPlot.klass, "save_svg", VALUEFUNC(_wrap_GGPlot_save_svg), -1);
   rb_define_method(SwigClassGGPlot.klass, "show", VALUEFUNC(_wrap_GGPlot_show), -1);
+  rb_define_method(SwigClassGGPlot.klass, "rows", VALUEFUNC(_wrap_GGPlot_rows), -1);
+  rb_define_method(SwigClassGGPlot.klass, "x_column", VALUEFUNC(_wrap_GGPlot_x_column), -1);
+  rb_define_method(SwigClassGGPlot.klass, "y_column", VALUEFUNC(_wrap_GGPlot_y_column), -1);
+  rb_define_method(SwigClassGGPlot.klass, "color_column", VALUEFUNC(_wrap_GGPlot_color_column), -1);
+  rb_define_method(SwigClassGGPlot.klass, "layer_count", VALUEFUNC(_wrap_GGPlot_layer_count), -1);
+  rb_define_method(SwigClassGGPlot.klass, "layer_kinds", VALUEFUNC(_wrap_GGPlot_layer_kinds), -1);
+  rb_define_method(SwigClassGGPlot.klass, "theme_name", VALUEFUNC(_wrap_GGPlot_theme_name), -1);
+  rb_define_method(SwigClassGGPlot.klass, "facet_column", VALUEFUNC(_wrap_GGPlot_facet_column), -1);
+  rb_define_method(SwigClassGGPlot.klass, "title_text", VALUEFUNC(_wrap_GGPlot_title_text), -1);
+  rb_define_method(SwigClassGGPlot.klass, "x_label", VALUEFUNC(_wrap_GGPlot_x_label), -1);
+  rb_define_method(SwigClassGGPlot.klass, "y_label", VALUEFUNC(_wrap_GGPlot_y_label), -1);
   SwigClassGGPlot.cext_type.wrap_struct_name = "C++ class datamunge::GGPlot";
   SwigClassGGPlot.cext_type.function.dmark = SWIG_Ruby_mark_swig_type;
   SwigClassGGPlot.cext_type.function.dfree = SWIG_Ruby_free_swig_type;
@@ -135232,6 +145012,44 @@ SWIGEXPORT void Init_octruby(void) {
   SwigClassGGPlot.mark = 0;
   SwigClassGGPlot.destroy = (void (*)(void *)) free_datamunge_GGPlot;
   SwigClassGGPlot.trackObjects = 0;
+  
+  SwigClassSplom.klass = rb_define_class_under(mOctruby, "Splom", rb_cObject);
+  SWIG_TypeClientData(SWIGTYPE_p_datamunge__Splom, (void *) &SwigClassSplom);
+  rb_define_alloc_func(SwigClassSplom.klass, _wrap_Splom_allocate);
+  rb_define_method(SwigClassSplom.klass, "initialize", VALUEFUNC(_wrap_new_Splom), -1);
+  rb_define_method(SwigClassSplom.klass, "title", VALUEFUNC(_wrap_Splom_title), -1);
+  rb_define_method(SwigClassSplom.klass, "size", VALUEFUNC(_wrap_Splom_size), -1);
+  rb_define_method(SwigClassSplom.klass, "color", VALUEFUNC(_wrap_Splom_color), -1);
+  rb_define_method(SwigClassSplom.klass, "group_by", VALUEFUNC(_wrap_Splom_group_by), -1);
+  rb_define_method(SwigClassSplom.klass, "point_colors", VALUEFUNC(_wrap_Splom_point_colors), -1);
+  rb_define_method(SwigClassSplom.klass, "level_palette", VALUEFUNC(_wrap_Splom_level_palette), -1);
+  rb_define_method(SwigClassSplom.klass, "marker_size", VALUEFUNC(_wrap_Splom_marker_size), -1);
+  rb_define_method(SwigClassSplom.klass, "diagonal_names", VALUEFUNC(_wrap_Splom_diagonal_names), -1);
+  rb_define_method(SwigClassSplom.klass, "diagonal_density", VALUEFUNC(_wrap_Splom_diagonal_density), -1);
+  rb_define_method(SwigClassSplom.klass, "diagonal_histogram", VALUEFUNC(_wrap_Splom_diagonal_histogram), -1);
+  rb_define_method(SwigClassSplom.klass, "span", VALUEFUNC(_wrap_Splom_span), -1);
+  rb_define_method(SwigClassSplom.klass, "prediction_level", VALUEFUNC(_wrap_Splom_prediction_level), -1);
+  rb_define_method(SwigClassSplom.klass, "bins", VALUEFUNC(_wrap_Splom_bins), -1);
+  rb_define_method(SwigClassSplom.klass, "show_grid", VALUEFUNC(_wrap_Splom_show_grid), -1);
+  rb_define_method(SwigClassSplom.klass, "variables", VALUEFUNC(_wrap_Splom_variables), -1);
+  rb_define_method(SwigClassSplom.klass, "groups", VALUEFUNC(_wrap_Splom_groups), -1);
+  rb_define_method(SwigClassSplom.klass, "title_text", VALUEFUNC(_wrap_Splom_title_text), -1);
+  rb_define_method(SwigClassSplom.klass, "width", VALUEFUNC(_wrap_Splom_width), -1);
+  rb_define_method(SwigClassSplom.klass, "height", VALUEFUNC(_wrap_Splom_height), -1);
+  rb_define_method(SwigClassSplom.klass, "panel", VALUEFUNC(_wrap_Splom_panel), -1);
+  rb_define_method(SwigClassSplom.klass, "to_svg", VALUEFUNC(_wrap_Splom_to_svg), -1);
+  rb_define_method(SwigClassSplom.klass, "save", VALUEFUNC(_wrap_Splom_save), -1);
+  rb_define_method(SwigClassSplom.klass, "save_svg", VALUEFUNC(_wrap_Splom_save_svg), -1);
+  rb_define_method(SwigClassSplom.klass, "show", VALUEFUNC(_wrap_Splom_show), -1);
+  SwigClassSplom.cext_type.wrap_struct_name = "C++ class datamunge::Splom";
+  SwigClassSplom.cext_type.function.dmark = SWIG_Ruby_mark_swig_type;
+  SwigClassSplom.cext_type.function.dfree = SWIG_Ruby_free_swig_type;
+#ifdef RUBY_TYPED_FREE_IMMEDIATELY
+  SwigClassSplom.cext_type.flags = SWIG_RUBY_TYPED_DATA_FLAGS;
+#endif
+  SwigClassSplom.mark = 0;
+  SwigClassSplom.destroy = (void (*)(void *)) free_datamunge_Splom;
+  SwigClassSplom.trackObjects = 0;
   
   SwigClassLM.klass = rb_define_class_under(mOctruby, "LM", rb_cObject);
   SWIG_TypeClientData(SWIGTYPE_p_datamunge__LM, (void *) &SwigClassLM);
@@ -135409,10 +145227,12 @@ SWIGEXPORT void Init_octruby(void) {
   rb_define_method(SwigClassLDA.klass, "confusion_matrix", VALUEFUNC(_wrap_LDA_confusion_matrix), -1);
   rb_define_method(SwigClassLDA.klass, "summary", VALUEFUNC(_wrap_LDA_summary), -1);
   rb_define_method(SwigClassLDA.klass, "print_summary", VALUEFUNC(_wrap_LDA_print_summary), -1);
+  rb_define_method(SwigClassLDA.klass, "to_md", VALUEFUNC(_wrap_LDA_to_md), -1);
   rb_define_method(SwigClassLDA.klass, "predict", VALUEFUNC(_wrap_LDA_predict), -1);
   rb_define_method(SwigClassLDA.klass, "predict_frame", VALUEFUNC(_wrap_LDA_predict_frame), -1);
   rb_define_method(SwigClassLDA.klass, "plot_discriminants", VALUEFUNC(_wrap_LDA_plot_discriminants), -1);
   rb_define_method(SwigClassLDA.klass, "save_discriminant_plot", VALUEFUNC(_wrap_LDA_save_discriminant_plot), -1);
+  rb_define_method(SwigClassLDA.klass, "plot_decision_regions", VALUEFUNC(_wrap_LDA_plot_decision_regions), -1);
   SwigClassLDA.cext_type.wrap_struct_name = "C++ class datamunge::LDA";
   SwigClassLDA.cext_type.function.dmark = SWIG_Ruby_mark_swig_type;
   SwigClassLDA.cext_type.function.dfree = SWIG_Ruby_free_swig_type;
@@ -136515,7 +146335,7 @@ SWIGEXPORT void Init_octruby(void) {
   SwigClassVar.trackObjects = 0;
   
   SwigClassRGB.klass = rb_define_class_under(mOctruby, "RGB", rb_cObject);
-  SWIG_TypeClientData(SWIGTYPE_p_datamunge__plot__RGB, (void *) &SwigClassRGB);
+  SWIG_TypeClientData(SWIGTYPE_p_datamunge__graphics__RGB, (void *) &SwigClassRGB);
   rb_define_alloc_func(SwigClassRGB.klass, _wrap_RGB_allocate);
   rb_define_method(SwigClassRGB.klass, "initialize", VALUEFUNC(_wrap_new_RGB), -1);
   rb_define_method(SwigClassRGB.klass, "r=", VALUEFUNC(_wrap_RGB_r_set), -1);
@@ -136533,11 +146353,11 @@ SWIGEXPORT void Init_octruby(void) {
   SwigClassRGB.cext_type.flags = SWIG_RUBY_TYPED_DATA_FLAGS;
 #endif
   SwigClassRGB.mark = 0;
-  SwigClassRGB.destroy = (void (*)(void *)) free_datamunge_plot_RGB;
+  SwigClassRGB.destroy = (void (*)(void *)) free_datamunge_graphics_RGB;
   SwigClassRGB.trackObjects = 0;
   
   SwigClassDataSeries.klass = rb_define_class_under(mOctruby, "DataSeries", rb_cObject);
-  SWIG_TypeClientData(SWIGTYPE_p_datamunge__plot__DataSeries, (void *) &SwigClassDataSeries);
+  SWIG_TypeClientData(SWIGTYPE_p_datamunge__graphics__DataSeries, (void *) &SwigClassDataSeries);
   rb_define_alloc_func(SwigClassDataSeries.klass, _wrap_DataSeries_allocate);
   rb_define_method(SwigClassDataSeries.klass, "initialize", VALUEFUNC(_wrap_new_DataSeries), -1);
   rb_define_const(SwigClassDataSeries.klass, "Kind_Scatter", SWIG_From_int(static_cast< int >(datamunge::graphics::DataSeries::Kind::Scatter)));
@@ -136565,6 +146385,8 @@ SWIGEXPORT void Init_octruby(void) {
   rb_define_method(SwigClassDataSeries.klass, "bar_width", VALUEFUNC(_wrap_DataSeries_bar_width_get), -1);
   rb_define_method(SwigClassDataSeries.klass, "filled=", VALUEFUNC(_wrap_DataSeries_filled_set), -1);
   rb_define_method(SwigClassDataSeries.klass, "filled", VALUEFUNC(_wrap_DataSeries_filled_get), -1);
+  rb_define_method(SwigClassDataSeries.klass, "point_colors=", VALUEFUNC(_wrap_DataSeries_point_colors_set), -1);
+  rb_define_method(SwigClassDataSeries.klass, "point_colors", VALUEFUNC(_wrap_DataSeries_point_colors_get), -1);
   SwigClassDataSeries.cext_type.wrap_struct_name = "C++ class datamunge::graphics::DataSeries";
   SwigClassDataSeries.cext_type.function.dmark = SWIG_Ruby_mark_swig_type;
   SwigClassDataSeries.cext_type.function.dfree = SWIG_Ruby_free_swig_type;
@@ -136572,11 +146394,11 @@ SWIGEXPORT void Init_octruby(void) {
   SwigClassDataSeries.cext_type.flags = SWIG_RUBY_TYPED_DATA_FLAGS;
 #endif
   SwigClassDataSeries.mark = 0;
-  SwigClassDataSeries.destroy = (void (*)(void *)) free_datamunge_plot_DataSeries;
+  SwigClassDataSeries.destroy = (void (*)(void *)) free_datamunge_graphics_DataSeries;
   SwigClassDataSeries.trackObjects = 0;
   
   SwigClassABLine.klass = rb_define_class_under(mOctruby, "ABLine", rb_cObject);
-  SWIG_TypeClientData(SWIGTYPE_p_datamunge__plot__ABLine, (void *) &SwigClassABLine);
+  SWIG_TypeClientData(SWIGTYPE_p_datamunge__graphics__ABLine, (void *) &SwigClassABLine);
   rb_define_alloc_func(SwigClassABLine.klass, _wrap_ABLine_allocate);
   rb_define_method(SwigClassABLine.klass, "initialize", VALUEFUNC(_wrap_new_ABLine), -1);
   rb_define_method(SwigClassABLine.klass, "vertical=", VALUEFUNC(_wrap_ABLine_vertical_set), -1);
@@ -136596,11 +146418,11 @@ SWIGEXPORT void Init_octruby(void) {
   SwigClassABLine.cext_type.flags = SWIG_RUBY_TYPED_DATA_FLAGS;
 #endif
   SwigClassABLine.mark = 0;
-  SwigClassABLine.destroy = (void (*)(void *)) free_datamunge_plot_ABLine;
+  SwigClassABLine.destroy = (void (*)(void *)) free_datamunge_graphics_ABLine;
   SwigClassABLine.trackObjects = 0;
   
   SwigClassLegendEntry.klass = rb_define_class_under(mOctruby, "LegendEntry", rb_cObject);
-  SWIG_TypeClientData(SWIGTYPE_p_datamunge__plot__LegendEntry, (void *) &SwigClassLegendEntry);
+  SWIG_TypeClientData(SWIGTYPE_p_datamunge__graphics__LegendEntry, (void *) &SwigClassLegendEntry);
   rb_define_alloc_func(SwigClassLegendEntry.klass, _wrap_LegendEntry_allocate);
   rb_define_method(SwigClassLegendEntry.klass, "initialize", VALUEFUNC(_wrap_new_LegendEntry), -1);
   rb_define_method(SwigClassLegendEntry.klass, "label=", VALUEFUNC(_wrap_LegendEntry_label_set), -1);
@@ -136614,15 +146436,16 @@ SWIGEXPORT void Init_octruby(void) {
   SwigClassLegendEntry.cext_type.flags = SWIG_RUBY_TYPED_DATA_FLAGS;
 #endif
   SwigClassLegendEntry.mark = 0;
-  SwigClassLegendEntry.destroy = (void (*)(void *)) free_datamunge_plot_LegendEntry;
+  SwigClassLegendEntry.destroy = (void (*)(void *)) free_datamunge_graphics_LegendEntry;
   SwigClassLegendEntry.trackObjects = 0;
   
   SwigClassPlot.klass = rb_define_class_under(mOctruby, "Plot", rb_cObject);
-  SWIG_TypeClientData(SWIGTYPE_p_datamunge__plot__Plot, (void *) &SwigClassPlot);
+  SWIG_TypeClientData(SWIGTYPE_p_datamunge__graphics__Plot, (void *) &SwigClassPlot);
   rb_define_alloc_func(SwigClassPlot.klass, _wrap_Plot_allocate);
   rb_define_method(SwigClassPlot.klass, "initialize", VALUEFUNC(_wrap_new_Plot), -1);
   rb_define_method(SwigClassPlot.klass, "size", VALUEFUNC(_wrap_Plot_size), -1);
   rb_define_method(SwigClassPlot.klass, "title", VALUEFUNC(_wrap_Plot_title), -1);
+  rb_define_method(SwigClassPlot.klass, "subtitle", VALUEFUNC(_wrap_Plot_subtitle), -1);
   rb_define_method(SwigClassPlot.klass, "x_label", VALUEFUNC(_wrap_Plot_x_label), -1);
   rb_define_method(SwigClassPlot.klass, "y_label", VALUEFUNC(_wrap_Plot_y_label), -1);
   rb_define_method(SwigClassPlot.klass, "background", VALUEFUNC(_wrap_Plot_background), -1);
@@ -136633,9 +146456,16 @@ SWIGEXPORT void Init_octruby(void) {
   rb_define_method(SwigClassPlot.klass, "y_limits", VALUEFUNC(_wrap_Plot_y_limits), -1);
   rb_define_method(SwigClassPlot.klass, "hide_axes", VALUEFUNC(_wrap_Plot_hide_axes), -1);
   rb_define_method(SwigClassPlot.klass, "x_tick_labels", VALUEFUNC(_wrap_Plot_x_tick_labels), -1);
+  rb_define_method(SwigClassPlot.klass, "x_ticks", VALUEFUNC(_wrap_Plot_x_ticks), -1);
+  rb_define_method(SwigClassPlot.klass, "y_tick_labels", VALUEFUNC(_wrap_Plot_y_tick_labels), -1);
+  rb_define_method(SwigClassPlot.klass, "y_ticks", VALUEFUNC(_wrap_Plot_y_ticks), -1);
+  rb_define_method(SwigClassPlot.klass, "margins", VALUEFUNC(_wrap_Plot_margins), -1);
+  rb_define_method(SwigClassPlot.klass, "tick_font_size", VALUEFUNC(_wrap_Plot_tick_font_size), -1);
+  rb_define_method(SwigClassPlot.klass, "pretty_ticks", VALUEFUNC(_wrap_Plot_pretty_ticks), -1);
   rb_define_method(SwigClassPlot.klass, "width", VALUEFUNC(_wrap_Plot_width), -1);
   rb_define_method(SwigClassPlot.klass, "height", VALUEFUNC(_wrap_Plot_height), -1);
   rb_define_method(SwigClassPlot.klass, "title_text", VALUEFUNC(_wrap_Plot_title_text), -1);
+  rb_define_method(SwigClassPlot.klass, "subtitle_text", VALUEFUNC(_wrap_Plot_subtitle_text), -1);
   rb_define_method(SwigClassPlot.klass, "x_label_text", VALUEFUNC(_wrap_Plot_x_label_text), -1);
   rb_define_method(SwigClassPlot.klass, "y_label_text", VALUEFUNC(_wrap_Plot_y_label_text), -1);
   rb_define_method(SwigClassPlot.klass, "series", VALUEFUNC(_wrap_Plot_series), -1);
@@ -136651,11 +146481,25 @@ SWIGEXPORT void Init_octruby(void) {
   rb_define_method(SwigClassPlot.klass, "y_max", VALUEFUNC(_wrap_Plot_y_max), -1);
   rb_define_method(SwigClassPlot.klass, "axes_hidden", VALUEFUNC(_wrap_Plot_axes_hidden), -1);
   rb_define_method(SwigClassPlot.klass, "x_tick_label_list", VALUEFUNC(_wrap_Plot_x_tick_label_list), -1);
+  rb_define_method(SwigClassPlot.klass, "x_tick_position_list", VALUEFUNC(_wrap_Plot_x_tick_position_list), -1);
+  rb_define_method(SwigClassPlot.klass, "y_tick_label_list", VALUEFUNC(_wrap_Plot_y_tick_label_list), -1);
+  rb_define_method(SwigClassPlot.klass, "y_tick_position_list", VALUEFUNC(_wrap_Plot_y_tick_position_list), -1);
   rb_define_method(SwigClassPlot.klass, "reference_lines", VALUEFUNC(_wrap_Plot_reference_lines), -1);
   rb_define_method(SwigClassPlot.klass, "legend_entries", VALUEFUNC(_wrap_Plot_legend_entries), -1);
+  rb_define_method(SwigClassPlot.klass, "has_custom_margins", VALUEFUNC(_wrap_Plot_has_custom_margins), -1);
+  rb_define_method(SwigClassPlot.klass, "margin_left", VALUEFUNC(_wrap_Plot_margin_left), -1);
+  rb_define_method(SwigClassPlot.klass, "margin_right", VALUEFUNC(_wrap_Plot_margin_right), -1);
+  rb_define_method(SwigClassPlot.klass, "margin_top", VALUEFUNC(_wrap_Plot_margin_top), -1);
+  rb_define_method(SwigClassPlot.klass, "margin_bottom", VALUEFUNC(_wrap_Plot_margin_bottom), -1);
+  rb_define_method(SwigClassPlot.klass, "tick_font_px", VALUEFUNC(_wrap_Plot_tick_font_px), -1);
+  rb_define_method(SwigClassPlot.klass, "pretty_ticks_enabled", VALUEFUNC(_wrap_Plot_pretty_ticks_enabled), -1);
   rb_define_method(SwigClassPlot.klass, "to_svg", VALUEFUNC(_wrap_Plot_to_svg), -1);
   rb_define_method(SwigClassPlot.klass, "save", VALUEFUNC(_wrap_Plot_save), -1);
   rb_define_method(SwigClassPlot.klass, "save_svg", VALUEFUNC(_wrap_Plot_save_svg), -1);
+  rb_define_method(SwigClassPlot.klass, "to_png", VALUEFUNC(_wrap_Plot_to_png), -1);
+  rb_define_method(SwigClassPlot.klass, "to_pdf", VALUEFUNC(_wrap_Plot_to_pdf), -1);
+  rb_define_method(SwigClassPlot.klass, "save_png", VALUEFUNC(_wrap_Plot_save_png), -1);
+  rb_define_method(SwigClassPlot.klass, "save_pdf", VALUEFUNC(_wrap_Plot_save_pdf), -1);
   rb_define_method(SwigClassPlot.klass, "view", VALUEFUNC(_wrap_Plot_view), -1);
   rb_define_method(SwigClassPlot.klass, "show", VALUEFUNC(_wrap_Plot_show), -1);
   SwigClassPlot.cext_type.wrap_struct_name = "C++ class datamunge::graphics::Plot";
@@ -136665,28 +146509,42 @@ SWIGEXPORT void Init_octruby(void) {
   SwigClassPlot.cext_type.flags = SWIG_RUBY_TYPED_DATA_FLAGS;
 #endif
   SwigClassPlot.mark = 0;
-  SwigClassPlot.destroy = (void (*)(void *)) free_datamunge_plot_Plot;
+  SwigClassPlot.destroy = (void (*)(void *)) free_datamunge_graphics_Plot;
   SwigClassPlot.trackObjects = 0;
   
-  SwigClassRPlot.klass = rb_define_class_under(mOctruby, "RPlot", ((swig_class *) SWIGTYPE_p_datamunge__plot__Plot->clientdata)->klass);
-  SWIG_TypeClientData(SWIGTYPE_p_datamunge__plot__RPlot, (void *) &SwigClassRPlot);
+  SwigClassRPlot.klass = rb_define_class_under(mOctruby, "RPlot", ((swig_class *) SWIGTYPE_p_datamunge__graphics__Plot->clientdata)->klass);
+  SWIG_TypeClientData(SWIGTYPE_p_datamunge__graphics__RPlot, (void *) &SwigClassRPlot);
   rb_define_alloc_func(SwigClassRPlot.klass, _wrap_RPlot_allocate);
   rb_define_method(SwigClassRPlot.klass, "initialize", VALUEFUNC(_wrap_new_RPlot), -1);
   rb_define_singleton_method(SwigClassRPlot.klass, "create", VALUEFUNC(_wrap_RPlot_create), -1);
   rb_define_method(SwigClassRPlot.klass, "size", VALUEFUNC(_wrap_RPlot_size), -1);
   rb_define_method(SwigClassRPlot.klass, "title", VALUEFUNC(_wrap_RPlot_title), -1);
+  rb_define_method(SwigClassRPlot.klass, "subtitle", VALUEFUNC(_wrap_RPlot_subtitle), -1);
   rb_define_method(SwigClassRPlot.klass, "x_label", VALUEFUNC(_wrap_RPlot_x_label), -1);
   rb_define_method(SwigClassRPlot.klass, "y_label", VALUEFUNC(_wrap_RPlot_y_label), -1);
   rb_define_method(SwigClassRPlot.klass, "xlab", VALUEFUNC(_wrap_RPlot_xlab), -1);
   rb_define_method(SwigClassRPlot.klass, "ylab", VALUEFUNC(_wrap_RPlot_ylab), -1);
+  rb_define_method(SwigClassRPlot.klass, "set_title", VALUEFUNC(_wrap_RPlot_set_title), -1);
+  rb_define_method(SwigClassRPlot.klass, "set_subtitle", VALUEFUNC(_wrap_RPlot_set_subtitle), -1);
+  rb_define_method(SwigClassRPlot.klass, "set_xlab", VALUEFUNC(_wrap_RPlot_set_xlab), -1);
+  rb_define_method(SwigClassRPlot.klass, "set_ylab", VALUEFUNC(_wrap_RPlot_set_ylab), -1);
+  rb_define_method(SwigClassRPlot.klass, "set_col", VALUEFUNC(_wrap_RPlot_set_col), -1);
   rb_define_method(SwigClassRPlot.klass, "background", VALUEFUNC(_wrap_RPlot_background), -1);
   rb_define_method(SwigClassRPlot.klass, "axis_color", VALUEFUNC(_wrap_RPlot_axis_color), -1);
   rb_define_method(SwigClassRPlot.klass, "grid_color", VALUEFUNC(_wrap_RPlot_grid_color), -1);
   rb_define_method(SwigClassRPlot.klass, "show_grid", VALUEFUNC(_wrap_RPlot_show_grid), -1);
   rb_define_method(SwigClassRPlot.klass, "x_limits", VALUEFUNC(_wrap_RPlot_x_limits), -1);
   rb_define_method(SwigClassRPlot.klass, "y_limits", VALUEFUNC(_wrap_RPlot_y_limits), -1);
+  rb_define_method(SwigClassRPlot.klass, "xlim", VALUEFUNC(_wrap_RPlot_xlim), -1);
+  rb_define_method(SwigClassRPlot.klass, "ylim", VALUEFUNC(_wrap_RPlot_ylim), -1);
   rb_define_method(SwigClassRPlot.klass, "hide_axes", VALUEFUNC(_wrap_RPlot_hide_axes), -1);
   rb_define_method(SwigClassRPlot.klass, "x_tick_labels", VALUEFUNC(_wrap_RPlot_x_tick_labels), -1);
+  rb_define_method(SwigClassRPlot.klass, "x_ticks", VALUEFUNC(_wrap_RPlot_x_ticks), -1);
+  rb_define_method(SwigClassRPlot.klass, "y_tick_labels", VALUEFUNC(_wrap_RPlot_y_tick_labels), -1);
+  rb_define_method(SwigClassRPlot.klass, "y_ticks", VALUEFUNC(_wrap_RPlot_y_ticks), -1);
+  rb_define_method(SwigClassRPlot.klass, "margins", VALUEFUNC(_wrap_RPlot_margins), -1);
+  rb_define_method(SwigClassRPlot.klass, "tick_font_size", VALUEFUNC(_wrap_RPlot_tick_font_size), -1);
+  rb_define_method(SwigClassRPlot.klass, "pretty_ticks", VALUEFUNC(_wrap_RPlot_pretty_ticks), -1);
   rb_define_singleton_method(SwigClassRPlot.klass, "plot", VALUEFUNC(_wrap_RPlot_plot), -1);
   rb_define_singleton_method(SwigClassRPlot.klass, "hist", VALUEFUNC(_wrap_RPlot_hist), -1);
   rb_define_singleton_method(SwigClassRPlot.klass, "barplot", VALUEFUNC(_wrap_RPlot_barplot), -1);
@@ -136694,6 +146552,7 @@ SWIGEXPORT void Init_octruby(void) {
   rb_define_singleton_method(SwigClassRPlot.klass, "pie", VALUEFUNC(_wrap_RPlot_pie), -1);
   rb_define_singleton_method(SwigClassRPlot.klass, "curve", VALUEFUNC(_wrap_RPlot_curve), -1);
   rb_define_singleton_method(SwigClassRPlot.klass, "qqnorm", VALUEFUNC(_wrap_RPlot_qqnorm), -1);
+  rb_define_method(SwigClassRPlot.klass, "points_colored", VALUEFUNC(_wrap_RPlot_points_colored), -1);
   rb_define_method(SwigClassRPlot.klass, "line", VALUEFUNC(_wrap_RPlot_line), -1);
   rb_define_method(SwigClassRPlot.klass, "points", VALUEFUNC(_wrap_RPlot_points), -1);
   rb_define_method(SwigClassRPlot.klass, "lines", VALUEFUNC(_wrap_RPlot_lines), -1);
@@ -136706,6 +146565,7 @@ SWIGEXPORT void Init_octruby(void) {
   rb_define_method(SwigClassRPlot.klass, "legend", VALUEFUNC(_wrap_RPlot_legend), -1);
   rb_define_method(SwigClassRPlot.klass, "text", VALUEFUNC(_wrap_RPlot_text), -1);
   rb_define_method(SwigClassRPlot.klass, "polygon", VALUEFUNC(_wrap_RPlot_polygon), -1);
+  rb_define_method(SwigClassRPlot.klass, "image", VALUEFUNC(_wrap_RPlot_image), -1);
   rb_define_method(SwigClassRPlot.klass, "segments", VALUEFUNC(_wrap_RPlot_segments), -1);
   SwigClassRPlot.cext_type.wrap_struct_name = "C++ class datamunge::graphics::RPlot";
   SwigClassRPlot.cext_type.function.dmark = SWIG_Ruby_mark_swig_type;
@@ -136714,19 +146574,36 @@ SWIGEXPORT void Init_octruby(void) {
   SwigClassRPlot.cext_type.flags = SWIG_RUBY_TYPED_DATA_FLAGS;
 #endif
   SwigClassRPlot.mark = 0;
-  SwigClassRPlot.destroy = (void (*)(void *)) free_datamunge_plot_RPlot;
+  SwigClassRPlot.destroy = (void (*)(void *)) free_datamunge_graphics_RPlot;
   SwigClassRPlot.trackObjects = 0;
   
   SwigClassRLayout.klass = rb_define_class_under(mOctruby, "RLayout", rb_cObject);
-  SWIG_TypeClientData(SWIGTYPE_p_datamunge__plot__RLayout, (void *) &SwigClassRLayout);
+  SWIG_TypeClientData(SWIGTYPE_p_datamunge__graphics__RLayout, (void *) &SwigClassRLayout);
   rb_define_alloc_func(SwigClassRLayout.klass, _wrap_RLayout_allocate);
   rb_define_method(SwigClassRLayout.klass, "initialize", VALUEFUNC(_wrap_new_RLayout), -1);
+  rb_define_const(SwigClassRLayout.klass, "Title_band_px", SWIG_From_size_t(static_cast< size_t >(datamunge::graphics::RLayout::title_band_px)));
+  rb_define_const(SwigClassRLayout.klass, "Min_panel_px", SWIG_From_size_t(static_cast< size_t >(datamunge::graphics::RLayout::min_panel_px)));
   rb_define_singleton_method(SwigClassRLayout.klass, "create", VALUEFUNC(_wrap_RLayout_create), -1);
   rb_define_method(SwigClassRLayout.klass, "add", VALUEFUNC(_wrap_RLayout_add), -1);
   rb_define_method(SwigClassRLayout.klass, "size", VALUEFUNC(_wrap_RLayout_size), -1);
+  rb_define_method(SwigClassRLayout.klass, "title", VALUEFUNC(_wrap_RLayout_title), -1);
+  rb_define_method(SwigClassRLayout.klass, "rows", VALUEFUNC(_wrap_RLayout_rows), -1);
+  rb_define_method(SwigClassRLayout.klass, "cols", VALUEFUNC(_wrap_RLayout_cols), -1);
+  rb_define_method(SwigClassRLayout.klass, "width", VALUEFUNC(_wrap_RLayout_width), -1);
+  rb_define_method(SwigClassRLayout.klass, "height", VALUEFUNC(_wrap_RLayout_height), -1);
+  rb_define_method(SwigClassRLayout.klass, "panel_count", VALUEFUNC(_wrap_RLayout_panel_count), -1);
+  rb_define_method(SwigClassRLayout.klass, "title_text", VALUEFUNC(_wrap_RLayout_title_text), -1);
+  rb_define_method(SwigClassRLayout.klass, "panel", VALUEFUNC(_wrap_RLayout_panel), -1);
   rb_define_method(SwigClassRLayout.klass, "to_svg", VALUEFUNC(_wrap_RLayout_to_svg), -1);
   rb_define_method(SwigClassRLayout.klass, "save", VALUEFUNC(_wrap_RLayout_save), -1);
   rb_define_method(SwigClassRLayout.klass, "save_svg", VALUEFUNC(_wrap_RLayout_save_svg), -1);
+  rb_define_method(SwigClassRLayout.klass, "to_png", VALUEFUNC(_wrap_RLayout_to_png), -1);
+  rb_define_method(SwigClassRLayout.klass, "to_pdf", VALUEFUNC(_wrap_RLayout_to_pdf), -1);
+  rb_define_method(SwigClassRLayout.klass, "save_png", VALUEFUNC(_wrap_RLayout_save_png), -1);
+  rb_define_method(SwigClassRLayout.klass, "save_pdf", VALUEFUNC(_wrap_RLayout_save_pdf), -1);
+  rb_define_method(SwigClassRLayout.klass, "fit_panels", VALUEFUNC(_wrap_RLayout_fit_panels), -1);
+  rb_define_method(SwigClassRLayout.klass, "show", VALUEFUNC(_wrap_RLayout_show), -1);
+  rb_define_method(SwigClassRLayout.klass, "view", VALUEFUNC(_wrap_RLayout_view), -1);
   SwigClassRLayout.cext_type.wrap_struct_name = "C++ class datamunge::graphics::RLayout";
   SwigClassRLayout.cext_type.function.dmark = SWIG_Ruby_mark_swig_type;
   SwigClassRLayout.cext_type.function.dfree = SWIG_Ruby_free_swig_type;
@@ -136734,10 +146611,15 @@ SWIGEXPORT void Init_octruby(void) {
   SwigClassRLayout.cext_type.flags = SWIG_RUBY_TYPED_DATA_FLAGS;
 #endif
   SwigClassRLayout.mark = 0;
-  SwigClassRLayout.destroy = (void (*)(void *)) free_datamunge_plot_RLayout;
+  SwigClassRLayout.destroy = (void (*)(void *)) free_datamunge_graphics_RLayout;
   SwigClassRLayout.trackObjects = 0;
+  rb_define_module_function(mOctruby, "terrain_colors", VALUEFUNC(_wrap_terrain_colors), -1);
+  rb_define_module_function(mOctruby, "diverging_colors", VALUEFUNC(_wrap_diverging_colors), -1);
+  rb_define_module_function(mOctruby, "viridis_colors", VALUEFUNC(_wrap_viridis_colors), -1);
+  rb_define_module_function(mOctruby, "value_colors", VALUEFUNC(_wrap_value_colors), -1);
   rb_define_module_function(mOctruby, "set_seed", VALUEFUNC(_wrap_set_seed), -1);
   rb_define_module_function(mOctruby, "unif", VALUEFUNC(_wrap_unif), -1);
+  rb_define_module_function(mOctruby, "runif", VALUEFUNC(_wrap_runif), -1);
   rb_define_module_function(mOctruby, "rnorm", VALUEFUNC(_wrap_rnorm), -1);
   rb_define_module_function(mOctruby, "seql", VALUEFUNC(_wrap_seql), -1);
   
@@ -136846,6 +146728,9 @@ SWIGEXPORT void Init_octruby(void) {
   rb_define_method(SwigClassARIMA.klass, "fitted_values", VALUEFUNC(_wrap_ARIMA_fitted_values), -1);
   rb_define_method(SwigClassARIMA.klass, "residuals", VALUEFUNC(_wrap_ARIMA_residuals), -1);
   rb_define_method(SwigClassARIMA.klass, "forecast", VALUEFUNC(_wrap_ARIMA_forecast), -1);
+  rb_define_method(SwigClassARIMA.klass, "expanded_ar_coefficients", VALUEFUNC(_wrap_ARIMA_expanded_ar_coefficients), -1);
+  rb_define_method(SwigClassARIMA.klass, "expanded_ma_coefficients", VALUEFUNC(_wrap_ARIMA_expanded_ma_coefficients), -1);
+  rb_define_method(SwigClassARIMA.klass, "psi_weights", VALUEFUNC(_wrap_ARIMA_psi_weights), -1);
   rb_define_method(SwigClassARIMA.klass, "forecast_with_intervals", VALUEFUNC(_wrap_ARIMA_forecast_with_intervals), -1);
   SwigClassARIMA.cext_type.wrap_struct_name = "C++ class datamunge::stats::ARIMA";
   SwigClassARIMA.cext_type.function.dmark = SWIG_Ruby_mark_swig_type;
@@ -136969,6 +146854,7 @@ SWIGEXPORT void Init_octruby(void) {
   rb_define_module_function(mOctruby, "wilcoxon_signed_rank_test", VALUEFUNC(_wrap_wilcoxon_signed_rank_test), -1);
   rb_define_module_function(mOctruby, "wilcoxon_rank_sum_test", VALUEFUNC(_wrap_wilcoxon_rank_sum_test), -1);
   rb_define_module_function(mOctruby, "ks_test_one_sample_normal", VALUEFUNC(_wrap_ks_test_one_sample_normal), -1);
+  rb_define_module_function(mOctruby, "ks_test_one_sample_uniform", VALUEFUNC(_wrap_ks_test_one_sample_uniform), -1);
   rb_define_module_function(mOctruby, "ks_test_two_sample", VALUEFUNC(_wrap_ks_test_two_sample), -1);
   rb_define_module_function(mOctruby, "chi_squared_goodness_of_fit", VALUEFUNC(_wrap_chi_squared_goodness_of_fit), -1);
   rb_define_module_function(mOctruby, "chi_squared_test_independence", VALUEFUNC(_wrap_chi_squared_test_independence), -1);
@@ -136976,6 +146862,35 @@ SWIGEXPORT void Init_octruby(void) {
   rb_define_module_function(mOctruby, "kruskal_wallis_test", VALUEFUNC(_wrap_kruskal_wallis_test), -1);
   rb_define_module_function(mOctruby, "pearson_correlation_test", VALUEFUNC(_wrap_pearson_correlation_test), -1);
   rb_define_module_function(mOctruby, "spearman_correlation_test", VALUEFUNC(_wrap_spearman_correlation_test), -1);
+  
+  SwigClassKendallTau.klass = rb_define_class_under(mOctruby, "KendallTau", rb_cObject);
+  SWIG_TypeClientData(SWIGTYPE_p_datamunge__stats__KendallTau, (void *) &SwigClassKendallTau);
+  rb_define_alloc_func(SwigClassKendallTau.klass, _wrap_KendallTau_allocate);
+  rb_define_method(SwigClassKendallTau.klass, "initialize", VALUEFUNC(_wrap_new_KendallTau), -1);
+  rb_define_method(SwigClassKendallTau.klass, "concordant=", VALUEFUNC(_wrap_KendallTau_concordant_set), -1);
+  rb_define_method(SwigClassKendallTau.klass, "concordant", VALUEFUNC(_wrap_KendallTau_concordant_get), -1);
+  rb_define_method(SwigClassKendallTau.klass, "discordant=", VALUEFUNC(_wrap_KendallTau_discordant_set), -1);
+  rb_define_method(SwigClassKendallTau.klass, "discordant", VALUEFUNC(_wrap_KendallTau_discordant_get), -1);
+  rb_define_method(SwigClassKendallTau.klass, "ties_x=", VALUEFUNC(_wrap_KendallTau_ties_x_set), -1);
+  rb_define_method(SwigClassKendallTau.klass, "ties_x", VALUEFUNC(_wrap_KendallTau_ties_x_get), -1);
+  rb_define_method(SwigClassKendallTau.klass, "ties_y=", VALUEFUNC(_wrap_KendallTau_ties_y_set), -1);
+  rb_define_method(SwigClassKendallTau.klass, "ties_y", VALUEFUNC(_wrap_KendallTau_ties_y_get), -1);
+  rb_define_method(SwigClassKendallTau.klass, "ties_xy=", VALUEFUNC(_wrap_KendallTau_ties_xy_set), -1);
+  rb_define_method(SwigClassKendallTau.klass, "ties_xy", VALUEFUNC(_wrap_KendallTau_ties_xy_get), -1);
+  rb_define_method(SwigClassKendallTau.klass, "tau_a=", VALUEFUNC(_wrap_KendallTau_tau_a_set), -1);
+  rb_define_method(SwigClassKendallTau.klass, "tau_a", VALUEFUNC(_wrap_KendallTau_tau_a_get), -1);
+  rb_define_method(SwigClassKendallTau.klass, "tau_b=", VALUEFUNC(_wrap_KendallTau_tau_b_set), -1);
+  rb_define_method(SwigClassKendallTau.klass, "tau_b", VALUEFUNC(_wrap_KendallTau_tau_b_get), -1);
+  SwigClassKendallTau.cext_type.wrap_struct_name = "C++ class datamunge::stats::KendallTau";
+  SwigClassKendallTau.cext_type.function.dmark = SWIG_Ruby_mark_swig_type;
+  SwigClassKendallTau.cext_type.function.dfree = SWIG_Ruby_free_swig_type;
+#ifdef RUBY_TYPED_FREE_IMMEDIATELY
+  SwigClassKendallTau.cext_type.flags = SWIG_RUBY_TYPED_DATA_FLAGS;
+#endif
+  SwigClassKendallTau.mark = 0;
+  SwigClassKendallTau.destroy = (void (*)(void *)) free_datamunge_stats_KendallTau;
+  SwigClassKendallTau.trackObjects = 0;
+  rb_define_module_function(mOctruby, "kendall_tau", VALUEFUNC(_wrap_kendall_tau), -1);
   rb_define_module_function(mOctruby, "f_test_variance", VALUEFUNC(_wrap_f_test_variance), -1);
   rb_define_module_function(mOctruby, "proportion_test_one_sample", VALUEFUNC(_wrap_proportion_test_one_sample), -1);
   rb_define_module_function(mOctruby, "proportion_test_two_sample", VALUEFUNC(_wrap_proportion_test_two_sample), -1);
@@ -137173,6 +147088,7 @@ SWIGEXPORT void Init_octruby(void) {
   rb_define_alloc_func(SwigClassGradientDescent.klass, _wrap_GradientDescent_allocate);
   rb_define_method(SwigClassGradientDescent.klass, "initialize", VALUEFUNC(_wrap_new_GradientDescent), -1);
   rb_define_method(SwigClassGradientDescent.klass, "optimize", VALUEFUNC(_wrap_GradientDescent_optimize), -1);
+  rb_define_method(SwigClassGradientDescent.klass, "options", VALUEFUNC(_wrap_GradientDescent_options), -1);
   SwigClassGradientDescent.cext_type.wrap_struct_name = "C++ class datamunge::optim::GradientDescent";
   SwigClassGradientDescent.cext_type.function.dmark = SWIG_Ruby_mark_swig_type;
   SwigClassGradientDescent.cext_type.function.dfree = SWIG_Ruby_free_swig_type;
@@ -137214,6 +147130,7 @@ SWIGEXPORT void Init_octruby(void) {
   rb_define_alloc_func(SwigClassAdam.klass, _wrap_Adam_allocate);
   rb_define_method(SwigClassAdam.klass, "initialize", VALUEFUNC(_wrap_new_Adam), -1);
   rb_define_method(SwigClassAdam.klass, "optimize", VALUEFUNC(_wrap_Adam_optimize), -1);
+  rb_define_method(SwigClassAdam.klass, "options", VALUEFUNC(_wrap_Adam_options), -1);
   SwigClassAdam.cext_type.wrap_struct_name = "C++ class datamunge::optim::Adam";
   SwigClassAdam.cext_type.function.dmark = SWIG_Ruby_mark_swig_type;
   SwigClassAdam.cext_type.function.dfree = SWIG_Ruby_free_swig_type;
@@ -137251,6 +147168,7 @@ SWIGEXPORT void Init_octruby(void) {
   rb_define_alloc_func(SwigClassAdaGrad.klass, _wrap_AdaGrad_allocate);
   rb_define_method(SwigClassAdaGrad.klass, "initialize", VALUEFUNC(_wrap_new_AdaGrad), -1);
   rb_define_method(SwigClassAdaGrad.klass, "optimize", VALUEFUNC(_wrap_AdaGrad_optimize), -1);
+  rb_define_method(SwigClassAdaGrad.klass, "options", VALUEFUNC(_wrap_AdaGrad_options), -1);
   SwigClassAdaGrad.cext_type.wrap_struct_name = "C++ class datamunge::optim::AdaGrad";
   SwigClassAdaGrad.cext_type.function.dmark = SWIG_Ruby_mark_swig_type;
   SwigClassAdaGrad.cext_type.function.dfree = SWIG_Ruby_free_swig_type;
@@ -137288,6 +147206,7 @@ SWIGEXPORT void Init_octruby(void) {
   rb_define_alloc_func(SwigClassAdaDelta.klass, _wrap_AdaDelta_allocate);
   rb_define_method(SwigClassAdaDelta.klass, "initialize", VALUEFUNC(_wrap_new_AdaDelta), -1);
   rb_define_method(SwigClassAdaDelta.klass, "optimize", VALUEFUNC(_wrap_AdaDelta_optimize), -1);
+  rb_define_method(SwigClassAdaDelta.klass, "options", VALUEFUNC(_wrap_AdaDelta_options), -1);
   SwigClassAdaDelta.cext_type.wrap_struct_name = "C++ class datamunge::optim::AdaDelta";
   SwigClassAdaDelta.cext_type.function.dmark = SWIG_Ruby_mark_swig_type;
   SwigClassAdaDelta.cext_type.function.dfree = SWIG_Ruby_free_swig_type;
@@ -137329,6 +147248,7 @@ SWIGEXPORT void Init_octruby(void) {
   rb_define_alloc_func(SwigClassAMSGrad.klass, _wrap_AMSGrad_allocate);
   rb_define_method(SwigClassAMSGrad.klass, "initialize", VALUEFUNC(_wrap_new_AMSGrad), -1);
   rb_define_method(SwigClassAMSGrad.klass, "optimize", VALUEFUNC(_wrap_AMSGrad_optimize), -1);
+  rb_define_method(SwigClassAMSGrad.klass, "options", VALUEFUNC(_wrap_AMSGrad_options), -1);
   SwigClassAMSGrad.cext_type.wrap_struct_name = "C++ class datamunge::optim::AMSGrad";
   SwigClassAMSGrad.cext_type.function.dmark = SWIG_Ruby_mark_swig_type;
   SwigClassAMSGrad.cext_type.function.dfree = SWIG_Ruby_free_swig_type;
@@ -137370,6 +147290,7 @@ SWIGEXPORT void Init_octruby(void) {
   rb_define_alloc_func(SwigClassNadam.klass, _wrap_Nadam_allocate);
   rb_define_method(SwigClassNadam.klass, "initialize", VALUEFUNC(_wrap_new_Nadam), -1);
   rb_define_method(SwigClassNadam.klass, "optimize", VALUEFUNC(_wrap_Nadam_optimize), -1);
+  rb_define_method(SwigClassNadam.klass, "options", VALUEFUNC(_wrap_Nadam_options), -1);
   SwigClassNadam.cext_type.wrap_struct_name = "C++ class datamunge::optim::Nadam";
   SwigClassNadam.cext_type.function.dmark = SWIG_Ruby_mark_swig_type;
   SwigClassNadam.cext_type.function.dfree = SWIG_Ruby_free_swig_type;
@@ -137409,6 +147330,7 @@ SWIGEXPORT void Init_octruby(void) {
   rb_define_alloc_func(SwigClassRMSProp.klass, _wrap_RMSProp_allocate);
   rb_define_method(SwigClassRMSProp.klass, "initialize", VALUEFUNC(_wrap_new_RMSProp), -1);
   rb_define_method(SwigClassRMSProp.klass, "optimize", VALUEFUNC(_wrap_RMSProp_optimize), -1);
+  rb_define_method(SwigClassRMSProp.klass, "options", VALUEFUNC(_wrap_RMSProp_options), -1);
   SwigClassRMSProp.cext_type.wrap_struct_name = "C++ class datamunge::optim::RMSProp";
   SwigClassRMSProp.cext_type.function.dmark = SWIG_Ruby_mark_swig_type;
   SwigClassRMSProp.cext_type.function.dfree = SWIG_Ruby_free_swig_type;
@@ -137450,6 +147372,7 @@ SWIGEXPORT void Init_octruby(void) {
   rb_define_alloc_func(SwigClassLBFGS.klass, _wrap_LBFGS_allocate);
   rb_define_method(SwigClassLBFGS.klass, "initialize", VALUEFUNC(_wrap_new_LBFGS), -1);
   rb_define_method(SwigClassLBFGS.klass, "optimize", VALUEFUNC(_wrap_LBFGS_optimize), -1);
+  rb_define_method(SwigClassLBFGS.klass, "options", VALUEFUNC(_wrap_LBFGS_options), -1);
   SwigClassLBFGS.cext_type.wrap_struct_name = "C++ class datamunge::optim::LBFGS";
   SwigClassLBFGS.cext_type.function.dmark = SWIG_Ruby_mark_swig_type;
   SwigClassLBFGS.cext_type.function.dfree = SWIG_Ruby_free_swig_type;
@@ -137493,6 +147416,7 @@ SWIGEXPORT void Init_octruby(void) {
   rb_define_alloc_func(SwigClassNelderMead.klass, _wrap_NelderMead_allocate);
   rb_define_method(SwigClassNelderMead.klass, "initialize", VALUEFUNC(_wrap_new_NelderMead), -1);
   rb_define_method(SwigClassNelderMead.klass, "optimize", VALUEFUNC(_wrap_NelderMead_optimize), -1);
+  rb_define_method(SwigClassNelderMead.klass, "options", VALUEFUNC(_wrap_NelderMead_options), -1);
   SwigClassNelderMead.cext_type.wrap_struct_name = "C++ class datamunge::optim::NelderMead";
   SwigClassNelderMead.cext_type.function.dmark = SWIG_Ruby_mark_swig_type;
   SwigClassNelderMead.cext_type.function.dfree = SWIG_Ruby_free_swig_type;
@@ -137534,6 +147458,7 @@ SWIGEXPORT void Init_octruby(void) {
   rb_define_alloc_func(SwigClassSGD.klass, _wrap_SGD_allocate);
   rb_define_method(SwigClassSGD.klass, "initialize", VALUEFUNC(_wrap_new_SGD), -1);
   rb_define_method(SwigClassSGD.klass, "optimize", VALUEFUNC(_wrap_SGD_optimize), -1);
+  rb_define_method(SwigClassSGD.klass, "options", VALUEFUNC(_wrap_SGD_options), -1);
   SwigClassSGD.cext_type.wrap_struct_name = "C++ class datamunge::optim::SGD";
   SwigClassSGD.cext_type.function.dmark = SWIG_Ruby_mark_swig_type;
   SwigClassSGD.cext_type.function.dfree = SWIG_Ruby_free_swig_type;
@@ -137573,6 +147498,7 @@ SWIGEXPORT void Init_octruby(void) {
   rb_define_alloc_func(SwigClassSVRG.klass, _wrap_SVRG_allocate);
   rb_define_method(SwigClassSVRG.klass, "initialize", VALUEFUNC(_wrap_new_SVRG), -1);
   rb_define_method(SwigClassSVRG.klass, "optimize", VALUEFUNC(_wrap_SVRG_optimize), -1);
+  rb_define_method(SwigClassSVRG.klass, "options", VALUEFUNC(_wrap_SVRG_options), -1);
   SwigClassSVRG.cext_type.wrap_struct_name = "C++ class datamunge::optim::SVRG";
   SwigClassSVRG.cext_type.function.dmark = SWIG_Ruby_mark_swig_type;
   SwigClassSVRG.cext_type.function.dfree = SWIG_Ruby_free_swig_type;
@@ -137610,6 +147536,7 @@ SWIGEXPORT void Init_octruby(void) {
   rb_define_alloc_func(SwigClassSAGA.klass, _wrap_SAGA_allocate);
   rb_define_method(SwigClassSAGA.klass, "initialize", VALUEFUNC(_wrap_new_SAGA), -1);
   rb_define_method(SwigClassSAGA.klass, "optimize", VALUEFUNC(_wrap_SAGA_optimize), -1);
+  rb_define_method(SwigClassSAGA.klass, "options", VALUEFUNC(_wrap_SAGA_options), -1);
   SwigClassSAGA.cext_type.wrap_struct_name = "C++ class datamunge::optim::SAGA";
   SwigClassSAGA.cext_type.function.dmark = SWIG_Ruby_mark_swig_type;
   SwigClassSAGA.cext_type.function.dfree = SWIG_Ruby_free_swig_type;
@@ -137651,6 +147578,7 @@ SWIGEXPORT void Init_octruby(void) {
   rb_define_alloc_func(SwigClassCoordinateDescent.klass, _wrap_CoordinateDescent_allocate);
   rb_define_method(SwigClassCoordinateDescent.klass, "initialize", VALUEFUNC(_wrap_new_CoordinateDescent), -1);
   rb_define_method(SwigClassCoordinateDescent.klass, "optimize", VALUEFUNC(_wrap_CoordinateDescent_optimize), -1);
+  rb_define_method(SwigClassCoordinateDescent.klass, "options", VALUEFUNC(_wrap_CoordinateDescent_options), -1);
   SwigClassCoordinateDescent.cext_type.wrap_struct_name = "C++ class datamunge::optim::CoordinateDescent";
   SwigClassCoordinateDescent.cext_type.function.dmark = SWIG_Ruby_mark_swig_type;
   SwigClassCoordinateDescent.cext_type.function.dfree = SWIG_Ruby_free_swig_type;
@@ -137696,6 +147624,7 @@ SWIGEXPORT void Init_octruby(void) {
   rb_define_alloc_func(SwigClassRandomizedBlockCoordinateDescent.klass, _wrap_RandomizedBlockCoordinateDescent_allocate);
   rb_define_method(SwigClassRandomizedBlockCoordinateDescent.klass, "initialize", VALUEFUNC(_wrap_new_RandomizedBlockCoordinateDescent), -1);
   rb_define_method(SwigClassRandomizedBlockCoordinateDescent.klass, "optimize", VALUEFUNC(_wrap_RandomizedBlockCoordinateDescent_optimize), -1);
+  rb_define_method(SwigClassRandomizedBlockCoordinateDescent.klass, "options", VALUEFUNC(_wrap_RandomizedBlockCoordinateDescent_options), -1);
   SwigClassRandomizedBlockCoordinateDescent.cext_type.wrap_struct_name = "C++ class datamunge::optim::RandomizedBlockCoordinateDescent";
   SwigClassRandomizedBlockCoordinateDescent.cext_type.function.dmark = SWIG_Ruby_mark_swig_type;
   SwigClassRandomizedBlockCoordinateDescent.cext_type.function.dfree = SWIG_Ruby_free_swig_type;
@@ -137733,6 +147662,7 @@ SWIGEXPORT void Init_octruby(void) {
   rb_define_alloc_func(SwigClassNesterovAcceleratedGradient.klass, _wrap_NesterovAcceleratedGradient_allocate);
   rb_define_method(SwigClassNesterovAcceleratedGradient.klass, "initialize", VALUEFUNC(_wrap_new_NesterovAcceleratedGradient), -1);
   rb_define_method(SwigClassNesterovAcceleratedGradient.klass, "optimize", VALUEFUNC(_wrap_NesterovAcceleratedGradient_optimize), -1);
+  rb_define_method(SwigClassNesterovAcceleratedGradient.klass, "options", VALUEFUNC(_wrap_NesterovAcceleratedGradient_options), -1);
   SwigClassNesterovAcceleratedGradient.cext_type.wrap_struct_name = "C++ class datamunge::optim::NesterovAcceleratedGradient";
   SwigClassNesterovAcceleratedGradient.cext_type.function.dmark = SWIG_Ruby_mark_swig_type;
   SwigClassNesterovAcceleratedGradient.cext_type.function.dfree = SWIG_Ruby_free_swig_type;
@@ -137772,6 +147702,7 @@ SWIGEXPORT void Init_octruby(void) {
   rb_define_alloc_func(SwigClassConjugateGradient.klass, _wrap_ConjugateGradient_allocate);
   rb_define_method(SwigClassConjugateGradient.klass, "initialize", VALUEFUNC(_wrap_new_ConjugateGradient), -1);
   rb_define_method(SwigClassConjugateGradient.klass, "optimize", VALUEFUNC(_wrap_ConjugateGradient_optimize), -1);
+  rb_define_method(SwigClassConjugateGradient.klass, "options", VALUEFUNC(_wrap_ConjugateGradient_options), -1);
   SwigClassConjugateGradient.cext_type.wrap_struct_name = "C++ class datamunge::optim::ConjugateGradient";
   SwigClassConjugateGradient.cext_type.function.dmark = SWIG_Ruby_mark_swig_type;
   SwigClassConjugateGradient.cext_type.function.dfree = SWIG_Ruby_free_swig_type;
@@ -137811,6 +147742,7 @@ SWIGEXPORT void Init_octruby(void) {
   rb_define_alloc_func(SwigClassCMAES.klass, _wrap_CMAES_allocate);
   rb_define_method(SwigClassCMAES.klass, "initialize", VALUEFUNC(_wrap_new_CMAES), -1);
   rb_define_method(SwigClassCMAES.klass, "optimize", VALUEFUNC(_wrap_CMAES_optimize), -1);
+  rb_define_method(SwigClassCMAES.klass, "options", VALUEFUNC(_wrap_CMAES_options), -1);
   SwigClassCMAES.cext_type.wrap_struct_name = "C++ class datamunge::optim::CMAES";
   SwigClassCMAES.cext_type.function.dmark = SWIG_Ruby_mark_swig_type;
   SwigClassCMAES.cext_type.function.dfree = SWIG_Ruby_free_swig_type;
@@ -137850,6 +147782,7 @@ SWIGEXPORT void Init_octruby(void) {
   rb_define_alloc_func(SwigClassSimulatedAnnealing.klass, _wrap_SimulatedAnnealing_allocate);
   rb_define_method(SwigClassSimulatedAnnealing.klass, "initialize", VALUEFUNC(_wrap_new_SimulatedAnnealing), -1);
   rb_define_method(SwigClassSimulatedAnnealing.klass, "optimize", VALUEFUNC(_wrap_SimulatedAnnealing_optimize), -1);
+  rb_define_method(SwigClassSimulatedAnnealing.klass, "options", VALUEFUNC(_wrap_SimulatedAnnealing_options), -1);
   SwigClassSimulatedAnnealing.cext_type.wrap_struct_name = "C++ class datamunge::optim::SimulatedAnnealing";
   SwigClassSimulatedAnnealing.cext_type.function.dmark = SWIG_Ruby_mark_swig_type;
   SwigClassSimulatedAnnealing.cext_type.function.dfree = SWIG_Ruby_free_swig_type;
@@ -137901,6 +147834,7 @@ SWIGEXPORT void Init_octruby(void) {
   rb_define_alloc_func(SwigClassPSO.klass, _wrap_PSO_allocate);
   rb_define_method(SwigClassPSO.klass, "initialize", VALUEFUNC(_wrap_new_PSO), -1);
   rb_define_method(SwigClassPSO.klass, "optimize", VALUEFUNC(_wrap_PSO_optimize), -1);
+  rb_define_method(SwigClassPSO.klass, "options", VALUEFUNC(_wrap_PSO_options), -1);
   SwigClassPSO.cext_type.wrap_struct_name = "C++ class datamunge::optim::PSO";
   SwigClassPSO.cext_type.function.dmark = SWIG_Ruby_mark_swig_type;
   SwigClassPSO.cext_type.function.dfree = SWIG_Ruby_free_swig_type;
@@ -137946,6 +147880,7 @@ SWIGEXPORT void Init_octruby(void) {
   rb_define_alloc_func(SwigClassDifferentialEvolution.klass, _wrap_DifferentialEvolution_allocate);
   rb_define_method(SwigClassDifferentialEvolution.klass, "initialize", VALUEFUNC(_wrap_new_DifferentialEvolution), -1);
   rb_define_method(SwigClassDifferentialEvolution.klass, "optimize", VALUEFUNC(_wrap_DifferentialEvolution_optimize), -1);
+  rb_define_method(SwigClassDifferentialEvolution.klass, "options", VALUEFUNC(_wrap_DifferentialEvolution_options), -1);
   SwigClassDifferentialEvolution.cext_type.wrap_struct_name = "C++ class datamunge::optim::DifferentialEvolution";
   SwigClassDifferentialEvolution.cext_type.function.dmark = SWIG_Ruby_mark_swig_type;
   SwigClassDifferentialEvolution.cext_type.function.dfree = SWIG_Ruby_free_swig_type;
@@ -138001,6 +147936,7 @@ SWIGEXPORT void Init_octruby(void) {
   rb_define_alloc_func(SwigClassGeneticAlgorithm.klass, _wrap_GeneticAlgorithm_allocate);
   rb_define_method(SwigClassGeneticAlgorithm.klass, "initialize", VALUEFUNC(_wrap_new_GeneticAlgorithm), -1);
   rb_define_method(SwigClassGeneticAlgorithm.klass, "optimize", VALUEFUNC(_wrap_GeneticAlgorithm_optimize), -1);
+  rb_define_method(SwigClassGeneticAlgorithm.klass, "options", VALUEFUNC(_wrap_GeneticAlgorithm_options), -1);
   SwigClassGeneticAlgorithm.cext_type.wrap_struct_name = "C++ class datamunge::optim::GeneticAlgorithm";
   SwigClassGeneticAlgorithm.cext_type.function.dmark = SWIG_Ruby_mark_swig_type;
   SwigClassGeneticAlgorithm.cext_type.function.dfree = SWIG_Ruby_free_swig_type;
@@ -138044,6 +147980,7 @@ SWIGEXPORT void Init_octruby(void) {
   rb_define_alloc_func(SwigClassACOR.klass, _wrap_ACOR_allocate);
   rb_define_method(SwigClassACOR.klass, "initialize", VALUEFUNC(_wrap_new_ACOR), -1);
   rb_define_method(SwigClassACOR.klass, "optimize", VALUEFUNC(_wrap_ACOR_optimize), -1);
+  rb_define_method(SwigClassACOR.klass, "options", VALUEFUNC(_wrap_ACOR_options), -1);
   SwigClassACOR.cext_type.wrap_struct_name = "C++ class datamunge::optim::ACOR";
   SwigClassACOR.cext_type.function.dmark = SWIG_Ruby_mark_swig_type;
   SwigClassACOR.cext_type.function.dfree = SWIG_Ruby_free_swig_type;
@@ -138083,6 +148020,7 @@ SWIGEXPORT void Init_octruby(void) {
   rb_define_alloc_func(SwigClassArtificialBeeColony.klass, _wrap_ArtificialBeeColony_allocate);
   rb_define_method(SwigClassArtificialBeeColony.klass, "initialize", VALUEFUNC(_wrap_new_ArtificialBeeColony), -1);
   rb_define_method(SwigClassArtificialBeeColony.klass, "optimize", VALUEFUNC(_wrap_ArtificialBeeColony_optimize), -1);
+  rb_define_method(SwigClassArtificialBeeColony.klass, "options", VALUEFUNC(_wrap_ArtificialBeeColony_options), -1);
   SwigClassArtificialBeeColony.cext_type.wrap_struct_name = "C++ class datamunge::optim::ArtificialBeeColony";
   SwigClassArtificialBeeColony.cext_type.function.dmark = SWIG_Ruby_mark_swig_type;
   SwigClassArtificialBeeColony.cext_type.function.dfree = SWIG_Ruby_free_swig_type;
@@ -138126,6 +148064,7 @@ SWIGEXPORT void Init_octruby(void) {
   rb_define_alloc_func(SwigClassCrossEntropyMethod.klass, _wrap_CrossEntropyMethod_allocate);
   rb_define_method(SwigClassCrossEntropyMethod.klass, "initialize", VALUEFUNC(_wrap_new_CrossEntropyMethod), -1);
   rb_define_method(SwigClassCrossEntropyMethod.klass, "optimize", VALUEFUNC(_wrap_CrossEntropyMethod_optimize), -1);
+  rb_define_method(SwigClassCrossEntropyMethod.klass, "options", VALUEFUNC(_wrap_CrossEntropyMethod_options), -1);
   SwigClassCrossEntropyMethod.cext_type.wrap_struct_name = "C++ class datamunge::optim::CrossEntropyMethod";
   SwigClassCrossEntropyMethod.cext_type.function.dmark = SWIG_Ruby_mark_swig_type;
   SwigClassCrossEntropyMethod.cext_type.function.dfree = SWIG_Ruby_free_swig_type;
@@ -138169,6 +148108,7 @@ SWIGEXPORT void Init_octruby(void) {
   rb_define_alloc_func(SwigClassCuckooSearch.klass, _wrap_CuckooSearch_allocate);
   rb_define_method(SwigClassCuckooSearch.klass, "initialize", VALUEFUNC(_wrap_new_CuckooSearch), -1);
   rb_define_method(SwigClassCuckooSearch.klass, "optimize", VALUEFUNC(_wrap_CuckooSearch_optimize), -1);
+  rb_define_method(SwigClassCuckooSearch.klass, "options", VALUEFUNC(_wrap_CuckooSearch_options), -1);
   SwigClassCuckooSearch.cext_type.wrap_struct_name = "C++ class datamunge::optim::CuckooSearch";
   SwigClassCuckooSearch.cext_type.function.dmark = SWIG_Ruby_mark_swig_type;
   SwigClassCuckooSearch.cext_type.function.dfree = SWIG_Ruby_free_swig_type;
@@ -138212,6 +148152,7 @@ SWIGEXPORT void Init_octruby(void) {
   rb_define_alloc_func(SwigClassEstimationOfDistribution.klass, _wrap_EstimationOfDistribution_allocate);
   rb_define_method(SwigClassEstimationOfDistribution.klass, "initialize", VALUEFUNC(_wrap_new_EstimationOfDistribution), -1);
   rb_define_method(SwigClassEstimationOfDistribution.klass, "optimize", VALUEFUNC(_wrap_EstimationOfDistribution_optimize), -1);
+  rb_define_method(SwigClassEstimationOfDistribution.klass, "options", VALUEFUNC(_wrap_EstimationOfDistribution_options), -1);
   SwigClassEstimationOfDistribution.cext_type.wrap_struct_name = "C++ class datamunge::optim::EstimationOfDistribution";
   SwigClassEstimationOfDistribution.cext_type.function.dmark = SWIG_Ruby_mark_swig_type;
   SwigClassEstimationOfDistribution.cext_type.function.dfree = SWIG_Ruby_free_swig_type;
@@ -138255,6 +148196,7 @@ SWIGEXPORT void Init_octruby(void) {
   rb_define_alloc_func(SwigClassEvolutionStrategy.klass, _wrap_EvolutionStrategy_allocate);
   rb_define_method(SwigClassEvolutionStrategy.klass, "initialize", VALUEFUNC(_wrap_new_EvolutionStrategy), -1);
   rb_define_method(SwigClassEvolutionStrategy.klass, "optimize", VALUEFUNC(_wrap_EvolutionStrategy_optimize), -1);
+  rb_define_method(SwigClassEvolutionStrategy.klass, "options", VALUEFUNC(_wrap_EvolutionStrategy_options), -1);
   SwigClassEvolutionStrategy.cext_type.wrap_struct_name = "C++ class datamunge::optim::EvolutionStrategy";
   SwigClassEvolutionStrategy.cext_type.function.dmark = SWIG_Ruby_mark_swig_type;
   SwigClassEvolutionStrategy.cext_type.function.dfree = SWIG_Ruby_free_swig_type;
@@ -138300,6 +148242,7 @@ SWIGEXPORT void Init_octruby(void) {
   rb_define_alloc_func(SwigClassFireflyAlgorithm.klass, _wrap_FireflyAlgorithm_allocate);
   rb_define_method(SwigClassFireflyAlgorithm.klass, "initialize", VALUEFUNC(_wrap_new_FireflyAlgorithm), -1);
   rb_define_method(SwigClassFireflyAlgorithm.klass, "optimize", VALUEFUNC(_wrap_FireflyAlgorithm_optimize), -1);
+  rb_define_method(SwigClassFireflyAlgorithm.klass, "options", VALUEFUNC(_wrap_FireflyAlgorithm_options), -1);
   SwigClassFireflyAlgorithm.cext_type.wrap_struct_name = "C++ class datamunge::optim::FireflyAlgorithm";
   SwigClassFireflyAlgorithm.cext_type.function.dmark = SWIG_Ruby_mark_swig_type;
   SwigClassFireflyAlgorithm.cext_type.function.dfree = SWIG_Ruby_free_swig_type;
@@ -138337,6 +148280,7 @@ SWIGEXPORT void Init_octruby(void) {
   rb_define_alloc_func(SwigClassGreyWolfOptimizer.klass, _wrap_GreyWolfOptimizer_allocate);
   rb_define_method(SwigClassGreyWolfOptimizer.klass, "initialize", VALUEFUNC(_wrap_new_GreyWolfOptimizer), -1);
   rb_define_method(SwigClassGreyWolfOptimizer.klass, "optimize", VALUEFUNC(_wrap_GreyWolfOptimizer_optimize), -1);
+  rb_define_method(SwigClassGreyWolfOptimizer.klass, "options", VALUEFUNC(_wrap_GreyWolfOptimizer_options), -1);
   SwigClassGreyWolfOptimizer.cext_type.wrap_struct_name = "C++ class datamunge::optim::GreyWolfOptimizer";
   SwigClassGreyWolfOptimizer.cext_type.function.dmark = SWIG_Ruby_mark_swig_type;
   SwigClassGreyWolfOptimizer.cext_type.function.dfree = SWIG_Ruby_free_swig_type;
@@ -138380,6 +148324,7 @@ SWIGEXPORT void Init_octruby(void) {
   rb_define_alloc_func(SwigClassHarmonySearch.klass, _wrap_HarmonySearch_allocate);
   rb_define_method(SwigClassHarmonySearch.klass, "initialize", VALUEFUNC(_wrap_new_HarmonySearch), -1);
   rb_define_method(SwigClassHarmonySearch.klass, "optimize", VALUEFUNC(_wrap_HarmonySearch_optimize), -1);
+  rb_define_method(SwigClassHarmonySearch.klass, "options", VALUEFUNC(_wrap_HarmonySearch_options), -1);
   SwigClassHarmonySearch.cext_type.wrap_struct_name = "C++ class datamunge::optim::HarmonySearch";
   SwigClassHarmonySearch.cext_type.function.dmark = SWIG_Ruby_mark_swig_type;
   SwigClassHarmonySearch.cext_type.function.dfree = SWIG_Ruby_free_swig_type;
@@ -138423,6 +148368,7 @@ SWIGEXPORT void Init_octruby(void) {
   rb_define_alloc_func(SwigClassParallelTempering.klass, _wrap_ParallelTempering_allocate);
   rb_define_method(SwigClassParallelTempering.klass, "initialize", VALUEFUNC(_wrap_new_ParallelTempering), -1);
   rb_define_method(SwigClassParallelTempering.klass, "optimize", VALUEFUNC(_wrap_ParallelTempering_optimize), -1);
+  rb_define_method(SwigClassParallelTempering.klass, "options", VALUEFUNC(_wrap_ParallelTempering_options), -1);
   SwigClassParallelTempering.cext_type.wrap_struct_name = "C++ class datamunge::optim::ParallelTempering";
   SwigClassParallelTempering.cext_type.function.dmark = SWIG_Ruby_mark_swig_type;
   SwigClassParallelTempering.cext_type.function.dfree = SWIG_Ruby_free_swig_type;
@@ -138462,6 +148408,7 @@ SWIGEXPORT void Init_octruby(void) {
   rb_define_alloc_func(SwigClassWhaleOptimization.klass, _wrap_WhaleOptimization_allocate);
   rb_define_method(SwigClassWhaleOptimization.klass, "initialize", VALUEFUNC(_wrap_new_WhaleOptimization), -1);
   rb_define_method(SwigClassWhaleOptimization.klass, "optimize", VALUEFUNC(_wrap_WhaleOptimization_optimize), -1);
+  rb_define_method(SwigClassWhaleOptimization.klass, "options", VALUEFUNC(_wrap_WhaleOptimization_options), -1);
   SwigClassWhaleOptimization.cext_type.wrap_struct_name = "C++ class datamunge::optim::WhaleOptimization";
   SwigClassWhaleOptimization.cext_type.function.dmark = SWIG_Ruby_mark_swig_type;
   SwigClassWhaleOptimization.cext_type.function.dfree = SWIG_Ruby_free_swig_type;
@@ -138497,6 +148444,7 @@ SWIGEXPORT void Init_octruby(void) {
   rb_define_alloc_func(SwigClassFISTA.klass, _wrap_FISTA_allocate);
   rb_define_method(SwigClassFISTA.klass, "initialize", VALUEFUNC(_wrap_new_FISTA), -1);
   rb_define_method(SwigClassFISTA.klass, "optimize", VALUEFUNC(_wrap_FISTA_optimize), -1);
+  rb_define_method(SwigClassFISTA.klass, "options", VALUEFUNC(_wrap_FISTA_options), -1);
   SwigClassFISTA.cext_type.wrap_struct_name = "C++ class datamunge::optim::FISTA";
   SwigClassFISTA.cext_type.function.dmark = SWIG_Ruby_mark_swig_type;
   SwigClassFISTA.cext_type.function.dfree = SWIG_Ruby_free_swig_type;
@@ -138532,6 +148480,7 @@ SWIGEXPORT void Init_octruby(void) {
   rb_define_alloc_func(SwigClassProximalGradient.klass, _wrap_ProximalGradient_allocate);
   rb_define_method(SwigClassProximalGradient.klass, "initialize", VALUEFUNC(_wrap_new_ProximalGradient), -1);
   rb_define_method(SwigClassProximalGradient.klass, "optimize", VALUEFUNC(_wrap_ProximalGradient_optimize), -1);
+  rb_define_method(SwigClassProximalGradient.klass, "options", VALUEFUNC(_wrap_ProximalGradient_options), -1);
   SwigClassProximalGradient.cext_type.wrap_struct_name = "C++ class datamunge::optim::ProximalGradient";
   SwigClassProximalGradient.cext_type.function.dmark = SWIG_Ruby_mark_swig_type;
   SwigClassProximalGradient.cext_type.function.dfree = SWIG_Ruby_free_swig_type;
@@ -138567,6 +148516,7 @@ SWIGEXPORT void Init_octruby(void) {
   rb_define_alloc_func(SwigClassLevenbergMarquardt.klass, _wrap_LevenbergMarquardt_allocate);
   rb_define_method(SwigClassLevenbergMarquardt.klass, "initialize", VALUEFUNC(_wrap_new_LevenbergMarquardt), -1);
   rb_define_method(SwigClassLevenbergMarquardt.klass, "optimize", VALUEFUNC(_wrap_LevenbergMarquardt_optimize), -1);
+  rb_define_method(SwigClassLevenbergMarquardt.klass, "options", VALUEFUNC(_wrap_LevenbergMarquardt_options), -1);
   SwigClassLevenbergMarquardt.cext_type.wrap_struct_name = "C++ class datamunge::optim::LevenbergMarquardt";
   SwigClassLevenbergMarquardt.cext_type.function.dmark = SWIG_Ruby_mark_swig_type;
   SwigClassLevenbergMarquardt.cext_type.function.dfree = SWIG_Ruby_free_swig_type;
@@ -138602,6 +148552,7 @@ SWIGEXPORT void Init_octruby(void) {
   rb_define_alloc_func(SwigClassNewton.klass, _wrap_Newton_allocate);
   rb_define_method(SwigClassNewton.klass, "initialize", VALUEFUNC(_wrap_new_Newton), -1);
   rb_define_method(SwigClassNewton.klass, "optimize", VALUEFUNC(_wrap_Newton_optimize), -1);
+  rb_define_method(SwigClassNewton.klass, "options", VALUEFUNC(_wrap_Newton_options), -1);
   SwigClassNewton.cext_type.wrap_struct_name = "C++ class datamunge::optim::Newton";
   SwigClassNewton.cext_type.function.dmark = SWIG_Ruby_mark_swig_type;
   SwigClassNewton.cext_type.function.dfree = SWIG_Ruby_free_swig_type;
@@ -138639,6 +148590,7 @@ SWIGEXPORT void Init_octruby(void) {
   rb_define_alloc_func(SwigClassTrustRegionNewton.klass, _wrap_TrustRegionNewton_allocate);
   rb_define_method(SwigClassTrustRegionNewton.klass, "initialize", VALUEFUNC(_wrap_new_TrustRegionNewton), -1);
   rb_define_method(SwigClassTrustRegionNewton.klass, "optimize", VALUEFUNC(_wrap_TrustRegionNewton_optimize), -1);
+  rb_define_method(SwigClassTrustRegionNewton.klass, "options", VALUEFUNC(_wrap_TrustRegionNewton_options), -1);
   SwigClassTrustRegionNewton.cext_type.wrap_struct_name = "C++ class datamunge::optim::TrustRegionNewton";
   SwigClassTrustRegionNewton.cext_type.function.dmark = SWIG_Ruby_mark_swig_type;
   SwigClassTrustRegionNewton.cext_type.function.dfree = SWIG_Ruby_free_swig_type;
@@ -138678,6 +148630,7 @@ SWIGEXPORT void Init_octruby(void) {
   rb_define_alloc_func(SwigClassAugmentedLagrangian.klass, _wrap_AugmentedLagrangian_allocate);
   rb_define_method(SwigClassAugmentedLagrangian.klass, "initialize", VALUEFUNC(_wrap_new_AugmentedLagrangian), -1);
   rb_define_method(SwigClassAugmentedLagrangian.klass, "optimize", VALUEFUNC(_wrap_AugmentedLagrangian_optimize), -1);
+  rb_define_method(SwigClassAugmentedLagrangian.klass, "options", VALUEFUNC(_wrap_AugmentedLagrangian_options), -1);
   SwigClassAugmentedLagrangian.cext_type.wrap_struct_name = "C++ class datamunge::optim::AugmentedLagrangian";
   SwigClassAugmentedLagrangian.cext_type.function.dmark = SWIG_Ruby_mark_swig_type;
   SwigClassAugmentedLagrangian.cext_type.function.dfree = SWIG_Ruby_free_swig_type;
@@ -138715,6 +148668,7 @@ SWIGEXPORT void Init_octruby(void) {
   rb_define_alloc_func(SwigClassSQP.klass, _wrap_SQP_allocate);
   rb_define_method(SwigClassSQP.klass, "initialize", VALUEFUNC(_wrap_new_SQP), -1);
   rb_define_method(SwigClassSQP.klass, "optimize", VALUEFUNC(_wrap_SQP_optimize), -1);
+  rb_define_method(SwigClassSQP.klass, "options", VALUEFUNC(_wrap_SQP_options), -1);
   SwigClassSQP.cext_type.wrap_struct_name = "C++ class datamunge::optim::SQP";
   SwigClassSQP.cext_type.function.dmark = SWIG_Ruby_mark_swig_type;
   SwigClassSQP.cext_type.function.dfree = SWIG_Ruby_free_swig_type;
@@ -138754,6 +148708,7 @@ SWIGEXPORT void Init_octruby(void) {
   rb_define_alloc_func(SwigClassInteriorPoint.klass, _wrap_InteriorPoint_allocate);
   rb_define_method(SwigClassInteriorPoint.klass, "initialize", VALUEFUNC(_wrap_new_InteriorPoint), -1);
   rb_define_method(SwigClassInteriorPoint.klass, "optimize", VALUEFUNC(_wrap_InteriorPoint_optimize), -1);
+  rb_define_method(SwigClassInteriorPoint.klass, "options", VALUEFUNC(_wrap_InteriorPoint_options), -1);
   SwigClassInteriorPoint.cext_type.wrap_struct_name = "C++ class datamunge::optim::InteriorPoint";
   SwigClassInteriorPoint.cext_type.function.dmark = SWIG_Ruby_mark_swig_type;
   SwigClassInteriorPoint.cext_type.function.dfree = SWIG_Ruby_free_swig_type;
@@ -138791,6 +148746,10 @@ SWIGEXPORT void Init_octruby(void) {
   rb_define_method(SwigClassBayesianOptimizationOptions.klass, "max_iterations", VALUEFUNC(_wrap_BayesianOptimizationOptions_max_iterations_get), -1);
   rb_define_method(SwigClassBayesianOptimizationOptions.klass, "seed=", VALUEFUNC(_wrap_BayesianOptimizationOptions_seed_set), -1);
   rb_define_method(SwigClassBayesianOptimizationOptions.klass, "seed", VALUEFUNC(_wrap_BayesianOptimizationOptions_seed_get), -1);
+  rb_define_method(SwigClassBayesianOptimizationOptions.klass, "candidates=", VALUEFUNC(_wrap_BayesianOptimizationOptions_candidates_set), -1);
+  rb_define_method(SwigClassBayesianOptimizationOptions.klass, "candidates", VALUEFUNC(_wrap_BayesianOptimizationOptions_candidates_get), -1);
+  rb_define_method(SwigClassBayesianOptimizationOptions.klass, "refine_iterations=", VALUEFUNC(_wrap_BayesianOptimizationOptions_refine_iterations_set), -1);
+  rb_define_method(SwigClassBayesianOptimizationOptions.klass, "refine_iterations", VALUEFUNC(_wrap_BayesianOptimizationOptions_refine_iterations_get), -1);
   SwigClassBayesianOptimizationOptions.cext_type.wrap_struct_name = "C++ class datamunge::optim::BayesianOptimizationOptions";
   SwigClassBayesianOptimizationOptions.cext_type.function.dmark = SWIG_Ruby_mark_swig_type;
   SwigClassBayesianOptimizationOptions.cext_type.function.dfree = SWIG_Ruby_free_swig_type;
@@ -138801,11 +148760,39 @@ SWIGEXPORT void Init_octruby(void) {
   SwigClassBayesianOptimizationOptions.destroy = (void (*)(void *)) free_datamunge_optim_BayesianOptimizationOptions;
   SwigClassBayesianOptimizationOptions.trackObjects = 0;
   
+  SwigClassBayesianOptimizationResult.klass = rb_define_class_under(mOctruby, "BayesianOptimizationResult", rb_cObject);
+  SWIG_TypeClientData(SWIGTYPE_p_datamunge__optim__BayesianOptimizationResult, (void *) &SwigClassBayesianOptimizationResult);
+  rb_define_alloc_func(SwigClassBayesianOptimizationResult.klass, _wrap_BayesianOptimizationResult_allocate);
+  rb_define_method(SwigClassBayesianOptimizationResult.klass, "initialize", VALUEFUNC(_wrap_new_BayesianOptimizationResult), -1);
+  rb_define_method(SwigClassBayesianOptimizationResult.klass, "best_point=", VALUEFUNC(_wrap_BayesianOptimizationResult_best_point_set), -1);
+  rb_define_method(SwigClassBayesianOptimizationResult.klass, "best_point", VALUEFUNC(_wrap_BayesianOptimizationResult_best_point_get), -1);
+  rb_define_method(SwigClassBayesianOptimizationResult.klass, "best_value=", VALUEFUNC(_wrap_BayesianOptimizationResult_best_value_set), -1);
+  rb_define_method(SwigClassBayesianOptimizationResult.klass, "best_value", VALUEFUNC(_wrap_BayesianOptimizationResult_best_value_get), -1);
+  rb_define_method(SwigClassBayesianOptimizationResult.klass, "points=", VALUEFUNC(_wrap_BayesianOptimizationResult_points_set), -1);
+  rb_define_method(SwigClassBayesianOptimizationResult.klass, "points", VALUEFUNC(_wrap_BayesianOptimizationResult_points_get), -1);
+  rb_define_method(SwigClassBayesianOptimizationResult.klass, "values=", VALUEFUNC(_wrap_BayesianOptimizationResult_values_set), -1);
+  rb_define_method(SwigClassBayesianOptimizationResult.klass, "values", VALUEFUNC(_wrap_BayesianOptimizationResult_values_get), -1);
+  rb_define_method(SwigClassBayesianOptimizationResult.klass, "best_values=", VALUEFUNC(_wrap_BayesianOptimizationResult_best_values_set), -1);
+  rb_define_method(SwigClassBayesianOptimizationResult.klass, "best_values", VALUEFUNC(_wrap_BayesianOptimizationResult_best_values_get), -1);
+  rb_define_method(SwigClassBayesianOptimizationResult.klass, "acquisition_values=", VALUEFUNC(_wrap_BayesianOptimizationResult_acquisition_values_set), -1);
+  rb_define_method(SwigClassBayesianOptimizationResult.klass, "acquisition_values", VALUEFUNC(_wrap_BayesianOptimizationResult_acquisition_values_get), -1);
+  SwigClassBayesianOptimizationResult.cext_type.wrap_struct_name = "C++ class datamunge::optim::BayesianOptimizationResult";
+  SwigClassBayesianOptimizationResult.cext_type.function.dmark = SWIG_Ruby_mark_swig_type;
+  SwigClassBayesianOptimizationResult.cext_type.function.dfree = SWIG_Ruby_free_swig_type;
+#ifdef RUBY_TYPED_FREE_IMMEDIATELY
+  SwigClassBayesianOptimizationResult.cext_type.flags = SWIG_RUBY_TYPED_DATA_FLAGS;
+#endif
+  SwigClassBayesianOptimizationResult.mark = 0;
+  SwigClassBayesianOptimizationResult.destroy = (void (*)(void *)) free_datamunge_optim_BayesianOptimizationResult;
+  SwigClassBayesianOptimizationResult.trackObjects = 0;
+  
   SwigClassBayesianOptimization.klass = rb_define_class_under(mOctruby, "BayesianOptimization", rb_cObject);
   SWIG_TypeClientData(SWIGTYPE_p_datamunge__optim__BayesianOptimization, (void *) &SwigClassBayesianOptimization);
   rb_define_alloc_func(SwigClassBayesianOptimization.klass, _wrap_BayesianOptimization_allocate);
   rb_define_method(SwigClassBayesianOptimization.klass, "initialize", VALUEFUNC(_wrap_new_BayesianOptimization), -1);
+  rb_define_method(SwigClassBayesianOptimization.klass, "run", VALUEFUNC(_wrap_BayesianOptimization_run), -1);
   rb_define_method(SwigClassBayesianOptimization.klass, "optimize", VALUEFUNC(_wrap_BayesianOptimization_optimize), -1);
+  rb_define_method(SwigClassBayesianOptimization.klass, "options", VALUEFUNC(_wrap_BayesianOptimization_options), -1);
   SwigClassBayesianOptimization.cext_type.wrap_struct_name = "C++ class datamunge::optim::BayesianOptimization";
   SwigClassBayesianOptimization.cext_type.function.dmark = SWIG_Ruby_mark_swig_type;
   SwigClassBayesianOptimization.cext_type.function.dfree = SWIG_Ruby_free_swig_type;
@@ -138815,6 +148802,26 @@ SWIGEXPORT void Init_octruby(void) {
   SwigClassBayesianOptimization.mark = 0;
   SwigClassBayesianOptimization.destroy = (void (*)(void *)) free_datamunge_optim_BayesianOptimization;
   SwigClassBayesianOptimization.trackObjects = 0;
+  rb_define_module_function(mOctruby, "expected_improvement", VALUEFUNC(_wrap_expected_improvement), -1);
+  rb_define_module_function(mOctruby, "probability_of_improvement", VALUEFUNC(_wrap_probability_of_improvement), -1);
+  
+  SwigClassSurrogatePrediction.klass = rb_define_class_under(mOctruby, "SurrogatePrediction", rb_cObject);
+  SWIG_TypeClientData(SWIGTYPE_p_datamunge__optim__SurrogatePrediction, (void *) &SwigClassSurrogatePrediction);
+  rb_define_alloc_func(SwigClassSurrogatePrediction.klass, _wrap_SurrogatePrediction_allocate);
+  rb_define_method(SwigClassSurrogatePrediction.klass, "initialize", VALUEFUNC(_wrap_new_SurrogatePrediction), -1);
+  rb_define_method(SwigClassSurrogatePrediction.klass, "mean=", VALUEFUNC(_wrap_SurrogatePrediction_mean_set), -1);
+  rb_define_method(SwigClassSurrogatePrediction.klass, "mean", VALUEFUNC(_wrap_SurrogatePrediction_mean_get), -1);
+  rb_define_method(SwigClassSurrogatePrediction.klass, "sd=", VALUEFUNC(_wrap_SurrogatePrediction_sd_set), -1);
+  rb_define_method(SwigClassSurrogatePrediction.klass, "sd", VALUEFUNC(_wrap_SurrogatePrediction_sd_get), -1);
+  SwigClassSurrogatePrediction.cext_type.wrap_struct_name = "C++ class datamunge::optim::SurrogatePrediction";
+  SwigClassSurrogatePrediction.cext_type.function.dmark = SWIG_Ruby_mark_swig_type;
+  SwigClassSurrogatePrediction.cext_type.function.dfree = SWIG_Ruby_free_swig_type;
+#ifdef RUBY_TYPED_FREE_IMMEDIATELY
+  SwigClassSurrogatePrediction.cext_type.flags = SWIG_RUBY_TYPED_DATA_FLAGS;
+#endif
+  SwigClassSurrogatePrediction.mark = 0;
+  SwigClassSurrogatePrediction.destroy = (void (*)(void *)) free_datamunge_optim_SurrogatePrediction;
+  SwigClassSurrogatePrediction.trackObjects = 0;
   
   SwigClassRBFGaussianProcessSurrogate.klass = rb_define_class_under(mOctruby, "RBFGaussianProcessSurrogate", ((swig_class *) SWIGTYPE_p_datamunge__optim__BayesianSurrogate->clientdata)->klass);
   SWIG_TypeClientData(SWIGTYPE_p_datamunge__optim__RBFGaussianProcessSurrogate, (void *) &SwigClassRBFGaussianProcessSurrogate);
@@ -138822,6 +148829,15 @@ SWIGEXPORT void Init_octruby(void) {
   rb_define_method(SwigClassRBFGaussianProcessSurrogate.klass, "initialize", VALUEFUNC(_wrap_new_RBFGaussianProcessSurrogate), -1);
   rb_define_method(SwigClassRBFGaussianProcessSurrogate.klass, "fit", VALUEFUNC(_wrap_RBFGaussianProcessSurrogate_fit), -1);
   rb_define_method(SwigClassRBFGaussianProcessSurrogate.klass, "acquisition", VALUEFUNC(_wrap_RBFGaussianProcessSurrogate_acquisition), -1);
+  rb_define_method(SwigClassRBFGaussianProcessSurrogate.klass, "predict", VALUEFUNC(_wrap_RBFGaussianProcessSurrogate_predict), -1);
+  rb_define_method(SwigClassRBFGaussianProcessSurrogate.klass, "log_marginal_likelihood", VALUEFUNC(_wrap_RBFGaussianProcessSurrogate_log_marginal_likelihood), -1);
+  rb_define_method(SwigClassRBFGaussianProcessSurrogate.klass, "length_scale", VALUEFUNC(_wrap_RBFGaussianProcessSurrogate_length_scale), -1);
+  rb_define_method(SwigClassRBFGaussianProcessSurrogate.klass, "noise", VALUEFUNC(_wrap_RBFGaussianProcessSurrogate_noise), -1);
+  rb_define_method(SwigClassRBFGaussianProcessSurrogate.klass, "signal_variance", VALUEFUNC(_wrap_RBFGaussianProcessSurrogate_signal_variance), -1);
+  rb_define_method(SwigClassRBFGaussianProcessSurrogate.klass, "prior_mean", VALUEFUNC(_wrap_RBFGaussianProcessSurrogate_prior_mean), -1);
+  rb_define_method(SwigClassRBFGaussianProcessSurrogate.klass, "value_scale", VALUEFUNC(_wrap_RBFGaussianProcessSurrogate_value_scale), -1);
+  rb_define_method(SwigClassRBFGaussianProcessSurrogate.klass, "points", VALUEFUNC(_wrap_RBFGaussianProcessSurrogate_points), -1);
+  rb_define_method(SwigClassRBFGaussianProcessSurrogate.klass, "values", VALUEFUNC(_wrap_RBFGaussianProcessSurrogate_values), -1);
   SwigClassRBFGaussianProcessSurrogate.cext_type.wrap_struct_name = "C++ class datamunge::optim::RBFGaussianProcessSurrogate";
   SwigClassRBFGaussianProcessSurrogate.cext_type.function.dmark = SWIG_Ruby_mark_swig_type;
   SwigClassRBFGaussianProcessSurrogate.cext_type.function.dfree = SWIG_Ruby_free_swig_type;
@@ -138857,6 +148873,7 @@ SWIGEXPORT void Init_octruby(void) {
   rb_define_alloc_func(SwigClassMAP.klass, _wrap_MAP_allocate);
   rb_define_method(SwigClassMAP.klass, "initialize", VALUEFUNC(_wrap_new_MAP), -1);
   rb_define_method(SwigClassMAP.klass, "optimize", VALUEFUNC(_wrap_MAP_optimize), -1);
+  rb_define_method(SwigClassMAP.klass, "options", VALUEFUNC(_wrap_MAP_options), -1);
   SwigClassMAP.cext_type.wrap_struct_name = "C++ class datamunge::bayes::MAP";
   SwigClassMAP.cext_type.function.dmark = SWIG_Ruby_mark_swig_type;
   SwigClassMAP.cext_type.function.dfree = SWIG_Ruby_free_swig_type;
@@ -138918,6 +148935,7 @@ SWIGEXPORT void Init_octruby(void) {
   rb_define_alloc_func(SwigClassHMC.klass, _wrap_HMC_allocate);
   rb_define_method(SwigClassHMC.klass, "initialize", VALUEFUNC(_wrap_new_HMC), -1);
   rb_define_method(SwigClassHMC.klass, "sample", VALUEFUNC(_wrap_HMC_sample), -1);
+  rb_define_method(SwigClassHMC.klass, "options", VALUEFUNC(_wrap_HMC_options), -1);
   SwigClassHMC.cext_type.wrap_struct_name = "C++ class datamunge::bayes::HMC";
   SwigClassHMC.cext_type.function.dmark = SWIG_Ruby_mark_swig_type;
   SwigClassHMC.cext_type.function.dfree = SWIG_Ruby_free_swig_type;
@@ -138927,6 +148945,7 @@ SWIGEXPORT void Init_octruby(void) {
   SwigClassHMC.mark = 0;
   SwigClassHMC.destroy = (void (*)(void *)) free_datamunge_bayes_HMC;
   SwigClassHMC.trackObjects = 0;
+  rb_define_module_function(mOctruby, "leapfrog_gaussian_acceptance", VALUEFUNC(_wrap_leapfrog_gaussian_acceptance), -1);
   
   SwigClassNUTSOptions.klass = rb_define_class_under(mOctruby, "NUTSOptions", rb_cObject);
   SWIG_TypeClientData(SWIGTYPE_p_datamunge__bayes__NUTSOptions, (void *) &SwigClassNUTSOptions);
@@ -138968,6 +148987,14 @@ SWIGEXPORT void Init_octruby(void) {
   rb_define_method(SwigClassNUTSResult.klass, "final_step_size", VALUEFUNC(_wrap_NUTSResult_final_step_size_get), -1);
   rb_define_method(SwigClassNUTSResult.klass, "num_divergences=", VALUEFUNC(_wrap_NUTSResult_num_divergences_set), -1);
   rb_define_method(SwigClassNUTSResult.klass, "num_divergences", VALUEFUNC(_wrap_NUTSResult_num_divergences_get), -1);
+  rb_define_method(SwigClassNUTSResult.klass, "divergent=", VALUEFUNC(_wrap_NUTSResult_divergent_set), -1);
+  rb_define_method(SwigClassNUTSResult.klass, "divergent", VALUEFUNC(_wrap_NUTSResult_divergent_get), -1);
+  rb_define_method(SwigClassNUTSResult.klass, "tree_depth=", VALUEFUNC(_wrap_NUTSResult_tree_depth_set), -1);
+  rb_define_method(SwigClassNUTSResult.klass, "tree_depth", VALUEFUNC(_wrap_NUTSResult_tree_depth_get), -1);
+  rb_define_method(SwigClassNUTSResult.klass, "n_leapfrog=", VALUEFUNC(_wrap_NUTSResult_n_leapfrog_set), -1);
+  rb_define_method(SwigClassNUTSResult.klass, "n_leapfrog", VALUEFUNC(_wrap_NUTSResult_n_leapfrog_get), -1);
+  rb_define_method(SwigClassNUTSResult.klass, "energy=", VALUEFUNC(_wrap_NUTSResult_energy_set), -1);
+  rb_define_method(SwigClassNUTSResult.klass, "energy", VALUEFUNC(_wrap_NUTSResult_energy_get), -1);
   SwigClassNUTSResult.cext_type.wrap_struct_name = "C++ class datamunge::bayes::NUTSResult";
   SwigClassNUTSResult.cext_type.function.dmark = SWIG_Ruby_mark_swig_type;
   SwigClassNUTSResult.cext_type.function.dfree = SWIG_Ruby_free_swig_type;
@@ -138983,6 +149010,7 @@ SWIGEXPORT void Init_octruby(void) {
   rb_define_alloc_func(SwigClassNUTS.klass, _wrap_NUTS_allocate);
   rb_define_method(SwigClassNUTS.klass, "initialize", VALUEFUNC(_wrap_new_NUTS), -1);
   rb_define_method(SwigClassNUTS.klass, "sample", VALUEFUNC(_wrap_NUTS_sample), -1);
+  rb_define_method(SwigClassNUTS.klass, "options", VALUEFUNC(_wrap_NUTS_options), -1);
   SwigClassNUTS.cext_type.wrap_struct_name = "C++ class datamunge::bayes::NUTS";
   SwigClassNUTS.cext_type.function.dmark = SWIG_Ruby_mark_swig_type;
   SwigClassNUTS.cext_type.function.dfree = SWIG_Ruby_free_swig_type;
@@ -139007,6 +149035,8 @@ SWIGEXPORT void Init_octruby(void) {
   rb_define_method(SwigClassRWMOptions.klass, "target_accept_rate", VALUEFUNC(_wrap_RWMOptions_target_accept_rate_get), -1);
   rb_define_method(SwigClassRWMOptions.klass, "seed=", VALUEFUNC(_wrap_RWMOptions_seed_set), -1);
   rb_define_method(SwigClassRWMOptions.klass, "seed", VALUEFUNC(_wrap_RWMOptions_seed_get), -1);
+  rb_define_method(SwigClassRWMOptions.klass, "adapt_covariance=", VALUEFUNC(_wrap_RWMOptions_adapt_covariance_set), -1);
+  rb_define_method(SwigClassRWMOptions.klass, "adapt_covariance", VALUEFUNC(_wrap_RWMOptions_adapt_covariance_get), -1);
   SwigClassRWMOptions.cext_type.wrap_struct_name = "C++ class datamunge::bayes::RWMOptions";
   SwigClassRWMOptions.cext_type.function.dmark = SWIG_Ruby_mark_swig_type;
   SwigClassRWMOptions.cext_type.function.dfree = SWIG_Ruby_free_swig_type;
@@ -139027,6 +149057,8 @@ SWIGEXPORT void Init_octruby(void) {
   rb_define_method(SwigClassRWMResult.klass, "accept_rate", VALUEFUNC(_wrap_RWMResult_accept_rate_get), -1);
   rb_define_method(SwigClassRWMResult.klass, "final_step_size=", VALUEFUNC(_wrap_RWMResult_final_step_size_set), -1);
   rb_define_method(SwigClassRWMResult.klass, "final_step_size", VALUEFUNC(_wrap_RWMResult_final_step_size_get), -1);
+  rb_define_method(SwigClassRWMResult.klass, "proposal_covariance=", VALUEFUNC(_wrap_RWMResult_proposal_covariance_set), -1);
+  rb_define_method(SwigClassRWMResult.klass, "proposal_covariance", VALUEFUNC(_wrap_RWMResult_proposal_covariance_get), -1);
   SwigClassRWMResult.cext_type.wrap_struct_name = "C++ class datamunge::bayes::RWMResult";
   SwigClassRWMResult.cext_type.function.dmark = SWIG_Ruby_mark_swig_type;
   SwigClassRWMResult.cext_type.function.dfree = SWIG_Ruby_free_swig_type;
@@ -139042,6 +149074,7 @@ SWIGEXPORT void Init_octruby(void) {
   rb_define_alloc_func(SwigClassRandomWalkMetropolis.klass, _wrap_RandomWalkMetropolis_allocate);
   rb_define_method(SwigClassRandomWalkMetropolis.klass, "initialize", VALUEFUNC(_wrap_new_RandomWalkMetropolis), -1);
   rb_define_method(SwigClassRandomWalkMetropolis.klass, "sample", VALUEFUNC(_wrap_RandomWalkMetropolis_sample), -1);
+  rb_define_method(SwigClassRandomWalkMetropolis.klass, "options", VALUEFUNC(_wrap_RandomWalkMetropolis_options), -1);
   SwigClassRandomWalkMetropolis.cext_type.wrap_struct_name = "C++ class datamunge::bayes::RandomWalkMetropolis";
   SwigClassRandomWalkMetropolis.cext_type.function.dmark = SWIG_Ruby_mark_swig_type;
   SwigClassRandomWalkMetropolis.cext_type.function.dfree = SWIG_Ruby_free_swig_type;
@@ -139101,6 +149134,7 @@ SWIGEXPORT void Init_octruby(void) {
   rb_define_alloc_func(SwigClassGibbsSampler.klass, _wrap_GibbsSampler_allocate);
   rb_define_method(SwigClassGibbsSampler.klass, "initialize", VALUEFUNC(_wrap_new_GibbsSampler), -1);
   rb_define_method(SwigClassGibbsSampler.klass, "sample", VALUEFUNC(_wrap_GibbsSampler_sample), -1);
+  rb_define_method(SwigClassGibbsSampler.klass, "options", VALUEFUNC(_wrap_GibbsSampler_options), -1);
   SwigClassGibbsSampler.cext_type.wrap_struct_name = "C++ class datamunge::bayes::GibbsSampler";
   SwigClassGibbsSampler.cext_type.function.dmark = SWIG_Ruby_mark_swig_type;
   SwigClassGibbsSampler.cext_type.function.dfree = SWIG_Ruby_free_swig_type;
@@ -139156,6 +149190,7 @@ SWIGEXPORT void Init_octruby(void) {
   rb_define_alloc_func(SwigClassImportanceSampling.klass, _wrap_ImportanceSampling_allocate);
   rb_define_method(SwigClassImportanceSampling.klass, "initialize", VALUEFUNC(_wrap_new_ImportanceSampling), -1);
   rb_define_method(SwigClassImportanceSampling.klass, "sample", VALUEFUNC(_wrap_ImportanceSampling_sample), -1);
+  rb_define_method(SwigClassImportanceSampling.klass, "options", VALUEFUNC(_wrap_ImportanceSampling_options), -1);
   SwigClassImportanceSampling.cext_type.wrap_struct_name = "C++ class datamunge::bayes::ImportanceSampling";
   SwigClassImportanceSampling.cext_type.function.dmark = SWIG_Ruby_mark_swig_type;
   SwigClassImportanceSampling.cext_type.function.dfree = SWIG_Ruby_free_swig_type;
@@ -139165,6 +149200,7 @@ SWIGEXPORT void Init_octruby(void) {
   SwigClassImportanceSampling.mark = 0;
   SwigClassImportanceSampling.destroy = (void (*)(void *)) free_datamunge_bayes_ImportanceSampling;
   SwigClassImportanceSampling.trackObjects = 0;
+  rb_define_module_function(mOctruby, "gaussian_importance_efficiency", VALUEFUNC(_wrap_gaussian_importance_efficiency), -1);
   
   SwigClassRHS.klass = rb_define_class_under(mOctruby, "RHS", rb_cObject);
   SWIG_TypeClientData(SWIGTYPE_p_datamunge__ode__RHS, (void *) &SwigClassRHS);
@@ -139239,6 +149275,7 @@ SWIGEXPORT void Init_octruby(void) {
   rb_define_method(SwigClassODESolver.klass, "initialize", VALUEFUNC(_wrap_new_ODESolver), -1);
   rb_define_method(SwigClassODESolver.klass, "solve", VALUEFUNC(_wrap_ODESolver_solve), -1);
   rb_define_method(SwigClassODESolver.klass, "solve_builtin", VALUEFUNC(_wrap_ODESolver_solve_builtin), -1);
+  rb_define_method(SwigClassODESolver.klass, "options", VALUEFUNC(_wrap_ODESolver_options), -1);
   SwigClassODESolver.cext_type.wrap_struct_name = "C++ class datamunge::ode::ODESolver";
   SwigClassODESolver.cext_type.function.dmark = SWIG_Ruby_mark_swig_type;
   SwigClassODESolver.cext_type.function.dfree = SWIG_Ruby_free_swig_type;

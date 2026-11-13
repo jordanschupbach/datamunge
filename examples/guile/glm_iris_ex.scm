@@ -1,6 +1,8 @@
+;; CMD: just TARGET=glm_iris_ex run-guile
+
 (use-modules (datamunge))
 
-(define iris (DataFrame-iris))
+(define iris (data_iris))
 
 (define is-virginica '())
 (define petal-length '())

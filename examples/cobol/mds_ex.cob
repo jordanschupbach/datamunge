@@ -1,6 +1,6 @@
 *> Classical multidimensional scaling of the iris measurements into two dimensions,
 *> with euclidean and manhattan distances.
-*> Run with `just run-cobol TARGET=mds_ex`.
+*> CMD: just TARGET=mds_ex run-cobol
 IDENTIFICATION DIVISION.
 PROGRAM-ID. MDS-EX.
 DATA DIVISION.
@@ -29,9 +29,9 @@ COPY "datamunge.cpy".
 01 FIT-EDIT-2    PIC -9.9999.
 
 PROCEDURE DIVISION.
-    CALL "dm_data_frame_iris" USING DM-DATA-FRAME-IRIS DM-STATUS
+    CALL "dm_data_iris" USING DM-DATA-IRIS DM-STATUS
     PERFORM CHECK
-    MOVE DM-DATA-FRAME-IRIS-RESULT TO IRIS
+    MOVE DM-DATA-IRIS-RESULT TO IRIS
     MOVE 4 TO DM-VECTOR-STRING-TABLE-COUNT
     PERFORM VARYING I FROM 1 BY 1 UNTIL I > 4
         MOVE FEATURE-NAME(I) TO DM-VECTOR-STRING-TABLE-ITEM(I)

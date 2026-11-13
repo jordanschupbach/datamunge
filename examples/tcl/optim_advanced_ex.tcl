@@ -1,3 +1,5 @@
+# CMD: just TARGET=optim_advanced_ex run-tcl
+
 package require Datamunge 0.0.1
 
 # ================================================================================================

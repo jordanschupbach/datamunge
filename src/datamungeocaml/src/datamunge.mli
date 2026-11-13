@@ -133,11 +133,37 @@ val _sum_dpair : c_obj -> c_obj
 val new_DataFrame : c_obj -> c_obj
 val _new_DataFrame : c_obj -> c_obj
 val _DataFrame_empty : c_obj -> c_obj
-val _DataFrame_iris : c_obj -> c_obj
-val _DataFrame_penguins : c_obj -> c_obj
+val _DataFrame_read_csv : c_obj -> c_obj
+val _DataFrame_parse_csv : c_obj -> c_obj
+val _DataFrame_from_image_batch : c_obj -> c_obj
 val _delete_DataFrame : c_obj -> c_obj
 
 val create_datamunge_xxDataFrame_from_ptr : c_obj -> c_obj
+
+
+val _data_iris : c_obj -> c_obj
+val _data_penguins : c_obj -> c_obj
+val _data_tooth_growth : c_obj -> c_obj
+val _data_wine : c_obj -> c_obj
+val _data_titanic : c_obj -> c_obj
+val _data_eight_schools : c_obj -> c_obj
+val _data_air_passengers : c_obj -> c_obj
+val _data_volcano : c_obj -> c_obj
+val _data_faithful : c_obj -> c_obj
+val _data_mtcars : c_obj -> c_obj
+val _data_airquality : c_obj -> c_obj
+val _data_breast_cancer : c_obj -> c_obj
+val _data_diabetes : c_obj -> c_obj
+val _data_digits : c_obj -> c_obj
+val _data_diamonds : c_obj -> c_obj
+val _data_california_housing : c_obj -> c_obj
+val _data_load : c_obj -> c_obj
+val _data_catalog : c_obj -> c_obj
+val new_CsvReader : c_obj -> c_obj
+val _new_CsvReader : c_obj -> c_obj
+val _delete_CsvReader : c_obj -> c_obj
+
+val create_datamunge_xxCsvReader_from_ptr : c_obj -> c_obj
 
 
 val _ShapeLayer_read : c_obj -> c_obj
@@ -151,6 +177,13 @@ val _new_GGPlot : c_obj -> c_obj
 val _delete_GGPlot : c_obj -> c_obj
 
 val create_datamunge_xxGGPlot_from_ptr : c_obj -> c_obj
+
+
+val new_Splom : c_obj -> c_obj
+val _new_Splom : c_obj -> c_obj
+val _delete_Splom : c_obj -> c_obj
+
+val create_datamunge_xxSplom_from_ptr : c_obj -> c_obj
 
 
 val new_LM : c_obj -> c_obj
@@ -456,7 +489,7 @@ val new_RGB : c_obj -> c_obj
 val _new_RGB : c_obj -> c_obj
 val _delete_RGB : c_obj -> c_obj
 
-val create_datamunge_xxplot_xxRGB_from_ptr : c_obj -> c_obj
+val create_datamunge_xxgraphics_xxRGB_from_ptr : c_obj -> c_obj
 
 
 val _Scatter : c_obj -> Swig.c_obj
@@ -470,30 +503,32 @@ val new_DataSeries : c_obj -> c_obj
 val _new_DataSeries : c_obj -> c_obj
 val _delete_DataSeries : c_obj -> c_obj
 
-val create_datamunge_xxplot_xxDataSeries_from_ptr : c_obj -> c_obj
+val create_datamunge_xxgraphics_xxDataSeries_from_ptr : c_obj -> c_obj
 
 
 val new_ABLine : c_obj -> c_obj
 val _new_ABLine : c_obj -> c_obj
 val _delete_ABLine : c_obj -> c_obj
 
-val create_datamunge_xxplot_xxABLine_from_ptr : c_obj -> c_obj
+val create_datamunge_xxgraphics_xxABLine_from_ptr : c_obj -> c_obj
 
 
 val new_LegendEntry : c_obj -> c_obj
 val _new_LegendEntry : c_obj -> c_obj
 val _delete_LegendEntry : c_obj -> c_obj
 
-val create_datamunge_xxplot_xxLegendEntry_from_ptr : c_obj -> c_obj
+val create_datamunge_xxgraphics_xxLegendEntry_from_ptr : c_obj -> c_obj
 
 
 val _delete_Plot : c_obj -> c_obj
 val new_Plot : c_obj -> c_obj
 val _new_Plot : c_obj -> c_obj
 
-val create_datamunge_xxplot_xxPlot_from_ptr : c_obj -> c_obj
+val create_datamunge_xxgraphics_xxPlot_from_ptr : c_obj -> c_obj
 
 
+val new_RPlot : c_obj -> c_obj
+val _new_RPlot : c_obj -> c_obj
 val _RPlot_create : c_obj -> c_obj
 val _RPlot_plot : c_obj -> c_obj
 val _RPlot_hist : c_obj -> c_obj
@@ -502,23 +537,28 @@ val _RPlot_boxplot : c_obj -> c_obj
 val _RPlot_pie : c_obj -> c_obj
 val _RPlot_curve : c_obj -> c_obj
 val _RPlot_qqnorm : c_obj -> c_obj
-val new_RPlot : c_obj -> c_obj
-val _new_RPlot : c_obj -> c_obj
 val _delete_RPlot : c_obj -> c_obj
 
-val create_datamunge_xxplot_xxRPlot_from_ptr : c_obj -> c_obj
+val create_datamunge_xxgraphics_xxRPlot_from_ptr : c_obj -> c_obj
 
 
+val _RLayout_title_band_px : c_obj -> Swig.c_obj
+val _RLayout_min_panel_px : c_obj -> Swig.c_obj
 val _RLayout_create : c_obj -> c_obj
 val new_RLayout : c_obj -> c_obj
 val _new_RLayout : c_obj -> c_obj
 val _delete_RLayout : c_obj -> c_obj
 
-val create_datamunge_xxplot_xxRLayout_from_ptr : c_obj -> c_obj
+val create_datamunge_xxgraphics_xxRLayout_from_ptr : c_obj -> c_obj
 
 
+val _terrain_colors : c_obj -> c_obj
+val _diverging_colors : c_obj -> c_obj
+val _viridis_colors : c_obj -> c_obj
+val _value_colors : c_obj -> c_obj
 val _set_seed : c_obj -> c_obj
 val _unif : c_obj -> c_obj
+val _runif : c_obj -> c_obj
 val _rnorm : c_obj -> c_obj
 val _seql : c_obj -> c_obj
 val new_BSplineRegression : c_obj -> c_obj
@@ -583,6 +623,7 @@ val _t_test_paired : c_obj -> c_obj
 val _wilcoxon_signed_rank_test : c_obj -> c_obj
 val _wilcoxon_rank_sum_test : c_obj -> c_obj
 val _ks_test_one_sample_normal : c_obj -> c_obj
+val _ks_test_one_sample_uniform : c_obj -> c_obj
 val _ks_test_two_sample : c_obj -> c_obj
 val _chi_squared_goodness_of_fit : c_obj -> c_obj
 val _chi_squared_test_independence : c_obj -> c_obj
@@ -590,6 +631,14 @@ val _one_way_anova : c_obj -> c_obj
 val _kruskal_wallis_test : c_obj -> c_obj
 val _pearson_correlation_test : c_obj -> c_obj
 val _spearman_correlation_test : c_obj -> c_obj
+val new_KendallTau : c_obj -> c_obj
+val _new_KendallTau : c_obj -> c_obj
+val _delete_KendallTau : c_obj -> c_obj
+
+val create_datamunge_xxstats_xxKendallTau_from_ptr : c_obj -> c_obj
+
+
+val _kendall_tau : c_obj -> c_obj
 val _f_test_variance : c_obj -> c_obj
 val _proportion_test_one_sample : c_obj -> c_obj
 val _proportion_test_two_sample : c_obj -> c_obj
@@ -1242,11 +1291,27 @@ val _delete_BayesianOptimizationOptions : c_obj -> c_obj
 val create_datamunge_xxoptim_xxBayesianOptimizationOptions_from_ptr : c_obj -> c_obj
 
 
+val new_BayesianOptimizationResult : c_obj -> c_obj
+val _new_BayesianOptimizationResult : c_obj -> c_obj
+val _delete_BayesianOptimizationResult : c_obj -> c_obj
+
+val create_datamunge_xxoptim_xxBayesianOptimizationResult_from_ptr : c_obj -> c_obj
+
+
 val new_BayesianOptimization : c_obj -> c_obj
 val _new_BayesianOptimization : c_obj -> c_obj
 val _delete_BayesianOptimization : c_obj -> c_obj
 
 val create_datamunge_xxoptim_xxBayesianOptimization_from_ptr : c_obj -> c_obj
+
+
+val _expected_improvement : c_obj -> c_obj
+val _probability_of_improvement : c_obj -> c_obj
+val new_SurrogatePrediction : c_obj -> c_obj
+val _new_SurrogatePrediction : c_obj -> c_obj
+val _delete_SurrogatePrediction : c_obj -> c_obj
+
+val create_datamunge_xxoptim_xxSurrogatePrediction_from_ptr : c_obj -> c_obj
 
 
 val new_RBFGaussianProcessSurrogate : c_obj -> c_obj
@@ -1291,6 +1356,7 @@ val _delete_HMC : c_obj -> c_obj
 val create_datamunge_xxbayes_xxHMC_from_ptr : c_obj -> c_obj
 
 
+val _leapfrog_gaussian_acceptance : c_obj -> c_obj
 val new_NUTSOptions : c_obj -> c_obj
 val _new_NUTSOptions : c_obj -> c_obj
 val _delete_NUTSOptions : c_obj -> c_obj
@@ -1375,6 +1441,7 @@ val _delete_ImportanceSampling : c_obj -> c_obj
 val create_datamunge_xxbayes_xxImportanceSampling_from_ptr : c_obj -> c_obj
 
 
+val _gaussian_importance_efficiency : c_obj -> c_obj
 val _delete_RHS : c_obj -> c_obj
 
 val create_datamunge_xxode_xxRHS_from_ptr : c_obj -> c_obj

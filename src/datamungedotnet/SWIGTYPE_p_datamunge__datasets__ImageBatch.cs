@@ -9,22 +9,22 @@
 //------------------------------------------------------------------------------
 
 
-public class SWIGTYPE_p_std__vectorT_datamunge__plot__RGB_t {
+public class SWIGTYPE_p_datamunge__datasets__ImageBatch {
   private global::System.Runtime.InteropServices.HandleRef swigCPtr;
 
-  internal SWIGTYPE_p_std__vectorT_datamunge__plot__RGB_t(global::System.IntPtr cPtr, bool futureUse) {
+  internal SWIGTYPE_p_datamunge__datasets__ImageBatch(global::System.IntPtr cPtr, bool futureUse) {
     swigCPtr = new global::System.Runtime.InteropServices.HandleRef(this, cPtr);
   }
 
-  protected SWIGTYPE_p_std__vectorT_datamunge__plot__RGB_t() {
+  protected SWIGTYPE_p_datamunge__datasets__ImageBatch() {
     swigCPtr = new global::System.Runtime.InteropServices.HandleRef(null, global::System.IntPtr.Zero);
   }
 
-  internal static global::System.Runtime.InteropServices.HandleRef getCPtr(SWIGTYPE_p_std__vectorT_datamunge__plot__RGB_t obj) {
+  internal static global::System.Runtime.InteropServices.HandleRef getCPtr(SWIGTYPE_p_datamunge__datasets__ImageBatch obj) {
     return (obj == null) ? new global::System.Runtime.InteropServices.HandleRef(null, global::System.IntPtr.Zero) : obj.swigCPtr;
   }
 
-  internal static global::System.Runtime.InteropServices.HandleRef swigRelease(SWIGTYPE_p_std__vectorT_datamunge__plot__RGB_t obj) {
+  internal static global::System.Runtime.InteropServices.HandleRef swigRelease(SWIGTYPE_p_datamunge__datasets__ImageBatch obj) {
     return (obj == null) ? new global::System.Runtime.InteropServices.HandleRef(null, global::System.IntPtr.Zero) : obj.swigCPtr;
   }
 }

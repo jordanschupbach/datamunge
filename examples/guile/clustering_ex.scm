@@ -1,3 +1,5 @@
+;; CMD: just TARGET=clustering_ex run-guile
+
 (use-modules (datamunge) (ice-9 format))
 
 (define (report-purity cluster-labels species n-clusters)
@@ -22,7 +24,7 @@
         (when (> total 0)
           (format #t "  cluster ~a: ~a points, majority ~a (~a/~a)\n" c total best-sp best total))))))
 
-(define iris (DataFrame-iris))
+(define iris (data_iris))
 (define n (DataFrame-nrows iris))
 (define species '())
 (do ((i 0 (+ i 1))) ((= i n))

@@ -1,3 +1,5 @@
+# CMD: just TARGET=dataframe_ex run-tcl
+
 package require Datamunge 0.0.1
 
 set sales [datamunge::DataFrame_empty]

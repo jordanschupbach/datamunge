@@ -57,16 +57,39 @@ public class RandomWalkMetropolis {
     }
   }
 
+  /**
+   *  Stores the sampler settings.<br>
+   *  @param options Sampler settings.
+   */
   public RandomWalkMetropolis(RWMOptions options) {
     this(datamungeJNI.new_RandomWalkMetropolis__SWIG_0(RWMOptions.getCPtr(options), options), true);
   }
 
+  /**
+   *  Stores the sampler settings.<br>
+   *  
+   */
   public RandomWalkMetropolis() {
     this(datamungeJNI.new_RandomWalkMetropolis__SWIG_1(), true);
   }
 
+  /**
+   *  Runs warmup (adapting the step size, and optionally the proposal covariance),<br>
+   *         then num_samples draws.<br>
+   *  @param log_posterior Log density up to a constant; only evaluate() is used.<br>
+   *  @param initial_params Starting point.<br>
+   *  @return Draws, acceptance rate, final step size and learned covariance.
+   */
   public RWMResult sample(ArbitraryFunction log_posterior, DVector initial_params) {
     return new RWMResult(datamungeJNI.RandomWalkMetropolis_sample(swigCPtr, this, ArbitraryFunction.getCPtr(log_posterior), log_posterior, DVector.getCPtr(initial_params), initial_params), true);
+  }
+
+  /**
+   *  The options this RandomWalkMetropolis was configured with.<br>
+   *  @return The stored options.
+   */
+  public RWMOptions options() {
+    return new RWMOptions(datamungeJNI.RandomWalkMetropolis_options(swigCPtr, this), false);
   }
 
 }

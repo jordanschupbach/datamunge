@@ -57,19 +57,35 @@ public class Tape : global::System.IDisposable {
     }
   }
 
+  /// <summary>An empty tape; create leaf Vars against it with Var(tape, value).</summary>
   public Tape() : this(datamungePINVOKE.new_Tape(), true) {
   }
 
+  /// <summary>Number of recorded nodes (leaves plus operation results).</summary>
   public uint size() {
     uint ret = datamungePINVOKE.Tape_size(swigCPtr);
     return ret;
   }
 
+  /// <summary>The value recorded at node ``index``.</summary>
+  /// <param name="index"> Node index, as returned by Var::index().</param> 
+  /// <returns>The node's value.</returns> 
+  /// <exception cref="std::out_of_range"> When ``index`` >= size().</exception>
   public double value_at(uint index) {
     double ret = datamungePINVOKE.Tape_value_at(swigCPtr, index);
     return ret;
   }
 
+  /// <summary>Reverse sweep from ``output``: d(output)/d(node) for every node on the tape.</summary>
+  ///  The tape is unchanged, so backward() may be called again for other outputs.
+  /// <param name="output"> A Var recorded on this tape (usually the final expression).</param> 
+  /// <returns>One adjoint per node, indexed by Var::index() (0-based; add 1 in R and Lua).</returns> 
+  /// <exception cref="std::out_of_range"> When ``output`` is not a node of this tape.</exception> 
+  /// Title: Example
+  /// <code>      dm::Tape tape;
+  ///      const dm::Var a(tape, 2.0), b(tape, 3.0);
+  ///      const auto grad = tape.backward(a.multiply(b));
+  ///      std::print("{} {}\n", grad[a.index()], grad[b.index()]);  // 3 2</code>
   public DVector backward(Var output) {
     DVector ret = new DVector(datamungePINVOKE.Tape_backward(swigCPtr, Var.getCPtr(output)), true);
     if (datamungePINVOKE.SWIGPendingException.Pending) throw datamungePINVOKE.SWIGPendingException.Retrieve();

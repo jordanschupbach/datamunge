@@ -71,4 +71,11 @@ public class HarmonySearch : global::System.IDisposable {
     return ret;
   }
 
+  /// <summary>The options this HarmonySearch was configured with.</summary>
+  /// <returns>The stored options.</returns>
+  public HarmonySearchOptions options() {
+    HarmonySearchOptions ret = new HarmonySearchOptions(datamungePINVOKE.HarmonySearch_options(swigCPtr), false);
+    return ret;
+  }
+
 }

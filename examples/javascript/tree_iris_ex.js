@@ -1,6 +1,8 @@
+// CMD: just TARGET=tree_iris_ex run-javascript
+
 const datamunge = require("../../index.js");
 
-const iris = datamunge.DataFrame.iris();
+const iris = datamunge.data.iris();
 console.log(`iris: ${iris.nrows()} rows x ${iris.ncols()} cols\n`);
 
 const model = new datamunge.DecisionTreeClassifier(iris, "Species ~ Petal.Length + Petal.Width");
@@ -15,7 +17,7 @@ let misclassified = 0;
 const n = iris.nrows();
 for (let i = 0; i < n; i++) {
   const actual = iris.string_at("Species", i);
-  const pred = predictions.get(i);
+  const pred = predictions[i];
   if (pred !== actual) {
     misclassified += 1;
     console.log(`  row ${i}: Petal.Length=${iris.numeric_at("Petal.Length", i)} Petal.Width=${iris.numeric_at("Petal.Width", i)}  actual=${actual}  predicted=${pred}`);

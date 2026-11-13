@@ -1,8 +1,10 @@
+# CMD: just TARGET=elastic_net_iris_ex run-ruby
+
 require "octruby"
 
 FORMULA = "Petal.Length ~ Sepal.Length + Sepal.Width + Petal.Width + Sepal.Length:Petal.Width"
 
-iris = Datamunge::DataFrame.iris
+iris = Datamunge.data_iris
 puts "iris: #{iris.nrows} rows x #{iris.ncols} cols"
 puts "formula: #{FORMULA}\n\n"
 

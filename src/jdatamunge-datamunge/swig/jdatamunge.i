@@ -176,6 +176,7 @@
 %{
   #include "datamunge/datamunge.hpp"
 %}
+%include "datamunge/data_names.i"
 %include "datamunge/datamunge.hpp"
 %include "datamunge/plot/plot.hpp"
 %include "datamunge/vector.i"

@@ -1,10 +1,12 @@
+% CMD: just TARGET=kernel_regression_iris_ex run-octave
+
 1;
 
 datamunge;
 
 FORMULA = "Petal.Length ~ Petal.Width";
 
-iris = DataFrame_iris();
+iris = data_iris();
 printf("iris: %d rows x %d cols\n", DataFrame_nrows(iris), DataFrame_ncols(iris));
 printf("formula: %s\n\n", FORMULA);
 

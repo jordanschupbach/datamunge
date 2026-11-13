@@ -1,8 +1,8 @@
-# CMD: nix develop .#r --command Rscript examples/r/lda_iris_ex.r
-# REPL: nix develop .#r --command R --no-save --quiet
+# CMD: nix develop .#r --command env R_LIBS_USER=build/r/library Rscript examples/r/lda_iris_ex.r
+# REPL: nix develop .#r --command env R_LIBS_USER=build/r/library R --no-save --quiet
 library(datamunger)
 
-iris <- DataFrame$iris()
+iris <- data$iris()
 cat(iris$nrows(), "rows x", iris$ncols(), "cols\n\n")
 
 model <- LDA$new(iris, "Species ~ Sepal.Length + Sepal.Width + Petal.Length + Petal.Width")

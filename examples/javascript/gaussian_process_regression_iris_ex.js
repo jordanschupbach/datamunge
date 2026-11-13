@@ -1,14 +1,10 @@
-const datamunge = require("../../index.js");
+// CMD: just TARGET=gaussian_process_regression_iris_ex run-javascript
 
-function dvector(values) {
-  const out = new datamunge.DVector(values.length);
-  for (let i = 0; i < values.length; i++) out.set(i, values[i]);
-  return out;
-}
+const datamunge = require("../../index.js");
 
 const FORMULA = "Petal.Length ~ Petal.Width";
 
-const iris = datamunge.DataFrame.iris();
+const iris = datamunge.data.iris();
 console.log(`iris: ${iris.nrows()} rows x ${iris.ncols()} cols`);
 console.log(`formula: ${FORMULA}\n`);
 
@@ -20,7 +16,7 @@ model.plot_length_scale_profile().save("gpr_iris_length_scale_profile.svg");
 console.log("\nSaved gpr_iris_fit.svg and gpr_iris_length_scale_profile.svg");
 
 const query = new datamunge.DataFrame();
-query.add_numeric_column("Petal.Width", dvector([0.2, 1.3, 2.5, 10.0]));
+query.add_numeric_column("Petal.Width", [0.2, 1.3, 2.5, 10.0]);
 const detail = model.predict_frame(query, "confidence");
 console.log("\nPredictions with 95% confidence intervals:");
 console.log(detail.to_string());

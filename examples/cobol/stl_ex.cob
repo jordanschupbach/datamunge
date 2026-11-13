@@ -1,6 +1,6 @@
 *> C++ standard containers from COBOL: std::vector<double> and std::vector<int> handles,
 *> and pairs, which the bindings flatten into -FIRST/-SECOND fields.
-*> Run with `just run-cobol TARGET=stl_ex`.
+*> CMD: just TARGET=stl_ex run-cobol
 IDENTIFICATION DIVISION.
 PROGRAM-ID. STL-EX.
 DATA DIVISION.

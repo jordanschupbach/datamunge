@@ -72,4 +72,12 @@ public class GreyWolfOptimizer {
     return datamungeJNI.GreyWolfOptimizer_optimize(swigCPtr, this, ArbitraryFunction.getCPtr(function), function, DVector.getCPtr(coordinates), coordinates, DVector.getCPtr(lower_bound), lower_bound, DVector.getCPtr(upper_bound), upper_bound);
   }
 
+  /**
+   *  The options this GreyWolfOptimizer was configured with.<br>
+   *  @return The stored options.
+   */
+  public GreyWolfOptimizerOptions options() {
+    return new GreyWolfOptimizerOptions(datamungeJNI.GreyWolfOptimizer_options(swigCPtr, this), false);
+  }
+
 }

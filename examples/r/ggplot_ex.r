@@ -1,5 +1,5 @@
-# CMD: nix develop .#r --command Rscript examples/r/ggplot_ex.r
-# REPL: nix develop .#r --command R --no-save --quiet
+# CMD: nix develop .#r --command env R_LIBS_USER=build/r/library Rscript examples/r/ggplot_ex.r
+# REPL: nix develop .#r --command env R_LIBS_USER=build/r/library R --no-save --quiet
 # Demonstrates GGPlot -- the ggplot2-style grammar-of-graphics library.
 # Mutator calls below are wrapped in invisible(): GGPlot's chainable methods return the
 # plot itself, and Rscript auto-prints any un-assigned top-level result.
@@ -21,7 +21,7 @@ rgb <- function(r, g, b) {
   color
 }
 
-iris <- DataFrame$iris()
+iris <- data$iris()
 
 # ggplot(iris, aes(x = Sepal.Length, y = Sepal.Width, color = Species)) + geom_point()
 scatter <- GGPlot$new(iris, "Sepal.Length", "Sepal.Width", "Species")

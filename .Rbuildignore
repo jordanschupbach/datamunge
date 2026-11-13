@@ -30,7 +30,6 @@
 ^tests/(cpp|d|guile|javascript|lua|ocaml|octave|perl|php|ruby|tcl)(/|$)
 ^src/datamunge_php_wrap\.(cpp|h)$
 ^src/godatamunge_wrap\.cxx$
-^src/datamunge_js_callbacks\.inl$
 ^src/php_datamunge\.h$
 ^src/index\.js$
 ^src/godatamunge_legacy(/|$)

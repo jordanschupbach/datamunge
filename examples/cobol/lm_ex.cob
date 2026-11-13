@@ -1,5 +1,5 @@
 *> Linear regression: mpg ~ hp + wt + transmission, with ANOVA and predictions.
-*> Run with `just run-cobol TARGET=lm_ex`.
+*> CMD: just TARGET=lm_ex run-cobol
 IDENTIFICATION DIVISION.
 PROGRAM-ID. LM-EX.
 DATA DIVISION.

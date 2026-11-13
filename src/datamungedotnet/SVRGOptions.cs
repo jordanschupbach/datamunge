@@ -9,6 +9,14 @@
 //------------------------------------------------------------------------------
 
 
+/// <summary>Configuration for SVRG; fields retain their documented native defaults. Supply finite values in the supported ranges. Controls are copied at construction; validation, stopping and loss scaling belong to optimize().</summary>
+/// Title: Example
+/// <code>      dm::optim::SVRGOptions o;
+///      std::print("{}\n",o.max_epochs); // 100</code>
+///
+///
+///
+/// <seealso cref="SVRG"/>
 public class SVRGOptions : global::System.IDisposable {
   private global::System.Runtime.InteropServices.HandleRef swigCPtr;
   protected bool swigCMemOwn;
@@ -76,7 +84,6 @@ public class SVRGOptions : global::System.IDisposable {
     } 
   }
 
-  /// <summary>Stochastic updates per epoch; zero uses the number of component functions.</summary>
   public uint inner_iterations {
     set {
       datamungePINVOKE.SVRGOptions_inner_iterations_set(swigCPtr, value);

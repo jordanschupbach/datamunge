@@ -9,11 +9,21 @@
 package js.datamunge.jdatamunge;
 
 /**
- *  Simulated annealing on an ArbitraryFunction: a derivative-free stochastic method<br>
- *         that accepts worsening moves with Metropolis probability exp(-delta/temperature),<br>
- *         cooling geometrically, and tracks the best point found. The only optimizer here<br>
- *         that requires nothing beyond evaluate() -- suitable for non-differentiable or<br>
- *         black-box objectives.
+ *  SimulatedAnnealing on the ArbitraryFunction callback interface.<br>
+ *  Gaussian random-walk proposals with geometrically decaying temperature and Metropolis acceptance of worse values. Returns the best visited point, not the last accepted state. A finite cooling schedule does not certify a global optimum; O(p) storage.<br>
+ *  The caller supplies finite, dimensionally consistent callbacks. Inputs are borrowed;<br>
+ *  coordinates mutate in place and can retain a partial state if a callback throws.<br>
+ *  Calls use local optimizer state and propagate callback exceptions; sharing a mutable<br>
+ *  objective across threads requires external synchronisation. Normal return alone<br>
+ *  is not a uniform convergence certificate.<br>
+ *  <p alt="Example"><br>
+ *  {@code 
+ const dm::optim::SimulatedAnnealing optimizer;
+ std::print("{}\n",optimizer.options().max_iterations); // 10000
+ }</p><br>
+ *  <p alt="References"><br>
+ *  - S. Kirkpatrick, C. D. Gelatt and M. P. Vecchi (1983), Optimization by Simulated Annealing, https://doi.org/10.1126/science.220.4598.671. Finite geometric cooling here supplies no global guarantee.<br>
+ *  </p>@see SimulatedAnnealingOptions, trace_optimize()
  */
 public class SimulatedAnnealing {
   private transient long swigCPtr;
@@ -55,16 +65,60 @@ public class SimulatedAnnealing {
     }
   }
 
+  /**
+   *  Store a copy of the controls without running the objective.<br>
+   *  @param options Method-specific controls; defaults are listed by SimulatedAnnealingOptions.<br>
+   *  <p alt="Example"><br>
+   *  {@code 
+   const dm::optim::SimulatedAnnealing optimizer;
+   std::print("{}\n",optimizer.options().max_iterations); // 10000
+   }</p><br>
+   *  @see optimize()
+   */
   public SimulatedAnnealing(SimulatedAnnealingOptions options) {
     this(datamungeJNI.new_SimulatedAnnealing__SWIG_0(SimulatedAnnealingOptions.getCPtr(options), options), true);
   }
 
+  /**
+   *  Store a copy of the controls without running the objective.<br>
+   *  <p alt="Example"><br>
+   *  {@code 
+   const dm::optim::SimulatedAnnealing optimizer;
+   std::print("{}\n",optimizer.options().max_iterations); // 10000
+   }</p><br>
+   *  @see optimize()
+   */
   public SimulatedAnnealing() {
     this(datamungeJNI.new_SimulatedAnnealing__SWIG_1(), true);
   }
 
+  /**
+   *  Run SimulatedAnnealing from the supplied point using the configured finite budget.<br>
+   *  Gaussian random-walk proposals with geometrically decaying temperature and Metropolis acceptance of worse values. Returns the best visited point, not the last accepted state. A finite cooling schedule does not certify a global optimum; O(p) storage.<br>
+   *  @param function Borrowed ArbitraryFunction with matching finite output shapes.<br>
+   *  @param coordinates Owned-by-caller finite start; overwritten with the native returned point.<br>
+   *  @return Objective at the native returned coordinates; not a stop-status code.<br>
+   *  @throws std::exception Exceptions from supplied callbacks propagate. Raw solvers do not uniformly reject nonfinite inputs.<br>
+   *  <p alt="Example"><br>
+   *  {@code 
+   dm::optim::QuadraticObjective f({2,8},{1,-2});
+   dm::optim::SimulatedAnnealingOptions controls;controls.max_iterations=5;
+   std::vector<double> x{0,0};
+   const auto value=dm::optim::SimulatedAnnealing(controls).optimize(f,x);
+   std::print("{}\n",std::isfinite(value)); // true
+   }</p><br>
+   *  @see trace_optimize(), SimulatedAnnealingOptions
+   */
   public double optimize(ArbitraryFunction function, DVector coordinates) {
     return datamungeJNI.SimulatedAnnealing_optimize(swigCPtr, this, ArbitraryFunction.getCPtr(function), function, DVector.getCPtr(coordinates), coordinates);
+  }
+
+  /**
+   *  Borrow this optimizer's stored configuration.<br>
+   *  @return Const option reference, valid during this object's lifetime; no mutation.
+   */
+  public SimulatedAnnealingOptions options() {
+    return new SimulatedAnnealingOptions(datamungeJNI.SimulatedAnnealing_options(swigCPtr, this), false);
   }
 
 }

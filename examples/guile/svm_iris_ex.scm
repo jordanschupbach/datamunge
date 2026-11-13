@@ -1,6 +1,8 @@
+;; CMD: just TARGET=svm_iris_ex run-guile
+
 (use-modules (datamunge))
 
-(define iris (DataFrame-iris))
+(define iris (data_iris))
 (format #t "iris: ~a rows x ~a cols\n\n" (DataFrame-nrows iris) (DataFrame-ncols iris))
 
 (format #t "=== RBF kernel (default) ===\n")

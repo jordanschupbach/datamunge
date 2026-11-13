@@ -1,4 +1,6 @@
 <?php
+// CMD: just TARGET=stl_ex run-php
+
 
 $n = 100;
 $v = new DVector($n);

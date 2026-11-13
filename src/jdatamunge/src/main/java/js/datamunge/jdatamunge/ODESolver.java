@@ -87,4 +87,12 @@ public class ODESolver {
     return new ODESolution(datamungeJNI.ODESolver_solve_builtin(swigCPtr, this, system, DVector.getCPtr(params), params, DVector.getCPtr(y0), y0, t_start, t_end), true);
   }
 
+  /**
+   *  The options this ODESolver was configured with.<br>
+   *  @return The stored options.
+   */
+  public ODEOptions options() {
+    return new ODEOptions(datamungeJNI.ODESolver_options(swigCPtr, this), false);
+  }
+
 }

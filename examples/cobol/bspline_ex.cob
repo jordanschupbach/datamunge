@@ -1,5 +1,5 @@
 *> A tensor-product B-spline surface fit: z ~ bs(x, y) on an 8x8 grid.
-*> Run with `just run-cobol TARGET=bspline_ex`.
+*> CMD: just TARGET=bspline_ex run-cobol
 IDENTIFICATION DIVISION.
 PROGRAM-ID. BSPLINE-EX.
 DATA DIVISION.

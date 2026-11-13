@@ -8,6 +8,17 @@
 
 package js.datamunge.jdatamunge;
 
+/**
+ *  Configuration for SimulatedAnnealing; fields retain their documented native defaults.<br>
+ *  Supply finite values in the supported ranges. Controls are copied at construction;<br>
+ *  validation, stopping and loss scaling belong to optimize().<br>
+ *  <p alt="Example"><br>
+ *  {@code 
+ dm::optim::SimulatedAnnealingOptions o;
+ std::print("{}\n",o.max_iterations); // 10000
+ }</p><br>
+ *  @see SimulatedAnnealing
+ */
 public class SimulatedAnnealingOptions {
   private transient long swigCPtr;
   protected transient boolean swigCMemOwn;
@@ -56,16 +67,10 @@ public class SimulatedAnnealingOptions {
     return datamungeJNI.SimulatedAnnealingOptions_initial_temperature_get(swigCPtr, this);
   }
 
-  /**
-   *  Multiplicative cooling factor applied to the temperature after every iteration.
-   */
   public void setCooling_rate(double value) {
     datamungeJNI.SimulatedAnnealingOptions_cooling_rate_set(swigCPtr, this, value);
   }
 
-  /**
-   *  Multiplicative cooling factor applied to the temperature after every iteration.
-   */
   public double getCooling_rate() {
     return datamungeJNI.SimulatedAnnealingOptions_cooling_rate_get(swigCPtr, this);
   }
@@ -78,16 +83,10 @@ public class SimulatedAnnealingOptions {
     return datamungeJNI.SimulatedAnnealingOptions_max_iterations_get(swigCPtr, this);
   }
 
-  /**
-   *  Standard deviation of the Gaussian perturbation proposed at each step.
-   */
   public void setStep_std_dev(double value) {
     datamungeJNI.SimulatedAnnealingOptions_step_std_dev_set(swigCPtr, this, value);
   }
 
-  /**
-   *  Standard deviation of the Gaussian perturbation proposed at each step.
-   */
   public double getStep_std_dev() {
     return datamungeJNI.SimulatedAnnealingOptions_step_std_dev_get(swigCPtr, this);
   }

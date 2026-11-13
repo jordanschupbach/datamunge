@@ -1,3 +1,5 @@
+// CMD: just TARGET=courier_offscreen run-cpp tests/fixtures/game/crystal_courier_3d.json build/courier.png
+
 /// @file courier_offscreen.cpp
 /// @brief Run the frozen native 3D Courier scene and save an optional Vulkan frame.
 #include <cstdio>

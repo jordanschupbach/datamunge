@@ -1,3 +1,5 @@
+// CMD: just TARGET=autodiff_ex run-javascript
+
 const datamunge = require("../../index.js");
 
 function rosenbrockDual(x0, x1) {
@@ -30,8 +32,8 @@ const b = new datamunge.Var(tape, 3.0);
 const y = a.multiply(b).add(a.sin());
 console.log(`y = a*b + sin(a) at a=2, b=3 -> y = ${y.value()}`);
 const adjoint = tape.backward(y);
-console.log(`dy/da = ${adjoint.get(a.index())} (exact: b + cos(a))`);
-console.log(`dy/db = ${adjoint.get(b.index())} (exact: a)`);
+console.log(`dy/da = ${adjoint[a.index()]} (exact: b + cos(a))`);
+console.log(`dy/db = ${adjoint[b.index()]} (exact: a)`);
 
 console.log("\n=================== Forward vs reverse mode agree on the Rosenbrock function ===================");
 const px = 0.0;
@@ -50,7 +52,7 @@ const gradRev = tape2.backward(vf);
 
 console.log(`f(0,0) = ${rosenbrockValue(px, py)}`);
 console.log(`gradient (forward mode): [${gx}, ${gy}]`);
-console.log(`gradient (reverse mode): [${gradRev.get(vx.index())}, ${gradRev.get(vy.index())}]`);
+console.log(`gradient (reverse mode): [${gradRev[vx.index()]}, ${gradRev[vy.index()]}]`);
 
 console.log("\n=================== Jacobian of a vector-valued function ===================");
 const vxVal = 2.0;
@@ -117,8 +119,8 @@ for (let step = 0; step < nSteps; step++) {
   const vf2 = va2.multiply(va2).add(vb2.multiply(vb2).multiply_scalar(100.0));
   const grad = t.backward(vf2);
   const loss = vf2.value();
-  pointX -= learningRate * grad.get(vx2.index());
-  pointY -= learningRate * grad.get(vy2.index());
+  pointX -= learningRate * grad[vx2.index()];
+  pointY -= learningRate * grad[vy2.index()];
   if (step === 0 || step === nSteps - 1) {
     console.log(`step ${step}: loss = ${loss}, x = [${pointX}, ${pointY}]`);
   }

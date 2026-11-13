@@ -1,9 +1,9 @@
-# CMD: nix develop .#r --command Rscript examples/r/lmm_ex.r
-# REPL: nix develop .#r --command R --no-save --quiet
+# CMD: nix develop .#r --command env R_LIBS_USER=build/r/library Rscript examples/r/lmm_ex.r
+# REPL: nix develop .#r --command env R_LIBS_USER=build/r/library R --no-save --quiet
 library(datamunger)
 
 cat("=================== Random intercept on a real dataset (penguins) ===================\n")
-penguins <- DataFrame$penguins()
+penguins <- data$penguins()
 species_model <- LMM$new(penguins, "body_mass_g ~ flipper_length_mm + bill_length_mm + (1 | species)")
 species_model$print_summary()
 

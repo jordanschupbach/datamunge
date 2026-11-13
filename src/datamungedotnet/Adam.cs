@@ -9,7 +9,17 @@
 //------------------------------------------------------------------------------
 
 
-/// <summary>Full-batch Adam (Kingma &amp; Ba 2015) on a DifferentiableFunction.</summary>
+/// <summary>Adam on the DifferentiableFunction callback interface. Bias-corrected full-batch first and second moments, denominator sqrt(vhat)+epsilon. Tests the pre-update gradient norm after applying its update. No line search or general nonconvex convergence guarantee; O(p) reset local state. The caller supplies finite, dimensionally consistent callbacks. Inputs are borrowed; coordinates mutate in place and can retain a partial state if a callback throws. Calls use local optimizer state and propagate callback exceptions; sharing a mutable objective across threads requires external synchronisation. Normal return alone is not a uniform convergence certificate.</summary>
+/// Title: Example
+/// <code>      const dm::optim::Adam optimizer;
+///      std::print("{}\n",optimizer.options().max_iterations); // 10000</code>
+///
+///
+///
+/// Title: References
+///  - D. P. Kingma and J. Ba (2015), Adam: A Method for Stochastic Optimization, https://arxiv.org/abs/1412.6980
+///
+/// <seealso cref="AdamOptions, trace_optimize"/>
 public class Adam : global::System.IDisposable {
   private global::System.Runtime.InteropServices.HandleRef swigCPtr;
   protected bool swigCMemOwn;
@@ -57,16 +67,55 @@ public class Adam : global::System.IDisposable {
     }
   }
 
+  /// <summary>Store a copy of the controls without running the objective.</summary>
+  /// <param name="options"> Method-specific controls; defaults are listed by AdamOptions.</param> 
+  /// Title: Example
+  /// <code>      const dm::optim::Adam optimizer;
+  ///      std::print("{}\n",optimizer.options().max_iterations); // 10000</code>
+  ///
+  ///
+  ///
+  /// <seealso cref="optimize"/>
   public Adam(AdamOptions options) : this(datamungePINVOKE.new_Adam__SWIG_0(AdamOptions.getCPtr(options)), true) {
     if (datamungePINVOKE.SWIGPendingException.Pending) throw datamungePINVOKE.SWIGPendingException.Retrieve();
   }
 
+  /// <summary>Store a copy of the controls without running the objective.</summary>
+  /// Title: Example
+  /// <code>      const dm::optim::Adam optimizer;
+  ///      std::print("{}\n",optimizer.options().max_iterations); // 10000</code>
+  ///
+  ///
+  ///
+  /// <seealso cref="optimize"/>
   public Adam() : this(datamungePINVOKE.new_Adam__SWIG_1(), true) {
   }
 
+  /// <summary>Run Adam from the supplied point using the configured finite budget. Bias-corrected full-batch first and second moments, denominator sqrt(vhat)+epsilon. Tests the pre-update gradient norm after applying its update. No line search or general nonconvex convergence guarantee; O(p) reset local state.</summary>
+  /// <param name="function"> Borrowed DifferentiableFunction with matching finite output shapes.</param> 
+  /// <param name="coordinates"> Owned-by-caller finite start; overwritten with the native returned point.</param> 
+  /// <returns>Objective at the native returned coordinates; not a stop-status code.</returns> 
+  /// <exception cref="std::exception"> Exceptions from supplied callbacks propagate. Raw solvers do not uniformly reject nonfinite inputs.</exception> 
+  /// Title: Example
+  /// <code>      dm::optim::QuadraticObjective f({2,8},{1,-2});
+  ///      dm::optim::AdamOptions controls;controls.max_iterations=5;
+  ///      std::vector&lt;double&gt; x{0,0};
+  ///      const auto value=dm::optim::Adam(controls).optimize(f,x);
+  ///      std::print("{}\n",std::isfinite(value)); // true</code>
+  ///
+  ///
+  ///
+  /// <seealso cref="trace_optimize"/>
   public double optimize(DifferentiableFunction function, DVector coordinates) {
     double ret = datamungePINVOKE.Adam_optimize(swigCPtr, DifferentiableFunction.getCPtr(function), DVector.getCPtr(coordinates));
     if (datamungePINVOKE.SWIGPendingException.Pending) throw datamungePINVOKE.SWIGPendingException.Retrieve();
+    return ret;
+  }
+
+  /// <summary>Borrow this optimizer's stored configuration.</summary>
+  /// <returns>Const option reference, valid during this object's lifetime; no mutation.</returns>
+  public AdamOptions options() {
+    AdamOptions ret = new AdamOptions(datamungePINVOKE.Adam_options(swigCPtr), false);
     return ret;
   }
 

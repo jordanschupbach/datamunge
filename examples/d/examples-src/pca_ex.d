@@ -1,3 +1,5 @@
+// CMD: just TARGET=pca_ex run-d
+
 module app;
 
 import std.stdio : writeln, writefln;
@@ -10,7 +12,7 @@ SVector sv(string[] t) {
 }
 
 void main() {
-  auto iris = DataFrame.iris();
+  auto iris = data_iris();
   auto features = sv(["Sepal.Length", "Sepal.Width", "Petal.Length", "Petal.Width"]);
 
   // species labels as an SVector, for the grouped (colored-by-species) scores plot

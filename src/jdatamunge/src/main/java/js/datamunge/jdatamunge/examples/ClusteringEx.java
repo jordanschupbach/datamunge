@@ -60,7 +60,7 @@ public class ClusteringEx {
   }
 
   public static void run() {
-    var iris = DataFrame.iris();
+    var iris = datamunge.data_iris();
     long n = iris.nrows();
     List<String> species = new ArrayList<>();
     for (long i = 0; i < n; i++) species.add(iris.string_at("Species", i));

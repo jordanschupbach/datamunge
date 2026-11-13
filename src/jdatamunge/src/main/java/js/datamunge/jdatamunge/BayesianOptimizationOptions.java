@@ -8,6 +8,9 @@
 
 package js.datamunge.jdatamunge;
 
+/**
+ *  Settings for BayesianOptimization.
+ */
 public class BayesianOptimizationOptions {
   private transient long swigCPtr;
   protected transient boolean swigCMemOwn;
@@ -48,28 +51,76 @@ public class BayesianOptimizationOptions {
     }
   }
 
+  /**
+   *  Uniform random points evaluated before the surrogate is first fitted (at least 1).
+   */
   public void setInitial_samples(long value) {
     datamungeJNI.BayesianOptimizationOptions_initial_samples_set(swigCPtr, this, value);
   }
 
+  /**
+   *  Uniform random points evaluated before the surrogate is first fitted (at least 1).
+   */
   public long getInitial_samples() {
     return datamungeJNI.BayesianOptimizationOptions_initial_samples_get(swigCPtr, this);
   }
 
+  /**
+   *  Surrogate-guided evaluations after the initial design.
+   */
   public void setMax_iterations(long value) {
     datamungeJNI.BayesianOptimizationOptions_max_iterations_set(swigCPtr, this, value);
   }
 
+  /**
+   *  Surrogate-guided evaluations after the initial design.
+   */
   public long getMax_iterations() {
     return datamungeJNI.BayesianOptimizationOptions_max_iterations_get(swigCPtr, this);
   }
 
+  /**
+   *  Seed of the random design and the candidate draws.
+   */
   public void setSeed(java.math.BigInteger value) {
     datamungeJNI.BayesianOptimizationOptions_seed_set(swigCPtr, this, value);
   }
 
+  /**
+   *  Seed of the random design and the candidate draws.
+   */
   public java.math.BigInteger getSeed() {
     return datamungeJNI.BayesianOptimizationOptions_seed_get(swigCPtr, this);
+  }
+
+  /**
+   *  Uniform random candidates scored by the acquisition function per iteration (at least 1).
+   */
+  public void setCandidates(long value) {
+    datamungeJNI.BayesianOptimizationOptions_candidates_set(swigCPtr, this, value);
+  }
+
+  /**
+   *  Uniform random candidates scored by the acquisition function per iteration (at least 1).
+   */
+  public long getCandidates() {
+    return datamungeJNI.BayesianOptimizationOptions_candidates_get(swigCPtr, this);
+  }
+
+  /**
+   *  Compass-search step halvings that polish the best candidate on the acquisition<br>
+   *         surface; 0 keeps the best random candidate as it is.
+   */
+  public void setRefine_iterations(long value) {
+    datamungeJNI.BayesianOptimizationOptions_refine_iterations_set(swigCPtr, this, value);
+  }
+
+  /**
+   *  Compass-search step halvings that polish the best candidate on the acquisition<br>
+   *         surface; 0 keeps the best random candidate as it is.
+   */
+  public long getRefine_iterations() {
+    return datamungeJNI.BayesianOptimizationOptions_refine_iterations_get(swigCPtr, this);
   }
 
   public BayesianOptimizationOptions() {

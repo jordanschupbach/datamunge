@@ -1,3 +1,5 @@
+// CMD: just TARGET=bayes_ex run-d
+
 module app;
 
 import std.stdio : writeln;
@@ -139,7 +141,7 @@ void main() {
           ", divergences = ", result2.num_divergences());
 
   writeln("\n=================== Bayesian logistic regression vs. GLM's MLE (iris) ===================");
-  auto iris = DataFrame.iris();
+  auto iris = data_iris();
   double[] is_virginica;
   double[] petal_length;
   auto ni = iris.nrows();

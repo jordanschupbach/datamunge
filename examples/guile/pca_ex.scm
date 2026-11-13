@@ -1,6 +1,8 @@
+;; CMD: just TARGET=pca_ex run-guile
+
 (use-modules (datamunge) (ice-9 format))
 
-(define iris (DataFrame-iris))
+(define iris (data_iris))
 (define features (list "Sepal.Length" "Sepal.Width" "Petal.Length" "Petal.Width"))
 
 ;; species labels, for the grouped (colored-by-species) scores plot

@@ -3,7 +3,7 @@
 
 All come from Rosetta: Python from src/pydatamunge/rosetta, R from src/datamunger/rosetta,
 Lua from src/datamungelua/rosetta, Common Lisp from src/datamungelisp/rosetta, COBOL from
-src/datamungecobol/rosetta."""
+src/datamungecobol/rosetta, JavaScript from src/datamungejs/rosetta."""
 
 import argparse
 import os
@@ -26,15 +26,17 @@ R_PARTS = 16
 LUA_PARTS = 16
 LISP_PARTS = 16
 COBOL_PARTS = 16
+JS_PARTS = 16
 
 
 def generate_rosetta(header, policy, module, stem, parts, include_dirs=("include",), r_interface=None, lua_meta=None,
-                     lisp_dir=None, cobol_dir=None):
+                     lisp_dir=None, cobol_dir=None, js_types=None):
     """Generate src/<stem>*.cpp with Rosetta: the Python extension `module`, with
     r_interface (a path) the R package `module` and its R6 classes at that path, or with
     lua_meta (a path) the Lua module `module` and its LuaCATS stub at that path, or with
     lisp_dir (a directory) the Common Lisp system `module`: lisp_dir/module.lisp and .asd, or with
-    cobol_dir (a directory) the COBOL copybooks cobol_dir/module.cpy and module-callbacks.cpy."""
+    cobol_dir (a directory) the COBOL copybooks cobol_dir/module.cpy and module-callbacks.cpy, or with
+    js_types (a path) the Node.js addon `module` and its TypeScript declarations at that path."""
     with tempfile.TemporaryDirectory(prefix=".rosetta-", dir=ROOT / "src") as tmp:
         generated = Path(tmp) / (stem + ".cpp")
         language = ["--language", "python"]
@@ -51,6 +53,8 @@ def generate_rosetta(header, policy, module, stem, parts, include_dirs=("include
             language = ["--language", "cobol", "--cobol-api", "full", "--cobol-prefix", "dm", "--cobol-result-size", "16384",
                         "--cobol-output", str(Path(tmp) / (module + ".cpy")),
                         "--cobol-callbacks", str(Path(tmp) / (module + "-callbacks.cpy"))]
+        if js_types is not None:
+            language = ["--language", "javascript", "--js-types", str(Path(tmp) / Path(js_types).name)]
         subprocess.run(
             [
                 os.environ.get("ROSETTA", "rosetta"),
@@ -91,6 +95,8 @@ def generate_rosetta(header, policy, module, stem, parts, include_dirs=("include
             (ROOT / cobol_dir).mkdir(parents=True, exist_ok=True)
             for name in (module + ".cpy", module + "-callbacks.cpy"):
                 install_if_changed(Path(tmp) / name, ROOT / cobol_dir / name)
+        if js_types is not None:
+            install_if_changed(Path(tmp) / Path(js_types).name, ROOT / js_types)
 
 
 def prebuild_python():
@@ -102,7 +108,7 @@ def prebuild_python():
 
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument("language", choices=["python", "r", "lua", "lisp", "cobol"])
+    parser.add_argument("language", choices=["python", "r", "lua", "lisp", "cobol", "javascript"])
     args = parser.parse_args()
     if args.language == "python":
         prebuild_python()
@@ -115,6 +121,9 @@ def main():
         return
     if args.language == "cobol":
         prebuild_cobol()
+        return
+    if args.language == "javascript":
+        prebuild_javascript()
         return
     prebuild_r()
 
@@ -165,6 +174,15 @@ def prebuild_cobol():
     bindings = Path("src/datamungecobol/rosetta")
     generate_rosetta(bindings / "bindings.hpp", bindings / "policy.json", "datamunge", "datamunge_cobol_wrap", COBOL_PARTS,
                      cobol_dir="src/datamungecobol/copybooks")
+
+
+def prebuild_javascript():
+    """Generate src/datamunge_js_wrap*.cpp (the Node-API addon datamungejs.node, built by
+    setup.js and node-gyp) and index.d.ts beside index.js: TypeScript declarations whose JSDoc
+    carries the C++ documentation, so editors (tsserver, mep) show it on hover."""
+    bindings = Path("src/datamungejs/rosetta")
+    generate_rosetta(bindings / "bindings.hpp", bindings / "policy.json", "datamungejs", "datamunge_js_wrap", JS_PARTS,
+                     js_types="index.d.ts")
 
 
 if __name__ == "__main__":

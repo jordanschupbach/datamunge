@@ -1,3 +1,5 @@
+;; CMD: just TARGET=lmm_ex run-lisp
+
 ;;;; Linear mixed models: random intercept (penguins) and random intercept + slope (simulated schools).
 (require "asdf")
 (asdf:load-system "datamunge")
@@ -14,7 +16,7 @@
     (* (sqrt (* -2d0 (log u1))) (cos (* 2d0 pi u2)))))
 
 (format t "=================== Random intercept on a real dataset (penguins) ===================~%")
-(let ((penguins (dm:data-frame-penguins)))
+(let ((penguins (dm.data:penguins)))
   (dm:print-summary
    (dm:make-lmm penguins "body_mass_g ~ flipper_length_mm + bill_length_mm + (1 | species)")))
 

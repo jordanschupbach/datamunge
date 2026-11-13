@@ -8,6 +8,12 @@
 
 package js.datamunge.jdatamunge;
 
+/**
+ *  Model orders and optimizer settings for an ARIMA fit.<br>
+ * <br>
+ *  The regular orders are (p, d, q) and the seasonal orders are (P, D, Q) with period s.<br>
+ *  Leave every seasonal field at zero for a plain ARIMA(p, d, q) model.
+ */
 public class ARIMAOptions {
   private transient long swigCPtr;
   protected transient boolean swigCMemOwn;
@@ -138,16 +144,10 @@ public class ARIMAOptions {
     return datamungeJNI.ARIMAOptions_de_max_generations_get(swigCPtr, this);
   }
 
-  /**
-   *  Box constraint applied to every AR/MA coefficient during optimization.
-   */
   public void setCoefficient_bound(double value) {
     datamungeJNI.ARIMAOptions_coefficient_bound_set(swigCPtr, this, value);
   }
 
-  /**
-   *  Box constraint applied to every AR/MA coefficient during optimization.
-   */
   public double getCoefficient_bound() {
     return datamungeJNI.ARIMAOptions_coefficient_bound_get(swigCPtr, this);
   }

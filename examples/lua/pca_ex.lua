@@ -1,3 +1,5 @@
+-- CMD: just TARGET=pca_ex run-lua
+
 local dm = require("datamunge")
 
 local function sv(t)
@@ -6,7 +8,7 @@ local function sv(t)
   return v
 end
 
-local iris = dm.DataFrame.iris()
+local iris = dm.data.iris()
 local features = sv({ "Sepal.Length", "Sepal.Width", "Petal.Length", "Petal.Width" })
 
 -- species labels as an SVector, for the grouped (colored-by-species) scores plot

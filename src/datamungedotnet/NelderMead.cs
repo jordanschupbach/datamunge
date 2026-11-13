@@ -9,7 +9,17 @@
 //------------------------------------------------------------------------------
 
 
-/// <summary>Nelder-Mead downhill simplex search for an ArbitraryFunction.  This local,        derivative-free method is suitable when gradients are unavailable but repeated        objective evaluations are affordable.</summary>
+/// <summary>NelderMead on the ArbitraryFunction callback interface. Local simplex reflection, expansion, contraction and shrink search. Starts with per-coordinate displacements initial_simplex_scale and stops when simplex diameter and value spread are small. Those conditions do not prove stationarity or a global minimum. O(p^2) simplex storage. The caller supplies finite, dimensionally consistent callbacks. Inputs are borrowed; coordinates mutate in place and can retain a partial state if a callback throws. Calls use local optimizer state and propagate callback exceptions; sharing a mutable objective across threads requires external synchronisation. Normal return alone is not a uniform convergence certificate.</summary>
+/// Title: Example
+/// <code>      const dm::optim::NelderMead optimizer;
+///      std::print("{}\n",optimizer.options().max_iterations); // 2000</code>
+///
+///
+///
+/// Title: References
+///  - J. A. Nelder and R. Mead (1965), A Simplex Method for Function Minimization, https://doi.org/10.1093/comjnl/7.4.308
+///
+/// <seealso cref="NelderMeadOptions, trace_optimize"/>
 public class NelderMead : global::System.IDisposable {
   private global::System.Runtime.InteropServices.HandleRef swigCPtr;
   protected bool swigCMemOwn;
@@ -57,16 +67,56 @@ public class NelderMead : global::System.IDisposable {
     }
   }
 
+  /// <summary>Store a copy of the controls without running the objective.</summary>
+  /// <param name="options"> Method-specific controls; defaults are listed by NelderMeadOptions.</param> 
+  /// Title: Example
+  /// <code>      const dm::optim::NelderMead optimizer;
+  ///      std::print("{}\n",optimizer.options().max_iterations); // 2000</code>
+  ///
+  ///
+  ///
+  /// <seealso cref="optimize"/>
   public NelderMead(NelderMeadOptions options) : this(datamungePINVOKE.new_NelderMead__SWIG_0(NelderMeadOptions.getCPtr(options)), true) {
     if (datamungePINVOKE.SWIGPendingException.Pending) throw datamungePINVOKE.SWIGPendingException.Retrieve();
   }
 
+  /// <summary>Store a copy of the controls without running the objective.</summary>
+  /// Title: Example
+  /// <code>      const dm::optim::NelderMead optimizer;
+  ///      std::print("{}\n",optimizer.options().max_iterations); // 2000</code>
+  ///
+  ///
+  ///
+  /// <seealso cref="optimize"/>
   public NelderMead() : this(datamungePINVOKE.new_NelderMead__SWIG_1(), true) {
   }
 
+  /// <summary>Run NelderMead from the supplied point using the configured finite budget. Local simplex reflection, expansion, contraction and shrink search. Starts with per-coordinate displacements initial_simplex_scale and stops when simplex diameter and value spread are small. Those conditions do not prove stationarity or a global minimum. O(p^2) simplex storage.</summary>
+  /// <param name="function"> Borrowed ArbitraryFunction with matching finite output shapes.</param> 
+  /// <param name="coordinates"> Owned-by-caller finite start; overwritten with the native returned point.</param> 
+  /// <returns>Objective at the native returned coordinates; not a stop-status code.</returns> 
+  /// <exception cref="std::invalid_argument"> NelderMead: initial_simplex_scale must be positive; NelderMead: reflection must be positive; NelderMead: expansion must be greater than 1; NelderMead: contraction must be in (0, 1); NelderMead: shrink must be in (0, 1); NelderMead: tolerance must be non-negative.</exception> 
+  /// <exception cref="std::exception"> Exceptions from supplied callbacks propagate. Raw solvers do not uniformly reject nonfinite inputs.</exception> 
+  /// Title: Example
+  /// <code>      dm::optim::QuadraticObjective f({2,8},{1,-2});
+  ///      dm::optim::NelderMeadOptions controls;controls.max_iterations=5;
+  ///      std::vector&lt;double&gt; x{0,0};
+  ///      const auto value=dm::optim::NelderMead(controls).optimize(f,x);
+  ///      std::print("{}\n",std::isfinite(value)); // true</code>
+  ///
+  ///
+  ///
+  /// <seealso cref="trace_optimize"/>
   public double optimize(ArbitraryFunction function, DVector coordinates) {
     double ret = datamungePINVOKE.NelderMead_optimize(swigCPtr, ArbitraryFunction.getCPtr(function), DVector.getCPtr(coordinates));
     if (datamungePINVOKE.SWIGPendingException.Pending) throw datamungePINVOKE.SWIGPendingException.Retrieve();
+    return ret;
+  }
+
+  /// <summary>Borrow this optimizer's stored configuration.</summary>
+  /// <returns>Const option reference, valid during this object's lifetime; no mutation.</returns>
+  public NelderMeadOptions options() {
+    NelderMeadOptions ret = new NelderMeadOptions(datamungePINVOKE.NelderMead_options(swigCPtr), false);
     return ret;
   }
 

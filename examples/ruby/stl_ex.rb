@@ -1,3 +1,5 @@
+# CMD: just TARGET=stl_ex run-ruby
+
 require "octruby"
 
 n = 100

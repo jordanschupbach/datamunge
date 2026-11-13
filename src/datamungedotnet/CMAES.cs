@@ -9,7 +9,17 @@
 //------------------------------------------------------------------------------
 
 
-/// <summary>Covariance Matrix Adaptation Evolution Strategy (CMA-ES) for unconstrained continuous        derivative-free optimization.  CMA-ES adapts a full Gaussian covariance matrix from        the best sampled candidates each generation, making it effective on rotated and        ill-conditioned objectives.</summary>
+/// <summary>CMAES on the ArbitraryFunction callback interface. Unbounded covariance-adaptation evolution strategy with weighted elites, evolution paths and global step-size adaptation. Default offspring count is 4+floor(3*log(p)). Covariance eigensolve is dense with numerical eigenvalue floors. Stops on search-scale/axis tolerance or generation budget; stochastic results depend on seed and population, not a global certificate. The caller supplies finite, dimensionally consistent callbacks. Inputs are borrowed; coordinates mutate in place and can retain a partial state if a callback throws. Calls use local optimizer state and propagate callback exceptions; sharing a mutable objective across threads requires external synchronisation. Normal return alone is not a uniform convergence certificate.</summary>
+/// Title: Example
+/// <code>      const dm::optim::CMAES optimizer;
+///      std::print("{}\n",optimizer.options().max_generations); // 500</code>
+///
+///
+///
+/// Title: References
+///  - N. Hansen and A. Ostermeier (2001), Completely Derandomized Self-Adaptation in Evolution Strategies, https://doi.org/10.1162/106365601750190398
+///
+/// <seealso cref="CMAESOptions, trace_optimize"/>
 public class CMAES : global::System.IDisposable {
   private global::System.Runtime.InteropServices.HandleRef swigCPtr;
   protected bool swigCMemOwn;
@@ -57,16 +67,56 @@ public class CMAES : global::System.IDisposable {
     }
   }
 
+  /// <summary>Store a copy of the controls without running the objective.</summary>
+  /// <param name="options"> Method-specific controls; defaults are listed by CMAESOptions.</param> 
+  /// Title: Example
+  /// <code>      const dm::optim::CMAES optimizer;
+  ///      std::print("{}\n",optimizer.options().max_generations); // 500</code>
+  ///
+  ///
+  ///
+  /// <seealso cref="optimize"/>
   public CMAES(CMAESOptions options) : this(datamungePINVOKE.new_CMAES__SWIG_0(CMAESOptions.getCPtr(options)), true) {
     if (datamungePINVOKE.SWIGPendingException.Pending) throw datamungePINVOKE.SWIGPendingException.Retrieve();
   }
 
+  /// <summary>Store a copy of the controls without running the objective.</summary>
+  /// Title: Example
+  /// <code>      const dm::optim::CMAES optimizer;
+  ///      std::print("{}\n",optimizer.options().max_generations); // 500</code>
+  ///
+  ///
+  ///
+  /// <seealso cref="optimize"/>
   public CMAES() : this(datamungePINVOKE.new_CMAES__SWIG_1(), true) {
   }
 
+  /// <summary>Run CMAES from the supplied point using the configured finite budget. Unbounded covariance-adaptation evolution strategy with weighted elites, evolution paths and global step-size adaptation. Default offspring count is 4+floor(3*log(p)). Covariance eigensolve is dense with numerical eigenvalue floors. Stops on search-scale/axis tolerance or generation budget; stochastic results depend on seed and population, not a global certificate.</summary>
+  /// <param name="function"> Borrowed ArbitraryFunction with matching finite output shapes.</param> 
+  /// <param name="coordinates"> Owned-by-caller finite start; overwritten with the native returned point.</param> 
+  /// <returns>Objective at the native returned coordinates; not a stop-status code.</returns> 
+  /// <exception cref="std::invalid_argument"> CMAES: initial_step_size must be positive; CMAES: tolerance must be non-negative; CMAES: population_size must be at least 2.</exception> 
+  /// <exception cref="std::exception"> Exceptions from supplied callbacks propagate. Raw solvers do not uniformly reject nonfinite inputs.</exception> 
+  /// Title: Example
+  /// <code>      dm::optim::QuadraticObjective f({2,8},{1,-2});
+  ///      dm::optim::CMAESOptions controls;controls.max_generations=5;
+  ///      std::vector&lt;double&gt; x{0,0};
+  ///      const auto value=dm::optim::CMAES(controls).optimize(f,x);
+  ///      std::print("{}\n",std::isfinite(value)); // true</code>
+  ///
+  ///
+  ///
+  /// <seealso cref="trace_optimize"/>
   public double optimize(ArbitraryFunction function, DVector coordinates) {
     double ret = datamungePINVOKE.CMAES_optimize(swigCPtr, ArbitraryFunction.getCPtr(function), DVector.getCPtr(coordinates));
     if (datamungePINVOKE.SWIGPendingException.Pending) throw datamungePINVOKE.SWIGPendingException.Retrieve();
+    return ret;
+  }
+
+  /// <summary>Borrow this optimizer's stored configuration.</summary>
+  /// <returns>Const option reference, valid during this object's lifetime; no mutation.</returns>
+  public CMAESOptions options() {
+    CMAESOptions ret = new CMAESOptions(datamungePINVOKE.CMAES_options(swigCPtr), false);
     return ret;
   }
 

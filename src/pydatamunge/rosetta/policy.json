@@ -2,6 +2,7 @@
   "version": 1,
   "select": "all",
   "names": "flat",
+  "modules": { "datamunge::data": "data" },
   "sequences": "vector",
   "scope": [
     "../../../include/datamunge/plot/plot.hpp",

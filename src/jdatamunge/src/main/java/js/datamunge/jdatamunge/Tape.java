@@ -55,18 +55,45 @@ public class Tape {
     }
   }
 
+  /**
+   *  An empty tape; create leaf Vars against it with Var(tape, value).
+   */
   public Tape() {
     this(datamungeJNI.new_Tape(), true);
   }
 
+  /**
+   *  Number of recorded nodes (leaves plus operation results).
+   */
   public long size() {
     return datamungeJNI.Tape_size(swigCPtr, this);
   }
 
+  /**
+   *  The value recorded at node <code>index</code>.<br>
+   *  @param index Node index, as returned by Var::index().<br>
+   *  @return The node's value.<br>
+   *  @throws std::out_of_range When <code>index</code> &gt;= size().
+   */
   public double value_at(long index) {
     return datamungeJNI.Tape_value_at(swigCPtr, this, index);
   }
 
+  /**
+   *  Reverse sweep from <code>output</code>: d(output)/d(node) for every node on the tape.<br>
+   * <br>
+   *  The tape is unchanged, so backward() may be called again for other outputs.<br>
+   *  @param output A Var recorded on this tape (usually the final expression).<br>
+   *  @return One adjoint per node, indexed by Var::index() (0-based; add 1 in R and Lua).<br>
+   *  @throws std::out_of_range When <code>output</code> is not a node of this tape.<br>
+   *  <p alt="Example"><br>
+   *  {@code 
+   dm::Tape tape;
+   const dm::Var a(tape, 2.0), b(tape, 3.0);
+   const auto grad = tape.backward(a.multiply(b));
+   std::print("{} {}\n", grad[a.index()], grad[b.index()]);  // 3 2
+   }</p>
+   */
   public DVector backward(Var output) {
     return new DVector(datamungeJNI.Tape_backward(swigCPtr, this, Var.getCPtr(output), output), true);
   }

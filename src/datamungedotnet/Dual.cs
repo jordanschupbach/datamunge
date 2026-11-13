@@ -57,111 +57,173 @@ public class Dual : global::System.IDisposable {
     }
   }
 
+  /// <summary>A dual number value + derivative·ε (ε² = 0).</summary>
+  ///  Seed the variable you differentiate with derivative 1 and constants with 0; every
+  ///  operation then carries the exact derivative with respect to that seed.
+  /// <param name="value"> Real part, the function value.</param> 
+  /// <param name="derivative"> Dual part, the derivative with respect to the seed (default 0).</param> 
+  /// Title: Example
+  /// <code>      const dm::Dual x(2.0, 1.0);  // seed d/dx
+  ///      std::print("{}\n", x.multiply(x).derivative());  // 4</code>
   public Dual(double value, double derivative) : this(datamungePINVOKE.new_Dual__SWIG_0(value, derivative), true) {
   }
 
+  /// <summary>A dual number value + derivative·ε (ε² = 0).</summary>
+  ///  Seed the variable you differentiate with derivative 1 and constants with 0; every
+  ///  operation then carries the exact derivative with respect to that seed.
+  /// <param name="value"> Real part, the function value.</param> 
+  /// Title: Example
+  /// <code>      const dm::Dual x(2.0, 1.0);  // seed d/dx
+  ///      std::print("{}\n", x.multiply(x).derivative());  // 4</code>
   public Dual(double value) : this(datamungePINVOKE.new_Dual__SWIG_1(value), true) {
   }
 
+  /// <summary>The real part: the function value.</summary>
   public double value() {
     double ret = datamungePINVOKE.Dual_value(swigCPtr);
     return ret;
   }
 
+  /// <summary>The dual part: the exact derivative with respect to the seed.</summary>
   public double derivative() {
     double ret = datamungePINVOKE.Dual_derivative(swigCPtr);
     return ret;
   }
 
+  /// <summary>Sum: this + ``other``, with derivative a' + b'.</summary>
+  /// <param name="other"> Right operand.</param> 
+  /// <returns>A new Dual; neither operand changes.</returns>
   public Dual add(Dual other) {
     Dual ret = new Dual(datamungePINVOKE.Dual_add(swigCPtr, Dual.getCPtr(other)), true);
     if (datamungePINVOKE.SWIGPendingException.Pending) throw datamungePINVOKE.SWIGPendingException.Retrieve();
     return ret;
   }
 
+  /// <summary>Difference: this - ``other``, with derivative a' - b'.</summary>
+  /// <param name="other"> Right operand.</param> 
+  /// <returns>A new Dual; neither operand changes.</returns>
   public Dual subtract(Dual other) {
     Dual ret = new Dual(datamungePINVOKE.Dual_subtract(swigCPtr, Dual.getCPtr(other)), true);
     if (datamungePINVOKE.SWIGPendingException.Pending) throw datamungePINVOKE.SWIGPendingException.Retrieve();
     return ret;
   }
 
+  /// <summary>Product: this * ``other``, with derivative a'b + ab' (product rule).</summary>
+  /// <param name="other"> Right operand.</param> 
+  /// <returns>A new Dual; neither operand changes.</returns>
   public Dual multiply(Dual other) {
     Dual ret = new Dual(datamungePINVOKE.Dual_multiply(swigCPtr, Dual.getCPtr(other)), true);
     if (datamungePINVOKE.SWIGPendingException.Pending) throw datamungePINVOKE.SWIGPendingException.Retrieve();
     return ret;
   }
 
+  /// <summary>Quotient: this / ``other``, with derivative (a'b - ab')/b² (IEEE inf/NaN when other is 0).</summary>
+  /// <param name="other"> Right operand.</param> 
+  /// <returns>A new Dual; neither operand changes.</returns>
   public Dual divide(Dual other) {
     Dual ret = new Dual(datamungePINVOKE.Dual_divide(swigCPtr, Dual.getCPtr(other)), true);
     if (datamungePINVOKE.SWIGPendingException.Pending) throw datamungePINVOKE.SWIGPendingException.Retrieve();
     return ret;
   }
 
+  /// <summary>Negation -x, with its exact chain-rule derivative.</summary>
+  /// <returns>A new Dual.</returns>
   public Dual negate() {
     Dual ret = new Dual(datamungePINVOKE.Dual_negate(swigCPtr), true);
     return ret;
   }
 
+  /// <summary>Adds a constant ``scalar``, derivative unchanged.</summary>
+  /// <param name="scalar"> Constant right operand.</param> 
+  /// <returns>A new Dual.</returns>
   public Dual add_scalar(double scalar) {
     Dual ret = new Dual(datamungePINVOKE.Dual_add_scalar(swigCPtr, scalar), true);
     return ret;
   }
 
+  /// <summary>Subtracts a constant ``scalar``, derivative unchanged.</summary>
+  /// <param name="scalar"> Constant right operand.</param> 
+  /// <returns>A new Dual.</returns>
   public Dual subtract_scalar(double scalar) {
     Dual ret = new Dual(datamungePINVOKE.Dual_subtract_scalar(swigCPtr, scalar), true);
     return ret;
   }
 
+  /// <summary>Multiplies by a constant ``scalar``, derivative scaled by it.</summary>
+  /// <param name="scalar"> Constant right operand.</param> 
+  /// <returns>A new Dual.</returns>
   public Dual multiply_scalar(double scalar) {
     Dual ret = new Dual(datamungePINVOKE.Dual_multiply_scalar(swigCPtr, scalar), true);
     return ret;
   }
 
+  /// <summary>Divides by a constant ``scalar``, derivative divided by it.</summary>
+  /// <param name="scalar"> Constant right operand.</param> 
+  /// <returns>A new Dual.</returns>
   public Dual divide_scalar(double scalar) {
     Dual ret = new Dual(datamungePINVOKE.Dual_divide_scalar(swigCPtr, scalar), true);
     return ret;
   }
 
+  /// <summary>Power x^p for a constant exponent, with derivative p·x^(p-1).</summary>
+  /// <param name="exponent"> Constant exponent p; non-integer p needs x ≥ 0 (NaN otherwise).</param> 
+  /// <returns>A new Dual.</returns>
   public Dual pow(double exponent) {
     Dual ret = new Dual(datamungePINVOKE.Dual_pow(swigCPtr, exponent), true);
     return ret;
   }
 
+  /// <summary>Exponential e^x, with its exact chain-rule derivative.</summary>
+  /// <returns>A new Dual.</returns>
   public Dual exp() {
     Dual ret = new Dual(datamungePINVOKE.Dual_exp(swigCPtr), true);
     return ret;
   }
 
+  /// <summary>Natural logarithm ln x (NaN for x &lt; 0, -inf at 0), with its exact chain-rule derivative.</summary>
+  /// <returns>A new Dual.</returns>
   public Dual log() {
     Dual ret = new Dual(datamungePINVOKE.Dual_log(swigCPtr), true);
     return ret;
   }
 
+  /// <summary>Square root √x (NaN for x &lt; 0; infinite derivative at 0), with its exact chain-rule derivative.</summary>
+  /// <returns>A new Dual.</returns>
   public Dual sqrt() {
     Dual ret = new Dual(datamungePINVOKE.Dual_sqrt(swigCPtr), true);
     return ret;
   }
 
+  /// <summary>Sine (radians), with its exact chain-rule derivative.</summary>
+  /// <returns>A new Dual.</returns>
   public Dual sin() {
     Dual ret = new Dual(datamungePINVOKE.Dual_sin(swigCPtr), true);
     return ret;
   }
 
+  /// <summary>Cosine (radians), with its exact chain-rule derivative.</summary>
+  /// <returns>A new Dual.</returns>
   public Dual cos() {
     Dual ret = new Dual(datamungePINVOKE.Dual_cos(swigCPtr), true);
     return ret;
   }
 
+  /// <summary>Tangent (radians), with its exact chain-rule derivative.</summary>
+  /// <returns>A new Dual.</returns>
   public Dual tan() {
     Dual ret = new Dual(datamungePINVOKE.Dual_tan(swigCPtr), true);
     return ret;
   }
 
+  /// <summary>Hyperbolic tangent, with its exact chain-rule derivative.</summary>
+  /// <returns>A new Dual.</returns>
   public Dual tanh() {
     Dual ret = new Dual(datamungePINVOKE.Dual_tanh(swigCPtr), true);
     return ret;
   }
 
+  /// <summary>Absolute value |x| (the derivative at 0 uses the x ≥ 0 branch), with its exact chain-rule derivative.</summary>
+  /// <returns>A new Dual.</returns>
   public Dual abs() {
     Dual ret = new Dual(datamungePINVOKE.Dual_abs(swigCPtr), true);
     return ret;

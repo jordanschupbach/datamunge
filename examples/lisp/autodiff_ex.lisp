@@ -1,3 +1,5 @@
+;; CMD: just TARGET=autodiff_ex run-lisp
+
 ;;;; Automatic differentiation: forward mode (Dual), reverse mode (Tape/Var), Hessians (HyperDual).
 (require "asdf")
 (asdf:load-system "datamunge")

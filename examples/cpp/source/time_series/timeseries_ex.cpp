@@ -1,3 +1,5 @@
+// CMD: just TARGET=timeseries_ex run-cpp
+
 #include <datamunge/stats/arima.hpp>
 #include <datamunge/stats/exponential_smoothing.hpp>
 

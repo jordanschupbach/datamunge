@@ -57,16 +57,30 @@ public class GibbsSampler : global::System.IDisposable {
     }
   }
 
+  /// <summary>Stores the sampler settings.</summary>
+  /// <param name="options"> Sampler settings.</param>
   public GibbsSampler(GibbsOptions options) : this(datamungePINVOKE.new_GibbsSampler__SWIG_0(GibbsOptions.getCPtr(options)), true) {
     if (datamungePINVOKE.SWIGPendingException.Pending) throw datamungePINVOKE.SWIGPendingException.Retrieve();
   }
 
+  /// <summary>Stores the sampler settings.</summary>
   public GibbsSampler() : this(datamungePINVOKE.new_GibbsSampler__SWIG_1(), true) {
   }
 
+  /// <summary>Runs warmup sweeps (adapting each coordinate's step), then num_samples sweeps.</summary>
+  /// <param name="log_posterior"> Log density up to a constant; only evaluate() is used.</param> 
+  /// <param name="initial_params"> Starting point.</param> 
+  /// <returns>Draws, per-coordinate acceptance rates and step sizes.</returns>
   public GibbsResult sample(ArbitraryFunction log_posterior, DVector initial_params) {
     GibbsResult ret = new GibbsResult(datamungePINVOKE.GibbsSampler_sample(swigCPtr, ArbitraryFunction.getCPtr(log_posterior), DVector.getCPtr(initial_params)), true);
     if (datamungePINVOKE.SWIGPendingException.Pending) throw datamungePINVOKE.SWIGPendingException.Retrieve();
+    return ret;
+  }
+
+  /// <summary>The options this GibbsSampler was configured with.</summary>
+  /// <returns>The stored options.</returns>
+  public GibbsOptions options() {
+    GibbsOptions ret = new GibbsOptions(datamungePINVOKE.GibbsSampler_options(swigCPtr), false);
     return ret;
   }
 

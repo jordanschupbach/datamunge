@@ -65,7 +65,7 @@ def test_lm_fits_and_predicts():
 def test_pca_matches_known_iris_variance_explained():
     from pydatamunge import datamunge
 
-    iris = datamunge.DataFrame.iris()
+    iris = datamunge.data.iris()
     features = ["Sepal.Length", "Sepal.Width", "Petal.Length", "Petal.Width"]
 
     pca = datamunge.PCA(iris, features, True, True)
@@ -85,7 +85,7 @@ def test_pca_matches_known_iris_variance_explained():
 def test_mds_embeds_iris_with_high_goodness_of_fit():
     from pydatamunge import datamunge
 
-    iris = datamunge.DataFrame.iris()
+    iris = datamunge.data.iris()
     features = ["Sepal.Length", "Sepal.Width", "Petal.Length", "Petal.Width"]
 
     mds = datamunge.MDS(iris, features, 2, "euclidean")
@@ -101,7 +101,7 @@ def test_mds_embeds_iris_with_high_goodness_of_fit():
 def test_pca_and_mds_plot_grouped_by_species():
     from pydatamunge import datamunge
 
-    iris = datamunge.DataFrame.iris()
+    iris = datamunge.data.iris()
     features = ["Sepal.Length", "Sepal.Width", "Petal.Length", "Petal.Width"]
 
     pca = datamunge.PCA(iris, features, True, True)

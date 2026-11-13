@@ -8,6 +8,23 @@
 
 package js.datamunge.jdatamunge;
 
+/**
+ *  AugmentedLagrangian on the EqualityConstrainedFunction callback interface.<br>
+ *  Uses fixed inner gradient steps on f+lambda*c+rho*||c||^2/2, capped so each displacement norm is at most one. Updates multipliers after each inner budget and doubles rho until feasibility tolerance or outer budget. No dual-stationarity test is exposed. Objective return alone is not a KKT certificate.<br>
+ *  The caller supplies finite, dimensionally consistent callbacks. Inputs are borrowed;<br>
+ *  coordinates mutate in place and can retain a partial state if a callback throws.<br>
+ *  Calls use local optimizer state and propagate callback exceptions; sharing a mutable<br>
+ *  objective across threads requires external synchronisation. Normal return alone<br>
+ *  is not a uniform convergence certificate.<br>
+ *  <p alt="Example"><br>
+ *  {@code 
+ const dm::optim::AugmentedLagrangian optimizer;
+ std::print("{}\n",optimizer.options().max_outer_iterations); // 50
+ }</p><br>
+ *  <p alt="References"><br>
+ *  - J. Nocedal and S. J. Wright (2006), Numerical Optimization, second edition, https://doi.org/10.1007/978-0-387-40065-5. The implemented variant and stopping rules are specified above.<br>
+ *  </p>@see AugmentedLagrangianOptions, trace_optimize()
+ */
 public class AugmentedLagrangian {
   private transient long swigCPtr;
   protected transient boolean swigCMemOwn;
@@ -48,16 +65,61 @@ public class AugmentedLagrangian {
     }
   }
 
+  /**
+   *  Store a copy of the controls without running the objective.<br>
+   *  @param options Method-specific controls; defaults are listed by AugmentedLagrangianOptions.<br>
+   *  <p alt="Example"><br>
+   *  {@code 
+   const dm::optim::AugmentedLagrangian optimizer;
+   std::print("{}\n",optimizer.options().max_outer_iterations); // 50
+   }</p><br>
+   *  @see optimize()
+   */
   public AugmentedLagrangian(AugmentedLagrangianOptions options) {
     this(datamungeJNI.new_AugmentedLagrangian__SWIG_0(AugmentedLagrangianOptions.getCPtr(options), options), true);
   }
 
+  /**
+   *  Store a copy of the controls without running the objective.<br>
+   *  <p alt="Example"><br>
+   *  {@code 
+   const dm::optim::AugmentedLagrangian optimizer;
+   std::print("{}\n",optimizer.options().max_outer_iterations); // 50
+   }</p><br>
+   *  @see optimize()
+   */
   public AugmentedLagrangian() {
     this(datamungeJNI.new_AugmentedLagrangian__SWIG_1(), true);
   }
 
+  /**
+   *  Run AugmentedLagrangian from the supplied point using the configured finite budget.<br>
+   *  Uses fixed inner gradient steps on f+lambda*c+rho*||c||^2/2, capped so each displacement norm is at most one. Updates multipliers after each inner budget and doubles rho until feasibility tolerance or outer budget. No dual-stationarity test is exposed. Objective return alone is not a KKT certificate.<br>
+   *  @param function Borrowed EqualityConstrainedFunction with matching finite output shapes.<br>
+   *  @param coordinates Owned-by-caller finite start; overwritten with the native returned point.<br>
+   *  @return Objective at the native returned coordinates; not a stop-status code.<br>
+   *  @throws std::invalid_argument AugmentedLagrangian: positive step_size and penalty required.<br>
+   *  @throws std::exception Exceptions from supplied callbacks propagate. Raw solvers do not uniformly reject nonfinite inputs.<br>
+   *  <p alt="Example"><br>
+   *  {@code 
+   dm::optim::EqualityQuadratic f({2,0},1);
+   dm::optim::AugmentedLagrangianOptions controls;controls.max_outer_iterations=5;
+   std::vector<double> x{0,0};
+   const auto value=dm::optim::AugmentedLagrangian(controls).optimize(f,x);
+   std::print("{}\n",std::isfinite(value)); // true
+   }</p><br>
+   *  @see trace_optimize(), AugmentedLagrangianOptions
+   */
   public double optimize(EqualityConstrainedFunction function, DVector coordinates) {
     return datamungeJNI.AugmentedLagrangian_optimize(swigCPtr, this, EqualityConstrainedFunction.getCPtr(function), function, DVector.getCPtr(coordinates), coordinates);
+  }
+
+  /**
+   *  Borrow this optimizer's stored configuration.<br>
+   *  @return Const option reference, valid during this object's lifetime; no mutation.
+   */
+  public AugmentedLagrangianOptions options() {
+    return new AugmentedLagrangianOptions(datamungeJNI.AugmentedLagrangian_options(swigCPtr, this), false);
   }
 
 }

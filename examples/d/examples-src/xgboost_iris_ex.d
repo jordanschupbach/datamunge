@@ -1,10 +1,12 @@
+// CMD: just TARGET=xgboost_iris_ex run-d
+
 module app;
 
 import std.stdio : writeln;
 import datamunge;
 
 void main() {
-  auto iris = DataFrame.iris();
+  auto iris = data_iris();
   writeln("iris: ", iris.nrows(), " rows x ", iris.ncols(), " cols\n");
 
   auto model = new XGBoostClassifier(iris, "Species ~ Petal.Length + Petal.Width");

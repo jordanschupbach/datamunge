@@ -1,3 +1,5 @@
+# CMD: just TARGET=rplot_ex run-ruby
+
 require "octruby"
 
 # Demonstrates Datamunge::RPlot / Datamunge::RLayout -- the R-base-graphics-style plotting library.

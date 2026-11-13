@@ -1,4 +1,6 @@
 <?php
+// CMD: just TARGET=optim_advanced_ex run-php
+
 
 // Exercises the datamunge::optim module in PHP -- previously the ENTIRE module (including
 // the original ArbitraryFunction/DifferentiableFunction base interfaces) was %ignore'd for

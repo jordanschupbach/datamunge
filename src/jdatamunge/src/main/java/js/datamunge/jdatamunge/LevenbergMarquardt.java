@@ -8,6 +8,23 @@
 
 package js.datamunge.jdatamunge;
 
+/**
+ *  LevenbergMarquardt on the ResidualFunction callback interface.<br>
+ *  Forms J transpose J plus scalar damping*I and solves by unpivoted elimination. Accepts only strict reductions of half residual SSE, multiplying damping by .3 on acceptance and 10 on rejection. Tests proposed step norm even after rejection. A small rejected step is not a gradient certificate; no parameter constraints. O(np^2+p^3) work.<br>
+ *  The caller supplies finite, dimensionally consistent callbacks. Inputs are borrowed;<br>
+ *  coordinates mutate in place and can retain a partial state if a callback throws.<br>
+ *  Calls use local optimizer state and propagate callback exceptions; sharing a mutable<br>
+ *  objective across threads requires external synchronisation. Normal return alone<br>
+ *  is not a uniform convergence certificate.<br>
+ *  <p alt="Example"><br>
+ *  {@code 
+ const dm::optim::LevenbergMarquardt optimizer;
+ std::print("{}\n",optimizer.options().max_iterations); // 200
+ }</p><br>
+ *  <p alt="References"><br>
+ *  - K. Levenberg (1944), A Method for the Solution of Certain Non-Linear Problems in Least Squares, https://doi.org/10.1090/qam/10666; D. W. Marquardt (1963), An Algorithm for Least-Squares Estimation of Nonlinear Parameters, https://doi.org/10.1137/0111030<br>
+ *  </p>@see LevenbergMarquardtOptions, trace_optimize()
+ */
 public class LevenbergMarquardt {
   private transient long swigCPtr;
   protected transient boolean swigCMemOwn;
@@ -48,16 +65,61 @@ public class LevenbergMarquardt {
     }
   }
 
+  /**
+   *  Store a copy of the controls without running the objective.<br>
+   *  @param options Method-specific controls; defaults are listed by LevenbergMarquardtOptions.<br>
+   *  <p alt="Example"><br>
+   *  {@code 
+   const dm::optim::LevenbergMarquardt optimizer;
+   std::print("{}\n",optimizer.options().max_iterations); // 200
+   }</p><br>
+   *  @see optimize()
+   */
   public LevenbergMarquardt(LevenbergMarquardtOptions options) {
     this(datamungeJNI.new_LevenbergMarquardt__SWIG_0(LevenbergMarquardtOptions.getCPtr(options), options), true);
   }
 
+  /**
+   *  Store a copy of the controls without running the objective.<br>
+   *  <p alt="Example"><br>
+   *  {@code 
+   const dm::optim::LevenbergMarquardt optimizer;
+   std::print("{}\n",optimizer.options().max_iterations); // 200
+   }</p><br>
+   *  @see optimize()
+   */
   public LevenbergMarquardt() {
     this(datamungeJNI.new_LevenbergMarquardt__SWIG_1(), true);
   }
 
+  /**
+   *  Run LevenbergMarquardt from the supplied point using the configured finite budget.<br>
+   *  Forms J transpose J plus scalar damping*I and solves by unpivoted elimination. Accepts only strict reductions of half residual SSE, multiplying damping by .3 on acceptance and 10 on rejection. Tests proposed step norm even after rejection. A small rejected step is not a gradient certificate; no parameter constraints. O(np^2+p^3) work.<br>
+   *  @param function Borrowed ResidualFunction with matching finite output shapes.<br>
+   *  @param coordinates Owned-by-caller finite start; overwritten with the native returned point.<br>
+   *  @return Objective at the native returned coordinates (half residual SSE); not a stop-status code.<br>
+   *  @throws std::invalid_argument LevenbergMarquardt: initial_damping must be positive.<br>
+   *  @throws std::exception Exceptions from supplied callbacks propagate. Raw solvers do not uniformly reject nonfinite inputs.<br>
+   *  <p alt="Example"><br>
+   *  {@code 
+   const auto data=dm::optim::optimization_curve_data();dm::optim::CurveResidual f(data);
+   dm::optim::LevenbergMarquardtOptions controls;controls.max_iterations=5;
+   std::vector<double> x{2,.5};
+   const auto value=dm::optim::LevenbergMarquardt(controls).optimize(f,x);
+   std::print("{}\n",std::isfinite(value)); // true
+   }</p><br>
+   *  @see trace_optimize(), LevenbergMarquardtOptions
+   */
   public double optimize(ResidualFunction function, DVector coordinates) {
     return datamungeJNI.LevenbergMarquardt_optimize(swigCPtr, this, ResidualFunction.getCPtr(function), function, DVector.getCPtr(coordinates), coordinates);
+  }
+
+  /**
+   *  Borrow this optimizer's stored configuration.<br>
+   *  @return Const option reference, valid during this object's lifetime; no mutation.
+   */
+  public LevenbergMarquardtOptions options() {
+    return new LevenbergMarquardtOptions(datamungeJNI.LevenbergMarquardt_options(swigCPtr, this), false);
   }
 
 }

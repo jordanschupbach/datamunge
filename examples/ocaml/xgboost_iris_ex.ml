@@ -1,3 +1,5 @@
+(* CMD: just TARGET=xgboost_iris_ex run-ocaml *)
+
 open Swig
 open Datamunge
 
@@ -6,7 +8,7 @@ let last_of v =
   get_float (invoke v "[]" (C_int (n - 1)))
 
 let () =
-  let iris = _DataFrame_iris C_void in
+  let iris = _data_iris C_void in
   Printf.printf "iris: %d rows x %d cols\n\n"
     (get_int (invoke iris "nrows" C_void)) (get_int (invoke iris "ncols" C_void));
 

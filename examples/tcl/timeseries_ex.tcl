@@ -1,3 +1,5 @@
+# CMD: just TARGET=timeseries_ex run-tcl
+
 package require Datamunge 0.0.1
 
 proc randn {} {

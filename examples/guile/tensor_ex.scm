@@ -1,3 +1,5 @@
+;; CMD: just TARGET=tensor_ex run-guile
+
 (use-modules (datamunge))
 
 (define (shape-str shp)
@@ -46,7 +48,7 @@
 (format #t "count(r >= 6) = ~a\n" (Tensor-sum mask))
 
 (format #t "\n=================== A real dataset as a Tensor ===================\n")
-(define iris (DataFrame-iris))
+(define iris (data_iris))
 (define n (DataFrame-nrows iris))
 (define flat '())
 (do ((i 0 (+ i 1))) ((= i n))

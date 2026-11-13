@@ -1,3 +1,5 @@
+// CMD: just TARGET=lmm_ex run-d
+
 module app;
 
 import std.stdio : writeln;
@@ -19,7 +21,7 @@ double gauss(ref Random rng) {
 
 void main() {
   writeln("=================== Random intercept on a real dataset (penguins) ===================");
-  auto penguins = DataFrame.penguins();
+  auto penguins = data_penguins();
   auto species_model = new LMM(penguins, "body_mass_g ~ flipper_length_mm + bill_length_mm + (1 | species)");
   species_model.print_summary();
 

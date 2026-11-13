@@ -4,7 +4,7 @@ import pytest
 def _iris():
     from pydatamunge import datamunge
 
-    return datamunge.DataFrame.iris()
+    return datamunge.data.iris()
 
 
 def test_splom_selects_numeric_columns_and_renders_grid():

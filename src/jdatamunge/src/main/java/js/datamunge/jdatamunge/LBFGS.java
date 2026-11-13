@@ -9,9 +9,21 @@
 package js.datamunge.jdatamunge;
 
 /**
- *  Limited-memory BFGS (Nocedal 1980) on a DifferentiableFunction: a quasi-Newton<br>
- *         method that approximates the inverse Hessian from a short history of gradient<br>
- *         changes, combined with an Armijo backtracking line search.
+ *  LBFGS on the DifferentiableFunction callback interface.<br>
+ *  Limited-memory BFGS with weak-Wolfe bracket/bisection search, descent fallback and positive-curvature pair retention. If the search budget ends, a previous Armijo step can be used; if none was found, returns. Tests gradient norm or absolute objective change. O(history_size*p) state; history_size must be positive.<br>
+ *  The caller supplies finite, dimensionally consistent callbacks. Inputs are borrowed;<br>
+ *  coordinates mutate in place and can retain a partial state if a callback throws.<br>
+ *  Calls use local optimizer state and propagate callback exceptions; sharing a mutable<br>
+ *  objective across threads requires external synchronisation. Normal return alone<br>
+ *  is not a uniform convergence certificate.<br>
+ *  <p alt="Example"><br>
+ *  {@code 
+ const dm::optim::LBFGS optimizer;
+ std::print("{}\n",optimizer.options().max_iterations); // 500
+ }</p><br>
+ *  <p alt="References"><br>
+ *  - J. Nocedal and S. J. Wright (2006), Numerical Optimization, second edition, https://doi.org/10.1007/978-0-387-40065-5. The implemented variant and stopping rules are specified above.<br>
+ *  </p>@see LBFGSOptions, trace_optimize()
  */
 public class LBFGS {
   private transient long swigCPtr;
@@ -53,16 +65,60 @@ public class LBFGS {
     }
   }
 
+  /**
+   *  Store a copy of the controls without running the objective.<br>
+   *  @param options Method-specific controls; defaults are listed by LBFGSOptions.<br>
+   *  <p alt="Example"><br>
+   *  {@code 
+   const dm::optim::LBFGS optimizer;
+   std::print("{}\n",optimizer.options().max_iterations); // 500
+   }</p><br>
+   *  @see optimize()
+   */
   public LBFGS(LBFGSOptions options) {
     this(datamungeJNI.new_LBFGS__SWIG_0(LBFGSOptions.getCPtr(options), options), true);
   }
 
+  /**
+   *  Store a copy of the controls without running the objective.<br>
+   *  <p alt="Example"><br>
+   *  {@code 
+   const dm::optim::LBFGS optimizer;
+   std::print("{}\n",optimizer.options().max_iterations); // 500
+   }</p><br>
+   *  @see optimize()
+   */
   public LBFGS() {
     this(datamungeJNI.new_LBFGS__SWIG_1(), true);
   }
 
+  /**
+   *  Run LBFGS from the supplied point using the configured finite budget.<br>
+   *  Limited-memory BFGS with weak-Wolfe bracket/bisection search, descent fallback and positive-curvature pair retention. If the search budget ends, a previous Armijo step can be used; if none was found, returns. Tests gradient norm or absolute objective change. O(history_size*p) state; history_size must be positive.<br>
+   *  @param function Borrowed DifferentiableFunction with matching finite output shapes.<br>
+   *  @param coordinates Owned-by-caller finite start; overwritten with the native returned point.<br>
+   *  @return Objective at the native returned coordinates; not a stop-status code.<br>
+   *  @throws std::exception Exceptions from supplied callbacks propagate. Raw solvers do not uniformly reject nonfinite inputs.<br>
+   *  <p alt="Example"><br>
+   *  {@code 
+   dm::optim::QuadraticObjective f({2,8},{1,-2});
+   dm::optim::LBFGSOptions controls;controls.max_iterations=5;
+   std::vector<double> x{0,0};
+   const auto value=dm::optim::LBFGS(controls).optimize(f,x);
+   std::print("{}\n",std::isfinite(value)); // true
+   }</p><br>
+   *  @see trace_optimize(), LBFGSOptions
+   */
   public double optimize(DifferentiableFunction function, DVector coordinates) {
     return datamungeJNI.LBFGS_optimize(swigCPtr, this, DifferentiableFunction.getCPtr(function), function, DVector.getCPtr(coordinates), coordinates);
+  }
+
+  /**
+   *  Borrow this optimizer's stored configuration.<br>
+   *  @return Const option reference, valid during this object's lifetime; no mutation.
+   */
+  public LBFGSOptions options() {
+    return new LBFGSOptions(datamungeJNI.LBFGS_options(swigCPtr, this), false);
   }
 
 }

@@ -1,9 +1,11 @@
+# CMD: just TARGET=forest_iris_ex run-perl
+
 use strict;
 use warnings;
 
 use Datamunge;
 
-my $iris = Datamunge::DataFrame::iris();
+my $iris = Datamunge::data_iris();
 print "iris: " . $iris->nrows() . " rows x " . $iris->ncols() . " cols\n\n";
 
 my $model = Datamunge::RandomForestClassifier->new($iris, "Species ~ Petal.Length + Petal.Width");

@@ -1,3 +1,5 @@
+// CMD: just TARGET=dataframe_ex run-go
+
 package main
 
 import (

@@ -1,3 +1,5 @@
+// CMD: just TARGET=lda_iris_ex run-d
+
 module app;
 
 import std.stdio : writeln;
@@ -10,7 +12,7 @@ DVector dv(double[] t) {
 }
 
 void main() {
-  auto iris = DataFrame.iris();
+  auto iris = data_iris();
   writeln("iris: ", iris.nrows(), " rows x ", iris.ncols(), " cols\n");
 
   auto model = new LDA(iris, "Species ~ Sepal.Length + Sepal.Width + Petal.Length + Petal.Width");

@@ -1,3 +1,5 @@
+(* CMD: just TARGET=gaussian_process_regression_iris_ex run-ocaml *)
+
 open Swig
 open Datamunge
 
@@ -9,7 +11,7 @@ let dv values =
 let formula = "Petal.Length ~ Petal.Width"
 
 let () =
-  let iris = _DataFrame_iris C_void in
+  let iris = _data_iris C_void in
   Printf.printf "iris: %d rows x %d cols\n" (get_int (invoke iris "nrows" C_void)) (get_int (invoke iris "ncols" C_void));
   Printf.printf "formula: %s\n\n" formula;
 

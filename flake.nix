@@ -22,10 +22,13 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
     # Rosetta generates the Python extension (pydatamunge._datamunge) from C++ headers.
-    # git+file reads the checkout's tracked files (uncommitted edits included) without
-    # copying its untracked build trees. Refresh with `nix flake update rosetta`.
+    # Pinned from GitHub so the flake works anywhere (including as an input of another flake).
+    # When a checkout sits next to this one (../rosetta), direnv and the justfile build against
+    # it instead (--override-input rosetta git+file://..., uncommitted edits included); point
+    # DATAMUNGE_ROSETTA_SRC at another checkout, or set it to "none" to use the pin. Bump the
+    # pin with `nix flake update rosetta` after pushing rosetta.
     rosetta = {
-      url = "git+file:///mnt/projects/rosetta";
+      url = "github:jordanschupbach/rosetta";
       inputs.nixpkgs.follows = "nixpkgs";
     };
     # mep (editor and `mep-mepml`), from its main branch: the docs build runs and
@@ -1182,6 +1185,8 @@
 
         devShells.javascript = pkgs.mkShell {
           packages = [
+            # just prebuild-javascript: scripts/prebuild_bindings.py javascript runs rosetta.
+            rosettaPkg
             pkgs.libxml2
             pkgs.pkg-config
             pkgs.python3
@@ -1217,6 +1222,13 @@
             pkgs.cmake
             dotnetSdk
             pkgs.just
+            # just run-csharp builds the core from source via CPM, which
+            # requires the data-asset dependencies (DATAMUNGE_ENABLE_DATA_ASSETS).
+            pkgs.pkg-config
+            pkgs.libarchive
+            pkgs.openssl
+            pkgs.nlohmann_json
+            pkgs.hdf5-cpp
           ]
           # (neither builds on aarch64-darwin)
           ++ opt pkgs.stdenv.isLinux [
@@ -1236,6 +1248,12 @@
             pkgs.cmake
             pkgs.stdenv.cc
             pkgs.just
+            # just build-php builds the core from source via CPM, which
+            # requires the data-asset dependencies (DATAMUNGE_ENABLE_DATA_ASSETS).
+            pkgs.libarchive
+            pkgs.openssl
+            pkgs.nlohmann_json
+            pkgs.hdf5-cpp
           ];
         };
 
@@ -1390,6 +1408,8 @@
             pkgs.ninja
             pkgs.pkg-config
             pkgs.just
+            # datamungeConfig.cmake find_dependency(Arrow) for build-lisp.
+            pkgs.arrow-cpp
           ];
 
           shellHook = localBindingsHook + lispHook;

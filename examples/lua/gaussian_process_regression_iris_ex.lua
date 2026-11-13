@@ -1,3 +1,5 @@
+-- CMD: just TARGET=gaussian_process_regression_iris_ex run-lua
+
 local dm = require("datamunge")
 
 local function dv(t)
@@ -8,7 +10,7 @@ end
 
 local FORMULA = "Petal.Length ~ Petal.Width"
 
-local iris = dm.DataFrame.iris()
+local iris = dm.data.iris()
 print("iris: " .. iris:nrows() .. " rows x " .. iris:ncols() .. " cols")
 print("formula: " .. FORMULA .. "\n")
 

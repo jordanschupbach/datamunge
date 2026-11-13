@@ -1,3 +1,5 @@
+;; CMD: just TARGET=ode_ex run-guile
+
 (use-modules (datamunge) (ice-9 format))
 
 ;; ODESolution-state-at returns a std::vector<double> by const-reference, which the binding hands

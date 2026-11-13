@@ -72,4 +72,12 @@ public class EvolutionStrategy {
     return datamungeJNI.EvolutionStrategy_optimize(swigCPtr, this, ArbitraryFunction.getCPtr(function), function, DVector.getCPtr(coordinates), coordinates, DVector.getCPtr(lower_bound), lower_bound, DVector.getCPtr(upper_bound), upper_bound);
   }
 
+  /**
+   *  The options this EvolutionStrategy was configured with.<br>
+   *  @return The stored options.
+   */
+  public EvolutionStrategyOptions options() {
+    return new EvolutionStrategyOptions(datamungeJNI.EvolutionStrategy_options(swigCPtr, this), false);
+  }
+
 }

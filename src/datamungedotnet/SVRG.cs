@@ -9,7 +9,17 @@
 //------------------------------------------------------------------------------
 
 
-/// <summary>Stochastic Variance Reduced Gradient (Johnson &amp; Zhang 2013) on a        DifferentiableSeparableFunction.  Each epoch uses a full-gradient snapshot as a        control variate, reducing the noise of individual component-gradient updates.</summary>
+/// <summary>SVRG on the DifferentiableSeparableFunction callback interface. Uses mean component gradients: current_i-snapshot_i+full_snapshot_gradient/n. The division by n is essential for an unbiased mean-loss estimator and matches SGD/SAGA scale. Earlier code omitted it. Stops on absolute full-sum objective change per epoch. O(p) snapshot state, two component-gradient calls per inner update plus one full gradient per epoch. The caller supplies finite, dimensionally consistent callbacks. Inputs are borrowed; coordinates mutate in place and can retain a partial state if a callback throws. Calls use local optimizer state and propagate callback exceptions; sharing a mutable objective across threads requires external synchronisation. Normal return alone is not a uniform convergence certificate.</summary>
+/// Title: Example
+/// <code>      const dm::optim::SVRG optimizer;
+///      std::print("{}\n",optimizer.options().max_epochs); // 100</code>
+///
+///
+///
+/// Title: References
+///  - R. Johnson and T. Zhang (2013), Accelerating Stochastic Gradient Descent using Predictive Variance Reduction, https://proceedings.neurips.cc/paper/2013/hash/ac1dd209cbcc5e5d1c6e28598e8cbbe8-Abstract.html
+///
+/// <seealso cref="SVRGOptions, trace_optimize"/>
 public class SVRG : global::System.IDisposable {
   private global::System.Runtime.InteropServices.HandleRef swigCPtr;
   protected bool swigCMemOwn;
@@ -57,16 +67,56 @@ public class SVRG : global::System.IDisposable {
     }
   }
 
+  /// <summary>Store a copy of the controls without running the objective.</summary>
+  /// <param name="options"> Method-specific controls; defaults are listed by SVRGOptions.</param> 
+  /// Title: Example
+  /// <code>      const dm::optim::SVRG optimizer;
+  ///      std::print("{}\n",optimizer.options().max_epochs); // 100</code>
+  ///
+  ///
+  ///
+  /// <seealso cref="optimize"/>
   public SVRG(SVRGOptions options) : this(datamungePINVOKE.new_SVRG__SWIG_0(SVRGOptions.getCPtr(options)), true) {
     if (datamungePINVOKE.SWIGPendingException.Pending) throw datamungePINVOKE.SWIGPendingException.Retrieve();
   }
 
+  /// <summary>Store a copy of the controls without running the objective.</summary>
+  /// Title: Example
+  /// <code>      const dm::optim::SVRG optimizer;
+  ///      std::print("{}\n",optimizer.options().max_epochs); // 100</code>
+  ///
+  ///
+  ///
+  /// <seealso cref="optimize"/>
   public SVRG() : this(datamungePINVOKE.new_SVRG__SWIG_1(), true) {
   }
 
+  /// <summary>Run SVRG from the supplied point using the configured finite budget. Uses mean component gradients: current_i-snapshot_i+full_snapshot_gradient/n. The division by n is essential for an unbiased mean-loss estimator and matches SGD/SAGA scale. Earlier code omitted it. Stops on absolute full-sum objective change per epoch. O(p) snapshot state, two component-gradient calls per inner update plus one full gradient per epoch.</summary>
+  /// <param name="function"> Borrowed DifferentiableSeparableFunction with matching finite output shapes.</param> 
+  /// <param name="coordinates"> Owned-by-caller finite start; overwritten with the native returned point.</param> 
+  /// <returns>Objective at the native returned coordinates; not a stop-status code.</returns> 
+  /// <exception cref="std::invalid_argument"> SVRG: step_size must be positive; SVRG: tolerance must be non-negative; SVRG: function has zero terms.</exception> 
+  /// <exception cref="std::exception"> Exceptions from supplied callbacks propagate. Raw solvers do not uniformly reject nonfinite inputs.</exception> 
+  /// Title: Example
+  /// <code>      dm::optim::LeastSquaresObjective f({{1},{1}},{1,3});
+  ///      dm::optim::SVRGOptions controls;controls.max_epochs=5;
+  ///      std::vector&lt;double&gt; x{0};
+  ///      const auto value=dm::optim::SVRG(controls).optimize(f,x);
+  ///      std::print("{}\n",std::isfinite(value)); // true</code>
+  ///
+  ///
+  ///
+  /// <seealso cref="trace_optimize"/>
   public double optimize(DifferentiableSeparableFunction function, DVector coordinates) {
     double ret = datamungePINVOKE.SVRG_optimize(swigCPtr, DifferentiableSeparableFunction.getCPtr(function), DVector.getCPtr(coordinates));
     if (datamungePINVOKE.SWIGPendingException.Pending) throw datamungePINVOKE.SWIGPendingException.Retrieve();
+    return ret;
+  }
+
+  /// <summary>Borrow this optimizer's stored configuration.</summary>
+  /// <returns>Const option reference, valid during this object's lifetime; no mutation.</returns>
+  public SVRGOptions options() {
+    SVRGOptions ret = new SVRGOptions(datamungePINVOKE.SVRG_options(swigCPtr), false);
     return ret;
   }
 

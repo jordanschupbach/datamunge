@@ -1,10 +1,10 @@
-# CMD: nix develop .#r --command Rscript examples/r/gaussian_process_regression_iris_ex.r
-# REPL: nix develop .#r --command R --no-save --quiet
+# CMD: nix develop .#r --command env R_LIBS_USER=build/r/library Rscript examples/r/gaussian_process_regression_iris_ex.r
+# REPL: nix develop .#r --command env R_LIBS_USER=build/r/library R --no-save --quiet
 library(datamunger)
 
 FORMULA <- "Petal.Length ~ Petal.Width"
 
-iris <- DataFrame$iris()
+iris <- data$iris()
 cat(iris$nrows(), "rows x", iris$ncols(), "cols\n")
 cat("formula:", FORMULA, "\n\n")
 

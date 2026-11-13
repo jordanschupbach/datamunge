@@ -68,4 +68,12 @@ public class ParallelTempering {
     return datamungeJNI.ParallelTempering_optimize(swigCPtr, this, ArbitraryFunction.getCPtr(function), function, DVector.getCPtr(coordinates), coordinates);
   }
 
+  /**
+   *  The options this ParallelTempering was configured with.<br>
+   *  @return The stored options.
+   */
+  public ParallelTemperingOptions options() {
+    return new ParallelTemperingOptions(datamungeJNI.ParallelTempering_options(swigCPtr, this), false);
+  }
+
 }

@@ -1,6 +1,8 @@
 <?php
+// CMD: just TARGET=naive_bayes_penguins_ex run-php
 
-$penguins = DataFrame::penguins();
+
+$penguins = data_penguins();
 print("penguins: " . $penguins->nrows() . " rows x " . $penguins->ncols() . " cols\n\n");
 
 $model = new NaiveBayesClassifier($penguins, "species ~ bill_length_mm + bill_depth_mm + island + sex");

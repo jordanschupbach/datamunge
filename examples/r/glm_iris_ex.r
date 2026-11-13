@@ -1,11 +1,11 @@
-# CMD: nix develop .#r --command Rscript examples/r/glm_iris_ex.r
-# REPL: nix develop .#r --command R --no-save --quiet
+# CMD: nix develop .#r --command env R_LIBS_USER=build/r/library Rscript examples/r/glm_iris_ex.r
+# REPL: nix develop .#r --command env R_LIBS_USER=build/r/library R --no-save --quiet
 # Note: simplified relative to the C++ example -- this skips manually building the
 # predicted-probability sigmoid-curve RPlot and instead just saves the standard GLM
 # diagnostic plots, same as lm_ex.r does for LM.
 library(datamunger)
 
-iris <- DataFrame$iris()
+iris <- data$iris()
 n <- iris$nrows()
 
 # Logistic regression: versicolor vs virginica only -- setosa is perfectly separable from the

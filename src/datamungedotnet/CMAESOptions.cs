@@ -9,6 +9,14 @@
 //------------------------------------------------------------------------------
 
 
+/// <summary>Configuration for CMAES; fields retain their documented native defaults. Supply finite values in the supported ranges. Controls are copied at construction; validation, stopping and loss scaling belong to optimize().</summary>
+/// Title: Example
+/// <code>      dm::optim::CMAESOptions o;
+///      std::print("{}\n",o.max_generations); // 500</code>
+///
+///
+///
+/// <seealso cref="CMAES"/>
 public class CMAESOptions : global::System.IDisposable {
   private global::System.Runtime.InteropServices.HandleRef swigCPtr;
   protected bool swigCMemOwn;
@@ -56,7 +64,6 @@ public class CMAESOptions : global::System.IDisposable {
     }
   }
 
-  /// <summary>Offspring sampled per generation; zero selects the standard 4 + floor(3 log(n)).</summary>
   public uint population_size {
     set {
       datamungePINVOKE.CMAESOptions_population_size_set(swigCPtr, value);
@@ -67,7 +74,6 @@ public class CMAESOptions : global::System.IDisposable {
     } 
   }
 
-  /// <summary>Initial global search standard deviation.</summary>
   public double initial_step_size {
     set {
       datamungePINVOKE.CMAESOptions_initial_step_size_set(swigCPtr, value);
@@ -88,7 +94,6 @@ public class CMAESOptions : global::System.IDisposable {
     } 
   }
 
-  /// <summary>Stops when the global step size times the largest covariance axis is below this.</summary>
   public double tolerance {
     set {
       datamungePINVOKE.CMAESOptions_tolerance_set(swigCPtr, value);

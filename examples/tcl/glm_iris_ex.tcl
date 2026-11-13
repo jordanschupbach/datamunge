@@ -1,6 +1,8 @@
+# CMD: just TARGET=glm_iris_ex run-tcl
+
 package require Datamunge 0.0.1
 
-set iris [datamunge::DataFrame_iris]
+set iris [datamunge::data_iris]
 
 set is_virginica {}
 set petal_length {}

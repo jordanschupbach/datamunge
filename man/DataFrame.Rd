@@ -140,59 +140,9 @@ The value at (column_name, row_index); throws if the cell is null or the column 
 \itemize{
 \item \code{DataFrame$empty()} -> \verb{DataFrame or NULL}
 
-Equivalent to the default constructor, exposed as a static factory (like iris()/
-penguins()) as a workaround for a SWIG R-backend bug where the plain no-argument
+Equivalent to the default constructor, exposed as a static factory (like read_csv())
+as a workaround for a SWIG R-backend bug where the plain no-argument
 constructor's ownership-flagged pointer breaks method dispatch on the result.
-\item \code{DataFrame$iris()} -> \verb{DataFrame or NULL}
-\item \code{DataFrame$penguins()} -> \verb{DataFrame or NULL}
-\item \code{DataFrame$tooth_growth()} -> \verb{DataFrame or NULL}
-\item \code{DataFrame$wine()} -> \verb{DataFrame or NULL}
-
-UCI wine recognition data, 178 x 14; see datasets::wine().
-\item \code{DataFrame$titanic()} -> \verb{DataFrame or NULL}
-
-Kaggle Titanic training set, 891 x 12 with missing values; see datasets::titanic().
-\item \code{DataFrame$eight_schools()} -> \verb{DataFrame or NULL}
-
-Rubin's eight schools coaching experiment, 8 x 3; see datasets::eight_schools().
-\item \code{DataFrame$air_passengers()} -> \verb{DataFrame or NULL}
-
-Monthly airline passengers 1949-1960, 144 x 3; see datasets::air_passengers().
-\item \code{DataFrame$volcano()} -> \verb{DataFrame or NULL}
-
-Maunga Whau (Mt Eden) elevations on a 10 m grid, 5307 x 3; see datasets::volcano().
-\item \code{DataFrame$faithful()} -> \verb{DataFrame or NULL}
-
-Old Faithful eruptions, 272 x 2; see datasets::faithful().
-\item \code{DataFrame$mtcars()} -> \verb{DataFrame or NULL}
-
-Motor Trend cars, 32 x 12 (row names as \code{model}); see datasets::mtcars().
-\item \code{DataFrame$airquality()} -> \verb{DataFrame or NULL}
-
-New York air quality 1973, 153 x 6 with missing values; see datasets::airquality().
-\item \code{DataFrame$breast_cancer()} -> \verb{DataFrame or NULL}
-
-Wisconsin diagnostic breast cancer, 569 x 31; see datasets::breast_cancer().
-\item \code{DataFrame$diabetes()} -> \verb{DataFrame or NULL}
-
-Efron et al.'s diabetes progression data, 442 x 11; see datasets::diabetes().
-\item \code{DataFrame$digits()} -> \verb{DataFrame or NULL}
-
-8x8 handwritten digits, 1797 x 65; see datasets::digits().
-\item \code{DataFrame$diamonds()} -> \verb{DataFrame or NULL}
-
-ggplot2's diamonds, 53940 x 10, downloaded once and cached; see datasets::diamonds().
-\item \code{DataFrame$california_housing()} -> \verb{DataFrame or NULL}
-
-California housing, 20640 x 10, downloaded once and cached; see
-datasets::california_housing().
-\item \code{DataFrame$dataset(name)} -> \verb{DataFrame or NULL}
-
-Any table-shaped dataset by name, e.g. "wine"; see datasets::load().
-\item \code{DataFrame$dataset_catalog()} -> \verb{DataFrame or NULL}
-
-One row per available dataset (name, rows, columns, storage, size_mb,
-description); see datasets::catalog().
 \item \code{DataFrame$read_csv(path, delimiter = ",")} -> \verb{DataFrame or NULL}
 
 Reads a whole CSV file, typing columns automatically; see datasets::read_csv().

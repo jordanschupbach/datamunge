@@ -1,6 +1,6 @@
 *> R-base-graphics-style plotting with RPlot and RLayout: scatter + abline, hist, barplot,
 *> boxplot, pie, qqnorm + qqline, and a two-panel layout.
-*> Run with `just run-cobol TARGET=rplot_ex`.
+*> CMD: just TARGET=rplot_ex run-cobol
 IDENTIFICATION DIVISION.
 PROGRAM-ID. RPLOT-EX.
 DATA DIVISION.

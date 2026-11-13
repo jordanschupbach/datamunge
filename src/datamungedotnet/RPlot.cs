@@ -9,9 +9,30 @@
 //------------------------------------------------------------------------------
 
 
-/// A single R-base-graphics-style plot (`plot()`, `hist()`, `barplot()`, `boxplot()`, `pie()`,
-/// `curve()`, `qqnorm()`, ...) plus the chainable "add to current plot" verbs R exposes as
-/// separate top-level functions (`points()`, `lines()`, `abline()`, `legend()`, `text()`, ...).
+/// <summary>A single R-base-graphics-style plot, spelled `dm::Plot` in user code.</summary>
+///  Covers R's high-level plotting calls (`plot()`, `hist()`, `barplot()`, `boxplot()`, `pie()`,
+///  `curve()`, `qqnorm()`, ...) as constructors and static factories, plus the "add to the
+///  current plot" verbs R exposes as separate functions (`points()`, `lines()`, `abline()`,
+///  `legend()`, `text()`, ...) as chainable member functions. A plot is an ordinary value: it
+///  owns copies of its data, copies cheaply enough to pass around, and draws nothing until it
+///  is rendered with to_svg(), save(), or show().
+///  Two composition styles mix freely. Setters such as set_title() and verbs such as points()
+///  mutate the plot and return `RPlot&amp;` for chaining; the pipe `plot | dm::points(...)` (see
+///  compose.hpp) appends a reusable layer to a copy. A fresh plot has the title
+///  "datamunge plot", axis labels "x" and "y", a 960x640 canvas, and a light grid.
+///
+/// Title: Example
+/// <code>      const auto x = dm::seql(-2.0, 2.0, 9);
+///      auto plt = dm::Plot(x, x * x)
+///                     .set_title("Parabola")
+///                     .set_xlab("x")
+///                     .set_ylab("x squared");
+///      plt.lines(x, x * x, dm::RGB{220, 38, 38}).abline_h(0.0);
+///      plt.save("parabola.svg");</code>
+///
+///
+///
+/// <seealso cref="dm.points"/>
 public class RPlot : Plot {
   private global::System.Runtime.InteropServices.HandleRef swigCPtr;
 
@@ -49,566 +70,3278 @@ public class RPlot : Plot {
     }
   }
 
+  /// <summary>Constructs an empty plot with default labels and styling, ready for layers.</summary>
+  ///
+  /// Title: Example
+  /// <code>      auto plt = dm::Plot();
+  ///      std::print("{} | {} | {}\n", plt.title_text(), plt.x_label_text(), plt.y_label_text());
+  ///     datamunge plot | x | y</code>
+  public RPlot() : this(datamungePINVOKE.new_RPlot__SWIG_0(), true) {
+  }
+
+  /// <summary>Constructs a scatter plot of ``y`` against ``x``, like R's `plot(x, y)`.</summary>
+  ///  Equivalent to `RPlot::plot(x, y)`: one unlabeled scatter series drawn in blue
+  ///  `{37, 99, 235}` with 4-pixel markers; axis ranges fit the data. The coordinates are
+  ///  copied (or moved from rvalues); `dm::Vector&lt;double&gt;` converts implicitly. Restyle the
+  ///  points afterwards with set_col().
+  ///
+  /// <param name="x">  Horizontal coordinates, one per point.</param> 
+  /// <param name="y">  Vertical coordinates, paired with ``x`` by position.</param> 
+  /// <exception cref="std::invalid_argument">  If the coordinates are empty or have different lengths.</exception> 
+  ///
+  /// Title: Example
+  /// <code>      const auto iris = dm::datasets::iris();
+  ///      auto plt = dm::Plot(iris.get_column("Petal.Length").values(),
+  ///                          iris.get_column("Petal.Width").values())
+  ///                     .set_col("blue");
+  ///      plt.save("petals.svg");</code>
+  ///
+  ///
+  ///
+  /// <seealso cref="points"/>
+  public RPlot(DVector x, DVector y) : this(datamungePINVOKE.new_RPlot__SWIG_1(DVector.getCPtr(x), DVector.getCPtr(y)), true) {
+    if (datamungePINVOKE.SWIGPendingException.Pending) throw datamungePINVOKE.SWIGPendingException.Retrieve();
+  }
+
+  /// <summary>Returns a fresh empty plot; same as the default constructor `dm::Plot()`.</summary>
+  ///  Kept for language bindings, where a named factory reads better than a constructor.
+  ///
+  /// <returns>An empty plot with default labels and styling.</returns> 
+  ///
+  /// Title: Example
+  /// <code>      auto plt = dm::Plot::create();
+  ///      std::print("{}\n", plt.series().size());  // 0</code>
+  ///
+  ///
+  ///
+  /// <seealso cref="RPlot"/>
   public static RPlot create() {
     RPlot ret = new RPlot(datamungePINVOKE.RPlot_create(), true);
     return ret;
   }
 
-  ///  Plot's setters, returning RPlot&amp; so they chain with the RPlot verbs below.
+  /// <summary>Sets the canvas size in pixels (default 960 by 640), like the `width`/`height`        of R's `png()` or `svg()` device.</summary>
+  ///  Not validated here: rendering throws std::runtime_error when the canvas leaves no room
+  ///  inside the margins (by default the canvas must exceed 114 by 156 pixels).
+  ///
+  /// <param name="width">  Canvas width in pixels.</param> 
+  /// <param name="height">  Canvas height in pixels.</param> 
+  /// <returns>This plot, for chaining.</returns> 
+  ///
+  /// Title: Example
+  /// <code>      auto plt = dm::Plot(dm::c(1.0, 2.0), dm::c(1.0, 2.0)).size(400, 300);
+  ///      std::print("{}x{}\n", plt.width(), plt.height());  // 400x300</code>
+  ///
+  ///
+  ///
+  /// <seealso cref="margins"/>
   public new RPlot size(uint width, uint height) {
     RPlot ret = new RPlot(datamungePINVOKE.RPlot_size(swigCPtr, width, height), false);
     return ret;
   }
 
+  /// <summary>Sets the main heading, like R's `main =`; an empty string removes it.</summary>
+  /// <param name="value">  Heading text (copied).</param> 
+  /// <returns>This plot, for chaining.</returns> 
+  /// <seealso cref="set_title"/>
   public new RPlot title(string value) {
     RPlot ret = new RPlot(datamungePINVOKE.RPlot_title(swigCPtr, value), false);
     if (datamungePINVOKE.SWIGPendingException.Pending) throw datamungePINVOKE.SWIGPendingException.Retrieve();
     return ret;
   }
 
+  /// <summary>Sets the subtitle and returns this plot for chaining RPlot verbs; same as set_subtitle().</summary>
+  /// <param name="value">  Subtitle text drawn under the title; empty removes it.</param> 
+  /// <returns>This plot, for chaining.</returns> 
+  /// <seealso cref="set_subtitle"/>
+  public new RPlot subtitle(string value) {
+    RPlot ret = new RPlot(datamungePINVOKE.RPlot_subtitle(swigCPtr, value), false);
+    if (datamungePINVOKE.SWIGPendingException.Pending) throw datamungePINVOKE.SWIGPendingException.Retrieve();
+    return ret;
+  }
+
+  /// <summary>Sets the horizontal-axis label; same as xlab() and set_xlab().</summary>
+  /// <param name="value">  Label text (copied).</param> 
+  /// <returns>This plot, for chaining.</returns> 
+  /// <seealso cref="set_xlab"/>
   public new RPlot x_label(string value) {
     RPlot ret = new RPlot(datamungePINVOKE.RPlot_x_label(swigCPtr, value), false);
     if (datamungePINVOKE.SWIGPendingException.Pending) throw datamungePINVOKE.SWIGPendingException.Retrieve();
     return ret;
   }
 
+  /// <summary>Sets the vertical-axis label; same as ylab() and set_ylab().</summary>
+  /// <param name="value">  Label text (copied).</param> 
+  /// <returns>This plot, for chaining.</returns> 
+  /// <seealso cref="set_ylab"/>
   public new RPlot y_label(string value) {
     RPlot ret = new RPlot(datamungePINVOKE.RPlot_y_label(swigCPtr, value), false);
     if (datamungePINVOKE.SWIGPendingException.Pending) throw datamungePINVOKE.SWIGPendingException.Retrieve();
     return ret;
   }
 
-  ///  R-style aliases for x_label() / y_label().
+  /// <summary>R-style alias for x_label(), like R's `xlab =`.</summary>
+  /// <param name="value">  Label text (copied).</param> 
+  /// <returns>This plot, for chaining.</returns> 
+  /// <seealso cref="set_xlab"/>
   public RPlot xlab(string value) {
     RPlot ret = new RPlot(datamungePINVOKE.RPlot_xlab(swigCPtr, value), false);
     if (datamungePINVOKE.SWIGPendingException.Pending) throw datamungePINVOKE.SWIGPendingException.Retrieve();
     return ret;
   }
 
+  /// <summary>R-style alias for y_label(), like R's `ylab =`.</summary>
+  /// <param name="value">  Label text (copied).</param> 
+  /// <returns>This plot, for chaining.</returns> 
+  /// <seealso cref="set_ylab"/>
   public RPlot ylab(string value) {
     RPlot ret = new RPlot(datamungePINVOKE.RPlot_ylab(swigCPtr, value), false);
     if (datamungePINVOKE.SWIGPendingException.Pending) throw datamungePINVOKE.SWIGPendingException.Retrieve();
     return ret;
   }
 
+  /// <summary>Sets the main heading drawn above the plotting area (R's `main =`).</summary>
+  ///  The plot owns a copy of the text. An empty string clears the heading; a fresh plot
+  ///  shows "datamunge plot" until this is called. Same as title().
+  ///
+  /// <param name="value">  Heading text.</param> 
+  /// <returns>This plot, for chaining.</returns> 
+  ///
+  /// Title: Example
+  /// <code>      auto plt = dm::Plot(dm::c(1.0, 2.0, 3.0), dm::c(2.0, 4.0, 8.0))
+  ///                     .set_title("Growth")
+  ///                     .set_subtitle("Doubling every step")
+  ///                     .set_xlab("Step")
+  ///                     .set_ylab("Count");
+  ///      std::print("{} / {}\n", plt.title_text(), plt.subtitle_text());
+  ///     Growth / Doubling every step</code>
+  ///
+  ///
+  ///
+  /// <seealso cref="set_subtitle"/>
+  public RPlot set_title(string value) {
+    RPlot ret = new RPlot(datamungePINVOKE.RPlot_set_title(swigCPtr, value), false);
+    if (datamungePINVOKE.SWIGPendingException.Pending) throw datamungePINVOKE.SWIGPendingException.Retrieve();
+    return ret;
+  }
+
+  /// <summary>Sets the smaller second heading drawn beneath the title (unlike R's `sub =`,        which sits below the x axis).</summary>
+  ///  The plot owns a copy of the text. Empty (the default) draws no subtitle and reserves no
+  ///  extra top margin. Same as subtitle().
+  ///
+  /// <param name="value">  Subtitle text.</param> 
+  /// <returns>This plot, for chaining.</returns> 
+  ///
+  /// Title: Example
+  /// <code>      auto plt = dm::Plot().set_title("Iris Dataset").set_subtitle("Sepal Width vs Length");
+  ///      plt.set_subtitle("");  // remove it again</code>
+  ///
+  ///
+  ///
+  /// <seealso cref="set_title"/>
+  public RPlot set_subtitle(string value) {
+    RPlot ret = new RPlot(datamungePINVOKE.RPlot_set_subtitle(swigCPtr, value), false);
+    if (datamungePINVOKE.SWIGPendingException.Pending) throw datamungePINVOKE.SWIGPendingException.Retrieve();
+    return ret;
+  }
+
+  /// <summary>Sets the horizontal-axis label (R's `xlab =`).</summary>
+  ///  The plot owns a copy of the text; the default is "x" and an empty string hides the
+  ///  label. Same as xlab() and x_label().
+  ///
+  /// <param name="value">  Axis label text.</param> 
+  /// <returns>This plot, for chaining.</returns> 
+  ///
+  /// Title: Example
+  /// <code>      auto plt = dm::Plot(dm::c(1.0, 2.0), dm::c(3.0, 4.0)).set_xlab("Sepal Width");
+  ///      std::print("{}\n", plt.x_label_text());  // Sepal Width</code>
+  ///
+  ///
+  ///
+  /// <seealso cref="set_ylab"/>
+  public RPlot set_xlab(string value) {
+    RPlot ret = new RPlot(datamungePINVOKE.RPlot_set_xlab(swigCPtr, value), false);
+    if (datamungePINVOKE.SWIGPendingException.Pending) throw datamungePINVOKE.SWIGPendingException.Retrieve();
+    return ret;
+  }
+
+  /// <summary>Sets the vertical-axis label (R's `ylab =`).</summary>
+  ///  The plot owns a copy of the text; the default is "y" and an empty string hides the
+  ///  label. Same as ylab() and y_label().
+  ///
+  /// <param name="value">  Axis label text.</param> 
+  /// <returns>This plot, for chaining.</returns> 
+  ///
+  /// Title: Example
+  /// <code>      auto plt = dm::Plot(dm::c(1.0, 2.0), dm::c(3.0, 4.0)).set_ylab("Sepal Length");
+  ///      std::print("{}\n", plt.y_label_text());  // Sepal Length</code>
+  ///
+  ///
+  ///
+  /// <seealso cref="set_xlab"/>
+  public RPlot set_ylab(string value) {
+    RPlot ret = new RPlot(datamungePINVOKE.RPlot_set_ylab(swigCPtr, value), false);
+    if (datamungePINVOKE.SWIGPendingException.Pending) throw datamungePINVOKE.SWIGPendingException.Retrieve();
+    return ret;
+  }
+
+  /// <summary>Recolors every data series already on the plot (R's `col =` applied after the fact).</summary>
+  ///  Every existing series (points, lines, bars, ...) takes ``color``, and per-point palettes
+  ///  from dm::points(...).set_col() or points_colored() are cleared, so the whole plot becomes
+  ///  one color. Only layers present now are affected: points added later keep their own
+  ///  colors. Reference lines (abline) and manual legend entries keep their explicit colors.
+  ///
+  /// <param name="color">  New color, including its alpha.</param> 
+  /// <returns>This plot, for chaining.</returns> 
+  ///
+  /// Title: Example
+  /// <code>      auto plt = dm::Plot(dm::c(1.0, 2.0, 3.0), dm::c(3.0, 1.0, 2.0))
+  ///                     .set_col(dm::RGB{220, 100, 255});
+  ///      std::print("{}\n", plt.series()[0].color.r);  // 220</code>
+  ///
+  ///
+  ///
+  /// <seealso cref="set_col"/>
+  public RPlot set_col(RGB color) {
+    RPlot ret = new RPlot(datamungePINVOKE.RPlot_set_col__SWIG_0(swigCPtr, RGB.getCPtr(color)), false);
+    if (datamungePINVOKE.SWIGPendingException.Pending) throw datamungePINVOKE.SWIGPendingException.Retrieve();
+    return ret;
+  }
+
+  /// <summary>Same as set_col(RGB) but takes a color name or hex string, like R's `col = "blue"`.</summary>
+  ///  Matching is case-insensitive. Names are black, white, red, green, blue, yellow, cyan,
+  ///  magenta, gray/grey, and transparent (a much smaller set than R's `colors()`). Green is
+  ///  RGB(0,128,0) as in CSS, and transparent is black with zero alpha. Hex strings are
+  ///  `#RRGGBB` or `#RRGGBBAA`, where AA is an alpha byte (`80` is about 0.5).
+  ///
+  /// <param name="color">  Color name or hex string.</param> 
+  /// <returns>This plot, for chaining.</returns> 
+  /// <exception cref="std::invalid_argument">  For unknown names or malformed hex; the plot is unchanged.</exception> 
+  ///
+  /// Title: Example
+  /// <code>      const auto x = dm::runif(0, 1, 100);
+  ///      auto plt = dm::Plot(x, dm::rnorm(0, 1, 100)).set_col("blue");
+  ///      plt.set_col("#FF000080");  // half-transparent red
+  ///      const auto&amp; col = plt.series()[0].color;
+  ///      std::print("{} {:.2f}\n", col.r, col.alpha);  // 255 0.50</code>
+  ///
+  ///
+  ///
+  /// <seealso cref="set_col"/>
+  public RPlot set_col(string color) {
+    RPlot ret = new RPlot(datamungePINVOKE.RPlot_set_col__SWIG_1(swigCPtr, color), false);
+    if (datamungePINVOKE.SWIGPendingException.Pending) throw datamungePINVOKE.SWIGPendingException.Retrieve();
+    return ret;
+  }
+
+  /// <summary>Sets the fill color of the whole canvas, like R's `par(bg =)`.</summary>
+  ///  The default is white `{255, 255, 255}`. The color fills the margins as well as the
+  ///  plotting area. Its alpha is ignored: the background is always drawn opaque.
+  ///
+  /// <param name="color">  Canvas fill color.</param> 
+  /// <returns>This plot, for chaining.</returns> 
+  ///
+  /// Title: Example
+  /// <code>      auto plt = dm::Plot(dm::c(1.0, 2.0), dm::c(1.0, 2.0))
+  ///                     .background(dm::RGB{17, 24, 39})
+  ///                     .axis_color(dm::RGB{229, 231, 235})
+  ///                     .grid_color(dm::RGB{55, 65, 81});  // a dark theme
+  ///      std::print("{} {}\n", plt.background_color().r, plt.axes_color().r);  // 17 229</code>
+  ///
+  ///
+  ///
+  ///
+  /// Title: References
+  ///  - R `par()` (`bg`): https://stat.ethz.ch/R-manual/R-devel/library/graphics/html/par.html
+  ///
+  ///
+  ///
+  /// <seealso cref="axis_color"/>
   public new RPlot background(RGB color) {
     RPlot ret = new RPlot(datamungePINVOKE.RPlot_background(swigCPtr, RGB.getCPtr(color)), false);
     if (datamungePINVOKE.SWIGPendingException.Pending) throw datamungePINVOKE.SWIGPendingException.Retrieve();
     return ret;
   }
 
+  /// <summary>Sets the color of the axis lines and of all plot-level text: tick labels, axis        labels, title, and subtitle (R's `col.axis`, `col.lab`, and `col.main` in one).</summary>
+  ///  The default is slate gray `{55, 65, 81}`. Legend text follows it too; text() labels and
+  ///  data layers keep their own colors.
+  ///
+  /// <param name="color">  Axis and text color.</param> 
+  /// <returns>This plot, for chaining.</returns> 
+  ///
+  /// Title: Example
+  ///  See background(), which builds a dark theme with all three color setters.
+  ///
+  ///
+  ///
+  /// Title: References
+  ///  - R `par()` (`col.axis`, `col.lab`, `col.main`): https://stat.ethz.ch/R-manual/R-devel/library/graphics/html/par.html
+  ///
+  ///
+  ///
+  /// <seealso cref="background"/>
   public new RPlot axis_color(RGB color) {
     RPlot ret = new RPlot(datamungePINVOKE.RPlot_axis_color(swigCPtr, RGB.getCPtr(color)), false);
     if (datamungePINVOKE.SWIGPendingException.Pending) throw datamungePINVOKE.SWIGPendingException.Retrieve();
     return ret;
   }
 
+  /// <summary>Sets the color of the background grid lines (default light gray `{229, 231, 235}`).</summary>
+  ///  Has no visible effect while the grid is off (show_grid(false)) or the axes are hidden.
+  ///
+  /// <param name="color">  Grid-line color.</param> 
+  /// <returns>This plot, for chaining.</returns> 
+  ///
+  /// Title: Example
+  ///  See background(), which builds a dark theme with all three color setters.
+  ///
+  /// <seealso cref="show_grid"/>
   public new RPlot grid_color(RGB color) {
     RPlot ret = new RPlot(datamungePINVOKE.RPlot_grid_color(swigCPtr, RGB.getCPtr(color)), false);
     if (datamungePINVOKE.SWIGPendingException.Pending) throw datamungePINVOKE.SWIGPendingException.Retrieve();
     return ret;
   }
 
+  /// <summary>Turns the light background grid on or off (on by default), like adding or        omitting R's `grid()`.</summary>
+  ///  One vertical line per x tick and one horizontal line per y tick, so the grid always lines
+  ///  up with the tick labels (round values, evenly spaced ticks, or custom tick positions).
+  ///  Hidden axes hide the grid too.
+  ///
+  /// <param name="enabled">  True (the default) draws the grid; false omits it.</param> 
+  /// <returns>This plot, for chaining.</returns> 
+  ///
+  /// Title: Example
+  /// <code>      auto plt = dm::Plot(dm::c(1.0, 2.0), dm::c(1.0, 2.0)).show_grid(false);
+  ///      std::print("{}\n", plt.grid_visible());  // false</code>
+  ///
+  ///
+  ///
+  ///
+  /// Title: References
+  ///  - R `grid()`: https://stat.ethz.ch/R-manual/R-devel/library/graphics/html/grid.html
+  ///
+  ///
+  ///
+  /// <seealso cref="grid_color"/>
   public new RPlot show_grid(bool enabled) {
     RPlot ret = new RPlot(datamungePINVOKE.RPlot_show_grid__SWIG_0(swigCPtr, enabled), false);
     return ret;
   }
 
+  /// <summary>Turns the light background grid on or off (on by default), like adding or        omitting R's `grid()`.</summary>
+  ///  One vertical line per x tick and one horizontal line per y tick, so the grid always lines
+  ///  up with the tick labels (round values, evenly spaced ticks, or custom tick positions).
+  ///  Hidden axes hide the grid too.
+  ///
+  /// <returns>This plot, for chaining.</returns> 
+  ///
+  /// Title: Example
+  /// <code>      auto plt = dm::Plot(dm::c(1.0, 2.0), dm::c(1.0, 2.0)).show_grid(false);
+  ///      std::print("{}\n", plt.grid_visible());  // false</code>
+  ///
+  ///
+  ///
+  ///
+  /// Title: References
+  ///  - R `grid()`: https://stat.ethz.ch/R-manual/R-devel/library/graphics/html/grid.html
+  ///
+  ///
+  ///
+  /// <seealso cref="grid_color"/>
   public new RPlot show_grid() {
     RPlot ret = new RPlot(datamungePINVOKE.RPlot_show_grid__SWIG_1(swigCPtr), false);
     return ret;
   }
 
+  /// <summary>Fixes the visible x range, like R's `xlim = c(min_x, max_x)`.</summary>
+  ///  Without limits the x range is fitted to every layer (and vertical reference line), plus
+  ///  5% padding on each side. With limits, the plotting area spans exactly [``min_x``, ``max_x]``
+  ///  with no padding (R pads `xlim` by 4% unless `xaxs = "i"`). Data outside the range is not
+  ///  clipped and may be drawn over the margins.
+  ///
+  /// <param name="min_x">  Left edge of the plotting area, in data units.</param> 
+  /// <param name="max_x">  Right edge; must be greater than ``min_x``.</param> 
+  /// <returns>This plot, for chaining.</returns> 
+  /// <exception cref="std::invalid_argument">  Unless `max_x > min_x` (NaN fails); the plot is unchanged.</exception> 
+  ///
+  /// Title: Example
+  /// <code>      auto plt = dm::Plot(dm::c(1.0, 2.0, 3.0), dm::c(1.0, 4.0, 9.0))
+  ///                     .x_limits(0.0, 4.0)
+  ///                     .y_limits(0.0, 10.0);
+  ///      std::print("{} {} {}\n", plt.has_x_limits(), plt.x_max(), plt.y_max());  // true 4 10</code>
+  ///
+  ///
+  ///
+  ///
+  /// Title: References
+  ///  - R `plot.default()` (`xlim`, `ylim`): https://stat.ethz.ch/R-manual/R-devel/library/graphics/html/plot.default.html
+  ///
+  ///
+  ///
+  /// <seealso cref="y_limits"/>
   public new RPlot x_limits(double min_x, double max_x) {
     RPlot ret = new RPlot(datamungePINVOKE.RPlot_x_limits(swigCPtr, min_x, max_x), false);
     return ret;
   }
 
+  /// <summary>Fixes the visible y range, like R's `ylim = c(min_y, max_y)`.</summary>
+  ///  Without limits the y range is fitted to every layer, plus 10% padding at each end (bar
+  ///  layers also include y = 0). With limits, the plotting area spans exactly
+  ///  [``min_y``, ``max_y]``. Data outside the range is not clipped.
+  ///
+  /// <param name="min_y">  Bottom edge of the plotting area, in data units.</param> 
+  /// <param name="max_y">  Top edge; must be greater than ``min_y``.</param> 
+  /// <returns>This plot, for chaining.</returns> 
+  /// <exception cref="std::invalid_argument">  Unless `max_y > min_y` (NaN fails); the plot is unchanged.</exception> 
+  ///
+  /// Title: Example
+  ///  See x_limits(), which sets both ranges.
+  ///
+  ///
+  ///
+  /// Title: References
+  ///  - R `plot.default()` (`xlim`, `ylim`): https://stat.ethz.ch/R-manual/R-devel/library/graphics/html/plot.default.html
+  ///
+  ///
+  ///
+  /// <seealso cref="x_limits"/>
   public new RPlot y_limits(double min_y, double max_y) {
     RPlot ret = new RPlot(datamungePINVOKE.RPlot_y_limits(swigCPtr, min_y, max_y), false);
     return ret;
   }
 
+  /// <summary>Short spelling of x_limits(), matching R's xlim plot argument. Fixes the horizontal plotting range without automatic padding. Data outside the range follows x_limits() rendering behavior; this does not filter layers.</summary>
+  /// <param name="min_x"> Left edge in data units.</param> 
+  /// <param name="max_x"> Right edge; must be greater than min_x.</param> 
+  /// <returns>This plot, for chaining.</returns> 
+  /// <exception cref="std::invalid_argument"> Unless max_x > min_x (NaN fails); the plot is unchanged.</exception> 
+  /// Title: Example
+  /// <code>      auto plt = dm::plot().points(dm::c(0, 1), dm::c(1, 2)).xlim(0, 1).ylim(-4, 4);
+  ///      std::print("{} {}\n", plt.x_max(), plt.y_min()); // 1 -4</code>
+  ///
+  ///
+  ///
+  /// <seealso cref="x_limits"/>
+  public RPlot xlim(double min_x, double max_x) {
+    RPlot ret = new RPlot(datamungePINVOKE.RPlot_xlim(swigCPtr, min_x, max_x), false);
+    return ret;
+  }
+
+  /// <summary>Short spelling of y_limits(), matching R's ylim plot argument. Fixes the vertical plotting range without automatic padding; layers are retained.</summary>
+  /// <param name="min_y"> Bottom edge in data units.</param> 
+  /// <param name="max_y"> Top edge; must be greater than min_y.</param> 
+  /// <returns>This plot, for chaining.</returns> 
+  /// <exception cref="std::invalid_argument"> Unless max_y > min_y (NaN fails); the plot is unchanged.</exception> 
+  /// Title: Example
+  ///  See xlim(), whose example uses both aliases.
+  ///
+  /// <seealso cref="y_limits"/>
+  public RPlot ylim(double min_y, double max_y) {
+    RPlot ret = new RPlot(datamungePINVOKE.RPlot_ylim(swigCPtr, min_y, max_y), false);
+    return ret;
+  }
+
+  /// <summary>Hides the axis lines, tick labels, grid, and axis labels, like R's `axes = FALSE,        ann = FALSE` (the title and subtitle are still drawn).</summary>
+  ///  pie() turns this on. Margins are unchanged, so call margins() as well to let the data use
+  ///  the freed space.
+  ///
+  /// <param name="enabled">  True (the default) hides them; false shows them again.</param> 
+  /// <returns>This plot, for chaining.</returns> 
+  ///
+  /// Title: Example
+  /// <code>      auto plt = dm::Plot(dm::c(1.0, 2.0), dm::c(1.0, 2.0)).hide_axes();
+  ///      std::print("{}\n", plt.axes_hidden());  // true</code>
+  ///
+  ///
+  ///
+  ///
+  /// Title: References
+  ///  - R `plot.default()` (`axes`, `ann`): https://stat.ethz.ch/R-manual/R-devel/library/graphics/html/plot.default.html
+  ///
+  ///
+  ///
+  /// <seealso cref="show_grid"/>
   public new RPlot hide_axes(bool enabled) {
     RPlot ret = new RPlot(datamungePINVOKE.RPlot_hide_axes__SWIG_0(swigCPtr, enabled), false);
     return ret;
   }
 
+  /// <summary>Hides the axis lines, tick labels, grid, and axis labels, like R's `axes = FALSE,        ann = FALSE` (the title and subtitle are still drawn).</summary>
+  ///  pie() turns this on. Margins are unchanged, so call margins() as well to let the data use
+  ///  the freed space.
+  ///
+  /// <returns>This plot, for chaining.</returns> 
+  ///
+  /// Title: Example
+  /// <code>      auto plt = dm::Plot(dm::c(1.0, 2.0), dm::c(1.0, 2.0)).hide_axes();
+  ///      std::print("{}\n", plt.axes_hidden());  // true</code>
+  ///
+  ///
+  ///
+  ///
+  /// Title: References
+  ///  - R `plot.default()` (`axes`, `ann`): https://stat.ethz.ch/R-manual/R-devel/library/graphics/html/plot.default.html
+  ///
+  ///
+  ///
+  /// <seealso cref="show_grid"/>
   public new RPlot hide_axes() {
     RPlot ret = new RPlot(datamungePINVOKE.RPlot_hide_axes__SWIG_1(swigCPtr), false);
     return ret;
   }
 
+  /// <summary>Replaces the numeric x ticks with ``labels`` at x = 0, 1, 2, ..., like R's        `axis(1, at = 0:(n - 1), labels = labels)`.</summary>
+  ///  Matches the bar positions of barplot() and boxplot(). Clears any positions set by
+  ///  x_ticks(); an empty vector restores the numeric ticks.
+  ///
+  /// <param name="labels">  Tick texts, in order.</param> 
+  /// <returns>This plot, for chaining.</returns> 
+  ///
+  /// Title: Example
+  /// <code>      auto plt = dm::Plot(dm::c(0.0, 1.0, 2.0), dm::c(5.0, 3.0, 4.0))
+  ///                     .x_tick_labels({"low", "mid", "high"});
+  ///      std::print("{}\n", plt.x_tick_label_list()[2]);  // high</code>
+  ///
+  ///
+  ///
+  ///
+  /// Title: References
+  ///  - R `axis()`: https://stat.ethz.ch/R-manual/R-devel/library/graphics/html/axis.html
+  ///
+  ///
+  ///
+  /// <seealso cref="x_ticks"/>
   public new RPlot x_tick_labels(SVector labels) {
     RPlot ret = new RPlot(datamungePINVOKE.RPlot_x_tick_labels(swigCPtr, SVector.getCPtr(labels)), false);
     if (datamungePINVOKE.SWIGPendingException.Pending) throw datamungePINVOKE.SWIGPendingException.Retrieve();
     return ret;
   }
 
-  ///  Mimics R's `plot(x, y, type = "p"|"l"|"b")`.
+  /// <summary>Replaces the numeric x ticks with ``labels`` drawn at data positions ``positions``,        like R's `axis(1, at = positions, labels = labels)`.</summary>
+  ///  Positions need not be sorted or inside the visible range. Two empty vectors restore the
+  ///  numeric ticks.
+  ///
+  /// <param name="positions">  x data coordinates of the ticks.</param> 
+  /// <param name="labels">  Tick texts, one per position.</param> 
+  /// <returns>This plot, for chaining.</returns> 
+  /// <exception cref="std::invalid_argument">  If the two vectors differ in length; the plot is unchanged.</exception> 
+  ///
+  /// Title: Example
+  /// <code>      const auto x = dm::seql(0.0, 6.283, 50);
+  ///      auto plt = dm::Plot(x, dm::sin(x))
+  ///                     .x_ticks({0.0, 3.1416, 6.2832}, {"0", "pi", "2 pi"})
+  ///                     .y_ticks({-1.0, 0.0, 1.0}, {"min", "0", "max"});
+  ///      std::print("{}\n", plt.x_tick_position_list()[1]);  // 3.1416</code>
+  ///
+  ///
+  ///
+  ///
+  /// Title: References
+  ///  - R `axis()`: https://stat.ethz.ch/R-manual/R-devel/library/graphics/html/axis.html
+  ///
+  ///
+  ///
+  /// <seealso cref="x_tick_labels"/>
+  public new RPlot x_ticks(DVector positions, SVector labels) {
+    RPlot ret = new RPlot(datamungePINVOKE.RPlot_x_ticks(swigCPtr, DVector.getCPtr(positions), SVector.getCPtr(labels)), false);
+    if (datamungePINVOKE.SWIGPendingException.Pending) throw datamungePINVOKE.SWIGPendingException.Retrieve();
+    return ret;
+  }
+
+  /// <summary>Replaces the numeric y ticks with ``labels`` at y = 0, 1, 2, ..., like R's        `axis(2, at = 0:(n - 1), labels = labels)`.</summary>
+  ///  Clears any positions set by y_ticks(); an empty vector restores the numeric ticks.
+  ///
+  /// <param name="labels">  Tick texts, in order.</param> 
+  /// <returns>This plot, for chaining.</returns> 
+  ///
+  /// Title: Example
+  /// <code>      auto plt = dm::Plot(dm::c(3.0, 5.0), dm::c(0.0, 1.0)).y_tick_labels({"no", "yes"});
+  ///      std::print("{}\n", plt.y_tick_label_list().size());  // 2</code>
+  ///
+  ///
+  ///
+  ///
+  /// Title: References
+  ///  - R `axis()`: https://stat.ethz.ch/R-manual/R-devel/library/graphics/html/axis.html
+  ///
+  ///
+  ///
+  /// <seealso cref="y_ticks"/>
+  public new RPlot y_tick_labels(SVector labels) {
+    RPlot ret = new RPlot(datamungePINVOKE.RPlot_y_tick_labels(swigCPtr, SVector.getCPtr(labels)), false);
+    if (datamungePINVOKE.SWIGPendingException.Pending) throw datamungePINVOKE.SWIGPendingException.Retrieve();
+    return ret;
+  }
+
+  /// <summary>Replaces the numeric y ticks with ``labels`` drawn at data positions ``positions``,        like R's `axis(2, at = positions, labels = labels)`.</summary>
+  ///  Two empty vectors restore the numeric ticks.
+  ///
+  /// <param name="positions">  y data coordinates of the ticks.</param> 
+  /// <param name="labels">  Tick texts, one per position.</param> 
+  /// <returns>This plot, for chaining.</returns> 
+  /// <exception cref="std::invalid_argument">  If the two vectors differ in length; the plot is unchanged.</exception> 
+  ///
+  /// Title: Example
+  ///  See x_ticks(), which sets both axes.
+  ///
+  ///
+  ///
+  /// Title: References
+  ///  - R `axis()`: https://stat.ethz.ch/R-manual/R-devel/library/graphics/html/axis.html
+  ///
+  ///
+  ///
+  /// <seealso cref="y_tick_labels"/>
+  public new RPlot y_ticks(DVector positions, SVector labels) {
+    RPlot ret = new RPlot(datamungePINVOKE.RPlot_y_ticks(swigCPtr, DVector.getCPtr(positions), SVector.getCPtr(labels)), false);
+    if (datamungePINVOKE.SWIGPendingException.Pending) throw datamungePINVOKE.SWIGPendingException.Retrieve();
+    return ret;
+  }
+
+  /// <summary>Overrides the automatic outer margins around the plotting area, in pixels, like        R's `par(mai =)` (which uses inches and orders bottom, left, top, right).</summary>
+  ///  The automatic margins are left 90, right 24, top 72 (96 when a subtitle is set), and
+  ///  bottom 84; they leave room for the title, axis labels, and ticks. Explicit margins are used
+  ///  as given, with no extra room for a subtitle. Tight margins suit small multi-panel tiles
+  ///  whose title and axis labels are empty. Rendering throws std::runtime_error if the margins
+  ///  leave no plotting area.
+  ///
+  /// <param name="left">  Left margin in pixels.</param> 
+  /// <param name="right">  Right margin in pixels.</param> 
+  /// <param name="top">  Top margin in pixels.</param> 
+  /// <param name="bottom">  Bottom margin in pixels.</param> 
+  /// <returns>This plot, for chaining.</returns> 
+  /// <exception cref="std::invalid_argument">  If any margin is negative or non-finite; the plot is unchanged.</exception> 
+  ///
+  /// Title: Example
+  /// <code>      auto tile = dm::Plot(dm::c(1.0, 2.0), dm::c(2.0, 1.0))
+  ///                      .set_title("").set_xlab("").set_ylab("")
+  ///                      .margins(30, 10, 10, 20)
+  ///                      .tick_font_size(9);
+  ///      std::print("{} {}\n", tile.has_custom_margins(), tile.margin_left());  // true 30</code>
+  ///
+  ///
+  ///
+  ///
+  /// Title: References
+  ///  - R `par()` (`mai`, `mar`): https://stat.ethz.ch/R-manual/R-devel/library/graphics/html/par.html
+  ///
+  ///
+  ///
+  /// <seealso cref="size"/>
+  public new RPlot margins(double left, double right, double top, double bottom) {
+    RPlot ret = new RPlot(datamungePINVOKE.RPlot_margins(swigCPtr, left, right, top, bottom), false);
+    return ret;
+  }
+
+  /// <summary>Sets the tick-label font size in pixels (default 12), like R's `cex.axis`.</summary>
+  ///  In SVG output the size is used as given. The raster outputs (PNG, PDF, show()) draw tick
+  ///  labels with half-size glyphs when the size is below 12.
+  ///
+  /// <param name="pixels">  Font size in pixels.</param> 
+  /// <returns>This plot, for chaining.</returns> 
+  /// <exception cref="std::invalid_argument">  If ``pixels`` is not positive and finite; the plot is unchanged.</exception> 
+  ///
+  /// Title: Example
+  ///  See margins(), which shrinks the ticks for a small tile.
+  ///
+  ///
+  ///
+  /// Title: References
+  ///  - R `par()` (`cex.axis`): https://stat.ethz.ch/R-manual/R-devel/library/graphics/html/par.html
+  ///
+  ///
+  ///
+  /// <seealso cref="margins"/>
+  public new RPlot tick_font_size(double pixels) {
+    RPlot ret = new RPlot(datamungePINVOKE.RPlot_tick_font_size(swigCPtr, pixels), false);
+    return ret;
+  }
+
+  /// <summary>Places numeric ticks at round values (default on) instead of six evenly spaced        ticks across the range, in the spirit of R's `pretty()`.</summary>
+  ///  The step is 1, 2, or 5 times a power of ten, chosen as the "nice number" nearest a fifth
+  ///  of the visible range (Heckbert's rule), and ticks are its multiples inside the range.
+  ///  That gives about four to seven ticks, close to R's `pretty()`: a padded range of -0.365
+  ///  to 7.665 gets ticks at 0, 2, 4 and 6. Custom tick labels take precedence. The background
+  ///  grid follows the ticks.
+  ///
+  /// <param name="enabled">  True turns round ticks on; false restores six even ticks.</param> 
+  /// <returns>This plot, for chaining.</returns> 
+  ///
+  /// Title: Example
+  /// <code>      auto plt = dm::Plot(dm::c(0.0, 100.0), dm::c(0.0, 1.0)).pretty_ticks();
+  ///      std::print("{}\n", plt.to_svg().contains("&gt;40&lt;/text&gt;"));  // true: ticks 0, 20, ..., 100</code>
+  ///
+  ///
+  ///
+  ///
+  /// Title: References
+  ///  - R `pretty()`: https://stat.ethz.ch/R-manual/R-devel/library/base/html/pretty.html
+  ///  - P. S. Heckbert (1990). "Nice Numbers for Graph Labels". In Graphics Gems, 61-63.
+  ///    Academic Press. doi:10.1016/B978-0-08-050753-8.50020-8
+  ///
+  ///
+  ///
+  /// <seealso cref="x_ticks"/>
+  public new RPlot pretty_ticks(bool enabled) {
+    RPlot ret = new RPlot(datamungePINVOKE.RPlot_pretty_ticks__SWIG_0(swigCPtr, enabled), false);
+    return ret;
+  }
+
+  /// <summary>Places numeric ticks at round values (default on) instead of six evenly spaced        ticks across the range, in the spirit of R's `pretty()`.</summary>
+  ///  The step is 1, 2, or 5 times a power of ten, chosen as the "nice number" nearest a fifth
+  ///  of the visible range (Heckbert's rule), and ticks are its multiples inside the range.
+  ///  That gives about four to seven ticks, close to R's `pretty()`: a padded range of -0.365
+  ///  to 7.665 gets ticks at 0, 2, 4 and 6. Custom tick labels take precedence. The background
+  ///  grid follows the ticks.
+  ///
+  /// <returns>This plot, for chaining.</returns> 
+  ///
+  /// Title: Example
+  /// <code>      auto plt = dm::Plot(dm::c(0.0, 100.0), dm::c(0.0, 1.0)).pretty_ticks();
+  ///      std::print("{}\n", plt.to_svg().contains("&gt;40&lt;/text&gt;"));  // true: ticks 0, 20, ..., 100</code>
+  ///
+  ///
+  ///
+  ///
+  /// Title: References
+  ///  - R `pretty()`: https://stat.ethz.ch/R-manual/R-devel/library/base/html/pretty.html
+  ///  - P. S. Heckbert (1990). "Nice Numbers for Graph Labels". In Graphics Gems, 61-63.
+  ///    Academic Press. doi:10.1016/B978-0-08-050753-8.50020-8
+  ///
+  ///
+  ///
+  /// <seealso cref="x_ticks"/>
+  public new RPlot pretty_ticks() {
+    RPlot ret = new RPlot(datamungePINVOKE.RPlot_pretty_ticks__SWIG_1(swigCPtr), false);
+    return ret;
+  }
+
+  /// <summary>Builds a scatter, line, or line-plus-points plot of ``y`` against ``x``, like R's        `plot(x, y, type = "p" | "l" | "b")`.</summary>
+  ///  `"p"` (the default) adds one scatter series with 4-pixel markers; `"l"` adds one 2-pixel
+  ///  line joining the points in input order; `"b"` adds the line and then unlabeled points on
+  ///  top (R's `"b"` leaves gaps in the line around each point; this draws it through them). The
+  ///  title and axis labels keep their defaults. `RPlot(x, y)` is `plot(x, y)`.
+  ///
+  /// <param name="x">  Horizontal coordinates, one per point.</param> 
+  /// <param name="y">  Vertical coordinates, paired with ``x`` by position.</param> 
+  /// <param name="type">  `"p"` (default), `"l"`, or `"b"`; case-sensitive.</param> 
+  /// <param name="label">  Legend text; empty (the default) keeps the plot out of the automatic legend.
+  ///             With `"b"` only the line carries it.</param> 
+  /// <param name="color">  Color of the points and line (default blue `{37, 99, 235}`).</param> 
+  /// <returns>A new plot holding the series.</returns> 
+  /// <exception cref="std::invalid_argument">  If the coordinates are empty or differ in length, or
+  ///              ``type`` is not one of the three codes.</exception> 
+  ///
+  /// Title: Example
+  /// <code>      const auto x = dm::seql(0.0, 4.0, 5);
+  ///      auto plt = dm::Plot::plot(x, x * x, "b", "x squared");
+  ///      std::print("{} series\n", plt.series().size());  // 2 series</code>
+  ///
+  ///
+  ///
+  ///
+  /// Title: References
+  ///  - R `plot.default()`: https://stat.ethz.ch/R-manual/R-devel/library/graphics/html/plot.default.html
+  ///
+  ///
+  ///
+  /// <seealso cref="RPlot"/>
   public static RPlot plot(DVector x, DVector y, string type, string label, RGB color) {
     RPlot ret = new RPlot(datamungePINVOKE.RPlot_plot__SWIG_0(DVector.getCPtr(x), DVector.getCPtr(y), type, label, RGB.getCPtr(color)), true);
     if (datamungePINVOKE.SWIGPendingException.Pending) throw datamungePINVOKE.SWIGPendingException.Retrieve();
     return ret;
   }
 
-  ///  Mimics R's `plot(x, y, type = "p"|"l"|"b")`.
+  /// <summary>Builds a scatter, line, or line-plus-points plot of ``y`` against ``x``, like R's        `plot(x, y, type = "p" | "l" | "b")`.</summary>
+  ///  `"p"` (the default) adds one scatter series with 4-pixel markers; `"l"` adds one 2-pixel
+  ///  line joining the points in input order; `"b"` adds the line and then unlabeled points on
+  ///  top (R's `"b"` leaves gaps in the line around each point; this draws it through them). The
+  ///  title and axis labels keep their defaults. `RPlot(x, y)` is `plot(x, y)`.
+  ///
+  /// <param name="x">  Horizontal coordinates, one per point.</param> 
+  /// <param name="y">  Vertical coordinates, paired with ``x`` by position.</param> 
+  /// <param name="type">  `"p"` (default), `"l"`, or `"b"`; case-sensitive.</param> 
+  /// <param name="label">  Legend text; empty (the default) keeps the plot out of the automatic legend.
+  ///             With `"b"` only the line carries it.</param> 
+  /// <returns>A new plot holding the series.</returns> 
+  /// <exception cref="std::invalid_argument">  If the coordinates are empty or differ in length, or
+  ///              ``type`` is not one of the three codes.</exception> 
+  ///
+  /// Title: Example
+  /// <code>      const auto x = dm::seql(0.0, 4.0, 5);
+  ///      auto plt = dm::Plot::plot(x, x * x, "b", "x squared");
+  ///      std::print("{} series\n", plt.series().size());  // 2 series</code>
+  ///
+  ///
+  ///
+  ///
+  /// Title: References
+  ///  - R `plot.default()`: https://stat.ethz.ch/R-manual/R-devel/library/graphics/html/plot.default.html
+  ///
+  ///
+  ///
+  /// <seealso cref="RPlot"/>
   public static RPlot plot(DVector x, DVector y, string type, string label) {
     RPlot ret = new RPlot(datamungePINVOKE.RPlot_plot__SWIG_1(DVector.getCPtr(x), DVector.getCPtr(y), type, label), true);
     if (datamungePINVOKE.SWIGPendingException.Pending) throw datamungePINVOKE.SWIGPendingException.Retrieve();
     return ret;
   }
 
-  ///  Mimics R's `plot(x, y, type = "p"|"l"|"b")`.
+  /// <summary>Builds a scatter, line, or line-plus-points plot of ``y`` against ``x``, like R's        `plot(x, y, type = "p" | "l" | "b")`.</summary>
+  ///  `"p"` (the default) adds one scatter series with 4-pixel markers; `"l"` adds one 2-pixel
+  ///  line joining the points in input order; `"b"` adds the line and then unlabeled points on
+  ///  top (R's `"b"` leaves gaps in the line around each point; this draws it through them). The
+  ///  title and axis labels keep their defaults. `RPlot(x, y)` is `plot(x, y)`.
+  ///
+  /// <param name="x">  Horizontal coordinates, one per point.</param> 
+  /// <param name="y">  Vertical coordinates, paired with ``x`` by position.</param> 
+  /// <param name="type">  `"p"` (default), `"l"`, or `"b"`; case-sensitive.</param> 
+  /// <returns>A new plot holding the series.</returns> 
+  /// <exception cref="std::invalid_argument">  If the coordinates are empty or differ in length, or
+  ///              ``type`` is not one of the three codes.</exception> 
+  ///
+  /// Title: Example
+  /// <code>      const auto x = dm::seql(0.0, 4.0, 5);
+  ///      auto plt = dm::Plot::plot(x, x * x, "b", "x squared");
+  ///      std::print("{} series\n", plt.series().size());  // 2 series</code>
+  ///
+  ///
+  ///
+  ///
+  /// Title: References
+  ///  - R `plot.default()`: https://stat.ethz.ch/R-manual/R-devel/library/graphics/html/plot.default.html
+  ///
+  ///
+  ///
+  /// <seealso cref="RPlot"/>
   public static RPlot plot(DVector x, DVector y, string type) {
     RPlot ret = new RPlot(datamungePINVOKE.RPlot_plot__SWIG_2(DVector.getCPtr(x), DVector.getCPtr(y), type), true);
     if (datamungePINVOKE.SWIGPendingException.Pending) throw datamungePINVOKE.SWIGPendingException.Retrieve();
     return ret;
   }
 
-  ///  Mimics R's `plot(x, y, type = "p"|"l"|"b")`.
+  /// <summary>Builds a scatter, line, or line-plus-points plot of ``y`` against ``x``, like R's        `plot(x, y, type = "p" | "l" | "b")`.</summary>
+  ///  `"p"` (the default) adds one scatter series with 4-pixel markers; `"l"` adds one 2-pixel
+  ///  line joining the points in input order; `"b"` adds the line and then unlabeled points on
+  ///  top (R's `"b"` leaves gaps in the line around each point; this draws it through them). The
+  ///  title and axis labels keep their defaults. `RPlot(x, y)` is `plot(x, y)`.
+  ///
+  /// <param name="x">  Horizontal coordinates, one per point.</param> 
+  /// <param name="y">  Vertical coordinates, paired with ``x`` by position.</param> 
+  /// <returns>A new plot holding the series.</returns> 
+  /// <exception cref="std::invalid_argument">  If the coordinates are empty or differ in length, or
+  ///              ``type`` is not one of the three codes.</exception> 
+  ///
+  /// Title: Example
+  /// <code>      const auto x = dm::seql(0.0, 4.0, 5);
+  ///      auto plt = dm::Plot::plot(x, x * x, "b", "x squared");
+  ///      std::print("{} series\n", plt.series().size());  // 2 series</code>
+  ///
+  ///
+  ///
+  ///
+  /// Title: References
+  ///  - R `plot.default()`: https://stat.ethz.ch/R-manual/R-devel/library/graphics/html/plot.default.html
+  ///
+  ///
+  ///
+  /// <seealso cref="RPlot"/>
   public static RPlot plot(DVector x, DVector y) {
     RPlot ret = new RPlot(datamungePINVOKE.RPlot_plot__SWIG_3(DVector.getCPtr(x), DVector.getCPtr(y)), true);
     if (datamungePINVOKE.SWIGPendingException.Pending) throw datamungePINVOKE.SWIGPendingException.Retrieve();
     return ret;
   }
 
-  ///  Mimics R's `hist(x, breaks = bins)`. Bin edges are equal-width over the data range.
+  /// <summary>Builds a frequency histogram of ``data`` with ``bins`` equal-width bins, like R's        `hist(x, breaks = bins)`.</summary>
+  ///  The bins split [min, max] of the data into equal widths (R instead treats `breaks` as a
+  ///  suggestion and uses `pretty()` boundaries). Bins include their left edge and exclude their
+  ///  right edge, except that the maximum goes in the final bin; R's default (`right = TRUE`) is
+  ///  the opposite, so a value on an inner boundary is counted one bin higher here. Constant
+  ///  data uses the range [value, value + 1]. Each bin is one bar of height equal to its count,
+  ///  centered on the bin with width equal to the bin width. The title is "Histogram", the x
+  ///  label "x", and the y label "Frequency". The data is consumed; the plot keeps only counts.
+  ///
+  /// <param name="data">  Observations; all must be finite.</param> 
+  /// <param name="bins">  Number of bins (default 10).</param> 
+  /// <param name="label">  Legend text; empty (the default) shows no legend.</param> 
+  /// <param name="color">  Bar color (default light blue `{96, 165, 250}`).</param> 
+  /// <returns>A new plot holding one Bar series.</returns> 
+  /// <exception cref="std::invalid_argument"> For empty/non-finite data, zero bins, or a range/bin
+  ///              width that cannot be represented as a finite positive double.</exception> 
+  ///
+  /// Title: Example
+  /// <code>      auto plt = dm::Plot::hist({1.0, 2.0, 2.0, 3.0, 3.0, 3.0, 4.0}, 3);
+  ///      const auto&amp; bars = plt.series()[0];  // bins [1,2) [2,3) [3,4]
+  ///      std::print("{} {} {}\n", bars.y[0], bars.y[1], bars.y[2]);  // 1 2 4</code>
+  ///
+  ///
+  ///
+  ///
+  /// Title: References
+  ///  - R `hist()`: https://stat.ethz.ch/R-manual/R-devel/library/graphics/html/hist.html
+  ///
+  ///
+  ///
+  /// <seealso cref="dm.Histogram, bars"/>
   public static RPlot hist(DVector data, uint bins, string label, RGB color) {
     RPlot ret = new RPlot(datamungePINVOKE.RPlot_hist__SWIG_0(DVector.getCPtr(data), bins, label, RGB.getCPtr(color)), true);
     if (datamungePINVOKE.SWIGPendingException.Pending) throw datamungePINVOKE.SWIGPendingException.Retrieve();
     return ret;
   }
 
-  ///  Mimics R's `hist(x, breaks = bins)`. Bin edges are equal-width over the data range.
+  /// <summary>Builds a frequency histogram of ``data`` with ``bins`` equal-width bins, like R's        `hist(x, breaks = bins)`.</summary>
+  ///  The bins split [min, max] of the data into equal widths (R instead treats `breaks` as a
+  ///  suggestion and uses `pretty()` boundaries). Bins include their left edge and exclude their
+  ///  right edge, except that the maximum goes in the final bin; R's default (`right = TRUE`) is
+  ///  the opposite, so a value on an inner boundary is counted one bin higher here. Constant
+  ///  data uses the range [value, value + 1]. Each bin is one bar of height equal to its count,
+  ///  centered on the bin with width equal to the bin width. The title is "Histogram", the x
+  ///  label "x", and the y label "Frequency". The data is consumed; the plot keeps only counts.
+  ///
+  /// <param name="data">  Observations; all must be finite.</param> 
+  /// <param name="bins">  Number of bins (default 10).</param> 
+  /// <param name="label">  Legend text; empty (the default) shows no legend.</param> 
+  /// <returns>A new plot holding one Bar series.</returns> 
+  /// <exception cref="std::invalid_argument"> For empty/non-finite data, zero bins, or a range/bin
+  ///              width that cannot be represented as a finite positive double.</exception> 
+  ///
+  /// Title: Example
+  /// <code>      auto plt = dm::Plot::hist({1.0, 2.0, 2.0, 3.0, 3.0, 3.0, 4.0}, 3);
+  ///      const auto&amp; bars = plt.series()[0];  // bins [1,2) [2,3) [3,4]
+  ///      std::print("{} {} {}\n", bars.y[0], bars.y[1], bars.y[2]);  // 1 2 4</code>
+  ///
+  ///
+  ///
+  ///
+  /// Title: References
+  ///  - R `hist()`: https://stat.ethz.ch/R-manual/R-devel/library/graphics/html/hist.html
+  ///
+  ///
+  ///
+  /// <seealso cref="dm.Histogram, bars"/>
   public static RPlot hist(DVector data, uint bins, string label) {
     RPlot ret = new RPlot(datamungePINVOKE.RPlot_hist__SWIG_1(DVector.getCPtr(data), bins, label), true);
     if (datamungePINVOKE.SWIGPendingException.Pending) throw datamungePINVOKE.SWIGPendingException.Retrieve();
     return ret;
   }
 
-  ///  Mimics R's `hist(x, breaks = bins)`. Bin edges are equal-width over the data range.
+  /// <summary>Builds a frequency histogram of ``data`` with ``bins`` equal-width bins, like R's        `hist(x, breaks = bins)`.</summary>
+  ///  The bins split [min, max] of the data into equal widths (R instead treats `breaks` as a
+  ///  suggestion and uses `pretty()` boundaries). Bins include their left edge and exclude their
+  ///  right edge, except that the maximum goes in the final bin; R's default (`right = TRUE`) is
+  ///  the opposite, so a value on an inner boundary is counted one bin higher here. Constant
+  ///  data uses the range [value, value + 1]. Each bin is one bar of height equal to its count,
+  ///  centered on the bin with width equal to the bin width. The title is "Histogram", the x
+  ///  label "x", and the y label "Frequency". The data is consumed; the plot keeps only counts.
+  ///
+  /// <param name="data">  Observations; all must be finite.</param> 
+  /// <param name="bins">  Number of bins (default 10).</param> 
+  /// <returns>A new plot holding one Bar series.</returns> 
+  /// <exception cref="std::invalid_argument"> For empty/non-finite data, zero bins, or a range/bin
+  ///              width that cannot be represented as a finite positive double.</exception> 
+  ///
+  /// Title: Example
+  /// <code>      auto plt = dm::Plot::hist({1.0, 2.0, 2.0, 3.0, 3.0, 3.0, 4.0}, 3);
+  ///      const auto&amp; bars = plt.series()[0];  // bins [1,2) [2,3) [3,4]
+  ///      std::print("{} {} {}\n", bars.y[0], bars.y[1], bars.y[2]);  // 1 2 4</code>
+  ///
+  ///
+  ///
+  ///
+  /// Title: References
+  ///  - R `hist()`: https://stat.ethz.ch/R-manual/R-devel/library/graphics/html/hist.html
+  ///
+  ///
+  ///
+  /// <seealso cref="dm.Histogram, bars"/>
   public static RPlot hist(DVector data, uint bins) {
     RPlot ret = new RPlot(datamungePINVOKE.RPlot_hist__SWIG_2(DVector.getCPtr(data), bins), true);
     if (datamungePINVOKE.SWIGPendingException.Pending) throw datamungePINVOKE.SWIGPendingException.Retrieve();
     return ret;
   }
 
-  ///  Mimics R's `hist(x, breaks = bins)`. Bin edges are equal-width over the data range.
+  /// <summary>Builds a frequency histogram of ``data`` with ``bins`` equal-width bins, like R's        `hist(x, breaks = bins)`.</summary>
+  ///  The bins split [min, max] of the data into equal widths (R instead treats `breaks` as a
+  ///  suggestion and uses `pretty()` boundaries). Bins include their left edge and exclude their
+  ///  right edge, except that the maximum goes in the final bin; R's default (`right = TRUE`) is
+  ///  the opposite, so a value on an inner boundary is counted one bin higher here. Constant
+  ///  data uses the range [value, value + 1]. Each bin is one bar of height equal to its count,
+  ///  centered on the bin with width equal to the bin width. The title is "Histogram", the x
+  ///  label "x", and the y label "Frequency". The data is consumed; the plot keeps only counts.
+  ///
+  /// <param name="data">  Observations; all must be finite.</param> 
+  /// <returns>A new plot holding one Bar series.</returns> 
+  /// <exception cref="std::invalid_argument"> For empty/non-finite data, zero bins, or a range/bin
+  ///              width that cannot be represented as a finite positive double.</exception> 
+  ///
+  /// Title: Example
+  /// <code>      auto plt = dm::Plot::hist({1.0, 2.0, 2.0, 3.0, 3.0, 3.0, 4.0}, 3);
+  ///      const auto&amp; bars = plt.series()[0];  // bins [1,2) [2,3) [3,4]
+  ///      std::print("{} {} {}\n", bars.y[0], bars.y[1], bars.y[2]);  // 1 2 4</code>
+  ///
+  ///
+  ///
+  ///
+  /// Title: References
+  ///  - R `hist()`: https://stat.ethz.ch/R-manual/R-devel/library/graphics/html/hist.html
+  ///
+  ///
+  ///
+  /// <seealso cref="dm.Histogram, bars"/>
   public static RPlot hist(DVector data) {
     RPlot ret = new RPlot(datamungePINVOKE.RPlot_hist__SWIG_3(DVector.getCPtr(data)), true);
     if (datamungePINVOKE.SWIGPendingException.Pending) throw datamungePINVOKE.SWIGPendingException.Retrieve();
     return ret;
   }
 
-  ///  Mimics R's `barplot(heights, names.arg = names)`.
+  /// <summary>Builds a bar chart with one bar per height, like R's        `barplot(heights, names.arg = names)`.</summary>
+  ///  Bar i is centered at x = i (0, 1, 2, ...) and is 0.8 units wide (R puts default bars at
+  ///  0.7, 1.9, 3.1, ...). Bars rise from 0, so negative heights point down, and the y range
+  ///  always includes 0. Nonempty ``names`` become x tick labels under the bars. The title and
+  ///  axis labels keep their defaults.
+  ///
+  /// <param name="heights">  Bar heights, in display order.</param> 
+  /// <param name="names">  Tick labels, one per bar; empty (the default) keeps numeric ticks.</param> 
+  /// <param name="label">  Legend text; empty (the default) shows no legend.</param> 
+  /// <param name="color">  Bar color (default green `{22, 163, 74}`).</param> 
+  /// <returns>A new plot holding one Bar series.</returns> 
+  /// <exception cref="std::invalid_argument">  If ``heights`` is empty or ``names`` is nonempty with a
+  ///              different length.</exception> 
+  ///
+  /// Title: Example
+  /// <code>      auto plt = dm::Plot::barplot({3.0, 5.0, 2.0}, {"a", "b", "c"}).set_title("Counts");
+  ///      std::print("{} {}\n", plt.series()[0].x[2], plt.x_tick_label_list()[2]);  // 2 c</code>
+  ///
+  ///
+  ///
+  ///
+  /// Title: References
+  ///  - R `barplot()`: https://stat.ethz.ch/R-manual/R-devel/library/graphics/html/barplot.html
+  ///
+  ///
+  ///
+  /// <seealso cref="bars"/>
   public static RPlot barplot(DVector heights, SVector names, string label, RGB color) {
     RPlot ret = new RPlot(datamungePINVOKE.RPlot_barplot__SWIG_0(DVector.getCPtr(heights), SVector.getCPtr(names), label, RGB.getCPtr(color)), true);
     if (datamungePINVOKE.SWIGPendingException.Pending) throw datamungePINVOKE.SWIGPendingException.Retrieve();
     return ret;
   }
 
-  ///  Mimics R's `barplot(heights, names.arg = names)`.
+  /// <summary>Builds a bar chart with one bar per height, like R's        `barplot(heights, names.arg = names)`.</summary>
+  ///  Bar i is centered at x = i (0, 1, 2, ...) and is 0.8 units wide (R puts default bars at
+  ///  0.7, 1.9, 3.1, ...). Bars rise from 0, so negative heights point down, and the y range
+  ///  always includes 0. Nonempty ``names`` become x tick labels under the bars. The title and
+  ///  axis labels keep their defaults.
+  ///
+  /// <param name="heights">  Bar heights, in display order.</param> 
+  /// <param name="names">  Tick labels, one per bar; empty (the default) keeps numeric ticks.</param> 
+  /// <param name="label">  Legend text; empty (the default) shows no legend.</param> 
+  /// <returns>A new plot holding one Bar series.</returns> 
+  /// <exception cref="std::invalid_argument">  If ``heights`` is empty or ``names`` is nonempty with a
+  ///              different length.</exception> 
+  ///
+  /// Title: Example
+  /// <code>      auto plt = dm::Plot::barplot({3.0, 5.0, 2.0}, {"a", "b", "c"}).set_title("Counts");
+  ///      std::print("{} {}\n", plt.series()[0].x[2], plt.x_tick_label_list()[2]);  // 2 c</code>
+  ///
+  ///
+  ///
+  ///
+  /// Title: References
+  ///  - R `barplot()`: https://stat.ethz.ch/R-manual/R-devel/library/graphics/html/barplot.html
+  ///
+  ///
+  ///
+  /// <seealso cref="bars"/>
   public static RPlot barplot(DVector heights, SVector names, string label) {
     RPlot ret = new RPlot(datamungePINVOKE.RPlot_barplot__SWIG_1(DVector.getCPtr(heights), SVector.getCPtr(names), label), true);
     if (datamungePINVOKE.SWIGPendingException.Pending) throw datamungePINVOKE.SWIGPendingException.Retrieve();
     return ret;
   }
 
-  ///  Mimics R's `barplot(heights, names.arg = names)`.
+  /// <summary>Builds a bar chart with one bar per height, like R's        `barplot(heights, names.arg = names)`.</summary>
+  ///  Bar i is centered at x = i (0, 1, 2, ...) and is 0.8 units wide (R puts default bars at
+  ///  0.7, 1.9, 3.1, ...). Bars rise from 0, so negative heights point down, and the y range
+  ///  always includes 0. Nonempty ``names`` become x tick labels under the bars. The title and
+  ///  axis labels keep their defaults.
+  ///
+  /// <param name="heights">  Bar heights, in display order.</param> 
+  /// <param name="names">  Tick labels, one per bar; empty (the default) keeps numeric ticks.</param> 
+  /// <returns>A new plot holding one Bar series.</returns> 
+  /// <exception cref="std::invalid_argument">  If ``heights`` is empty or ``names`` is nonempty with a
+  ///              different length.</exception> 
+  ///
+  /// Title: Example
+  /// <code>      auto plt = dm::Plot::barplot({3.0, 5.0, 2.0}, {"a", "b", "c"}).set_title("Counts");
+  ///      std::print("{} {}\n", plt.series()[0].x[2], plt.x_tick_label_list()[2]);  // 2 c</code>
+  ///
+  ///
+  ///
+  ///
+  /// Title: References
+  ///  - R `barplot()`: https://stat.ethz.ch/R-manual/R-devel/library/graphics/html/barplot.html
+  ///
+  ///
+  ///
+  /// <seealso cref="bars"/>
   public static RPlot barplot(DVector heights, SVector names) {
     RPlot ret = new RPlot(datamungePINVOKE.RPlot_barplot__SWIG_2(DVector.getCPtr(heights), SVector.getCPtr(names)), true);
     if (datamungePINVOKE.SWIGPendingException.Pending) throw datamungePINVOKE.SWIGPendingException.Retrieve();
     return ret;
   }
 
-  ///  Mimics R's `barplot(heights, names.arg = names)`.
+  /// <summary>Builds a bar chart with one bar per height, like R's        `barplot(heights, names.arg = names)`.</summary>
+  ///  Bar i is centered at x = i (0, 1, 2, ...) and is 0.8 units wide (R puts default bars at
+  ///  0.7, 1.9, 3.1, ...). Bars rise from 0, so negative heights point down, and the y range
+  ///  always includes 0. Nonempty ``names`` become x tick labels under the bars. The title and
+  ///  axis labels keep their defaults.
+  ///
+  /// <param name="heights">  Bar heights, in display order.</param> 
+  /// <returns>A new plot holding one Bar series.</returns> 
+  /// <exception cref="std::invalid_argument">  If ``heights`` is empty or ``names`` is nonempty with a
+  ///              different length.</exception> 
+  ///
+  /// Title: Example
+  /// <code>      auto plt = dm::Plot::barplot({3.0, 5.0, 2.0}, {"a", "b", "c"}).set_title("Counts");
+  ///      std::print("{} {}\n", plt.series()[0].x[2], plt.x_tick_label_list()[2]);  // 2 c</code>
+  ///
+  ///
+  ///
+  ///
+  /// Title: References
+  ///  - R `barplot()`: https://stat.ethz.ch/R-manual/R-devel/library/graphics/html/barplot.html
+  ///
+  ///
+  ///
+  /// <seealso cref="bars"/>
   public static RPlot barplot(DVector heights) {
     RPlot ret = new RPlot(datamungePINVOKE.RPlot_barplot__SWIG_3(DVector.getCPtr(heights)), true);
     if (datamungePINVOKE.SWIGPendingException.Pending) throw datamungePINVOKE.SWIGPendingException.Retrieve();
     return ret;
   }
 
-  ///  Mimics R's `boxplot(...)` over one or more groups.
+  /// <summary>Builds side-by-side box-and-whisker plots, one per group, like R's        `boxplot(list(...), names = names)`.</summary>
+  ///  Group g is drawn at x = g (0, 1, 2, ...) as a 0.6-unit-wide box from the first to the
+  ///  third quartile with a line at the median. Quartiles are R's default "type 7" sample
+  ///  quantiles. Whiskers reach the most extreme values within 1.5 IQR of the box (Tukey's
+  ///  rule), and values beyond are drawn as outlier points. R's `boxplot()` instead uses
+  ///  Tukey's hinges (`fivenum()`), so for some sample sizes the box edges and the fences differ
+  ///  slightly from R: for 1, ..., 9, 40 this gives quartiles 3.25 and 7.75 where R draws
+  ///  hinges at 3 and 8. All boxes share ``color;`` the title and axis labels keep their defaults.
+  ///
+  /// <param name="groups">  One vector of observations per box; each must be nonempty.</param> 
+  /// <param name="names">  Tick labels under the boxes; empty (the default) keeps numeric ticks.</param> 
+  /// <param name="color">  Box, whisker, and outlier color (default light blue `{96, 165, 250}`).</param> 
+  /// <returns>A new plot holding one Box series per group (see DataSeries::Kind::Box for its layout).</returns> 
+  /// <exception cref="std::invalid_argument">  If ``groups`` or any group is empty, or ``names`` is nonempty
+  ///              with a different length.</exception> 
+  ///
+  /// Title: Example
+  /// <code>      auto plt = dm::Plot::boxplot({{1, 2, 3, 4, 5, 6, 7, 8, 9, 40}, {2, 4, 6}}, {"a", "b"});
+  ///      const auto&amp; y = plt.series()[0].y;  // whisker_lo, q1, median, q3, whisker_hi, outliers...
+  ///      std::print("{} {} {} {} {} | {}\n", y[0], y[1], y[2], y[3], y[4], y[5]);
+  ///     1 3.25 5.5 7.75 9 | 40
+  ///      plt.save("boxes.svg");</code>
+  ///
+  ///
+  ///
+  ///
+  /// Title: References
+  ///  - J. W. Tukey (1977). Exploratory Data Analysis. Addison-Wesley. (Box plot and the 1.5 IQR fences.)
+  ///  - R. McGill, J. W. Tukey, W. A. Larsen (1978). "Variations of Box Plots". The American
+  ///    Statistician 32(1), 12-16. doi:10.1080/00031305.1978.10479236
+  ///  - R. J. Hyndman, Y. Fan (1996). "Sample Quantiles in Statistical Packages". The American
+  ///    Statistician 50(4), 361-365. doi:10.1080/00031305.1996.10473566 (quantile type 7.)
+  ///  - R `boxplot()`: https://stat.ethz.ch/R-manual/R-devel/library/graphics/html/boxplot.html
+  ///  - R `boxplot.stats()`: https://stat.ethz.ch/R-manual/R-devel/library/grDevices/html/boxplot.stats.html
+  ///
+  ///
+  ///
+  /// <seealso cref="box"/>
   public static RPlot boxplot(DVectorVector groups, SVector names, RGB color) {
     RPlot ret = new RPlot(datamungePINVOKE.RPlot_boxplot__SWIG_0(DVectorVector.getCPtr(groups), SVector.getCPtr(names), RGB.getCPtr(color)), true);
     if (datamungePINVOKE.SWIGPendingException.Pending) throw datamungePINVOKE.SWIGPendingException.Retrieve();
     return ret;
   }
 
-  ///  Mimics R's `boxplot(...)` over one or more groups.
+  /// <summary>Builds side-by-side box-and-whisker plots, one per group, like R's        `boxplot(list(...), names = names)`.</summary>
+  ///  Group g is drawn at x = g (0, 1, 2, ...) as a 0.6-unit-wide box from the first to the
+  ///  third quartile with a line at the median. Quartiles are R's default "type 7" sample
+  ///  quantiles. Whiskers reach the most extreme values within 1.5 IQR of the box (Tukey's
+  ///  rule), and values beyond are drawn as outlier points. R's `boxplot()` instead uses
+  ///  Tukey's hinges (`fivenum()`), so for some sample sizes the box edges and the fences differ
+  ///  slightly from R: for 1, ..., 9, 40 this gives quartiles 3.25 and 7.75 where R draws
+  ///  hinges at 3 and 8. All boxes share ``color;`` the title and axis labels keep their defaults.
+  ///
+  /// <param name="groups">  One vector of observations per box; each must be nonempty.</param> 
+  /// <param name="names">  Tick labels under the boxes; empty (the default) keeps numeric ticks.</param> 
+  /// <returns>A new plot holding one Box series per group (see DataSeries::Kind::Box for its layout).</returns> 
+  /// <exception cref="std::invalid_argument">  If ``groups`` or any group is empty, or ``names`` is nonempty
+  ///              with a different length.</exception> 
+  ///
+  /// Title: Example
+  /// <code>      auto plt = dm::Plot::boxplot({{1, 2, 3, 4, 5, 6, 7, 8, 9, 40}, {2, 4, 6}}, {"a", "b"});
+  ///      const auto&amp; y = plt.series()[0].y;  // whisker_lo, q1, median, q3, whisker_hi, outliers...
+  ///      std::print("{} {} {} {} {} | {}\n", y[0], y[1], y[2], y[3], y[4], y[5]);
+  ///     1 3.25 5.5 7.75 9 | 40
+  ///      plt.save("boxes.svg");</code>
+  ///
+  ///
+  ///
+  ///
+  /// Title: References
+  ///  - J. W. Tukey (1977). Exploratory Data Analysis. Addison-Wesley. (Box plot and the 1.5 IQR fences.)
+  ///  - R. McGill, J. W. Tukey, W. A. Larsen (1978). "Variations of Box Plots". The American
+  ///    Statistician 32(1), 12-16. doi:10.1080/00031305.1978.10479236
+  ///  - R. J. Hyndman, Y. Fan (1996). "Sample Quantiles in Statistical Packages". The American
+  ///    Statistician 50(4), 361-365. doi:10.1080/00031305.1996.10473566 (quantile type 7.)
+  ///  - R `boxplot()`: https://stat.ethz.ch/R-manual/R-devel/library/graphics/html/boxplot.html
+  ///  - R `boxplot.stats()`: https://stat.ethz.ch/R-manual/R-devel/library/grDevices/html/boxplot.stats.html
+  ///
+  ///
+  ///
+  /// <seealso cref="box"/>
   public static RPlot boxplot(DVectorVector groups, SVector names) {
     RPlot ret = new RPlot(datamungePINVOKE.RPlot_boxplot__SWIG_1(DVectorVector.getCPtr(groups), SVector.getCPtr(names)), true);
     if (datamungePINVOKE.SWIGPendingException.Pending) throw datamungePINVOKE.SWIGPendingException.Retrieve();
     return ret;
   }
 
-  ///  Mimics R's `boxplot(...)` over one or more groups.
+  /// <summary>Builds side-by-side box-and-whisker plots, one per group, like R's        `boxplot(list(...), names = names)`.</summary>
+  ///  Group g is drawn at x = g (0, 1, 2, ...) as a 0.6-unit-wide box from the first to the
+  ///  third quartile with a line at the median. Quartiles are R's default "type 7" sample
+  ///  quantiles. Whiskers reach the most extreme values within 1.5 IQR of the box (Tukey's
+  ///  rule), and values beyond are drawn as outlier points. R's `boxplot()` instead uses
+  ///  Tukey's hinges (`fivenum()`), so for some sample sizes the box edges and the fences differ
+  ///  slightly from R: for 1, ..., 9, 40 this gives quartiles 3.25 and 7.75 where R draws
+  ///  hinges at 3 and 8. All boxes share ``color;`` the title and axis labels keep their defaults.
+  ///
+  /// <param name="groups">  One vector of observations per box; each must be nonempty.</param> 
+  /// <returns>A new plot holding one Box series per group (see DataSeries::Kind::Box for its layout).</returns> 
+  /// <exception cref="std::invalid_argument">  If ``groups`` or any group is empty, or ``names`` is nonempty
+  ///              with a different length.</exception> 
+  ///
+  /// Title: Example
+  /// <code>      auto plt = dm::Plot::boxplot({{1, 2, 3, 4, 5, 6, 7, 8, 9, 40}, {2, 4, 6}}, {"a", "b"});
+  ///      const auto&amp; y = plt.series()[0].y;  // whisker_lo, q1, median, q3, whisker_hi, outliers...
+  ///      std::print("{} {} {} {} {} | {}\n", y[0], y[1], y[2], y[3], y[4], y[5]);
+  ///     1 3.25 5.5 7.75 9 | 40
+  ///      plt.save("boxes.svg");</code>
+  ///
+  ///
+  ///
+  ///
+  /// Title: References
+  ///  - J. W. Tukey (1977). Exploratory Data Analysis. Addison-Wesley. (Box plot and the 1.5 IQR fences.)
+  ///  - R. McGill, J. W. Tukey, W. A. Larsen (1978). "Variations of Box Plots". The American
+  ///    Statistician 32(1), 12-16. doi:10.1080/00031305.1978.10479236
+  ///  - R. J. Hyndman, Y. Fan (1996). "Sample Quantiles in Statistical Packages". The American
+  ///    Statistician 50(4), 361-365. doi:10.1080/00031305.1996.10473566 (quantile type 7.)
+  ///  - R `boxplot()`: https://stat.ethz.ch/R-manual/R-devel/library/graphics/html/boxplot.html
+  ///  - R `boxplot.stats()`: https://stat.ethz.ch/R-manual/R-devel/library/grDevices/html/boxplot.stats.html
+  ///
+  ///
+  ///
+  /// <seealso cref="box"/>
   public static RPlot boxplot(DVectorVector groups) {
     RPlot ret = new RPlot(datamungePINVOKE.RPlot_boxplot__SWIG_2(DVectorVector.getCPtr(groups)), true);
     if (datamungePINVOKE.SWIGPendingException.Pending) throw datamungePINVOKE.SWIGPendingException.Retrieve();
     return ret;
   }
 
-  ///  Mimics R's `pie(x, labels = names)`.
-  public static RPlot pie(DVector values, SVector names, SWIGTYPE_p_std__vectorT_datamunge__plot__RGB_t colors) {
-    RPlot ret = new RPlot(datamungePINVOKE.RPlot_pie__SWIG_0(DVector.getCPtr(values), SVector.getCPtr(names), SWIGTYPE_p_std__vectorT_datamunge__plot__RGB_t.getCPtr(colors)), true);
+  /// <summary>boxplot() with one color per box, like R's `boxplot(..., col = colors)`.</summary>
+  ///
+  /// <param name="groups">  One vector of observations per box; each must be nonempty.</param> 
+  /// <param name="names">  Tick labels under the boxes; empty keeps numeric ticks.</param> 
+  /// <param name="colors">  Box colors, recycled when shorter than ``groups;`` must be nonempty.</param> 
+  /// <returns>A new plot holding one Box series per group.</returns> 
+  /// <exception cref="std::invalid_argument">  As boxplot(), or if ``colors`` is empty.</exception> 
+  ///
+  /// Title: Example
+  /// <code>      auto plt = dm::graphics::RPlot::boxplot({{1, 2, 3}, {2, 4, 6}}, {"a", "b"},
+  ///                                          std::vector&lt;dm::RGB&gt;{{78, 121, 167}, {242, 142, 43}});</code>
+  ///
+  ///
+  ///
+  /// <seealso cref="boxplot"/>
+  public static RPlot boxplot(DVectorVector groups, SVector names, SWIGTYPE_p_std__vectorT_datamunge__graphics__RGB_t colors) {
+    RPlot ret = new RPlot(datamungePINVOKE.RPlot_boxplot__SWIG_3(DVectorVector.getCPtr(groups), SVector.getCPtr(names), SWIGTYPE_p_std__vectorT_datamunge__graphics__RGB_t.getCPtr(colors)), true);
     if (datamungePINVOKE.SWIGPendingException.Pending) throw datamungePINVOKE.SWIGPendingException.Retrieve();
     return ret;
   }
 
-  ///  Mimics R's `pie(x, labels = names)`.
+  /// <summary>Builds a pie chart with one wedge per value, like R's        `pie(x, labels = names, col = colors, clockwise = TRUE)`.</summary>
+  ///  Wedge i spans the fraction values[i] / sum(values) of the circle. Wedges start at 12
+  ///  o'clock and run clockwise (R's default starts at 3 o'clock and runs counter-clockwise).
+  ///  Each wedge is a filled unit-radius polygon with 24 arc segments. Names, when given, are
+  ///  drawn at radius 1.15 beside the middle of each wedge's arc and also label the wedges, so the
+  ///  automatic legend lists them. Colors are recycled; empty uses an 8-color built-in palette
+  ///  starting blue, red, green. The axes and grid are hidden and both ranges are fixed at
+  ///  [-1.4, 1.4]. The pie is drawn in data units, so it is round only when the plotting area is
+  ///  square, e.g. `.size(598, 640)` with the default margins; the default 960x640 canvas draws an
+  ///  ellipse.
+  ///
+  /// <param name="values">  Wedge sizes; nonnegative, with a positive sum.</param> 
+  /// <param name="names">  Wedge labels; empty (the default) draws none.</param> 
+  /// <param name="colors">  Wedge colors, recycled; empty (the default) uses the built-in palette.</param> 
+  /// <returns>A new plot holding one Polygon series per wedge plus one Text series per name.</returns> 
+  /// <exception cref="std::invalid_argument">  If ``values`` is empty, has a negative entry, or sums to 0,
+  ///              or ``names`` is nonempty with a different length.</exception> 
+  ///
+  /// Title: Example
+  /// <code>      auto plt = dm::Plot::pie({3.0, 2.0, 1.0}, {"rent", "food", "fun"}).size(598, 640);
+  ///      std::print("{}\n", plt.series().size());  // 6
+  ///      plt.save("budget.svg");</code>
+  ///
+  ///
+  ///
+  ///
+  /// Title: References
+  ///  - R `pie()`: https://stat.ethz.ch/R-manual/R-devel/library/graphics/html/pie.html
+  ///
+  ///
+  ///
+  /// <seealso cref="polygon"/>
+  public static RPlot pie(DVector values, SVector names, SWIGTYPE_p_std__vectorT_datamunge__graphics__RGB_t colors) {
+    RPlot ret = new RPlot(datamungePINVOKE.RPlot_pie__SWIG_0(DVector.getCPtr(values), SVector.getCPtr(names), SWIGTYPE_p_std__vectorT_datamunge__graphics__RGB_t.getCPtr(colors)), true);
+    if (datamungePINVOKE.SWIGPendingException.Pending) throw datamungePINVOKE.SWIGPendingException.Retrieve();
+    return ret;
+  }
+
+  /// <summary>Builds a pie chart with one wedge per value, like R's        `pie(x, labels = names, col = colors, clockwise = TRUE)`.</summary>
+  ///  Wedge i spans the fraction values[i] / sum(values) of the circle. Wedges start at 12
+  ///  o'clock and run clockwise (R's default starts at 3 o'clock and runs counter-clockwise).
+  ///  Each wedge is a filled unit-radius polygon with 24 arc segments. Names, when given, are
+  ///  drawn at radius 1.15 beside the middle of each wedge's arc and also label the wedges, so the
+  ///  automatic legend lists them. Colors are recycled; empty uses an 8-color built-in palette
+  ///  starting blue, red, green. The axes and grid are hidden and both ranges are fixed at
+  ///  [-1.4, 1.4]. The pie is drawn in data units, so it is round only when the plotting area is
+  ///  square, e.g. `.size(598, 640)` with the default margins; the default 960x640 canvas draws an
+  ///  ellipse.
+  ///
+  /// <param name="values">  Wedge sizes; nonnegative, with a positive sum.</param> 
+  /// <param name="names">  Wedge labels; empty (the default) draws none.</param> 
+  /// <returns>A new plot holding one Polygon series per wedge plus one Text series per name.</returns> 
+  /// <exception cref="std::invalid_argument">  If ``values`` is empty, has a negative entry, or sums to 0,
+  ///              or ``names`` is nonempty with a different length.</exception> 
+  ///
+  /// Title: Example
+  /// <code>      auto plt = dm::Plot::pie({3.0, 2.0, 1.0}, {"rent", "food", "fun"}).size(598, 640);
+  ///      std::print("{}\n", plt.series().size());  // 6
+  ///      plt.save("budget.svg");</code>
+  ///
+  ///
+  ///
+  ///
+  /// Title: References
+  ///  - R `pie()`: https://stat.ethz.ch/R-manual/R-devel/library/graphics/html/pie.html
+  ///
+  ///
+  ///
+  /// <seealso cref="polygon"/>
   public static RPlot pie(DVector values, SVector names) {
     RPlot ret = new RPlot(datamungePINVOKE.RPlot_pie__SWIG_1(DVector.getCPtr(values), SVector.getCPtr(names)), true);
     if (datamungePINVOKE.SWIGPendingException.Pending) throw datamungePINVOKE.SWIGPendingException.Retrieve();
     return ret;
   }
 
-  ///  Mimics R's `pie(x, labels = names)`.
+  /// <summary>Builds a pie chart with one wedge per value, like R's        `pie(x, labels = names, col = colors, clockwise = TRUE)`.</summary>
+  ///  Wedge i spans the fraction values[i] / sum(values) of the circle. Wedges start at 12
+  ///  o'clock and run clockwise (R's default starts at 3 o'clock and runs counter-clockwise).
+  ///  Each wedge is a filled unit-radius polygon with 24 arc segments. Names, when given, are
+  ///  drawn at radius 1.15 beside the middle of each wedge's arc and also label the wedges, so the
+  ///  automatic legend lists them. Colors are recycled; empty uses an 8-color built-in palette
+  ///  starting blue, red, green. The axes and grid are hidden and both ranges are fixed at
+  ///  [-1.4, 1.4]. The pie is drawn in data units, so it is round only when the plotting area is
+  ///  square, e.g. `.size(598, 640)` with the default margins; the default 960x640 canvas draws an
+  ///  ellipse.
+  ///
+  /// <param name="values">  Wedge sizes; nonnegative, with a positive sum.</param> 
+  /// <returns>A new plot holding one Polygon series per wedge plus one Text series per name.</returns> 
+  /// <exception cref="std::invalid_argument">  If ``values`` is empty, has a negative entry, or sums to 0,
+  ///              or ``names`` is nonempty with a different length.</exception> 
+  ///
+  /// Title: Example
+  /// <code>      auto plt = dm::Plot::pie({3.0, 2.0, 1.0}, {"rent", "food", "fun"}).size(598, 640);
+  ///      std::print("{}\n", plt.series().size());  // 6
+  ///      plt.save("budget.svg");</code>
+  ///
+  ///
+  ///
+  ///
+  /// Title: References
+  ///  - R `pie()`: https://stat.ethz.ch/R-manual/R-devel/library/graphics/html/pie.html
+  ///
+  ///
+  ///
+  /// <seealso cref="polygon"/>
   public static RPlot pie(DVector values) {
     RPlot ret = new RPlot(datamungePINVOKE.RPlot_pie__SWIG_2(DVector.getCPtr(values)), true);
     if (datamungePINVOKE.SWIGPendingException.Pending) throw datamungePINVOKE.SWIGPendingException.Retrieve();
     return ret;
   }
 
-  ///  Mimics R's `curve(expr, from, to)`; `f` is sampled at `n` evenly-spaced points.
+  /// <summary>Plots a function over [``from``, ``to]`` as a line, like R's `curve(expr, from, to, n)`.</summary>
+  ///  Evaluates `f.call(x)` at ``n`` evenly spaced points including both ends, in increasing
+  ///  order, and joins them with a 2-pixel line. ``f`` is used only during this call and is not
+  ///  retained. Non-finite results are stored as-is. Exceptions thrown by `f.call()` propagate.
+  ///
+  /// <param name="f">  The function to draw: a dm::Callback subclass overriding `call(double)`.</param> 
+  /// <param name="from">  Left end of the range.</param> 
+  /// <param name="to">  Right end; must be greater than ``from``.</param> 
+  /// <param name="n">  Number of sample points, at least 2 (default 101, as in R).</param> 
+  /// <param name="label">  Legend text; empty (the default) shows no legend.</param> 
+  /// <param name="color">  Line color (default red `{220, 38, 38}`).</param> 
+  /// <returns>A new plot holding one Line series.</returns> 
+  /// <exception cref="std::invalid_argument">  If ``n`` is below 2 or ``to`` is not greater than ``from``.</exception> 
+  ///
+  /// Title: Example
+  /// <code>      struct Square : dm::Callback {
+  ///        double call(double x) override { return x * x; }
+  ///      };
+  ///      Square square;
+  ///      auto plt = dm::Plot::curve(square, -1.0, 1.0, 5);
+  ///      std::print("{}\n", plt.series()[0].y);  // [1, 0.25, 0, 0.25, 1]</code>
+  ///
+  ///
+  ///
+  ///
+  /// Title: References
+  ///  - R `curve()`: https://stat.ethz.ch/R-manual/R-devel/library/graphics/html/curve.html
+  ///
+  ///
+  ///
+  /// <seealso cref="lines"/>
   public static RPlot curve(Callback f, double from, double to, uint n, string label, RGB color) {
     RPlot ret = new RPlot(datamungePINVOKE.RPlot_curve__SWIG_0(Callback.getCPtr(f), from, to, n, label, RGB.getCPtr(color)), true);
     if (datamungePINVOKE.SWIGPendingException.Pending) throw datamungePINVOKE.SWIGPendingException.Retrieve();
     return ret;
   }
 
-  ///  Mimics R's `curve(expr, from, to)`; `f` is sampled at `n` evenly-spaced points.
+  /// <summary>Plots a function over [``from``, ``to]`` as a line, like R's `curve(expr, from, to, n)`.</summary>
+  ///  Evaluates `f.call(x)` at ``n`` evenly spaced points including both ends, in increasing
+  ///  order, and joins them with a 2-pixel line. ``f`` is used only during this call and is not
+  ///  retained. Non-finite results are stored as-is. Exceptions thrown by `f.call()` propagate.
+  ///
+  /// <param name="f">  The function to draw: a dm::Callback subclass overriding `call(double)`.</param> 
+  /// <param name="from">  Left end of the range.</param> 
+  /// <param name="to">  Right end; must be greater than ``from``.</param> 
+  /// <param name="n">  Number of sample points, at least 2 (default 101, as in R).</param> 
+  /// <param name="label">  Legend text; empty (the default) shows no legend.</param> 
+  /// <returns>A new plot holding one Line series.</returns> 
+  /// <exception cref="std::invalid_argument">  If ``n`` is below 2 or ``to`` is not greater than ``from``.</exception> 
+  ///
+  /// Title: Example
+  /// <code>      struct Square : dm::Callback {
+  ///        double call(double x) override { return x * x; }
+  ///      };
+  ///      Square square;
+  ///      auto plt = dm::Plot::curve(square, -1.0, 1.0, 5);
+  ///      std::print("{}\n", plt.series()[0].y);  // [1, 0.25, 0, 0.25, 1]</code>
+  ///
+  ///
+  ///
+  ///
+  /// Title: References
+  ///  - R `curve()`: https://stat.ethz.ch/R-manual/R-devel/library/graphics/html/curve.html
+  ///
+  ///
+  ///
+  /// <seealso cref="lines"/>
   public static RPlot curve(Callback f, double from, double to, uint n, string label) {
     RPlot ret = new RPlot(datamungePINVOKE.RPlot_curve__SWIG_1(Callback.getCPtr(f), from, to, n, label), true);
     if (datamungePINVOKE.SWIGPendingException.Pending) throw datamungePINVOKE.SWIGPendingException.Retrieve();
     return ret;
   }
 
-  ///  Mimics R's `curve(expr, from, to)`; `f` is sampled at `n` evenly-spaced points.
+  /// <summary>Plots a function over [``from``, ``to]`` as a line, like R's `curve(expr, from, to, n)`.</summary>
+  ///  Evaluates `f.call(x)` at ``n`` evenly spaced points including both ends, in increasing
+  ///  order, and joins them with a 2-pixel line. ``f`` is used only during this call and is not
+  ///  retained. Non-finite results are stored as-is. Exceptions thrown by `f.call()` propagate.
+  ///
+  /// <param name="f">  The function to draw: a dm::Callback subclass overriding `call(double)`.</param> 
+  /// <param name="from">  Left end of the range.</param> 
+  /// <param name="to">  Right end; must be greater than ``from``.</param> 
+  /// <param name="n">  Number of sample points, at least 2 (default 101, as in R).</param> 
+  /// <returns>A new plot holding one Line series.</returns> 
+  /// <exception cref="std::invalid_argument">  If ``n`` is below 2 or ``to`` is not greater than ``from``.</exception> 
+  ///
+  /// Title: Example
+  /// <code>      struct Square : dm::Callback {
+  ///        double call(double x) override { return x * x; }
+  ///      };
+  ///      Square square;
+  ///      auto plt = dm::Plot::curve(square, -1.0, 1.0, 5);
+  ///      std::print("{}\n", plt.series()[0].y);  // [1, 0.25, 0, 0.25, 1]</code>
+  ///
+  ///
+  ///
+  ///
+  /// Title: References
+  ///  - R `curve()`: https://stat.ethz.ch/R-manual/R-devel/library/graphics/html/curve.html
+  ///
+  ///
+  ///
+  /// <seealso cref="lines"/>
   public static RPlot curve(Callback f, double from, double to, uint n) {
     RPlot ret = new RPlot(datamungePINVOKE.RPlot_curve__SWIG_2(Callback.getCPtr(f), from, to, n), true);
     if (datamungePINVOKE.SWIGPendingException.Pending) throw datamungePINVOKE.SWIGPendingException.Retrieve();
     return ret;
   }
 
-  ///  Mimics R's `curve(expr, from, to)`; `f` is sampled at `n` evenly-spaced points.
+  /// <summary>Plots a function over [``from``, ``to]`` as a line, like R's `curve(expr, from, to, n)`.</summary>
+  ///  Evaluates `f.call(x)` at ``n`` evenly spaced points including both ends, in increasing
+  ///  order, and joins them with a 2-pixel line. ``f`` is used only during this call and is not
+  ///  retained. Non-finite results are stored as-is. Exceptions thrown by `f.call()` propagate.
+  ///
+  /// <param name="f">  The function to draw: a dm::Callback subclass overriding `call(double)`.</param> 
+  /// <param name="from">  Left end of the range.</param> 
+  /// <param name="to">  Right end; must be greater than ``from``.</param> 
+  /// <returns>A new plot holding one Line series.</returns> 
+  /// <exception cref="std::invalid_argument">  If ``n`` is below 2 or ``to`` is not greater than ``from``.</exception> 
+  ///
+  /// Title: Example
+  /// <code>      struct Square : dm::Callback {
+  ///        double call(double x) override { return x * x; }
+  ///      };
+  ///      Square square;
+  ///      auto plt = dm::Plot::curve(square, -1.0, 1.0, 5);
+  ///      std::print("{}\n", plt.series()[0].y);  // [1, 0.25, 0, 0.25, 1]</code>
+  ///
+  ///
+  ///
+  ///
+  /// Title: References
+  ///  - R `curve()`: https://stat.ethz.ch/R-manual/R-devel/library/graphics/html/curve.html
+  ///
+  ///
+  ///
+  /// <seealso cref="lines"/>
   public static RPlot curve(Callback f, double from, double to) {
     RPlot ret = new RPlot(datamungePINVOKE.RPlot_curve__SWIG_3(Callback.getCPtr(f), from, to), true);
     if (datamungePINVOKE.SWIGPendingException.Pending) throw datamungePINVOKE.SWIGPendingException.Retrieve();
     return ret;
   }
 
-  ///  Mimics R's `qqnorm(y)`: plots sample quantiles of `data` against standard-normal quantiles.
+  /// <summary>Builds a normal Q-Q plot: the sorted ``data`` against standard-normal quantiles,        like R's `qqnorm(y)`.</summary>
+  ///  The i-th smallest value (i = 1..n) is plotted against the normal quantile of the plotting
+  ///  position (i - 0.5) / n. R's `ppoints()` uses that rule only for n &gt; 10 and
+  ///  (i - 3/8) / (n + 1/4) for n &lt;= 10, so the x coordinates differ from R for small samples.
+  ///  Points that fall on a straight line indicate normally distributed data; add the reference
+  ///  line with qqline(). The title is "Normal Q-Q", the axis labels "Theoretical Quantiles"
+  ///  and "Sample Quantiles".
+  ///
+  /// <param name="data">  The sample; at least two values. Consumed (sorted in place).</param> 
+  /// <param name="label">  Legend text (default "sample", so the automatic legend shows one row; pass
+  ///             "" to hide it).</param> 
+  /// <param name="color">  Point color (default blue `{37, 99, 235}`).</param> 
+  /// <returns>A new plot holding one Scatter series.</returns> 
+  /// <exception cref="std::invalid_argument">  If ``data`` has fewer than two values.</exception> 
+  ///
+  /// Title: Example
+  /// <code>      const std::vector&lt;double&gt; sample{3.0, 1.0, 2.0, 5.0, 4.0};
+  ///      auto plt = dm::Plot::qqnorm(sample).qqline(sample);
+  ///      std::print("{:.4f}\n", plt.series()[0].x[0]);  // -1.2816</code>
+  ///
+  ///
+  ///
+  ///
+  /// Title: References
+  ///  - M. B. Wilk, R. Gnanadesikan (1968). "Probability plotting methods for the analysis of
+  ///    data". Biometrika 55(1), 1-17. doi:10.1093/biomet/55.1.1
+  ///  - R `qqnorm()`: https://stat.ethz.ch/R-manual/R-devel/library/stats/html/qqnorm.html
+  ///  - R `ppoints()`: https://stat.ethz.ch/R-manual/R-devel/library/stats/html/ppoints.html
+  ///
+  ///
+  ///
+  /// <seealso cref="qqline"/>
   public static RPlot qqnorm(DVector data, string label, RGB color) {
     RPlot ret = new RPlot(datamungePINVOKE.RPlot_qqnorm__SWIG_0(DVector.getCPtr(data), label, RGB.getCPtr(color)), true);
     if (datamungePINVOKE.SWIGPendingException.Pending) throw datamungePINVOKE.SWIGPendingException.Retrieve();
     return ret;
   }
 
-  ///  Mimics R's `qqnorm(y)`: plots sample quantiles of `data` against standard-normal quantiles.
+  /// <summary>Builds a normal Q-Q plot: the sorted ``data`` against standard-normal quantiles,        like R's `qqnorm(y)`.</summary>
+  ///  The i-th smallest value (i = 1..n) is plotted against the normal quantile of the plotting
+  ///  position (i - 0.5) / n. R's `ppoints()` uses that rule only for n &gt; 10 and
+  ///  (i - 3/8) / (n + 1/4) for n &lt;= 10, so the x coordinates differ from R for small samples.
+  ///  Points that fall on a straight line indicate normally distributed data; add the reference
+  ///  line with qqline(). The title is "Normal Q-Q", the axis labels "Theoretical Quantiles"
+  ///  and "Sample Quantiles".
+  ///
+  /// <param name="data">  The sample; at least two values. Consumed (sorted in place).</param> 
+  /// <param name="label">  Legend text (default "sample", so the automatic legend shows one row; pass
+  ///             "" to hide it).</param> 
+  /// <returns>A new plot holding one Scatter series.</returns> 
+  /// <exception cref="std::invalid_argument">  If ``data`` has fewer than two values.</exception> 
+  ///
+  /// Title: Example
+  /// <code>      const std::vector&lt;double&gt; sample{3.0, 1.0, 2.0, 5.0, 4.0};
+  ///      auto plt = dm::Plot::qqnorm(sample).qqline(sample);
+  ///      std::print("{:.4f}\n", plt.series()[0].x[0]);  // -1.2816</code>
+  ///
+  ///
+  ///
+  ///
+  /// Title: References
+  ///  - M. B. Wilk, R. Gnanadesikan (1968). "Probability plotting methods for the analysis of
+  ///    data". Biometrika 55(1), 1-17. doi:10.1093/biomet/55.1.1
+  ///  - R `qqnorm()`: https://stat.ethz.ch/R-manual/R-devel/library/stats/html/qqnorm.html
+  ///  - R `ppoints()`: https://stat.ethz.ch/R-manual/R-devel/library/stats/html/ppoints.html
+  ///
+  ///
+  ///
+  /// <seealso cref="qqline"/>
   public static RPlot qqnorm(DVector data, string label) {
     RPlot ret = new RPlot(datamungePINVOKE.RPlot_qqnorm__SWIG_1(DVector.getCPtr(data), label), true);
     if (datamungePINVOKE.SWIGPendingException.Pending) throw datamungePINVOKE.SWIGPendingException.Retrieve();
     return ret;
   }
 
-  ///  Mimics R's `qqnorm(y)`: plots sample quantiles of `data` against standard-normal quantiles.
+  /// <summary>Builds a normal Q-Q plot: the sorted ``data`` against standard-normal quantiles,        like R's `qqnorm(y)`.</summary>
+  ///  The i-th smallest value (i = 1..n) is plotted against the normal quantile of the plotting
+  ///  position (i - 0.5) / n. R's `ppoints()` uses that rule only for n &gt; 10 and
+  ///  (i - 3/8) / (n + 1/4) for n &lt;= 10, so the x coordinates differ from R for small samples.
+  ///  Points that fall on a straight line indicate normally distributed data; add the reference
+  ///  line with qqline(). The title is "Normal Q-Q", the axis labels "Theoretical Quantiles"
+  ///  and "Sample Quantiles".
+  ///
+  /// <param name="data">  The sample; at least two values. Consumed (sorted in place).</param> 
+  /// <returns>A new plot holding one Scatter series.</returns> 
+  /// <exception cref="std::invalid_argument">  If ``data`` has fewer than two values.</exception> 
+  ///
+  /// Title: Example
+  /// <code>      const std::vector&lt;double&gt; sample{3.0, 1.0, 2.0, 5.0, 4.0};
+  ///      auto plt = dm::Plot::qqnorm(sample).qqline(sample);
+  ///      std::print("{:.4f}\n", plt.series()[0].x[0]);  // -1.2816</code>
+  ///
+  ///
+  ///
+  ///
+  /// Title: References
+  ///  - M. B. Wilk, R. Gnanadesikan (1968). "Probability plotting methods for the analysis of
+  ///    data". Biometrika 55(1), 1-17. doi:10.1093/biomet/55.1.1
+  ///  - R `qqnorm()`: https://stat.ethz.ch/R-manual/R-devel/library/stats/html/qqnorm.html
+  ///  - R `ppoints()`: https://stat.ethz.ch/R-manual/R-devel/library/stats/html/ppoints.html
+  ///
+  ///
+  ///
+  /// <seealso cref="qqline"/>
   public static RPlot qqnorm(DVector data) {
     RPlot ret = new RPlot(datamungePINVOKE.RPlot_qqnorm__SWIG_2(DVector.getCPtr(data)), true);
     if (datamungePINVOKE.SWIGPendingException.Pending) throw datamungePINVOKE.SWIGPendingException.Retrieve();
     return ret;
   }
 
+  /// <summary>Adds a scatter series to this plot, like R's `points(x, y, col = color)`.</summary>
+  ///  The coordinates are copied (or moved from rvalues) into a new series drawn above the
+  ///  existing ones; axis ranges grow to include it. A nonempty ``label`` adds a row to the
+  ///  automatic legend (shown only while no manual legend() entries exist).
+  ///
+  /// <param name="x">  Horizontal coordinates, one per point.</param> 
+  /// <param name="y">  Vertical coordinates, paired with ``x`` by position.</param> 
+  /// <param name="label">  Legend text for this series; empty (the default) keeps it out of the legend.</param> 
+  /// <param name="color">  Marker color for every point (default blue `{37, 99, 235}`).</param> 
+  /// <param name="marker_size">  Marker radius in pixels (default 4).</param> 
+  /// <returns>This plot, for chaining.</returns> 
+  /// <exception cref="std::invalid_argument">  If the coordinates are empty or have different lengths.</exception> 
+  ///
+  /// Title: Example
+  /// <code>      const auto x = dm::seql(0.0, 6.0, 13);
+  ///      auto plt = dm::Plot().set_title("sin and cos");
+  ///      plt.points(x, dm::sin(x), "sin", dm::RGB{37, 99, 235})
+  ///         .points(x, dm::cos(x), "cos", dm::RGB{220, 38, 38}, 6.0);
+  ///      plt.save("trig.svg");  // automatic legend lists "sin" and "cos"</code>
+  ///
+  ///
+  ///
+  ///
+  /// Title: References
+  ///  - R `points()`: https://stat.ethz.ch/R-manual/R-devel/library/graphics/html/points.html
+  ///
+  ///
+  ///
+  /// <seealso cref="points_colored"/>
   public RPlot points(DVector x, DVector y, string label, RGB color, double marker_size) {
     RPlot ret = new RPlot(datamungePINVOKE.RPlot_points__SWIG_0(swigCPtr, DVector.getCPtr(x), DVector.getCPtr(y), label, RGB.getCPtr(color), marker_size), false);
     if (datamungePINVOKE.SWIGPendingException.Pending) throw datamungePINVOKE.SWIGPendingException.Retrieve();
     return ret;
   }
 
+  /// <summary>Adds a scatter series to this plot, like R's `points(x, y, col = color)`.</summary>
+  ///  The coordinates are copied (or moved from rvalues) into a new series drawn above the
+  ///  existing ones; axis ranges grow to include it. A nonempty ``label`` adds a row to the
+  ///  automatic legend (shown only while no manual legend() entries exist).
+  ///
+  /// <param name="x">  Horizontal coordinates, one per point.</param> 
+  /// <param name="y">  Vertical coordinates, paired with ``x`` by position.</param> 
+  /// <param name="label">  Legend text for this series; empty (the default) keeps it out of the legend.</param> 
+  /// <param name="color">  Marker color for every point (default blue `{37, 99, 235}`).</param> 
+  /// <returns>This plot, for chaining.</returns> 
+  /// <exception cref="std::invalid_argument">  If the coordinates are empty or have different lengths.</exception> 
+  ///
+  /// Title: Example
+  /// <code>      const auto x = dm::seql(0.0, 6.0, 13);
+  ///      auto plt = dm::Plot().set_title("sin and cos");
+  ///      plt.points(x, dm::sin(x), "sin", dm::RGB{37, 99, 235})
+  ///         .points(x, dm::cos(x), "cos", dm::RGB{220, 38, 38}, 6.0);
+  ///      plt.save("trig.svg");  // automatic legend lists "sin" and "cos"</code>
+  ///
+  ///
+  ///
+  ///
+  /// Title: References
+  ///  - R `points()`: https://stat.ethz.ch/R-manual/R-devel/library/graphics/html/points.html
+  ///
+  ///
+  ///
+  /// <seealso cref="points_colored"/>
   public RPlot points(DVector x, DVector y, string label, RGB color) {
     RPlot ret = new RPlot(datamungePINVOKE.RPlot_points__SWIG_1(swigCPtr, DVector.getCPtr(x), DVector.getCPtr(y), label, RGB.getCPtr(color)), false);
     if (datamungePINVOKE.SWIGPendingException.Pending) throw datamungePINVOKE.SWIGPendingException.Retrieve();
     return ret;
   }
 
+  /// <summary>Adds a scatter series to this plot, like R's `points(x, y, col = color)`.</summary>
+  ///  The coordinates are copied (or moved from rvalues) into a new series drawn above the
+  ///  existing ones; axis ranges grow to include it. A nonempty ``label`` adds a row to the
+  ///  automatic legend (shown only while no manual legend() entries exist).
+  ///
+  /// <param name="x">  Horizontal coordinates, one per point.</param> 
+  /// <param name="y">  Vertical coordinates, paired with ``x`` by position.</param> 
+  /// <param name="label">  Legend text for this series; empty (the default) keeps it out of the legend.</param> 
+  /// <returns>This plot, for chaining.</returns> 
+  /// <exception cref="std::invalid_argument">  If the coordinates are empty or have different lengths.</exception> 
+  ///
+  /// Title: Example
+  /// <code>      const auto x = dm::seql(0.0, 6.0, 13);
+  ///      auto plt = dm::Plot().set_title("sin and cos");
+  ///      plt.points(x, dm::sin(x), "sin", dm::RGB{37, 99, 235})
+  ///         .points(x, dm::cos(x), "cos", dm::RGB{220, 38, 38}, 6.0);
+  ///      plt.save("trig.svg");  // automatic legend lists "sin" and "cos"</code>
+  ///
+  ///
+  ///
+  ///
+  /// Title: References
+  ///  - R `points()`: https://stat.ethz.ch/R-manual/R-devel/library/graphics/html/points.html
+  ///
+  ///
+  ///
+  /// <seealso cref="points_colored"/>
   public RPlot points(DVector x, DVector y, string label) {
     RPlot ret = new RPlot(datamungePINVOKE.RPlot_points__SWIG_2(swigCPtr, DVector.getCPtr(x), DVector.getCPtr(y), label), false);
     if (datamungePINVOKE.SWIGPendingException.Pending) throw datamungePINVOKE.SWIGPendingException.Retrieve();
     return ret;
   }
 
+  /// <summary>Adds a scatter series to this plot, like R's `points(x, y, col = color)`.</summary>
+  ///  The coordinates are copied (or moved from rvalues) into a new series drawn above the
+  ///  existing ones; axis ranges grow to include it. A nonempty ``label`` adds a row to the
+  ///  automatic legend (shown only while no manual legend() entries exist).
+  ///
+  /// <param name="x">  Horizontal coordinates, one per point.</param> 
+  /// <param name="y">  Vertical coordinates, paired with ``x`` by position.</param> 
+  /// <returns>This plot, for chaining.</returns> 
+  /// <exception cref="std::invalid_argument">  If the coordinates are empty or have different lengths.</exception> 
+  ///
+  /// Title: Example
+  /// <code>      const auto x = dm::seql(0.0, 6.0, 13);
+  ///      auto plt = dm::Plot().set_title("sin and cos");
+  ///      plt.points(x, dm::sin(x), "sin", dm::RGB{37, 99, 235})
+  ///         .points(x, dm::cos(x), "cos", dm::RGB{220, 38, 38}, 6.0);
+  ///      plt.save("trig.svg");  // automatic legend lists "sin" and "cos"</code>
+  ///
+  ///
+  ///
+  ///
+  /// Title: References
+  ///  - R `points()`: https://stat.ethz.ch/R-manual/R-devel/library/graphics/html/points.html
+  ///
+  ///
+  ///
+  /// <seealso cref="points_colored"/>
   public RPlot points(DVector x, DVector y) {
     RPlot ret = new RPlot(datamungePINVOKE.RPlot_points__SWIG_3(swigCPtr, DVector.getCPtr(x), DVector.getCPtr(y)), false);
     if (datamungePINVOKE.SWIGPendingException.Pending) throw datamungePINVOKE.SWIGPendingException.Retrieve();
     return ret;
   }
 
+  /// <summary>Appends scatter points with a recycled per-point RGB(A) palette. Coordinates must have equal nonzero lengths; colors must not be empty. A partial palette cycle is allowed without a warning. Colors retain their own alpha. The series is unlabeled, so it never appears in the automatic legend.</summary>
+  /// <param name="x">  Horizontal coordinates.</param> 
+  /// <param name="y">  Vertical coordinates, paired with ``x``.</param> 
+  /// <param name="colors">  Palette; point i uses `colors[i % colors.size()]`.</param> 
+  /// <param name="marker_size">  Marker radius in pixels (default 4).</param> 
+  /// <returns>This plot, for chaining.</returns> 
+  /// <exception cref="std::invalid_argument"> If the coordinate lengths or palette are invalid.</exception> 
+  ///
+  /// Title: Example
+  /// <code>      const auto palette = dm::c(dm::RGB{255, 0, 0}, dm::RGB{0, 0, 255});
+  ///      auto plt = dm::Plot().points_colored(dm::c(1.0, 2.0, 3.0), dm::c(3.0, 2.0, 1.0), palette);
+  ///      std::print("{}\n", plt.series()[0].point_colors.size());  // 2 (red, blue, red)</code>
+  ///
+  ///
+  ///
+  ///
+  /// Title: References
+  ///  - R `points()` (vector `col`): https://stat.ethz.ch/R-manual/R-devel/library/graphics/html/points.html
+  ///
+  ///
+  ///
+  /// <seealso cref="dm.points"/>
+  public RPlot points_colored(DVector x, DVector y, SWIGTYPE_p_std__vectorT_datamunge__graphics__RGB_t colors, double marker_size) {
+    RPlot ret = new RPlot(datamungePINVOKE.RPlot_points_colored__SWIG_0(swigCPtr, DVector.getCPtr(x), DVector.getCPtr(y), SWIGTYPE_p_std__vectorT_datamunge__graphics__RGB_t.getCPtr(colors), marker_size), false);
+    if (datamungePINVOKE.SWIGPendingException.Pending) throw datamungePINVOKE.SWIGPendingException.Retrieve();
+    return ret;
+  }
+
+  /// <summary>Appends scatter points with a recycled per-point RGB(A) palette. Coordinates must have equal nonzero lengths; colors must not be empty. A partial palette cycle is allowed without a warning. Colors retain their own alpha. The series is unlabeled, so it never appears in the automatic legend.</summary>
+  /// <param name="x">  Horizontal coordinates.</param> 
+  /// <param name="y">  Vertical coordinates, paired with ``x``.</param> 
+  /// <param name="colors">  Palette; point i uses `colors[i % colors.size()]`.</param> 
+  /// <returns>This plot, for chaining.</returns> 
+  /// <exception cref="std::invalid_argument"> If the coordinate lengths or palette are invalid.</exception> 
+  ///
+  /// Title: Example
+  /// <code>      const auto palette = dm::c(dm::RGB{255, 0, 0}, dm::RGB{0, 0, 255});
+  ///      auto plt = dm::Plot().points_colored(dm::c(1.0, 2.0, 3.0), dm::c(3.0, 2.0, 1.0), palette);
+  ///      std::print("{}\n", plt.series()[0].point_colors.size());  // 2 (red, blue, red)</code>
+  ///
+  ///
+  ///
+  ///
+  /// Title: References
+  ///  - R `points()` (vector `col`): https://stat.ethz.ch/R-manual/R-devel/library/graphics/html/points.html
+  ///
+  ///
+  ///
+  /// <seealso cref="dm.points"/>
+  public RPlot points_colored(DVector x, DVector y, SWIGTYPE_p_std__vectorT_datamunge__graphics__RGB_t colors) {
+    RPlot ret = new RPlot(datamungePINVOKE.RPlot_points_colored__SWIG_1(swigCPtr, DVector.getCPtr(x), DVector.getCPtr(y), SWIGTYPE_p_std__vectorT_datamunge__graphics__RGB_t.getCPtr(colors)), false);
+    if (datamungePINVOKE.SWIGPendingException.Pending) throw datamungePINVOKE.SWIGPendingException.Retrieve();
+    return ret;
+  }
+
+  /// <summary>Adds a line joining the points in input order, like R's `lines(x, y, col = color,        lwd = stroke_width)`; same as lines().</summary>
+  ///  The points are not sorted, so unsorted x draws a zigzag. The coordinates are copied (or
+  ///  moved from rvalues) into a new Line series drawn above existing layers; axis ranges grow
+  ///  to include it. A nonempty ``label`` adds a row to the automatic legend.
+  ///
+  /// <param name="x">  Horizontal coordinates, one per vertex.</param> 
+  /// <param name="y">  Vertical coordinates, paired with ``x`` by position.</param> 
+  /// <param name="label">  Legend text; empty (the default) keeps it out of the legend.</param> 
+  /// <param name="color">  Line color (default red `{220, 38, 38}`).</param> 
+  /// <param name="stroke_width">  Line width in pixels (default 2).</param> 
+  /// <returns>This plot, for chaining.</returns> 
+  /// <exception cref="std::invalid_argument">  If the coordinates are empty or have different lengths.</exception> 
+  ///
+  /// Title: Example
+  ///  See lines().
+  ///
+  ///
+  ///
+  /// Title: References
+  ///  - R `lines()`: https://stat.ethz.ch/R-manual/R-devel/library/graphics/html/lines.html
+  ///
+  ///
+  ///
+  /// <seealso cref="lines"/>
   public RPlot line(DVector x, DVector y, string label, RGB color, double stroke_width) {
     RPlot ret = new RPlot(datamungePINVOKE.RPlot_line__SWIG_0(swigCPtr, DVector.getCPtr(x), DVector.getCPtr(y), label, RGB.getCPtr(color), stroke_width), false);
     if (datamungePINVOKE.SWIGPendingException.Pending) throw datamungePINVOKE.SWIGPendingException.Retrieve();
     return ret;
   }
 
+  /// <summary>Adds a line joining the points in input order, like R's `lines(x, y, col = color,        lwd = stroke_width)`; same as lines().</summary>
+  ///  The points are not sorted, so unsorted x draws a zigzag. The coordinates are copied (or
+  ///  moved from rvalues) into a new Line series drawn above existing layers; axis ranges grow
+  ///  to include it. A nonempty ``label`` adds a row to the automatic legend.
+  ///
+  /// <param name="x">  Horizontal coordinates, one per vertex.</param> 
+  /// <param name="y">  Vertical coordinates, paired with ``x`` by position.</param> 
+  /// <param name="label">  Legend text; empty (the default) keeps it out of the legend.</param> 
+  /// <param name="color">  Line color (default red `{220, 38, 38}`).</param> 
+  /// <returns>This plot, for chaining.</returns> 
+  /// <exception cref="std::invalid_argument">  If the coordinates are empty or have different lengths.</exception> 
+  ///
+  /// Title: Example
+  ///  See lines().
+  ///
+  ///
+  ///
+  /// Title: References
+  ///  - R `lines()`: https://stat.ethz.ch/R-manual/R-devel/library/graphics/html/lines.html
+  ///
+  ///
+  ///
+  /// <seealso cref="lines"/>
   public RPlot line(DVector x, DVector y, string label, RGB color) {
     RPlot ret = new RPlot(datamungePINVOKE.RPlot_line__SWIG_1(swigCPtr, DVector.getCPtr(x), DVector.getCPtr(y), label, RGB.getCPtr(color)), false);
     if (datamungePINVOKE.SWIGPendingException.Pending) throw datamungePINVOKE.SWIGPendingException.Retrieve();
     return ret;
   }
 
+  /// <summary>Adds a line joining the points in input order, like R's `lines(x, y, col = color,        lwd = stroke_width)`; same as lines().</summary>
+  ///  The points are not sorted, so unsorted x draws a zigzag. The coordinates are copied (or
+  ///  moved from rvalues) into a new Line series drawn above existing layers; axis ranges grow
+  ///  to include it. A nonempty ``label`` adds a row to the automatic legend.
+  ///
+  /// <param name="x">  Horizontal coordinates, one per vertex.</param> 
+  /// <param name="y">  Vertical coordinates, paired with ``x`` by position.</param> 
+  /// <param name="label">  Legend text; empty (the default) keeps it out of the legend.</param> 
+  /// <returns>This plot, for chaining.</returns> 
+  /// <exception cref="std::invalid_argument">  If the coordinates are empty or have different lengths.</exception> 
+  ///
+  /// Title: Example
+  ///  See lines().
+  ///
+  ///
+  ///
+  /// Title: References
+  ///  - R `lines()`: https://stat.ethz.ch/R-manual/R-devel/library/graphics/html/lines.html
+  ///
+  ///
+  ///
+  /// <seealso cref="lines"/>
   public RPlot line(DVector x, DVector y, string label) {
     RPlot ret = new RPlot(datamungePINVOKE.RPlot_line__SWIG_2(swigCPtr, DVector.getCPtr(x), DVector.getCPtr(y), label), false);
     if (datamungePINVOKE.SWIGPendingException.Pending) throw datamungePINVOKE.SWIGPendingException.Retrieve();
     return ret;
   }
 
+  /// <summary>Adds a line joining the points in input order, like R's `lines(x, y, col = color,        lwd = stroke_width)`; same as lines().</summary>
+  ///  The points are not sorted, so unsorted x draws a zigzag. The coordinates are copied (or
+  ///  moved from rvalues) into a new Line series drawn above existing layers; axis ranges grow
+  ///  to include it. A nonempty ``label`` adds a row to the automatic legend.
+  ///
+  /// <param name="x">  Horizontal coordinates, one per vertex.</param> 
+  /// <param name="y">  Vertical coordinates, paired with ``x`` by position.</param> 
+  /// <returns>This plot, for chaining.</returns> 
+  /// <exception cref="std::invalid_argument">  If the coordinates are empty or have different lengths.</exception> 
+  ///
+  /// Title: Example
+  ///  See lines().
+  ///
+  ///
+  ///
+  /// Title: References
+  ///  - R `lines()`: https://stat.ethz.ch/R-manual/R-devel/library/graphics/html/lines.html
+  ///
+  ///
+  ///
+  /// <seealso cref="lines"/>
   public RPlot line(DVector x, DVector y) {
     RPlot ret = new RPlot(datamungePINVOKE.RPlot_line__SWIG_3(swigCPtr, DVector.getCPtr(x), DVector.getCPtr(y)), false);
     if (datamungePINVOKE.SWIGPendingException.Pending) throw datamungePINVOKE.SWIGPendingException.Retrieve();
     return ret;
   }
 
+  /// <summary>Adds a line joining the points in input order, like R's `lines(x, y, col = color,        lwd = stroke_width)`.</summary>
+  ///  Same as line(). The points are not sorted, so unsorted x draws a zigzag. The coordinates
+  ///  are copied (or moved from rvalues) into a new Line series drawn above existing layers;
+  ///  axis ranges grow to include it. A nonempty ``label`` adds a row to the automatic legend.
+  ///
+  /// <param name="x">  Horizontal coordinates, one per vertex.</param> 
+  /// <param name="y">  Vertical coordinates, paired with ``x`` by position.</param> 
+  /// <param name="label">  Legend text; empty (the default) keeps it out of the legend.</param> 
+  /// <param name="color">  Line color (default red `{220, 38, 38}`).</param> 
+  /// <param name="stroke_width">  Line width in pixels (default 2).</param> 
+  /// <returns>This plot, for chaining.</returns> 
+  /// <exception cref="std::invalid_argument">  If the coordinates are empty or have different lengths.</exception> 
+  ///
+  /// Title: Example
+  /// <code>      const auto x = dm::seql(0.0, 6.0, 25);
+  ///      auto plt = dm::Plot(x, dm::sin(x) + dm::rnorm(0, 0.1, 25));
+  ///      plt.lines(x, dm::sin(x), "sin(x)", dm::RGB{220, 38, 38}, 3.0);
+  ///      std::print("{}\n", plt.series()[1].stroke_width);  // 3</code>
+  ///
+  ///
+  ///
+  ///
+  /// Title: References
+  ///  - R `lines()`: https://stat.ethz.ch/R-manual/R-devel/library/graphics/html/lines.html
+  ///
+  ///
+  ///
+  /// <seealso cref="line"/>
   public RPlot lines(DVector x, DVector y, string label, RGB color, double stroke_width) {
     RPlot ret = new RPlot(datamungePINVOKE.RPlot_lines__SWIG_0(swigCPtr, DVector.getCPtr(x), DVector.getCPtr(y), label, RGB.getCPtr(color), stroke_width), false);
     if (datamungePINVOKE.SWIGPendingException.Pending) throw datamungePINVOKE.SWIGPendingException.Retrieve();
     return ret;
   }
 
+  /// <summary>Adds a line joining the points in input order, like R's `lines(x, y, col = color,        lwd = stroke_width)`.</summary>
+  ///  Same as line(). The points are not sorted, so unsorted x draws a zigzag. The coordinates
+  ///  are copied (or moved from rvalues) into a new Line series drawn above existing layers;
+  ///  axis ranges grow to include it. A nonempty ``label`` adds a row to the automatic legend.
+  ///
+  /// <param name="x">  Horizontal coordinates, one per vertex.</param> 
+  /// <param name="y">  Vertical coordinates, paired with ``x`` by position.</param> 
+  /// <param name="label">  Legend text; empty (the default) keeps it out of the legend.</param> 
+  /// <param name="color">  Line color (default red `{220, 38, 38}`).</param> 
+  /// <returns>This plot, for chaining.</returns> 
+  /// <exception cref="std::invalid_argument">  If the coordinates are empty or have different lengths.</exception> 
+  ///
+  /// Title: Example
+  /// <code>      const auto x = dm::seql(0.0, 6.0, 25);
+  ///      auto plt = dm::Plot(x, dm::sin(x) + dm::rnorm(0, 0.1, 25));
+  ///      plt.lines(x, dm::sin(x), "sin(x)", dm::RGB{220, 38, 38}, 3.0);
+  ///      std::print("{}\n", plt.series()[1].stroke_width);  // 3</code>
+  ///
+  ///
+  ///
+  ///
+  /// Title: References
+  ///  - R `lines()`: https://stat.ethz.ch/R-manual/R-devel/library/graphics/html/lines.html
+  ///
+  ///
+  ///
+  /// <seealso cref="line"/>
   public RPlot lines(DVector x, DVector y, string label, RGB color) {
     RPlot ret = new RPlot(datamungePINVOKE.RPlot_lines__SWIG_1(swigCPtr, DVector.getCPtr(x), DVector.getCPtr(y), label, RGB.getCPtr(color)), false);
     if (datamungePINVOKE.SWIGPendingException.Pending) throw datamungePINVOKE.SWIGPendingException.Retrieve();
     return ret;
   }
 
+  /// <summary>Adds a line joining the points in input order, like R's `lines(x, y, col = color,        lwd = stroke_width)`.</summary>
+  ///  Same as line(). The points are not sorted, so unsorted x draws a zigzag. The coordinates
+  ///  are copied (or moved from rvalues) into a new Line series drawn above existing layers;
+  ///  axis ranges grow to include it. A nonempty ``label`` adds a row to the automatic legend.
+  ///
+  /// <param name="x">  Horizontal coordinates, one per vertex.</param> 
+  /// <param name="y">  Vertical coordinates, paired with ``x`` by position.</param> 
+  /// <param name="label">  Legend text; empty (the default) keeps it out of the legend.</param> 
+  /// <returns>This plot, for chaining.</returns> 
+  /// <exception cref="std::invalid_argument">  If the coordinates are empty or have different lengths.</exception> 
+  ///
+  /// Title: Example
+  /// <code>      const auto x = dm::seql(0.0, 6.0, 25);
+  ///      auto plt = dm::Plot(x, dm::sin(x) + dm::rnorm(0, 0.1, 25));
+  ///      plt.lines(x, dm::sin(x), "sin(x)", dm::RGB{220, 38, 38}, 3.0);
+  ///      std::print("{}\n", plt.series()[1].stroke_width);  // 3</code>
+  ///
+  ///
+  ///
+  ///
+  /// Title: References
+  ///  - R `lines()`: https://stat.ethz.ch/R-manual/R-devel/library/graphics/html/lines.html
+  ///
+  ///
+  ///
+  /// <seealso cref="line"/>
   public RPlot lines(DVector x, DVector y, string label) {
     RPlot ret = new RPlot(datamungePINVOKE.RPlot_lines__SWIG_2(swigCPtr, DVector.getCPtr(x), DVector.getCPtr(y), label), false);
     if (datamungePINVOKE.SWIGPendingException.Pending) throw datamungePINVOKE.SWIGPendingException.Retrieve();
     return ret;
   }
 
+  /// <summary>Adds a line joining the points in input order, like R's `lines(x, y, col = color,        lwd = stroke_width)`.</summary>
+  ///  Same as line(). The points are not sorted, so unsorted x draws a zigzag. The coordinates
+  ///  are copied (or moved from rvalues) into a new Line series drawn above existing layers;
+  ///  axis ranges grow to include it. A nonempty ``label`` adds a row to the automatic legend.
+  ///
+  /// <param name="x">  Horizontal coordinates, one per vertex.</param> 
+  /// <param name="y">  Vertical coordinates, paired with ``x`` by position.</param> 
+  /// <returns>This plot, for chaining.</returns> 
+  /// <exception cref="std::invalid_argument">  If the coordinates are empty or have different lengths.</exception> 
+  ///
+  /// Title: Example
+  /// <code>      const auto x = dm::seql(0.0, 6.0, 25);
+  ///      auto plt = dm::Plot(x, dm::sin(x) + dm::rnorm(0, 0.1, 25));
+  ///      plt.lines(x, dm::sin(x), "sin(x)", dm::RGB{220, 38, 38}, 3.0);
+  ///      std::print("{}\n", plt.series()[1].stroke_width);  // 3</code>
+  ///
+  ///
+  ///
+  ///
+  /// Title: References
+  ///  - R `lines()`: https://stat.ethz.ch/R-manual/R-devel/library/graphics/html/lines.html
+  ///
+  ///
+  ///
+  /// <seealso cref="line"/>
   public RPlot lines(DVector x, DVector y) {
     RPlot ret = new RPlot(datamungePINVOKE.RPlot_lines__SWIG_3(swigCPtr, DVector.getCPtr(x), DVector.getCPtr(y)), false);
     if (datamungePINVOKE.SWIGPendingException.Pending) throw datamungePINVOKE.SWIGPendingException.Retrieve();
     return ret;
   }
 
-  ///  Unlabeled shorthands: `points(x, y, {r, g, b}, size)` / `lines(x, y, {r, g, b}, width)`.
+  /// <summary>Same as points(x, y, label, color, marker_size) with an empty label, so the        series stays out of the automatic legend.</summary>
+  /// <param name="x">  Horizontal coordinates.</param> 
+  /// <param name="y">  Vertical coordinates, paired with ``x``.</param> 
+  /// <param name="color">  Marker color for every point.</param> 
+  /// <param name="marker_size">  Marker radius in pixels (default 4).</param> 
+  /// <returns>This plot, for chaining.</returns> 
+  /// <exception cref="std::invalid_argument">  If the coordinates are empty or have different lengths.</exception> 
+  ///
+  /// Title: Example
+  /// <code>      auto plt = dm::Plot();
+  ///      plt.points(dm::c(1.0, 2.0, 3.0), dm::c(1.0, 4.0, 9.0), dm::RGB{22, 163, 74}, 3.0);</code>
+  ///
+  ///
+  ///
+  /// <seealso cref="points"/>
   public RPlot points(DVector x, DVector y, RGB color, double marker_size) {
     RPlot ret = new RPlot(datamungePINVOKE.RPlot_points__SWIG_4(swigCPtr, DVector.getCPtr(x), DVector.getCPtr(y), RGB.getCPtr(color), marker_size), false);
     if (datamungePINVOKE.SWIGPendingException.Pending) throw datamungePINVOKE.SWIGPendingException.Retrieve();
     return ret;
   }
 
-  ///  Unlabeled shorthands: `points(x, y, {r, g, b}, size)` / `lines(x, y, {r, g, b}, width)`.
+  /// <summary>Same as points(x, y, label, color, marker_size) with an empty label, so the        series stays out of the automatic legend.</summary>
+  /// <param name="x">  Horizontal coordinates.</param> 
+  /// <param name="y">  Vertical coordinates, paired with ``x``.</param> 
+  /// <param name="color">  Marker color for every point.</param> 
+  /// <returns>This plot, for chaining.</returns> 
+  /// <exception cref="std::invalid_argument">  If the coordinates are empty or have different lengths.</exception> 
+  ///
+  /// Title: Example
+  /// <code>      auto plt = dm::Plot();
+  ///      plt.points(dm::c(1.0, 2.0, 3.0), dm::c(1.0, 4.0, 9.0), dm::RGB{22, 163, 74}, 3.0);</code>
+  ///
+  ///
+  ///
+  /// <seealso cref="points"/>
   public RPlot points(DVector x, DVector y, RGB color) {
     RPlot ret = new RPlot(datamungePINVOKE.RPlot_points__SWIG_5(swigCPtr, DVector.getCPtr(x), DVector.getCPtr(y), RGB.getCPtr(color)), false);
     if (datamungePINVOKE.SWIGPendingException.Pending) throw datamungePINVOKE.SWIGPendingException.Retrieve();
     return ret;
   }
 
+  /// <summary>Unlabeled line shorthand: `lines(x, y, {r, g, b}, width)`.</summary>
+  /// <param name="x">  Horizontal coordinates.</param> 
+  /// <param name="y">  Vertical coordinates, paired with ``x``.</param> 
+  /// <param name="color">  Line color.</param> 
+  /// <param name="stroke_width">  Line width in pixels (default 2).</param> 
+  /// <returns>This plot, for chaining.</returns> 
+  /// <exception cref="std::invalid_argument">  If the coordinates are empty or have different lengths.</exception> 
+  ///
+  /// Title: Example
+  /// <code>      auto plt = dm::Plot().lines(dm::c(0.0, 1.0, 2.0), dm::c(0.0, 1.0, 0.0), dm::RGB{0, 0, 0}, 1.0);
+  ///      std::print("{}\n", plt.series()[0].label.empty());  // true</code>
+  ///
+  ///
+  ///
+  /// <seealso cref="lines"/>
   public RPlot lines(DVector x, DVector y, RGB color, double stroke_width) {
     RPlot ret = new RPlot(datamungePINVOKE.RPlot_lines__SWIG_4(swigCPtr, DVector.getCPtr(x), DVector.getCPtr(y), RGB.getCPtr(color), stroke_width), false);
     if (datamungePINVOKE.SWIGPendingException.Pending) throw datamungePINVOKE.SWIGPendingException.Retrieve();
     return ret;
   }
 
+  /// <summary>Unlabeled line shorthand: `lines(x, y, {r, g, b}, width)`.</summary>
+  /// <param name="x">  Horizontal coordinates.</param> 
+  /// <param name="y">  Vertical coordinates, paired with ``x``.</param> 
+  /// <param name="color">  Line color.</param> 
+  /// <returns>This plot, for chaining.</returns> 
+  /// <exception cref="std::invalid_argument">  If the coordinates are empty or have different lengths.</exception> 
+  ///
+  /// Title: Example
+  /// <code>      auto plt = dm::Plot().lines(dm::c(0.0, 1.0, 2.0), dm::c(0.0, 1.0, 0.0), dm::RGB{0, 0, 0}, 1.0);
+  ///      std::print("{}\n", plt.series()[0].label.empty());  // true</code>
+  ///
+  ///
+  ///
+  /// <seealso cref="lines"/>
   public RPlot lines(DVector x, DVector y, RGB color) {
     RPlot ret = new RPlot(datamungePINVOKE.RPlot_lines__SWIG_5(swigCPtr, DVector.getCPtr(x), DVector.getCPtr(y), RGB.getCPtr(color)), false);
     if (datamungePINVOKE.SWIGPendingException.Pending) throw datamungePINVOKE.SWIGPendingException.Retrieve();
     return ret;
   }
 
-  ///  Lower-level bar primitive at arbitrary x positions (`barplot()`/`hist()` build on this).
+  /// <summary>Adds vertical bars centered at arbitrary x positions, the low-level form behind        barplot() and hist() (R's `rect()` from 0 to each height).</summary>
+  ///  Bar i spans x[i] +/- bar_width / 2 and rises from 0 to y[i] (negative heights point
+  ///  down); the y range always includes 0. Bars are drawn 85% opaque in SVG output. A nonempty
+  ///  ``label`` adds a row to the automatic legend.
+  ///
+  /// <param name="x">  Bar centers, in data units.</param> 
+  /// <param name="y">  Bar heights, paired with ``x`` by position.</param> 
+  /// <param name="label">  Legend text; empty (the default) keeps it out of the legend.</param> 
+  /// <param name="color">  Bar color (default green `{22, 163, 74}`).</param> 
+  /// <param name="bar_width">  Bar width in data units (default 0.8).</param> 
+  /// <returns>This plot, for chaining.</returns> 
+  /// <exception cref="std::invalid_argument">  If the coordinates are empty or have different lengths.</exception> 
+  ///
+  /// Title: Example
+  /// <code>      auto plt = dm::Plot().bars(dm::c(1.0, 2.5, 4.0), dm::c(3.0, -1.0, 2.0), "net",
+  ///                                 dm::RGB{22, 163, 74}, 1.0);
+  ///      std::print("{}\n", plt.series()[0].bar_width);  // 1</code>
+  ///
+  ///
+  ///
+  ///
+  /// Title: References
+  ///  - R `rect()`: https://stat.ethz.ch/R-manual/R-devel/library/graphics/html/rect.html
+  ///
+  ///
+  ///
+  /// <seealso cref="barplot"/>
   public RPlot bars(DVector x, DVector y, string label, RGB color, double bar_width) {
     RPlot ret = new RPlot(datamungePINVOKE.RPlot_bars__SWIG_0(swigCPtr, DVector.getCPtr(x), DVector.getCPtr(y), label, RGB.getCPtr(color), bar_width), false);
     if (datamungePINVOKE.SWIGPendingException.Pending) throw datamungePINVOKE.SWIGPendingException.Retrieve();
     return ret;
   }
 
-  ///  Lower-level bar primitive at arbitrary x positions (`barplot()`/`hist()` build on this).
+  /// <summary>Adds vertical bars centered at arbitrary x positions, the low-level form behind        barplot() and hist() (R's `rect()` from 0 to each height).</summary>
+  ///  Bar i spans x[i] +/- bar_width / 2 and rises from 0 to y[i] (negative heights point
+  ///  down); the y range always includes 0. Bars are drawn 85% opaque in SVG output. A nonempty
+  ///  ``label`` adds a row to the automatic legend.
+  ///
+  /// <param name="x">  Bar centers, in data units.</param> 
+  /// <param name="y">  Bar heights, paired with ``x`` by position.</param> 
+  /// <param name="label">  Legend text; empty (the default) keeps it out of the legend.</param> 
+  /// <param name="color">  Bar color (default green `{22, 163, 74}`).</param> 
+  /// <returns>This plot, for chaining.</returns> 
+  /// <exception cref="std::invalid_argument">  If the coordinates are empty or have different lengths.</exception> 
+  ///
+  /// Title: Example
+  /// <code>      auto plt = dm::Plot().bars(dm::c(1.0, 2.5, 4.0), dm::c(3.0, -1.0, 2.0), "net",
+  ///                                 dm::RGB{22, 163, 74}, 1.0);
+  ///      std::print("{}\n", plt.series()[0].bar_width);  // 1</code>
+  ///
+  ///
+  ///
+  ///
+  /// Title: References
+  ///  - R `rect()`: https://stat.ethz.ch/R-manual/R-devel/library/graphics/html/rect.html
+  ///
+  ///
+  ///
+  /// <seealso cref="barplot"/>
   public RPlot bars(DVector x, DVector y, string label, RGB color) {
     RPlot ret = new RPlot(datamungePINVOKE.RPlot_bars__SWIG_1(swigCPtr, DVector.getCPtr(x), DVector.getCPtr(y), label, RGB.getCPtr(color)), false);
     if (datamungePINVOKE.SWIGPendingException.Pending) throw datamungePINVOKE.SWIGPendingException.Retrieve();
     return ret;
   }
 
-  ///  Lower-level bar primitive at arbitrary x positions (`barplot()`/`hist()` build on this).
+  /// <summary>Adds vertical bars centered at arbitrary x positions, the low-level form behind        barplot() and hist() (R's `rect()` from 0 to each height).</summary>
+  ///  Bar i spans x[i] +/- bar_width / 2 and rises from 0 to y[i] (negative heights point
+  ///  down); the y range always includes 0. Bars are drawn 85% opaque in SVG output. A nonempty
+  ///  ``label`` adds a row to the automatic legend.
+  ///
+  /// <param name="x">  Bar centers, in data units.</param> 
+  /// <param name="y">  Bar heights, paired with ``x`` by position.</param> 
+  /// <param name="label">  Legend text; empty (the default) keeps it out of the legend.</param> 
+  /// <returns>This plot, for chaining.</returns> 
+  /// <exception cref="std::invalid_argument">  If the coordinates are empty or have different lengths.</exception> 
+  ///
+  /// Title: Example
+  /// <code>      auto plt = dm::Plot().bars(dm::c(1.0, 2.5, 4.0), dm::c(3.0, -1.0, 2.0), "net",
+  ///                                 dm::RGB{22, 163, 74}, 1.0);
+  ///      std::print("{}\n", plt.series()[0].bar_width);  // 1</code>
+  ///
+  ///
+  ///
+  ///
+  /// Title: References
+  ///  - R `rect()`: https://stat.ethz.ch/R-manual/R-devel/library/graphics/html/rect.html
+  ///
+  ///
+  ///
+  /// <seealso cref="barplot"/>
   public RPlot bars(DVector x, DVector y, string label) {
     RPlot ret = new RPlot(datamungePINVOKE.RPlot_bars__SWIG_2(swigCPtr, DVector.getCPtr(x), DVector.getCPtr(y), label), false);
     if (datamungePINVOKE.SWIGPendingException.Pending) throw datamungePINVOKE.SWIGPendingException.Retrieve();
     return ret;
   }
 
-  ///  Lower-level bar primitive at arbitrary x positions (`barplot()`/`hist()` build on this).
+  /// <summary>Adds vertical bars centered at arbitrary x positions, the low-level form behind        barplot() and hist() (R's `rect()` from 0 to each height).</summary>
+  ///  Bar i spans x[i] +/- bar_width / 2 and rises from 0 to y[i] (negative heights point
+  ///  down); the y range always includes 0. Bars are drawn 85% opaque in SVG output. A nonempty
+  ///  ``label`` adds a row to the automatic legend.
+  ///
+  /// <param name="x">  Bar centers, in data units.</param> 
+  /// <param name="y">  Bar heights, paired with ``x`` by position.</param> 
+  /// <returns>This plot, for chaining.</returns> 
+  /// <exception cref="std::invalid_argument">  If the coordinates are empty or have different lengths.</exception> 
+  ///
+  /// Title: Example
+  /// <code>      auto plt = dm::Plot().bars(dm::c(1.0, 2.5, 4.0), dm::c(3.0, -1.0, 2.0), "net",
+  ///                                 dm::RGB{22, 163, 74}, 1.0);
+  ///      std::print("{}\n", plt.series()[0].bar_width);  // 1</code>
+  ///
+  ///
+  ///
+  ///
+  /// Title: References
+  ///  - R `rect()`: https://stat.ethz.ch/R-manual/R-devel/library/graphics/html/rect.html
+  ///
+  ///
+  ///
+  /// <seealso cref="barplot"/>
   public RPlot bars(DVector x, DVector y) {
     RPlot ret = new RPlot(datamungePINVOKE.RPlot_bars__SWIG_3(swigCPtr, DVector.getCPtr(x), DVector.getCPtr(y)), false);
     if (datamungePINVOKE.SWIGPendingException.Pending) throw datamungePINVOKE.SWIGPendingException.Retrieve();
     return ret;
   }
 
-  ///  Lower-level box-and-whisker primitive at an arbitrary x position (`boxplot()` builds on this).
+  /// <summary>Adds one box-and-whisker from precomputed statistics at an arbitrary x position,        the low-level form behind boxplot() (R's `bxp()`).</summary>
+  ///  Draws a box from ``q1`` to ``q3`` with a thicker line at ``median``, whiskers out to
+  ///  ``whisker_lo`` and ``whisker_hi`` with end caps, and one dot per outlier. The values are
+  ///  not checked for order or finiteness. In SVG the box is filled at 35% opacity.
+  ///
+  /// <param name="position">  Box center, in x data units.</param> 
+  /// <param name="whisker_lo">  Lower whisker end.</param> 
+  /// <param name="q1">  Lower box edge (first quartile).</param> 
+  /// <param name="median">  Median line.</param> 
+  /// <param name="q3">  Upper box edge (third quartile).</param> 
+  /// <param name="whisker_hi">  Upper whisker end.</param> 
+  /// <param name="outliers">  Values drawn as individual points (default none).</param> 
+  /// <param name="color">  Box, whisker, and outlier color (default light blue `{96, 165, 250}`).</param> 
+  /// <param name="width">  Box width in data units (default 0.6).</param> 
+  /// <returns>This plot, for chaining.</returns> 
+  ///
+  /// Title: Example
+  /// <code>      auto plt = dm::Plot().box(0.0, 1.0, 2.0, 3.0, 4.0, 5.0, {8.0}).box(1.0, 2.0, 3.0, 3.5, 4.0, 6.0);
+  ///      std::print("{} {}\n", plt.series().size(), plt.series()[0].y.size());  // 2 6</code>
+  ///
+  ///
+  ///
+  ///
+  /// Title: References
+  ///  - J. W. Tukey (1977). Exploratory Data Analysis. Addison-Wesley.
+  ///  - R `bxp()`: https://stat.ethz.ch/R-manual/R-devel/library/graphics/html/bxp.html
+  ///
+  ///
+  ///
+  /// <seealso cref="boxplot"/>
   public RPlot box(double position, double whisker_lo, double q1, double median, double q3, double whisker_hi, DVector outliers, RGB color, double width) {
     RPlot ret = new RPlot(datamungePINVOKE.RPlot_box__SWIG_0(swigCPtr, position, whisker_lo, q1, median, q3, whisker_hi, DVector.getCPtr(outliers), RGB.getCPtr(color), width), false);
     if (datamungePINVOKE.SWIGPendingException.Pending) throw datamungePINVOKE.SWIGPendingException.Retrieve();
     return ret;
   }
 
-  ///  Lower-level box-and-whisker primitive at an arbitrary x position (`boxplot()` builds on this).
+  /// <summary>Adds one box-and-whisker from precomputed statistics at an arbitrary x position,        the low-level form behind boxplot() (R's `bxp()`).</summary>
+  ///  Draws a box from ``q1`` to ``q3`` with a thicker line at ``median``, whiskers out to
+  ///  ``whisker_lo`` and ``whisker_hi`` with end caps, and one dot per outlier. The values are
+  ///  not checked for order or finiteness. In SVG the box is filled at 35% opacity.
+  ///
+  /// <param name="position">  Box center, in x data units.</param> 
+  /// <param name="whisker_lo">  Lower whisker end.</param> 
+  /// <param name="q1">  Lower box edge (first quartile).</param> 
+  /// <param name="median">  Median line.</param> 
+  /// <param name="q3">  Upper box edge (third quartile).</param> 
+  /// <param name="whisker_hi">  Upper whisker end.</param> 
+  /// <param name="outliers">  Values drawn as individual points (default none).</param> 
+  /// <param name="color">  Box, whisker, and outlier color (default light blue `{96, 165, 250}`).</param> 
+  /// <returns>This plot, for chaining.</returns> 
+  ///
+  /// Title: Example
+  /// <code>      auto plt = dm::Plot().box(0.0, 1.0, 2.0, 3.0, 4.0, 5.0, {8.0}).box(1.0, 2.0, 3.0, 3.5, 4.0, 6.0);
+  ///      std::print("{} {}\n", plt.series().size(), plt.series()[0].y.size());  // 2 6</code>
+  ///
+  ///
+  ///
+  ///
+  /// Title: References
+  ///  - J. W. Tukey (1977). Exploratory Data Analysis. Addison-Wesley.
+  ///  - R `bxp()`: https://stat.ethz.ch/R-manual/R-devel/library/graphics/html/bxp.html
+  ///
+  ///
+  ///
+  /// <seealso cref="boxplot"/>
   public RPlot box(double position, double whisker_lo, double q1, double median, double q3, double whisker_hi, DVector outliers, RGB color) {
     RPlot ret = new RPlot(datamungePINVOKE.RPlot_box__SWIG_1(swigCPtr, position, whisker_lo, q1, median, q3, whisker_hi, DVector.getCPtr(outliers), RGB.getCPtr(color)), false);
     if (datamungePINVOKE.SWIGPendingException.Pending) throw datamungePINVOKE.SWIGPendingException.Retrieve();
     return ret;
   }
 
-  ///  Lower-level box-and-whisker primitive at an arbitrary x position (`boxplot()` builds on this).
+  /// <summary>Adds one box-and-whisker from precomputed statistics at an arbitrary x position,        the low-level form behind boxplot() (R's `bxp()`).</summary>
+  ///  Draws a box from ``q1`` to ``q3`` with a thicker line at ``median``, whiskers out to
+  ///  ``whisker_lo`` and ``whisker_hi`` with end caps, and one dot per outlier. The values are
+  ///  not checked for order or finiteness. In SVG the box is filled at 35% opacity.
+  ///
+  /// <param name="position">  Box center, in x data units.</param> 
+  /// <param name="whisker_lo">  Lower whisker end.</param> 
+  /// <param name="q1">  Lower box edge (first quartile).</param> 
+  /// <param name="median">  Median line.</param> 
+  /// <param name="q3">  Upper box edge (third quartile).</param> 
+  /// <param name="whisker_hi">  Upper whisker end.</param> 
+  /// <param name="outliers">  Values drawn as individual points (default none).</param> 
+  /// <returns>This plot, for chaining.</returns> 
+  ///
+  /// Title: Example
+  /// <code>      auto plt = dm::Plot().box(0.0, 1.0, 2.0, 3.0, 4.0, 5.0, {8.0}).box(1.0, 2.0, 3.0, 3.5, 4.0, 6.0);
+  ///      std::print("{} {}\n", plt.series().size(), plt.series()[0].y.size());  // 2 6</code>
+  ///
+  ///
+  ///
+  ///
+  /// Title: References
+  ///  - J. W. Tukey (1977). Exploratory Data Analysis. Addison-Wesley.
+  ///  - R `bxp()`: https://stat.ethz.ch/R-manual/R-devel/library/graphics/html/bxp.html
+  ///
+  ///
+  ///
+  /// <seealso cref="boxplot"/>
   public RPlot box(double position, double whisker_lo, double q1, double median, double q3, double whisker_hi, DVector outliers) {
     RPlot ret = new RPlot(datamungePINVOKE.RPlot_box__SWIG_2(swigCPtr, position, whisker_lo, q1, median, q3, whisker_hi, DVector.getCPtr(outliers)), false);
     if (datamungePINVOKE.SWIGPendingException.Pending) throw datamungePINVOKE.SWIGPendingException.Retrieve();
     return ret;
   }
 
-  ///  Lower-level box-and-whisker primitive at an arbitrary x position (`boxplot()` builds on this).
+  /// <summary>Adds one box-and-whisker from precomputed statistics at an arbitrary x position,        the low-level form behind boxplot() (R's `bxp()`).</summary>
+  ///  Draws a box from ``q1`` to ``q3`` with a thicker line at ``median``, whiskers out to
+  ///  ``whisker_lo`` and ``whisker_hi`` with end caps, and one dot per outlier. The values are
+  ///  not checked for order or finiteness. In SVG the box is filled at 35% opacity.
+  ///
+  /// <param name="position">  Box center, in x data units.</param> 
+  /// <param name="whisker_lo">  Lower whisker end.</param> 
+  /// <param name="q1">  Lower box edge (first quartile).</param> 
+  /// <param name="median">  Median line.</param> 
+  /// <param name="q3">  Upper box edge (third quartile).</param> 
+  /// <param name="whisker_hi">  Upper whisker end.</param> 
+  /// <returns>This plot, for chaining.</returns> 
+  ///
+  /// Title: Example
+  /// <code>      auto plt = dm::Plot().box(0.0, 1.0, 2.0, 3.0, 4.0, 5.0, {8.0}).box(1.0, 2.0, 3.0, 3.5, 4.0, 6.0);
+  ///      std::print("{} {}\n", plt.series().size(), plt.series()[0].y.size());  // 2 6</code>
+  ///
+  ///
+  ///
+  ///
+  /// Title: References
+  ///  - J. W. Tukey (1977). Exploratory Data Analysis. Addison-Wesley.
+  ///  - R `bxp()`: https://stat.ethz.ch/R-manual/R-devel/library/graphics/html/bxp.html
+  ///
+  ///
+  ///
+  /// <seealso cref="boxplot"/>
   public RPlot box(double position, double whisker_lo, double q1, double median, double q3, double whisker_hi) {
     RPlot ret = new RPlot(datamungePINVOKE.RPlot_box__SWIG_3(swigCPtr, position, whisker_lo, q1, median, q3, whisker_hi), false);
     return ret;
   }
 
+  /// <summary>Adds the reference line y = intercept + slope * x across the plotting area, like        R's `abline(a = intercept, b = slope)`.</summary>
+  ///  The line runs between the left and right edges of the visible x range and is drawn
+  ///  beneath every data layer. It does not change the axis ranges, and it is not clipped to the
+  ///  plotting area, so a steep line can extend into the margins. Stored as an ABLine.
+  ///
+  /// <param name="intercept">  y value at x = 0.</param> 
+  /// <param name="slope">  Change in y per unit x.</param> 
+  /// <param name="color">  Line color (default opaque black).</param> 
+  /// <param name="stroke_width">  Line width in pixels (default 1).</param> 
+  /// <returns>This plot, for chaining.</returns> 
+  ///
+  /// <remarks>Only to_svg() and `.svg` saves draw reference lines. The raster outputs (`.png`,</remarks>
+  /// Title: Example
+  /// <code>      const auto x = dm::c(1.0, 2.0, 3.0, 4.0);
+  ///      auto plt = dm::Plot(x, dm::c(2.1, 3.9, 6.2, 7.8))
+  ///                     .abline(0.0, 2.0, dm::RGB{220, 38, 38})  // y = 2x
+  ///                     .abline_h(5.0)
+  ///                     .abline_v(2.5, dm::RGB{37, 99, 235}, 2.0);
+  ///      std::print("{}\n", plt.reference_lines().size());  // 3
+  ///      plt.save("ablines.svg");</code>
+  ///
+  ///
+  ///
+  ///
+  /// Title: References
+  ///  - R `abline()`: https://stat.ethz.ch/R-manual/R-devel/library/graphics/html/abline.html
+  ///
+  ///
+  ///
+  /// <seealso cref="abline_h"/>
   public RPlot abline(double intercept, double slope, RGB color, double stroke_width) {
     RPlot ret = new RPlot(datamungePINVOKE.RPlot_abline__SWIG_0(swigCPtr, intercept, slope, RGB.getCPtr(color), stroke_width), false);
     if (datamungePINVOKE.SWIGPendingException.Pending) throw datamungePINVOKE.SWIGPendingException.Retrieve();
     return ret;
   }
 
+  /// <summary>Adds the reference line y = intercept + slope * x across the plotting area, like        R's `abline(a = intercept, b = slope)`.</summary>
+  ///  The line runs between the left and right edges of the visible x range and is drawn
+  ///  beneath every data layer. It does not change the axis ranges, and it is not clipped to the
+  ///  plotting area, so a steep line can extend into the margins. Stored as an ABLine.
+  ///
+  /// <param name="intercept">  y value at x = 0.</param> 
+  /// <param name="slope">  Change in y per unit x.</param> 
+  /// <param name="color">  Line color (default opaque black).</param> 
+  /// <returns>This plot, for chaining.</returns> 
+  ///
+  /// <remarks>Only to_svg() and `.svg` saves draw reference lines. The raster outputs (`.png`,</remarks>
+  /// Title: Example
+  /// <code>      const auto x = dm::c(1.0, 2.0, 3.0, 4.0);
+  ///      auto plt = dm::Plot(x, dm::c(2.1, 3.9, 6.2, 7.8))
+  ///                     .abline(0.0, 2.0, dm::RGB{220, 38, 38})  // y = 2x
+  ///                     .abline_h(5.0)
+  ///                     .abline_v(2.5, dm::RGB{37, 99, 235}, 2.0);
+  ///      std::print("{}\n", plt.reference_lines().size());  // 3
+  ///      plt.save("ablines.svg");</code>
+  ///
+  ///
+  ///
+  ///
+  /// Title: References
+  ///  - R `abline()`: https://stat.ethz.ch/R-manual/R-devel/library/graphics/html/abline.html
+  ///
+  ///
+  ///
+  /// <seealso cref="abline_h"/>
   public RPlot abline(double intercept, double slope, RGB color) {
     RPlot ret = new RPlot(datamungePINVOKE.RPlot_abline__SWIG_1(swigCPtr, intercept, slope, RGB.getCPtr(color)), false);
     if (datamungePINVOKE.SWIGPendingException.Pending) throw datamungePINVOKE.SWIGPendingException.Retrieve();
     return ret;
   }
 
+  /// <summary>Adds the reference line y = intercept + slope * x across the plotting area, like        R's `abline(a = intercept, b = slope)`.</summary>
+  ///  The line runs between the left and right edges of the visible x range and is drawn
+  ///  beneath every data layer. It does not change the axis ranges, and it is not clipped to the
+  ///  plotting area, so a steep line can extend into the margins. Stored as an ABLine.
+  ///
+  /// <param name="intercept">  y value at x = 0.</param> 
+  /// <param name="slope">  Change in y per unit x.</param> 
+  /// <returns>This plot, for chaining.</returns> 
+  ///
+  /// <remarks>Only to_svg() and `.svg` saves draw reference lines. The raster outputs (`.png`,</remarks>
+  /// Title: Example
+  /// <code>      const auto x = dm::c(1.0, 2.0, 3.0, 4.0);
+  ///      auto plt = dm::Plot(x, dm::c(2.1, 3.9, 6.2, 7.8))
+  ///                     .abline(0.0, 2.0, dm::RGB{220, 38, 38})  // y = 2x
+  ///                     .abline_h(5.0)
+  ///                     .abline_v(2.5, dm::RGB{37, 99, 235}, 2.0);
+  ///      std::print("{}\n", plt.reference_lines().size());  // 3
+  ///      plt.save("ablines.svg");</code>
+  ///
+  ///
+  ///
+  ///
+  /// Title: References
+  ///  - R `abline()`: https://stat.ethz.ch/R-manual/R-devel/library/graphics/html/abline.html
+  ///
+  ///
+  ///
+  /// <seealso cref="abline_h"/>
   public RPlot abline(double intercept, double slope) {
     RPlot ret = new RPlot(datamungePINVOKE.RPlot_abline__SWIG_2(swigCPtr, intercept, slope), false);
     return ret;
   }
 
+  /// <summary>Adds a horizontal reference line at y = ``y_value``, like R's `abline(h = y_value)`.</summary>
+  ///  Same as `abline(y_value, 0.0, color, stroke_width)`: drawn beneath the data and not
+  ///  included in the axis ranges, so a value outside the visible y range is off the plot.
+  ///
+  /// <param name="y_value">  Height of the line, in data units.</param> 
+  /// <param name="color">  Line color (default opaque black).</param> 
+  /// <param name="stroke_width">  Line width in pixels (default 1).</param> 
+  /// <returns>This plot, for chaining.</returns> 
+  ///
+  /// <remarks>Only to_svg() and `.svg` saves draw reference lines. The raster outputs (`.png`,</remarks>
+  /// Title: Example
+  ///  See abline().
+  ///
+  ///
+  ///
+  /// Title: References
+  ///  - R `abline()`: https://stat.ethz.ch/R-manual/R-devel/library/graphics/html/abline.html
+  ///
+  ///
+  ///
+  /// <seealso cref="abline"/>
   public RPlot abline_h(double y_value, RGB color, double stroke_width) {
     RPlot ret = new RPlot(datamungePINVOKE.RPlot_abline_h__SWIG_0(swigCPtr, y_value, RGB.getCPtr(color), stroke_width), false);
     if (datamungePINVOKE.SWIGPendingException.Pending) throw datamungePINVOKE.SWIGPendingException.Retrieve();
     return ret;
   }
 
+  /// <summary>Adds a horizontal reference line at y = ``y_value``, like R's `abline(h = y_value)`.</summary>
+  ///  Same as `abline(y_value, 0.0, color, stroke_width)`: drawn beneath the data and not
+  ///  included in the axis ranges, so a value outside the visible y range is off the plot.
+  ///
+  /// <param name="y_value">  Height of the line, in data units.</param> 
+  /// <param name="color">  Line color (default opaque black).</param> 
+  /// <returns>This plot, for chaining.</returns> 
+  ///
+  /// <remarks>Only to_svg() and `.svg` saves draw reference lines. The raster outputs (`.png`,</remarks>
+  /// Title: Example
+  ///  See abline().
+  ///
+  ///
+  ///
+  /// Title: References
+  ///  - R `abline()`: https://stat.ethz.ch/R-manual/R-devel/library/graphics/html/abline.html
+  ///
+  ///
+  ///
+  /// <seealso cref="abline"/>
   public RPlot abline_h(double y_value, RGB color) {
     RPlot ret = new RPlot(datamungePINVOKE.RPlot_abline_h__SWIG_1(swigCPtr, y_value, RGB.getCPtr(color)), false);
     if (datamungePINVOKE.SWIGPendingException.Pending) throw datamungePINVOKE.SWIGPendingException.Retrieve();
     return ret;
   }
 
+  /// <summary>Adds a horizontal reference line at y = ``y_value``, like R's `abline(h = y_value)`.</summary>
+  ///  Same as `abline(y_value, 0.0, color, stroke_width)`: drawn beneath the data and not
+  ///  included in the axis ranges, so a value outside the visible y range is off the plot.
+  ///
+  /// <param name="y_value">  Height of the line, in data units.</param> 
+  /// <returns>This plot, for chaining.</returns> 
+  ///
+  /// <remarks>Only to_svg() and `.svg` saves draw reference lines. The raster outputs (`.png`,</remarks>
+  /// Title: Example
+  ///  See abline().
+  ///
+  ///
+  ///
+  /// Title: References
+  ///  - R `abline()`: https://stat.ethz.ch/R-manual/R-devel/library/graphics/html/abline.html
+  ///
+  ///
+  ///
+  /// <seealso cref="abline"/>
   public RPlot abline_h(double y_value) {
     RPlot ret = new RPlot(datamungePINVOKE.RPlot_abline_h__SWIG_2(swigCPtr, y_value), false);
     return ret;
   }
 
+  /// <summary>Adds a vertical reference line at x = ``x_value``, like R's `abline(v = x_value)`.</summary>
+  ///  Spans the full height of the plotting area beneath the data. Unlike horizontal and
+  ///  sloped lines, it widens the automatic x range to include ``x_value``.
+  ///
+  /// <param name="x_value">  Horizontal position of the line, in data units.</param> 
+  /// <param name="color">  Line color (default opaque black).</param> 
+  /// <param name="stroke_width">  Line width in pixels (default 1).</param> 
+  /// <returns>This plot, for chaining.</returns> 
+  ///
+  /// <remarks>Only to_svg() and `.svg` saves draw reference lines. The raster outputs (`.png`,</remarks>
+  /// Title: Example
+  ///  See abline().
+  ///
+  ///
+  ///
+  /// Title: References
+  ///  - R `abline()`: https://stat.ethz.ch/R-manual/R-devel/library/graphics/html/abline.html
+  ///
+  ///
+  ///
+  /// <seealso cref="abline"/>
   public RPlot abline_v(double x_value, RGB color, double stroke_width) {
     RPlot ret = new RPlot(datamungePINVOKE.RPlot_abline_v__SWIG_0(swigCPtr, x_value, RGB.getCPtr(color), stroke_width), false);
     if (datamungePINVOKE.SWIGPendingException.Pending) throw datamungePINVOKE.SWIGPendingException.Retrieve();
     return ret;
   }
 
+  /// <summary>Adds a vertical reference line at x = ``x_value``, like R's `abline(v = x_value)`.</summary>
+  ///  Spans the full height of the plotting area beneath the data. Unlike horizontal and
+  ///  sloped lines, it widens the automatic x range to include ``x_value``.
+  ///
+  /// <param name="x_value">  Horizontal position of the line, in data units.</param> 
+  /// <param name="color">  Line color (default opaque black).</param> 
+  /// <returns>This plot, for chaining.</returns> 
+  ///
+  /// <remarks>Only to_svg() and `.svg` saves draw reference lines. The raster outputs (`.png`,</remarks>
+  /// Title: Example
+  ///  See abline().
+  ///
+  ///
+  ///
+  /// Title: References
+  ///  - R `abline()`: https://stat.ethz.ch/R-manual/R-devel/library/graphics/html/abline.html
+  ///
+  ///
+  ///
+  /// <seealso cref="abline"/>
   public RPlot abline_v(double x_value, RGB color) {
     RPlot ret = new RPlot(datamungePINVOKE.RPlot_abline_v__SWIG_1(swigCPtr, x_value, RGB.getCPtr(color)), false);
     if (datamungePINVOKE.SWIGPendingException.Pending) throw datamungePINVOKE.SWIGPendingException.Retrieve();
     return ret;
   }
 
+  /// <summary>Adds a vertical reference line at x = ``x_value``, like R's `abline(v = x_value)`.</summary>
+  ///  Spans the full height of the plotting area beneath the data. Unlike horizontal and
+  ///  sloped lines, it widens the automatic x range to include ``x_value``.
+  ///
+  /// <param name="x_value">  Horizontal position of the line, in data units.</param> 
+  /// <returns>This plot, for chaining.</returns> 
+  ///
+  /// <remarks>Only to_svg() and `.svg` saves draw reference lines. The raster outputs (`.png`,</remarks>
+  /// Title: Example
+  ///  See abline().
+  ///
+  ///
+  ///
+  /// Title: References
+  ///  - R `abline()`: https://stat.ethz.ch/R-manual/R-devel/library/graphics/html/abline.html
+  ///
+  ///
+  ///
+  /// <seealso cref="abline"/>
   public RPlot abline_v(double x_value) {
     RPlot ret = new RPlot(datamungePINVOKE.RPlot_abline_v__SWIG_2(swigCPtr, x_value), false);
     return ret;
   }
 
-  /// Mimics R's `qqline()`: draws the line through the 1st and 3rd sample/theoretical quartiles
-  /// of `data`, the same data that was passed to `qqnorm()`.
+  /// <summary>Adds the reference line of a normal Q-Q plot, like R's `qqline(y)`: the line        through the first and third quartiles of ``data`` and of the standard normal.</summary>
+  ///  Pass the same data given to qqnorm(). The sample quartiles are R's default "type 7"
+  ///  quantiles, as in R's `qqline()` defaults (`probs = c(0.25, 0.75)`, `qtype = 7`). The
+  ///  slope is the sample IQR divided by the normal IQR (about 1.349), so for normal data it
+  ///  estimates the standard deviation and the intercept estimates the mean. Added through
+  ///  abline().
+  ///
+  /// <param name="data">  The sample; at least two values. Taken by value, so the caller's data is unchanged.</param> 
+  /// <param name="color">  Line color (default red `{220, 38, 38}`).</param> 
+  /// <param name="stroke_width">  Line width in pixels (default 1.5).</param> 
+  /// <returns>This plot, for chaining.</returns> 
+  /// <exception cref="std::invalid_argument">  If ``data`` has fewer than two values.</exception> 
+  ///
+  /// <remarks>Only to_svg() and `.svg` saves draw reference lines. The raster outputs (`.png`,</remarks>
+  /// Title: Example
+  /// <code>      const std::vector&lt;double&gt; sample{3.0, 1.0, 2.0, 5.0, 4.0};
+  ///      auto plt = dm::Plot::qqnorm(sample).qqline(sample);
+  ///      const auto&amp; line = plt.reference_lines()[0];
+  ///      std::print("{:.4f} {:.4f}\n", line.value, line.slope);  // 3.0000 1.4826</code>
+  ///
+  ///
+  ///
+  ///
+  /// Title: References
+  ///  - R `qqline()`: https://stat.ethz.ch/R-manual/R-devel/library/stats/html/qqnorm.html
+  ///  - R. J. Hyndman, Y. Fan (1996). "Sample Quantiles in Statistical Packages". The American
+  ///    Statistician 50(4), 361-365. doi:10.1080/00031305.1996.10473566
+  ///
+  ///
+  ///
+  /// <seealso cref="qqnorm"/>
   public RPlot qqline(DVector data, RGB color, double stroke_width) {
     RPlot ret = new RPlot(datamungePINVOKE.RPlot_qqline__SWIG_0(swigCPtr, DVector.getCPtr(data), RGB.getCPtr(color), stroke_width), false);
     if (datamungePINVOKE.SWIGPendingException.Pending) throw datamungePINVOKE.SWIGPendingException.Retrieve();
     return ret;
   }
 
-  /// Mimics R's `qqline()`: draws the line through the 1st and 3rd sample/theoretical quartiles
-  /// of `data`, the same data that was passed to `qqnorm()`.
+  /// <summary>Adds the reference line of a normal Q-Q plot, like R's `qqline(y)`: the line        through the first and third quartiles of ``data`` and of the standard normal.</summary>
+  ///  Pass the same data given to qqnorm(). The sample quartiles are R's default "type 7"
+  ///  quantiles, as in R's `qqline()` defaults (`probs = c(0.25, 0.75)`, `qtype = 7`). The
+  ///  slope is the sample IQR divided by the normal IQR (about 1.349), so for normal data it
+  ///  estimates the standard deviation and the intercept estimates the mean. Added through
+  ///  abline().
+  ///
+  /// <param name="data">  The sample; at least two values. Taken by value, so the caller's data is unchanged.</param> 
+  /// <param name="color">  Line color (default red `{220, 38, 38}`).</param> 
+  /// <returns>This plot, for chaining.</returns> 
+  /// <exception cref="std::invalid_argument">  If ``data`` has fewer than two values.</exception> 
+  ///
+  /// <remarks>Only to_svg() and `.svg` saves draw reference lines. The raster outputs (`.png`,</remarks>
+  /// Title: Example
+  /// <code>      const std::vector&lt;double&gt; sample{3.0, 1.0, 2.0, 5.0, 4.0};
+  ///      auto plt = dm::Plot::qqnorm(sample).qqline(sample);
+  ///      const auto&amp; line = plt.reference_lines()[0];
+  ///      std::print("{:.4f} {:.4f}\n", line.value, line.slope);  // 3.0000 1.4826</code>
+  ///
+  ///
+  ///
+  ///
+  /// Title: References
+  ///  - R `qqline()`: https://stat.ethz.ch/R-manual/R-devel/library/stats/html/qqnorm.html
+  ///  - R. J. Hyndman, Y. Fan (1996). "Sample Quantiles in Statistical Packages". The American
+  ///    Statistician 50(4), 361-365. doi:10.1080/00031305.1996.10473566
+  ///
+  ///
+  ///
+  /// <seealso cref="qqnorm"/>
   public RPlot qqline(DVector data, RGB color) {
     RPlot ret = new RPlot(datamungePINVOKE.RPlot_qqline__SWIG_1(swigCPtr, DVector.getCPtr(data), RGB.getCPtr(color)), false);
     if (datamungePINVOKE.SWIGPendingException.Pending) throw datamungePINVOKE.SWIGPendingException.Retrieve();
     return ret;
   }
 
-  /// Mimics R's `qqline()`: draws the line through the 1st and 3rd sample/theoretical quartiles
-  /// of `data`, the same data that was passed to `qqnorm()`.
+  /// <summary>Adds the reference line of a normal Q-Q plot, like R's `qqline(y)`: the line        through the first and third quartiles of ``data`` and of the standard normal.</summary>
+  ///  Pass the same data given to qqnorm(). The sample quartiles are R's default "type 7"
+  ///  quantiles, as in R's `qqline()` defaults (`probs = c(0.25, 0.75)`, `qtype = 7`). The
+  ///  slope is the sample IQR divided by the normal IQR (about 1.349), so for normal data it
+  ///  estimates the standard deviation and the intercept estimates the mean. Added through
+  ///  abline().
+  ///
+  /// <param name="data">  The sample; at least two values. Taken by value, so the caller's data is unchanged.</param> 
+  /// <returns>This plot, for chaining.</returns> 
+  /// <exception cref="std::invalid_argument">  If ``data`` has fewer than two values.</exception> 
+  ///
+  /// <remarks>Only to_svg() and `.svg` saves draw reference lines. The raster outputs (`.png`,</remarks>
+  /// Title: Example
+  /// <code>      const std::vector&lt;double&gt; sample{3.0, 1.0, 2.0, 5.0, 4.0};
+  ///      auto plt = dm::Plot::qqnorm(sample).qqline(sample);
+  ///      const auto&amp; line = plt.reference_lines()[0];
+  ///      std::print("{:.4f} {:.4f}\n", line.value, line.slope);  // 3.0000 1.4826</code>
+  ///
+  ///
+  ///
+  ///
+  /// Title: References
+  ///  - R `qqline()`: https://stat.ethz.ch/R-manual/R-devel/library/stats/html/qqnorm.html
+  ///  - R. J. Hyndman, Y. Fan (1996). "Sample Quantiles in Statistical Packages". The American
+  ///    Statistician 50(4), 361-365. doi:10.1080/00031305.1996.10473566
+  ///
+  ///
+  ///
+  /// <seealso cref="qqnorm"/>
   public RPlot qqline(DVector data) {
     RPlot ret = new RPlot(datamungePINVOKE.RPlot_qqline__SWIG_2(swigCPtr, DVector.getCPtr(data)), false);
     if (datamungePINVOKE.SWIGPendingException.Pending) throw datamungePINVOKE.SWIGPendingException.Retrieve();
     return ret;
   }
 
-  public RPlot legend(SVector labels, SWIGTYPE_p_std__vectorT_datamunge__plot__RGB_t colors) {
-    RPlot ret = new RPlot(datamungePINVOKE.RPlot_legend(swigCPtr, SVector.getCPtr(labels), SWIGTYPE_p_std__vectorT_datamunge__plot__RGB_t.getCPtr(colors)), false);
+  /// <summary>Adds manual legend rows, like R's `legend(legend = labels, col = colors)`.</summary>
+  ///  Each label is paired with the color at the same position and drawn as a swatch row in
+  ///  the legend box. Once any manual row exists, it replaces the automatic legend built from
+  ///  labeled series. Calling again appends more rows. Unlike dm::legend(), colors are not
+  ///  recycled here: the vectors must match in length. Empty vectors add nothing.
+  ///
+  /// <param name="labels">  Row texts, in display order.</param> 
+  /// <param name="colors">  Swatch colors, one per label.</param> 
+  /// <returns>This plot, for chaining.</returns> 
+  /// <exception cref="std::invalid_argument">  If ``labels`` and ``colors`` differ in length.</exception> 
+  ///
+  /// Title: Example
+  /// <code>      const auto up = dm::RGB{37, 99, 235};
+  ///      const auto down = dm::RGB{220, 38, 38};
+  ///      auto plt = dm::Plot();
+  ///      plt.points(dm::c(1.0, 2.0), dm::c(1.0, 2.0), up)
+  ///         .points(dm::c(1.0, 2.0), dm::c(2.0, 1.0), down)
+  ///         .legend({"rising", "falling"}, {up, down});
+  ///      std::print("{}\n", plt.legend_entries().size());  // 2</code>
+  ///
+  ///
+  ///
+  ///
+  /// Title: References
+  ///  - R `legend()`: https://stat.ethz.ch/R-manual/R-devel/library/graphics/html/legend.html
+  ///
+  ///
+  ///
+  /// <seealso cref="dm.legend"/>
+  public RPlot legend(SVector labels, SWIGTYPE_p_std__vectorT_datamunge__graphics__RGB_t colors) {
+    RPlot ret = new RPlot(datamungePINVOKE.RPlot_legend(swigCPtr, SVector.getCPtr(labels), SWIGTYPE_p_std__vectorT_datamunge__graphics__RGB_t.getCPtr(colors)), false);
     if (datamungePINVOKE.SWIGPendingException.Pending) throw datamungePINVOKE.SWIGPendingException.Retrieve();
     return ret;
   }
 
+  /// <summary>Draws ``label`` centered on the data point (``x``, ``y)``, like R's        `text(x, y, labels = label)`.</summary>
+  ///  The text is centered both horizontally and vertically on the point, like R's default
+  ///  `adj`. The point counts toward the automatic axis ranges, but the text's extent does not,
+  ///  so long labels near the edge can overflow. Text layers never appear in the legend, and
+  ///  set_col() recolors them along with the data.
+  ///
+  /// <param name="x">  Horizontal position, in data units.</param> 
+  /// <param name="y">  Vertical position, in data units.</param> 
+  /// <param name="label">  The text to draw (XML-escaped in SVG output).</param> 
+  /// <param name="color">  Text color (default near-black `{17, 24, 39}`).</param> 
+  /// <param name="font_size">  Font size in pixels (default 14).</param> 
+  /// <returns>This plot, for chaining.</returns> 
+  ///
+  /// Title: Example
+  /// <code>      auto plt = dm::Plot(dm::c(1.0, 2.0, 3.0), dm::c(1.0, 4.0, 2.0))
+  ///                     .text(2.0, 4.4, "peak", dm::RGB{220, 38, 38}, 16.0);
+  ///      std::print("{} {}\n", plt.series()[1].label, plt.series()[1].marker_size);  // peak 16</code>
+  ///
+  ///
+  ///
+  ///
+  /// Title: References
+  ///  - R `text()`: https://stat.ethz.ch/R-manual/R-devel/library/graphics/html/text.html
+  ///
+  ///
+  ///
+  /// <seealso cref="pie"/>
   public RPlot text(double x, double y, string label, RGB color, double font_size) {
     RPlot ret = new RPlot(datamungePINVOKE.RPlot_text__SWIG_0(swigCPtr, x, y, label, RGB.getCPtr(color), font_size), false);
     if (datamungePINVOKE.SWIGPendingException.Pending) throw datamungePINVOKE.SWIGPendingException.Retrieve();
     return ret;
   }
 
+  /// <summary>Draws ``label`` centered on the data point (``x``, ``y)``, like R's        `text(x, y, labels = label)`.</summary>
+  ///  The text is centered both horizontally and vertically on the point, like R's default
+  ///  `adj`. The point counts toward the automatic axis ranges, but the text's extent does not,
+  ///  so long labels near the edge can overflow. Text layers never appear in the legend, and
+  ///  set_col() recolors them along with the data.
+  ///
+  /// <param name="x">  Horizontal position, in data units.</param> 
+  /// <param name="y">  Vertical position, in data units.</param> 
+  /// <param name="label">  The text to draw (XML-escaped in SVG output).</param> 
+  /// <param name="color">  Text color (default near-black `{17, 24, 39}`).</param> 
+  /// <returns>This plot, for chaining.</returns> 
+  ///
+  /// Title: Example
+  /// <code>      auto plt = dm::Plot(dm::c(1.0, 2.0, 3.0), dm::c(1.0, 4.0, 2.0))
+  ///                     .text(2.0, 4.4, "peak", dm::RGB{220, 38, 38}, 16.0);
+  ///      std::print("{} {}\n", plt.series()[1].label, plt.series()[1].marker_size);  // peak 16</code>
+  ///
+  ///
+  ///
+  ///
+  /// Title: References
+  ///  - R `text()`: https://stat.ethz.ch/R-manual/R-devel/library/graphics/html/text.html
+  ///
+  ///
+  ///
+  /// <seealso cref="pie"/>
   public RPlot text(double x, double y, string label, RGB color) {
     RPlot ret = new RPlot(datamungePINVOKE.RPlot_text__SWIG_1(swigCPtr, x, y, label, RGB.getCPtr(color)), false);
     if (datamungePINVOKE.SWIGPendingException.Pending) throw datamungePINVOKE.SWIGPendingException.Retrieve();
     return ret;
   }
 
+  /// <summary>Draws ``label`` centered on the data point (``x``, ``y)``, like R's        `text(x, y, labels = label)`.</summary>
+  ///  The text is centered both horizontally and vertically on the point, like R's default
+  ///  `adj`. The point counts toward the automatic axis ranges, but the text's extent does not,
+  ///  so long labels near the edge can overflow. Text layers never appear in the legend, and
+  ///  set_col() recolors them along with the data.
+  ///
+  /// <param name="x">  Horizontal position, in data units.</param> 
+  /// <param name="y">  Vertical position, in data units.</param> 
+  /// <param name="label">  The text to draw (XML-escaped in SVG output).</param> 
+  /// <returns>This plot, for chaining.</returns> 
+  ///
+  /// Title: Example
+  /// <code>      auto plt = dm::Plot(dm::c(1.0, 2.0, 3.0), dm::c(1.0, 4.0, 2.0))
+  ///                     .text(2.0, 4.4, "peak", dm::RGB{220, 38, 38}, 16.0);
+  ///      std::print("{} {}\n", plt.series()[1].label, plt.series()[1].marker_size);  // peak 16</code>
+  ///
+  ///
+  ///
+  ///
+  /// Title: References
+  ///  - R `text()`: https://stat.ethz.ch/R-manual/R-devel/library/graphics/html/text.html
+  ///
+  ///
+  ///
+  /// <seealso cref="pie"/>
   public RPlot text(double x, double y, string label) {
     RPlot ret = new RPlot(datamungePINVOKE.RPlot_text__SWIG_2(swigCPtr, x, y, label), false);
     if (datamungePINVOKE.SWIGPendingException.Pending) throw datamungePINVOKE.SWIGPendingException.Retrieve();
     return ret;
   }
 
+  /// <summary>Draws the closed polygon through the vertices (x[i], y[i]), like R's        `polygon(x, y, col = color)`.</summary>
+  ///  The last vertex joins the first automatically. Filled polygons (the default) are painted
+  ///  with ``color`` (plus a 1-pixel outline in SVG; the raster fill uses the even-odd rule);
+  ///  unfilled ones draw a 2-pixel outline only (R's default is unfilled). Translucent colors work well
+  ///  for shaded regions such as confidence bands. Vertices count toward the axis ranges.
+  ///
+  /// <param name="x">  Vertex x coordinates, in order around the polygon.</param> 
+  /// <param name="y">  Vertex y coordinates, paired with ``x``.</param> 
+  /// <param name="color">  Fill (and outline) color (default blue `{37, 99, 235}`).</param> 
+  /// <param name="filled">  True (the default) fills; false draws the outline only.</param> 
+  /// <returns>This plot, for chaining.</returns> 
+  /// <exception cref="std::invalid_argument">  If the coordinates are empty or have different lengths.</exception> 
+  ///
+  /// Title: Example
+  /// <code>      auto plt = dm::Plot()
+  ///                     .polygon({0.0, 1.0, 0.5}, {0.0, 0.0, 1.0}, dm::RGBA{37, 99, 235, 0.4})
+  ///                     .polygon({0.2, 0.8, 0.8, 0.2}, {0.1, 0.1, 0.4, 0.4}, dm::RGB{0, 0, 0}, false);
+  ///      std::print("{}\n", plt.series()[1].filled);  // false</code>
+  ///
+  ///
+  ///
+  ///
+  /// Title: References
+  ///  - R `polygon()`: https://stat.ethz.ch/R-manual/R-devel/library/graphics/html/polygon.html
+  ///
+  ///
+  ///
+  /// <seealso cref="pie"/>
   public RPlot polygon(DVector x, DVector y, RGB color, bool filled) {
     RPlot ret = new RPlot(datamungePINVOKE.RPlot_polygon__SWIG_0(swigCPtr, DVector.getCPtr(x), DVector.getCPtr(y), RGB.getCPtr(color), filled), false);
     if (datamungePINVOKE.SWIGPendingException.Pending) throw datamungePINVOKE.SWIGPendingException.Retrieve();
     return ret;
   }
 
+  /// <summary>Draws the closed polygon through the vertices (x[i], y[i]), like R's        `polygon(x, y, col = color)`.</summary>
+  ///  The last vertex joins the first automatically. Filled polygons (the default) are painted
+  ///  with ``color`` (plus a 1-pixel outline in SVG; the raster fill uses the even-odd rule);
+  ///  unfilled ones draw a 2-pixel outline only (R's default is unfilled). Translucent colors work well
+  ///  for shaded regions such as confidence bands. Vertices count toward the axis ranges.
+  ///
+  /// <param name="x">  Vertex x coordinates, in order around the polygon.</param> 
+  /// <param name="y">  Vertex y coordinates, paired with ``x``.</param> 
+  /// <param name="color">  Fill (and outline) color (default blue `{37, 99, 235}`).</param> 
+  /// <returns>This plot, for chaining.</returns> 
+  /// <exception cref="std::invalid_argument">  If the coordinates are empty or have different lengths.</exception> 
+  ///
+  /// Title: Example
+  /// <code>      auto plt = dm::Plot()
+  ///                     .polygon({0.0, 1.0, 0.5}, {0.0, 0.0, 1.0}, dm::RGBA{37, 99, 235, 0.4})
+  ///                     .polygon({0.2, 0.8, 0.8, 0.2}, {0.1, 0.1, 0.4, 0.4}, dm::RGB{0, 0, 0}, false);
+  ///      std::print("{}\n", plt.series()[1].filled);  // false</code>
+  ///
+  ///
+  ///
+  ///
+  /// Title: References
+  ///  - R `polygon()`: https://stat.ethz.ch/R-manual/R-devel/library/graphics/html/polygon.html
+  ///
+  ///
+  ///
+  /// <seealso cref="pie"/>
   public RPlot polygon(DVector x, DVector y, RGB color) {
     RPlot ret = new RPlot(datamungePINVOKE.RPlot_polygon__SWIG_1(swigCPtr, DVector.getCPtr(x), DVector.getCPtr(y), RGB.getCPtr(color)), false);
     if (datamungePINVOKE.SWIGPendingException.Pending) throw datamungePINVOKE.SWIGPendingException.Retrieve();
     return ret;
   }
 
+  /// <summary>Draws the closed polygon through the vertices (x[i], y[i]), like R's        `polygon(x, y, col = color)`.</summary>
+  ///  The last vertex joins the first automatically. Filled polygons (the default) are painted
+  ///  with ``color`` (plus a 1-pixel outline in SVG; the raster fill uses the even-odd rule);
+  ///  unfilled ones draw a 2-pixel outline only (R's default is unfilled). Translucent colors work well
+  ///  for shaded regions such as confidence bands. Vertices count toward the axis ranges.
+  ///
+  /// <param name="x">  Vertex x coordinates, in order around the polygon.</param> 
+  /// <param name="y">  Vertex y coordinates, paired with ``x``.</param> 
+  /// <returns>This plot, for chaining.</returns> 
+  /// <exception cref="std::invalid_argument">  If the coordinates are empty or have different lengths.</exception> 
+  ///
+  /// Title: Example
+  /// <code>      auto plt = dm::Plot()
+  ///                     .polygon({0.0, 1.0, 0.5}, {0.0, 0.0, 1.0}, dm::RGBA{37, 99, 235, 0.4})
+  ///                     .polygon({0.2, 0.8, 0.8, 0.2}, {0.1, 0.1, 0.4, 0.4}, dm::RGB{0, 0, 0}, false);
+  ///      std::print("{}\n", plt.series()[1].filled);  // false</code>
+  ///
+  ///
+  ///
+  ///
+  /// Title: References
+  ///  - R `polygon()`: https://stat.ethz.ch/R-manual/R-devel/library/graphics/html/polygon.html
+  ///
+  ///
+  ///
+  /// <seealso cref="pie"/>
   public RPlot polygon(DVector x, DVector y) {
     RPlot ret = new RPlot(datamungePINVOKE.RPlot_polygon__SWIG_2(swigCPtr, DVector.getCPtr(x), DVector.getCPtr(y)), false);
     if (datamungePINVOKE.SWIGPendingException.Pending) throw datamungePINVOKE.SWIGPendingException.Retrieve();
     return ret;
   }
 
+  /// <summary>Draws a grid of coloured rectangles, one per value of ``z``, like R's `image(x, y, z)`.</summary>
+  ///  Cell (i, j) is centred on (x[i], y[j]) and reaches halfway to its neighbours (a half step
+  ///  beyond the outermost centres). Its colour is the palette entry for z[i][j] on a linear
+  ///  scale from ``z_min`` to ``z_max;`` NaN cells are left empty. Each cell is added as a filled
+  ///  polygon, so the grid should have at most tens of thousands of cells.
+  ///
+  /// <param name="x">  Cell centres along x, increasing (at least 2).</param> 
+  /// <param name="y">  Cell centres along y, increasing (at least 2).</param> 
+  /// <param name="z">  Values, z[i][j] at (x[i], y[j]); z.size() == x.size() and each row has y.size() entries.</param> 
+  /// <param name="palette">  Colours from low to high (default terrain_colors(12)).</param> 
+  /// <param name="z_min">  Value mapped to the first colour; NaN (the default) uses the smallest z.</param> 
+  /// <param name="z_max">  Value mapped to the last colour; NaN (the default) uses the largest z.</param> 
+  /// <returns>This plot, for chaining.</returns> 
+  /// <exception cref="std::invalid_argument">  If the sizes do not match, x or y is not increasing, or the
+  ///              palette is empty.</exception> 
+  ///
+  /// Title: Example
+  /// <code>      auto plt = dm::graphics::RPlot::create().image({0.0, 1.0}, {0.0, 1.0, 2.0}, {{1, 2, 3}, {4, 5, 6}});
+  ///      std::print("{}\n", plt.series().size());  // 6</code>
+  ///
+  ///
+  ///
+  ///
+  /// Title: References
+  ///  - R `image()`: https://stat.ethz.ch/R-manual/R-devel/library/graphics/html/image.html
+  ///
+  ///
+  ///
+  /// <seealso cref="terrain_colors"/>
+  public RPlot image(DVector x, DVector y, DVectorVector z, SWIGTYPE_p_std__vectorT_datamunge__graphics__RGB_t palette, double z_min, double z_max) {
+    RPlot ret = new RPlot(datamungePINVOKE.RPlot_image__SWIG_0(swigCPtr, DVector.getCPtr(x), DVector.getCPtr(y), DVectorVector.getCPtr(z), SWIGTYPE_p_std__vectorT_datamunge__graphics__RGB_t.getCPtr(palette), z_min, z_max), false);
+    if (datamungePINVOKE.SWIGPendingException.Pending) throw datamungePINVOKE.SWIGPendingException.Retrieve();
+    return ret;
+  }
+
+  /// <summary>Draws a grid of coloured rectangles, one per value of ``z``, like R's `image(x, y, z)`.</summary>
+  ///  Cell (i, j) is centred on (x[i], y[j]) and reaches halfway to its neighbours (a half step
+  ///  beyond the outermost centres). Its colour is the palette entry for z[i][j] on a linear
+  ///  scale from ``z_min`` to ``z_max;`` NaN cells are left empty. Each cell is added as a filled
+  ///  polygon, so the grid should have at most tens of thousands of cells.
+  ///
+  /// <param name="x">  Cell centres along x, increasing (at least 2).</param> 
+  /// <param name="y">  Cell centres along y, increasing (at least 2).</param> 
+  /// <param name="z">  Values, z[i][j] at (x[i], y[j]); z.size() == x.size() and each row has y.size() entries.</param> 
+  /// <param name="palette">  Colours from low to high (default terrain_colors(12)).</param> 
+  /// <param name="z_min">  Value mapped to the first colour; NaN (the default) uses the smallest z.</param> 
+  /// <returns>This plot, for chaining.</returns> 
+  /// <exception cref="std::invalid_argument">  If the sizes do not match, x or y is not increasing, or the
+  ///              palette is empty.</exception> 
+  ///
+  /// Title: Example
+  /// <code>      auto plt = dm::graphics::RPlot::create().image({0.0, 1.0}, {0.0, 1.0, 2.0}, {{1, 2, 3}, {4, 5, 6}});
+  ///      std::print("{}\n", plt.series().size());  // 6</code>
+  ///
+  ///
+  ///
+  ///
+  /// Title: References
+  ///  - R `image()`: https://stat.ethz.ch/R-manual/R-devel/library/graphics/html/image.html
+  ///
+  ///
+  ///
+  /// <seealso cref="terrain_colors"/>
+  public RPlot image(DVector x, DVector y, DVectorVector z, SWIGTYPE_p_std__vectorT_datamunge__graphics__RGB_t palette, double z_min) {
+    RPlot ret = new RPlot(datamungePINVOKE.RPlot_image__SWIG_1(swigCPtr, DVector.getCPtr(x), DVector.getCPtr(y), DVectorVector.getCPtr(z), SWIGTYPE_p_std__vectorT_datamunge__graphics__RGB_t.getCPtr(palette), z_min), false);
+    if (datamungePINVOKE.SWIGPendingException.Pending) throw datamungePINVOKE.SWIGPendingException.Retrieve();
+    return ret;
+  }
+
+  /// <summary>Draws a grid of coloured rectangles, one per value of ``z``, like R's `image(x, y, z)`.</summary>
+  ///  Cell (i, j) is centred on (x[i], y[j]) and reaches halfway to its neighbours (a half step
+  ///  beyond the outermost centres). Its colour is the palette entry for z[i][j] on a linear
+  ///  scale from ``z_min`` to ``z_max;`` NaN cells are left empty. Each cell is added as a filled
+  ///  polygon, so the grid should have at most tens of thousands of cells.
+  ///
+  /// <param name="x">  Cell centres along x, increasing (at least 2).</param> 
+  /// <param name="y">  Cell centres along y, increasing (at least 2).</param> 
+  /// <param name="z">  Values, z[i][j] at (x[i], y[j]); z.size() == x.size() and each row has y.size() entries.</param> 
+  /// <param name="palette">  Colours from low to high (default terrain_colors(12)).</param> 
+  /// <returns>This plot, for chaining.</returns> 
+  /// <exception cref="std::invalid_argument">  If the sizes do not match, x or y is not increasing, or the
+  ///              palette is empty.</exception> 
+  ///
+  /// Title: Example
+  /// <code>      auto plt = dm::graphics::RPlot::create().image({0.0, 1.0}, {0.0, 1.0, 2.0}, {{1, 2, 3}, {4, 5, 6}});
+  ///      std::print("{}\n", plt.series().size());  // 6</code>
+  ///
+  ///
+  ///
+  ///
+  /// Title: References
+  ///  - R `image()`: https://stat.ethz.ch/R-manual/R-devel/library/graphics/html/image.html
+  ///
+  ///
+  ///
+  /// <seealso cref="terrain_colors"/>
+  public RPlot image(DVector x, DVector y, DVectorVector z, SWIGTYPE_p_std__vectorT_datamunge__graphics__RGB_t palette) {
+    RPlot ret = new RPlot(datamungePINVOKE.RPlot_image__SWIG_2(swigCPtr, DVector.getCPtr(x), DVector.getCPtr(y), DVectorVector.getCPtr(z), SWIGTYPE_p_std__vectorT_datamunge__graphics__RGB_t.getCPtr(palette)), false);
+    if (datamungePINVOKE.SWIGPendingException.Pending) throw datamungePINVOKE.SWIGPendingException.Retrieve();
+    return ret;
+  }
+
+  /// <summary>Draws a grid of coloured rectangles, one per value of ``z``, like R's `image(x, y, z)`.</summary>
+  ///  Cell (i, j) is centred on (x[i], y[j]) and reaches halfway to its neighbours (a half step
+  ///  beyond the outermost centres). Its colour is the palette entry for z[i][j] on a linear
+  ///  scale from ``z_min`` to ``z_max;`` NaN cells are left empty. Each cell is added as a filled
+  ///  polygon, so the grid should have at most tens of thousands of cells.
+  ///
+  /// <param name="x">  Cell centres along x, increasing (at least 2).</param> 
+  /// <param name="y">  Cell centres along y, increasing (at least 2).</param> 
+  /// <param name="z">  Values, z[i][j] at (x[i], y[j]); z.size() == x.size() and each row has y.size() entries.</param> 
+  /// <returns>This plot, for chaining.</returns> 
+  /// <exception cref="std::invalid_argument">  If the sizes do not match, x or y is not increasing, or the
+  ///              palette is empty.</exception> 
+  ///
+  /// Title: Example
+  /// <code>      auto plt = dm::graphics::RPlot::create().image({0.0, 1.0}, {0.0, 1.0, 2.0}, {{1, 2, 3}, {4, 5, 6}});
+  ///      std::print("{}\n", plt.series().size());  // 6</code>
+  ///
+  ///
+  ///
+  ///
+  /// Title: References
+  ///  - R `image()`: https://stat.ethz.ch/R-manual/R-devel/library/graphics/html/image.html
+  ///
+  ///
+  ///
+  /// <seealso cref="terrain_colors"/>
+  public RPlot image(DVector x, DVector y, DVectorVector z) {
+    RPlot ret = new RPlot(datamungePINVOKE.RPlot_image__SWIG_3(swigCPtr, DVector.getCPtr(x), DVector.getCPtr(y), DVectorVector.getCPtr(z)), false);
+    if (datamungePINVOKE.SWIGPendingException.Pending) throw datamungePINVOKE.SWIGPendingException.Retrieve();
+    return ret;
+  }
+
+  /// <summary>Draws one straight segment from (x0[i], y0[i]) to (x1[i], y1[i]) for each i, like        R's `segments(x0, y0, x1, y1)`.</summary>
+  ///  All segments share ``color`` and ``stroke_width`` and form one Segment layer; their end
+  ///  points count toward the axis ranges. Useful for error bars, residual sticks, and
+  ///  dendrograms.
+  ///
+  /// <param name="x0">  Start x coordinates.</param> 
+  /// <param name="y0">  Start y coordinates.</param> 
+  /// <param name="x1">  End x coordinates.</param> 
+  /// <param name="y1">  End y coordinates.</param> 
+  /// <param name="color">  Segment color (default opaque black).</param> 
+  /// <param name="stroke_width">  Segment width in pixels (default 1).</param> 
+  /// <returns>This plot, for chaining.</returns> 
+  /// <exception cref="std::invalid_argument">  If the four vectors differ in length or are empty.</exception> 
+  ///
+  /// Title: Example
+  /// <code>      const auto x = dm::c(1.0, 2.0, 3.0);
+  ///      const auto y = dm::c(2.0, 3.5, 3.0);
+  ///      auto plt = dm::Plot(x, y).segments(x, y - 0.5, x, y + 0.5);  // +/- 0.5 error bars
+  ///      std::print("{}\n", plt.series()[1].x.size());  // 6 (start, end, start, end, ...)</code>
+  ///
+  ///
+  ///
+  ///
+  /// Title: References
+  ///  - R `segments()`: https://stat.ethz.ch/R-manual/R-devel/library/graphics/html/segments.html
+  ///
+  ///
+  ///
+  /// <seealso cref="abline"/>
   public RPlot segments(DVector x0, DVector y0, DVector x1, DVector y1, RGB color, double stroke_width) {
     RPlot ret = new RPlot(datamungePINVOKE.RPlot_segments__SWIG_0(swigCPtr, DVector.getCPtr(x0), DVector.getCPtr(y0), DVector.getCPtr(x1), DVector.getCPtr(y1), RGB.getCPtr(color), stroke_width), false);
     if (datamungePINVOKE.SWIGPendingException.Pending) throw datamungePINVOKE.SWIGPendingException.Retrieve();
     return ret;
   }
 
+  /// <summary>Draws one straight segment from (x0[i], y0[i]) to (x1[i], y1[i]) for each i, like        R's `segments(x0, y0, x1, y1)`.</summary>
+  ///  All segments share ``color`` and ``stroke_width`` and form one Segment layer; their end
+  ///  points count toward the axis ranges. Useful for error bars, residual sticks, and
+  ///  dendrograms.
+  ///
+  /// <param name="x0">  Start x coordinates.</param> 
+  /// <param name="y0">  Start y coordinates.</param> 
+  /// <param name="x1">  End x coordinates.</param> 
+  /// <param name="y1">  End y coordinates.</param> 
+  /// <param name="color">  Segment color (default opaque black).</param> 
+  /// <returns>This plot, for chaining.</returns> 
+  /// <exception cref="std::invalid_argument">  If the four vectors differ in length or are empty.</exception> 
+  ///
+  /// Title: Example
+  /// <code>      const auto x = dm::c(1.0, 2.0, 3.0);
+  ///      const auto y = dm::c(2.0, 3.5, 3.0);
+  ///      auto plt = dm::Plot(x, y).segments(x, y - 0.5, x, y + 0.5);  // +/- 0.5 error bars
+  ///      std::print("{}\n", plt.series()[1].x.size());  // 6 (start, end, start, end, ...)</code>
+  ///
+  ///
+  ///
+  ///
+  /// Title: References
+  ///  - R `segments()`: https://stat.ethz.ch/R-manual/R-devel/library/graphics/html/segments.html
+  ///
+  ///
+  ///
+  /// <seealso cref="abline"/>
   public RPlot segments(DVector x0, DVector y0, DVector x1, DVector y1, RGB color) {
     RPlot ret = new RPlot(datamungePINVOKE.RPlot_segments__SWIG_1(swigCPtr, DVector.getCPtr(x0), DVector.getCPtr(y0), DVector.getCPtr(x1), DVector.getCPtr(y1), RGB.getCPtr(color)), false);
     if (datamungePINVOKE.SWIGPendingException.Pending) throw datamungePINVOKE.SWIGPendingException.Retrieve();
     return ret;
   }
 
+  /// <summary>Draws one straight segment from (x0[i], y0[i]) to (x1[i], y1[i]) for each i, like        R's `segments(x0, y0, x1, y1)`.</summary>
+  ///  All segments share ``color`` and ``stroke_width`` and form one Segment layer; their end
+  ///  points count toward the axis ranges. Useful for error bars, residual sticks, and
+  ///  dendrograms.
+  ///
+  /// <param name="x0">  Start x coordinates.</param> 
+  /// <param name="y0">  Start y coordinates.</param> 
+  /// <param name="x1">  End x coordinates.</param> 
+  /// <param name="y1">  End y coordinates.</param> 
+  /// <returns>This plot, for chaining.</returns> 
+  /// <exception cref="std::invalid_argument">  If the four vectors differ in length or are empty.</exception> 
+  ///
+  /// Title: Example
+  /// <code>      const auto x = dm::c(1.0, 2.0, 3.0);
+  ///      const auto y = dm::c(2.0, 3.5, 3.0);
+  ///      auto plt = dm::Plot(x, y).segments(x, y - 0.5, x, y + 0.5);  // +/- 0.5 error bars
+  ///      std::print("{}\n", plt.series()[1].x.size());  // 6 (start, end, start, end, ...)</code>
+  ///
+  ///
+  ///
+  ///
+  /// Title: References
+  ///  - R `segments()`: https://stat.ethz.ch/R-manual/R-devel/library/graphics/html/segments.html
+  ///
+  ///
+  ///
+  /// <seealso cref="abline"/>
   public RPlot segments(DVector x0, DVector y0, DVector x1, DVector y1) {
     RPlot ret = new RPlot(datamungePINVOKE.RPlot_segments__SWIG_2(swigCPtr, DVector.getCPtr(x0), DVector.getCPtr(y0), DVector.getCPtr(x1), DVector.getCPtr(y1)), false);
     if (datamungePINVOKE.SWIGPendingException.Pending) throw datamungePINVOKE.SWIGPendingException.Retrieve();
     return ret;
-  }
-
-  public RPlot() : this(datamungePINVOKE.new_RPlot(), true) {
   }
 
 }

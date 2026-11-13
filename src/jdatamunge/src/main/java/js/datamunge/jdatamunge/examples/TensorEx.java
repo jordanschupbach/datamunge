@@ -64,7 +64,7 @@ public class TensorEx {
     System.out.println("count(r >= 6) = " + mask.sum());
 
     System.out.println("\n=================== A real dataset as a Tensor ===================");
-    var iris = DataFrame.iris();
+    var iris = datamunge.data_iris();
     long n = iris.nrows();
     List<Double> flat = new ArrayList<>();
     for (long i = 0; i < n; i++) {

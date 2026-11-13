@@ -315,6 +315,7 @@ def __iter__(self):
 %include "datamunge/datasets/download.hpp"
 %include "datamunge/datasets/image_loader.hpp"
 %exception;
+%include "datamunge/data_names.i"
 %include "datamunge/datamunge.hpp"
 %include "datamunge/vector.i"
 %pythoncode %{

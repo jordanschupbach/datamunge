@@ -1,8 +1,10 @@
+;; CMD: just TARGET=mds_ex run-lisp
+
 ;;;; Classical multidimensional scaling of iris: euclidean embedding, plot, and a manhattan comparison.
 (require "asdf")
 (asdf:load-system "datamunge")
 
-(defparameter *iris* (dm:data-frame-iris))
+(defparameter *iris* (dm.data:iris))
 (defparameter *feature-columns* #("Sepal.Length" "Sepal.Width" "Petal.Length" "Petal.Width"))
 (defparameter *species*
   (let ((v (make-array (dm:nrows *iris*))))

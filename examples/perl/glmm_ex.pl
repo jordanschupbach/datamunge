@@ -1,3 +1,5 @@
+# CMD: just TARGET=glmm_ex run-perl
+
 use strict;
 use warnings;
 
@@ -7,7 +9,7 @@ print "=================== Binomial (logistic) mixed model on a real dataset (pe
 # Predicting sex from body mass, grouped by island: unlike species (which is almost perfectly
 # confounded with island in this dataset -- Gentoo penguins occur on Biscoe island only), sex
 # is not tied to location, so this is a well-behaved fit.
-my $penguins = Datamunge::DataFrame::penguins();
+my $penguins = Datamunge::data_penguins();
 my (@is_male, @body_mass, @island);
 for (my $i = 0; $i < $penguins->nrows(); $i++) {
   next if $penguins->is_null("sex", $i) || $penguins->is_null("body_mass_g", $i) || $penguins->is_null("island", $i);

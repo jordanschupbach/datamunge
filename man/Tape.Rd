@@ -31,7 +31,7 @@ The value recorded at node \code{index}.
 Reverse sweep from \code{output}: d(output)/d(node) for every node on the tape.
 \itemize{
 \item \code{output}: A Var recorded on this tape (usually the final expression).
-\item Returns: One adjoint per node, indexed by Var::index() (0-based; add 1 in R).
+\item Returns: One adjoint per node, indexed by Var::index() (0-based; add 1 in R and Lua).
 }
 }
 }

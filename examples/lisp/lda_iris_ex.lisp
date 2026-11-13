@@ -1,8 +1,10 @@
+;; CMD: just TARGET=lda_iris_ex run-lisp
+
 ;;;; Linear discriminant analysis on iris: summary, confusion matrix, predictions and discriminant plot.
 (require "asdf")
 (asdf:load-system "datamunge")
 
-(defparameter *iris* (dm:data-frame-iris))
+(defparameter *iris* (dm.data:iris))
 (format t "iris: ~a rows x ~a cols~%~%" (dm:nrows *iris*) (dm:ncols *iris*))
 
 (defparameter *model*

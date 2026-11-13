@@ -1,8 +1,10 @@
+// CMD: just TARGET=naive_bayes_penguins_ex run-csharp
+
 using System;
 
 class Program {
   static void Main() {
-    var penguins = DataFrame.penguins();
+    var penguins = datamunge.data_penguins();
     Console.WriteLine($"penguins: {penguins.nrows()} rows x {penguins.ncols()} cols\n");
 
     var model = new NaiveBayesClassifier(penguins, "species ~ bill_length_mm + bill_depth_mm + island + sex");

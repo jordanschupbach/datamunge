@@ -9,7 +9,21 @@
 package js.datamunge.jdatamunge;
 
 /**
- *  Full-batch Adam (Kingma &amp; Ba 2015) on a DifferentiableFunction.
+ *  Adam on the DifferentiableFunction callback interface.<br>
+ *  Bias-corrected full-batch first and second moments, denominator sqrt(vhat)+epsilon. Tests the pre-update gradient norm after applying its update. No line search or general nonconvex convergence guarantee; O(p) reset local state.<br>
+ *  The caller supplies finite, dimensionally consistent callbacks. Inputs are borrowed;<br>
+ *  coordinates mutate in place and can retain a partial state if a callback throws.<br>
+ *  Calls use local optimizer state and propagate callback exceptions; sharing a mutable<br>
+ *  objective across threads requires external synchronisation. Normal return alone<br>
+ *  is not a uniform convergence certificate.<br>
+ *  <p alt="Example"><br>
+ *  {@code 
+ const dm::optim::Adam optimizer;
+ std::print("{}\n",optimizer.options().max_iterations); // 10000
+ }</p><br>
+ *  <p alt="References"><br>
+ *  - D. P. Kingma and J. Ba (2015), Adam: A Method for Stochastic Optimization, https://arxiv.org/abs/1412.6980<br>
+ *  </p>@see AdamOptions, trace_optimize()
  */
 public class Adam {
   private transient long swigCPtr;
@@ -51,16 +65,60 @@ public class Adam {
     }
   }
 
+  /**
+   *  Store a copy of the controls without running the objective.<br>
+   *  @param options Method-specific controls; defaults are listed by AdamOptions.<br>
+   *  <p alt="Example"><br>
+   *  {@code 
+   const dm::optim::Adam optimizer;
+   std::print("{}\n",optimizer.options().max_iterations); // 10000
+   }</p><br>
+   *  @see optimize()
+   */
   public Adam(AdamOptions options) {
     this(datamungeJNI.new_Adam__SWIG_0(AdamOptions.getCPtr(options), options), true);
   }
 
+  /**
+   *  Store a copy of the controls without running the objective.<br>
+   *  <p alt="Example"><br>
+   *  {@code 
+   const dm::optim::Adam optimizer;
+   std::print("{}\n",optimizer.options().max_iterations); // 10000
+   }</p><br>
+   *  @see optimize()
+   */
   public Adam() {
     this(datamungeJNI.new_Adam__SWIG_1(), true);
   }
 
+  /**
+   *  Run Adam from the supplied point using the configured finite budget.<br>
+   *  Bias-corrected full-batch first and second moments, denominator sqrt(vhat)+epsilon. Tests the pre-update gradient norm after applying its update. No line search or general nonconvex convergence guarantee; O(p) reset local state.<br>
+   *  @param function Borrowed DifferentiableFunction with matching finite output shapes.<br>
+   *  @param coordinates Owned-by-caller finite start; overwritten with the native returned point.<br>
+   *  @return Objective at the native returned coordinates; not a stop-status code.<br>
+   *  @throws std::exception Exceptions from supplied callbacks propagate. Raw solvers do not uniformly reject nonfinite inputs.<br>
+   *  <p alt="Example"><br>
+   *  {@code 
+   dm::optim::QuadraticObjective f({2,8},{1,-2});
+   dm::optim::AdamOptions controls;controls.max_iterations=5;
+   std::vector<double> x{0,0};
+   const auto value=dm::optim::Adam(controls).optimize(f,x);
+   std::print("{}\n",std::isfinite(value)); // true
+   }</p><br>
+   *  @see trace_optimize(), AdamOptions
+   */
   public double optimize(DifferentiableFunction function, DVector coordinates) {
     return datamungeJNI.Adam_optimize(swigCPtr, this, DifferentiableFunction.getCPtr(function), function, DVector.getCPtr(coordinates), coordinates);
+  }
+
+  /**
+   *  Borrow this optimizer's stored configuration.<br>
+   *  @return Const option reference, valid during this object's lifetime; no mutation.
+   */
+  public AdamOptions options() {
+    return new AdamOptions(datamungeJNI.Adam_options(swigCPtr, this), false);
   }
 
 }

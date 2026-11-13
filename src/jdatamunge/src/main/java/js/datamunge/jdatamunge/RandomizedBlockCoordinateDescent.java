@@ -9,10 +9,21 @@
 package js.datamunge.jdatamunge;
 
 /**
- *  Randomized cyclic block coordinate descent on a DifferentiableFunction.  Every epoch<br>
- *         randomly permutes the coordinates, partitions that permutation into blocks, and visits<br>
- *         each block exactly once.  A block uses a simultaneous partial-gradient step with an<br>
- *         Armijo backtracking line search.
+ *  RandomizedBlockCoordinateDescent on the DifferentiableFunction callback interface.<br>
+ *  Randomly permutes coordinates each epoch and visits consecutive blocks once. Full-gradient block directions use Armijo backtracking and restore a failed block. This is random reshuffling, not independent coordinate draws. Stops on the full epoch-end gradient norm; O(p) local storage.<br>
+ *  The caller supplies finite, dimensionally consistent callbacks. Inputs are borrowed;<br>
+ *  coordinates mutate in place and can retain a partial state if a callback throws.<br>
+ *  Calls use local optimizer state and propagate callback exceptions; sharing a mutable<br>
+ *  objective across threads requires external synchronisation. Normal return alone<br>
+ *  is not a uniform convergence certificate.<br>
+ *  <p alt="Example"><br>
+ *  {@code 
+ const dm::optim::RandomizedBlockCoordinateDescent optimizer;
+ std::print("{}\n",optimizer.options().max_iterations); // 1000
+ }</p><br>
+ *  <p alt="References"><br>
+ *  - S. J. Wright (2015), Coordinate descent algorithms, https://doi.org/10.1007/s10107-015-0892-3. This implementation uses the stated full-gradient coordinate/block steps.<br>
+ *  </p>@see RandomizedBlockCoordinateDescentOptions, trace_optimize()
  */
 public class RandomizedBlockCoordinateDescent {
   private transient long swigCPtr;
@@ -54,16 +65,61 @@ public class RandomizedBlockCoordinateDescent {
     }
   }
 
+  /**
+   *  Store a copy of the controls without running the objective.<br>
+   *  @param options Method-specific controls; defaults are listed by RandomizedBlockCoordinateDescentOptions.<br>
+   *  <p alt="Example"><br>
+   *  {@code 
+   const dm::optim::RandomizedBlockCoordinateDescent optimizer;
+   std::print("{}\n",optimizer.options().max_iterations); // 1000
+   }</p><br>
+   *  @see optimize()
+   */
   public RandomizedBlockCoordinateDescent(RandomizedBlockCoordinateDescentOptions options) {
     this(datamungeJNI.new_RandomizedBlockCoordinateDescent__SWIG_0(RandomizedBlockCoordinateDescentOptions.getCPtr(options), options), true);
   }
 
+  /**
+   *  Store a copy of the controls without running the objective.<br>
+   *  <p alt="Example"><br>
+   *  {@code 
+   const dm::optim::RandomizedBlockCoordinateDescent optimizer;
+   std::print("{}\n",optimizer.options().max_iterations); // 1000
+   }</p><br>
+   *  @see optimize()
+   */
   public RandomizedBlockCoordinateDescent() {
     this(datamungeJNI.new_RandomizedBlockCoordinateDescent__SWIG_1(), true);
   }
 
+  /**
+   *  Run RandomizedBlockCoordinateDescent from the supplied point using the configured finite budget.<br>
+   *  Randomly permutes coordinates each epoch and visits consecutive blocks once. Full-gradient block directions use Armijo backtracking and restore a failed block. This is random reshuffling, not independent coordinate draws. Stops on the full epoch-end gradient norm; O(p) local storage.<br>
+   *  @param function Borrowed DifferentiableFunction with matching finite output shapes.<br>
+   *  @param coordinates Owned-by-caller finite start; overwritten with the native returned point.<br>
+   *  @return Objective at the native returned coordinates; not a stop-status code.<br>
+   *  @throws std::invalid_argument RandomizedBlockCoordinateDescent: block_size must be positive; RandomizedBlockCoordinateDescent: step_size must be positive; RandomizedBlockCoordinateDescent: tolerance must be non-negative; RandomizedBlockCoordinateDescent: armijo_c1 must be in (0, 1); RandomizedBlockCoordinateDescent: backtracking_factor must be in (0, 1).<br>
+   *  @throws std::exception Exceptions from supplied callbacks propagate. Raw solvers do not uniformly reject nonfinite inputs.<br>
+   *  <p alt="Example"><br>
+   *  {@code 
+   dm::optim::QuadraticObjective f({2,8},{1,-2});
+   dm::optim::RandomizedBlockCoordinateDescentOptions controls;controls.max_iterations=5;
+   std::vector<double> x{0,0};
+   const auto value=dm::optim::RandomizedBlockCoordinateDescent(controls).optimize(f,x);
+   std::print("{}\n",std::isfinite(value)); // true
+   }</p><br>
+   *  @see trace_optimize(), RandomizedBlockCoordinateDescentOptions
+   */
   public double optimize(DifferentiableFunction function, DVector coordinates) {
     return datamungeJNI.RandomizedBlockCoordinateDescent_optimize(swigCPtr, this, DifferentiableFunction.getCPtr(function), function, DVector.getCPtr(coordinates), coordinates);
+  }
+
+  /**
+   *  Borrow this optimizer's stored configuration.<br>
+   *  @return Const option reference, valid during this object's lifetime; no mutation.
+   */
+  public RandomizedBlockCoordinateDescentOptions options() {
+    return new RandomizedBlockCoordinateDescentOptions(datamungeJNI.RandomizedBlockCoordinateDescent_options(swigCPtr, this), false);
   }
 
 }

@@ -8,6 +8,23 @@
 
 package js.datamunge.jdatamunge;
 
+/**
+ *  TrustRegionNewton on the HessianFunction callback interface.<br>
+ *  Cauchy-point variant: clips a steepest-descent ray using gHg and the current radius. Accepts any strict objective decrease and doubles the radius, otherwise halves it. It does not compute a model-agreement ratio, dogleg step or exact trust-region subproblem. Stops on gradient norm or tiny radius; O(p^2) Hessian work.<br>
+ *  The caller supplies finite, dimensionally consistent callbacks. Inputs are borrowed;<br>
+ *  coordinates mutate in place and can retain a partial state if a callback throws.<br>
+ *  Calls use local optimizer state and propagate callback exceptions; sharing a mutable<br>
+ *  objective across threads requires external synchronisation. Normal return alone<br>
+ *  is not a uniform convergence certificate.<br>
+ *  <p alt="Example"><br>
+ *  {@code 
+ const dm::optim::TrustRegionNewton optimizer;
+ std::print("{}\n",optimizer.options().max_iterations); // 200
+ }</p><br>
+ *  <p alt="References"><br>
+ *  - J. Nocedal and S. J. Wright (2006), Numerical Optimization, second edition, https://doi.org/10.1007/978-0-387-40065-5. The implemented variant and stopping rules are specified above.<br>
+ *  </p>@see TrustRegionNewtonOptions, trace_optimize()
+ */
 public class TrustRegionNewton {
   private transient long swigCPtr;
   protected transient boolean swigCMemOwn;
@@ -48,16 +65,61 @@ public class TrustRegionNewton {
     }
   }
 
+  /**
+   *  Store a copy of the controls without running the objective.<br>
+   *  @param options Method-specific controls; defaults are listed by TrustRegionNewtonOptions.<br>
+   *  <p alt="Example"><br>
+   *  {@code 
+   const dm::optim::TrustRegionNewton optimizer;
+   std::print("{}\n",optimizer.options().max_iterations); // 200
+   }</p><br>
+   *  @see optimize()
+   */
   public TrustRegionNewton(TrustRegionNewtonOptions options) {
     this(datamungeJNI.new_TrustRegionNewton__SWIG_0(TrustRegionNewtonOptions.getCPtr(options), options), true);
   }
 
+  /**
+   *  Store a copy of the controls without running the objective.<br>
+   *  <p alt="Example"><br>
+   *  {@code 
+   const dm::optim::TrustRegionNewton optimizer;
+   std::print("{}\n",optimizer.options().max_iterations); // 200
+   }</p><br>
+   *  @see optimize()
+   */
   public TrustRegionNewton() {
     this(datamungeJNI.new_TrustRegionNewton__SWIG_1(), true);
   }
 
+  /**
+   *  Run TrustRegionNewton from the supplied point using the configured finite budget.<br>
+   *  Cauchy-point variant: clips a steepest-descent ray using gHg and the current radius. Accepts any strict objective decrease and doubles the radius, otherwise halves it. It does not compute a model-agreement ratio, dogleg step or exact trust-region subproblem. Stops on gradient norm or tiny radius; O(p^2) Hessian work.<br>
+   *  @param function Borrowed HessianFunction with matching finite output shapes.<br>
+   *  @param coordinates Owned-by-caller finite start; overwritten with the native returned point.<br>
+   *  @return Objective at the native returned coordinates; not a stop-status code.<br>
+   *  @throws std::invalid_argument TrustRegionNewton: initial_radius must be positive.<br>
+   *  @throws std::exception Exceptions from supplied callbacks propagate. Raw solvers do not uniformly reject nonfinite inputs.<br>
+   *  <p alt="Example"><br>
+   *  {@code 
+   dm::optim::QuadraticObjective f({2,8},{1,-2});
+   dm::optim::TrustRegionNewtonOptions controls;controls.max_iterations=5;
+   std::vector<double> x{0,0};
+   const auto value=dm::optim::TrustRegionNewton(controls).optimize(f,x);
+   std::print("{}\n",std::isfinite(value)); // true
+   }</p><br>
+   *  @see trace_optimize(), TrustRegionNewtonOptions
+   */
   public double optimize(HessianFunction function, DVector coordinates) {
     return datamungeJNI.TrustRegionNewton_optimize(swigCPtr, this, HessianFunction.getCPtr(function), function, DVector.getCPtr(coordinates), coordinates);
+  }
+
+  /**
+   *  Borrow this optimizer's stored configuration.<br>
+   *  @return Const option reference, valid during this object's lifetime; no mutation.
+   */
+  public TrustRegionNewtonOptions options() {
+    return new TrustRegionNewtonOptions(datamungeJNI.TrustRegionNewton_options(swigCPtr, this), false);
   }
 
 }

@@ -710,10 +710,6 @@ SWIGINTERN void std_vector_Sl_std_string_Sg__setElement(std::vector< std::string
 
 #include "datamunge/datamunge.hpp"
 
-SWIGINTERN datamunge::graphics::RGB *new_datamunge_plot_RGB__SWIG_0(){ return new datamunge::graphics::RGB(); }
-SWIGINTERN datamunge::graphics::RGB *new_datamunge_plot_RGB__SWIG_1(int r,int g,int b,double alpha=1.0){
-    return new datamunge::graphics::RGB{r, g, b, alpha};
-  }
 
 
 /* ---------------------------------------------------
@@ -4919,6 +4915,32 @@ SWIGEXPORT char * D_DataFrame_to_string__SWIG_1(void * jarg1) {
 }
 
 
+SWIGEXPORT char * D_DataFrame_to_md__SWIG_0(void * jarg1, int jarg2) {
+  char * jresult = 0 ;
+  datamunge::DataFrame *arg1 = 0 ;
+  int arg2 ;
+  std::string result;
+  
+  arg1 = (datamunge::DataFrame *)jarg1;
+  arg2 = (int)jarg2;
+  result = ((datamunge::DataFrame const *)arg1)->to_md(arg2);
+  jresult = SWIG_d_string_callback((&result)->c_str()); 
+  return jresult;
+}
+
+
+SWIGEXPORT char * D_DataFrame_to_md__SWIG_1(void * jarg1) {
+  char * jresult = 0 ;
+  datamunge::DataFrame *arg1 = 0 ;
+  std::string result;
+  
+  arg1 = (datamunge::DataFrame *)jarg1;
+  result = ((datamunge::DataFrame const *)arg1)->to_md();
+  jresult = SWIG_d_string_callback((&result)->c_str()); 
+  return jresult;
+}
+
+
 SWIGEXPORT unsigned int D_DataFrame_is_numeric_column(void * jarg1, char * jarg2) {
   unsigned int jresult = 0 ;
   datamunge::DataFrame *arg1 = 0 ;
@@ -5001,21 +5023,89 @@ SWIGEXPORT char * D_DataFrame_string_at(void * jarg1, char * jarg2, size_t jarg3
 }
 
 
-SWIGEXPORT void * D_DataFrame_iris() {
+SWIGEXPORT void * D_DataFrame_read_csv__SWIG_0(char * jarg1, char jarg2) {
   void * jresult = 0 ;
+  std::string *arg1 = 0 ;
+  char arg2 ;
   datamunge::DataFrame *result = 0 ;
   
-  result = (datamunge::DataFrame *)datamunge::DataFrame::iris();
+  if (!jarg1) {
+    SWIG_DSetPendingException(SWIG_DNullReferenceException, "null string");
+    return 0;
+  }
+  std::string arg1_str(jarg1);
+  arg1 = &arg1_str; 
+  arg2 = (char)jarg2;
+  result = (datamunge::DataFrame *)datamunge::DataFrame::read_csv((std::string const &)*arg1,arg2);
   jresult = (void *)result;
   return jresult;
 }
 
 
-SWIGEXPORT void * D_DataFrame_penguins() {
+SWIGEXPORT void * D_DataFrame_read_csv__SWIG_1(char * jarg1) {
   void * jresult = 0 ;
+  std::string *arg1 = 0 ;
   datamunge::DataFrame *result = 0 ;
   
-  result = (datamunge::DataFrame *)datamunge::DataFrame::penguins();
+  if (!jarg1) {
+    SWIG_DSetPendingException(SWIG_DNullReferenceException, "null string");
+    return 0;
+  }
+  std::string arg1_str(jarg1);
+  arg1 = &arg1_str; 
+  result = (datamunge::DataFrame *)datamunge::DataFrame::read_csv((std::string const &)*arg1);
+  jresult = (void *)result;
+  return jresult;
+}
+
+
+SWIGEXPORT void * D_DataFrame_parse_csv__SWIG_0(char * jarg1, char jarg2) {
+  void * jresult = 0 ;
+  std::string *arg1 = 0 ;
+  char arg2 ;
+  datamunge::DataFrame *result = 0 ;
+  
+  if (!jarg1) {
+    SWIG_DSetPendingException(SWIG_DNullReferenceException, "null string");
+    return 0;
+  }
+  std::string arg1_str(jarg1);
+  arg1 = &arg1_str; 
+  arg2 = (char)jarg2;
+  result = (datamunge::DataFrame *)datamunge::DataFrame::parse_csv((std::string const &)*arg1,arg2);
+  jresult = (void *)result;
+  return jresult;
+}
+
+
+SWIGEXPORT void * D_DataFrame_parse_csv__SWIG_1(char * jarg1) {
+  void * jresult = 0 ;
+  std::string *arg1 = 0 ;
+  datamunge::DataFrame *result = 0 ;
+  
+  if (!jarg1) {
+    SWIG_DSetPendingException(SWIG_DNullReferenceException, "null string");
+    return 0;
+  }
+  std::string arg1_str(jarg1);
+  arg1 = &arg1_str; 
+  result = (datamunge::DataFrame *)datamunge::DataFrame::parse_csv((std::string const &)*arg1);
+  jresult = (void *)result;
+  return jresult;
+}
+
+
+SWIGEXPORT void * D_DataFrame_from_image_batch(void * jarg1) {
+  void * jresult = 0 ;
+  datamunge::datasets::ImageBatch *arg1 = 0 ;
+  datamunge::DataFrame *result = 0 ;
+  
+  arg1 = (datamunge::datasets::ImageBatch *)jarg1;
+  if (!arg1) {
+    SWIG_DSetPendingException(SWIG_DNullReferenceException, "datamunge::datasets::ImageBatch const & is null");
+    return 0;
+  } 
+  result = (datamunge::DataFrame *)datamunge::DataFrame::from_image_batch((datamunge::datasets::ImageBatch const &)*arg1);
   jresult = (void *)result;
   return jresult;
 }
@@ -5025,6 +5115,336 @@ SWIGEXPORT void D_delete_DataFrame(void * jarg1) {
   datamunge::DataFrame *arg1 = 0 ;
   
   arg1 = (datamunge::DataFrame *)jarg1;
+  delete arg1;
+}
+
+
+SWIGEXPORT void * D_data_iris() {
+  void * jresult = 0 ;
+  datamunge::DataFrame *result = 0 ;
+  
+  result = (datamunge::DataFrame *)datamunge::data::iris();
+  jresult = (void *)result;
+  return jresult;
+}
+
+
+SWIGEXPORT void * D_data_penguins() {
+  void * jresult = 0 ;
+  datamunge::DataFrame *result = 0 ;
+  
+  result = (datamunge::DataFrame *)datamunge::data::penguins();
+  jresult = (void *)result;
+  return jresult;
+}
+
+
+SWIGEXPORT void * D_data_tooth_growth() {
+  void * jresult = 0 ;
+  datamunge::DataFrame *result = 0 ;
+  
+  result = (datamunge::DataFrame *)datamunge::data::tooth_growth();
+  jresult = (void *)result;
+  return jresult;
+}
+
+
+SWIGEXPORT void * D_data_wine() {
+  void * jresult = 0 ;
+  datamunge::DataFrame *result = 0 ;
+  
+  result = (datamunge::DataFrame *)datamunge::data::wine();
+  jresult = (void *)result;
+  return jresult;
+}
+
+
+SWIGEXPORT void * D_data_titanic() {
+  void * jresult = 0 ;
+  datamunge::DataFrame *result = 0 ;
+  
+  result = (datamunge::DataFrame *)datamunge::data::titanic();
+  jresult = (void *)result;
+  return jresult;
+}
+
+
+SWIGEXPORT void * D_data_eight_schools() {
+  void * jresult = 0 ;
+  datamunge::DataFrame *result = 0 ;
+  
+  result = (datamunge::DataFrame *)datamunge::data::eight_schools();
+  jresult = (void *)result;
+  return jresult;
+}
+
+
+SWIGEXPORT void * D_data_air_passengers() {
+  void * jresult = 0 ;
+  datamunge::DataFrame *result = 0 ;
+  
+  result = (datamunge::DataFrame *)datamunge::data::air_passengers();
+  jresult = (void *)result;
+  return jresult;
+}
+
+
+SWIGEXPORT void * D_data_volcano() {
+  void * jresult = 0 ;
+  datamunge::DataFrame *result = 0 ;
+  
+  result = (datamunge::DataFrame *)datamunge::data::volcano();
+  jresult = (void *)result;
+  return jresult;
+}
+
+
+SWIGEXPORT void * D_data_faithful() {
+  void * jresult = 0 ;
+  datamunge::DataFrame *result = 0 ;
+  
+  result = (datamunge::DataFrame *)datamunge::data::faithful();
+  jresult = (void *)result;
+  return jresult;
+}
+
+
+SWIGEXPORT void * D_data_mtcars() {
+  void * jresult = 0 ;
+  datamunge::DataFrame *result = 0 ;
+  
+  result = (datamunge::DataFrame *)datamunge::data::mtcars();
+  jresult = (void *)result;
+  return jresult;
+}
+
+
+SWIGEXPORT void * D_data_airquality() {
+  void * jresult = 0 ;
+  datamunge::DataFrame *result = 0 ;
+  
+  result = (datamunge::DataFrame *)datamunge::data::airquality();
+  jresult = (void *)result;
+  return jresult;
+}
+
+
+SWIGEXPORT void * D_data_breast_cancer() {
+  void * jresult = 0 ;
+  datamunge::DataFrame *result = 0 ;
+  
+  result = (datamunge::DataFrame *)datamunge::data::breast_cancer();
+  jresult = (void *)result;
+  return jresult;
+}
+
+
+SWIGEXPORT void * D_data_diabetes() {
+  void * jresult = 0 ;
+  datamunge::DataFrame *result = 0 ;
+  
+  result = (datamunge::DataFrame *)datamunge::data::diabetes();
+  jresult = (void *)result;
+  return jresult;
+}
+
+
+SWIGEXPORT void * D_data_digits() {
+  void * jresult = 0 ;
+  datamunge::DataFrame *result = 0 ;
+  
+  result = (datamunge::DataFrame *)datamunge::data::digits();
+  jresult = (void *)result;
+  return jresult;
+}
+
+
+SWIGEXPORT void * D_data_diamonds() {
+  void * jresult = 0 ;
+  datamunge::DataFrame *result = 0 ;
+  
+  result = (datamunge::DataFrame *)datamunge::data::diamonds();
+  jresult = (void *)result;
+  return jresult;
+}
+
+
+SWIGEXPORT void * D_data_california_housing() {
+  void * jresult = 0 ;
+  datamunge::DataFrame *result = 0 ;
+  
+  result = (datamunge::DataFrame *)datamunge::data::california_housing();
+  jresult = (void *)result;
+  return jresult;
+}
+
+
+SWIGEXPORT void * D_data_load(char * jarg1) {
+  void * jresult = 0 ;
+  std::string *arg1 = 0 ;
+  datamunge::DataFrame *result = 0 ;
+  
+  if (!jarg1) {
+    SWIG_DSetPendingException(SWIG_DNullReferenceException, "null string");
+    return 0;
+  }
+  std::string arg1_str(jarg1);
+  arg1 = &arg1_str; 
+  result = (datamunge::DataFrame *)datamunge::data::load((std::string const &)*arg1);
+  jresult = (void *)result;
+  return jresult;
+}
+
+
+SWIGEXPORT void * D_data_catalog() {
+  void * jresult = 0 ;
+  datamunge::DataFrame *result = 0 ;
+  
+  result = (datamunge::DataFrame *)datamunge::data::catalog();
+  jresult = (void *)result;
+  return jresult;
+}
+
+
+SWIGEXPORT void * D_new_CsvReader__SWIG_0(char * jarg1, int jarg2, char jarg3) {
+  void * jresult = 0 ;
+  std::string *arg1 = 0 ;
+  int arg2 ;
+  char arg3 ;
+  datamunge::CsvReader *result = 0 ;
+  
+  if (!jarg1) {
+    SWIG_DSetPendingException(SWIG_DNullReferenceException, "null string");
+    return 0;
+  }
+  std::string arg1_str(jarg1);
+  arg1 = &arg1_str; 
+  arg2 = (int)jarg2;
+  arg3 = (char)jarg3;
+  result = (datamunge::CsvReader *)new datamunge::CsvReader((std::string const &)*arg1,arg2,arg3);
+  jresult = (void *)result;
+  return jresult;
+}
+
+
+SWIGEXPORT void * D_new_CsvReader__SWIG_1(char * jarg1, int jarg2) {
+  void * jresult = 0 ;
+  std::string *arg1 = 0 ;
+  int arg2 ;
+  datamunge::CsvReader *result = 0 ;
+  
+  if (!jarg1) {
+    SWIG_DSetPendingException(SWIG_DNullReferenceException, "null string");
+    return 0;
+  }
+  std::string arg1_str(jarg1);
+  arg1 = &arg1_str; 
+  arg2 = (int)jarg2;
+  result = (datamunge::CsvReader *)new datamunge::CsvReader((std::string const &)*arg1,arg2);
+  jresult = (void *)result;
+  return jresult;
+}
+
+
+SWIGEXPORT void * D_new_CsvReader__SWIG_2(char * jarg1) {
+  void * jresult = 0 ;
+  std::string *arg1 = 0 ;
+  datamunge::CsvReader *result = 0 ;
+  
+  if (!jarg1) {
+    SWIG_DSetPendingException(SWIG_DNullReferenceException, "null string");
+    return 0;
+  }
+  std::string arg1_str(jarg1);
+  arg1 = &arg1_str; 
+  result = (datamunge::CsvReader *)new datamunge::CsvReader((std::string const &)*arg1);
+  jresult = (void *)result;
+  return jresult;
+}
+
+
+SWIGEXPORT unsigned int D_CsvReader_has_next(void * jarg1) {
+  unsigned int jresult = 0 ;
+  datamunge::CsvReader *arg1 = 0 ;
+  bool result;
+  
+  arg1 = (datamunge::CsvReader *)jarg1;
+  result = (bool)(arg1)->has_next();
+  jresult = result;
+  return jresult;
+}
+
+
+SWIGEXPORT void * D_CsvReader_next(void * jarg1) {
+  void * jresult = 0 ;
+  datamunge::CsvReader *arg1 = 0 ;
+  datamunge::DataFrame *result = 0 ;
+  
+  arg1 = (datamunge::CsvReader *)jarg1;
+  result = (datamunge::DataFrame *)(arg1)->next();
+  jresult = (void *)result;
+  return jresult;
+}
+
+
+SWIGEXPORT void D_CsvReader_reset(void * jarg1) {
+  datamunge::CsvReader *arg1 = 0 ;
+  
+  arg1 = (datamunge::CsvReader *)jarg1;
+  (arg1)->reset();
+}
+
+
+SWIGEXPORT int D_CsvReader_batch_size(void * jarg1) {
+  int jresult = 0 ;
+  datamunge::CsvReader *arg1 = 0 ;
+  int result;
+  
+  arg1 = (datamunge::CsvReader *)jarg1;
+  result = (int)((datamunge::CsvReader const *)arg1)->batch_size();
+  jresult = result;
+  return jresult;
+}
+
+
+SWIGEXPORT void D_CsvReader_set_batch_size(void * jarg1, int jarg2) {
+  datamunge::CsvReader *arg1 = 0 ;
+  int arg2 ;
+  
+  arg1 = (datamunge::CsvReader *)jarg1;
+  arg2 = (int)jarg2;
+  (arg1)->set_batch_size(arg2);
+}
+
+
+SWIGEXPORT void * D_CsvReader_column_names(void * jarg1) {
+  void * jresult = 0 ;
+  datamunge::CsvReader *arg1 = 0 ;
+  std::vector< std::string > result;
+  
+  arg1 = (datamunge::CsvReader *)jarg1;
+  result = ((datamunge::CsvReader const *)arg1)->column_names();
+  jresult = new std::vector< std::string >(result); 
+  return jresult;
+}
+
+
+SWIGEXPORT double D_CsvReader_rows_read(void * jarg1) {
+  double jresult = 0 ;
+  datamunge::CsvReader *arg1 = 0 ;
+  double result;
+  
+  arg1 = (datamunge::CsvReader *)jarg1;
+  result = (double)((datamunge::CsvReader const *)arg1)->rows_read();
+  jresult = result;
+  return jresult;
+}
+
+
+SWIGEXPORT void D_delete_CsvReader(void * jarg1) {
+  datamunge::CsvReader *arg1 = 0 ;
+  
+  arg1 = (datamunge::CsvReader *)jarg1;
   delete arg1;
 }
 
@@ -5185,8 +5605,8 @@ SWIGEXPORT void * D_ShapeLayer_point_y(void * jarg1, size_t jarg2) {
 SWIGEXPORT void * D_ShapeLayer_plot__SWIG_0(void * jarg1, void * jarg2, void * jarg3, size_t jarg4, size_t jarg5) {
   void * jresult = 0 ;
   datamunge::ShapeLayer *arg1 = 0 ;
-  SwigValueWrapper< datamunge::graphics::RGB > arg2 ;
-  SwigValueWrapper< datamunge::graphics::RGB > arg3 ;
+  datamunge::graphics::RGB arg2 ;
+  datamunge::graphics::RGB arg3 ;
   std::size_t arg4 ;
   std::size_t arg5 ;
   datamunge::graphics::RGB *argp2 ;
@@ -5217,8 +5637,8 @@ SWIGEXPORT void * D_ShapeLayer_plot__SWIG_0(void * jarg1, void * jarg2, void * j
 SWIGEXPORT void * D_ShapeLayer_plot__SWIG_1(void * jarg1, void * jarg2, void * jarg3, size_t jarg4) {
   void * jresult = 0 ;
   datamunge::ShapeLayer *arg1 = 0 ;
-  SwigValueWrapper< datamunge::graphics::RGB > arg2 ;
-  SwigValueWrapper< datamunge::graphics::RGB > arg3 ;
+  datamunge::graphics::RGB arg2 ;
+  datamunge::graphics::RGB arg3 ;
   std::size_t arg4 ;
   datamunge::graphics::RGB *argp2 ;
   datamunge::graphics::RGB *argp3 ;
@@ -5247,8 +5667,8 @@ SWIGEXPORT void * D_ShapeLayer_plot__SWIG_1(void * jarg1, void * jarg2, void * j
 SWIGEXPORT void * D_ShapeLayer_plot__SWIG_2(void * jarg1, void * jarg2, void * jarg3) {
   void * jresult = 0 ;
   datamunge::ShapeLayer *arg1 = 0 ;
-  SwigValueWrapper< datamunge::graphics::RGB > arg2 ;
-  SwigValueWrapper< datamunge::graphics::RGB > arg3 ;
+  datamunge::graphics::RGB arg2 ;
+  datamunge::graphics::RGB arg3 ;
   datamunge::graphics::RGB *argp2 ;
   datamunge::graphics::RGB *argp3 ;
   datamunge::graphics::RPlot result;
@@ -5275,7 +5695,7 @@ SWIGEXPORT void * D_ShapeLayer_plot__SWIG_2(void * jarg1, void * jarg2, void * j
 SWIGEXPORT void * D_ShapeLayer_plot__SWIG_3(void * jarg1, void * jarg2) {
   void * jresult = 0 ;
   datamunge::ShapeLayer *arg1 = 0 ;
-  SwigValueWrapper< datamunge::graphics::RGB > arg2 ;
+  datamunge::graphics::RGB arg2 ;
   datamunge::graphics::RGB *argp2 ;
   datamunge::graphics::RPlot result;
   
@@ -5500,7 +5920,7 @@ SWIGEXPORT void * D_new_GGPlot__SWIG_4(void * jarg1, char * jarg2) {
 SWIGEXPORT void * D_GGPlot_geom_point__SWIG_0(void * jarg1, void * jarg2, double jarg3) {
   void * jresult = 0 ;
   datamunge::GGPlot *arg1 = 0 ;
-  SwigValueWrapper< datamunge::graphics::RGB > arg2 ;
+  datamunge::graphics::RGB arg2 ;
   double arg3 ;
   datamunge::graphics::RGB *argp2 ;
   datamunge::GGPlot *result = 0 ;
@@ -5522,7 +5942,7 @@ SWIGEXPORT void * D_GGPlot_geom_point__SWIG_0(void * jarg1, void * jarg2, double
 SWIGEXPORT void * D_GGPlot_geom_point__SWIG_1(void * jarg1, void * jarg2) {
   void * jresult = 0 ;
   datamunge::GGPlot *arg1 = 0 ;
-  SwigValueWrapper< datamunge::graphics::RGB > arg2 ;
+  datamunge::graphics::RGB arg2 ;
   datamunge::graphics::RGB *argp2 ;
   datamunge::GGPlot *result = 0 ;
   
@@ -5554,7 +5974,7 @@ SWIGEXPORT void * D_GGPlot_geom_point__SWIG_2(void * jarg1) {
 SWIGEXPORT void * D_GGPlot_geom_line__SWIG_0(void * jarg1, void * jarg2, double jarg3) {
   void * jresult = 0 ;
   datamunge::GGPlot *arg1 = 0 ;
-  SwigValueWrapper< datamunge::graphics::RGB > arg2 ;
+  datamunge::graphics::RGB arg2 ;
   double arg3 ;
   datamunge::graphics::RGB *argp2 ;
   datamunge::GGPlot *result = 0 ;
@@ -5576,7 +5996,7 @@ SWIGEXPORT void * D_GGPlot_geom_line__SWIG_0(void * jarg1, void * jarg2, double 
 SWIGEXPORT void * D_GGPlot_geom_line__SWIG_1(void * jarg1, void * jarg2) {
   void * jresult = 0 ;
   datamunge::GGPlot *arg1 = 0 ;
-  SwigValueWrapper< datamunge::graphics::RGB > arg2 ;
+  datamunge::graphics::RGB arg2 ;
   datamunge::graphics::RGB *argp2 ;
   datamunge::GGPlot *result = 0 ;
   
@@ -5608,7 +6028,7 @@ SWIGEXPORT void * D_GGPlot_geom_line__SWIG_2(void * jarg1) {
 SWIGEXPORT void * D_GGPlot_geom_bar__SWIG_0(void * jarg1, void * jarg2) {
   void * jresult = 0 ;
   datamunge::GGPlot *arg1 = 0 ;
-  SwigValueWrapper< datamunge::graphics::RGB > arg2 ;
+  datamunge::graphics::RGB arg2 ;
   datamunge::graphics::RGB *argp2 ;
   datamunge::GGPlot *result = 0 ;
   
@@ -5640,7 +6060,7 @@ SWIGEXPORT void * D_GGPlot_geom_bar__SWIG_1(void * jarg1) {
 SWIGEXPORT void * D_GGPlot_geom_col__SWIG_0(void * jarg1, void * jarg2) {
   void * jresult = 0 ;
   datamunge::GGPlot *arg1 = 0 ;
-  SwigValueWrapper< datamunge::graphics::RGB > arg2 ;
+  datamunge::graphics::RGB arg2 ;
   datamunge::graphics::RGB *argp2 ;
   datamunge::GGPlot *result = 0 ;
   
@@ -5673,7 +6093,7 @@ SWIGEXPORT void * D_GGPlot_geom_histogram__SWIG_0(void * jarg1, size_t jarg2, vo
   void * jresult = 0 ;
   datamunge::GGPlot *arg1 = 0 ;
   std::size_t arg2 ;
-  SwigValueWrapper< datamunge::graphics::RGB > arg3 ;
+  datamunge::graphics::RGB arg3 ;
   datamunge::graphics::RGB *argp3 ;
   datamunge::GGPlot *result = 0 ;
   
@@ -5720,7 +6140,7 @@ SWIGEXPORT void * D_GGPlot_geom_histogram__SWIG_2(void * jarg1) {
 SWIGEXPORT void * D_GGPlot_geom_boxplot__SWIG_0(void * jarg1, void * jarg2) {
   void * jresult = 0 ;
   datamunge::GGPlot *arg1 = 0 ;
-  SwigValueWrapper< datamunge::graphics::RGB > arg2 ;
+  datamunge::graphics::RGB arg2 ;
   datamunge::graphics::RGB *argp2 ;
   datamunge::GGPlot *result = 0 ;
   
@@ -5752,7 +6172,7 @@ SWIGEXPORT void * D_GGPlot_geom_boxplot__SWIG_1(void * jarg1) {
 SWIGEXPORT void * D_GGPlot_geom_smooth__SWIG_0(void * jarg1, void * jarg2) {
   void * jresult = 0 ;
   datamunge::GGPlot *arg1 = 0 ;
-  SwigValueWrapper< datamunge::graphics::RGB > arg2 ;
+  datamunge::graphics::RGB arg2 ;
   datamunge::graphics::RGB *argp2 ;
   datamunge::GGPlot *result = 0 ;
   
@@ -5784,7 +6204,7 @@ SWIGEXPORT void * D_GGPlot_geom_smooth__SWIG_1(void * jarg1) {
 SWIGEXPORT void * D_GGPlot_geom_area__SWIG_0(void * jarg1, void * jarg2) {
   void * jresult = 0 ;
   datamunge::GGPlot *arg1 = 0 ;
-  SwigValueWrapper< datamunge::graphics::RGB > arg2 ;
+  datamunge::graphics::RGB arg2 ;
   datamunge::graphics::RGB *argp2 ;
   datamunge::GGPlot *result = 0 ;
   
@@ -5818,7 +6238,7 @@ SWIGEXPORT void * D_GGPlot_geom_ribbon__SWIG_0(void * jarg1, char * jarg2, char 
   datamunge::GGPlot *arg1 = 0 ;
   std::string *arg2 = 0 ;
   std::string *arg3 = 0 ;
-  SwigValueWrapper< datamunge::graphics::RGB > arg4 ;
+  datamunge::graphics::RGB arg4 ;
   datamunge::graphics::RGB *argp4 ;
   datamunge::GGPlot *result = 0 ;
   
@@ -5876,7 +6296,7 @@ SWIGEXPORT void * D_GGPlot_geom_ribbon__SWIG_1(void * jarg1, char * jarg2, char 
 SWIGEXPORT void * D_GGPlot_geom_density__SWIG_0(void * jarg1, void * jarg2) {
   void * jresult = 0 ;
   datamunge::GGPlot *arg1 = 0 ;
-  SwigValueWrapper< datamunge::graphics::RGB > arg2 ;
+  datamunge::graphics::RGB arg2 ;
   datamunge::graphics::RGB *argp2 ;
   datamunge::GGPlot *result = 0 ;
   
@@ -6154,10 +6574,582 @@ SWIGEXPORT void D_GGPlot_show__SWIG_1(void * jarg1) {
 }
 
 
+SWIGEXPORT int D_GGPlot_rows(void * jarg1) {
+  int jresult = 0 ;
+  datamunge::GGPlot *arg1 = 0 ;
+  int result;
+  
+  arg1 = (datamunge::GGPlot *)jarg1;
+  result = (int)((datamunge::GGPlot const *)arg1)->rows();
+  jresult = result;
+  return jresult;
+}
+
+
+SWIGEXPORT char * D_GGPlot_x_column(void * jarg1) {
+  char * jresult = 0 ;
+  datamunge::GGPlot *arg1 = 0 ;
+  std::string result;
+  
+  arg1 = (datamunge::GGPlot *)jarg1;
+  result = ((datamunge::GGPlot const *)arg1)->x_column();
+  jresult = SWIG_d_string_callback((&result)->c_str()); 
+  return jresult;
+}
+
+
+SWIGEXPORT char * D_GGPlot_y_column(void * jarg1) {
+  char * jresult = 0 ;
+  datamunge::GGPlot *arg1 = 0 ;
+  std::string result;
+  
+  arg1 = (datamunge::GGPlot *)jarg1;
+  result = ((datamunge::GGPlot const *)arg1)->y_column();
+  jresult = SWIG_d_string_callback((&result)->c_str()); 
+  return jresult;
+}
+
+
+SWIGEXPORT char * D_GGPlot_color_column(void * jarg1) {
+  char * jresult = 0 ;
+  datamunge::GGPlot *arg1 = 0 ;
+  std::string result;
+  
+  arg1 = (datamunge::GGPlot *)jarg1;
+  result = ((datamunge::GGPlot const *)arg1)->color_column();
+  jresult = SWIG_d_string_callback((&result)->c_str()); 
+  return jresult;
+}
+
+
+SWIGEXPORT int D_GGPlot_layer_count(void * jarg1) {
+  int jresult = 0 ;
+  datamunge::GGPlot *arg1 = 0 ;
+  int result;
+  
+  arg1 = (datamunge::GGPlot *)jarg1;
+  result = (int)((datamunge::GGPlot const *)arg1)->layer_count();
+  jresult = result;
+  return jresult;
+}
+
+
+SWIGEXPORT void * D_GGPlot_layer_kinds(void * jarg1) {
+  void * jresult = 0 ;
+  datamunge::GGPlot *arg1 = 0 ;
+  std::vector< std::string > result;
+  
+  arg1 = (datamunge::GGPlot *)jarg1;
+  result = ((datamunge::GGPlot const *)arg1)->layer_kinds();
+  jresult = new std::vector< std::string >(result); 
+  return jresult;
+}
+
+
+SWIGEXPORT char * D_GGPlot_theme_name(void * jarg1) {
+  char * jresult = 0 ;
+  datamunge::GGPlot *arg1 = 0 ;
+  std::string result;
+  
+  arg1 = (datamunge::GGPlot *)jarg1;
+  result = ((datamunge::GGPlot const *)arg1)->theme_name();
+  jresult = SWIG_d_string_callback((&result)->c_str()); 
+  return jresult;
+}
+
+
+SWIGEXPORT char * D_GGPlot_facet_column(void * jarg1) {
+  char * jresult = 0 ;
+  datamunge::GGPlot *arg1 = 0 ;
+  std::string result;
+  
+  arg1 = (datamunge::GGPlot *)jarg1;
+  result = ((datamunge::GGPlot const *)arg1)->facet_column();
+  jresult = SWIG_d_string_callback((&result)->c_str()); 
+  return jresult;
+}
+
+
+SWIGEXPORT char * D_GGPlot_title_text(void * jarg1) {
+  char * jresult = 0 ;
+  datamunge::GGPlot *arg1 = 0 ;
+  std::string result;
+  
+  arg1 = (datamunge::GGPlot *)jarg1;
+  result = ((datamunge::GGPlot const *)arg1)->title_text();
+  jresult = SWIG_d_string_callback((&result)->c_str()); 
+  return jresult;
+}
+
+
+SWIGEXPORT char * D_GGPlot_x_label(void * jarg1) {
+  char * jresult = 0 ;
+  datamunge::GGPlot *arg1 = 0 ;
+  std::string result;
+  
+  arg1 = (datamunge::GGPlot *)jarg1;
+  result = ((datamunge::GGPlot const *)arg1)->x_label();
+  jresult = SWIG_d_string_callback((&result)->c_str()); 
+  return jresult;
+}
+
+
+SWIGEXPORT char * D_GGPlot_y_label(void * jarg1) {
+  char * jresult = 0 ;
+  datamunge::GGPlot *arg1 = 0 ;
+  std::string result;
+  
+  arg1 = (datamunge::GGPlot *)jarg1;
+  result = ((datamunge::GGPlot const *)arg1)->y_label();
+  jresult = SWIG_d_string_callback((&result)->c_str()); 
+  return jresult;
+}
+
+
 SWIGEXPORT void D_delete_GGPlot(void * jarg1) {
   datamunge::GGPlot *arg1 = 0 ;
   
   arg1 = (datamunge::GGPlot *)jarg1;
+  delete arg1;
+}
+
+
+SWIGEXPORT void * D_new_Splom__SWIG_0(void * jarg1, void * jarg2) {
+  void * jresult = 0 ;
+  datamunge::DataFrame *arg1 = 0 ;
+  std::vector< std::string > *arg2 = 0 ;
+  datamunge::Splom *result = 0 ;
+  
+  arg1 = (datamunge::DataFrame *)jarg1;
+  if (!arg1) {
+    SWIG_DSetPendingException(SWIG_DNullReferenceException, "datamunge::DataFrame const & is null");
+    return 0;
+  } 
+  arg2 = (std::vector< std::string > *)jarg2;
+  if (!arg2) {
+    SWIG_DSetPendingException(SWIG_DNullReferenceException, "std::vector< std::string > const & is null");
+    return 0;
+  } 
+  result = (datamunge::Splom *)new datamunge::Splom((datamunge::DataFrame const &)*arg1,(std::vector< std::string > const &)*arg2);
+  jresult = (void *)result;
+  return jresult;
+}
+
+
+SWIGEXPORT void * D_new_Splom__SWIG_1(void * jarg1) {
+  void * jresult = 0 ;
+  datamunge::DataFrame *arg1 = 0 ;
+  datamunge::Splom *result = 0 ;
+  
+  arg1 = (datamunge::DataFrame *)jarg1;
+  if (!arg1) {
+    SWIG_DSetPendingException(SWIG_DNullReferenceException, "datamunge::DataFrame const & is null");
+    return 0;
+  } 
+  result = (datamunge::Splom *)new datamunge::Splom((datamunge::DataFrame const &)*arg1);
+  jresult = (void *)result;
+  return jresult;
+}
+
+
+SWIGEXPORT void * D_Splom_title(void * jarg1, char * jarg2) {
+  void * jresult = 0 ;
+  datamunge::Splom *arg1 = 0 ;
+  std::string *arg2 = 0 ;
+  datamunge::Splom *result = 0 ;
+  
+  arg1 = (datamunge::Splom *)jarg1;
+  if (!jarg2) {
+    SWIG_DSetPendingException(SWIG_DNullReferenceException, "null string");
+    return 0;
+  }
+  std::string arg2_str(jarg2);
+  arg2 = &arg2_str; 
+  result = (datamunge::Splom *) &(arg1)->title((std::string const &)*arg2);
+  jresult = (void *)result;
+  return jresult;
+}
+
+
+SWIGEXPORT void * D_Splom_size(void * jarg1, size_t jarg2, size_t jarg3) {
+  void * jresult = 0 ;
+  datamunge::Splom *arg1 = 0 ;
+  std::size_t arg2 ;
+  std::size_t arg3 ;
+  datamunge::Splom *result = 0 ;
+  
+  arg1 = (datamunge::Splom *)jarg1;
+  arg2 = (std::size_t)jarg2;
+  arg3 = (std::size_t)jarg3;
+  result = (datamunge::Splom *) &(arg1)->size(SWIG_STD_MOVE(*(&arg2)),SWIG_STD_MOVE(*(&arg3)));
+  jresult = (void *)result;
+  return jresult;
+}
+
+
+SWIGEXPORT void * D_Splom_color(void * jarg1, void * jarg2) {
+  void * jresult = 0 ;
+  datamunge::Splom *arg1 = 0 ;
+  datamunge::graphics::RGB arg2 ;
+  datamunge::graphics::RGB *argp2 ;
+  datamunge::Splom *result = 0 ;
+  
+  arg1 = (datamunge::Splom *)jarg1;
+  argp2 = (datamunge::graphics::RGB *)jarg2;
+  if (!argp2) {
+    SWIG_DSetPendingException(SWIG_DNullReferenceException, "Attempt to dereference null datamunge::graphics::RGB");
+    return 0;
+  }
+  arg2 = *argp2; 
+  result = (datamunge::Splom *) &(arg1)->color(SWIG_STD_MOVE(*(&arg2)));
+  jresult = (void *)result;
+  return jresult;
+}
+
+
+SWIGEXPORT void * D_Splom_group_by__SWIG_0(void * jarg1, char * jarg2, void * jarg3) {
+  void * jresult = 0 ;
+  datamunge::Splom *arg1 = 0 ;
+  std::string *arg2 = 0 ;
+  std::vector< datamunge::graphics::RGB > *arg3 = 0 ;
+  datamunge::Splom *result = 0 ;
+  
+  arg1 = (datamunge::Splom *)jarg1;
+  if (!jarg2) {
+    SWIG_DSetPendingException(SWIG_DNullReferenceException, "null string");
+    return 0;
+  }
+  std::string arg2_str(jarg2);
+  arg2 = &arg2_str; 
+  arg3 = (std::vector< datamunge::graphics::RGB > *)jarg3;
+  if (!arg3) {
+    SWIG_DSetPendingException(SWIG_DNullReferenceException, "std::vector< datamunge::graphics::RGB > const & is null");
+    return 0;
+  } 
+  result = (datamunge::Splom *) &(arg1)->group_by((std::string const &)*arg2,(std::vector< datamunge::graphics::RGB > const &)*arg3);
+  jresult = (void *)result;
+  return jresult;
+}
+
+
+SWIGEXPORT void * D_Splom_group_by__SWIG_1(void * jarg1, char * jarg2) {
+  void * jresult = 0 ;
+  datamunge::Splom *arg1 = 0 ;
+  std::string *arg2 = 0 ;
+  datamunge::Splom *result = 0 ;
+  
+  arg1 = (datamunge::Splom *)jarg1;
+  if (!jarg2) {
+    SWIG_DSetPendingException(SWIG_DNullReferenceException, "null string");
+    return 0;
+  }
+  std::string arg2_str(jarg2);
+  arg2 = &arg2_str; 
+  result = (datamunge::Splom *) &(arg1)->group_by((std::string const &)*arg2);
+  jresult = (void *)result;
+  return jresult;
+}
+
+
+SWIGEXPORT void * D_Splom_point_colors(void * jarg1, void * jarg2) {
+  void * jresult = 0 ;
+  datamunge::Splom *arg1 = 0 ;
+  std::vector< datamunge::graphics::RGB > *arg2 = 0 ;
+  datamunge::Splom *result = 0 ;
+  
+  arg1 = (datamunge::Splom *)jarg1;
+  arg2 = (std::vector< datamunge::graphics::RGB > *)jarg2;
+  if (!arg2) {
+    SWIG_DSetPendingException(SWIG_DNullReferenceException, "std::vector< datamunge::graphics::RGB > const & is null");
+    return 0;
+  } 
+  result = (datamunge::Splom *) &(arg1)->point_colors((std::vector< datamunge::graphics::RGB > const &)*arg2);
+  jresult = (void *)result;
+  return jresult;
+}
+
+
+SWIGEXPORT void * D_Splom_level_palette(void * jarg1, void * jarg2) {
+  void * jresult = 0 ;
+  datamunge::Splom *arg1 = 0 ;
+  std::vector< datamunge::graphics::RGB > *arg2 = 0 ;
+  datamunge::Splom *result = 0 ;
+  
+  arg1 = (datamunge::Splom *)jarg1;
+  arg2 = (std::vector< datamunge::graphics::RGB > *)jarg2;
+  if (!arg2) {
+    SWIG_DSetPendingException(SWIG_DNullReferenceException, "std::vector< datamunge::graphics::RGB > const & is null");
+    return 0;
+  } 
+  result = (datamunge::Splom *) &(arg1)->level_palette((std::vector< datamunge::graphics::RGB > const &)*arg2);
+  jresult = (void *)result;
+  return jresult;
+}
+
+
+SWIGEXPORT void * D_Splom_marker_size(void * jarg1, double jarg2) {
+  void * jresult = 0 ;
+  datamunge::Splom *arg1 = 0 ;
+  double arg2 ;
+  datamunge::Splom *result = 0 ;
+  
+  arg1 = (datamunge::Splom *)jarg1;
+  arg2 = (double)jarg2;
+  result = (datamunge::Splom *) &(arg1)->marker_size(arg2);
+  jresult = (void *)result;
+  return jresult;
+}
+
+
+SWIGEXPORT void * D_Splom_diagonal_names(void * jarg1) {
+  void * jresult = 0 ;
+  datamunge::Splom *arg1 = 0 ;
+  datamunge::Splom *result = 0 ;
+  
+  arg1 = (datamunge::Splom *)jarg1;
+  result = (datamunge::Splom *) &(arg1)->diagonal_names();
+  jresult = (void *)result;
+  return jresult;
+}
+
+
+SWIGEXPORT void * D_Splom_diagonal_density(void * jarg1) {
+  void * jresult = 0 ;
+  datamunge::Splom *arg1 = 0 ;
+  datamunge::Splom *result = 0 ;
+  
+  arg1 = (datamunge::Splom *)jarg1;
+  result = (datamunge::Splom *) &(arg1)->diagonal_density();
+  jresult = (void *)result;
+  return jresult;
+}
+
+
+SWIGEXPORT void * D_Splom_diagonal_histogram(void * jarg1) {
+  void * jresult = 0 ;
+  datamunge::Splom *arg1 = 0 ;
+  datamunge::Splom *result = 0 ;
+  
+  arg1 = (datamunge::Splom *)jarg1;
+  result = (datamunge::Splom *) &(arg1)->diagonal_histogram();
+  jresult = (void *)result;
+  return jresult;
+}
+
+
+SWIGEXPORT void * D_Splom_span(void * jarg1, double jarg2) {
+  void * jresult = 0 ;
+  datamunge::Splom *arg1 = 0 ;
+  double arg2 ;
+  datamunge::Splom *result = 0 ;
+  
+  arg1 = (datamunge::Splom *)jarg1;
+  arg2 = (double)jarg2;
+  result = (datamunge::Splom *) &(arg1)->span(arg2);
+  jresult = (void *)result;
+  return jresult;
+}
+
+
+SWIGEXPORT void * D_Splom_prediction_level(void * jarg1, double jarg2) {
+  void * jresult = 0 ;
+  datamunge::Splom *arg1 = 0 ;
+  double arg2 ;
+  datamunge::Splom *result = 0 ;
+  
+  arg1 = (datamunge::Splom *)jarg1;
+  arg2 = (double)jarg2;
+  result = (datamunge::Splom *) &(arg1)->prediction_level(arg2);
+  jresult = (void *)result;
+  return jresult;
+}
+
+
+SWIGEXPORT void * D_Splom_bins(void * jarg1, size_t jarg2) {
+  void * jresult = 0 ;
+  datamunge::Splom *arg1 = 0 ;
+  std::size_t arg2 ;
+  datamunge::Splom *result = 0 ;
+  
+  arg1 = (datamunge::Splom *)jarg1;
+  arg2 = (std::size_t)jarg2;
+  result = (datamunge::Splom *) &(arg1)->bins(SWIG_STD_MOVE(*(&arg2)));
+  jresult = (void *)result;
+  return jresult;
+}
+
+
+SWIGEXPORT void * D_Splom_show_grid__SWIG_0(void * jarg1, unsigned int jarg2) {
+  void * jresult = 0 ;
+  datamunge::Splom *arg1 = 0 ;
+  bool arg2 ;
+  datamunge::Splom *result = 0 ;
+  
+  arg1 = (datamunge::Splom *)jarg1;
+  arg2 = jarg2 ? true : false;
+  result = (datamunge::Splom *) &(arg1)->show_grid(arg2);
+  jresult = (void *)result;
+  return jresult;
+}
+
+
+SWIGEXPORT void * D_Splom_show_grid__SWIG_1(void * jarg1) {
+  void * jresult = 0 ;
+  datamunge::Splom *arg1 = 0 ;
+  datamunge::Splom *result = 0 ;
+  
+  arg1 = (datamunge::Splom *)jarg1;
+  result = (datamunge::Splom *) &(arg1)->show_grid();
+  jresult = (void *)result;
+  return jresult;
+}
+
+
+SWIGEXPORT void * D_Splom_variables(void * jarg1) {
+  void * jresult = 0 ;
+  datamunge::Splom *arg1 = 0 ;
+  std::vector< std::string > result;
+  
+  arg1 = (datamunge::Splom *)jarg1;
+  result = ((datamunge::Splom const *)arg1)->variables();
+  jresult = new std::vector< std::string >(result); 
+  return jresult;
+}
+
+
+SWIGEXPORT void * D_Splom_groups(void * jarg1) {
+  void * jresult = 0 ;
+  datamunge::Splom *arg1 = 0 ;
+  std::vector< std::string > result;
+  
+  arg1 = (datamunge::Splom *)jarg1;
+  result = ((datamunge::Splom const *)arg1)->groups();
+  jresult = new std::vector< std::string >(result); 
+  return jresult;
+}
+
+
+SWIGEXPORT char * D_Splom_title_text(void * jarg1) {
+  char * jresult = 0 ;
+  datamunge::Splom *arg1 = 0 ;
+  std::string result;
+  
+  arg1 = (datamunge::Splom *)jarg1;
+  result = ((datamunge::Splom const *)arg1)->title_text();
+  jresult = SWIG_d_string_callback((&result)->c_str()); 
+  return jresult;
+}
+
+
+SWIGEXPORT int D_Splom_width(void * jarg1) {
+  int jresult = 0 ;
+  datamunge::Splom *arg1 = 0 ;
+  int result;
+  
+  arg1 = (datamunge::Splom *)jarg1;
+  result = (int)((datamunge::Splom const *)arg1)->width();
+  jresult = result;
+  return jresult;
+}
+
+
+SWIGEXPORT int D_Splom_height(void * jarg1) {
+  int jresult = 0 ;
+  datamunge::Splom *arg1 = 0 ;
+  int result;
+  
+  arg1 = (datamunge::Splom *)jarg1;
+  result = (int)((datamunge::Splom const *)arg1)->height();
+  jresult = result;
+  return jresult;
+}
+
+
+SWIGEXPORT void * D_Splom_panel(void * jarg1, size_t jarg2, size_t jarg3) {
+  void * jresult = 0 ;
+  datamunge::Splom *arg1 = 0 ;
+  std::size_t arg2 ;
+  std::size_t arg3 ;
+  datamunge::graphics::RPlot result;
+  
+  arg1 = (datamunge::Splom *)jarg1;
+  arg2 = (std::size_t)jarg2;
+  arg3 = (std::size_t)jarg3;
+  result = ((datamunge::Splom const *)arg1)->panel(SWIG_STD_MOVE(*(&arg2)),SWIG_STD_MOVE(*(&arg3)));
+  jresult = new datamunge::graphics::RPlot(result); 
+  return jresult;
+}
+
+
+SWIGEXPORT char * D_Splom_to_svg(void * jarg1) {
+  char * jresult = 0 ;
+  datamunge::Splom *arg1 = 0 ;
+  std::string result;
+  
+  arg1 = (datamunge::Splom *)jarg1;
+  result = ((datamunge::Splom const *)arg1)->to_svg();
+  jresult = SWIG_d_string_callback((&result)->c_str()); 
+  return jresult;
+}
+
+
+SWIGEXPORT void D_Splom_save(void * jarg1, char * jarg2) {
+  datamunge::Splom *arg1 = 0 ;
+  std::string *arg2 = 0 ;
+  
+  arg1 = (datamunge::Splom *)jarg1;
+  if (!jarg2) {
+    SWIG_DSetPendingException(SWIG_DNullReferenceException, "null string");
+    return ;
+  }
+  std::string arg2_str(jarg2);
+  arg2 = &arg2_str; 
+  ((datamunge::Splom const *)arg1)->save((std::string const &)*arg2);
+}
+
+
+SWIGEXPORT void D_Splom_save_svg(void * jarg1, char * jarg2) {
+  datamunge::Splom *arg1 = 0 ;
+  std::string *arg2 = 0 ;
+  
+  arg1 = (datamunge::Splom *)jarg1;
+  if (!jarg2) {
+    SWIG_DSetPendingException(SWIG_DNullReferenceException, "null string");
+    return ;
+  }
+  std::string arg2_str(jarg2);
+  arg2 = &arg2_str; 
+  ((datamunge::Splom const *)arg1)->save_svg((std::string const &)*arg2);
+}
+
+
+SWIGEXPORT void D_Splom_show__SWIG_0(void * jarg1, char * jarg2) {
+  datamunge::Splom *arg1 = 0 ;
+  std::string *arg2 = 0 ;
+  
+  arg1 = (datamunge::Splom *)jarg1;
+  if (!jarg2) {
+    SWIG_DSetPendingException(SWIG_DNullReferenceException, "null string");
+    return ;
+  }
+  std::string arg2_str(jarg2);
+  arg2 = &arg2_str; 
+  ((datamunge::Splom const *)arg1)->show((std::string const &)*arg2);
+}
+
+
+SWIGEXPORT void D_Splom_show__SWIG_1(void * jarg1) {
+  datamunge::Splom *arg1 = 0 ;
+  
+  arg1 = (datamunge::Splom *)jarg1;
+  ((datamunge::Splom const *)arg1)->show();
+}
+
+
+SWIGEXPORT void D_delete_Splom(void * jarg1) {
+  datamunge::Splom *arg1 = 0 ;
+  
+  arg1 = (datamunge::Splom *)jarg1;
   delete arg1;
 }
 
@@ -8597,6 +9589,32 @@ SWIGEXPORT void D_LDA_print_summary(void * jarg1) {
 }
 
 
+SWIGEXPORT char * D_LDA_to_md__SWIG_0(void * jarg1, int jarg2) {
+  char * jresult = 0 ;
+  datamunge::LDA *arg1 = 0 ;
+  int arg2 ;
+  std::string result;
+  
+  arg1 = (datamunge::LDA *)jarg1;
+  arg2 = (int)jarg2;
+  result = ((datamunge::LDA const *)arg1)->to_md(arg2);
+  jresult = SWIG_d_string_callback((&result)->c_str()); 
+  return jresult;
+}
+
+
+SWIGEXPORT char * D_LDA_to_md__SWIG_1(void * jarg1) {
+  char * jresult = 0 ;
+  datamunge::LDA *arg1 = 0 ;
+  std::string result;
+  
+  arg1 = (datamunge::LDA *)jarg1;
+  result = ((datamunge::LDA const *)arg1)->to_md();
+  jresult = SWIG_d_string_callback((&result)->c_str()); 
+  return jresult;
+}
+
+
 SWIGEXPORT void * D_LDA_predict(void * jarg1, void * jarg2) {
   void * jresult = 0 ;
   datamunge::LDA *arg1 = 0 ;
@@ -8633,7 +9651,21 @@ SWIGEXPORT void * D_LDA_predict_frame(void * jarg1, void * jarg2) {
 }
 
 
-SWIGEXPORT void * D_LDA_plot_discriminants(void * jarg1) {
+SWIGEXPORT void * D_LDA_plot_discriminants__SWIG_0(void * jarg1, unsigned int jarg2) {
+  void * jresult = 0 ;
+  datamunge::LDA *arg1 = 0 ;
+  bool arg2 ;
+  datamunge::graphics::RPlot result;
+  
+  arg1 = (datamunge::LDA *)jarg1;
+  arg2 = jarg2 ? true : false;
+  result = ((datamunge::LDA const *)arg1)->plot_discriminants(arg2);
+  jresult = new datamunge::graphics::RPlot(result); 
+  return jresult;
+}
+
+
+SWIGEXPORT void * D_LDA_plot_discriminants__SWIG_1(void * jarg1) {
   void * jresult = 0 ;
   datamunge::LDA *arg1 = 0 ;
   datamunge::graphics::RPlot result;
@@ -8657,6 +9689,18 @@ SWIGEXPORT void D_LDA_save_discriminant_plot(void * jarg1, char * jarg2) {
   std::string arg2_str(jarg2);
   arg2 = &arg2_str; 
   ((datamunge::LDA const *)arg1)->save_discriminant_plot((std::string const &)*arg2);
+}
+
+
+SWIGEXPORT void * D_LDA_plot_decision_regions(void * jarg1) {
+  void * jresult = 0 ;
+  datamunge::LDA *arg1 = 0 ;
+  datamunge::graphics::RPlot result;
+  
+  arg1 = (datamunge::LDA *)jarg1;
+  result = ((datamunge::LDA const *)arg1)->plot_decision_regions();
+  jresult = new datamunge::graphics::RPlot(result); 
+  return jresult;
 }
 
 
@@ -26357,7 +27401,7 @@ SWIGEXPORT void * D_new_RGB__SWIG_0() {
   void * jresult = 0 ;
   datamunge::graphics::RGB *result = 0 ;
   
-  result = (datamunge::graphics::RGB *)new_datamunge_plot_RGB__SWIG_0();
+  result = (datamunge::graphics::RGB *)new datamunge::graphics::RGB();
   jresult = (void *)result;
   return jresult;
 }
@@ -26375,7 +27419,7 @@ SWIGEXPORT void * D_new_RGB__SWIG_1(int jarg1, int jarg2, int jarg3, double jarg
   arg2 = (int)jarg2;
   arg3 = (int)jarg3;
   arg4 = (double)jarg4;
-  result = (datamunge::graphics::RGB *)new_datamunge_plot_RGB__SWIG_1(arg1,arg2,arg3,arg4);
+  result = (datamunge::graphics::RGB *)new datamunge::graphics::RGB(arg1,arg2,arg3,arg4);
   jresult = (void *)result;
   return jresult;
 }
@@ -26391,7 +27435,50 @@ SWIGEXPORT void * D_new_RGB__SWIG_2(int jarg1, int jarg2, int jarg3) {
   arg1 = (int)jarg1;
   arg2 = (int)jarg2;
   arg3 = (int)jarg3;
-  result = (datamunge::graphics::RGB *)new_datamunge_plot_RGB__SWIG_1(arg1,arg2,arg3);
+  result = (datamunge::graphics::RGB *)new datamunge::graphics::RGB(arg1,arg2,arg3);
+  jresult = (void *)result;
+  return jresult;
+}
+
+
+SWIGEXPORT void * D_new_RGB__SWIG_3(int jarg1) {
+  void * jresult = 0 ;
+  int arg1 ;
+  datamunge::graphics::RGB *result = 0 ;
+  
+  arg1 = (int)jarg1;
+  result = (datamunge::graphics::RGB *)new datamunge::graphics::RGB(arg1);
+  jresult = (void *)result;
+  return jresult;
+}
+
+
+SWIGEXPORT void * D_new_RGB__SWIG_4(int jarg1, int jarg2) {
+  void * jresult = 0 ;
+  int arg1 ;
+  int arg2 ;
+  datamunge::graphics::RGB *result = 0 ;
+  
+  arg1 = (int)jarg1;
+  arg2 = (int)jarg2;
+  result = (datamunge::graphics::RGB *)new datamunge::graphics::RGB(arg1,arg2);
+  jresult = (void *)result;
+  return jresult;
+}
+
+
+SWIGEXPORT void * D_new_RGB__SWIG_5(char * jarg1) {
+  void * jresult = 0 ;
+  std::string *arg1 = 0 ;
+  datamunge::graphics::RGB *result = 0 ;
+  
+  if (!jarg1) {
+    SWIG_DSetPendingException(SWIG_DNullReferenceException, "null string");
+    return 0;
+  }
+  std::string arg1_str(jarg1);
+  arg1 = &arg1_str; 
+  result = (datamunge::graphics::RGB *)new datamunge::graphics::RGB((std::string const &)*arg1);
   jresult = (void *)result;
   return jresult;
 }
@@ -26500,10 +27587,10 @@ SWIGEXPORT char * D_DataSeries_label_get(void * jarg1) {
 
 SWIGEXPORT void D_DataSeries_color_set(void * jarg1, void * jarg2) {
   datamunge::graphics::DataSeries *arg1 = 0 ;
-  datamunge::graphics::RGB *arg2 = 0 ;
+  datamunge::graphics::RGBA *arg2 = 0 ;
   
   arg1 = (datamunge::graphics::DataSeries *)jarg1;
-  arg2 = (datamunge::graphics::RGB *)jarg2;
+  arg2 = (datamunge::graphics::RGBA *)jarg2;
   if (arg1) (arg1)->color = *arg2;
 }
 
@@ -26511,10 +27598,10 @@ SWIGEXPORT void D_DataSeries_color_set(void * jarg1, void * jarg2) {
 SWIGEXPORT void * D_DataSeries_color_get(void * jarg1) {
   void * jresult = 0 ;
   datamunge::graphics::DataSeries *arg1 = 0 ;
-  datamunge::graphics::RGB *result = 0 ;
+  datamunge::graphics::RGBA *result = 0 ;
   
   arg1 = (datamunge::graphics::DataSeries *)jarg1;
-  result = (datamunge::graphics::RGB *)& ((arg1)->color);
+  result = (datamunge::graphics::RGBA *)& ((arg1)->color);
   jresult = (void *)result;
   return jresult;
 }
@@ -26608,6 +27695,28 @@ SWIGEXPORT unsigned int D_DataSeries_filled_get(void * jarg1) {
 }
 
 
+SWIGEXPORT void D_DataSeries_point_colors_set(void * jarg1, void * jarg2) {
+  datamunge::graphics::DataSeries *arg1 = 0 ;
+  std::vector< datamunge::graphics::RGBA > *arg2 = 0 ;
+  
+  arg1 = (datamunge::graphics::DataSeries *)jarg1;
+  arg2 = (std::vector< datamunge::graphics::RGBA > *)jarg2;
+  if (arg1) (arg1)->point_colors = *arg2;
+}
+
+
+SWIGEXPORT void * D_DataSeries_point_colors_get(void * jarg1) {
+  void * jresult = 0 ;
+  datamunge::graphics::DataSeries *arg1 = 0 ;
+  std::vector< datamunge::graphics::RGBA > *result = 0 ;
+  
+  arg1 = (datamunge::graphics::DataSeries *)jarg1;
+  result = (std::vector< datamunge::graphics::RGBA > *)& ((arg1)->point_colors);
+  jresult = (void *)result;
+  return jresult;
+}
+
+
 SWIGEXPORT void * D_new_DataSeries() {
   void * jresult = 0 ;
   datamunge::graphics::DataSeries *result = 0 ;
@@ -26694,10 +27803,10 @@ SWIGEXPORT double D_ABLine_slope_get(void * jarg1) {
 
 SWIGEXPORT void D_ABLine_color_set(void * jarg1, void * jarg2) {
   datamunge::graphics::ABLine *arg1 = 0 ;
-  datamunge::graphics::RGB *arg2 = 0 ;
+  datamunge::graphics::RGBA *arg2 = 0 ;
   
   arg1 = (datamunge::graphics::ABLine *)jarg1;
-  arg2 = (datamunge::graphics::RGB *)jarg2;
+  arg2 = (datamunge::graphics::RGBA *)jarg2;
   if (arg1) (arg1)->color = *arg2;
 }
 
@@ -26705,10 +27814,10 @@ SWIGEXPORT void D_ABLine_color_set(void * jarg1, void * jarg2) {
 SWIGEXPORT void * D_ABLine_color_get(void * jarg1) {
   void * jresult = 0 ;
   datamunge::graphics::ABLine *arg1 = 0 ;
-  datamunge::graphics::RGB *result = 0 ;
+  datamunge::graphics::RGBA *result = 0 ;
   
   arg1 = (datamunge::graphics::ABLine *)jarg1;
-  result = (datamunge::graphics::RGB *)& ((arg1)->color);
+  result = (datamunge::graphics::RGBA *)& ((arg1)->color);
   jresult = (void *)result;
   return jresult;
 }
@@ -26783,10 +27892,10 @@ SWIGEXPORT char * D_LegendEntry_label_get(void * jarg1) {
 
 SWIGEXPORT void D_LegendEntry_color_set(void * jarg1, void * jarg2) {
   datamunge::graphics::LegendEntry *arg1 = 0 ;
-  datamunge::graphics::RGB *arg2 = 0 ;
+  datamunge::graphics::RGBA *arg2 = 0 ;
   
   arg1 = (datamunge::graphics::LegendEntry *)jarg1;
-  arg2 = (datamunge::graphics::RGB *)jarg2;
+  arg2 = (datamunge::graphics::RGBA *)jarg2;
   if (arg1) (arg1)->color = *arg2;
 }
 
@@ -26794,10 +27903,10 @@ SWIGEXPORT void D_LegendEntry_color_set(void * jarg1, void * jarg2) {
 SWIGEXPORT void * D_LegendEntry_color_get(void * jarg1) {
   void * jresult = 0 ;
   datamunge::graphics::LegendEntry *arg1 = 0 ;
-  datamunge::graphics::RGB *result = 0 ;
+  datamunge::graphics::RGBA *result = 0 ;
   
   arg1 = (datamunge::graphics::LegendEntry *)jarg1;
-  result = (datamunge::graphics::RGB *)& ((arg1)->color);
+  result = (datamunge::graphics::RGBA *)& ((arg1)->color);
   jresult = (void *)result;
   return jresult;
 }
@@ -26863,6 +27972,24 @@ SWIGEXPORT void * D_Plot_title(void * jarg1, char * jarg2) {
 }
 
 
+SWIGEXPORT void * D_Plot_subtitle(void * jarg1, char * jarg2) {
+  void * jresult = 0 ;
+  datamunge::graphics::Plot *arg1 = 0 ;
+  std::string arg2 ;
+  datamunge::graphics::Plot *result = 0 ;
+  
+  arg1 = (datamunge::graphics::Plot *)jarg1;
+  if (!jarg2) {
+    SWIG_DSetPendingException(SWIG_DNullReferenceException, "null string");
+    return 0;
+  }
+  (&arg2)->assign(jarg2); 
+  result = (datamunge::graphics::Plot *) &(arg1)->subtitle(SWIG_STD_MOVE(*(&arg2)));
+  jresult = (void *)result;
+  return jresult;
+}
+
+
 SWIGEXPORT void * D_Plot_x_label(void * jarg1, char * jarg2) {
   void * jresult = 0 ;
   datamunge::graphics::Plot *arg1 = 0 ;
@@ -26902,14 +28029,14 @@ SWIGEXPORT void * D_Plot_y_label(void * jarg1, char * jarg2) {
 SWIGEXPORT void * D_Plot_background(void * jarg1, void * jarg2) {
   void * jresult = 0 ;
   datamunge::graphics::Plot *arg1 = 0 ;
-  SwigValueWrapper< datamunge::graphics::RGB > arg2 ;
-  datamunge::graphics::RGB *argp2 ;
+  datamunge::graphics::RGBA arg2 ;
+  datamunge::graphics::RGBA *argp2 ;
   datamunge::graphics::Plot *result = 0 ;
   
   arg1 = (datamunge::graphics::Plot *)jarg1;
-  argp2 = (datamunge::graphics::RGB *)jarg2;
+  argp2 = (datamunge::graphics::RGBA *)jarg2;
   if (!argp2) {
-    SWIG_DSetPendingException(SWIG_DNullReferenceException, "Attempt to dereference null datamunge::graphics::RGB");
+    SWIG_DSetPendingException(SWIG_DNullReferenceException, "Attempt to dereference null datamunge::graphics::RGBA");
     return 0;
   }
   arg2 = *argp2; 
@@ -26922,14 +28049,14 @@ SWIGEXPORT void * D_Plot_background(void * jarg1, void * jarg2) {
 SWIGEXPORT void * D_Plot_axis_color(void * jarg1, void * jarg2) {
   void * jresult = 0 ;
   datamunge::graphics::Plot *arg1 = 0 ;
-  SwigValueWrapper< datamunge::graphics::RGB > arg2 ;
-  datamunge::graphics::RGB *argp2 ;
+  datamunge::graphics::RGBA arg2 ;
+  datamunge::graphics::RGBA *argp2 ;
   datamunge::graphics::Plot *result = 0 ;
   
   arg1 = (datamunge::graphics::Plot *)jarg1;
-  argp2 = (datamunge::graphics::RGB *)jarg2;
+  argp2 = (datamunge::graphics::RGBA *)jarg2;
   if (!argp2) {
-    SWIG_DSetPendingException(SWIG_DNullReferenceException, "Attempt to dereference null datamunge::graphics::RGB");
+    SWIG_DSetPendingException(SWIG_DNullReferenceException, "Attempt to dereference null datamunge::graphics::RGBA");
     return 0;
   }
   arg2 = *argp2; 
@@ -26942,14 +28069,14 @@ SWIGEXPORT void * D_Plot_axis_color(void * jarg1, void * jarg2) {
 SWIGEXPORT void * D_Plot_grid_color(void * jarg1, void * jarg2) {
   void * jresult = 0 ;
   datamunge::graphics::Plot *arg1 = 0 ;
-  SwigValueWrapper< datamunge::graphics::RGB > arg2 ;
-  datamunge::graphics::RGB *argp2 ;
+  datamunge::graphics::RGBA arg2 ;
+  datamunge::graphics::RGBA *argp2 ;
   datamunge::graphics::Plot *result = 0 ;
   
   arg1 = (datamunge::graphics::Plot *)jarg1;
-  argp2 = (datamunge::graphics::RGB *)jarg2;
+  argp2 = (datamunge::graphics::RGBA *)jarg2;
   if (!argp2) {
-    SWIG_DSetPendingException(SWIG_DNullReferenceException, "Attempt to dereference null datamunge::graphics::RGB");
+    SWIG_DSetPendingException(SWIG_DNullReferenceException, "Attempt to dereference null datamunge::graphics::RGBA");
     return 0;
   }
   arg2 = *argp2; 
@@ -27063,6 +28190,142 @@ SWIGEXPORT void * D_Plot_x_tick_labels(void * jarg1, void * jarg2) {
 }
 
 
+SWIGEXPORT void * D_Plot_x_ticks(void * jarg1, void * jarg2, void * jarg3) {
+  void * jresult = 0 ;
+  datamunge::graphics::Plot *arg1 = 0 ;
+  std::vector< double > arg2 ;
+  std::vector< std::string > arg3 ;
+  std::vector< double > *argp2 ;
+  std::vector< std::string > *argp3 ;
+  datamunge::graphics::Plot *result = 0 ;
+  
+  arg1 = (datamunge::graphics::Plot *)jarg1;
+  argp2 = (std::vector< double > *)jarg2;
+  if (!argp2) {
+    SWIG_DSetPendingException(SWIG_DNullReferenceException, "Attempt to dereference null std::vector< double >");
+    return 0;
+  }
+  arg2 = *argp2; 
+  argp3 = (std::vector< std::string > *)jarg3;
+  if (!argp3) {
+    SWIG_DSetPendingException(SWIG_DNullReferenceException, "Attempt to dereference null std::vector< std::string >");
+    return 0;
+  }
+  arg3 = *argp3; 
+  result = (datamunge::graphics::Plot *) &(arg1)->x_ticks(SWIG_STD_MOVE(*(&arg2)),SWIG_STD_MOVE(*(&arg3)));
+  jresult = (void *)result;
+  return jresult;
+}
+
+
+SWIGEXPORT void * D_Plot_y_tick_labels(void * jarg1, void * jarg2) {
+  void * jresult = 0 ;
+  datamunge::graphics::Plot *arg1 = 0 ;
+  std::vector< std::string > arg2 ;
+  std::vector< std::string > *argp2 ;
+  datamunge::graphics::Plot *result = 0 ;
+  
+  arg1 = (datamunge::graphics::Plot *)jarg1;
+  argp2 = (std::vector< std::string > *)jarg2;
+  if (!argp2) {
+    SWIG_DSetPendingException(SWIG_DNullReferenceException, "Attempt to dereference null std::vector< std::string >");
+    return 0;
+  }
+  arg2 = *argp2; 
+  result = (datamunge::graphics::Plot *) &(arg1)->y_tick_labels(SWIG_STD_MOVE(*(&arg2)));
+  jresult = (void *)result;
+  return jresult;
+}
+
+
+SWIGEXPORT void * D_Plot_y_ticks(void * jarg1, void * jarg2, void * jarg3) {
+  void * jresult = 0 ;
+  datamunge::graphics::Plot *arg1 = 0 ;
+  std::vector< double > arg2 ;
+  std::vector< std::string > arg3 ;
+  std::vector< double > *argp2 ;
+  std::vector< std::string > *argp3 ;
+  datamunge::graphics::Plot *result = 0 ;
+  
+  arg1 = (datamunge::graphics::Plot *)jarg1;
+  argp2 = (std::vector< double > *)jarg2;
+  if (!argp2) {
+    SWIG_DSetPendingException(SWIG_DNullReferenceException, "Attempt to dereference null std::vector< double >");
+    return 0;
+  }
+  arg2 = *argp2; 
+  argp3 = (std::vector< std::string > *)jarg3;
+  if (!argp3) {
+    SWIG_DSetPendingException(SWIG_DNullReferenceException, "Attempt to dereference null std::vector< std::string >");
+    return 0;
+  }
+  arg3 = *argp3; 
+  result = (datamunge::graphics::Plot *) &(arg1)->y_ticks(SWIG_STD_MOVE(*(&arg2)),SWIG_STD_MOVE(*(&arg3)));
+  jresult = (void *)result;
+  return jresult;
+}
+
+
+SWIGEXPORT void * D_Plot_margins(void * jarg1, double jarg2, double jarg3, double jarg4, double jarg5) {
+  void * jresult = 0 ;
+  datamunge::graphics::Plot *arg1 = 0 ;
+  double arg2 ;
+  double arg3 ;
+  double arg4 ;
+  double arg5 ;
+  datamunge::graphics::Plot *result = 0 ;
+  
+  arg1 = (datamunge::graphics::Plot *)jarg1;
+  arg2 = (double)jarg2;
+  arg3 = (double)jarg3;
+  arg4 = (double)jarg4;
+  arg5 = (double)jarg5;
+  result = (datamunge::graphics::Plot *) &(arg1)->margins(arg2,arg3,arg4,arg5);
+  jresult = (void *)result;
+  return jresult;
+}
+
+
+SWIGEXPORT void * D_Plot_tick_font_size(void * jarg1, double jarg2) {
+  void * jresult = 0 ;
+  datamunge::graphics::Plot *arg1 = 0 ;
+  double arg2 ;
+  datamunge::graphics::Plot *result = 0 ;
+  
+  arg1 = (datamunge::graphics::Plot *)jarg1;
+  arg2 = (double)jarg2;
+  result = (datamunge::graphics::Plot *) &(arg1)->tick_font_size(arg2);
+  jresult = (void *)result;
+  return jresult;
+}
+
+
+SWIGEXPORT void * D_Plot_pretty_ticks__SWIG_0(void * jarg1, unsigned int jarg2) {
+  void * jresult = 0 ;
+  datamunge::graphics::Plot *arg1 = 0 ;
+  bool arg2 ;
+  datamunge::graphics::Plot *result = 0 ;
+  
+  arg1 = (datamunge::graphics::Plot *)jarg1;
+  arg2 = jarg2 ? true : false;
+  result = (datamunge::graphics::Plot *) &(arg1)->pretty_ticks(arg2);
+  jresult = (void *)result;
+  return jresult;
+}
+
+
+SWIGEXPORT void * D_Plot_pretty_ticks__SWIG_1(void * jarg1) {
+  void * jresult = 0 ;
+  datamunge::graphics::Plot *arg1 = 0 ;
+  datamunge::graphics::Plot *result = 0 ;
+  
+  arg1 = (datamunge::graphics::Plot *)jarg1;
+  result = (datamunge::graphics::Plot *) &(arg1)->pretty_ticks();
+  jresult = (void *)result;
+  return jresult;
+}
+
+
 SWIGEXPORT size_t D_Plot_width(void * jarg1) {
   size_t jresult = 0 ;
   datamunge::graphics::Plot *arg1 = 0 ;
@@ -27094,6 +28357,18 @@ SWIGEXPORT char * D_Plot_title_text(void * jarg1) {
   
   arg1 = (datamunge::graphics::Plot *)jarg1;
   result = (std::string *) &((datamunge::graphics::Plot const *)arg1)->title_text();
+  jresult = SWIG_d_string_callback(result->c_str()); 
+  return jresult;
+}
+
+
+SWIGEXPORT char * D_Plot_subtitle_text(void * jarg1) {
+  char * jresult = 0 ;
+  datamunge::graphics::Plot *arg1 = 0 ;
+  std::string *result = 0 ;
+  
+  arg1 = (datamunge::graphics::Plot *)jarg1;
+  result = (std::string *) &((datamunge::graphics::Plot const *)arg1)->subtitle_text();
   jresult = SWIG_d_string_callback(result->c_str()); 
   return jresult;
 }
@@ -27138,11 +28413,11 @@ SWIGEXPORT void * D_Plot_series(void * jarg1) {
 SWIGEXPORT void * D_Plot_background_color(void * jarg1) {
   void * jresult = 0 ;
   datamunge::graphics::Plot *arg1 = 0 ;
-  SwigValueWrapper< datamunge::graphics::RGB > result;
+  datamunge::graphics::RGBA result;
   
   arg1 = (datamunge::graphics::Plot *)jarg1;
   result = ((datamunge::graphics::Plot const *)arg1)->background_color();
-  jresult = new datamunge::graphics::RGB(result); 
+  jresult = new datamunge::graphics::RGBA(result); 
   return jresult;
 }
 
@@ -27150,11 +28425,11 @@ SWIGEXPORT void * D_Plot_background_color(void * jarg1) {
 SWIGEXPORT void * D_Plot_axes_color(void * jarg1) {
   void * jresult = 0 ;
   datamunge::graphics::Plot *arg1 = 0 ;
-  SwigValueWrapper< datamunge::graphics::RGB > result;
+  datamunge::graphics::RGBA result;
   
   arg1 = (datamunge::graphics::Plot *)jarg1;
   result = ((datamunge::graphics::Plot const *)arg1)->axes_color();
-  jresult = new datamunge::graphics::RGB(result); 
+  jresult = new datamunge::graphics::RGBA(result); 
   return jresult;
 }
 
@@ -27162,11 +28437,11 @@ SWIGEXPORT void * D_Plot_axes_color(void * jarg1) {
 SWIGEXPORT void * D_Plot_major_grid_color(void * jarg1) {
   void * jresult = 0 ;
   datamunge::graphics::Plot *arg1 = 0 ;
-  SwigValueWrapper< datamunge::graphics::RGB > result;
+  datamunge::graphics::RGBA result;
   
   arg1 = (datamunge::graphics::Plot *)jarg1;
   result = ((datamunge::graphics::Plot const *)arg1)->major_grid_color();
-  jresult = new datamunge::graphics::RGB(result); 
+  jresult = new datamunge::graphics::RGBA(result); 
   return jresult;
 }
 
@@ -27279,6 +28554,42 @@ SWIGEXPORT void * D_Plot_x_tick_label_list(void * jarg1) {
 }
 
 
+SWIGEXPORT void * D_Plot_x_tick_position_list(void * jarg1) {
+  void * jresult = 0 ;
+  datamunge::graphics::Plot *arg1 = 0 ;
+  std::vector< double > *result = 0 ;
+  
+  arg1 = (datamunge::graphics::Plot *)jarg1;
+  result = (std::vector< double > *) &((datamunge::graphics::Plot const *)arg1)->x_tick_position_list();
+  jresult = (void *)result;
+  return jresult;
+}
+
+
+SWIGEXPORT void * D_Plot_y_tick_label_list(void * jarg1) {
+  void * jresult = 0 ;
+  datamunge::graphics::Plot *arg1 = 0 ;
+  std::vector< std::string > *result = 0 ;
+  
+  arg1 = (datamunge::graphics::Plot *)jarg1;
+  result = (std::vector< std::string > *) &((datamunge::graphics::Plot const *)arg1)->y_tick_label_list();
+  jresult = (void *)result;
+  return jresult;
+}
+
+
+SWIGEXPORT void * D_Plot_y_tick_position_list(void * jarg1) {
+  void * jresult = 0 ;
+  datamunge::graphics::Plot *arg1 = 0 ;
+  std::vector< double > *result = 0 ;
+  
+  arg1 = (datamunge::graphics::Plot *)jarg1;
+  result = (std::vector< double > *) &((datamunge::graphics::Plot const *)arg1)->y_tick_position_list();
+  jresult = (void *)result;
+  return jresult;
+}
+
+
 SWIGEXPORT void * D_Plot_reference_lines(void * jarg1) {
   void * jresult = 0 ;
   datamunge::graphics::Plot *arg1 = 0 ;
@@ -27299,6 +28610,90 @@ SWIGEXPORT void * D_Plot_legend_entries(void * jarg1) {
   arg1 = (datamunge::graphics::Plot *)jarg1;
   result = (std::vector< datamunge::graphics::LegendEntry > *) &((datamunge::graphics::Plot const *)arg1)->legend_entries();
   jresult = (void *)result;
+  return jresult;
+}
+
+
+SWIGEXPORT unsigned int D_Plot_has_custom_margins(void * jarg1) {
+  unsigned int jresult = 0 ;
+  datamunge::graphics::Plot *arg1 = 0 ;
+  bool result;
+  
+  arg1 = (datamunge::graphics::Plot *)jarg1;
+  result = (bool)((datamunge::graphics::Plot const *)arg1)->has_custom_margins();
+  jresult = result;
+  return jresult;
+}
+
+
+SWIGEXPORT double D_Plot_margin_left(void * jarg1) {
+  double jresult = 0 ;
+  datamunge::graphics::Plot *arg1 = 0 ;
+  double result;
+  
+  arg1 = (datamunge::graphics::Plot *)jarg1;
+  result = (double)((datamunge::graphics::Plot const *)arg1)->margin_left();
+  jresult = result;
+  return jresult;
+}
+
+
+SWIGEXPORT double D_Plot_margin_right(void * jarg1) {
+  double jresult = 0 ;
+  datamunge::graphics::Plot *arg1 = 0 ;
+  double result;
+  
+  arg1 = (datamunge::graphics::Plot *)jarg1;
+  result = (double)((datamunge::graphics::Plot const *)arg1)->margin_right();
+  jresult = result;
+  return jresult;
+}
+
+
+SWIGEXPORT double D_Plot_margin_top(void * jarg1) {
+  double jresult = 0 ;
+  datamunge::graphics::Plot *arg1 = 0 ;
+  double result;
+  
+  arg1 = (datamunge::graphics::Plot *)jarg1;
+  result = (double)((datamunge::graphics::Plot const *)arg1)->margin_top();
+  jresult = result;
+  return jresult;
+}
+
+
+SWIGEXPORT double D_Plot_margin_bottom(void * jarg1) {
+  double jresult = 0 ;
+  datamunge::graphics::Plot *arg1 = 0 ;
+  double result;
+  
+  arg1 = (datamunge::graphics::Plot *)jarg1;
+  result = (double)((datamunge::graphics::Plot const *)arg1)->margin_bottom();
+  jresult = result;
+  return jresult;
+}
+
+
+SWIGEXPORT double D_Plot_tick_font_px(void * jarg1) {
+  double jresult = 0 ;
+  datamunge::graphics::Plot *arg1 = 0 ;
+  double result;
+  
+  arg1 = (datamunge::graphics::Plot *)jarg1;
+  result = (double)((datamunge::graphics::Plot const *)arg1)->tick_font_px();
+  jresult = result;
+  return jresult;
+}
+
+
+SWIGEXPORT unsigned int D_Plot_pretty_ticks_enabled(void * jarg1) {
+  unsigned int jresult = 0 ;
+  datamunge::graphics::Plot *arg1 = 0 ;
+  bool result;
+  
+  arg1 = (datamunge::graphics::Plot *)jarg1;
+  result = (bool)((datamunge::graphics::Plot const *)arg1)->pretty_ticks_enabled();
+  jresult = result;
   return jresult;
 }
 
@@ -27342,6 +28737,60 @@ SWIGEXPORT void D_Plot_save_svg(void * jarg1, char * jarg2) {
   std::string arg2_str(jarg2);
   arg2 = &arg2_str; 
   ((datamunge::graphics::Plot const *)arg1)->save_svg((std::string const &)*arg2);
+}
+
+
+SWIGEXPORT void * D_Plot_to_png(void * jarg1) {
+  void * jresult = 0 ;
+  datamunge::graphics::Plot *arg1 = 0 ;
+  std::vector< std::uint8_t > result;
+  
+  arg1 = (datamunge::graphics::Plot *)jarg1;
+  result = ((datamunge::graphics::Plot const *)arg1)->to_png();
+  jresult = new std::vector< std::uint8_t >(result); 
+  return jresult;
+}
+
+
+SWIGEXPORT void * D_Plot_to_pdf(void * jarg1) {
+  void * jresult = 0 ;
+  datamunge::graphics::Plot *arg1 = 0 ;
+  std::vector< std::uint8_t > result;
+  
+  arg1 = (datamunge::graphics::Plot *)jarg1;
+  result = ((datamunge::graphics::Plot const *)arg1)->to_pdf();
+  jresult = new std::vector< std::uint8_t >(result); 
+  return jresult;
+}
+
+
+SWIGEXPORT void D_Plot_save_png(void * jarg1, char * jarg2) {
+  datamunge::graphics::Plot *arg1 = 0 ;
+  std::string *arg2 = 0 ;
+  
+  arg1 = (datamunge::graphics::Plot *)jarg1;
+  if (!jarg2) {
+    SWIG_DSetPendingException(SWIG_DNullReferenceException, "null string");
+    return ;
+  }
+  std::string arg2_str(jarg2);
+  arg2 = &arg2_str; 
+  ((datamunge::graphics::Plot const *)arg1)->save_png((std::string const &)*arg2);
+}
+
+
+SWIGEXPORT void D_Plot_save_pdf(void * jarg1, char * jarg2) {
+  datamunge::graphics::Plot *arg1 = 0 ;
+  std::string *arg2 = 0 ;
+  
+  arg1 = (datamunge::graphics::Plot *)jarg1;
+  if (!jarg2) {
+    SWIG_DSetPendingException(SWIG_DNullReferenceException, "null string");
+    return ;
+  }
+  std::string arg2_str(jarg2);
+  arg2 = &arg2_str; 
+  ((datamunge::graphics::Plot const *)arg1)->save_pdf((std::string const &)*arg2);
 }
 
 
@@ -27401,6 +28850,42 @@ SWIGEXPORT void * D_new_Plot() {
 }
 
 
+SWIGEXPORT void * D_new_RPlot__SWIG_0() {
+  void * jresult = 0 ;
+  datamunge::graphics::RPlot *result = 0 ;
+  
+  result = (datamunge::graphics::RPlot *)new datamunge::graphics::RPlot();
+  jresult = (void *)result;
+  return jresult;
+}
+
+
+SWIGEXPORT void * D_new_RPlot__SWIG_1(void * jarg1, void * jarg2) {
+  void * jresult = 0 ;
+  std::vector< double > arg1 ;
+  std::vector< double > arg2 ;
+  std::vector< double > *argp1 ;
+  std::vector< double > *argp2 ;
+  datamunge::graphics::RPlot *result = 0 ;
+  
+  argp1 = (std::vector< double > *)jarg1;
+  if (!argp1) {
+    SWIG_DSetPendingException(SWIG_DNullReferenceException, "Attempt to dereference null std::vector< double >");
+    return 0;
+  }
+  arg1 = *argp1; 
+  argp2 = (std::vector< double > *)jarg2;
+  if (!argp2) {
+    SWIG_DSetPendingException(SWIG_DNullReferenceException, "Attempt to dereference null std::vector< double >");
+    return 0;
+  }
+  arg2 = *argp2; 
+  result = (datamunge::graphics::RPlot *)new datamunge::graphics::RPlot(SWIG_STD_MOVE(*(&arg1)),SWIG_STD_MOVE(*(&arg2)));
+  jresult = (void *)result;
+  return jresult;
+}
+
+
 SWIGEXPORT void * D_RPlot_create() {
   void * jresult = 0 ;
   datamunge::graphics::RPlot result;
@@ -27440,6 +28925,24 @@ SWIGEXPORT void * D_RPlot_title(void * jarg1, char * jarg2) {
   }
   (&arg2)->assign(jarg2); 
   result = (datamunge::graphics::RPlot *) &(arg1)->title(SWIG_STD_MOVE(*(&arg2)));
+  jresult = (void *)result;
+  return jresult;
+}
+
+
+SWIGEXPORT void * D_RPlot_subtitle(void * jarg1, char * jarg2) {
+  void * jresult = 0 ;
+  datamunge::graphics::RPlot *arg1 = 0 ;
+  std::string arg2 ;
+  datamunge::graphics::RPlot *result = 0 ;
+  
+  arg1 = (datamunge::graphics::RPlot *)jarg1;
+  if (!jarg2) {
+    SWIG_DSetPendingException(SWIG_DNullReferenceException, "null string");
+    return 0;
+  }
+  (&arg2)->assign(jarg2); 
+  result = (datamunge::graphics::RPlot *) &(arg1)->subtitle(SWIG_STD_MOVE(*(&arg2)));
   jresult = (void *)result;
   return jresult;
 }
@@ -27517,17 +29020,127 @@ SWIGEXPORT void * D_RPlot_ylab(void * jarg1, char * jarg2) {
 }
 
 
-SWIGEXPORT void * D_RPlot_background(void * jarg1, void * jarg2) {
+SWIGEXPORT void * D_RPlot_set_title(void * jarg1, char * jarg2) {
   void * jresult = 0 ;
   datamunge::graphics::RPlot *arg1 = 0 ;
-  SwigValueWrapper< datamunge::graphics::RGB > arg2 ;
-  datamunge::graphics::RGB *argp2 ;
+  std::string arg2 ;
   datamunge::graphics::RPlot *result = 0 ;
   
   arg1 = (datamunge::graphics::RPlot *)jarg1;
-  argp2 = (datamunge::graphics::RGB *)jarg2;
+  if (!jarg2) {
+    SWIG_DSetPendingException(SWIG_DNullReferenceException, "null string");
+    return 0;
+  }
+  (&arg2)->assign(jarg2); 
+  result = (datamunge::graphics::RPlot *) &(arg1)->set_title(SWIG_STD_MOVE(*(&arg2)));
+  jresult = (void *)result;
+  return jresult;
+}
+
+
+SWIGEXPORT void * D_RPlot_set_subtitle(void * jarg1, char * jarg2) {
+  void * jresult = 0 ;
+  datamunge::graphics::RPlot *arg1 = 0 ;
+  std::string arg2 ;
+  datamunge::graphics::RPlot *result = 0 ;
+  
+  arg1 = (datamunge::graphics::RPlot *)jarg1;
+  if (!jarg2) {
+    SWIG_DSetPendingException(SWIG_DNullReferenceException, "null string");
+    return 0;
+  }
+  (&arg2)->assign(jarg2); 
+  result = (datamunge::graphics::RPlot *) &(arg1)->set_subtitle(SWIG_STD_MOVE(*(&arg2)));
+  jresult = (void *)result;
+  return jresult;
+}
+
+
+SWIGEXPORT void * D_RPlot_set_xlab(void * jarg1, char * jarg2) {
+  void * jresult = 0 ;
+  datamunge::graphics::RPlot *arg1 = 0 ;
+  std::string arg2 ;
+  datamunge::graphics::RPlot *result = 0 ;
+  
+  arg1 = (datamunge::graphics::RPlot *)jarg1;
+  if (!jarg2) {
+    SWIG_DSetPendingException(SWIG_DNullReferenceException, "null string");
+    return 0;
+  }
+  (&arg2)->assign(jarg2); 
+  result = (datamunge::graphics::RPlot *) &(arg1)->set_xlab(SWIG_STD_MOVE(*(&arg2)));
+  jresult = (void *)result;
+  return jresult;
+}
+
+
+SWIGEXPORT void * D_RPlot_set_ylab(void * jarg1, char * jarg2) {
+  void * jresult = 0 ;
+  datamunge::graphics::RPlot *arg1 = 0 ;
+  std::string arg2 ;
+  datamunge::graphics::RPlot *result = 0 ;
+  
+  arg1 = (datamunge::graphics::RPlot *)jarg1;
+  if (!jarg2) {
+    SWIG_DSetPendingException(SWIG_DNullReferenceException, "null string");
+    return 0;
+  }
+  (&arg2)->assign(jarg2); 
+  result = (datamunge::graphics::RPlot *) &(arg1)->set_ylab(SWIG_STD_MOVE(*(&arg2)));
+  jresult = (void *)result;
+  return jresult;
+}
+
+
+SWIGEXPORT void * D_RPlot_set_col__SWIG_0(void * jarg1, void * jarg2) {
+  void * jresult = 0 ;
+  datamunge::graphics::RPlot *arg1 = 0 ;
+  datamunge::graphics::RGBA arg2 ;
+  datamunge::graphics::RGBA *argp2 ;
+  datamunge::graphics::RPlot *result = 0 ;
+  
+  arg1 = (datamunge::graphics::RPlot *)jarg1;
+  argp2 = (datamunge::graphics::RGBA *)jarg2;
   if (!argp2) {
-    SWIG_DSetPendingException(SWIG_DNullReferenceException, "Attempt to dereference null datamunge::graphics::RGB");
+    SWIG_DSetPendingException(SWIG_DNullReferenceException, "Attempt to dereference null datamunge::graphics::RGBA");
+    return 0;
+  }
+  arg2 = *argp2; 
+  result = (datamunge::graphics::RPlot *) &(arg1)->set_col(SWIG_STD_MOVE(*(&arg2)));
+  jresult = (void *)result;
+  return jresult;
+}
+
+
+SWIGEXPORT void * D_RPlot_set_col__SWIG_1(void * jarg1, char * jarg2) {
+  void * jresult = 0 ;
+  datamunge::graphics::RPlot *arg1 = 0 ;
+  std::string arg2 ;
+  datamunge::graphics::RPlot *result = 0 ;
+  
+  arg1 = (datamunge::graphics::RPlot *)jarg1;
+  if (!jarg2) {
+    SWIG_DSetPendingException(SWIG_DNullReferenceException, "null string");
+    return 0;
+  }
+  (&arg2)->assign(jarg2); 
+  result = (datamunge::graphics::RPlot *) &(arg1)->set_col(SWIG_STD_MOVE(*(&arg2)));
+  jresult = (void *)result;
+  return jresult;
+}
+
+
+SWIGEXPORT void * D_RPlot_background(void * jarg1, void * jarg2) {
+  void * jresult = 0 ;
+  datamunge::graphics::RPlot *arg1 = 0 ;
+  datamunge::graphics::RGBA arg2 ;
+  datamunge::graphics::RGBA *argp2 ;
+  datamunge::graphics::RPlot *result = 0 ;
+  
+  arg1 = (datamunge::graphics::RPlot *)jarg1;
+  argp2 = (datamunge::graphics::RGBA *)jarg2;
+  if (!argp2) {
+    SWIG_DSetPendingException(SWIG_DNullReferenceException, "Attempt to dereference null datamunge::graphics::RGBA");
     return 0;
   }
   arg2 = *argp2; 
@@ -27540,14 +29153,14 @@ SWIGEXPORT void * D_RPlot_background(void * jarg1, void * jarg2) {
 SWIGEXPORT void * D_RPlot_axis_color(void * jarg1, void * jarg2) {
   void * jresult = 0 ;
   datamunge::graphics::RPlot *arg1 = 0 ;
-  SwigValueWrapper< datamunge::graphics::RGB > arg2 ;
-  datamunge::graphics::RGB *argp2 ;
+  datamunge::graphics::RGBA arg2 ;
+  datamunge::graphics::RGBA *argp2 ;
   datamunge::graphics::RPlot *result = 0 ;
   
   arg1 = (datamunge::graphics::RPlot *)jarg1;
-  argp2 = (datamunge::graphics::RGB *)jarg2;
+  argp2 = (datamunge::graphics::RGBA *)jarg2;
   if (!argp2) {
-    SWIG_DSetPendingException(SWIG_DNullReferenceException, "Attempt to dereference null datamunge::graphics::RGB");
+    SWIG_DSetPendingException(SWIG_DNullReferenceException, "Attempt to dereference null datamunge::graphics::RGBA");
     return 0;
   }
   arg2 = *argp2; 
@@ -27560,14 +29173,14 @@ SWIGEXPORT void * D_RPlot_axis_color(void * jarg1, void * jarg2) {
 SWIGEXPORT void * D_RPlot_grid_color(void * jarg1, void * jarg2) {
   void * jresult = 0 ;
   datamunge::graphics::RPlot *arg1 = 0 ;
-  SwigValueWrapper< datamunge::graphics::RGB > arg2 ;
-  datamunge::graphics::RGB *argp2 ;
+  datamunge::graphics::RGBA arg2 ;
+  datamunge::graphics::RGBA *argp2 ;
   datamunge::graphics::RPlot *result = 0 ;
   
   arg1 = (datamunge::graphics::RPlot *)jarg1;
-  argp2 = (datamunge::graphics::RGB *)jarg2;
+  argp2 = (datamunge::graphics::RGBA *)jarg2;
   if (!argp2) {
-    SWIG_DSetPendingException(SWIG_DNullReferenceException, "Attempt to dereference null datamunge::graphics::RGB");
+    SWIG_DSetPendingException(SWIG_DNullReferenceException, "Attempt to dereference null datamunge::graphics::RGBA");
     return 0;
   }
   arg2 = *argp2; 
@@ -27635,6 +29248,38 @@ SWIGEXPORT void * D_RPlot_y_limits(void * jarg1, double jarg2, double jarg3) {
 }
 
 
+SWIGEXPORT void * D_RPlot_xlim(void * jarg1, double jarg2, double jarg3) {
+  void * jresult = 0 ;
+  datamunge::graphics::RPlot *arg1 = 0 ;
+  double arg2 ;
+  double arg3 ;
+  datamunge::graphics::RPlot *result = 0 ;
+  
+  arg1 = (datamunge::graphics::RPlot *)jarg1;
+  arg2 = (double)jarg2;
+  arg3 = (double)jarg3;
+  result = (datamunge::graphics::RPlot *) &(arg1)->xlim(arg2,arg3);
+  jresult = (void *)result;
+  return jresult;
+}
+
+
+SWIGEXPORT void * D_RPlot_ylim(void * jarg1, double jarg2, double jarg3) {
+  void * jresult = 0 ;
+  datamunge::graphics::RPlot *arg1 = 0 ;
+  double arg2 ;
+  double arg3 ;
+  datamunge::graphics::RPlot *result = 0 ;
+  
+  arg1 = (datamunge::graphics::RPlot *)jarg1;
+  arg2 = (double)jarg2;
+  arg3 = (double)jarg3;
+  result = (datamunge::graphics::RPlot *) &(arg1)->ylim(arg2,arg3);
+  jresult = (void *)result;
+  return jresult;
+}
+
+
 SWIGEXPORT void * D_RPlot_hide_axes__SWIG_0(void * jarg1, unsigned int jarg2) {
   void * jresult = 0 ;
   datamunge::graphics::RPlot *arg1 = 0 ;
@@ -27681,16 +29326,152 @@ SWIGEXPORT void * D_RPlot_x_tick_labels(void * jarg1, void * jarg2) {
 }
 
 
+SWIGEXPORT void * D_RPlot_x_ticks(void * jarg1, void * jarg2, void * jarg3) {
+  void * jresult = 0 ;
+  datamunge::graphics::RPlot *arg1 = 0 ;
+  std::vector< double > arg2 ;
+  std::vector< std::string > arg3 ;
+  std::vector< double > *argp2 ;
+  std::vector< std::string > *argp3 ;
+  datamunge::graphics::RPlot *result = 0 ;
+  
+  arg1 = (datamunge::graphics::RPlot *)jarg1;
+  argp2 = (std::vector< double > *)jarg2;
+  if (!argp2) {
+    SWIG_DSetPendingException(SWIG_DNullReferenceException, "Attempt to dereference null std::vector< double >");
+    return 0;
+  }
+  arg2 = *argp2; 
+  argp3 = (std::vector< std::string > *)jarg3;
+  if (!argp3) {
+    SWIG_DSetPendingException(SWIG_DNullReferenceException, "Attempt to dereference null std::vector< std::string >");
+    return 0;
+  }
+  arg3 = *argp3; 
+  result = (datamunge::graphics::RPlot *) &(arg1)->x_ticks(SWIG_STD_MOVE(*(&arg2)),SWIG_STD_MOVE(*(&arg3)));
+  jresult = (void *)result;
+  return jresult;
+}
+
+
+SWIGEXPORT void * D_RPlot_y_tick_labels(void * jarg1, void * jarg2) {
+  void * jresult = 0 ;
+  datamunge::graphics::RPlot *arg1 = 0 ;
+  std::vector< std::string > arg2 ;
+  std::vector< std::string > *argp2 ;
+  datamunge::graphics::RPlot *result = 0 ;
+  
+  arg1 = (datamunge::graphics::RPlot *)jarg1;
+  argp2 = (std::vector< std::string > *)jarg2;
+  if (!argp2) {
+    SWIG_DSetPendingException(SWIG_DNullReferenceException, "Attempt to dereference null std::vector< std::string >");
+    return 0;
+  }
+  arg2 = *argp2; 
+  result = (datamunge::graphics::RPlot *) &(arg1)->y_tick_labels(SWIG_STD_MOVE(*(&arg2)));
+  jresult = (void *)result;
+  return jresult;
+}
+
+
+SWIGEXPORT void * D_RPlot_y_ticks(void * jarg1, void * jarg2, void * jarg3) {
+  void * jresult = 0 ;
+  datamunge::graphics::RPlot *arg1 = 0 ;
+  std::vector< double > arg2 ;
+  std::vector< std::string > arg3 ;
+  std::vector< double > *argp2 ;
+  std::vector< std::string > *argp3 ;
+  datamunge::graphics::RPlot *result = 0 ;
+  
+  arg1 = (datamunge::graphics::RPlot *)jarg1;
+  argp2 = (std::vector< double > *)jarg2;
+  if (!argp2) {
+    SWIG_DSetPendingException(SWIG_DNullReferenceException, "Attempt to dereference null std::vector< double >");
+    return 0;
+  }
+  arg2 = *argp2; 
+  argp3 = (std::vector< std::string > *)jarg3;
+  if (!argp3) {
+    SWIG_DSetPendingException(SWIG_DNullReferenceException, "Attempt to dereference null std::vector< std::string >");
+    return 0;
+  }
+  arg3 = *argp3; 
+  result = (datamunge::graphics::RPlot *) &(arg1)->y_ticks(SWIG_STD_MOVE(*(&arg2)),SWIG_STD_MOVE(*(&arg3)));
+  jresult = (void *)result;
+  return jresult;
+}
+
+
+SWIGEXPORT void * D_RPlot_margins(void * jarg1, double jarg2, double jarg3, double jarg4, double jarg5) {
+  void * jresult = 0 ;
+  datamunge::graphics::RPlot *arg1 = 0 ;
+  double arg2 ;
+  double arg3 ;
+  double arg4 ;
+  double arg5 ;
+  datamunge::graphics::RPlot *result = 0 ;
+  
+  arg1 = (datamunge::graphics::RPlot *)jarg1;
+  arg2 = (double)jarg2;
+  arg3 = (double)jarg3;
+  arg4 = (double)jarg4;
+  arg5 = (double)jarg5;
+  result = (datamunge::graphics::RPlot *) &(arg1)->margins(arg2,arg3,arg4,arg5);
+  jresult = (void *)result;
+  return jresult;
+}
+
+
+SWIGEXPORT void * D_RPlot_tick_font_size(void * jarg1, double jarg2) {
+  void * jresult = 0 ;
+  datamunge::graphics::RPlot *arg1 = 0 ;
+  double arg2 ;
+  datamunge::graphics::RPlot *result = 0 ;
+  
+  arg1 = (datamunge::graphics::RPlot *)jarg1;
+  arg2 = (double)jarg2;
+  result = (datamunge::graphics::RPlot *) &(arg1)->tick_font_size(arg2);
+  jresult = (void *)result;
+  return jresult;
+}
+
+
+SWIGEXPORT void * D_RPlot_pretty_ticks__SWIG_0(void * jarg1, unsigned int jarg2) {
+  void * jresult = 0 ;
+  datamunge::graphics::RPlot *arg1 = 0 ;
+  bool arg2 ;
+  datamunge::graphics::RPlot *result = 0 ;
+  
+  arg1 = (datamunge::graphics::RPlot *)jarg1;
+  arg2 = jarg2 ? true : false;
+  result = (datamunge::graphics::RPlot *) &(arg1)->pretty_ticks(arg2);
+  jresult = (void *)result;
+  return jresult;
+}
+
+
+SWIGEXPORT void * D_RPlot_pretty_ticks__SWIG_1(void * jarg1) {
+  void * jresult = 0 ;
+  datamunge::graphics::RPlot *arg1 = 0 ;
+  datamunge::graphics::RPlot *result = 0 ;
+  
+  arg1 = (datamunge::graphics::RPlot *)jarg1;
+  result = (datamunge::graphics::RPlot *) &(arg1)->pretty_ticks();
+  jresult = (void *)result;
+  return jresult;
+}
+
+
 SWIGEXPORT void * D_RPlot_plot__SWIG_0(void * jarg1, void * jarg2, char * jarg3, char * jarg4, void * jarg5) {
   void * jresult = 0 ;
   std::vector< double > arg1 ;
   std::vector< double > arg2 ;
   std::string arg3 ;
   std::string arg4 ;
-  SwigValueWrapper< datamunge::graphics::RGB > arg5 ;
+  datamunge::graphics::RGBA arg5 ;
   std::vector< double > *argp1 ;
   std::vector< double > *argp2 ;
-  datamunge::graphics::RGB *argp5 ;
+  datamunge::graphics::RGBA *argp5 ;
   datamunge::graphics::RPlot result;
   
   argp1 = (std::vector< double > *)jarg1;
@@ -27715,9 +29496,9 @@ SWIGEXPORT void * D_RPlot_plot__SWIG_0(void * jarg1, void * jarg2, char * jarg3,
     return 0;
   }
   (&arg4)->assign(jarg4); 
-  argp5 = (datamunge::graphics::RGB *)jarg5;
+  argp5 = (datamunge::graphics::RGBA *)jarg5;
   if (!argp5) {
-    SWIG_DSetPendingException(SWIG_DNullReferenceException, "Attempt to dereference null datamunge::graphics::RGB");
+    SWIG_DSetPendingException(SWIG_DNullReferenceException, "Attempt to dereference null datamunge::graphics::RGBA");
     return 0;
   }
   arg5 = *argp5; 
@@ -27828,9 +29609,9 @@ SWIGEXPORT void * D_RPlot_hist__SWIG_0(void * jarg1, size_t jarg2, char * jarg3,
   std::vector< double > arg1 ;
   std::size_t arg2 ;
   std::string arg3 ;
-  SwigValueWrapper< datamunge::graphics::RGB > arg4 ;
+  datamunge::graphics::RGBA arg4 ;
   std::vector< double > *argp1 ;
-  datamunge::graphics::RGB *argp4 ;
+  datamunge::graphics::RGBA *argp4 ;
   datamunge::graphics::RPlot result;
   
   argp1 = (std::vector< double > *)jarg1;
@@ -27845,9 +29626,9 @@ SWIGEXPORT void * D_RPlot_hist__SWIG_0(void * jarg1, size_t jarg2, char * jarg3,
     return 0;
   }
   (&arg3)->assign(jarg3); 
-  argp4 = (datamunge::graphics::RGB *)jarg4;
+  argp4 = (datamunge::graphics::RGBA *)jarg4;
   if (!argp4) {
-    SWIG_DSetPendingException(SWIG_DNullReferenceException, "Attempt to dereference null datamunge::graphics::RGB");
+    SWIG_DSetPendingException(SWIG_DNullReferenceException, "Attempt to dereference null datamunge::graphics::RGBA");
     return 0;
   }
   arg4 = *argp4; 
@@ -27926,10 +29707,10 @@ SWIGEXPORT void * D_RPlot_barplot__SWIG_0(void * jarg1, void * jarg2, char * jar
   std::vector< double > arg1 ;
   std::vector< std::string > arg2 ;
   std::string arg3 ;
-  SwigValueWrapper< datamunge::graphics::RGB > arg4 ;
+  datamunge::graphics::RGBA arg4 ;
   std::vector< double > *argp1 ;
   std::vector< std::string > *argp2 ;
-  datamunge::graphics::RGB *argp4 ;
+  datamunge::graphics::RGBA *argp4 ;
   datamunge::graphics::RPlot result;
   
   argp1 = (std::vector< double > *)jarg1;
@@ -27949,9 +29730,9 @@ SWIGEXPORT void * D_RPlot_barplot__SWIG_0(void * jarg1, void * jarg2, char * jar
     return 0;
   }
   (&arg3)->assign(jarg3); 
-  argp4 = (datamunge::graphics::RGB *)jarg4;
+  argp4 = (datamunge::graphics::RGBA *)jarg4;
   if (!argp4) {
-    SWIG_DSetPendingException(SWIG_DNullReferenceException, "Attempt to dereference null datamunge::graphics::RGB");
+    SWIG_DSetPendingException(SWIG_DNullReferenceException, "Attempt to dereference null datamunge::graphics::RGBA");
     return 0;
   }
   arg4 = *argp4; 
@@ -28041,10 +29822,10 @@ SWIGEXPORT void * D_RPlot_boxplot__SWIG_0(void * jarg1, void * jarg2, void * jar
   void * jresult = 0 ;
   std::vector< std::vector< double > > arg1 ;
   std::vector< std::string > arg2 ;
-  SwigValueWrapper< datamunge::graphics::RGB > arg3 ;
+  datamunge::graphics::RGBA arg3 ;
   std::vector< std::vector< double > > *argp1 ;
   std::vector< std::string > *argp2 ;
-  datamunge::graphics::RGB *argp3 ;
+  datamunge::graphics::RGBA *argp3 ;
   datamunge::graphics::RPlot result;
   
   argp1 = (std::vector< std::vector< double > > *)jarg1;
@@ -28059,9 +29840,9 @@ SWIGEXPORT void * D_RPlot_boxplot__SWIG_0(void * jarg1, void * jarg2, void * jar
     return 0;
   }
   arg2 = *argp2; 
-  argp3 = (datamunge::graphics::RGB *)jarg3;
+  argp3 = (datamunge::graphics::RGBA *)jarg3;
   if (!argp3) {
-    SWIG_DSetPendingException(SWIG_DNullReferenceException, "Attempt to dereference null datamunge::graphics::RGB");
+    SWIG_DSetPendingException(SWIG_DNullReferenceException, "Attempt to dereference null datamunge::graphics::RGBA");
     return 0;
   }
   arg3 = *argp3; 
@@ -28115,6 +29896,40 @@ SWIGEXPORT void * D_RPlot_boxplot__SWIG_2(void * jarg1) {
 }
 
 
+SWIGEXPORT void * D_RPlot_boxplot__SWIG_3(void * jarg1, void * jarg2, void * jarg3) {
+  void * jresult = 0 ;
+  std::vector< std::vector< double > > arg1 ;
+  std::vector< std::string > arg2 ;
+  SwigValueWrapper< std::vector< datamunge::graphics::RGB > > arg3 ;
+  std::vector< std::vector< double > > *argp1 ;
+  std::vector< std::string > *argp2 ;
+  std::vector< datamunge::graphics::RGBA > *argp3 ;
+  datamunge::graphics::RPlot result;
+  
+  argp1 = (std::vector< std::vector< double > > *)jarg1;
+  if (!argp1) {
+    SWIG_DSetPendingException(SWIG_DNullReferenceException, "Attempt to dereference null std::vector< std::vector< double > >");
+    return 0;
+  }
+  arg1 = *argp1; 
+  argp2 = (std::vector< std::string > *)jarg2;
+  if (!argp2) {
+    SWIG_DSetPendingException(SWIG_DNullReferenceException, "Attempt to dereference null std::vector< std::string >");
+    return 0;
+  }
+  arg2 = *argp2; 
+  argp3 = (std::vector< datamunge::graphics::RGBA > *)jarg3;
+  if (!argp3) {
+    SWIG_DSetPendingException(SWIG_DNullReferenceException, "Attempt to dereference null std::vector< datamunge::graphics::RGBA >");
+    return 0;
+  }
+  arg3 = *argp3; 
+  result = datamunge::graphics::RPlot::boxplot(SWIG_STD_MOVE(*(&arg1)),SWIG_STD_MOVE(*(&arg2)),SWIG_STD_MOVE(*(&arg3)));
+  jresult = new datamunge::graphics::RPlot(result); 
+  return jresult;
+}
+
+
 SWIGEXPORT void * D_RPlot_pie__SWIG_0(void * jarg1, void * jarg2, void * jarg3) {
   void * jresult = 0 ;
   std::vector< double > arg1 ;
@@ -28122,7 +29937,7 @@ SWIGEXPORT void * D_RPlot_pie__SWIG_0(void * jarg1, void * jarg2, void * jarg3) 
   SwigValueWrapper< std::vector< datamunge::graphics::RGB > > arg3 ;
   std::vector< double > *argp1 ;
   std::vector< std::string > *argp2 ;
-  std::vector< datamunge::graphics::RGB > *argp3 ;
+  std::vector< datamunge::graphics::RGBA > *argp3 ;
   datamunge::graphics::RPlot result;
   
   argp1 = (std::vector< double > *)jarg1;
@@ -28137,9 +29952,9 @@ SWIGEXPORT void * D_RPlot_pie__SWIG_0(void * jarg1, void * jarg2, void * jarg3) 
     return 0;
   }
   arg2 = *argp2; 
-  argp3 = (std::vector< datamunge::graphics::RGB > *)jarg3;
+  argp3 = (std::vector< datamunge::graphics::RGBA > *)jarg3;
   if (!argp3) {
-    SWIG_DSetPendingException(SWIG_DNullReferenceException, "Attempt to dereference null std::vector< datamunge::graphics::RGB >");
+    SWIG_DSetPendingException(SWIG_DNullReferenceException, "Attempt to dereference null std::vector< datamunge::graphics::RGBA >");
     return 0;
   }
   arg3 = *argp3; 
@@ -28200,8 +30015,8 @@ SWIGEXPORT void * D_RPlot_curve__SWIG_0(void * jarg1, double jarg2, double jarg3
   double arg3 ;
   std::size_t arg4 ;
   std::string arg5 ;
-  SwigValueWrapper< datamunge::graphics::RGB > arg6 ;
-  datamunge::graphics::RGB *argp6 ;
+  datamunge::graphics::RGBA arg6 ;
+  datamunge::graphics::RGBA *argp6 ;
   datamunge::graphics::RPlot result;
   
   arg1 = (datamunge::Callback *)jarg1;
@@ -28217,9 +30032,9 @@ SWIGEXPORT void * D_RPlot_curve__SWIG_0(void * jarg1, double jarg2, double jarg3
     return 0;
   }
   (&arg5)->assign(jarg5); 
-  argp6 = (datamunge::graphics::RGB *)jarg6;
+  argp6 = (datamunge::graphics::RGBA *)jarg6;
   if (!argp6) {
-    SWIG_DSetPendingException(SWIG_DNullReferenceException, "Attempt to dereference null datamunge::graphics::RGB");
+    SWIG_DSetPendingException(SWIG_DNullReferenceException, "Attempt to dereference null datamunge::graphics::RGBA");
     return 0;
   }
   arg6 = *argp6; 
@@ -28303,9 +30118,9 @@ SWIGEXPORT void * D_RPlot_qqnorm__SWIG_0(void * jarg1, char * jarg2, void * jarg
   void * jresult = 0 ;
   std::vector< double > arg1 ;
   std::string arg2 ;
-  SwigValueWrapper< datamunge::graphics::RGB > arg3 ;
+  datamunge::graphics::RGBA arg3 ;
   std::vector< double > *argp1 ;
-  datamunge::graphics::RGB *argp3 ;
+  datamunge::graphics::RGBA *argp3 ;
   datamunge::graphics::RPlot result;
   
   argp1 = (std::vector< double > *)jarg1;
@@ -28319,9 +30134,9 @@ SWIGEXPORT void * D_RPlot_qqnorm__SWIG_0(void * jarg1, char * jarg2, void * jarg
     return 0;
   }
   (&arg2)->assign(jarg2); 
-  argp3 = (datamunge::graphics::RGB *)jarg3;
+  argp3 = (datamunge::graphics::RGBA *)jarg3;
   if (!argp3) {
-    SWIG_DSetPendingException(SWIG_DNullReferenceException, "Attempt to dereference null datamunge::graphics::RGB");
+    SWIG_DSetPendingException(SWIG_DNullReferenceException, "Attempt to dereference null datamunge::graphics::RGBA");
     return 0;
   }
   arg3 = *argp3; 
@@ -28379,11 +30194,11 @@ SWIGEXPORT void * D_RPlot_points__SWIG_0(void * jarg1, void * jarg2, void * jarg
   std::vector< double > arg2 ;
   std::vector< double > arg3 ;
   std::string arg4 ;
-  SwigValueWrapper< datamunge::graphics::RGB > arg5 ;
+  datamunge::graphics::RGBA arg5 ;
   double arg6 ;
   std::vector< double > *argp2 ;
   std::vector< double > *argp3 ;
-  datamunge::graphics::RGB *argp5 ;
+  datamunge::graphics::RGBA *argp5 ;
   datamunge::graphics::RPlot *result = 0 ;
   
   arg1 = (datamunge::graphics::RPlot *)jarg1;
@@ -28404,9 +30219,9 @@ SWIGEXPORT void * D_RPlot_points__SWIG_0(void * jarg1, void * jarg2, void * jarg
     return 0;
   }
   (&arg4)->assign(jarg4); 
-  argp5 = (datamunge::graphics::RGB *)jarg5;
+  argp5 = (datamunge::graphics::RGBA *)jarg5;
   if (!argp5) {
-    SWIG_DSetPendingException(SWIG_DNullReferenceException, "Attempt to dereference null datamunge::graphics::RGB");
+    SWIG_DSetPendingException(SWIG_DNullReferenceException, "Attempt to dereference null datamunge::graphics::RGBA");
     return 0;
   }
   arg5 = *argp5; 
@@ -28423,10 +30238,10 @@ SWIGEXPORT void * D_RPlot_points__SWIG_1(void * jarg1, void * jarg2, void * jarg
   std::vector< double > arg2 ;
   std::vector< double > arg3 ;
   std::string arg4 ;
-  SwigValueWrapper< datamunge::graphics::RGB > arg5 ;
+  datamunge::graphics::RGBA arg5 ;
   std::vector< double > *argp2 ;
   std::vector< double > *argp3 ;
-  datamunge::graphics::RGB *argp5 ;
+  datamunge::graphics::RGBA *argp5 ;
   datamunge::graphics::RPlot *result = 0 ;
   
   arg1 = (datamunge::graphics::RPlot *)jarg1;
@@ -28447,9 +30262,9 @@ SWIGEXPORT void * D_RPlot_points__SWIG_1(void * jarg1, void * jarg2, void * jarg
     return 0;
   }
   (&arg4)->assign(jarg4); 
-  argp5 = (datamunge::graphics::RGB *)jarg5;
+  argp5 = (datamunge::graphics::RGBA *)jarg5;
   if (!argp5) {
-    SWIG_DSetPendingException(SWIG_DNullReferenceException, "Attempt to dereference null datamunge::graphics::RGB");
+    SWIG_DSetPendingException(SWIG_DNullReferenceException, "Attempt to dereference null datamunge::graphics::RGBA");
     return 0;
   }
   arg5 = *argp5; 
@@ -28521,17 +30336,91 @@ SWIGEXPORT void * D_RPlot_points__SWIG_3(void * jarg1, void * jarg2, void * jarg
 }
 
 
+SWIGEXPORT void * D_RPlot_points_colored__SWIG_0(void * jarg1, void * jarg2, void * jarg3, void * jarg4, double jarg5) {
+  void * jresult = 0 ;
+  datamunge::graphics::RPlot *arg1 = 0 ;
+  std::vector< double > arg2 ;
+  std::vector< double > arg3 ;
+  SwigValueWrapper< std::vector< datamunge::graphics::RGB > > arg4 ;
+  double arg5 ;
+  std::vector< double > *argp2 ;
+  std::vector< double > *argp3 ;
+  std::vector< datamunge::graphics::RGBA > *argp4 ;
+  datamunge::graphics::RPlot *result = 0 ;
+  
+  arg1 = (datamunge::graphics::RPlot *)jarg1;
+  argp2 = (std::vector< double > *)jarg2;
+  if (!argp2) {
+    SWIG_DSetPendingException(SWIG_DNullReferenceException, "Attempt to dereference null std::vector< double >");
+    return 0;
+  }
+  arg2 = *argp2; 
+  argp3 = (std::vector< double > *)jarg3;
+  if (!argp3) {
+    SWIG_DSetPendingException(SWIG_DNullReferenceException, "Attempt to dereference null std::vector< double >");
+    return 0;
+  }
+  arg3 = *argp3; 
+  argp4 = (std::vector< datamunge::graphics::RGBA > *)jarg4;
+  if (!argp4) {
+    SWIG_DSetPendingException(SWIG_DNullReferenceException, "Attempt to dereference null std::vector< datamunge::graphics::RGBA >");
+    return 0;
+  }
+  arg4 = *argp4; 
+  arg5 = (double)jarg5;
+  result = (datamunge::graphics::RPlot *) &(arg1)->points_colored(SWIG_STD_MOVE(*(&arg2)),SWIG_STD_MOVE(*(&arg3)),SWIG_STD_MOVE(*(&arg4)),arg5);
+  jresult = (void *)result;
+  return jresult;
+}
+
+
+SWIGEXPORT void * D_RPlot_points_colored__SWIG_1(void * jarg1, void * jarg2, void * jarg3, void * jarg4) {
+  void * jresult = 0 ;
+  datamunge::graphics::RPlot *arg1 = 0 ;
+  std::vector< double > arg2 ;
+  std::vector< double > arg3 ;
+  SwigValueWrapper< std::vector< datamunge::graphics::RGB > > arg4 ;
+  std::vector< double > *argp2 ;
+  std::vector< double > *argp3 ;
+  std::vector< datamunge::graphics::RGBA > *argp4 ;
+  datamunge::graphics::RPlot *result = 0 ;
+  
+  arg1 = (datamunge::graphics::RPlot *)jarg1;
+  argp2 = (std::vector< double > *)jarg2;
+  if (!argp2) {
+    SWIG_DSetPendingException(SWIG_DNullReferenceException, "Attempt to dereference null std::vector< double >");
+    return 0;
+  }
+  arg2 = *argp2; 
+  argp3 = (std::vector< double > *)jarg3;
+  if (!argp3) {
+    SWIG_DSetPendingException(SWIG_DNullReferenceException, "Attempt to dereference null std::vector< double >");
+    return 0;
+  }
+  arg3 = *argp3; 
+  argp4 = (std::vector< datamunge::graphics::RGBA > *)jarg4;
+  if (!argp4) {
+    SWIG_DSetPendingException(SWIG_DNullReferenceException, "Attempt to dereference null std::vector< datamunge::graphics::RGBA >");
+    return 0;
+  }
+  arg4 = *argp4; 
+  result = (datamunge::graphics::RPlot *) &(arg1)->points_colored(SWIG_STD_MOVE(*(&arg2)),SWIG_STD_MOVE(*(&arg3)),SWIG_STD_MOVE(*(&arg4)));
+  jresult = (void *)result;
+  return jresult;
+}
+
+
 SWIGEXPORT void * D_RPlot_line__SWIG_0(void * jarg1, void * jarg2, void * jarg3, char * jarg4, void * jarg5, double jarg6) {
   void * jresult = 0 ;
   datamunge::graphics::RPlot *arg1 = 0 ;
   std::vector< double > arg2 ;
   std::vector< double > arg3 ;
   std::string arg4 ;
-  SwigValueWrapper< datamunge::graphics::RGB > arg5 ;
+  datamunge::graphics::RGBA arg5 ;
   double arg6 ;
   std::vector< double > *argp2 ;
   std::vector< double > *argp3 ;
-  datamunge::graphics::RGB *argp5 ;
+  datamunge::graphics::RGBA *argp5 ;
   datamunge::graphics::RPlot *result = 0 ;
   
   arg1 = (datamunge::graphics::RPlot *)jarg1;
@@ -28552,9 +30441,9 @@ SWIGEXPORT void * D_RPlot_line__SWIG_0(void * jarg1, void * jarg2, void * jarg3,
     return 0;
   }
   (&arg4)->assign(jarg4); 
-  argp5 = (datamunge::graphics::RGB *)jarg5;
+  argp5 = (datamunge::graphics::RGBA *)jarg5;
   if (!argp5) {
-    SWIG_DSetPendingException(SWIG_DNullReferenceException, "Attempt to dereference null datamunge::graphics::RGB");
+    SWIG_DSetPendingException(SWIG_DNullReferenceException, "Attempt to dereference null datamunge::graphics::RGBA");
     return 0;
   }
   arg5 = *argp5; 
@@ -28571,10 +30460,10 @@ SWIGEXPORT void * D_RPlot_line__SWIG_1(void * jarg1, void * jarg2, void * jarg3,
   std::vector< double > arg2 ;
   std::vector< double > arg3 ;
   std::string arg4 ;
-  SwigValueWrapper< datamunge::graphics::RGB > arg5 ;
+  datamunge::graphics::RGBA arg5 ;
   std::vector< double > *argp2 ;
   std::vector< double > *argp3 ;
-  datamunge::graphics::RGB *argp5 ;
+  datamunge::graphics::RGBA *argp5 ;
   datamunge::graphics::RPlot *result = 0 ;
   
   arg1 = (datamunge::graphics::RPlot *)jarg1;
@@ -28595,9 +30484,9 @@ SWIGEXPORT void * D_RPlot_line__SWIG_1(void * jarg1, void * jarg2, void * jarg3,
     return 0;
   }
   (&arg4)->assign(jarg4); 
-  argp5 = (datamunge::graphics::RGB *)jarg5;
+  argp5 = (datamunge::graphics::RGBA *)jarg5;
   if (!argp5) {
-    SWIG_DSetPendingException(SWIG_DNullReferenceException, "Attempt to dereference null datamunge::graphics::RGB");
+    SWIG_DSetPendingException(SWIG_DNullReferenceException, "Attempt to dereference null datamunge::graphics::RGBA");
     return 0;
   }
   arg5 = *argp5; 
@@ -28675,11 +30564,11 @@ SWIGEXPORT void * D_RPlot_lines__SWIG_0(void * jarg1, void * jarg2, void * jarg3
   std::vector< double > arg2 ;
   std::vector< double > arg3 ;
   std::string arg4 ;
-  SwigValueWrapper< datamunge::graphics::RGB > arg5 ;
+  datamunge::graphics::RGBA arg5 ;
   double arg6 ;
   std::vector< double > *argp2 ;
   std::vector< double > *argp3 ;
-  datamunge::graphics::RGB *argp5 ;
+  datamunge::graphics::RGBA *argp5 ;
   datamunge::graphics::RPlot *result = 0 ;
   
   arg1 = (datamunge::graphics::RPlot *)jarg1;
@@ -28700,9 +30589,9 @@ SWIGEXPORT void * D_RPlot_lines__SWIG_0(void * jarg1, void * jarg2, void * jarg3
     return 0;
   }
   (&arg4)->assign(jarg4); 
-  argp5 = (datamunge::graphics::RGB *)jarg5;
+  argp5 = (datamunge::graphics::RGBA *)jarg5;
   if (!argp5) {
-    SWIG_DSetPendingException(SWIG_DNullReferenceException, "Attempt to dereference null datamunge::graphics::RGB");
+    SWIG_DSetPendingException(SWIG_DNullReferenceException, "Attempt to dereference null datamunge::graphics::RGBA");
     return 0;
   }
   arg5 = *argp5; 
@@ -28719,10 +30608,10 @@ SWIGEXPORT void * D_RPlot_lines__SWIG_1(void * jarg1, void * jarg2, void * jarg3
   std::vector< double > arg2 ;
   std::vector< double > arg3 ;
   std::string arg4 ;
-  SwigValueWrapper< datamunge::graphics::RGB > arg5 ;
+  datamunge::graphics::RGBA arg5 ;
   std::vector< double > *argp2 ;
   std::vector< double > *argp3 ;
-  datamunge::graphics::RGB *argp5 ;
+  datamunge::graphics::RGBA *argp5 ;
   datamunge::graphics::RPlot *result = 0 ;
   
   arg1 = (datamunge::graphics::RPlot *)jarg1;
@@ -28743,9 +30632,9 @@ SWIGEXPORT void * D_RPlot_lines__SWIG_1(void * jarg1, void * jarg2, void * jarg3
     return 0;
   }
   (&arg4)->assign(jarg4); 
-  argp5 = (datamunge::graphics::RGB *)jarg5;
+  argp5 = (datamunge::graphics::RGBA *)jarg5;
   if (!argp5) {
-    SWIG_DSetPendingException(SWIG_DNullReferenceException, "Attempt to dereference null datamunge::graphics::RGB");
+    SWIG_DSetPendingException(SWIG_DNullReferenceException, "Attempt to dereference null datamunge::graphics::RGBA");
     return 0;
   }
   arg5 = *argp5; 
@@ -28822,11 +30711,11 @@ SWIGEXPORT void * D_RPlot_points__SWIG_4(void * jarg1, void * jarg2, void * jarg
   datamunge::graphics::RPlot *arg1 = 0 ;
   std::vector< double > arg2 ;
   std::vector< double > arg3 ;
-  SwigValueWrapper< datamunge::graphics::RGB > arg4 ;
+  datamunge::graphics::RGBA arg4 ;
   double arg5 ;
   std::vector< double > *argp2 ;
   std::vector< double > *argp3 ;
-  datamunge::graphics::RGB *argp4 ;
+  datamunge::graphics::RGBA *argp4 ;
   datamunge::graphics::RPlot *result = 0 ;
   
   arg1 = (datamunge::graphics::RPlot *)jarg1;
@@ -28842,9 +30731,9 @@ SWIGEXPORT void * D_RPlot_points__SWIG_4(void * jarg1, void * jarg2, void * jarg
     return 0;
   }
   arg3 = *argp3; 
-  argp4 = (datamunge::graphics::RGB *)jarg4;
+  argp4 = (datamunge::graphics::RGBA *)jarg4;
   if (!argp4) {
-    SWIG_DSetPendingException(SWIG_DNullReferenceException, "Attempt to dereference null datamunge::graphics::RGB");
+    SWIG_DSetPendingException(SWIG_DNullReferenceException, "Attempt to dereference null datamunge::graphics::RGBA");
     return 0;
   }
   arg4 = *argp4; 
@@ -28860,10 +30749,10 @@ SWIGEXPORT void * D_RPlot_points__SWIG_5(void * jarg1, void * jarg2, void * jarg
   datamunge::graphics::RPlot *arg1 = 0 ;
   std::vector< double > arg2 ;
   std::vector< double > arg3 ;
-  SwigValueWrapper< datamunge::graphics::RGB > arg4 ;
+  datamunge::graphics::RGBA arg4 ;
   std::vector< double > *argp2 ;
   std::vector< double > *argp3 ;
-  datamunge::graphics::RGB *argp4 ;
+  datamunge::graphics::RGBA *argp4 ;
   datamunge::graphics::RPlot *result = 0 ;
   
   arg1 = (datamunge::graphics::RPlot *)jarg1;
@@ -28879,9 +30768,9 @@ SWIGEXPORT void * D_RPlot_points__SWIG_5(void * jarg1, void * jarg2, void * jarg
     return 0;
   }
   arg3 = *argp3; 
-  argp4 = (datamunge::graphics::RGB *)jarg4;
+  argp4 = (datamunge::graphics::RGBA *)jarg4;
   if (!argp4) {
-    SWIG_DSetPendingException(SWIG_DNullReferenceException, "Attempt to dereference null datamunge::graphics::RGB");
+    SWIG_DSetPendingException(SWIG_DNullReferenceException, "Attempt to dereference null datamunge::graphics::RGBA");
     return 0;
   }
   arg4 = *argp4; 
@@ -28896,11 +30785,11 @@ SWIGEXPORT void * D_RPlot_lines__SWIG_4(void * jarg1, void * jarg2, void * jarg3
   datamunge::graphics::RPlot *arg1 = 0 ;
   std::vector< double > arg2 ;
   std::vector< double > arg3 ;
-  SwigValueWrapper< datamunge::graphics::RGB > arg4 ;
+  datamunge::graphics::RGBA arg4 ;
   double arg5 ;
   std::vector< double > *argp2 ;
   std::vector< double > *argp3 ;
-  datamunge::graphics::RGB *argp4 ;
+  datamunge::graphics::RGBA *argp4 ;
   datamunge::graphics::RPlot *result = 0 ;
   
   arg1 = (datamunge::graphics::RPlot *)jarg1;
@@ -28916,9 +30805,9 @@ SWIGEXPORT void * D_RPlot_lines__SWIG_4(void * jarg1, void * jarg2, void * jarg3
     return 0;
   }
   arg3 = *argp3; 
-  argp4 = (datamunge::graphics::RGB *)jarg4;
+  argp4 = (datamunge::graphics::RGBA *)jarg4;
   if (!argp4) {
-    SWIG_DSetPendingException(SWIG_DNullReferenceException, "Attempt to dereference null datamunge::graphics::RGB");
+    SWIG_DSetPendingException(SWIG_DNullReferenceException, "Attempt to dereference null datamunge::graphics::RGBA");
     return 0;
   }
   arg4 = *argp4; 
@@ -28934,10 +30823,10 @@ SWIGEXPORT void * D_RPlot_lines__SWIG_5(void * jarg1, void * jarg2, void * jarg3
   datamunge::graphics::RPlot *arg1 = 0 ;
   std::vector< double > arg2 ;
   std::vector< double > arg3 ;
-  SwigValueWrapper< datamunge::graphics::RGB > arg4 ;
+  datamunge::graphics::RGBA arg4 ;
   std::vector< double > *argp2 ;
   std::vector< double > *argp3 ;
-  datamunge::graphics::RGB *argp4 ;
+  datamunge::graphics::RGBA *argp4 ;
   datamunge::graphics::RPlot *result = 0 ;
   
   arg1 = (datamunge::graphics::RPlot *)jarg1;
@@ -28953,9 +30842,9 @@ SWIGEXPORT void * D_RPlot_lines__SWIG_5(void * jarg1, void * jarg2, void * jarg3
     return 0;
   }
   arg3 = *argp3; 
-  argp4 = (datamunge::graphics::RGB *)jarg4;
+  argp4 = (datamunge::graphics::RGBA *)jarg4;
   if (!argp4) {
-    SWIG_DSetPendingException(SWIG_DNullReferenceException, "Attempt to dereference null datamunge::graphics::RGB");
+    SWIG_DSetPendingException(SWIG_DNullReferenceException, "Attempt to dereference null datamunge::graphics::RGBA");
     return 0;
   }
   arg4 = *argp4; 
@@ -28971,11 +30860,11 @@ SWIGEXPORT void * D_RPlot_bars__SWIG_0(void * jarg1, void * jarg2, void * jarg3,
   std::vector< double > arg2 ;
   std::vector< double > arg3 ;
   std::string arg4 ;
-  SwigValueWrapper< datamunge::graphics::RGB > arg5 ;
+  datamunge::graphics::RGBA arg5 ;
   double arg6 ;
   std::vector< double > *argp2 ;
   std::vector< double > *argp3 ;
-  datamunge::graphics::RGB *argp5 ;
+  datamunge::graphics::RGBA *argp5 ;
   datamunge::graphics::RPlot *result = 0 ;
   
   arg1 = (datamunge::graphics::RPlot *)jarg1;
@@ -28996,9 +30885,9 @@ SWIGEXPORT void * D_RPlot_bars__SWIG_0(void * jarg1, void * jarg2, void * jarg3,
     return 0;
   }
   (&arg4)->assign(jarg4); 
-  argp5 = (datamunge::graphics::RGB *)jarg5;
+  argp5 = (datamunge::graphics::RGBA *)jarg5;
   if (!argp5) {
-    SWIG_DSetPendingException(SWIG_DNullReferenceException, "Attempt to dereference null datamunge::graphics::RGB");
+    SWIG_DSetPendingException(SWIG_DNullReferenceException, "Attempt to dereference null datamunge::graphics::RGBA");
     return 0;
   }
   arg5 = *argp5; 
@@ -29015,10 +30904,10 @@ SWIGEXPORT void * D_RPlot_bars__SWIG_1(void * jarg1, void * jarg2, void * jarg3,
   std::vector< double > arg2 ;
   std::vector< double > arg3 ;
   std::string arg4 ;
-  SwigValueWrapper< datamunge::graphics::RGB > arg5 ;
+  datamunge::graphics::RGBA arg5 ;
   std::vector< double > *argp2 ;
   std::vector< double > *argp3 ;
-  datamunge::graphics::RGB *argp5 ;
+  datamunge::graphics::RGBA *argp5 ;
   datamunge::graphics::RPlot *result = 0 ;
   
   arg1 = (datamunge::graphics::RPlot *)jarg1;
@@ -29039,9 +30928,9 @@ SWIGEXPORT void * D_RPlot_bars__SWIG_1(void * jarg1, void * jarg2, void * jarg3,
     return 0;
   }
   (&arg4)->assign(jarg4); 
-  argp5 = (datamunge::graphics::RGB *)jarg5;
+  argp5 = (datamunge::graphics::RGBA *)jarg5;
   if (!argp5) {
-    SWIG_DSetPendingException(SWIG_DNullReferenceException, "Attempt to dereference null datamunge::graphics::RGB");
+    SWIG_DSetPendingException(SWIG_DNullReferenceException, "Attempt to dereference null datamunge::graphics::RGBA");
     return 0;
   }
   arg5 = *argp5; 
@@ -29123,10 +31012,10 @@ SWIGEXPORT void * D_RPlot_box__SWIG_0(void * jarg1, double jarg2, double jarg3, 
   double arg6 ;
   double arg7 ;
   std::vector< double > arg8 ;
-  SwigValueWrapper< datamunge::graphics::RGB > arg9 ;
+  datamunge::graphics::RGBA arg9 ;
   double arg10 ;
   std::vector< double > *argp8 ;
-  datamunge::graphics::RGB *argp9 ;
+  datamunge::graphics::RGBA *argp9 ;
   datamunge::graphics::RPlot *result = 0 ;
   
   arg1 = (datamunge::graphics::RPlot *)jarg1;
@@ -29142,9 +31031,9 @@ SWIGEXPORT void * D_RPlot_box__SWIG_0(void * jarg1, double jarg2, double jarg3, 
     return 0;
   }
   arg8 = *argp8; 
-  argp9 = (datamunge::graphics::RGB *)jarg9;
+  argp9 = (datamunge::graphics::RGBA *)jarg9;
   if (!argp9) {
-    SWIG_DSetPendingException(SWIG_DNullReferenceException, "Attempt to dereference null datamunge::graphics::RGB");
+    SWIG_DSetPendingException(SWIG_DNullReferenceException, "Attempt to dereference null datamunge::graphics::RGBA");
     return 0;
   }
   arg9 = *argp9; 
@@ -29165,9 +31054,9 @@ SWIGEXPORT void * D_RPlot_box__SWIG_1(void * jarg1, double jarg2, double jarg3, 
   double arg6 ;
   double arg7 ;
   std::vector< double > arg8 ;
-  SwigValueWrapper< datamunge::graphics::RGB > arg9 ;
+  datamunge::graphics::RGBA arg9 ;
   std::vector< double > *argp8 ;
-  datamunge::graphics::RGB *argp9 ;
+  datamunge::graphics::RGBA *argp9 ;
   datamunge::graphics::RPlot *result = 0 ;
   
   arg1 = (datamunge::graphics::RPlot *)jarg1;
@@ -29183,9 +31072,9 @@ SWIGEXPORT void * D_RPlot_box__SWIG_1(void * jarg1, double jarg2, double jarg3, 
     return 0;
   }
   arg8 = *argp8; 
-  argp9 = (datamunge::graphics::RGB *)jarg9;
+  argp9 = (datamunge::graphics::RGBA *)jarg9;
   if (!argp9) {
-    SWIG_DSetPendingException(SWIG_DNullReferenceException, "Attempt to dereference null datamunge::graphics::RGB");
+    SWIG_DSetPendingException(SWIG_DNullReferenceException, "Attempt to dereference null datamunge::graphics::RGBA");
     return 0;
   }
   arg9 = *argp9; 
@@ -29256,17 +31145,17 @@ SWIGEXPORT void * D_RPlot_abline__SWIG_0(void * jarg1, double jarg2, double jarg
   datamunge::graphics::RPlot *arg1 = 0 ;
   double arg2 ;
   double arg3 ;
-  SwigValueWrapper< datamunge::graphics::RGB > arg4 ;
+  datamunge::graphics::RGBA arg4 ;
   double arg5 ;
-  datamunge::graphics::RGB *argp4 ;
+  datamunge::graphics::RGBA *argp4 ;
   datamunge::graphics::RPlot *result = 0 ;
   
   arg1 = (datamunge::graphics::RPlot *)jarg1;
   arg2 = (double)jarg2;
   arg3 = (double)jarg3;
-  argp4 = (datamunge::graphics::RGB *)jarg4;
+  argp4 = (datamunge::graphics::RGBA *)jarg4;
   if (!argp4) {
-    SWIG_DSetPendingException(SWIG_DNullReferenceException, "Attempt to dereference null datamunge::graphics::RGB");
+    SWIG_DSetPendingException(SWIG_DNullReferenceException, "Attempt to dereference null datamunge::graphics::RGBA");
     return 0;
   }
   arg4 = *argp4; 
@@ -29282,16 +31171,16 @@ SWIGEXPORT void * D_RPlot_abline__SWIG_1(void * jarg1, double jarg2, double jarg
   datamunge::graphics::RPlot *arg1 = 0 ;
   double arg2 ;
   double arg3 ;
-  SwigValueWrapper< datamunge::graphics::RGB > arg4 ;
-  datamunge::graphics::RGB *argp4 ;
+  datamunge::graphics::RGBA arg4 ;
+  datamunge::graphics::RGBA *argp4 ;
   datamunge::graphics::RPlot *result = 0 ;
   
   arg1 = (datamunge::graphics::RPlot *)jarg1;
   arg2 = (double)jarg2;
   arg3 = (double)jarg3;
-  argp4 = (datamunge::graphics::RGB *)jarg4;
+  argp4 = (datamunge::graphics::RGBA *)jarg4;
   if (!argp4) {
-    SWIG_DSetPendingException(SWIG_DNullReferenceException, "Attempt to dereference null datamunge::graphics::RGB");
+    SWIG_DSetPendingException(SWIG_DNullReferenceException, "Attempt to dereference null datamunge::graphics::RGBA");
     return 0;
   }
   arg4 = *argp4; 
@@ -29321,16 +31210,16 @@ SWIGEXPORT void * D_RPlot_abline_h__SWIG_0(void * jarg1, double jarg2, void * ja
   void * jresult = 0 ;
   datamunge::graphics::RPlot *arg1 = 0 ;
   double arg2 ;
-  SwigValueWrapper< datamunge::graphics::RGB > arg3 ;
+  datamunge::graphics::RGBA arg3 ;
   double arg4 ;
-  datamunge::graphics::RGB *argp3 ;
+  datamunge::graphics::RGBA *argp3 ;
   datamunge::graphics::RPlot *result = 0 ;
   
   arg1 = (datamunge::graphics::RPlot *)jarg1;
   arg2 = (double)jarg2;
-  argp3 = (datamunge::graphics::RGB *)jarg3;
+  argp3 = (datamunge::graphics::RGBA *)jarg3;
   if (!argp3) {
-    SWIG_DSetPendingException(SWIG_DNullReferenceException, "Attempt to dereference null datamunge::graphics::RGB");
+    SWIG_DSetPendingException(SWIG_DNullReferenceException, "Attempt to dereference null datamunge::graphics::RGBA");
     return 0;
   }
   arg3 = *argp3; 
@@ -29345,15 +31234,15 @@ SWIGEXPORT void * D_RPlot_abline_h__SWIG_1(void * jarg1, double jarg2, void * ja
   void * jresult = 0 ;
   datamunge::graphics::RPlot *arg1 = 0 ;
   double arg2 ;
-  SwigValueWrapper< datamunge::graphics::RGB > arg3 ;
-  datamunge::graphics::RGB *argp3 ;
+  datamunge::graphics::RGBA arg3 ;
+  datamunge::graphics::RGBA *argp3 ;
   datamunge::graphics::RPlot *result = 0 ;
   
   arg1 = (datamunge::graphics::RPlot *)jarg1;
   arg2 = (double)jarg2;
-  argp3 = (datamunge::graphics::RGB *)jarg3;
+  argp3 = (datamunge::graphics::RGBA *)jarg3;
   if (!argp3) {
-    SWIG_DSetPendingException(SWIG_DNullReferenceException, "Attempt to dereference null datamunge::graphics::RGB");
+    SWIG_DSetPendingException(SWIG_DNullReferenceException, "Attempt to dereference null datamunge::graphics::RGBA");
     return 0;
   }
   arg3 = *argp3; 
@@ -29381,16 +31270,16 @@ SWIGEXPORT void * D_RPlot_abline_v__SWIG_0(void * jarg1, double jarg2, void * ja
   void * jresult = 0 ;
   datamunge::graphics::RPlot *arg1 = 0 ;
   double arg2 ;
-  SwigValueWrapper< datamunge::graphics::RGB > arg3 ;
+  datamunge::graphics::RGBA arg3 ;
   double arg4 ;
-  datamunge::graphics::RGB *argp3 ;
+  datamunge::graphics::RGBA *argp3 ;
   datamunge::graphics::RPlot *result = 0 ;
   
   arg1 = (datamunge::graphics::RPlot *)jarg1;
   arg2 = (double)jarg2;
-  argp3 = (datamunge::graphics::RGB *)jarg3;
+  argp3 = (datamunge::graphics::RGBA *)jarg3;
   if (!argp3) {
-    SWIG_DSetPendingException(SWIG_DNullReferenceException, "Attempt to dereference null datamunge::graphics::RGB");
+    SWIG_DSetPendingException(SWIG_DNullReferenceException, "Attempt to dereference null datamunge::graphics::RGBA");
     return 0;
   }
   arg3 = *argp3; 
@@ -29405,15 +31294,15 @@ SWIGEXPORT void * D_RPlot_abline_v__SWIG_1(void * jarg1, double jarg2, void * ja
   void * jresult = 0 ;
   datamunge::graphics::RPlot *arg1 = 0 ;
   double arg2 ;
-  SwigValueWrapper< datamunge::graphics::RGB > arg3 ;
-  datamunge::graphics::RGB *argp3 ;
+  datamunge::graphics::RGBA arg3 ;
+  datamunge::graphics::RGBA *argp3 ;
   datamunge::graphics::RPlot *result = 0 ;
   
   arg1 = (datamunge::graphics::RPlot *)jarg1;
   arg2 = (double)jarg2;
-  argp3 = (datamunge::graphics::RGB *)jarg3;
+  argp3 = (datamunge::graphics::RGBA *)jarg3;
   if (!argp3) {
-    SWIG_DSetPendingException(SWIG_DNullReferenceException, "Attempt to dereference null datamunge::graphics::RGB");
+    SWIG_DSetPendingException(SWIG_DNullReferenceException, "Attempt to dereference null datamunge::graphics::RGBA");
     return 0;
   }
   arg3 = *argp3; 
@@ -29441,10 +31330,10 @@ SWIGEXPORT void * D_RPlot_qqline__SWIG_0(void * jarg1, void * jarg2, void * jarg
   void * jresult = 0 ;
   datamunge::graphics::RPlot *arg1 = 0 ;
   std::vector< double > arg2 ;
-  SwigValueWrapper< datamunge::graphics::RGB > arg3 ;
+  datamunge::graphics::RGBA arg3 ;
   double arg4 ;
   std::vector< double > *argp2 ;
-  datamunge::graphics::RGB *argp3 ;
+  datamunge::graphics::RGBA *argp3 ;
   datamunge::graphics::RPlot *result = 0 ;
   
   arg1 = (datamunge::graphics::RPlot *)jarg1;
@@ -29454,9 +31343,9 @@ SWIGEXPORT void * D_RPlot_qqline__SWIG_0(void * jarg1, void * jarg2, void * jarg
     return 0;
   }
   arg2 = *argp2; 
-  argp3 = (datamunge::graphics::RGB *)jarg3;
+  argp3 = (datamunge::graphics::RGBA *)jarg3;
   if (!argp3) {
-    SWIG_DSetPendingException(SWIG_DNullReferenceException, "Attempt to dereference null datamunge::graphics::RGB");
+    SWIG_DSetPendingException(SWIG_DNullReferenceException, "Attempt to dereference null datamunge::graphics::RGBA");
     return 0;
   }
   arg3 = *argp3; 
@@ -29471,9 +31360,9 @@ SWIGEXPORT void * D_RPlot_qqline__SWIG_1(void * jarg1, void * jarg2, void * jarg
   void * jresult = 0 ;
   datamunge::graphics::RPlot *arg1 = 0 ;
   std::vector< double > arg2 ;
-  SwigValueWrapper< datamunge::graphics::RGB > arg3 ;
+  datamunge::graphics::RGBA arg3 ;
   std::vector< double > *argp2 ;
-  datamunge::graphics::RGB *argp3 ;
+  datamunge::graphics::RGBA *argp3 ;
   datamunge::graphics::RPlot *result = 0 ;
   
   arg1 = (datamunge::graphics::RPlot *)jarg1;
@@ -29483,9 +31372,9 @@ SWIGEXPORT void * D_RPlot_qqline__SWIG_1(void * jarg1, void * jarg2, void * jarg
     return 0;
   }
   arg2 = *argp2; 
-  argp3 = (datamunge::graphics::RGB *)jarg3;
+  argp3 = (datamunge::graphics::RGBA *)jarg3;
   if (!argp3) {
-    SWIG_DSetPendingException(SWIG_DNullReferenceException, "Attempt to dereference null datamunge::graphics::RGB");
+    SWIG_DSetPendingException(SWIG_DNullReferenceException, "Attempt to dereference null datamunge::graphics::RGBA");
     return 0;
   }
   arg3 = *argp3; 
@@ -29521,7 +31410,7 @@ SWIGEXPORT void * D_RPlot_legend(void * jarg1, void * jarg2, void * jarg3) {
   std::vector< std::string > arg2 ;
   SwigValueWrapper< std::vector< datamunge::graphics::RGB > > arg3 ;
   std::vector< std::string > *argp2 ;
-  std::vector< datamunge::graphics::RGB > *argp3 ;
+  std::vector< datamunge::graphics::RGBA > *argp3 ;
   datamunge::graphics::RPlot *result = 0 ;
   
   arg1 = (datamunge::graphics::RPlot *)jarg1;
@@ -29531,9 +31420,9 @@ SWIGEXPORT void * D_RPlot_legend(void * jarg1, void * jarg2, void * jarg3) {
     return 0;
   }
   arg2 = *argp2; 
-  argp3 = (std::vector< datamunge::graphics::RGB > *)jarg3;
+  argp3 = (std::vector< datamunge::graphics::RGBA > *)jarg3;
   if (!argp3) {
-    SWIG_DSetPendingException(SWIG_DNullReferenceException, "Attempt to dereference null std::vector< datamunge::graphics::RGB >");
+    SWIG_DSetPendingException(SWIG_DNullReferenceException, "Attempt to dereference null std::vector< datamunge::graphics::RGBA >");
     return 0;
   }
   arg3 = *argp3; 
@@ -29549,9 +31438,9 @@ SWIGEXPORT void * D_RPlot_text__SWIG_0(void * jarg1, double jarg2, double jarg3,
   double arg2 ;
   double arg3 ;
   std::string arg4 ;
-  SwigValueWrapper< datamunge::graphics::RGB > arg5 ;
+  datamunge::graphics::RGBA arg5 ;
   double arg6 ;
-  datamunge::graphics::RGB *argp5 ;
+  datamunge::graphics::RGBA *argp5 ;
   datamunge::graphics::RPlot *result = 0 ;
   
   arg1 = (datamunge::graphics::RPlot *)jarg1;
@@ -29562,9 +31451,9 @@ SWIGEXPORT void * D_RPlot_text__SWIG_0(void * jarg1, double jarg2, double jarg3,
     return 0;
   }
   (&arg4)->assign(jarg4); 
-  argp5 = (datamunge::graphics::RGB *)jarg5;
+  argp5 = (datamunge::graphics::RGBA *)jarg5;
   if (!argp5) {
-    SWIG_DSetPendingException(SWIG_DNullReferenceException, "Attempt to dereference null datamunge::graphics::RGB");
+    SWIG_DSetPendingException(SWIG_DNullReferenceException, "Attempt to dereference null datamunge::graphics::RGBA");
     return 0;
   }
   arg5 = *argp5; 
@@ -29581,8 +31470,8 @@ SWIGEXPORT void * D_RPlot_text__SWIG_1(void * jarg1, double jarg2, double jarg3,
   double arg2 ;
   double arg3 ;
   std::string arg4 ;
-  SwigValueWrapper< datamunge::graphics::RGB > arg5 ;
-  datamunge::graphics::RGB *argp5 ;
+  datamunge::graphics::RGBA arg5 ;
+  datamunge::graphics::RGBA *argp5 ;
   datamunge::graphics::RPlot *result = 0 ;
   
   arg1 = (datamunge::graphics::RPlot *)jarg1;
@@ -29593,9 +31482,9 @@ SWIGEXPORT void * D_RPlot_text__SWIG_1(void * jarg1, double jarg2, double jarg3,
     return 0;
   }
   (&arg4)->assign(jarg4); 
-  argp5 = (datamunge::graphics::RGB *)jarg5;
+  argp5 = (datamunge::graphics::RGBA *)jarg5;
   if (!argp5) {
-    SWIG_DSetPendingException(SWIG_DNullReferenceException, "Attempt to dereference null datamunge::graphics::RGB");
+    SWIG_DSetPendingException(SWIG_DNullReferenceException, "Attempt to dereference null datamunge::graphics::RGBA");
     return 0;
   }
   arg5 = *argp5; 
@@ -29632,11 +31521,11 @@ SWIGEXPORT void * D_RPlot_polygon__SWIG_0(void * jarg1, void * jarg2, void * jar
   datamunge::graphics::RPlot *arg1 = 0 ;
   std::vector< double > arg2 ;
   std::vector< double > arg3 ;
-  SwigValueWrapper< datamunge::graphics::RGB > arg4 ;
+  datamunge::graphics::RGBA arg4 ;
   bool arg5 ;
   std::vector< double > *argp2 ;
   std::vector< double > *argp3 ;
-  datamunge::graphics::RGB *argp4 ;
+  datamunge::graphics::RGBA *argp4 ;
   datamunge::graphics::RPlot *result = 0 ;
   
   arg1 = (datamunge::graphics::RPlot *)jarg1;
@@ -29652,9 +31541,9 @@ SWIGEXPORT void * D_RPlot_polygon__SWIG_0(void * jarg1, void * jarg2, void * jar
     return 0;
   }
   arg3 = *argp3; 
-  argp4 = (datamunge::graphics::RGB *)jarg4;
+  argp4 = (datamunge::graphics::RGBA *)jarg4;
   if (!argp4) {
-    SWIG_DSetPendingException(SWIG_DNullReferenceException, "Attempt to dereference null datamunge::graphics::RGB");
+    SWIG_DSetPendingException(SWIG_DNullReferenceException, "Attempt to dereference null datamunge::graphics::RGBA");
     return 0;
   }
   arg4 = *argp4; 
@@ -29670,10 +31559,10 @@ SWIGEXPORT void * D_RPlot_polygon__SWIG_1(void * jarg1, void * jarg2, void * jar
   datamunge::graphics::RPlot *arg1 = 0 ;
   std::vector< double > arg2 ;
   std::vector< double > arg3 ;
-  SwigValueWrapper< datamunge::graphics::RGB > arg4 ;
+  datamunge::graphics::RGBA arg4 ;
   std::vector< double > *argp2 ;
   std::vector< double > *argp3 ;
-  datamunge::graphics::RGB *argp4 ;
+  datamunge::graphics::RGBA *argp4 ;
   datamunge::graphics::RPlot *result = 0 ;
   
   arg1 = (datamunge::graphics::RPlot *)jarg1;
@@ -29689,9 +31578,9 @@ SWIGEXPORT void * D_RPlot_polygon__SWIG_1(void * jarg1, void * jarg2, void * jar
     return 0;
   }
   arg3 = *argp3; 
-  argp4 = (datamunge::graphics::RGB *)jarg4;
+  argp4 = (datamunge::graphics::RGBA *)jarg4;
   if (!argp4) {
-    SWIG_DSetPendingException(SWIG_DNullReferenceException, "Attempt to dereference null datamunge::graphics::RGB");
+    SWIG_DSetPendingException(SWIG_DNullReferenceException, "Attempt to dereference null datamunge::graphics::RGBA");
     return 0;
   }
   arg4 = *argp4; 
@@ -29729,6 +31618,156 @@ SWIGEXPORT void * D_RPlot_polygon__SWIG_2(void * jarg1, void * jarg2, void * jar
 }
 
 
+SWIGEXPORT void * D_RPlot_image__SWIG_0(void * jarg1, void * jarg2, void * jarg3, void * jarg4, void * jarg5, double jarg6, double jarg7) {
+  void * jresult = 0 ;
+  datamunge::graphics::RPlot *arg1 = 0 ;
+  std::vector< double > *arg2 = 0 ;
+  std::vector< double > *arg3 = 0 ;
+  std::vector< std::vector< double > > *arg4 = 0 ;
+  SwigValueWrapper< std::vector< datamunge::graphics::RGB > > arg5 ;
+  double arg6 ;
+  double arg7 ;
+  std::vector< datamunge::graphics::RGBA > *argp5 ;
+  datamunge::graphics::RPlot *result = 0 ;
+  
+  arg1 = (datamunge::graphics::RPlot *)jarg1;
+  arg2 = (std::vector< double > *)jarg2;
+  if (!arg2) {
+    SWIG_DSetPendingException(SWIG_DNullReferenceException, "std::vector< double > const & is null");
+    return 0;
+  } 
+  arg3 = (std::vector< double > *)jarg3;
+  if (!arg3) {
+    SWIG_DSetPendingException(SWIG_DNullReferenceException, "std::vector< double > const & is null");
+    return 0;
+  } 
+  arg4 = (std::vector< std::vector< double > > *)jarg4;
+  if (!arg4) {
+    SWIG_DSetPendingException(SWIG_DNullReferenceException, "std::vector< std::vector< double > > const & is null");
+    return 0;
+  } 
+  argp5 = (std::vector< datamunge::graphics::RGBA > *)jarg5;
+  if (!argp5) {
+    SWIG_DSetPendingException(SWIG_DNullReferenceException, "Attempt to dereference null std::vector< datamunge::graphics::RGBA >");
+    return 0;
+  }
+  arg5 = *argp5; 
+  arg6 = (double)jarg6;
+  arg7 = (double)jarg7;
+  result = (datamunge::graphics::RPlot *) &(arg1)->image((std::vector< double > const &)*arg2,(std::vector< double > const &)*arg3,(std::vector< std::vector< double > > const &)*arg4,SWIG_STD_MOVE(*(&arg5)),arg6,arg7);
+  jresult = (void *)result;
+  return jresult;
+}
+
+
+SWIGEXPORT void * D_RPlot_image__SWIG_1(void * jarg1, void * jarg2, void * jarg3, void * jarg4, void * jarg5, double jarg6) {
+  void * jresult = 0 ;
+  datamunge::graphics::RPlot *arg1 = 0 ;
+  std::vector< double > *arg2 = 0 ;
+  std::vector< double > *arg3 = 0 ;
+  std::vector< std::vector< double > > *arg4 = 0 ;
+  SwigValueWrapper< std::vector< datamunge::graphics::RGB > > arg5 ;
+  double arg6 ;
+  std::vector< datamunge::graphics::RGBA > *argp5 ;
+  datamunge::graphics::RPlot *result = 0 ;
+  
+  arg1 = (datamunge::graphics::RPlot *)jarg1;
+  arg2 = (std::vector< double > *)jarg2;
+  if (!arg2) {
+    SWIG_DSetPendingException(SWIG_DNullReferenceException, "std::vector< double > const & is null");
+    return 0;
+  } 
+  arg3 = (std::vector< double > *)jarg3;
+  if (!arg3) {
+    SWIG_DSetPendingException(SWIG_DNullReferenceException, "std::vector< double > const & is null");
+    return 0;
+  } 
+  arg4 = (std::vector< std::vector< double > > *)jarg4;
+  if (!arg4) {
+    SWIG_DSetPendingException(SWIG_DNullReferenceException, "std::vector< std::vector< double > > const & is null");
+    return 0;
+  } 
+  argp5 = (std::vector< datamunge::graphics::RGBA > *)jarg5;
+  if (!argp5) {
+    SWIG_DSetPendingException(SWIG_DNullReferenceException, "Attempt to dereference null std::vector< datamunge::graphics::RGBA >");
+    return 0;
+  }
+  arg5 = *argp5; 
+  arg6 = (double)jarg6;
+  result = (datamunge::graphics::RPlot *) &(arg1)->image((std::vector< double > const &)*arg2,(std::vector< double > const &)*arg3,(std::vector< std::vector< double > > const &)*arg4,SWIG_STD_MOVE(*(&arg5)),arg6);
+  jresult = (void *)result;
+  return jresult;
+}
+
+
+SWIGEXPORT void * D_RPlot_image__SWIG_2(void * jarg1, void * jarg2, void * jarg3, void * jarg4, void * jarg5) {
+  void * jresult = 0 ;
+  datamunge::graphics::RPlot *arg1 = 0 ;
+  std::vector< double > *arg2 = 0 ;
+  std::vector< double > *arg3 = 0 ;
+  std::vector< std::vector< double > > *arg4 = 0 ;
+  SwigValueWrapper< std::vector< datamunge::graphics::RGB > > arg5 ;
+  std::vector< datamunge::graphics::RGBA > *argp5 ;
+  datamunge::graphics::RPlot *result = 0 ;
+  
+  arg1 = (datamunge::graphics::RPlot *)jarg1;
+  arg2 = (std::vector< double > *)jarg2;
+  if (!arg2) {
+    SWIG_DSetPendingException(SWIG_DNullReferenceException, "std::vector< double > const & is null");
+    return 0;
+  } 
+  arg3 = (std::vector< double > *)jarg3;
+  if (!arg3) {
+    SWIG_DSetPendingException(SWIG_DNullReferenceException, "std::vector< double > const & is null");
+    return 0;
+  } 
+  arg4 = (std::vector< std::vector< double > > *)jarg4;
+  if (!arg4) {
+    SWIG_DSetPendingException(SWIG_DNullReferenceException, "std::vector< std::vector< double > > const & is null");
+    return 0;
+  } 
+  argp5 = (std::vector< datamunge::graphics::RGBA > *)jarg5;
+  if (!argp5) {
+    SWIG_DSetPendingException(SWIG_DNullReferenceException, "Attempt to dereference null std::vector< datamunge::graphics::RGBA >");
+    return 0;
+  }
+  arg5 = *argp5; 
+  result = (datamunge::graphics::RPlot *) &(arg1)->image((std::vector< double > const &)*arg2,(std::vector< double > const &)*arg3,(std::vector< std::vector< double > > const &)*arg4,SWIG_STD_MOVE(*(&arg5)));
+  jresult = (void *)result;
+  return jresult;
+}
+
+
+SWIGEXPORT void * D_RPlot_image__SWIG_3(void * jarg1, void * jarg2, void * jarg3, void * jarg4) {
+  void * jresult = 0 ;
+  datamunge::graphics::RPlot *arg1 = 0 ;
+  std::vector< double > *arg2 = 0 ;
+  std::vector< double > *arg3 = 0 ;
+  std::vector< std::vector< double > > *arg4 = 0 ;
+  datamunge::graphics::RPlot *result = 0 ;
+  
+  arg1 = (datamunge::graphics::RPlot *)jarg1;
+  arg2 = (std::vector< double > *)jarg2;
+  if (!arg2) {
+    SWIG_DSetPendingException(SWIG_DNullReferenceException, "std::vector< double > const & is null");
+    return 0;
+  } 
+  arg3 = (std::vector< double > *)jarg3;
+  if (!arg3) {
+    SWIG_DSetPendingException(SWIG_DNullReferenceException, "std::vector< double > const & is null");
+    return 0;
+  } 
+  arg4 = (std::vector< std::vector< double > > *)jarg4;
+  if (!arg4) {
+    SWIG_DSetPendingException(SWIG_DNullReferenceException, "std::vector< std::vector< double > > const & is null");
+    return 0;
+  } 
+  result = (datamunge::graphics::RPlot *) &(arg1)->image((std::vector< double > const &)*arg2,(std::vector< double > const &)*arg3,(std::vector< std::vector< double > > const &)*arg4);
+  jresult = (void *)result;
+  return jresult;
+}
+
+
 SWIGEXPORT void * D_RPlot_segments__SWIG_0(void * jarg1, void * jarg2, void * jarg3, void * jarg4, void * jarg5, void * jarg6, double jarg7) {
   void * jresult = 0 ;
   datamunge::graphics::RPlot *arg1 = 0 ;
@@ -29736,13 +31775,13 @@ SWIGEXPORT void * D_RPlot_segments__SWIG_0(void * jarg1, void * jarg2, void * ja
   std::vector< double > arg3 ;
   std::vector< double > arg4 ;
   std::vector< double > arg5 ;
-  SwigValueWrapper< datamunge::graphics::RGB > arg6 ;
+  datamunge::graphics::RGBA arg6 ;
   double arg7 ;
   std::vector< double > *argp2 ;
   std::vector< double > *argp3 ;
   std::vector< double > *argp4 ;
   std::vector< double > *argp5 ;
-  datamunge::graphics::RGB *argp6 ;
+  datamunge::graphics::RGBA *argp6 ;
   datamunge::graphics::RPlot *result = 0 ;
   
   arg1 = (datamunge::graphics::RPlot *)jarg1;
@@ -29770,9 +31809,9 @@ SWIGEXPORT void * D_RPlot_segments__SWIG_0(void * jarg1, void * jarg2, void * ja
     return 0;
   }
   arg5 = *argp5; 
-  argp6 = (datamunge::graphics::RGB *)jarg6;
+  argp6 = (datamunge::graphics::RGBA *)jarg6;
   if (!argp6) {
-    SWIG_DSetPendingException(SWIG_DNullReferenceException, "Attempt to dereference null datamunge::graphics::RGB");
+    SWIG_DSetPendingException(SWIG_DNullReferenceException, "Attempt to dereference null datamunge::graphics::RGBA");
     return 0;
   }
   arg6 = *argp6; 
@@ -29790,12 +31829,12 @@ SWIGEXPORT void * D_RPlot_segments__SWIG_1(void * jarg1, void * jarg2, void * ja
   std::vector< double > arg3 ;
   std::vector< double > arg4 ;
   std::vector< double > arg5 ;
-  SwigValueWrapper< datamunge::graphics::RGB > arg6 ;
+  datamunge::graphics::RGBA arg6 ;
   std::vector< double > *argp2 ;
   std::vector< double > *argp3 ;
   std::vector< double > *argp4 ;
   std::vector< double > *argp5 ;
-  datamunge::graphics::RGB *argp6 ;
+  datamunge::graphics::RGBA *argp6 ;
   datamunge::graphics::RPlot *result = 0 ;
   
   arg1 = (datamunge::graphics::RPlot *)jarg1;
@@ -29823,9 +31862,9 @@ SWIGEXPORT void * D_RPlot_segments__SWIG_1(void * jarg1, void * jarg2, void * ja
     return 0;
   }
   arg5 = *argp5; 
-  argp6 = (datamunge::graphics::RGB *)jarg6;
+  argp6 = (datamunge::graphics::RGBA *)jarg6;
   if (!argp6) {
-    SWIG_DSetPendingException(SWIG_DNullReferenceException, "Attempt to dereference null datamunge::graphics::RGB");
+    SWIG_DSetPendingException(SWIG_DNullReferenceException, "Attempt to dereference null datamunge::graphics::RGBA");
     return 0;
   }
   arg6 = *argp6; 
@@ -29879,21 +31918,31 @@ SWIGEXPORT void * D_RPlot_segments__SWIG_2(void * jarg1, void * jarg2, void * ja
 }
 
 
-SWIGEXPORT void * D_new_RPlot() {
-  void * jresult = 0 ;
-  datamunge::graphics::RPlot *result = 0 ;
-  
-  result = (datamunge::graphics::RPlot *)new datamunge::graphics::RPlot();
-  jresult = (void *)result;
-  return jresult;
-}
-
-
 SWIGEXPORT void D_delete_RPlot(void * jarg1) {
   datamunge::graphics::RPlot *arg1 = 0 ;
   
   arg1 = (datamunge::graphics::RPlot *)jarg1;
   delete arg1;
+}
+
+
+SWIGEXPORT size_t D_RLayout_title_band_px_get() {
+  size_t jresult = 0 ;
+  std::size_t result;
+  
+  result = datamunge::graphics::RLayout::title_band_px;
+  jresult = result;
+  return jresult;
+}
+
+
+SWIGEXPORT size_t D_RLayout_min_panel_px_get() {
+  size_t jresult = 0 ;
+  std::size_t result;
+  
+  result = datamunge::graphics::RLayout::min_panel_px;
+  jresult = result;
+  return jresult;
 }
 
 
@@ -29945,6 +31994,110 @@ SWIGEXPORT void * D_RLayout_size(void * jarg1, size_t jarg2, size_t jarg3) {
 }
 
 
+SWIGEXPORT void * D_RLayout_title(void * jarg1, char * jarg2) {
+  void * jresult = 0 ;
+  datamunge::graphics::RLayout *arg1 = 0 ;
+  std::string arg2 ;
+  datamunge::graphics::RLayout *result = 0 ;
+  
+  arg1 = (datamunge::graphics::RLayout *)jarg1;
+  if (!jarg2) {
+    SWIG_DSetPendingException(SWIG_DNullReferenceException, "null string");
+    return 0;
+  }
+  (&arg2)->assign(jarg2); 
+  result = (datamunge::graphics::RLayout *) &(arg1)->title(SWIG_STD_MOVE(*(&arg2)));
+  jresult = (void *)result;
+  return jresult;
+}
+
+
+SWIGEXPORT size_t D_RLayout_rows(void * jarg1) {
+  size_t jresult = 0 ;
+  datamunge::graphics::RLayout *arg1 = 0 ;
+  std::size_t result;
+  
+  arg1 = (datamunge::graphics::RLayout *)jarg1;
+  result = ((datamunge::graphics::RLayout const *)arg1)->rows();
+  jresult = result;
+  return jresult;
+}
+
+
+SWIGEXPORT size_t D_RLayout_cols(void * jarg1) {
+  size_t jresult = 0 ;
+  datamunge::graphics::RLayout *arg1 = 0 ;
+  std::size_t result;
+  
+  arg1 = (datamunge::graphics::RLayout *)jarg1;
+  result = ((datamunge::graphics::RLayout const *)arg1)->cols();
+  jresult = result;
+  return jresult;
+}
+
+
+SWIGEXPORT size_t D_RLayout_width(void * jarg1) {
+  size_t jresult = 0 ;
+  datamunge::graphics::RLayout *arg1 = 0 ;
+  std::size_t result;
+  
+  arg1 = (datamunge::graphics::RLayout *)jarg1;
+  result = ((datamunge::graphics::RLayout const *)arg1)->width();
+  jresult = result;
+  return jresult;
+}
+
+
+SWIGEXPORT size_t D_RLayout_height(void * jarg1) {
+  size_t jresult = 0 ;
+  datamunge::graphics::RLayout *arg1 = 0 ;
+  std::size_t result;
+  
+  arg1 = (datamunge::graphics::RLayout *)jarg1;
+  result = ((datamunge::graphics::RLayout const *)arg1)->height();
+  jresult = result;
+  return jresult;
+}
+
+
+SWIGEXPORT size_t D_RLayout_panel_count(void * jarg1) {
+  size_t jresult = 0 ;
+  datamunge::graphics::RLayout *arg1 = 0 ;
+  std::size_t result;
+  
+  arg1 = (datamunge::graphics::RLayout *)jarg1;
+  result = ((datamunge::graphics::RLayout const *)arg1)->panel_count();
+  jresult = result;
+  return jresult;
+}
+
+
+SWIGEXPORT char * D_RLayout_title_text(void * jarg1) {
+  char * jresult = 0 ;
+  datamunge::graphics::RLayout *arg1 = 0 ;
+  std::string *result = 0 ;
+  
+  arg1 = (datamunge::graphics::RLayout *)jarg1;
+  result = (std::string *) &((datamunge::graphics::RLayout const *)arg1)->title_text();
+  jresult = SWIG_d_string_callback(result->c_str()); 
+  return jresult;
+}
+
+
+SWIGEXPORT void * D_RLayout_panel(void * jarg1, size_t jarg2) {
+  void * jresult = 0 ;
+  datamunge::graphics::RLayout *arg1 = 0 ;
+  std::size_t arg2 ;
+  datamunge::graphics::Plot *result = 0 ;
+  
+  arg1 = (datamunge::graphics::RLayout *)jarg1;
+  arg2 = (std::size_t)jarg2;
+  result = (datamunge::graphics::Plot *) &((datamunge::graphics::RLayout const *)arg1)->panel(SWIG_STD_MOVE(*(&arg2)));
+  jresult = (void *)result;
+  return jresult;
+}
+
+
 SWIGEXPORT char * D_RLayout_to_svg(void * jarg1) {
   char * jresult = 0 ;
   datamunge::graphics::RLayout *arg1 = 0 ;
@@ -29987,6 +32140,118 @@ SWIGEXPORT void D_RLayout_save_svg(void * jarg1, char * jarg2) {
 }
 
 
+SWIGEXPORT void * D_RLayout_to_png(void * jarg1) {
+  void * jresult = 0 ;
+  datamunge::graphics::RLayout *arg1 = 0 ;
+  std::vector< std::uint8_t > result;
+  
+  arg1 = (datamunge::graphics::RLayout *)jarg1;
+  result = ((datamunge::graphics::RLayout const *)arg1)->to_png();
+  jresult = new std::vector< std::uint8_t >(result); 
+  return jresult;
+}
+
+
+SWIGEXPORT void * D_RLayout_to_pdf(void * jarg1) {
+  void * jresult = 0 ;
+  datamunge::graphics::RLayout *arg1 = 0 ;
+  std::vector< std::uint8_t > result;
+  
+  arg1 = (datamunge::graphics::RLayout *)jarg1;
+  result = ((datamunge::graphics::RLayout const *)arg1)->to_pdf();
+  jresult = new std::vector< std::uint8_t >(result); 
+  return jresult;
+}
+
+
+SWIGEXPORT void D_RLayout_save_png(void * jarg1, char * jarg2) {
+  datamunge::graphics::RLayout *arg1 = 0 ;
+  std::string *arg2 = 0 ;
+  
+  arg1 = (datamunge::graphics::RLayout *)jarg1;
+  if (!jarg2) {
+    SWIG_DSetPendingException(SWIG_DNullReferenceException, "null string");
+    return ;
+  }
+  std::string arg2_str(jarg2);
+  arg2 = &arg2_str; 
+  ((datamunge::graphics::RLayout const *)arg1)->save_png((std::string const &)*arg2);
+}
+
+
+SWIGEXPORT void D_RLayout_save_pdf(void * jarg1, char * jarg2) {
+  datamunge::graphics::RLayout *arg1 = 0 ;
+  std::string *arg2 = 0 ;
+  
+  arg1 = (datamunge::graphics::RLayout *)jarg1;
+  if (!jarg2) {
+    SWIG_DSetPendingException(SWIG_DNullReferenceException, "null string");
+    return ;
+  }
+  std::string arg2_str(jarg2);
+  arg2 = &arg2_str; 
+  ((datamunge::graphics::RLayout const *)arg1)->save_pdf((std::string const &)*arg2);
+}
+
+
+SWIGEXPORT void * D_RLayout_fit_panels(void * jarg1) {
+  void * jresult = 0 ;
+  datamunge::graphics::RLayout *arg1 = 0 ;
+  datamunge::graphics::RLayout *result = 0 ;
+  
+  arg1 = (datamunge::graphics::RLayout *)jarg1;
+  result = (datamunge::graphics::RLayout *) &(arg1)->fit_panels();
+  jresult = (void *)result;
+  return jresult;
+}
+
+
+SWIGEXPORT void D_RLayout_show__SWIG_0(void * jarg1, char * jarg2) {
+  datamunge::graphics::RLayout *arg1 = 0 ;
+  std::string *arg2 = 0 ;
+  
+  arg1 = (datamunge::graphics::RLayout *)jarg1;
+  if (!jarg2) {
+    SWIG_DSetPendingException(SWIG_DNullReferenceException, "null string");
+    return ;
+  }
+  std::string arg2_str(jarg2);
+  arg2 = &arg2_str; 
+  ((datamunge::graphics::RLayout const *)arg1)->show((std::string const &)*arg2);
+}
+
+
+SWIGEXPORT void D_RLayout_show__SWIG_1(void * jarg1) {
+  datamunge::graphics::RLayout *arg1 = 0 ;
+  
+  arg1 = (datamunge::graphics::RLayout *)jarg1;
+  ((datamunge::graphics::RLayout const *)arg1)->show();
+}
+
+
+SWIGEXPORT void D_RLayout_view__SWIG_0(void * jarg1, char * jarg2) {
+  datamunge::graphics::RLayout *arg1 = 0 ;
+  std::string *arg2 = 0 ;
+  
+  arg1 = (datamunge::graphics::RLayout *)jarg1;
+  if (!jarg2) {
+    SWIG_DSetPendingException(SWIG_DNullReferenceException, "null string");
+    return ;
+  }
+  std::string arg2_str(jarg2);
+  arg2 = &arg2_str; 
+  ((datamunge::graphics::RLayout const *)arg1)->view((std::string const &)*arg2);
+}
+
+
+SWIGEXPORT void D_RLayout_view__SWIG_1(void * jarg1) {
+  datamunge::graphics::RLayout *arg1 = 0 ;
+  
+  arg1 = (datamunge::graphics::RLayout *)jarg1;
+  ((datamunge::graphics::RLayout const *)arg1)->view();
+}
+
+
 SWIGEXPORT void * D_new_RLayout() {
   void * jresult = 0 ;
   datamunge::graphics::RLayout *result = 0 ;
@@ -30002,6 +32267,136 @@ SWIGEXPORT void D_delete_RLayout(void * jarg1) {
   
   arg1 = (datamunge::graphics::RLayout *)jarg1;
   delete arg1;
+}
+
+
+SWIGEXPORT void * D_terrain_colors(size_t jarg1) {
+  void * jresult = 0 ;
+  std::size_t arg1 ;
+  SwigValueWrapper< std::vector< datamunge::graphics::RGB > > result;
+  
+  arg1 = (std::size_t)jarg1;
+  result = datamunge::graphics::terrain_colors(SWIG_STD_MOVE(*(&arg1)));
+  jresult = new std::vector< datamunge::graphics::RGBA >(result); 
+  return jresult;
+}
+
+
+SWIGEXPORT void * D_diverging_colors(size_t jarg1) {
+  void * jresult = 0 ;
+  std::size_t arg1 ;
+  SwigValueWrapper< std::vector< datamunge::graphics::RGB > > result;
+  
+  arg1 = (std::size_t)jarg1;
+  result = datamunge::graphics::diverging_colors(SWIG_STD_MOVE(*(&arg1)));
+  jresult = new std::vector< datamunge::graphics::RGBA >(result); 
+  return jresult;
+}
+
+
+SWIGEXPORT void * D_viridis_colors(size_t jarg1) {
+  void * jresult = 0 ;
+  std::size_t arg1 ;
+  SwigValueWrapper< std::vector< datamunge::graphics::RGB > > result;
+  
+  arg1 = (std::size_t)jarg1;
+  result = datamunge::graphics::viridis_colors(SWIG_STD_MOVE(*(&arg1)));
+  jresult = new std::vector< datamunge::graphics::RGBA >(result); 
+  return jresult;
+}
+
+
+SWIGEXPORT void * D_value_colors__SWIG_0(void * jarg1, void * jarg2, double jarg3, double jarg4) {
+  void * jresult = 0 ;
+  std::vector< double > *arg1 = 0 ;
+  SwigValueWrapper< std::vector< datamunge::graphics::RGB > > arg2 ;
+  double arg3 ;
+  double arg4 ;
+  std::vector< datamunge::graphics::RGBA > *argp2 ;
+  SwigValueWrapper< std::vector< datamunge::graphics::RGB > > result;
+  
+  arg1 = (std::vector< double > *)jarg1;
+  if (!arg1) {
+    SWIG_DSetPendingException(SWIG_DNullReferenceException, "std::vector< double > const & is null");
+    return 0;
+  } 
+  argp2 = (std::vector< datamunge::graphics::RGBA > *)jarg2;
+  if (!argp2) {
+    SWIG_DSetPendingException(SWIG_DNullReferenceException, "Attempt to dereference null std::vector< datamunge::graphics::RGBA >");
+    return 0;
+  }
+  arg2 = *argp2; 
+  arg3 = (double)jarg3;
+  arg4 = (double)jarg4;
+  result = datamunge::graphics::value_colors((std::vector< double > const &)*arg1,SWIG_STD_MOVE(*(&arg2)),arg3,arg4);
+  jresult = new std::vector< datamunge::graphics::RGBA >(result); 
+  return jresult;
+}
+
+
+SWIGEXPORT void * D_value_colors__SWIG_1(void * jarg1, void * jarg2, double jarg3) {
+  void * jresult = 0 ;
+  std::vector< double > *arg1 = 0 ;
+  SwigValueWrapper< std::vector< datamunge::graphics::RGB > > arg2 ;
+  double arg3 ;
+  std::vector< datamunge::graphics::RGBA > *argp2 ;
+  SwigValueWrapper< std::vector< datamunge::graphics::RGB > > result;
+  
+  arg1 = (std::vector< double > *)jarg1;
+  if (!arg1) {
+    SWIG_DSetPendingException(SWIG_DNullReferenceException, "std::vector< double > const & is null");
+    return 0;
+  } 
+  argp2 = (std::vector< datamunge::graphics::RGBA > *)jarg2;
+  if (!argp2) {
+    SWIG_DSetPendingException(SWIG_DNullReferenceException, "Attempt to dereference null std::vector< datamunge::graphics::RGBA >");
+    return 0;
+  }
+  arg2 = *argp2; 
+  arg3 = (double)jarg3;
+  result = datamunge::graphics::value_colors((std::vector< double > const &)*arg1,SWIG_STD_MOVE(*(&arg2)),arg3);
+  jresult = new std::vector< datamunge::graphics::RGBA >(result); 
+  return jresult;
+}
+
+
+SWIGEXPORT void * D_value_colors__SWIG_2(void * jarg1, void * jarg2) {
+  void * jresult = 0 ;
+  std::vector< double > *arg1 = 0 ;
+  SwigValueWrapper< std::vector< datamunge::graphics::RGB > > arg2 ;
+  std::vector< datamunge::graphics::RGBA > *argp2 ;
+  SwigValueWrapper< std::vector< datamunge::graphics::RGB > > result;
+  
+  arg1 = (std::vector< double > *)jarg1;
+  if (!arg1) {
+    SWIG_DSetPendingException(SWIG_DNullReferenceException, "std::vector< double > const & is null");
+    return 0;
+  } 
+  argp2 = (std::vector< datamunge::graphics::RGBA > *)jarg2;
+  if (!argp2) {
+    SWIG_DSetPendingException(SWIG_DNullReferenceException, "Attempt to dereference null std::vector< datamunge::graphics::RGBA >");
+    return 0;
+  }
+  arg2 = *argp2; 
+  result = datamunge::graphics::value_colors((std::vector< double > const &)*arg1,SWIG_STD_MOVE(*(&arg2)));
+  jresult = new std::vector< datamunge::graphics::RGBA >(result); 
+  return jresult;
+}
+
+
+SWIGEXPORT void * D_value_colors__SWIG_3(void * jarg1) {
+  void * jresult = 0 ;
+  std::vector< double > *arg1 = 0 ;
+  SwigValueWrapper< std::vector< datamunge::graphics::RGB > > result;
+  
+  arg1 = (std::vector< double > *)jarg1;
+  if (!arg1) {
+    SWIG_DSetPendingException(SWIG_DNullReferenceException, "std::vector< double > const & is null");
+    return 0;
+  } 
+  result = datamunge::graphics::value_colors((std::vector< double > const &)*arg1);
+  jresult = new std::vector< datamunge::graphics::RGBA >(result); 
+  return jresult;
 }
 
 
@@ -30024,6 +32419,22 @@ SWIGEXPORT void * D_unif(double jarg1, double jarg2, size_t jarg3) {
   arg2 = (double)jarg2;
   arg3 = (std::size_t)jarg3;
   result = datamunge::unif(arg1,arg2,SWIG_STD_MOVE(*(&arg3)));
+  jresult = new std::vector< double >(result); 
+  return jresult;
+}
+
+
+SWIGEXPORT void * D_runif(double jarg1, double jarg2, size_t jarg3) {
+  void * jresult = 0 ;
+  double arg1 ;
+  double arg2 ;
+  std::size_t arg3 ;
+  std::vector< double > result;
+  
+  arg1 = (double)jarg1;
+  arg2 = (double)jarg2;
+  arg3 = (std::size_t)jarg3;
+  result = datamunge::runif(arg1,arg2,SWIG_STD_MOVE(*(&arg3)));
   jresult = new std::vector< double >(result); 
   return jresult;
 }
@@ -31168,6 +33579,44 @@ SWIGEXPORT void * D_ARIMA_forecast(void * jarg1, size_t jarg2) {
   arg1 = (datamunge::stats::ARIMA *)jarg1;
   arg2 = (std::size_t)jarg2;
   result = ((datamunge::stats::ARIMA const *)arg1)->forecast(SWIG_STD_MOVE(*(&arg2)));
+  jresult = new std::vector< double >(result); 
+  return jresult;
+}
+
+
+SWIGEXPORT void * D_ARIMA_expanded_ar_coefficients(void * jarg1) {
+  void * jresult = 0 ;
+  datamunge::stats::ARIMA *arg1 = 0 ;
+  std::vector< double > *result = 0 ;
+  
+  arg1 = (datamunge::stats::ARIMA *)jarg1;
+  result = (std::vector< double > *) &((datamunge::stats::ARIMA const *)arg1)->expanded_ar_coefficients();
+  jresult = (void *)result;
+  return jresult;
+}
+
+
+SWIGEXPORT void * D_ARIMA_expanded_ma_coefficients(void * jarg1) {
+  void * jresult = 0 ;
+  datamunge::stats::ARIMA *arg1 = 0 ;
+  std::vector< double > *result = 0 ;
+  
+  arg1 = (datamunge::stats::ARIMA *)jarg1;
+  result = (std::vector< double > *) &((datamunge::stats::ARIMA const *)arg1)->expanded_ma_coefficients();
+  jresult = (void *)result;
+  return jresult;
+}
+
+
+SWIGEXPORT void * D_ARIMA_psi_weights(void * jarg1, size_t jarg2) {
+  void * jresult = 0 ;
+  datamunge::stats::ARIMA *arg1 = 0 ;
+  std::size_t arg2 ;
+  std::vector< double > result;
+  
+  arg1 = (datamunge::stats::ARIMA *)jarg1;
+  arg2 = (std::size_t)jarg2;
+  result = ((datamunge::stats::ARIMA const *)arg1)->psi_weights(SWIG_STD_MOVE(*(&arg2)));
   jresult = new std::vector< double >(result); 
   return jresult;
 }
@@ -32340,6 +34789,82 @@ SWIGEXPORT void * D_ks_test_one_sample_normal__SWIG_3(void * jarg1) {
 }
 
 
+SWIGEXPORT void * D_ks_test_one_sample_uniform__SWIG_0(void * jarg1, double jarg2, double jarg3, int jarg4) {
+  void * jresult = 0 ;
+  std::vector< double > *arg1 = 0 ;
+  double arg2 ;
+  double arg3 ;
+  datamunge::stats::Alternative arg4 ;
+  datamunge::stats::HypothesisTestResult result;
+  
+  arg1 = (std::vector< double > *)jarg1;
+  if (!arg1) {
+    SWIG_DSetPendingException(SWIG_DNullReferenceException, "std::vector< double > const & is null");
+    return 0;
+  } 
+  arg2 = (double)jarg2;
+  arg3 = (double)jarg3;
+  arg4 = (datamunge::stats::Alternative)jarg4; 
+  result = datamunge::stats::ks_test_one_sample_uniform((std::vector< double > const &)*arg1,arg2,arg3,arg4);
+  jresult = new datamunge::stats::HypothesisTestResult(result); 
+  return jresult;
+}
+
+
+SWIGEXPORT void * D_ks_test_one_sample_uniform__SWIG_1(void * jarg1, double jarg2, double jarg3) {
+  void * jresult = 0 ;
+  std::vector< double > *arg1 = 0 ;
+  double arg2 ;
+  double arg3 ;
+  datamunge::stats::HypothesisTestResult result;
+  
+  arg1 = (std::vector< double > *)jarg1;
+  if (!arg1) {
+    SWIG_DSetPendingException(SWIG_DNullReferenceException, "std::vector< double > const & is null");
+    return 0;
+  } 
+  arg2 = (double)jarg2;
+  arg3 = (double)jarg3;
+  result = datamunge::stats::ks_test_one_sample_uniform((std::vector< double > const &)*arg1,arg2,arg3);
+  jresult = new datamunge::stats::HypothesisTestResult(result); 
+  return jresult;
+}
+
+
+SWIGEXPORT void * D_ks_test_one_sample_uniform__SWIG_2(void * jarg1, double jarg2) {
+  void * jresult = 0 ;
+  std::vector< double > *arg1 = 0 ;
+  double arg2 ;
+  datamunge::stats::HypothesisTestResult result;
+  
+  arg1 = (std::vector< double > *)jarg1;
+  if (!arg1) {
+    SWIG_DSetPendingException(SWIG_DNullReferenceException, "std::vector< double > const & is null");
+    return 0;
+  } 
+  arg2 = (double)jarg2;
+  result = datamunge::stats::ks_test_one_sample_uniform((std::vector< double > const &)*arg1,arg2);
+  jresult = new datamunge::stats::HypothesisTestResult(result); 
+  return jresult;
+}
+
+
+SWIGEXPORT void * D_ks_test_one_sample_uniform__SWIG_3(void * jarg1) {
+  void * jresult = 0 ;
+  std::vector< double > *arg1 = 0 ;
+  datamunge::stats::HypothesisTestResult result;
+  
+  arg1 = (std::vector< double > *)jarg1;
+  if (!arg1) {
+    SWIG_DSetPendingException(SWIG_DNullReferenceException, "std::vector< double > const & is null");
+    return 0;
+  } 
+  result = datamunge::stats::ks_test_one_sample_uniform((std::vector< double > const &)*arg1);
+  jresult = new datamunge::stats::HypothesisTestResult(result); 
+  return jresult;
+}
+
+
 SWIGEXPORT void * D_ks_test_two_sample__SWIG_0(void * jarg1, void * jarg2, int jarg3) {
   void * jresult = 0 ;
   std::vector< double > *arg1 = 0 ;
@@ -32624,6 +35149,200 @@ SWIGEXPORT void * D_spearman_correlation_test__SWIG_1(void * jarg1, void * jarg2
   } 
   result = datamunge::stats::spearman_correlation_test((std::vector< double > const &)*arg1,(std::vector< double > const &)*arg2);
   jresult = new datamunge::stats::HypothesisTestResult(result); 
+  return jresult;
+}
+
+
+SWIGEXPORT void D_KendallTau_concordant_set(void * jarg1, long long jarg2) {
+  datamunge::stats::KendallTau *arg1 = 0 ;
+  long long arg2 ;
+  
+  arg1 = (datamunge::stats::KendallTau *)jarg1;
+  arg2 = (long long)jarg2;
+  if (arg1) (arg1)->concordant = arg2;
+}
+
+
+SWIGEXPORT long long D_KendallTau_concordant_get(void * jarg1) {
+  long long jresult = 0 ;
+  datamunge::stats::KendallTau *arg1 = 0 ;
+  long long result;
+  
+  arg1 = (datamunge::stats::KendallTau *)jarg1;
+  result = (long long) ((arg1)->concordant);
+  jresult = result;
+  return jresult;
+}
+
+
+SWIGEXPORT void D_KendallTau_discordant_set(void * jarg1, long long jarg2) {
+  datamunge::stats::KendallTau *arg1 = 0 ;
+  long long arg2 ;
+  
+  arg1 = (datamunge::stats::KendallTau *)jarg1;
+  arg2 = (long long)jarg2;
+  if (arg1) (arg1)->discordant = arg2;
+}
+
+
+SWIGEXPORT long long D_KendallTau_discordant_get(void * jarg1) {
+  long long jresult = 0 ;
+  datamunge::stats::KendallTau *arg1 = 0 ;
+  long long result;
+  
+  arg1 = (datamunge::stats::KendallTau *)jarg1;
+  result = (long long) ((arg1)->discordant);
+  jresult = result;
+  return jresult;
+}
+
+
+SWIGEXPORT void D_KendallTau_ties_x_set(void * jarg1, long long jarg2) {
+  datamunge::stats::KendallTau *arg1 = 0 ;
+  long long arg2 ;
+  
+  arg1 = (datamunge::stats::KendallTau *)jarg1;
+  arg2 = (long long)jarg2;
+  if (arg1) (arg1)->ties_x = arg2;
+}
+
+
+SWIGEXPORT long long D_KendallTau_ties_x_get(void * jarg1) {
+  long long jresult = 0 ;
+  datamunge::stats::KendallTau *arg1 = 0 ;
+  long long result;
+  
+  arg1 = (datamunge::stats::KendallTau *)jarg1;
+  result = (long long) ((arg1)->ties_x);
+  jresult = result;
+  return jresult;
+}
+
+
+SWIGEXPORT void D_KendallTau_ties_y_set(void * jarg1, long long jarg2) {
+  datamunge::stats::KendallTau *arg1 = 0 ;
+  long long arg2 ;
+  
+  arg1 = (datamunge::stats::KendallTau *)jarg1;
+  arg2 = (long long)jarg2;
+  if (arg1) (arg1)->ties_y = arg2;
+}
+
+
+SWIGEXPORT long long D_KendallTau_ties_y_get(void * jarg1) {
+  long long jresult = 0 ;
+  datamunge::stats::KendallTau *arg1 = 0 ;
+  long long result;
+  
+  arg1 = (datamunge::stats::KendallTau *)jarg1;
+  result = (long long) ((arg1)->ties_y);
+  jresult = result;
+  return jresult;
+}
+
+
+SWIGEXPORT void D_KendallTau_ties_xy_set(void * jarg1, long long jarg2) {
+  datamunge::stats::KendallTau *arg1 = 0 ;
+  long long arg2 ;
+  
+  arg1 = (datamunge::stats::KendallTau *)jarg1;
+  arg2 = (long long)jarg2;
+  if (arg1) (arg1)->ties_xy = arg2;
+}
+
+
+SWIGEXPORT long long D_KendallTau_ties_xy_get(void * jarg1) {
+  long long jresult = 0 ;
+  datamunge::stats::KendallTau *arg1 = 0 ;
+  long long result;
+  
+  arg1 = (datamunge::stats::KendallTau *)jarg1;
+  result = (long long) ((arg1)->ties_xy);
+  jresult = result;
+  return jresult;
+}
+
+
+SWIGEXPORT void D_KendallTau_tau_a_set(void * jarg1, double jarg2) {
+  datamunge::stats::KendallTau *arg1 = 0 ;
+  double arg2 ;
+  
+  arg1 = (datamunge::stats::KendallTau *)jarg1;
+  arg2 = (double)jarg2;
+  if (arg1) (arg1)->tau_a = arg2;
+}
+
+
+SWIGEXPORT double D_KendallTau_tau_a_get(void * jarg1) {
+  double jresult = 0 ;
+  datamunge::stats::KendallTau *arg1 = 0 ;
+  double result;
+  
+  arg1 = (datamunge::stats::KendallTau *)jarg1;
+  result = (double) ((arg1)->tau_a);
+  jresult = result;
+  return jresult;
+}
+
+
+SWIGEXPORT void D_KendallTau_tau_b_set(void * jarg1, double jarg2) {
+  datamunge::stats::KendallTau *arg1 = 0 ;
+  double arg2 ;
+  
+  arg1 = (datamunge::stats::KendallTau *)jarg1;
+  arg2 = (double)jarg2;
+  if (arg1) (arg1)->tau_b = arg2;
+}
+
+
+SWIGEXPORT double D_KendallTau_tau_b_get(void * jarg1) {
+  double jresult = 0 ;
+  datamunge::stats::KendallTau *arg1 = 0 ;
+  double result;
+  
+  arg1 = (datamunge::stats::KendallTau *)jarg1;
+  result = (double) ((arg1)->tau_b);
+  jresult = result;
+  return jresult;
+}
+
+
+SWIGEXPORT void * D_new_KendallTau() {
+  void * jresult = 0 ;
+  datamunge::stats::KendallTau *result = 0 ;
+  
+  result = (datamunge::stats::KendallTau *)new datamunge::stats::KendallTau();
+  jresult = (void *)result;
+  return jresult;
+}
+
+
+SWIGEXPORT void D_delete_KendallTau(void * jarg1) {
+  datamunge::stats::KendallTau *arg1 = 0 ;
+  
+  arg1 = (datamunge::stats::KendallTau *)jarg1;
+  delete arg1;
+}
+
+
+SWIGEXPORT void * D_kendall_tau(void * jarg1, void * jarg2) {
+  void * jresult = 0 ;
+  std::vector< double > *arg1 = 0 ;
+  std::vector< double > *arg2 = 0 ;
+  datamunge::stats::KendallTau result;
+  
+  arg1 = (std::vector< double > *)jarg1;
+  if (!arg1) {
+    SWIG_DSetPendingException(SWIG_DNullReferenceException, "std::vector< double > const & is null");
+    return 0;
+  } 
+  arg2 = (std::vector< double > *)jarg2;
+  if (!arg2) {
+    SWIG_DSetPendingException(SWIG_DNullReferenceException, "std::vector< double > const & is null");
+    return 0;
+  } 
+  result = datamunge::stats::kendall_tau((std::vector< double > const &)*arg1,(std::vector< double > const &)*arg2);
+  jresult = new datamunge::stats::KendallTau(result); 
   return jresult;
 }
 
@@ -33831,6 +36550,18 @@ SWIGEXPORT double D_GradientDescent_optimize(void * jarg1, void * jarg2, void * 
 }
 
 
+SWIGEXPORT void * D_GradientDescent_options(void * jarg1) {
+  void * jresult = 0 ;
+  datamunge::optim::GradientDescent *arg1 = 0 ;
+  datamunge::optim::GradientDescentOptions *result = 0 ;
+  
+  arg1 = (datamunge::optim::GradientDescent *)jarg1;
+  result = (datamunge::optim::GradientDescentOptions *) &((datamunge::optim::GradientDescent const *)arg1)->options();
+  jresult = (void *)result;
+  return jresult;
+}
+
+
 SWIGEXPORT void D_delete_GradientDescent(void * jarg1) {
   datamunge::optim::GradientDescent *arg1 = 0 ;
   
@@ -34041,6 +36772,18 @@ SWIGEXPORT double D_Adam_optimize(void * jarg1, void * jarg2, void * jarg3) {
 }
 
 
+SWIGEXPORT void * D_Adam_options(void * jarg1) {
+  void * jresult = 0 ;
+  datamunge::optim::Adam *arg1 = 0 ;
+  datamunge::optim::AdamOptions *result = 0 ;
+  
+  arg1 = (datamunge::optim::Adam *)jarg1;
+  result = (datamunge::optim::AdamOptions *) &((datamunge::optim::Adam const *)arg1)->options();
+  jresult = (void *)result;
+  return jresult;
+}
+
+
 SWIGEXPORT void D_delete_Adam(void * jarg1) {
   datamunge::optim::Adam *arg1 = 0 ;
   
@@ -34207,6 +36950,18 @@ SWIGEXPORT double D_AdaGrad_optimize(void * jarg1, void * jarg2, void * jarg3) {
 }
 
 
+SWIGEXPORT void * D_AdaGrad_options(void * jarg1) {
+  void * jresult = 0 ;
+  datamunge::optim::AdaGrad *arg1 = 0 ;
+  datamunge::optim::AdaGradOptions *result = 0 ;
+  
+  arg1 = (datamunge::optim::AdaGrad *)jarg1;
+  result = (datamunge::optim::AdaGradOptions *) &((datamunge::optim::AdaGrad const *)arg1)->options();
+  jresult = (void *)result;
+  return jresult;
+}
+
+
 SWIGEXPORT void D_delete_AdaGrad(void * jarg1) {
   datamunge::optim::AdaGrad *arg1 = 0 ;
   
@@ -34369,6 +37124,18 @@ SWIGEXPORT double D_AdaDelta_optimize(void * jarg1, void * jarg2, void * jarg3) 
   } 
   result = (double)((datamunge::optim::AdaDelta const *)arg1)->optimize(*arg2,*arg3);
   jresult = result;
+  return jresult;
+}
+
+
+SWIGEXPORT void * D_AdaDelta_options(void * jarg1) {
+  void * jresult = 0 ;
+  datamunge::optim::AdaDelta *arg1 = 0 ;
+  datamunge::optim::AdaDeltaOptions *result = 0 ;
+  
+  arg1 = (datamunge::optim::AdaDelta *)jarg1;
+  result = (datamunge::optim::AdaDeltaOptions *) &((datamunge::optim::AdaDelta const *)arg1)->options();
+  jresult = (void *)result;
   return jresult;
 }
 
@@ -34583,6 +37350,18 @@ SWIGEXPORT double D_AMSGrad_optimize(void * jarg1, void * jarg2, void * jarg3) {
 }
 
 
+SWIGEXPORT void * D_AMSGrad_options(void * jarg1) {
+  void * jresult = 0 ;
+  datamunge::optim::AMSGrad *arg1 = 0 ;
+  datamunge::optim::AMSGradOptions *result = 0 ;
+  
+  arg1 = (datamunge::optim::AMSGrad *)jarg1;
+  result = (datamunge::optim::AMSGradOptions *) &((datamunge::optim::AMSGrad const *)arg1)->options();
+  jresult = (void *)result;
+  return jresult;
+}
+
+
 SWIGEXPORT void D_delete_AMSGrad(void * jarg1) {
   datamunge::optim::AMSGrad *arg1 = 0 ;
   
@@ -34793,6 +37572,18 @@ SWIGEXPORT double D_Nadam_optimize(void * jarg1, void * jarg2, void * jarg3) {
 }
 
 
+SWIGEXPORT void * D_Nadam_options(void * jarg1) {
+  void * jresult = 0 ;
+  datamunge::optim::Nadam *arg1 = 0 ;
+  datamunge::optim::NadamOptions *result = 0 ;
+  
+  arg1 = (datamunge::optim::Nadam *)jarg1;
+  result = (datamunge::optim::NadamOptions *) &((datamunge::optim::Nadam const *)arg1)->options();
+  jresult = (void *)result;
+  return jresult;
+}
+
+
 SWIGEXPORT void D_delete_Nadam(void * jarg1) {
   datamunge::optim::Nadam *arg1 = 0 ;
   
@@ -34977,6 +37768,18 @@ SWIGEXPORT double D_RMSProp_optimize(void * jarg1, void * jarg2, void * jarg3) {
   } 
   result = (double)((datamunge::optim::RMSProp const *)arg1)->optimize(*arg2,*arg3);
   jresult = result;
+  return jresult;
+}
+
+
+SWIGEXPORT void * D_RMSProp_options(void * jarg1) {
+  void * jresult = 0 ;
+  datamunge::optim::RMSProp *arg1 = 0 ;
+  datamunge::optim::RMSPropOptions *result = 0 ;
+  
+  arg1 = (datamunge::optim::RMSProp *)jarg1;
+  result = (datamunge::optim::RMSPropOptions *) &((datamunge::optim::RMSProp const *)arg1)->options();
+  jresult = (void *)result;
   return jresult;
 }
 
@@ -35187,6 +37990,18 @@ SWIGEXPORT double D_LBFGS_optimize(void * jarg1, void * jarg2, void * jarg3) {
   } 
   result = (double)((datamunge::optim::LBFGS const *)arg1)->optimize(*arg2,*arg3);
   jresult = result;
+  return jresult;
+}
+
+
+SWIGEXPORT void * D_LBFGS_options(void * jarg1) {
+  void * jresult = 0 ;
+  datamunge::optim::LBFGS *arg1 = 0 ;
+  datamunge::optim::LBFGSOptions *result = 0 ;
+  
+  arg1 = (datamunge::optim::LBFGS *)jarg1;
+  result = (datamunge::optim::LBFGSOptions *) &((datamunge::optim::LBFGS const *)arg1)->options();
+  jresult = (void *)result;
   return jresult;
 }
 
@@ -35423,6 +38238,18 @@ SWIGEXPORT double D_NelderMead_optimize(void * jarg1, void * jarg2, void * jarg3
 }
 
 
+SWIGEXPORT void * D_NelderMead_options(void * jarg1) {
+  void * jresult = 0 ;
+  datamunge::optim::NelderMead *arg1 = 0 ;
+  datamunge::optim::NelderMeadOptions *result = 0 ;
+  
+  arg1 = (datamunge::optim::NelderMead *)jarg1;
+  result = (datamunge::optim::NelderMeadOptions *) &((datamunge::optim::NelderMead const *)arg1)->options();
+  jresult = (void *)result;
+  return jresult;
+}
+
+
 SWIGEXPORT void D_delete_NelderMead(void * jarg1) {
   datamunge::optim::NelderMead *arg1 = 0 ;
   
@@ -35633,6 +38460,18 @@ SWIGEXPORT double D_SGD_optimize(void * jarg1, void * jarg2, void * jarg3) {
 }
 
 
+SWIGEXPORT void * D_SGD_options(void * jarg1) {
+  void * jresult = 0 ;
+  datamunge::optim::SGD *arg1 = 0 ;
+  datamunge::optim::SGDOptions *result = 0 ;
+  
+  arg1 = (datamunge::optim::SGD *)jarg1;
+  result = (datamunge::optim::SGDOptions *) &((datamunge::optim::SGD const *)arg1)->options();
+  jresult = (void *)result;
+  return jresult;
+}
+
+
 SWIGEXPORT void D_delete_SGD(void * jarg1) {
   datamunge::optim::SGD *arg1 = 0 ;
   
@@ -35821,6 +38660,18 @@ SWIGEXPORT double D_SVRG_optimize(void * jarg1, void * jarg2, void * jarg3) {
 }
 
 
+SWIGEXPORT void * D_SVRG_options(void * jarg1) {
+  void * jresult = 0 ;
+  datamunge::optim::SVRG *arg1 = 0 ;
+  datamunge::optim::SVRGOptions *result = 0 ;
+  
+  arg1 = (datamunge::optim::SVRG *)jarg1;
+  result = (datamunge::optim::SVRGOptions *) &((datamunge::optim::SVRG const *)arg1)->options();
+  jresult = (void *)result;
+  return jresult;
+}
+
+
 SWIGEXPORT void D_delete_SVRG(void * jarg1) {
   datamunge::optim::SVRG *arg1 = 0 ;
   
@@ -35983,6 +38834,18 @@ SWIGEXPORT double D_SAGA_optimize(void * jarg1, void * jarg2, void * jarg3) {
   } 
   result = (double)((datamunge::optim::SAGA const *)arg1)->optimize(*arg2,*arg3);
   jresult = result;
+  return jresult;
+}
+
+
+SWIGEXPORT void * D_SAGA_options(void * jarg1) {
+  void * jresult = 0 ;
+  datamunge::optim::SAGA *arg1 = 0 ;
+  datamunge::optim::SAGAOptions *result = 0 ;
+  
+  arg1 = (datamunge::optim::SAGA *)jarg1;
+  result = (datamunge::optim::SAGAOptions *) &((datamunge::optim::SAGA const *)arg1)->options();
+  jresult = (void *)result;
   return jresult;
 }
 
@@ -36193,6 +39056,18 @@ SWIGEXPORT double D_CoordinateDescent_optimize(void * jarg1, void * jarg2, void 
   } 
   result = (double)((datamunge::optim::CoordinateDescent const *)arg1)->optimize(*arg2,*arg3);
   jresult = result;
+  return jresult;
+}
+
+
+SWIGEXPORT void * D_CoordinateDescent_options(void * jarg1) {
+  void * jresult = 0 ;
+  datamunge::optim::CoordinateDescent *arg1 = 0 ;
+  datamunge::optim::CoordinateDescentOptions *result = 0 ;
+  
+  arg1 = (datamunge::optim::CoordinateDescent *)jarg1;
+  result = (datamunge::optim::CoordinateDescentOptions *) &((datamunge::optim::CoordinateDescent const *)arg1)->options();
+  jresult = (void *)result;
   return jresult;
 }
 
@@ -36451,6 +39326,18 @@ SWIGEXPORT double D_RandomizedBlockCoordinateDescent_optimize(void * jarg1, void
 }
 
 
+SWIGEXPORT void * D_RandomizedBlockCoordinateDescent_options(void * jarg1) {
+  void * jresult = 0 ;
+  datamunge::optim::RandomizedBlockCoordinateDescent *arg1 = 0 ;
+  datamunge::optim::RandomizedBlockCoordinateDescentOptions *result = 0 ;
+  
+  arg1 = (datamunge::optim::RandomizedBlockCoordinateDescent *)jarg1;
+  result = (datamunge::optim::RandomizedBlockCoordinateDescentOptions *) &((datamunge::optim::RandomizedBlockCoordinateDescent const *)arg1)->options();
+  jresult = (void *)result;
+  return jresult;
+}
+
+
 SWIGEXPORT void D_delete_RandomizedBlockCoordinateDescent(void * jarg1) {
   datamunge::optim::RandomizedBlockCoordinateDescent *arg1 = 0 ;
   
@@ -36613,6 +39500,18 @@ SWIGEXPORT double D_NesterovAcceleratedGradient_optimize(void * jarg1, void * ja
   } 
   result = (double)((datamunge::optim::NesterovAcceleratedGradient const *)arg1)->optimize(*arg2,*arg3);
   jresult = result;
+  return jresult;
+}
+
+
+SWIGEXPORT void * D_NesterovAcceleratedGradient_options(void * jarg1) {
+  void * jresult = 0 ;
+  datamunge::optim::NesterovAcceleratedGradient *arg1 = 0 ;
+  datamunge::optim::NesterovAcceleratedGradientOptions *result = 0 ;
+  
+  arg1 = (datamunge::optim::NesterovAcceleratedGradient *)jarg1;
+  result = (datamunge::optim::NesterovAcceleratedGradientOptions *) &((datamunge::optim::NesterovAcceleratedGradient const *)arg1)->options();
+  jresult = (void *)result;
   return jresult;
 }
 
@@ -36805,6 +39704,18 @@ SWIGEXPORT double D_ConjugateGradient_optimize(void * jarg1, void * jarg2, void 
 }
 
 
+SWIGEXPORT void * D_ConjugateGradient_options(void * jarg1) {
+  void * jresult = 0 ;
+  datamunge::optim::ConjugateGradient *arg1 = 0 ;
+  datamunge::optim::ConjugateGradientOptions *result = 0 ;
+  
+  arg1 = (datamunge::optim::ConjugateGradient *)jarg1;
+  result = (datamunge::optim::ConjugateGradientOptions *) &((datamunge::optim::ConjugateGradient const *)arg1)->options();
+  jresult = (void *)result;
+  return jresult;
+}
+
+
 SWIGEXPORT void D_delete_ConjugateGradient(void * jarg1) {
   datamunge::optim::ConjugateGradient *arg1 = 0 ;
   
@@ -36993,6 +39904,18 @@ SWIGEXPORT double D_CMAES_optimize(void * jarg1, void * jarg2, void * jarg3) {
 }
 
 
+SWIGEXPORT void * D_CMAES_options(void * jarg1) {
+  void * jresult = 0 ;
+  datamunge::optim::CMAES *arg1 = 0 ;
+  datamunge::optim::CMAESOptions *result = 0 ;
+  
+  arg1 = (datamunge::optim::CMAES *)jarg1;
+  result = (datamunge::optim::CMAESOptions *) &((datamunge::optim::CMAES const *)arg1)->options();
+  jresult = (void *)result;
+  return jresult;
+}
+
+
 SWIGEXPORT void D_delete_CMAES(void * jarg1) {
   datamunge::optim::CMAES *arg1 = 0 ;
   
@@ -37177,6 +40100,18 @@ SWIGEXPORT double D_SimulatedAnnealing_optimize(void * jarg1, void * jarg2, void
   } 
   result = (double)((datamunge::optim::SimulatedAnnealing const *)arg1)->optimize(*arg2,*arg3);
   jresult = result;
+  return jresult;
+}
+
+
+SWIGEXPORT void * D_SimulatedAnnealing_options(void * jarg1) {
+  void * jresult = 0 ;
+  datamunge::optim::SimulatedAnnealing *arg1 = 0 ;
+  datamunge::optim::SimulatedAnnealingOptions *result = 0 ;
+  
+  arg1 = (datamunge::optim::SimulatedAnnealing *)jarg1;
+  result = (datamunge::optim::SimulatedAnnealingOptions *) &((datamunge::optim::SimulatedAnnealing const *)arg1)->options();
+  jresult = (void *)result;
   return jresult;
 }
 
@@ -37523,6 +40458,18 @@ SWIGEXPORT double D_PSO_optimize(void * jarg1, void * jarg2, void * jarg3, void 
 }
 
 
+SWIGEXPORT void * D_PSO_options(void * jarg1) {
+  void * jresult = 0 ;
+  datamunge::optim::PSO *arg1 = 0 ;
+  datamunge::optim::PSOOptions *result = 0 ;
+  
+  arg1 = (datamunge::optim::PSO *)jarg1;
+  result = (datamunge::optim::PSOOptions *) &((datamunge::optim::PSO const *)arg1)->options();
+  jresult = (void *)result;
+  return jresult;
+}
+
+
 SWIGEXPORT void D_delete_PSO(void * jarg1) {
   datamunge::optim::PSO *arg1 = 0 ;
   
@@ -37795,6 +40742,18 @@ SWIGEXPORT double D_DifferentialEvolution_optimize(void * jarg1, void * jarg2, v
   } 
   result = (double)((datamunge::optim::DifferentialEvolution const *)arg1)->optimize(*arg2,*arg3,(std::vector< double > const &)*arg4,(std::vector< double > const &)*arg5);
   jresult = result;
+  return jresult;
+}
+
+
+SWIGEXPORT void * D_DifferentialEvolution_options(void * jarg1) {
+  void * jresult = 0 ;
+  datamunge::optim::DifferentialEvolution *arg1 = 0 ;
+  datamunge::optim::DEOptions *result = 0 ;
+  
+  arg1 = (datamunge::optim::DifferentialEvolution *)jarg1;
+  result = (datamunge::optim::DEOptions *) &((datamunge::optim::DifferentialEvolution const *)arg1)->options();
+  jresult = (void *)result;
   return jresult;
 }
 
@@ -38185,6 +41144,18 @@ SWIGEXPORT double D_GeneticAlgorithm_optimize(void * jarg1, void * jarg2, void *
 }
 
 
+SWIGEXPORT void * D_GeneticAlgorithm_options(void * jarg1) {
+  void * jresult = 0 ;
+  datamunge::optim::GeneticAlgorithm *arg1 = 0 ;
+  datamunge::optim::GAOptions *result = 0 ;
+  
+  arg1 = (datamunge::optim::GeneticAlgorithm *)jarg1;
+  result = (datamunge::optim::GAOptions *) &((datamunge::optim::GeneticAlgorithm const *)arg1)->options();
+  jresult = (void *)result;
+  return jresult;
+}
+
+
 SWIGEXPORT void D_delete_GeneticAlgorithm(void * jarg1) {
   datamunge::optim::GeneticAlgorithm *arg1 = 0 ;
   
@@ -38429,6 +41400,18 @@ SWIGEXPORT double D_ACOR_optimize(void * jarg1, void * jarg2, void * jarg3, void
 }
 
 
+SWIGEXPORT void * D_ACOR_options(void * jarg1) {
+  void * jresult = 0 ;
+  datamunge::optim::ACOR *arg1 = 0 ;
+  datamunge::optim::ACOROptions *result = 0 ;
+  
+  arg1 = (datamunge::optim::ACOR *)jarg1;
+  result = (datamunge::optim::ACOROptions *) &((datamunge::optim::ACOR const *)arg1)->options();
+  jresult = (void *)result;
+  return jresult;
+}
+
+
 SWIGEXPORT void D_delete_ACOR(void * jarg1) {
   datamunge::optim::ACOR *arg1 = 0 ;
   
@@ -38625,6 +41608,18 @@ SWIGEXPORT double D_ArtificialBeeColony_optimize(void * jarg1, void * jarg2, voi
   } 
   result = (double)((datamunge::optim::ArtificialBeeColony const *)arg1)->optimize(*arg2,*arg3,(std::vector< double > const &)*arg4,(std::vector< double > const &)*arg5);
   jresult = result;
+  return jresult;
+}
+
+
+SWIGEXPORT void * D_ArtificialBeeColony_options(void * jarg1) {
+  void * jresult = 0 ;
+  datamunge::optim::ArtificialBeeColony *arg1 = 0 ;
+  datamunge::optim::ArtificialBeeColonyOptions *result = 0 ;
+  
+  arg1 = (datamunge::optim::ArtificialBeeColony *)jarg1;
+  result = (datamunge::optim::ArtificialBeeColonyOptions *) &((datamunge::optim::ArtificialBeeColony const *)arg1)->options();
+  jresult = (void *)result;
   return jresult;
 }
 
@@ -38873,6 +41868,18 @@ SWIGEXPORT double D_CrossEntropyMethod_optimize(void * jarg1, void * jarg2, void
 }
 
 
+SWIGEXPORT void * D_CrossEntropyMethod_options(void * jarg1) {
+  void * jresult = 0 ;
+  datamunge::optim::CrossEntropyMethod *arg1 = 0 ;
+  datamunge::optim::CrossEntropyMethodOptions *result = 0 ;
+  
+  arg1 = (datamunge::optim::CrossEntropyMethod *)jarg1;
+  result = (datamunge::optim::CrossEntropyMethodOptions *) &((datamunge::optim::CrossEntropyMethod const *)arg1)->options();
+  jresult = (void *)result;
+  return jresult;
+}
+
+
 SWIGEXPORT void D_delete_CrossEntropyMethod(void * jarg1) {
   datamunge::optim::CrossEntropyMethod *arg1 = 0 ;
   
@@ -39117,6 +42124,18 @@ SWIGEXPORT double D_CuckooSearch_optimize(void * jarg1, void * jarg2, void * jar
 }
 
 
+SWIGEXPORT void * D_CuckooSearch_options(void * jarg1) {
+  void * jresult = 0 ;
+  datamunge::optim::CuckooSearch *arg1 = 0 ;
+  datamunge::optim::CuckooSearchOptions *result = 0 ;
+  
+  arg1 = (datamunge::optim::CuckooSearch *)jarg1;
+  result = (datamunge::optim::CuckooSearchOptions *) &((datamunge::optim::CuckooSearch const *)arg1)->options();
+  jresult = (void *)result;
+  return jresult;
+}
+
+
 SWIGEXPORT void D_delete_CuckooSearch(void * jarg1) {
   datamunge::optim::CuckooSearch *arg1 = 0 ;
   
@@ -39357,6 +42376,18 @@ SWIGEXPORT double D_EstimationOfDistribution_optimize(void * jarg1, void * jarg2
   } 
   result = (double)((datamunge::optim::EstimationOfDistribution const *)arg1)->optimize(*arg2,*arg3,(std::vector< double > const &)*arg4,(std::vector< double > const &)*arg5);
   jresult = result;
+  return jresult;
+}
+
+
+SWIGEXPORT void * D_EstimationOfDistribution_options(void * jarg1) {
+  void * jresult = 0 ;
+  datamunge::optim::EstimationOfDistribution *arg1 = 0 ;
+  datamunge::optim::EstimationOfDistributionOptions *result = 0 ;
+  
+  arg1 = (datamunge::optim::EstimationOfDistribution *)jarg1;
+  result = (datamunge::optim::EstimationOfDistributionOptions *) &((datamunge::optim::EstimationOfDistribution const *)arg1)->options();
+  jresult = (void *)result;
   return jresult;
 }
 
@@ -39606,6 +42637,18 @@ SWIGEXPORT double D_EvolutionStrategy_optimize(void * jarg1, void * jarg2, void 
   } 
   result = (double)((datamunge::optim::EvolutionStrategy const *)arg1)->optimize(*arg2,*arg3,(std::vector< double > const &)*arg4,(std::vector< double > const &)*arg5);
   jresult = result;
+  return jresult;
+}
+
+
+SWIGEXPORT void * D_EvolutionStrategy_options(void * jarg1) {
+  void * jresult = 0 ;
+  datamunge::optim::EvolutionStrategy *arg1 = 0 ;
+  datamunge::optim::EvolutionStrategyOptions *result = 0 ;
+  
+  arg1 = (datamunge::optim::EvolutionStrategy *)jarg1;
+  result = (datamunge::optim::EvolutionStrategyOptions *) &((datamunge::optim::EvolutionStrategy const *)arg1)->options();
+  jresult = (void *)result;
   return jresult;
 }
 
@@ -39876,6 +42919,18 @@ SWIGEXPORT double D_FireflyAlgorithm_optimize(void * jarg1, void * jarg2, void *
 }
 
 
+SWIGEXPORT void * D_FireflyAlgorithm_options(void * jarg1) {
+  void * jresult = 0 ;
+  datamunge::optim::FireflyAlgorithm *arg1 = 0 ;
+  datamunge::optim::FireflyAlgorithmOptions *result = 0 ;
+  
+  arg1 = (datamunge::optim::FireflyAlgorithm *)jarg1;
+  result = (datamunge::optim::FireflyAlgorithmOptions *) &((datamunge::optim::FireflyAlgorithm const *)arg1)->options();
+  jresult = (void *)result;
+  return jresult;
+}
+
+
 SWIGEXPORT void D_delete_FireflyAlgorithm(void * jarg1) {
   datamunge::optim::FireflyAlgorithm *arg1 = 0 ;
   
@@ -40050,6 +43105,18 @@ SWIGEXPORT double D_GreyWolfOptimizer_optimize(void * jarg1, void * jarg2, void 
   } 
   result = (double)((datamunge::optim::GreyWolfOptimizer const *)arg1)->optimize(*arg2,*arg3,(std::vector< double > const &)*arg4,(std::vector< double > const &)*arg5);
   jresult = result;
+  return jresult;
+}
+
+
+SWIGEXPORT void * D_GreyWolfOptimizer_options(void * jarg1) {
+  void * jresult = 0 ;
+  datamunge::optim::GreyWolfOptimizer *arg1 = 0 ;
+  datamunge::optim::GreyWolfOptimizerOptions *result = 0 ;
+  
+  arg1 = (datamunge::optim::GreyWolfOptimizer *)jarg1;
+  result = (datamunge::optim::GreyWolfOptimizerOptions *) &((datamunge::optim::GreyWolfOptimizer const *)arg1)->options();
+  jresult = (void *)result;
   return jresult;
 }
 
@@ -40298,6 +43365,18 @@ SWIGEXPORT double D_HarmonySearch_optimize(void * jarg1, void * jarg2, void * ja
 }
 
 
+SWIGEXPORT void * D_HarmonySearch_options(void * jarg1) {
+  void * jresult = 0 ;
+  datamunge::optim::HarmonySearch *arg1 = 0 ;
+  datamunge::optim::HarmonySearchOptions *result = 0 ;
+  
+  arg1 = (datamunge::optim::HarmonySearch *)jarg1;
+  result = (datamunge::optim::HarmonySearchOptions *) &((datamunge::optim::HarmonySearch const *)arg1)->options();
+  jresult = (void *)result;
+  return jresult;
+}
+
+
 SWIGEXPORT void D_delete_HarmonySearch(void * jarg1) {
   datamunge::optim::HarmonySearch *arg1 = 0 ;
   
@@ -40530,6 +43609,18 @@ SWIGEXPORT double D_ParallelTempering_optimize(void * jarg1, void * jarg2, void 
 }
 
 
+SWIGEXPORT void * D_ParallelTempering_options(void * jarg1) {
+  void * jresult = 0 ;
+  datamunge::optim::ParallelTempering *arg1 = 0 ;
+  datamunge::optim::ParallelTemperingOptions *result = 0 ;
+  
+  arg1 = (datamunge::optim::ParallelTempering *)jarg1;
+  result = (datamunge::optim::ParallelTemperingOptions *) &((datamunge::optim::ParallelTempering const *)arg1)->options();
+  jresult = (void *)result;
+  return jresult;
+}
+
+
 SWIGEXPORT void D_delete_ParallelTempering(void * jarg1) {
   datamunge::optim::ParallelTempering *arg1 = 0 ;
   
@@ -40730,6 +43821,18 @@ SWIGEXPORT double D_WhaleOptimization_optimize(void * jarg1, void * jarg2, void 
 }
 
 
+SWIGEXPORT void * D_WhaleOptimization_options(void * jarg1) {
+  void * jresult = 0 ;
+  datamunge::optim::WhaleOptimization *arg1 = 0 ;
+  datamunge::optim::WhaleOptimizationOptions *result = 0 ;
+  
+  arg1 = (datamunge::optim::WhaleOptimization *)jarg1;
+  result = (datamunge::optim::WhaleOptimizationOptions *) &((datamunge::optim::WhaleOptimization const *)arg1)->options();
+  jresult = (void *)result;
+  return jresult;
+}
+
+
 SWIGEXPORT void D_delete_WhaleOptimization(void * jarg1) {
   datamunge::optim::WhaleOptimization *arg1 = 0 ;
   
@@ -40870,6 +43973,18 @@ SWIGEXPORT double D_FISTA_optimize(void * jarg1, void * jarg2, void * jarg3) {
   } 
   result = (double)((datamunge::optim::FISTA const *)arg1)->optimize(*arg2,*arg3);
   jresult = result;
+  return jresult;
+}
+
+
+SWIGEXPORT void * D_FISTA_options(void * jarg1) {
+  void * jresult = 0 ;
+  datamunge::optim::FISTA *arg1 = 0 ;
+  datamunge::optim::FISTAOptions *result = 0 ;
+  
+  arg1 = (datamunge::optim::FISTA *)jarg1;
+  result = (datamunge::optim::FISTAOptions *) &((datamunge::optim::FISTA const *)arg1)->options();
+  jresult = (void *)result;
   return jresult;
 }
 
@@ -41018,6 +44133,18 @@ SWIGEXPORT double D_ProximalGradient_optimize(void * jarg1, void * jarg2, void *
 }
 
 
+SWIGEXPORT void * D_ProximalGradient_options(void * jarg1) {
+  void * jresult = 0 ;
+  datamunge::optim::ProximalGradient *arg1 = 0 ;
+  datamunge::optim::ProximalGradientOptions *result = 0 ;
+  
+  arg1 = (datamunge::optim::ProximalGradient *)jarg1;
+  result = (datamunge::optim::ProximalGradientOptions *) &((datamunge::optim::ProximalGradient const *)arg1)->options();
+  jresult = (void *)result;
+  return jresult;
+}
+
+
 SWIGEXPORT void D_delete_ProximalGradient(void * jarg1) {
   datamunge::optim::ProximalGradient *arg1 = 0 ;
   
@@ -41162,6 +44289,18 @@ SWIGEXPORT double D_LevenbergMarquardt_optimize(void * jarg1, void * jarg2, void
 }
 
 
+SWIGEXPORT void * D_LevenbergMarquardt_options(void * jarg1) {
+  void * jresult = 0 ;
+  datamunge::optim::LevenbergMarquardt *arg1 = 0 ;
+  datamunge::optim::LevenbergMarquardtOptions *result = 0 ;
+  
+  arg1 = (datamunge::optim::LevenbergMarquardt *)jarg1;
+  result = (datamunge::optim::LevenbergMarquardtOptions *) &((datamunge::optim::LevenbergMarquardt const *)arg1)->options();
+  jresult = (void *)result;
+  return jresult;
+}
+
+
 SWIGEXPORT void D_delete_LevenbergMarquardt(void * jarg1) {
   datamunge::optim::LevenbergMarquardt *arg1 = 0 ;
   
@@ -41302,6 +44441,18 @@ SWIGEXPORT double D_Newton_optimize(void * jarg1, void * jarg2, void * jarg3) {
   } 
   result = (double)((datamunge::optim::Newton const *)arg1)->optimize(*arg2,*arg3);
   jresult = result;
+  return jresult;
+}
+
+
+SWIGEXPORT void * D_Newton_options(void * jarg1) {
+  void * jresult = 0 ;
+  datamunge::optim::Newton *arg1 = 0 ;
+  datamunge::optim::NewtonOptions *result = 0 ;
+  
+  arg1 = (datamunge::optim::Newton *)jarg1;
+  result = (datamunge::optim::NewtonOptions *) &((datamunge::optim::Newton const *)arg1)->options();
+  jresult = (void *)result;
   return jresult;
 }
 
@@ -41468,6 +44619,18 @@ SWIGEXPORT double D_TrustRegionNewton_optimize(void * jarg1, void * jarg2, void 
   } 
   result = (double)((datamunge::optim::TrustRegionNewton const *)arg1)->optimize(*arg2,*arg3);
   jresult = result;
+  return jresult;
+}
+
+
+SWIGEXPORT void * D_TrustRegionNewton_options(void * jarg1) {
+  void * jresult = 0 ;
+  datamunge::optim::TrustRegionNewton *arg1 = 0 ;
+  datamunge::optim::TrustRegionNewtonOptions *result = 0 ;
+  
+  arg1 = (datamunge::optim::TrustRegionNewton *)jarg1;
+  result = (datamunge::optim::TrustRegionNewtonOptions *) &((datamunge::optim::TrustRegionNewton const *)arg1)->options();
+  jresult = (void *)result;
   return jresult;
 }
 
@@ -41660,6 +44823,18 @@ SWIGEXPORT double D_AugmentedLagrangian_optimize(void * jarg1, void * jarg2, voi
 }
 
 
+SWIGEXPORT void * D_AugmentedLagrangian_options(void * jarg1) {
+  void * jresult = 0 ;
+  datamunge::optim::AugmentedLagrangian *arg1 = 0 ;
+  datamunge::optim::AugmentedLagrangianOptions *result = 0 ;
+  
+  arg1 = (datamunge::optim::AugmentedLagrangian *)jarg1;
+  result = (datamunge::optim::AugmentedLagrangianOptions *) &((datamunge::optim::AugmentedLagrangian const *)arg1)->options();
+  jresult = (void *)result;
+  return jresult;
+}
+
+
 SWIGEXPORT void D_delete_AugmentedLagrangian(void * jarg1) {
   datamunge::optim::AugmentedLagrangian *arg1 = 0 ;
   
@@ -41822,6 +44997,18 @@ SWIGEXPORT double D_SQP_optimize(void * jarg1, void * jarg2, void * jarg3) {
   } 
   result = (double)((datamunge::optim::SQP const *)arg1)->optimize(*arg2,*arg3);
   jresult = result;
+  return jresult;
+}
+
+
+SWIGEXPORT void * D_SQP_options(void * jarg1) {
+  void * jresult = 0 ;
+  datamunge::optim::SQP *arg1 = 0 ;
+  datamunge::optim::SQPOptions *result = 0 ;
+  
+  arg1 = (datamunge::optim::SQP *)jarg1;
+  result = (datamunge::optim::SQPOptions *) &((datamunge::optim::SQP const *)arg1)->options();
+  jresult = (void *)result;
   return jresult;
 }
 
@@ -42014,6 +45201,18 @@ SWIGEXPORT double D_InteriorPoint_optimize(void * jarg1, void * jarg2, void * ja
 }
 
 
+SWIGEXPORT void * D_InteriorPoint_options(void * jarg1) {
+  void * jresult = 0 ;
+  datamunge::optim::InteriorPoint *arg1 = 0 ;
+  datamunge::optim::InteriorPointOptions *result = 0 ;
+  
+  arg1 = (datamunge::optim::InteriorPoint *)jarg1;
+  result = (datamunge::optim::InteriorPointOptions *) &((datamunge::optim::InteriorPoint const *)arg1)->options();
+  jresult = (void *)result;
+  return jresult;
+}
+
+
 SWIGEXPORT void D_delete_InteriorPoint(void * jarg1) {
   datamunge::optim::InteriorPoint *arg1 = 0 ;
   
@@ -42153,6 +45352,50 @@ SWIGEXPORT unsigned long long D_BayesianOptimizationOptions_seed_get(void * jarg
 }
 
 
+SWIGEXPORT void D_BayesianOptimizationOptions_candidates_set(void * jarg1, size_t jarg2) {
+  datamunge::optim::BayesianOptimizationOptions *arg1 = 0 ;
+  std::size_t arg2 ;
+  
+  arg1 = (datamunge::optim::BayesianOptimizationOptions *)jarg1;
+  arg2 = (std::size_t)jarg2;
+  if (arg1) (arg1)->candidates = arg2;
+}
+
+
+SWIGEXPORT size_t D_BayesianOptimizationOptions_candidates_get(void * jarg1) {
+  size_t jresult = 0 ;
+  datamunge::optim::BayesianOptimizationOptions *arg1 = 0 ;
+  std::size_t result;
+  
+  arg1 = (datamunge::optim::BayesianOptimizationOptions *)jarg1;
+  result =  ((arg1)->candidates);
+  jresult = result;
+  return jresult;
+}
+
+
+SWIGEXPORT void D_BayesianOptimizationOptions_refine_iterations_set(void * jarg1, size_t jarg2) {
+  datamunge::optim::BayesianOptimizationOptions *arg1 = 0 ;
+  std::size_t arg2 ;
+  
+  arg1 = (datamunge::optim::BayesianOptimizationOptions *)jarg1;
+  arg2 = (std::size_t)jarg2;
+  if (arg1) (arg1)->refine_iterations = arg2;
+}
+
+
+SWIGEXPORT size_t D_BayesianOptimizationOptions_refine_iterations_get(void * jarg1) {
+  size_t jresult = 0 ;
+  datamunge::optim::BayesianOptimizationOptions *arg1 = 0 ;
+  std::size_t result;
+  
+  arg1 = (datamunge::optim::BayesianOptimizationOptions *)jarg1;
+  result =  ((arg1)->refine_iterations);
+  jresult = result;
+  return jresult;
+}
+
+
 SWIGEXPORT void * D_new_BayesianOptimizationOptions() {
   void * jresult = 0 ;
   datamunge::optim::BayesianOptimizationOptions *result = 0 ;
@@ -42167,6 +45410,156 @@ SWIGEXPORT void D_delete_BayesianOptimizationOptions(void * jarg1) {
   datamunge::optim::BayesianOptimizationOptions *arg1 = 0 ;
   
   arg1 = (datamunge::optim::BayesianOptimizationOptions *)jarg1;
+  delete arg1;
+}
+
+
+SWIGEXPORT void D_BayesianOptimizationResult_best_point_set(void * jarg1, void * jarg2) {
+  datamunge::optim::BayesianOptimizationResult *arg1 = 0 ;
+  std::vector< double > *arg2 = 0 ;
+  
+  arg1 = (datamunge::optim::BayesianOptimizationResult *)jarg1;
+  arg2 = (std::vector< double > *)jarg2;
+  if (arg1) (arg1)->best_point = *arg2;
+}
+
+
+SWIGEXPORT void * D_BayesianOptimizationResult_best_point_get(void * jarg1) {
+  void * jresult = 0 ;
+  datamunge::optim::BayesianOptimizationResult *arg1 = 0 ;
+  std::vector< double > *result = 0 ;
+  
+  arg1 = (datamunge::optim::BayesianOptimizationResult *)jarg1;
+  result = (std::vector< double > *)& ((arg1)->best_point);
+  jresult = (void *)result;
+  return jresult;
+}
+
+
+SWIGEXPORT void D_BayesianOptimizationResult_best_value_set(void * jarg1, double jarg2) {
+  datamunge::optim::BayesianOptimizationResult *arg1 = 0 ;
+  double arg2 ;
+  
+  arg1 = (datamunge::optim::BayesianOptimizationResult *)jarg1;
+  arg2 = (double)jarg2;
+  if (arg1) (arg1)->best_value = arg2;
+}
+
+
+SWIGEXPORT double D_BayesianOptimizationResult_best_value_get(void * jarg1) {
+  double jresult = 0 ;
+  datamunge::optim::BayesianOptimizationResult *arg1 = 0 ;
+  double result;
+  
+  arg1 = (datamunge::optim::BayesianOptimizationResult *)jarg1;
+  result = (double) ((arg1)->best_value);
+  jresult = result;
+  return jresult;
+}
+
+
+SWIGEXPORT void D_BayesianOptimizationResult_points_set(void * jarg1, void * jarg2) {
+  datamunge::optim::BayesianOptimizationResult *arg1 = 0 ;
+  std::vector< std::vector< double > > *arg2 = 0 ;
+  
+  arg1 = (datamunge::optim::BayesianOptimizationResult *)jarg1;
+  arg2 = (std::vector< std::vector< double > > *)jarg2;
+  if (arg1) (arg1)->points = *arg2;
+}
+
+
+SWIGEXPORT void * D_BayesianOptimizationResult_points_get(void * jarg1) {
+  void * jresult = 0 ;
+  datamunge::optim::BayesianOptimizationResult *arg1 = 0 ;
+  std::vector< std::vector< double > > *result = 0 ;
+  
+  arg1 = (datamunge::optim::BayesianOptimizationResult *)jarg1;
+  result = (std::vector< std::vector< double > > *)& ((arg1)->points);
+  jresult = (void *)result;
+  return jresult;
+}
+
+
+SWIGEXPORT void D_BayesianOptimizationResult_values_set(void * jarg1, void * jarg2) {
+  datamunge::optim::BayesianOptimizationResult *arg1 = 0 ;
+  std::vector< double > *arg2 = 0 ;
+  
+  arg1 = (datamunge::optim::BayesianOptimizationResult *)jarg1;
+  arg2 = (std::vector< double > *)jarg2;
+  if (arg1) (arg1)->values = *arg2;
+}
+
+
+SWIGEXPORT void * D_BayesianOptimizationResult_values_get(void * jarg1) {
+  void * jresult = 0 ;
+  datamunge::optim::BayesianOptimizationResult *arg1 = 0 ;
+  std::vector< double > *result = 0 ;
+  
+  arg1 = (datamunge::optim::BayesianOptimizationResult *)jarg1;
+  result = (std::vector< double > *)& ((arg1)->values);
+  jresult = (void *)result;
+  return jresult;
+}
+
+
+SWIGEXPORT void D_BayesianOptimizationResult_best_values_set(void * jarg1, void * jarg2) {
+  datamunge::optim::BayesianOptimizationResult *arg1 = 0 ;
+  std::vector< double > *arg2 = 0 ;
+  
+  arg1 = (datamunge::optim::BayesianOptimizationResult *)jarg1;
+  arg2 = (std::vector< double > *)jarg2;
+  if (arg1) (arg1)->best_values = *arg2;
+}
+
+
+SWIGEXPORT void * D_BayesianOptimizationResult_best_values_get(void * jarg1) {
+  void * jresult = 0 ;
+  datamunge::optim::BayesianOptimizationResult *arg1 = 0 ;
+  std::vector< double > *result = 0 ;
+  
+  arg1 = (datamunge::optim::BayesianOptimizationResult *)jarg1;
+  result = (std::vector< double > *)& ((arg1)->best_values);
+  jresult = (void *)result;
+  return jresult;
+}
+
+
+SWIGEXPORT void D_BayesianOptimizationResult_acquisition_values_set(void * jarg1, void * jarg2) {
+  datamunge::optim::BayesianOptimizationResult *arg1 = 0 ;
+  std::vector< double > *arg2 = 0 ;
+  
+  arg1 = (datamunge::optim::BayesianOptimizationResult *)jarg1;
+  arg2 = (std::vector< double > *)jarg2;
+  if (arg1) (arg1)->acquisition_values = *arg2;
+}
+
+
+SWIGEXPORT void * D_BayesianOptimizationResult_acquisition_values_get(void * jarg1) {
+  void * jresult = 0 ;
+  datamunge::optim::BayesianOptimizationResult *arg1 = 0 ;
+  std::vector< double > *result = 0 ;
+  
+  arg1 = (datamunge::optim::BayesianOptimizationResult *)jarg1;
+  result = (std::vector< double > *)& ((arg1)->acquisition_values);
+  jresult = (void *)result;
+  return jresult;
+}
+
+
+SWIGEXPORT void * D_new_BayesianOptimizationResult() {
+  void * jresult = 0 ;
+  datamunge::optim::BayesianOptimizationResult *result = 0 ;
+  
+  result = (datamunge::optim::BayesianOptimizationResult *)new datamunge::optim::BayesianOptimizationResult();
+  jresult = (void *)result;
+  return jresult;
+}
+
+
+SWIGEXPORT void D_delete_BayesianOptimizationResult(void * jarg1) {
+  datamunge::optim::BayesianOptimizationResult *arg1 = 0 ;
+  
+  arg1 = (datamunge::optim::BayesianOptimizationResult *)jarg1;
   delete arg1;
 }
 
@@ -42195,6 +45588,42 @@ SWIGEXPORT void * D_new_BayesianOptimization__SWIG_1() {
   
   result = (datamunge::optim::BayesianOptimization *)new datamunge::optim::BayesianOptimization();
   jresult = (void *)result;
+  return jresult;
+}
+
+
+SWIGEXPORT void * D_BayesianOptimization_run(void * jarg1, void * jarg2, void * jarg3, void * jarg4, void * jarg5) {
+  void * jresult = 0 ;
+  datamunge::optim::BayesianOptimization *arg1 = 0 ;
+  datamunge::optim::ArbitraryFunction *arg2 = 0 ;
+  std::vector< double > *arg3 = 0 ;
+  std::vector< double > *arg4 = 0 ;
+  datamunge::optim::BayesianSurrogate *arg5 = 0 ;
+  datamunge::optim::BayesianOptimizationResult result;
+  
+  arg1 = (datamunge::optim::BayesianOptimization *)jarg1;
+  arg2 = (datamunge::optim::ArbitraryFunction *)jarg2;
+  if (!arg2) {
+    SWIG_DSetPendingException(SWIG_DNullReferenceException, "datamunge::optim::ArbitraryFunction & is null");
+    return 0;
+  } 
+  arg3 = (std::vector< double > *)jarg3;
+  if (!arg3) {
+    SWIG_DSetPendingException(SWIG_DNullReferenceException, "std::vector< double > const & is null");
+    return 0;
+  } 
+  arg4 = (std::vector< double > *)jarg4;
+  if (!arg4) {
+    SWIG_DSetPendingException(SWIG_DNullReferenceException, "std::vector< double > const & is null");
+    return 0;
+  } 
+  arg5 = (datamunge::optim::BayesianSurrogate *)jarg5;
+  if (!arg5) {
+    SWIG_DSetPendingException(SWIG_DNullReferenceException, "datamunge::optim::BayesianSurrogate & is null");
+    return 0;
+  } 
+  result = ((datamunge::optim::BayesianOptimization const *)arg1)->run(*arg2,(std::vector< double > const &)*arg3,(std::vector< double > const &)*arg4,*arg5);
+  jresult = new datamunge::optim::BayesianOptimizationResult(result); 
   return jresult;
 }
 
@@ -42241,10 +45670,152 @@ SWIGEXPORT double D_BayesianOptimization_optimize(void * jarg1, void * jarg2, vo
 }
 
 
+SWIGEXPORT void * D_BayesianOptimization_options(void * jarg1) {
+  void * jresult = 0 ;
+  datamunge::optim::BayesianOptimization *arg1 = 0 ;
+  datamunge::optim::BayesianOptimizationOptions *result = 0 ;
+  
+  arg1 = (datamunge::optim::BayesianOptimization *)jarg1;
+  result = (datamunge::optim::BayesianOptimizationOptions *) &((datamunge::optim::BayesianOptimization const *)arg1)->options();
+  jresult = (void *)result;
+  return jresult;
+}
+
+
 SWIGEXPORT void D_delete_BayesianOptimization(void * jarg1) {
   datamunge::optim::BayesianOptimization *arg1 = 0 ;
   
   arg1 = (datamunge::optim::BayesianOptimization *)jarg1;
+  delete arg1;
+}
+
+
+SWIGEXPORT double D_expected_improvement__SWIG_0(double jarg1, double jarg2, double jarg3, double jarg4) {
+  double jresult = 0 ;
+  double arg1 ;
+  double arg2 ;
+  double arg3 ;
+  double arg4 ;
+  double result;
+  
+  arg1 = (double)jarg1;
+  arg2 = (double)jarg2;
+  arg3 = (double)jarg3;
+  arg4 = (double)jarg4;
+  result = (double)datamunge::optim::expected_improvement(arg1,arg2,arg3,arg4);
+  jresult = result;
+  return jresult;
+}
+
+
+SWIGEXPORT double D_expected_improvement__SWIG_1(double jarg1, double jarg2, double jarg3) {
+  double jresult = 0 ;
+  double arg1 ;
+  double arg2 ;
+  double arg3 ;
+  double result;
+  
+  arg1 = (double)jarg1;
+  arg2 = (double)jarg2;
+  arg3 = (double)jarg3;
+  result = (double)datamunge::optim::expected_improvement(arg1,arg2,arg3);
+  jresult = result;
+  return jresult;
+}
+
+
+SWIGEXPORT double D_probability_of_improvement__SWIG_0(double jarg1, double jarg2, double jarg3, double jarg4) {
+  double jresult = 0 ;
+  double arg1 ;
+  double arg2 ;
+  double arg3 ;
+  double arg4 ;
+  double result;
+  
+  arg1 = (double)jarg1;
+  arg2 = (double)jarg2;
+  arg3 = (double)jarg3;
+  arg4 = (double)jarg4;
+  result = (double)datamunge::optim::probability_of_improvement(arg1,arg2,arg3,arg4);
+  jresult = result;
+  return jresult;
+}
+
+
+SWIGEXPORT double D_probability_of_improvement__SWIG_1(double jarg1, double jarg2, double jarg3) {
+  double jresult = 0 ;
+  double arg1 ;
+  double arg2 ;
+  double arg3 ;
+  double result;
+  
+  arg1 = (double)jarg1;
+  arg2 = (double)jarg2;
+  arg3 = (double)jarg3;
+  result = (double)datamunge::optim::probability_of_improvement(arg1,arg2,arg3);
+  jresult = result;
+  return jresult;
+}
+
+
+SWIGEXPORT void D_SurrogatePrediction_mean_set(void * jarg1, double jarg2) {
+  datamunge::optim::SurrogatePrediction *arg1 = 0 ;
+  double arg2 ;
+  
+  arg1 = (datamunge::optim::SurrogatePrediction *)jarg1;
+  arg2 = (double)jarg2;
+  if (arg1) (arg1)->mean = arg2;
+}
+
+
+SWIGEXPORT double D_SurrogatePrediction_mean_get(void * jarg1) {
+  double jresult = 0 ;
+  datamunge::optim::SurrogatePrediction *arg1 = 0 ;
+  double result;
+  
+  arg1 = (datamunge::optim::SurrogatePrediction *)jarg1;
+  result = (double) ((arg1)->mean);
+  jresult = result;
+  return jresult;
+}
+
+
+SWIGEXPORT void D_SurrogatePrediction_sd_set(void * jarg1, double jarg2) {
+  datamunge::optim::SurrogatePrediction *arg1 = 0 ;
+  double arg2 ;
+  
+  arg1 = (datamunge::optim::SurrogatePrediction *)jarg1;
+  arg2 = (double)jarg2;
+  if (arg1) (arg1)->sd = arg2;
+}
+
+
+SWIGEXPORT double D_SurrogatePrediction_sd_get(void * jarg1) {
+  double jresult = 0 ;
+  datamunge::optim::SurrogatePrediction *arg1 = 0 ;
+  double result;
+  
+  arg1 = (datamunge::optim::SurrogatePrediction *)jarg1;
+  result = (double) ((arg1)->sd);
+  jresult = result;
+  return jresult;
+}
+
+
+SWIGEXPORT void * D_new_SurrogatePrediction() {
+  void * jresult = 0 ;
+  datamunge::optim::SurrogatePrediction *result = 0 ;
+  
+  result = (datamunge::optim::SurrogatePrediction *)new datamunge::optim::SurrogatePrediction();
+  jresult = (void *)result;
+  return jresult;
+}
+
+
+SWIGEXPORT void D_delete_SurrogatePrediction(void * jarg1) {
+  datamunge::optim::SurrogatePrediction *arg1 = 0 ;
+  
+  arg1 = (datamunge::optim::SurrogatePrediction *)jarg1;
   delete arg1;
 }
 
@@ -42321,6 +45892,120 @@ SWIGEXPORT double D_RBFGaussianProcessSurrogate_acquisition(void * jarg1, void *
   arg3 = (double)jarg3;
   result = (double)(arg1)->acquisition((std::vector< double > const &)*arg2,arg3);
   jresult = result;
+  return jresult;
+}
+
+
+SWIGEXPORT void * D_RBFGaussianProcessSurrogate_predict(void * jarg1, void * jarg2) {
+  void * jresult = 0 ;
+  datamunge::optim::RBFGaussianProcessSurrogate *arg1 = 0 ;
+  std::vector< double > *arg2 = 0 ;
+  datamunge::optim::SurrogatePrediction result;
+  
+  arg1 = (datamunge::optim::RBFGaussianProcessSurrogate *)jarg1;
+  arg2 = (std::vector< double > *)jarg2;
+  if (!arg2) {
+    SWIG_DSetPendingException(SWIG_DNullReferenceException, "std::vector< double > const & is null");
+    return 0;
+  } 
+  result = ((datamunge::optim::RBFGaussianProcessSurrogate const *)arg1)->predict((std::vector< double > const &)*arg2);
+  jresult = new datamunge::optim::SurrogatePrediction(result); 
+  return jresult;
+}
+
+
+SWIGEXPORT double D_RBFGaussianProcessSurrogate_log_marginal_likelihood(void * jarg1) {
+  double jresult = 0 ;
+  datamunge::optim::RBFGaussianProcessSurrogate *arg1 = 0 ;
+  double result;
+  
+  arg1 = (datamunge::optim::RBFGaussianProcessSurrogate *)jarg1;
+  result = (double)((datamunge::optim::RBFGaussianProcessSurrogate const *)arg1)->log_marginal_likelihood();
+  jresult = result;
+  return jresult;
+}
+
+
+SWIGEXPORT double D_RBFGaussianProcessSurrogate_length_scale(void * jarg1) {
+  double jresult = 0 ;
+  datamunge::optim::RBFGaussianProcessSurrogate *arg1 = 0 ;
+  double result;
+  
+  arg1 = (datamunge::optim::RBFGaussianProcessSurrogate *)jarg1;
+  result = (double)((datamunge::optim::RBFGaussianProcessSurrogate const *)arg1)->length_scale();
+  jresult = result;
+  return jresult;
+}
+
+
+SWIGEXPORT double D_RBFGaussianProcessSurrogate_noise(void * jarg1) {
+  double jresult = 0 ;
+  datamunge::optim::RBFGaussianProcessSurrogate *arg1 = 0 ;
+  double result;
+  
+  arg1 = (datamunge::optim::RBFGaussianProcessSurrogate *)jarg1;
+  result = (double)((datamunge::optim::RBFGaussianProcessSurrogate const *)arg1)->noise();
+  jresult = result;
+  return jresult;
+}
+
+
+SWIGEXPORT double D_RBFGaussianProcessSurrogate_signal_variance(void * jarg1) {
+  double jresult = 0 ;
+  datamunge::optim::RBFGaussianProcessSurrogate *arg1 = 0 ;
+  double result;
+  
+  arg1 = (datamunge::optim::RBFGaussianProcessSurrogate *)jarg1;
+  result = (double)((datamunge::optim::RBFGaussianProcessSurrogate const *)arg1)->signal_variance();
+  jresult = result;
+  return jresult;
+}
+
+
+SWIGEXPORT double D_RBFGaussianProcessSurrogate_prior_mean(void * jarg1) {
+  double jresult = 0 ;
+  datamunge::optim::RBFGaussianProcessSurrogate *arg1 = 0 ;
+  double result;
+  
+  arg1 = (datamunge::optim::RBFGaussianProcessSurrogate *)jarg1;
+  result = (double)((datamunge::optim::RBFGaussianProcessSurrogate const *)arg1)->prior_mean();
+  jresult = result;
+  return jresult;
+}
+
+
+SWIGEXPORT double D_RBFGaussianProcessSurrogate_value_scale(void * jarg1) {
+  double jresult = 0 ;
+  datamunge::optim::RBFGaussianProcessSurrogate *arg1 = 0 ;
+  double result;
+  
+  arg1 = (datamunge::optim::RBFGaussianProcessSurrogate *)jarg1;
+  result = (double)((datamunge::optim::RBFGaussianProcessSurrogate const *)arg1)->value_scale();
+  jresult = result;
+  return jresult;
+}
+
+
+SWIGEXPORT void * D_RBFGaussianProcessSurrogate_points(void * jarg1) {
+  void * jresult = 0 ;
+  datamunge::optim::RBFGaussianProcessSurrogate *arg1 = 0 ;
+  std::vector< std::vector< double > > *result = 0 ;
+  
+  arg1 = (datamunge::optim::RBFGaussianProcessSurrogate *)jarg1;
+  result = (std::vector< std::vector< double > > *) &((datamunge::optim::RBFGaussianProcessSurrogate const *)arg1)->points();
+  jresult = (void *)result;
+  return jresult;
+}
+
+
+SWIGEXPORT void * D_RBFGaussianProcessSurrogate_values(void * jarg1) {
+  void * jresult = 0 ;
+  datamunge::optim::RBFGaussianProcessSurrogate *arg1 = 0 ;
+  std::vector< double > *result = 0 ;
+  
+  arg1 = (datamunge::optim::RBFGaussianProcessSurrogate *)jarg1;
+  result = (std::vector< double > *) &((datamunge::optim::RBFGaussianProcessSurrogate const *)arg1)->values();
+  jresult = (void *)result;
   return jresult;
 }
 
@@ -42465,6 +46150,18 @@ SWIGEXPORT double D_MAP_optimize(void * jarg1, void * jarg2, void * jarg3) {
   } 
   result = (double)((datamunge::bayes::MAP const *)arg1)->optimize(*arg2,*arg3);
   jresult = result;
+  return jresult;
+}
+
+
+SWIGEXPORT void * D_MAP_options(void * jarg1) {
+  void * jresult = 0 ;
+  datamunge::bayes::MAP *arg1 = 0 ;
+  datamunge::bayes::MAPOptions *result = 0 ;
+  
+  arg1 = (datamunge::bayes::MAP *)jarg1;
+  result = (datamunge::bayes::MAPOptions *) &((datamunge::bayes::MAP const *)arg1)->options();
+  jresult = (void *)result;
   return jresult;
 }
 
@@ -42763,11 +46460,57 @@ SWIGEXPORT void * D_HMC_sample(void * jarg1, void * jarg2, void * jarg3) {
 }
 
 
+SWIGEXPORT void * D_HMC_options(void * jarg1) {
+  void * jresult = 0 ;
+  datamunge::bayes::HMC *arg1 = 0 ;
+  datamunge::bayes::HMCOptions *result = 0 ;
+  
+  arg1 = (datamunge::bayes::HMC *)jarg1;
+  result = (datamunge::bayes::HMCOptions *) &((datamunge::bayes::HMC const *)arg1)->options();
+  jresult = (void *)result;
+  return jresult;
+}
+
+
 SWIGEXPORT void D_delete_HMC(void * jarg1) {
   datamunge::bayes::HMC *arg1 = 0 ;
   
   arg1 = (datamunge::bayes::HMC *)jarg1;
   delete arg1;
+}
+
+
+SWIGEXPORT double D_leapfrog_gaussian_acceptance__SWIG_0(double jarg1, size_t jarg2, double jarg3, size_t jarg4) {
+  double jresult = 0 ;
+  double arg1 ;
+  std::size_t arg2 ;
+  double arg3 ;
+  std::size_t arg4 ;
+  double result;
+  
+  arg1 = (double)jarg1;
+  arg2 = (std::size_t)jarg2;
+  arg3 = (double)jarg3;
+  arg4 = (std::size_t)jarg4;
+  result = (double)datamunge::bayes::leapfrog_gaussian_acceptance(arg1,SWIG_STD_MOVE(*(&arg2)),arg3,SWIG_STD_MOVE(*(&arg4)));
+  jresult = result;
+  return jresult;
+}
+
+
+SWIGEXPORT double D_leapfrog_gaussian_acceptance__SWIG_1(double jarg1, size_t jarg2, double jarg3) {
+  double jresult = 0 ;
+  double arg1 ;
+  std::size_t arg2 ;
+  double arg3 ;
+  double result;
+  
+  arg1 = (double)jarg1;
+  arg2 = (std::size_t)jarg2;
+  arg3 = (double)jarg3;
+  result = (double)datamunge::bayes::leapfrog_gaussian_acceptance(arg1,SWIG_STD_MOVE(*(&arg2)),arg3);
+  jresult = result;
+  return jresult;
 }
 
 
@@ -43031,6 +46774,94 @@ SWIGEXPORT size_t D_NUTSResult_num_divergences_get(void * jarg1) {
 }
 
 
+SWIGEXPORT void D_NUTSResult_divergent_set(void * jarg1, void * jarg2) {
+  datamunge::bayes::NUTSResult *arg1 = 0 ;
+  std::vector< int > *arg2 = 0 ;
+  
+  arg1 = (datamunge::bayes::NUTSResult *)jarg1;
+  arg2 = (std::vector< int > *)jarg2;
+  if (arg1) (arg1)->divergent = *arg2;
+}
+
+
+SWIGEXPORT void * D_NUTSResult_divergent_get(void * jarg1) {
+  void * jresult = 0 ;
+  datamunge::bayes::NUTSResult *arg1 = 0 ;
+  std::vector< int > *result = 0 ;
+  
+  arg1 = (datamunge::bayes::NUTSResult *)jarg1;
+  result = (std::vector< int > *)& ((arg1)->divergent);
+  jresult = (void *)result;
+  return jresult;
+}
+
+
+SWIGEXPORT void D_NUTSResult_tree_depth_set(void * jarg1, void * jarg2) {
+  datamunge::bayes::NUTSResult *arg1 = 0 ;
+  std::vector< int > *arg2 = 0 ;
+  
+  arg1 = (datamunge::bayes::NUTSResult *)jarg1;
+  arg2 = (std::vector< int > *)jarg2;
+  if (arg1) (arg1)->tree_depth = *arg2;
+}
+
+
+SWIGEXPORT void * D_NUTSResult_tree_depth_get(void * jarg1) {
+  void * jresult = 0 ;
+  datamunge::bayes::NUTSResult *arg1 = 0 ;
+  std::vector< int > *result = 0 ;
+  
+  arg1 = (datamunge::bayes::NUTSResult *)jarg1;
+  result = (std::vector< int > *)& ((arg1)->tree_depth);
+  jresult = (void *)result;
+  return jresult;
+}
+
+
+SWIGEXPORT void D_NUTSResult_n_leapfrog_set(void * jarg1, void * jarg2) {
+  datamunge::bayes::NUTSResult *arg1 = 0 ;
+  std::vector< int > *arg2 = 0 ;
+  
+  arg1 = (datamunge::bayes::NUTSResult *)jarg1;
+  arg2 = (std::vector< int > *)jarg2;
+  if (arg1) (arg1)->n_leapfrog = *arg2;
+}
+
+
+SWIGEXPORT void * D_NUTSResult_n_leapfrog_get(void * jarg1) {
+  void * jresult = 0 ;
+  datamunge::bayes::NUTSResult *arg1 = 0 ;
+  std::vector< int > *result = 0 ;
+  
+  arg1 = (datamunge::bayes::NUTSResult *)jarg1;
+  result = (std::vector< int > *)& ((arg1)->n_leapfrog);
+  jresult = (void *)result;
+  return jresult;
+}
+
+
+SWIGEXPORT void D_NUTSResult_energy_set(void * jarg1, void * jarg2) {
+  datamunge::bayes::NUTSResult *arg1 = 0 ;
+  std::vector< double > *arg2 = 0 ;
+  
+  arg1 = (datamunge::bayes::NUTSResult *)jarg1;
+  arg2 = (std::vector< double > *)jarg2;
+  if (arg1) (arg1)->energy = *arg2;
+}
+
+
+SWIGEXPORT void * D_NUTSResult_energy_get(void * jarg1) {
+  void * jresult = 0 ;
+  datamunge::bayes::NUTSResult *arg1 = 0 ;
+  std::vector< double > *result = 0 ;
+  
+  arg1 = (datamunge::bayes::NUTSResult *)jarg1;
+  result = (std::vector< double > *)& ((arg1)->energy);
+  jresult = (void *)result;
+  return jresult;
+}
+
+
 SWIGEXPORT void * D_new_NUTSResult() {
   void * jresult = 0 ;
   datamunge::bayes::NUTSResult *result = 0 ;
@@ -43097,6 +46928,18 @@ SWIGEXPORT void * D_NUTS_sample(void * jarg1, void * jarg2, void * jarg3) {
   } 
   result = ((datamunge::bayes::NUTS const *)arg1)->sample(*arg2,(std::vector< double > const &)*arg3);
   jresult = new datamunge::bayes::NUTSResult(result); 
+  return jresult;
+}
+
+
+SWIGEXPORT void * D_NUTS_options(void * jarg1) {
+  void * jresult = 0 ;
+  datamunge::bayes::NUTS *arg1 = 0 ;
+  datamunge::bayes::NUTSOptions *result = 0 ;
+  
+  arg1 = (datamunge::bayes::NUTS *)jarg1;
+  result = (datamunge::bayes::NUTSOptions *) &((datamunge::bayes::NUTS const *)arg1)->options();
+  jresult = (void *)result;
   return jresult;
 }
 
@@ -43219,6 +47062,28 @@ SWIGEXPORT unsigned long long D_RWMOptions_seed_get(void * jarg1) {
 }
 
 
+SWIGEXPORT void D_RWMOptions_adapt_covariance_set(void * jarg1, unsigned int jarg2) {
+  datamunge::bayes::RWMOptions *arg1 = 0 ;
+  bool arg2 ;
+  
+  arg1 = (datamunge::bayes::RWMOptions *)jarg1;
+  arg2 = jarg2 ? true : false;
+  if (arg1) (arg1)->adapt_covariance = arg2;
+}
+
+
+SWIGEXPORT unsigned int D_RWMOptions_adapt_covariance_get(void * jarg1) {
+  unsigned int jresult = 0 ;
+  datamunge::bayes::RWMOptions *arg1 = 0 ;
+  bool result;
+  
+  arg1 = (datamunge::bayes::RWMOptions *)jarg1;
+  result = (bool) ((arg1)->adapt_covariance);
+  jresult = result;
+  return jresult;
+}
+
+
 SWIGEXPORT void * D_new_RWMOptions() {
   void * jresult = 0 ;
   datamunge::bayes::RWMOptions *result = 0 ;
@@ -43303,6 +47168,28 @@ SWIGEXPORT double D_RWMResult_final_step_size_get(void * jarg1) {
 }
 
 
+SWIGEXPORT void D_RWMResult_proposal_covariance_set(void * jarg1, void * jarg2) {
+  datamunge::bayes::RWMResult *arg1 = 0 ;
+  std::vector< std::vector< double > > *arg2 = 0 ;
+  
+  arg1 = (datamunge::bayes::RWMResult *)jarg1;
+  arg2 = (std::vector< std::vector< double > > *)jarg2;
+  if (arg1) (arg1)->proposal_covariance = *arg2;
+}
+
+
+SWIGEXPORT void * D_RWMResult_proposal_covariance_get(void * jarg1) {
+  void * jresult = 0 ;
+  datamunge::bayes::RWMResult *arg1 = 0 ;
+  std::vector< std::vector< double > > *result = 0 ;
+  
+  arg1 = (datamunge::bayes::RWMResult *)jarg1;
+  result = (std::vector< std::vector< double > > *)& ((arg1)->proposal_covariance);
+  jresult = (void *)result;
+  return jresult;
+}
+
+
 SWIGEXPORT void * D_new_RWMResult() {
   void * jresult = 0 ;
   datamunge::bayes::RWMResult *result = 0 ;
@@ -43369,6 +47256,18 @@ SWIGEXPORT void * D_RandomWalkMetropolis_sample(void * jarg1, void * jarg2, void
   } 
   result = ((datamunge::bayes::RandomWalkMetropolis const *)arg1)->sample(*arg2,(std::vector< double > const &)*arg3);
   jresult = new datamunge::bayes::RWMResult(result); 
+  return jresult;
+}
+
+
+SWIGEXPORT void * D_RandomWalkMetropolis_options(void * jarg1) {
+  void * jresult = 0 ;
+  datamunge::bayes::RandomWalkMetropolis *arg1 = 0 ;
+  datamunge::bayes::RWMOptions *result = 0 ;
+  
+  arg1 = (datamunge::bayes::RandomWalkMetropolis *)jarg1;
+  result = (datamunge::bayes::RWMOptions *) &((datamunge::bayes::RandomWalkMetropolis const *)arg1)->options();
+  jresult = (void *)result;
   return jresult;
 }
 
@@ -43645,6 +47544,18 @@ SWIGEXPORT void * D_GibbsSampler_sample(void * jarg1, void * jarg2, void * jarg3
 }
 
 
+SWIGEXPORT void * D_GibbsSampler_options(void * jarg1) {
+  void * jresult = 0 ;
+  datamunge::bayes::GibbsSampler *arg1 = 0 ;
+  datamunge::bayes::GibbsOptions *result = 0 ;
+  
+  arg1 = (datamunge::bayes::GibbsSampler *)jarg1;
+  result = (datamunge::bayes::GibbsOptions *) &((datamunge::bayes::GibbsSampler const *)arg1)->options();
+  jresult = (void *)result;
+  return jresult;
+}
+
+
 SWIGEXPORT void D_delete_GibbsSampler(void * jarg1) {
   datamunge::bayes::GibbsSampler *arg1 = 0 ;
   
@@ -43879,11 +47790,37 @@ SWIGEXPORT void * D_ImportanceSampling_sample(void * jarg1, void * jarg2, void *
 }
 
 
+SWIGEXPORT void * D_ImportanceSampling_options(void * jarg1) {
+  void * jresult = 0 ;
+  datamunge::bayes::ImportanceSampling *arg1 = 0 ;
+  datamunge::bayes::ImportanceSamplingOptions *result = 0 ;
+  
+  arg1 = (datamunge::bayes::ImportanceSampling *)jarg1;
+  result = (datamunge::bayes::ImportanceSamplingOptions *) &((datamunge::bayes::ImportanceSampling const *)arg1)->options();
+  jresult = (void *)result;
+  return jresult;
+}
+
+
 SWIGEXPORT void D_delete_ImportanceSampling(void * jarg1) {
   datamunge::bayes::ImportanceSampling *arg1 = 0 ;
   
   arg1 = (datamunge::bayes::ImportanceSampling *)jarg1;
   delete arg1;
+}
+
+
+SWIGEXPORT double D_gaussian_importance_efficiency(double jarg1, int jarg2) {
+  double jresult = 0 ;
+  double arg1 ;
+  int arg2 ;
+  double result;
+  
+  arg1 = (double)jarg1;
+  arg2 = (int)jarg2;
+  result = (double)datamunge::bayes::gaussian_importance_efficiency(arg1,arg2);
+  jresult = result;
+  return jresult;
 }
 
 
@@ -44254,6 +48191,18 @@ SWIGEXPORT void * D_ODESolver_solve_builtin(void * jarg1, char * jarg2, void * j
   arg6 = (double)jarg6;
   result = ((datamunge::ode::ODESolver const *)arg1)->solve_builtin((std::string const &)*arg2,(std::vector< double > const &)*arg3,(std::vector< double > const &)*arg4,arg5,arg6);
   jresult = new datamunge::ode::ODESolution(result); 
+  return jresult;
+}
+
+
+SWIGEXPORT void * D_ODESolver_options(void * jarg1) {
+  void * jresult = 0 ;
+  datamunge::ode::ODESolver *arg1 = 0 ;
+  datamunge::ode::ODEOptions *result = 0 ;
+  
+  arg1 = (datamunge::ode::ODESolver *)jarg1;
+  result = (datamunge::ode::ODEOptions *) &((datamunge::ode::ODESolver const *)arg1)->options();
+  jresult = (void *)result;
   return jresult;
 }
 

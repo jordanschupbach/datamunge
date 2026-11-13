@@ -1,4 +1,6 @@
 <?php
+// CMD: just TARGET=lm_ex run-php
+
 
 function dvector($values) {
     $out = new DVector(count($values));

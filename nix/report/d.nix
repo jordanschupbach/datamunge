@@ -15,6 +15,6 @@ pkgs.mkShell {
   # The generated datamunge module (source/) and libdatamunge_wrap, which it dlopens at startup.
   shellHook = ''
     export DATAMUNGED_SOURCE="${datamunged}/share/dub/packages/datamunged-${datamunged.version}/source"
-    export LD_LIBRARY_PATH="${datamunged}/lib:${libdir}"
+    export LD_LIBRARY_PATH="${datamunged}/lib:${libdir}''${LD_LIBRARY_PATH:+:$LD_LIBRARY_PATH}"
   '';
 }

@@ -8,6 +8,23 @@
 
 package js.datamunge.jdatamunge;
 
+/**
+ *  Newton on the HessianFunction callback interface.<br>
+ *  Adds fixed damping to the supplied Hessian diagonal, solves with partial-pivot Gaussian elimination, and takes a full step. This is not a globalised line-search method; indefinite or nearly singular Hessians can increase the loss or produce huge steps. Stops on gradient norm. Dense O(p^3) solve/O(p^2) storage.<br>
+ *  The caller supplies finite, dimensionally consistent callbacks. Inputs are borrowed;<br>
+ *  coordinates mutate in place and can retain a partial state if a callback throws.<br>
+ *  Calls use local optimizer state and propagate callback exceptions; sharing a mutable<br>
+ *  objective across threads requires external synchronisation. Normal return alone<br>
+ *  is not a uniform convergence certificate.<br>
+ *  <p alt="Example"><br>
+ *  {@code 
+ const dm::optim::Newton optimizer;
+ std::print("{}\n",optimizer.options().max_iterations); // 100
+ }</p><br>
+ *  <p alt="References"><br>
+ *  - J. Nocedal and S. J. Wright (2006), Numerical Optimization, second edition, https://doi.org/10.1007/978-0-387-40065-5. The implemented variant and stopping rules are specified above.<br>
+ *  </p>@see NewtonOptions, trace_optimize()
+ */
 public class Newton {
   private transient long swigCPtr;
   protected transient boolean swigCMemOwn;
@@ -48,16 +65,61 @@ public class Newton {
     }
   }
 
+  /**
+   *  Store a copy of the controls without running the objective.<br>
+   *  @param options Method-specific controls; defaults are listed by NewtonOptions.<br>
+   *  <p alt="Example"><br>
+   *  {@code 
+   const dm::optim::Newton optimizer;
+   std::print("{}\n",optimizer.options().max_iterations); // 100
+   }</p><br>
+   *  @see optimize()
+   */
   public Newton(NewtonOptions options) {
     this(datamungeJNI.new_Newton__SWIG_0(NewtonOptions.getCPtr(options), options), true);
   }
 
+  /**
+   *  Store a copy of the controls without running the objective.<br>
+   *  <p alt="Example"><br>
+   *  {@code 
+   const dm::optim::Newton optimizer;
+   std::print("{}\n",optimizer.options().max_iterations); // 100
+   }</p><br>
+   *  @see optimize()
+   */
   public Newton() {
     this(datamungeJNI.new_Newton__SWIG_1(), true);
   }
 
+  /**
+   *  Run Newton from the supplied point using the configured finite budget.<br>
+   *  Adds fixed damping to the supplied Hessian diagonal, solves with partial-pivot Gaussian elimination, and takes a full step. This is not a globalised line-search method; indefinite or nearly singular Hessians can increase the loss or produce huge steps. Stops on gradient norm. Dense O(p^3) solve/O(p^2) storage.<br>
+   *  @param function Borrowed HessianFunction with matching finite output shapes.<br>
+   *  @param coordinates Owned-by-caller finite start; overwritten with the native returned point.<br>
+   *  @return Objective at the native returned coordinates; not a stop-status code.<br>
+   *  @throws std::invalid_argument Newton: Hessian has wrong dimension; Newton: singular Hessian.<br>
+   *  @throws std::exception Exceptions from supplied callbacks propagate. Raw solvers do not uniformly reject nonfinite inputs.<br>
+   *  <p alt="Example"><br>
+   *  {@code 
+   dm::optim::QuadraticObjective f({2,8},{1,-2});
+   dm::optim::NewtonOptions controls;controls.max_iterations=5;
+   std::vector<double> x{0,0};
+   const auto value=dm::optim::Newton(controls).optimize(f,x);
+   std::print("{}\n",std::isfinite(value)); // true
+   }</p><br>
+   *  @see trace_optimize(), NewtonOptions
+   */
   public double optimize(HessianFunction function, DVector coordinates) {
     return datamungeJNI.Newton_optimize(swigCPtr, this, HessianFunction.getCPtr(function), function, DVector.getCPtr(coordinates), coordinates);
+  }
+
+  /**
+   *  Borrow this optimizer's stored configuration.<br>
+   *  @return Const option reference, valid during this object's lifetime; no mutation.
+   */
+  public NewtonOptions options() {
+    return new NewtonOptions(datamungeJNI.Newton_options(swigCPtr, this), false);
   }
 
 }

@@ -1,3 +1,5 @@
+;; CMD: just TARGET=datamunge_ex run-guile
+
 (use-modules (datamunge))
 
 (display "Hello from Guile + Datamunge\n")

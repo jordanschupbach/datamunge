@@ -1,3 +1,5 @@
+// CMD: just TARGET=image_ex run-cpp
+
 #include <datamunge/image/imaging.hpp>
 
 #include <iostream>

@@ -71,4 +71,12 @@ public class CuckooSearch {
     return datamungeJNI.CuckooSearch_optimize(swigCPtr, this, ArbitraryFunction.getCPtr(function), function, DVector.getCPtr(coordinates), coordinates, DVector.getCPtr(lower_bound), lower_bound, DVector.getCPtr(upper_bound), upper_bound);
   }
 
+  /**
+   *  The options this CuckooSearch was configured with.<br>
+   *  @return The stored options.
+   */
+  public CuckooSearchOptions options() {
+    return new CuckooSearchOptions(datamungeJNI.CuckooSearch_options(swigCPtr, this), false);
+  }
+
 }

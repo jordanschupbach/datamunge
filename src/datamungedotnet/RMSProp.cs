@@ -9,7 +9,17 @@
 //------------------------------------------------------------------------------
 
 
-/// <summary>Full-batch RMSProp on a DifferentiableFunction.  RMSProp normalizes every coordinate        by a moving average of its recent squared gradients, unlike AdaGrad whose accumulator        grows indefinitely.</summary>
+/// <summary>RMSProp on the DifferentiableFunction callback interface. Uses an exponential squared-gradient average with decay_rate, dividing by sqrt(average)+epsilon. Tests the pre-update gradient norm after updating. Fixed rates can oscillate. O(p) local state, reset on every call. The caller supplies finite, dimensionally consistent callbacks. Inputs are borrowed; coordinates mutate in place and can retain a partial state if a callback throws. Calls use local optimizer state and propagate callback exceptions; sharing a mutable objective across threads requires external synchronisation. Normal return alone is not a uniform convergence certificate.</summary>
+/// Title: Example
+/// <code>      const dm::optim::RMSProp optimizer;
+///      std::print("{}\n",optimizer.options().max_iterations); // 10000</code>
+///
+///
+///
+/// Title: References
+///  - G. Hinton (2012), lecture 6e, https://www.cs.utoronto.ca/~hinton/coursera_lectures.html
+///
+/// <seealso cref="RMSPropOptions, trace_optimize"/>
 public class RMSProp : global::System.IDisposable {
   private global::System.Runtime.InteropServices.HandleRef swigCPtr;
   protected bool swigCMemOwn;
@@ -57,16 +67,56 @@ public class RMSProp : global::System.IDisposable {
     }
   }
 
+  /// <summary>Store a copy of the controls without running the objective.</summary>
+  /// <param name="options"> Method-specific controls; defaults are listed by RMSPropOptions.</param> 
+  /// Title: Example
+  /// <code>      const dm::optim::RMSProp optimizer;
+  ///      std::print("{}\n",optimizer.options().max_iterations); // 10000</code>
+  ///
+  ///
+  ///
+  /// <seealso cref="optimize"/>
   public RMSProp(RMSPropOptions options) : this(datamungePINVOKE.new_RMSProp__SWIG_0(RMSPropOptions.getCPtr(options)), true) {
     if (datamungePINVOKE.SWIGPendingException.Pending) throw datamungePINVOKE.SWIGPendingException.Retrieve();
   }
 
+  /// <summary>Store a copy of the controls without running the objective.</summary>
+  /// Title: Example
+  /// <code>      const dm::optim::RMSProp optimizer;
+  ///      std::print("{}\n",optimizer.options().max_iterations); // 10000</code>
+  ///
+  ///
+  ///
+  /// <seealso cref="optimize"/>
   public RMSProp() : this(datamungePINVOKE.new_RMSProp__SWIG_1(), true) {
   }
 
+  /// <summary>Run RMSProp from the supplied point using the configured finite budget. Uses an exponential squared-gradient average with decay_rate, dividing by sqrt(average)+epsilon. Tests the pre-update gradient norm after updating. Fixed rates can oscillate. O(p) local state, reset on every call.</summary>
+  /// <param name="function"> Borrowed DifferentiableFunction with matching finite output shapes.</param> 
+  /// <param name="coordinates"> Owned-by-caller finite start; overwritten with the native returned point.</param> 
+  /// <returns>Objective at the native returned coordinates; not a stop-status code.</returns> 
+  /// <exception cref="std::invalid_argument"> RMSProp: step_size must be positive; RMSProp: decay_rate must be in [0, 1); RMSProp: epsilon must be positive; RMSProp: tolerance must be non-negative.</exception> 
+  /// <exception cref="std::exception"> Exceptions from supplied callbacks propagate. Raw solvers do not uniformly reject nonfinite inputs.</exception> 
+  /// Title: Example
+  /// <code>      dm::optim::QuadraticObjective f({2,8},{1,-2});
+  ///      dm::optim::RMSPropOptions controls;controls.max_iterations=5;
+  ///      std::vector&lt;double&gt; x{0,0};
+  ///      const auto value=dm::optim::RMSProp(controls).optimize(f,x);
+  ///      std::print("{}\n",std::isfinite(value)); // true</code>
+  ///
+  ///
+  ///
+  /// <seealso cref="trace_optimize"/>
   public double optimize(DifferentiableFunction function, DVector coordinates) {
     double ret = datamungePINVOKE.RMSProp_optimize(swigCPtr, DifferentiableFunction.getCPtr(function), DVector.getCPtr(coordinates));
     if (datamungePINVOKE.SWIGPendingException.Pending) throw datamungePINVOKE.SWIGPendingException.Retrieve();
+    return ret;
+  }
+
+  /// <summary>Borrow this optimizer's stored configuration.</summary>
+  /// <returns>Const option reference, valid during this object's lifetime; no mutation.</returns>
+  public RMSPropOptions options() {
+    RMSPropOptions ret = new RMSPropOptions(datamungePINVOKE.RMSProp_options(swigCPtr), false);
     return ret;
   }
 

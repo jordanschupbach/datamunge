@@ -1,8 +1,10 @@
+// CMD: just TARGET=kernel_regression_iris_ex run-javascript
+
 const datamunge = require("../../index.js");
 
 const FORMULA = "Petal.Length ~ Petal.Width";
 
-const iris = datamunge.DataFrame.iris();
+const iris = datamunge.data.iris();
 console.log(`iris: ${iris.nrows()} rows x ${iris.ncols()} cols`);
 console.log(`formula: ${FORMULA}\n`);
 

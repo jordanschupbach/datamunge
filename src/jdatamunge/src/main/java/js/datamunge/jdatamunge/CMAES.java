@@ -9,10 +9,21 @@
 package js.datamunge.jdatamunge;
 
 /**
- *  Covariance Matrix Adaptation Evolution Strategy (CMA-ES) for unconstrained continuous<br>
- *         derivative-free optimization.  CMA-ES adapts a full Gaussian covariance matrix from<br>
- *         the best sampled candidates each generation, making it effective on rotated and<br>
- *         ill-conditioned objectives.
+ *  CMAES on the ArbitraryFunction callback interface.<br>
+ *  Unbounded covariance-adaptation evolution strategy with weighted elites, evolution paths and global step-size adaptation. Default offspring count is 4+floor(3*log(p)). Covariance eigensolve is dense with numerical eigenvalue floors. Stops on search-scale/axis tolerance or generation budget; stochastic results depend on seed and population, not a global certificate.<br>
+ *  The caller supplies finite, dimensionally consistent callbacks. Inputs are borrowed;<br>
+ *  coordinates mutate in place and can retain a partial state if a callback throws.<br>
+ *  Calls use local optimizer state and propagate callback exceptions; sharing a mutable<br>
+ *  objective across threads requires external synchronisation. Normal return alone<br>
+ *  is not a uniform convergence certificate.<br>
+ *  <p alt="Example"><br>
+ *  {@code 
+ const dm::optim::CMAES optimizer;
+ std::print("{}\n",optimizer.options().max_generations); // 500
+ }</p><br>
+ *  <p alt="References"><br>
+ *  - N. Hansen and A. Ostermeier (2001), Completely Derandomized Self-Adaptation in Evolution Strategies, https://doi.org/10.1162/106365601750190398<br>
+ *  </p>@see CMAESOptions, trace_optimize()
  */
 public class CMAES {
   private transient long swigCPtr;
@@ -54,16 +65,61 @@ public class CMAES {
     }
   }
 
+  /**
+   *  Store a copy of the controls without running the objective.<br>
+   *  @param options Method-specific controls; defaults are listed by CMAESOptions.<br>
+   *  <p alt="Example"><br>
+   *  {@code 
+   const dm::optim::CMAES optimizer;
+   std::print("{}\n",optimizer.options().max_generations); // 500
+   }</p><br>
+   *  @see optimize()
+   */
   public CMAES(CMAESOptions options) {
     this(datamungeJNI.new_CMAES__SWIG_0(CMAESOptions.getCPtr(options), options), true);
   }
 
+  /**
+   *  Store a copy of the controls without running the objective.<br>
+   *  <p alt="Example"><br>
+   *  {@code 
+   const dm::optim::CMAES optimizer;
+   std::print("{}\n",optimizer.options().max_generations); // 500
+   }</p><br>
+   *  @see optimize()
+   */
   public CMAES() {
     this(datamungeJNI.new_CMAES__SWIG_1(), true);
   }
 
+  /**
+   *  Run CMAES from the supplied point using the configured finite budget.<br>
+   *  Unbounded covariance-adaptation evolution strategy with weighted elites, evolution paths and global step-size adaptation. Default offspring count is 4+floor(3*log(p)). Covariance eigensolve is dense with numerical eigenvalue floors. Stops on search-scale/axis tolerance or generation budget; stochastic results depend on seed and population, not a global certificate.<br>
+   *  @param function Borrowed ArbitraryFunction with matching finite output shapes.<br>
+   *  @param coordinates Owned-by-caller finite start; overwritten with the native returned point.<br>
+   *  @return Objective at the native returned coordinates; not a stop-status code.<br>
+   *  @throws std::invalid_argument CMAES: initial_step_size must be positive; CMAES: tolerance must be non-negative; CMAES: population_size must be at least 2.<br>
+   *  @throws std::exception Exceptions from supplied callbacks propagate. Raw solvers do not uniformly reject nonfinite inputs.<br>
+   *  <p alt="Example"><br>
+   *  {@code 
+   dm::optim::QuadraticObjective f({2,8},{1,-2});
+   dm::optim::CMAESOptions controls;controls.max_generations=5;
+   std::vector<double> x{0,0};
+   const auto value=dm::optim::CMAES(controls).optimize(f,x);
+   std::print("{}\n",std::isfinite(value)); // true
+   }</p><br>
+   *  @see trace_optimize(), CMAESOptions
+   */
   public double optimize(ArbitraryFunction function, DVector coordinates) {
     return datamungeJNI.CMAES_optimize(swigCPtr, this, ArbitraryFunction.getCPtr(function), function, DVector.getCPtr(coordinates), coordinates);
+  }
+
+  /**
+   *  Borrow this optimizer's stored configuration.<br>
+   *  @return Const option reference, valid during this object's lifetime; no mutation.
+   */
+  public CMAESOptions options() {
+    return new CMAESOptions(datamungeJNI.CMAES_options(swigCPtr, this), false);
   }
 
 }

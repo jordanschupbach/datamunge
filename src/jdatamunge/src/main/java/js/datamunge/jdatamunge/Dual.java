@@ -53,90 +53,202 @@ public class Dual {
     }
   }
 
+  /**
+   *  A dual number value + derivative·ε (ε² = 0).<br>
+   * <br>
+   *  Seed the variable you differentiate with derivative 1 and constants with 0; every<br>
+   *  operation then carries the exact derivative with respect to that seed.<br>
+   *  @param value Real part, the function value.<br>
+   *  @param derivative Dual part, the derivative with respect to the seed (default 0).<br>
+   *  <p alt="Example"><br>
+   *  {@code 
+   const dm::Dual x(2.0, 1.0);  // seed d/dx
+   std::print("{}\n", x.multiply(x).derivative());  // 4
+   }</p>
+   */
   public Dual(double value, double derivative) {
     this(datamungeJNI.new_Dual__SWIG_0(value, derivative), true);
   }
 
+  /**
+   *  A dual number value + derivative·ε (ε² = 0).<br>
+   * <br>
+   *  Seed the variable you differentiate with derivative 1 and constants with 0; every<br>
+   *  operation then carries the exact derivative with respect to that seed.<br>
+   *  @param value Real part, the function value.<br>
+   *  <p alt="Example"><br>
+   *  {@code 
+   const dm::Dual x(2.0, 1.0);  // seed d/dx
+   std::print("{}\n", x.multiply(x).derivative());  // 4
+   }</p>
+   */
   public Dual(double value) {
     this(datamungeJNI.new_Dual__SWIG_1(value), true);
   }
 
+  /**
+   *  The real part: the function value.
+   */
   public double value() {
     return datamungeJNI.Dual_value(swigCPtr, this);
   }
 
+  /**
+   *  The dual part: the exact derivative with respect to the seed.
+   */
   public double derivative() {
     return datamungeJNI.Dual_derivative(swigCPtr, this);
   }
 
+  /**
+   *  Sum: this + <code>other</code>, with derivative a' + b'.<br>
+   *  @param other Right operand.<br>
+   *  @return A new Dual; neither operand changes.
+   */
   public Dual add(Dual other) {
     return new Dual(datamungeJNI.Dual_add(swigCPtr, this, Dual.getCPtr(other), other), true);
   }
 
+  /**
+   *  Difference: this - <code>other</code>, with derivative a' - b'.<br>
+   *  @param other Right operand.<br>
+   *  @return A new Dual; neither operand changes.
+   */
   public Dual subtract(Dual other) {
     return new Dual(datamungeJNI.Dual_subtract(swigCPtr, this, Dual.getCPtr(other), other), true);
   }
 
+  /**
+   *  Product: this * <code>other</code>, with derivative a'b + ab' (product rule).<br>
+   *  @param other Right operand.<br>
+   *  @return A new Dual; neither operand changes.
+   */
   public Dual multiply(Dual other) {
     return new Dual(datamungeJNI.Dual_multiply(swigCPtr, this, Dual.getCPtr(other), other), true);
   }
 
+  /**
+   *  Quotient: this / <code>other</code>, with derivative (a'b - ab')/b² (IEEE inf/NaN when other is 0).<br>
+   *  @param other Right operand.<br>
+   *  @return A new Dual; neither operand changes.
+   */
   public Dual divide(Dual other) {
     return new Dual(datamungeJNI.Dual_divide(swigCPtr, this, Dual.getCPtr(other), other), true);
   }
 
+  /**
+   *  Negation -x, with its exact chain-rule derivative.<br>
+   *  @return A new Dual.
+   */
   public Dual negate() {
     return new Dual(datamungeJNI.Dual_negate(swigCPtr, this), true);
   }
 
+  /**
+   *  Adds a constant <code>scalar</code>, derivative unchanged.<br>
+   *  @param scalar Constant right operand.<br>
+   *  @return A new Dual.
+   */
   public Dual add_scalar(double scalar) {
     return new Dual(datamungeJNI.Dual_add_scalar(swigCPtr, this, scalar), true);
   }
 
+  /**
+   *  Subtracts a constant <code>scalar</code>, derivative unchanged.<br>
+   *  @param scalar Constant right operand.<br>
+   *  @return A new Dual.
+   */
   public Dual subtract_scalar(double scalar) {
     return new Dual(datamungeJNI.Dual_subtract_scalar(swigCPtr, this, scalar), true);
   }
 
+  /**
+   *  Multiplies by a constant <code>scalar</code>, derivative scaled by it.<br>
+   *  @param scalar Constant right operand.<br>
+   *  @return A new Dual.
+   */
   public Dual multiply_scalar(double scalar) {
     return new Dual(datamungeJNI.Dual_multiply_scalar(swigCPtr, this, scalar), true);
   }
 
+  /**
+   *  Divides by a constant <code>scalar</code>, derivative divided by it.<br>
+   *  @param scalar Constant right operand.<br>
+   *  @return A new Dual.
+   */
   public Dual divide_scalar(double scalar) {
     return new Dual(datamungeJNI.Dual_divide_scalar(swigCPtr, this, scalar), true);
   }
 
+  /**
+   *  Power x^p for a constant exponent, with derivative p·x^(p-1).<br>
+   *  @param exponent Constant exponent p; non-integer p needs x ≥ 0 (NaN otherwise).<br>
+   *  @return A new Dual.
+   */
   public Dual pow(double exponent) {
     return new Dual(datamungeJNI.Dual_pow(swigCPtr, this, exponent), true);
   }
 
+  /**
+   *  Exponential e^x, with its exact chain-rule derivative.<br>
+   *  @return A new Dual.
+   */
   public Dual exp() {
     return new Dual(datamungeJNI.Dual_exp(swigCPtr, this), true);
   }
 
+  /**
+   *  Natural logarithm ln x (NaN for x &lt; 0, -inf at 0), with its exact chain-rule derivative.<br>
+   *  @return A new Dual.
+   */
   public Dual log() {
     return new Dual(datamungeJNI.Dual_log(swigCPtr, this), true);
   }
 
+  /**
+   *  Square root √x (NaN for x &lt; 0; infinite derivative at 0), with its exact chain-rule derivative.<br>
+   *  @return A new Dual.
+   */
   public Dual sqrt() {
     return new Dual(datamungeJNI.Dual_sqrt(swigCPtr, this), true);
   }
 
+  /**
+   *  Sine (radians), with its exact chain-rule derivative.<br>
+   *  @return A new Dual.
+   */
   public Dual sin() {
     return new Dual(datamungeJNI.Dual_sin(swigCPtr, this), true);
   }
 
+  /**
+   *  Cosine (radians), with its exact chain-rule derivative.<br>
+   *  @return A new Dual.
+   */
   public Dual cos() {
     return new Dual(datamungeJNI.Dual_cos(swigCPtr, this), true);
   }
 
+  /**
+   *  Tangent (radians), with its exact chain-rule derivative.<br>
+   *  @return A new Dual.
+   */
   public Dual tan() {
     return new Dual(datamungeJNI.Dual_tan(swigCPtr, this), true);
   }
 
+  /**
+   *  Hyperbolic tangent, with its exact chain-rule derivative.<br>
+   *  @return A new Dual.
+   */
   public Dual tanh() {
     return new Dual(datamungeJNI.Dual_tanh(swigCPtr, this), true);
   }
 
+  /**
+   *  Absolute value |x| (the derivative at 0 uses the x ≥ 0 branch), with its exact chain-rule derivative.<br>
+   *  @return A new Dual.
+   */
   public Dual abs() {
     return new Dual(datamungeJNI.Dual_abs(swigCPtr, this), true);
   }

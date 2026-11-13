@@ -1,3 +1,5 @@
+# CMD: just TARGET=ggplot_ex run-ruby
+
 require "octruby"
 
 # Demonstrates Datamunge::GGPlot -- the ggplot2-style grammar-of-graphics library.
@@ -10,7 +12,7 @@ def rgb(r, g, b)
   color
 end
 
-iris = Datamunge::DataFrame.iris
+iris = Datamunge.data_iris
 
 # ggplot(iris, aes(x = Sepal.Length, y = Sepal.Width, color = Species)) + geom_point()
 scatter = Datamunge::GGPlot.new(iris, "Sepal.Length", "Sepal.Width", "Species")

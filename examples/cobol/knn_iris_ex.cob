@@ -1,6 +1,6 @@
 *> k-nearest-neighbors classification of iris species from petal measurements, with
 *> leave-one-out evaluation and decision-region plots for k = 5, 1 and 25.
-*> Run with `just run-cobol TARGET=knn_iris_ex`.
+*> CMD: just TARGET=knn_iris_ex run-cobol
 IDENTIFICATION DIVISION.
 PROGRAM-ID. KNN-IRIS-EX.
 DATA DIVISION.
@@ -27,9 +27,9 @@ COPY "datamunge.cpy".
 01 NUM-EDIT-2    PIC Z(8)9.
 
 PROCEDURE DIVISION.
-    CALL "dm_data_frame_iris" USING DM-DATA-FRAME-IRIS DM-STATUS
+    CALL "dm_data_iris" USING DM-DATA-IRIS DM-STATUS
     PERFORM CHECK
-    MOVE DM-DATA-FRAME-IRIS-RESULT TO IRIS
+    MOVE DM-DATA-IRIS-RESULT TO IRIS
     MOVE IRIS TO DM-DATA-FRAME-NROWS-SELF
     CALL "dm_data_frame_nrows" USING DM-DATA-FRAME-NROWS DM-STATUS
     PERFORM CHECK

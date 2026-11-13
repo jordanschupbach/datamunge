@@ -1,5 +1,5 @@
 *> DataFrame basics: null masks, drop_duplicates, fill_null, select, sort, group, join.
-*> Run with `just run-cobol TARGET=dataframe_ex`.
+*> CMD: just TARGET=dataframe_ex run-cobol
 IDENTIFICATION DIVISION.
 PROGRAM-ID. DATAFRAME-EX.
 DATA DIVISION.

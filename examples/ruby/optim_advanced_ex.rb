@@ -1,3 +1,5 @@
+# CMD: just TARGET=optim_advanced_ex run-ruby
+
 require "octruby"
 
 # Exercises three of the ten new datamunge::optim classes:

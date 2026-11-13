@@ -8,6 +8,26 @@
 
 package js.datamunge.jdatamunge;
 
+/**
+ *  One drawn layer of a plot (points, a line, bars, a box, a polygon, a label, or<br>
+ *         segments), as stored by RPlot's layer verbs and read back through Plot::series().<br>
+ * <br>
+ *  A plain aggregate holding data coordinates and styling. Which fields matter depends on<br>
+ *  kind; each Kind value documents how it reads x, y, and the other fields. Layers are drawn<br>
+ *  in insertion order, after the reference lines, and every layer's coordinates widen the<br>
+ *  automatic axis ranges (bars also pull the y range down or up to 0). A nonempty label puts<br>
+ *  the layer in the automatic legend unless it is a Text layer. User code normally creates<br>
+ *  layers through RPlot verbs (points(), lines(), bars(), ...) and only reads this struct.<br>
+ * <br>
+ *  <p alt="Example"><br>
+ *  {@code 
+ auto plt = dm::Plot().points(dm::c(1.0, 2.0), dm::c(3.0, 4.0), "pts");
+ const dm::graphics::DataSeries& s = plt.series()[0];
+ std::print("{} {} {} {}\n", s.kind == dm::graphics::DataSeries::Kind::Scatter, s.x.size(),
+            s.label, s.marker_size);  // true 2 pts 4
+ }</p><br>
+ *  @see Plot#series(), RPlot::points(), RPlot::lines()
+ */
 public class DataSeries {
   private transient long swigCPtr;
   protected transient boolean swigCMemOwn;
@@ -56,28 +76,46 @@ public class DataSeries {
     return DataSeries.Kind.swigToEnum(datamungeJNI.DataSeries_kind_get(swigCPtr, this));
   }
 
+  /**
+   *  Horizontal data coordinates; meaning depends on kind.
+   */
   public void setX(DVector value) {
     datamungeJNI.DataSeries_x_set(swigCPtr, this, DVector.getCPtr(value), value);
   }
 
+  /**
+   *  Horizontal data coordinates; meaning depends on kind.
+   */
   public DVector getX() {
     long cPtr = datamungeJNI.DataSeries_x_get(swigCPtr, this);
     return (cPtr == 0) ? null : new DVector(cPtr, false);
   }
 
+  /**
+   *  Vertical data coordinates; meaning depends on kind.
+   */
   public void setY(DVector value) {
     datamungeJNI.DataSeries_y_set(swigCPtr, this, DVector.getCPtr(value), value);
   }
 
+  /**
+   *  Vertical data coordinates; meaning depends on kind.
+   */
   public DVector getY() {
     long cPtr = datamungeJNI.DataSeries_y_get(swigCPtr, this);
     return (cPtr == 0) ? null : new DVector(cPtr, false);
   }
 
+  /**
+   *  Legend text (or the drawn text for Kind::Text); empty omits it.
+   */
   public void setLabel(String value) {
     datamungeJNI.DataSeries_label_set(swigCPtr, this, value);
   }
 
+  /**
+   *  Legend text (or the drawn text for Kind::Text); empty omits it.
+   */
   public String getLabel() {
     return datamungeJNI.DataSeries_label_get(swigCPtr, this);
   }
@@ -123,17 +161,59 @@ public class DataSeries {
     return datamungeJNI.DataSeries_filled_get(swigCPtr, this);
   }
 
+  /**
+   *  Optional scatter palette, recycled in input order; empty uses color for every point.
+   */
+  public void setPoint_colors(SWIGTYPE_p_std__vectorT_datamunge__graphics__RGB_t value) {
+    datamungeJNI.DataSeries_point_colors_set(swigCPtr, this, SWIGTYPE_p_std__vectorT_datamunge__graphics__RGB_t.getCPtr(value));
+  }
+
+  /**
+   *  Optional scatter palette, recycled in input order; empty uses color for every point.
+   */
+  public SWIGTYPE_p_std__vectorT_datamunge__graphics__RGB_t getPoint_colors() {
+    long cPtr = datamungeJNI.DataSeries_point_colors_get(swigCPtr, this);
+    return (cPtr == 0) ? null : new SWIGTYPE_p_std__vectorT_datamunge__graphics__RGB_t(cPtr, false);
+  }
+
   public DataSeries() {
     this(datamungeJNI.new_DataSeries(), true);
   }
 
+  /**
+   *  How a DataSeries is drawn and how its coordinate vectors are read.
+   */
   public final static class Kind {
+    /**
+     *  One marker (radius marker_size px) per (x[i], y[i]); colors from point_colors when set.
+     */
     public final static DataSeries.Kind Scatter = new DataSeries.Kind("Scatter");
+    /**
+     *  A polyline joining (x[i], y[i]) in order, stroke_width px wide (R's `lines()`).
+     */
     public final static DataSeries.Kind Line = new DataSeries.Kind("Line");
+    /**
+     *  Vertical bars from y = 0 to y[i], centered on x[i], bar_width data units wide.
+     */
     public final static DataSeries.Kind Bar = new DataSeries.Kind("Bar");
+    /**
+     *  One box-and-whisker at x[0]: y = {whisker_lo, q1, median, q3, whisker_hi,<br>
+     *         outliers...}; bar_width is the box width in data units.
+     */
     public final static DataSeries.Kind Box = new DataSeries.Kind("Box");
+    /**
+     *  A closed polygon through (x[i], y[i]); filled selects fill vs. outline only.
+     */
     public final static DataSeries.Kind Polygon = new DataSeries.Kind("Polygon");
+    /**
+     *  A centered text label at (x[0], y[0]); label holds the text and marker_size the<br>
+     *         font size in pixels. Never listed in the automatic legend.
+     */
     public final static DataSeries.Kind Text = new DataSeries.Kind("Text");
+    /**
+     *  Disconnected segments joining (x[2i], y[2i]) to (x[2i+1], y[2i+1]), stroke_width px<br>
+     *         wide (R's `segments()`).
+     */
     public final static DataSeries.Kind Segment = new DataSeries.Kind("Segment");
 
     public final int swigValue() {

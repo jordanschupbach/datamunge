@@ -8,6 +8,17 @@
 
 package js.datamunge.jdatamunge;
 
+/**
+ *  Configuration for GeneticAlgorithm; fields retain their documented native defaults.<br>
+ *  Supply finite values in the supported ranges. Controls are copied at construction;<br>
+ *  validation, stopping and loss scaling belong to optimize().<br>
+ *  <p alt="Example"><br>
+ *  {@code 
+ dm::optim::GAOptions o;
+ std::print("{}\n",o.max_generations); // 500
+ }</p><br>
+ *  @see GeneticAlgorithm
+ */
 public class GAOptions {
   private transient long swigCPtr;
   protected transient boolean swigCMemOwn;
@@ -72,44 +83,26 @@ public class GAOptions {
     return datamungeJNI.GAOptions_crossover_rate_get(swigCPtr, this);
   }
 
-  /**
-   *  Per-gene probability of a Gaussian mutation.
-   */
   public void setMutation_rate(double value) {
     datamungeJNI.GAOptions_mutation_rate_set(swigCPtr, this, value);
   }
 
-  /**
-   *  Per-gene probability of a Gaussian mutation.
-   */
   public double getMutation_rate() {
     return datamungeJNI.GAOptions_mutation_rate_get(swigCPtr, this);
   }
 
-  /**
-   *  Mutation Gaussian standard deviation, as a fraction of each gene's [lower, upper] range.
-   */
   public void setMutation_std_dev(double value) {
     datamungeJNI.GAOptions_mutation_std_dev_set(swigCPtr, this, value);
   }
 
-  /**
-   *  Mutation Gaussian standard deviation, as a fraction of each gene's [lower, upper] range.
-   */
   public double getMutation_std_dev() {
     return datamungeJNI.GAOptions_mutation_std_dev_get(swigCPtr, this);
   }
 
-  /**
-   *  One of "tournament", "roulette" (fitness-proportionate), or "rank" (linear ranking).
-   */
   public void setSelection_strategy(String value) {
     datamungeJNI.GAOptions_selection_strategy_set(swigCPtr, this, value);
   }
 
-  /**
-   *  One of "tournament", "roulette" (fitness-proportionate), or "rank" (linear ranking).
-   */
   public String getSelection_strategy() {
     return datamungeJNI.GAOptions_selection_strategy_get(swigCPtr, this);
   }
@@ -122,30 +115,18 @@ public class GAOptions {
     return datamungeJNI.GAOptions_tournament_size_get(swigCPtr, this);
   }
 
-  /**
-   *  One of "single_point", "uniform", or "blend" (BLX-alpha).
-   */
   public void setCrossover_strategy(String value) {
     datamungeJNI.GAOptions_crossover_strategy_set(swigCPtr, this, value);
   }
 
-  /**
-   *  One of "single_point", "uniform", or "blend" (BLX-alpha).
-   */
   public String getCrossover_strategy() {
     return datamungeJNI.GAOptions_crossover_strategy_get(swigCPtr, this);
   }
 
-  /**
-   *  Alpha parameter for BLX-alpha crossover, used only when crossover_strategy == "blend".
-   */
   public void setBlend_alpha(double value) {
     datamungeJNI.GAOptions_blend_alpha_set(swigCPtr, this, value);
   }
 
-  /**
-   *  Alpha parameter for BLX-alpha crossover, used only when crossover_strategy == "blend".
-   */
   public double getBlend_alpha() {
     return datamungeJNI.GAOptions_blend_alpha_get(swigCPtr, this);
   }
@@ -166,16 +147,10 @@ public class GAOptions {
     return datamungeJNI.GAOptions_elite_count_get(swigCPtr, this);
   }
 
-  /**
-   *  Stops after the population best has improved by less than this for 20 consecutive generations.
-   */
   public void setTolerance(double value) {
     datamungeJNI.GAOptions_tolerance_set(swigCPtr, this, value);
   }
 
-  /**
-   *  Stops after the population best has improved by less than this for 20 consecutive generations.
-   */
   public double getTolerance() {
     return datamungeJNI.GAOptions_tolerance_get(swigCPtr, this);
   }

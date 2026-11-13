@@ -8,6 +8,17 @@
 
 package js.datamunge.jdatamunge;
 
+/**
+ *  Configuration for NelderMead; fields retain their documented native defaults.<br>
+ *  Supply finite values in the supported ranges. Controls are copied at construction;<br>
+ *  validation, stopping and loss scaling belong to optimize().<br>
+ *  <p alt="Example"><br>
+ *  {@code 
+ dm::optim::NelderMeadOptions o;
+ std::print("{}\n",o.max_iterations); // 2000
+ }</p><br>
+ *  @see NelderMead
+ */
 public class NelderMeadOptions {
   private transient long swigCPtr;
   protected transient boolean swigCMemOwn;
@@ -48,16 +59,10 @@ public class NelderMeadOptions {
     }
   }
 
-  /**
-   *  Per-coordinate displacement used to construct the initial simplex.
-   */
   public void setInitial_simplex_scale(double value) {
     datamungeJNI.NelderMeadOptions_initial_simplex_scale_set(swigCPtr, this, value);
   }
 
-  /**
-   *  Per-coordinate displacement used to construct the initial simplex.
-   */
   public double getInitial_simplex_scale() {
     return datamungeJNI.NelderMeadOptions_initial_simplex_scale_get(swigCPtr, this);
   }
@@ -102,16 +107,10 @@ public class NelderMeadOptions {
     return datamungeJNI.NelderMeadOptions_max_iterations_get(swigCPtr, this);
   }
 
-  /**
-   *  Stops when both the simplex diameter and its objective spread are below this.
-   */
   public void setTolerance(double value) {
     datamungeJNI.NelderMeadOptions_tolerance_set(swigCPtr, this, value);
   }
 
-  /**
-   *  Stops when both the simplex diameter and its objective spread are below this.
-   */
   public double getTolerance() {
     return datamungeJNI.NelderMeadOptions_tolerance_get(swigCPtr, this);
   }

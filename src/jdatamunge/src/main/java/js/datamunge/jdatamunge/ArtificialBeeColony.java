@@ -71,4 +71,12 @@ public class ArtificialBeeColony {
     return datamungeJNI.ArtificialBeeColony_optimize(swigCPtr, this, ArbitraryFunction.getCPtr(function), function, DVector.getCPtr(coordinates), coordinates, DVector.getCPtr(lower_bound), lower_bound, DVector.getCPtr(upper_bound), upper_bound);
   }
 
+  /**
+   *  The options this ArtificialBeeColony was configured with.<br>
+   *  @return The stored options.
+   */
+  public ArtificialBeeColonyOptions options() {
+    return new ArtificialBeeColonyOptions(datamungeJNI.ArtificialBeeColony_options(swigCPtr, this), false);
+  }
+
 }

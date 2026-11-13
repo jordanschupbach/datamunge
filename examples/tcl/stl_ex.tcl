@@ -1,3 +1,5 @@
+# CMD: just TARGET=stl_ex run-tcl
+
 package require Datamunge 0.0.1
 
 set n 100

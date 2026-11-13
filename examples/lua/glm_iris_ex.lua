@@ -1,3 +1,5 @@
+-- CMD: just TARGET=glm_iris_ex run-lua
+
 local dm = require("datamunge")
 
 local function dv(t)
@@ -6,7 +8,7 @@ local function dv(t)
   return v
 end
 
-local iris = dm.DataFrame.iris()
+local iris = dm.data.iris()
 
 -- Logistic regression: versicolor vs virginica only -- setosa is perfectly separable from
 -- the other two on these predictors, which sends logistic regression's coefficients toward

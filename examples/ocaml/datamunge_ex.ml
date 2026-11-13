@@ -1,3 +1,5 @@
+(* CMD: just TARGET=datamunge_ex run-ocaml *)
+
 let () =
   let open Swig in
   ignore (Datamunge._hello C_void);

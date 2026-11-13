@@ -57,10 +57,18 @@ public class ImportanceSampling {
     }
   }
 
+  /**
+   *  Stores the sampler settings.<br>
+   *  @param options Sampler settings.
+   */
   public ImportanceSampling(ImportanceSamplingOptions options) {
     this(datamungeJNI.new_ImportanceSampling__SWIG_0(ImportanceSamplingOptions.getCPtr(options), options), true);
   }
 
+  /**
+   *  Stores the sampler settings.<br>
+   *  
+   */
   public ImportanceSampling() {
     this(datamungeJNI.new_ImportanceSampling__SWIG_1(), true);
   }
@@ -74,6 +82,14 @@ public class ImportanceSampling {
    */
   public ImportanceSamplingResult sample(ArbitraryFunction log_target, DVector proposal_mean, DVectorVector proposal_covariance) {
     return new ImportanceSamplingResult(datamungeJNI.ImportanceSampling_sample(swigCPtr, this, ArbitraryFunction.getCPtr(log_target), log_target, DVector.getCPtr(proposal_mean), proposal_mean, DVectorVector.getCPtr(proposal_covariance), proposal_covariance), true);
+  }
+
+  /**
+   *  The options this ImportanceSampling was configured with.<br>
+   *  @return The stored options.
+   */
+  public ImportanceSamplingOptions options() {
+    return new ImportanceSamplingOptions(datamungeJNI.ImportanceSampling_options(swigCPtr, this), false);
   }
 
 }

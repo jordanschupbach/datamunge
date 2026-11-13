@@ -1,3 +1,5 @@
+# CMD: just TARGET=autodiff_ex run-ruby
+
 require "octruby"
 
 # Note: the C++ autodiff_ex.cpp additionally demonstrates datamunge::autodiff::derivative/

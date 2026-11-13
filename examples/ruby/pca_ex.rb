@@ -1,7 +1,9 @@
+# CMD: just TARGET=pca_ex run-ruby
+
 require "octruby"
 
 # Plain Ruby arrays convert directly to std::vector<std::string> (feature/label lists).
-iris = Datamunge::DataFrame.iris
+iris = Datamunge.data_iris
 features = ["Sepal.Length", "Sepal.Width", "Petal.Length", "Petal.Width"]
 species = (0...iris.nrows).map { |i| iris.string_at("Species", i) }
 

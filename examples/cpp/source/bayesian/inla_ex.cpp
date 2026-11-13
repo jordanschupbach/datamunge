@@ -1,3 +1,5 @@
+// CMD: just TARGET=inla_ex run-cpp
+
 #include <datamunge/datasets/datasets.hpp>
 #include <datamunge/dstruct/dstruct.hpp>
 #include <datamunge/stats/inla_mixed_model.hpp>

@@ -18,6 +18,14 @@ function getSourcesFromFile(filePath) {
 }
 
 const sourcesFilenames = getSourcesFromFile("lib_sources.txt");
+// The addon itself: Rosetta's Node-API sources (scripts/prebuild_bindings.py javascript), split
+// into parts that compile in parallel.
+const addonSources = fs
+  .readdirSync("src")
+  .filter((name) => /^datamunge_js_wrap(_\d+)?\.cpp$/.test(name))
+  .sort()
+  .map((name) => `'src/${name}'`)
+  .join(", ");
 console.log("Sources Filenames:", sourcesFilenames);
 
 // DATAMUNGE_USE_SYSTEM_LIB=1 links an already-installed libdatamunge (found via pkg-config) instead
@@ -55,13 +63,11 @@ const gypContent = `
   'targets': [
     {
       'target_name': 'datamungejs',
-      'sources': [ ${coreSources}'src/datamunge_js_wrap.cpp' ],
+      'sources': [ ${coreSources}${addonSources} ],
       'include_dirs': [
         "${coreIncludeDir}",
-        "<!@(node -p \\\"require('node-addon-api').include\\\")",
         '${includeDir}'
       ],
-      'dependencies': ["<!(node -p \\\"require('node-addon-api').gyp\\\")"],
       'cflags': ['-std=c++23'],
       'cflags!': [ '-fno-exceptions', '-fno-rtti'], # ,
       'cflags_cc': ['-std=c++23'],

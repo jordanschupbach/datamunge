@@ -71,4 +71,11 @@ public class WhaleOptimization : global::System.IDisposable {
     return ret;
   }
 
+  /// <summary>The options this WhaleOptimization was configured with.</summary>
+  /// <returns>The stored options.</returns>
+  public WhaleOptimizationOptions options() {
+    WhaleOptimizationOptions ret = new WhaleOptimizationOptions(datamungePINVOKE.WhaleOptimization_options(swigCPtr), false);
+    return ret;
+  }
+
 }

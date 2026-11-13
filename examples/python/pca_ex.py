@@ -2,7 +2,7 @@
 # REPL: nix develop .#python --command env -u PYTHONPATH build/venv/pydatamunge-run/bin/python
 from pydatamunge import datamunge as dm
 
-iris = dm.DataFrame.iris()
+iris = dm.data.iris()
 features = ["Sepal.Length", "Sepal.Width", "Petal.Length", "Petal.Width"]
 species = [iris.string_at("Species", i) for i in range(iris.nrows())]
 

@@ -161,8 +161,8 @@ class DataFrame {
       : frame_(values, names) {}
 #endif
 
-  /// @brief Equivalent to the default constructor, exposed as a static factory (like iris()/
-  ///        penguins()) as a workaround for a SWIG R-backend bug where the plain no-argument
+  /// @brief Equivalent to the default constructor, exposed as a static factory (like read_csv())
+  ///        as a workaround for a SWIG R-backend bug where the plain no-argument
   ///        constructor's ownership-flagged pointer breaks method dispatch on the result.
   [[nodiscard]] static DataFrame* empty();
 
@@ -296,43 +296,6 @@ class DataFrame {
   /// @brief The value at (column_name, row_index); throws if the cell is null or the column isn't string-typed.
   [[nodiscard]] std::string string_at(const std::string& column_name, std::size_t row_index) const;
 
-  // Bundled sample datasets.
-  [[nodiscard]] static DataFrame* iris();
-  [[nodiscard]] static DataFrame* penguins();
-  [[nodiscard]] static DataFrame* tooth_growth();
-  /// @brief UCI wine recognition data, 178 x 14; see datasets::wine().
-  [[nodiscard]] static DataFrame* wine();
-  /// @brief Kaggle Titanic training set, 891 x 12 with missing values; see datasets::titanic().
-  [[nodiscard]] static DataFrame* titanic();
-  /// @brief Rubin's eight schools coaching experiment, 8 x 3; see datasets::eight_schools().
-  [[nodiscard]] static DataFrame* eight_schools();
-  /// @brief Monthly airline passengers 1949-1960, 144 x 3; see datasets::air_passengers().
-  [[nodiscard]] static DataFrame* air_passengers();
-  /// @brief Maunga Whau (Mt Eden) elevations on a 10 m grid, 5307 x 3; see datasets::volcano().
-  [[nodiscard]] static DataFrame* volcano();
-  /// @brief Old Faithful eruptions, 272 x 2; see datasets::faithful().
-  [[nodiscard]] static DataFrame* faithful();
-  /// @brief Motor Trend cars, 32 x 12 (row names as `model`); see datasets::mtcars().
-  [[nodiscard]] static DataFrame* mtcars();
-  /// @brief New York air quality 1973, 153 x 6 with missing values; see datasets::airquality().
-  [[nodiscard]] static DataFrame* airquality();
-  /// @brief Wisconsin diagnostic breast cancer, 569 x 31; see datasets::breast_cancer().
-  [[nodiscard]] static DataFrame* breast_cancer();
-  /// @brief Efron et al.'s diabetes progression data, 442 x 11; see datasets::diabetes().
-  [[nodiscard]] static DataFrame* diabetes();
-  /// @brief 8x8 handwritten digits, 1797 x 65; see datasets::digits().
-  [[nodiscard]] static DataFrame* digits();
-  /// @brief ggplot2's diamonds, 53940 x 10, downloaded once and cached; see datasets::diamonds().
-  [[nodiscard]] static DataFrame* diamonds();
-  /// @brief California housing, 20640 x 10, downloaded once and cached; see
-  ///        datasets::california_housing().
-  [[nodiscard]] static DataFrame* california_housing();
-  /// @brief Any table-shaped dataset by name, e.g. "wine"; see datasets::load().
-  /// @throws std::invalid_argument for an unknown or image dataset name.
-  [[nodiscard]] static DataFrame* dataset(const std::string& name);
-  /// @brief One row per available dataset (name, rows, columns, storage, size_mb,
-  ///        description); see datasets::catalog().
-  [[nodiscard]] static DataFrame* dataset_catalog();
   /// @brief Reads a whole CSV file, typing columns automatically; see datasets::read_csv().
   /// @param path The file to read.
   /// @param delimiter The field separator.
@@ -346,6 +309,7 @@ class DataFrame {
   [[nodiscard]] static DataFrame* from_image_batch(const datamunge::datasets::ImageBatch& batch);
 
  private:
+  friend struct DatasetFactory;  // data::iris() and the other bundled datasets
   friend class LM;
   friend class GGPlot;
   friend class Splom;
@@ -395,6 +359,299 @@ class DataFrame {
 
   dstruct::DataFrame frame_;
 };
+
+/// @brief Bundled sample datasets as binding-facing DataFrame objects, like R's `datasets`
+///        package or scikit-learn's `sklearn.datasets` loaders.
+///
+/// Each function returns a new facade DataFrame copied from the matching core loader in
+/// datamunge::datasets, which documents the columns, units and missing values. The caller owns
+/// the result: delete it in C++ (or wrap it in a std::unique_ptr); generated bindings take
+/// ownership. C++ code that works with core frames can call dm::datasets::iris() and friends
+/// directly. Bindings expose this namespace as a submodule where the language has one
+/// (`dm.data.iris()` in Python and JavaScript, `data$iris()` in R) and with a `data_` prefix
+/// otherwise (`dm_data_iris` in COBOL).
+///
+/// @par Example
+/// @code
+/// const std::unique_ptr<dm::DataFrame> iris(dm::data::iris());
+/// std::print("{} x {}\n", iris->nrows(), iris->ncols());   // 150 x 5
+/// @endcode
+/// @see datasets::catalog(), DataFrame::read_csv()
+namespace data {
+/// @brief Edgar Anderson's iris measurements, 150 x 5, as R's `datasets::iris`.
+///
+/// Bundled with the library, so it needs no file or network access. Columns are documented at
+/// datasets::iris().
+///
+/// @return A new 150 x 5 DataFrame owned by the caller.
+///
+/// @par Example
+/// @code
+/// const std::unique_ptr<dm::DataFrame> frame(dm::data::iris());
+/// std::print("{} x {}\n", frame->nrows(), frame->ncols());   // 150 x 5
+/// @endcode
+/// @see datasets::iris()
+[[nodiscard]] DataFrame* iris();
+
+/// @brief The Palmer penguins, 344 x 8 with missing values, as `palmerpenguins::penguins`.
+///
+/// Bundled with the library, so it needs no file or network access. Columns are documented at
+/// datasets::penguins().
+///
+/// @return A new 344 x 8 DataFrame owned by the caller.
+///
+/// @par Example
+/// @code
+/// const std::unique_ptr<dm::DataFrame> frame(dm::data::penguins());
+/// std::print("{} x {}\n", frame->nrows(), frame->ncols());   // 344 x 8
+/// @endcode
+/// @see datasets::penguins()
+[[nodiscard]] DataFrame* penguins();
+
+/// @brief Crampton's guinea pig tooth growth data, 60 x 3, as R's `datasets::ToothGrowth`.
+///
+/// Bundled with the library, so it needs no file or network access. Columns are documented at
+/// datasets::tooth_growth().
+///
+/// @return A new 60 x 3 DataFrame owned by the caller.
+///
+/// @par Example
+/// @code
+/// const std::unique_ptr<dm::DataFrame> frame(dm::data::tooth_growth());
+/// std::print("{} x {}\n", frame->nrows(), frame->ncols());   // 60 x 3
+/// @endcode
+/// @see datasets::tooth_growth()
+[[nodiscard]] DataFrame* tooth_growth();
+
+/// @brief The UCI wine recognition data, 178 x 14, as scikit-learn's `load_wine()`.
+///
+/// Bundled with the library, so it needs no file or network access. Columns are documented at
+/// datasets::wine().
+///
+/// @return A new 178 x 14 DataFrame owned by the caller.
+///
+/// @par Example
+/// @code
+/// const std::unique_ptr<dm::DataFrame> frame(dm::data::wine());
+/// std::print("{} x {}\n", frame->nrows(), frame->ncols());   // 178 x 14
+/// @endcode
+/// @see datasets::wine()
+[[nodiscard]] DataFrame* wine();
+
+/// @brief The Kaggle Titanic training set, 891 x 12 with missing values.
+///
+/// Bundled with the library, so it needs no file or network access. Columns are documented at
+/// datasets::titanic().
+///
+/// @return A new 891 x 12 DataFrame owned by the caller.
+///
+/// @par Example
+/// @code
+/// const std::unique_ptr<dm::DataFrame> frame(dm::data::titanic());
+/// std::print("{} x {}\n", frame->nrows(), frame->ncols());   // 891 x 12
+/// @endcode
+/// @see datasets::titanic()
+[[nodiscard]] DataFrame* titanic();
+
+/// @brief Rubin's eight schools coaching experiment, 8 x 3.
+///
+/// Bundled with the library, so it needs no file or network access. Columns are documented at
+/// datasets::eight_schools().
+///
+/// @return A new 8 x 3 DataFrame owned by the caller.
+///
+/// @par Example
+/// @code
+/// const std::unique_ptr<dm::DataFrame> frame(dm::data::eight_schools());
+/// std::print("{} x {}\n", frame->nrows(), frame->ncols());   // 8 x 3
+/// @endcode
+/// @see datasets::eight_schools()
+[[nodiscard]] DataFrame* eight_schools();
+
+/// @brief Monthly airline passengers 1949-1960, 144 x 3, as R's `datasets::AirPassengers`.
+///
+/// Bundled with the library, so it needs no file or network access. Columns are documented at
+/// datasets::air_passengers().
+///
+/// @return A new 144 x 3 DataFrame owned by the caller.
+///
+/// @par Example
+/// @code
+/// const std::unique_ptr<dm::DataFrame> frame(dm::data::air_passengers());
+/// std::print("{} x {}\n", frame->nrows(), frame->ncols());   // 144 x 3
+/// @endcode
+/// @see datasets::air_passengers()
+[[nodiscard]] DataFrame* air_passengers();
+
+/// @brief Maunga Whau (Mt Eden) elevations on a 10 m grid, 5307 x 3, as R's `datasets::volcano` in long form.
+///
+/// Bundled with the library, so it needs no file or network access. Columns are documented at
+/// datasets::volcano().
+///
+/// @return A new 5307 x 3 DataFrame owned by the caller.
+///
+/// @par Example
+/// @code
+/// const std::unique_ptr<dm::DataFrame> frame(dm::data::volcano());
+/// std::print("{} x {}\n", frame->nrows(), frame->ncols());   // 5307 x 3
+/// @endcode
+/// @see datasets::volcano()
+[[nodiscard]] DataFrame* volcano();
+
+/// @brief Old Faithful geyser eruptions, 272 x 2, as R's `datasets::faithful`.
+///
+/// Bundled with the library, so it needs no file or network access. Columns are documented at
+/// datasets::faithful().
+///
+/// @return A new 272 x 2 DataFrame owned by the caller.
+///
+/// @par Example
+/// @code
+/// const std::unique_ptr<dm::DataFrame> frame(dm::data::faithful());
+/// std::print("{} x {}\n", frame->nrows(), frame->ncols());   // 272 x 2
+/// @endcode
+/// @see datasets::faithful()
+[[nodiscard]] DataFrame* faithful();
+
+/// @brief Motor Trend cars, 32 x 12 with the row names as column `model`, as R's `datasets::mtcars`.
+///
+/// Bundled with the library, so it needs no file or network access. Columns are documented at
+/// datasets::mtcars().
+///
+/// @return A new 32 x 12 DataFrame owned by the caller.
+///
+/// @par Example
+/// @code
+/// const std::unique_ptr<dm::DataFrame> frame(dm::data::mtcars());
+/// std::print("{} x {}\n", frame->nrows(), frame->ncols());   // 32 x 12
+/// @endcode
+/// @see datasets::mtcars()
+[[nodiscard]] DataFrame* mtcars();
+
+/// @brief New York air quality measurements in 1973, 153 x 6 with missing values, as R's `datasets::airquality`.
+///
+/// Bundled with the library, so it needs no file or network access. Columns are documented at
+/// datasets::airquality().
+///
+/// @return A new 153 x 6 DataFrame owned by the caller.
+///
+/// @par Example
+/// @code
+/// const std::unique_ptr<dm::DataFrame> frame(dm::data::airquality());
+/// std::print("{} x {}\n", frame->nrows(), frame->ncols());   // 153 x 6
+/// @endcode
+/// @see datasets::airquality()
+[[nodiscard]] DataFrame* airquality();
+
+/// @brief Wisconsin diagnostic breast cancer data, 569 x 31, as scikit-learn's `load_breast_cancer()`.
+///
+/// Bundled with the library, so it needs no file or network access. Columns are documented at
+/// datasets::breast_cancer().
+///
+/// @return A new 569 x 31 DataFrame owned by the caller.
+///
+/// @par Example
+/// @code
+/// const std::unique_ptr<dm::DataFrame> frame(dm::data::breast_cancer());
+/// std::print("{} x {}\n", frame->nrows(), frame->ncols());   // 569 x 31
+/// @endcode
+/// @see datasets::breast_cancer()
+[[nodiscard]] DataFrame* breast_cancer();
+
+/// @brief Efron et al.'s diabetes progression data, 442 x 11, as scikit-learn's `load_diabetes()`.
+///
+/// Bundled with the library, so it needs no file or network access. Columns are documented at
+/// datasets::diabetes().
+///
+/// @return A new 442 x 11 DataFrame owned by the caller.
+///
+/// @par Example
+/// @code
+/// const std::unique_ptr<dm::DataFrame> frame(dm::data::diabetes());
+/// std::print("{} x {}\n", frame->nrows(), frame->ncols());   // 442 x 11
+/// @endcode
+/// @see datasets::diabetes()
+[[nodiscard]] DataFrame* diabetes();
+
+/// @brief 8x8 handwritten digits, 1797 x 65, as scikit-learn's `load_digits()`.
+///
+/// Bundled with the library, so it needs no file or network access. Columns are documented at
+/// datasets::digits().
+///
+/// @return A new 1797 x 65 DataFrame owned by the caller.
+///
+/// @par Example
+/// @code
+/// const std::unique_ptr<dm::DataFrame> frame(dm::data::digits());
+/// std::print("{} x {}\n", frame->nrows(), frame->ncols());   // 1797 x 65
+/// @endcode
+/// @see datasets::digits()
+[[nodiscard]] DataFrame* digits();
+
+/// @brief ggplot2's diamonds, 53940 x 10, downloaded on first use and cached.
+///
+/// The first call downloads the file into the dataset cache (see datasets::fetch()); later
+/// calls read the cached copy. Columns are documented at datasets::diamonds().
+///
+/// @return A new 53940 x 10 DataFrame owned by the caller.
+/// @throws std::runtime_error if the file is not cached and cannot be downloaded or read.
+///
+/// @par Example
+/// @code
+/// const std::unique_ptr<dm::DataFrame> frame(dm::data::diamonds());
+/// std::print("{} x {}\n", frame->nrows(), frame->ncols());   // 53940 x 10
+/// @endcode
+/// @see datasets::diamonds()
+[[nodiscard]] DataFrame* diamonds();
+
+/// @brief California housing, 20640 x 10, downloaded on first use and cached, as scikit-learn's `fetch_california_housing()`.
+///
+/// The first call downloads the file into the dataset cache (see datasets::fetch()); later
+/// calls read the cached copy. Columns are documented at datasets::california_housing().
+///
+/// @return A new 20640 x 10 DataFrame owned by the caller.
+/// @throws std::runtime_error if the file is not cached and cannot be downloaded or read.
+///
+/// @par Example
+/// @code
+/// const std::unique_ptr<dm::DataFrame> frame(dm::data::california_housing());
+/// std::print("{} x {}\n", frame->nrows(), frame->ncols());   // 20640 x 10
+/// @endcode
+/// @see datasets::california_housing()
+[[nodiscard]] DataFrame* california_housing();
+
+/// @brief Any table-shaped dataset by name, e.g. "wine", like scikit-learn's `fetch_openml()`
+///        lookup by name.
+///
+/// Accepts every name listed by catalog() whose storage is a table, bundled or downloaded
+/// (a downloaded dataset is cached as described at datasets::load()).
+///
+/// @param name A dataset name from catalog(), e.g. "iris" or "diamonds".
+/// @return A new DataFrame owned by the caller.
+/// @throws std::invalid_argument for an unknown name, an image dataset's name or karate_club.
+/// @throws std::runtime_error if a downloaded dataset is not cached and cannot be fetched.
+///
+/// @par Example
+/// @code
+/// const std::unique_ptr<dm::DataFrame> wine(dm::data::load("wine"));
+/// std::print("{} x {}\n", wine->nrows(), wine->ncols());   // 178 x 14
+/// @endcode
+/// @see catalog(), datasets::load()
+[[nodiscard]] DataFrame* load(const std::string& name);
+
+/// @brief One row per available dataset: `name`, `rows`, `columns`, `storage`, `size_mb` and
+///        `description`, like R's `data()` listing.
+///
+/// @return A new DataFrame owned by the caller.
+///
+/// @par Example
+/// @code
+/// const std::unique_ptr<dm::DataFrame> all(dm::data::catalog());
+/// std::print("{}\n", all->columns());   // ["name", "rows", "columns", "storage", "size_mb", "description"]
+/// @endcode
+/// @see load(), datasets::catalog()
+[[nodiscard]] DataFrame* catalog();
+}  // namespace data
 
 /// @brief SWIG-friendly streaming CSV reader: returns a big file as DataFrames of at most
 ///        batch_size() rows each, so only one chunk is in memory at a time.

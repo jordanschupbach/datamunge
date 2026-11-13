@@ -9,6 +9,29 @@
 //------------------------------------------------------------------------------
 
 
+/// <summary>A plotting color: 8-bit red, green, and blue channels plus an alpha opacity,        the C++ counterpart of R's `rgb(r, g, b, alpha, maxColorValue = 255)`.</summary>
+///  Brace-initialize numeric channels: `dm::RGB{255, 0, 0}` is opaque red and
+///  `dm::RGB{255, 0, 0, 0.5}` is half-transparent red. A default-constructed RGB is the
+///  library's dark-slate ink `{31, 41, 55}`, fully opaque. Channels are not validated: keep
+///  them in [0, 255] (both the raster and SVG renderers clamp out-of-range channels), and
+///  keep alpha in [0, 1] (both renderers clamp it). Every plotting API takes RGBA (the same type as RGB) by value,
+///  and `dm::c(...)` of several RGBs builds a palette usable with `select()` and set_col().
+///  Color strings convert implicitly: names are case-insensitive black, white, red, green,
+///  blue, yellow, cyan, magenta, gray/grey and transparent; hex accepts #RRGGBB and
+///  #RRGGBBAA, with alpha last and scaled to [0, 1]. Malformed text throws before a
+///  plot is changed. RGB and RGBA remain the same type, preserving existing palettes
+///  and the binary layout of numeric colors. Parsing owns no reference to the string.
+///
+/// Title: Example
+/// <code>      const auto gold = dm::RGB{255, 215, 0};
+///      const auto glass = dm::RGBA{37, 99, 235, 0.3};  // translucent blue
+///      const dm::RGB ink;                              // {31, 41, 55}, opaque
+///      std::print("{} {} {}\n", gold.r, glass.alpha, ink.r);  // 255 0.3 31
+///      const auto palette = dm::c(gold, glass);       // a dm::Vector&lt;dm::RGB&gt;</code>
+///
+///
+///
+/// <seealso cref="dm.RGBA, dm.Plot.set_col"/>
 public class RGB : global::System.IDisposable {
   private global::System.Runtime.InteropServices.HandleRef swigCPtr;
   protected bool swigCMemOwn;
@@ -96,13 +119,55 @@ public class RGB : global::System.IDisposable {
     } 
   }
 
+  /// <summary>Construct the default opaque dark-slate ink color.</summary>
+  /// Title: Example
+  ///  See the RGB class example.
   public RGB() : this(datamungePINVOKE.new_RGB__SWIG_0(), true) {
   }
 
-  public RGB(int r, int g, int b, double alpha) : this(datamungePINVOKE.new_RGB__SWIG_1(r, g, b, alpha), true) {
+  /// <summary>Construct numeric RGB channels and an optional normalized alpha. Channels and alpha are retained; renderers clamp them when drawing.</summary>
+  /// <param name="red"> Red channel, conventionally 0-255.</param> 
+  /// <param name="green"> Green channel, conventionally 0-255.</param> 
+  /// <param name="blue"> Blue channel, conventionally 0-255.</param> 
+  /// <param name="opacity"> Alpha in [0, 1], default 1 (opaque).</param> 
+  /// Title: Example
+  ///  See the RGB class example; RGB{255, 0, 0} and RGBA{255, 0, 0, 0.5} mix freely.
+  public RGB(int red, int green, int blue, double opacity) : this(datamungePINVOKE.new_RGB__SWIG_1(red, green, blue, opacity), true) {
   }
 
-  public RGB(int r, int g, int b) : this(datamungePINVOKE.new_RGB__SWIG_2(r, g, b), true) {
+  /// <summary>Construct numeric RGB channels and an optional normalized alpha. Channels and alpha are retained; renderers clamp them when drawing.</summary>
+  /// <param name="red"> Red channel, conventionally 0-255.</param> 
+  /// <param name="green"> Green channel, conventionally 0-255.</param> 
+  /// <param name="blue"> Blue channel, conventionally 0-255.</param> 
+  /// Title: Example
+  ///  See the RGB class example; RGB{255, 0, 0} and RGBA{255, 0, 0, 0.5} mix freely.
+  public RGB(int red, int green, int blue) : this(datamungePINVOKE.new_RGB__SWIG_2(red, green, blue), true) {
+  }
+
+  /// <summary>Preserve direct initialization with a red channel and default remaining channels. Explicit so a number cannot accidentally become a color argument.</summary>
+  /// <param name="red"> Red channel; green remains 41, blue 55 and alpha 1.</param> 
+  /// Title: Example
+  ///  See the numeric constructor; RGB{255} keeps the other default channels.
+  public RGB(int red) : this(datamungePINVOKE.new_RGB__SWIG_3(red), true) {
+  }
+
+  /// <summary>Preserve direct initialization with red/green and default blue/alpha.</summary>
+  /// <param name="red"> Red channel, conventionally 0-255.</param> 
+  /// <param name="green"> Green channel, conventionally 0-255; blue remains 55 and alpha 1.</param> 
+  /// Title: Example
+  ///  See the numeric constructor; RGB{255, 0} keeps the other default channels.
+  public RGB(int red, int green) : this(datamungePINVOKE.new_RGB__SWIG_4(red, green), true) {
+  }
+
+  /// <summary>Implicitly parse a color name, #RRGGBB or #RRGGBBAA string. Names and hexadecimal digits are case-insensitive. Hex alpha is the final byte divided by 255; omitted alpha is 1. Whitespace is not stripped. Named green is (0, 128, 0); transparent is black with alpha zero. The input is copied while parsing and is never borrowed by a plot or palette.</summary>
+  /// <param name="color"> Color text; supported names are listed in the class description.</param> 
+  /// <exception cref="std::invalid_argument"> For empty text, unknown names or malformed hex.</exception> 
+  /// Title: Example
+  /// <code>      const dm::RGBA glass = std::string("#ff44ff55");
+  ///      const auto plt = dm::plot(dm::c(0, 1), dm::c(1, 2), "data", "#ff44ff55");
+  ///      std::print("{} {}\n", glass.r, dm::round(glass.alpha, 3)); // 255 0.333</code>
+  public RGB(string color) : this(datamungePINVOKE.new_RGB__SWIG_5(color), true) {
+    if (datamungePINVOKE.SWIGPendingException.Pending) throw datamungePINVOKE.SWIGPendingException.Retrieve();
   }
 
 }

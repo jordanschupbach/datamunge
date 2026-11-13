@@ -1,3 +1,5 @@
+-- CMD: just TARGET=ggplot_ex run-lua
+
 -- Demonstrates dm.GGPlot -- the ggplot2-style grammar-of-graphics library.
 local dm = require("datamunge")
 
@@ -7,7 +9,7 @@ local function rgb(r, g, b)
   return c
 end
 
-local iris = dm.DataFrame.iris()
+local iris = dm.data.iris()
 
 -- ggplot(iris, aes(x = Sepal.Length, y = Sepal.Width, color = Species)) + geom_point()
 local scatter = dm.GGPlot(iris, "Sepal.Length", "Sepal.Width", "Species")

@@ -1,3 +1,5 @@
+# CMD: just TARGET=datamunge_ex run-tcl
+
 package require Datamunge 0.0.1
 
 datamunge::hello

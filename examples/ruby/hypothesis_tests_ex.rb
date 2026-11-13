@@ -1,3 +1,5 @@
+# CMD: just TARGET=hypothesis_tests_ex run-ruby
+
 require "octruby"
 
 ALT_NAMES = {
@@ -20,7 +22,7 @@ def column_for_species(df, column, species)
   (0...df.nrows).select { |i| df.string_at("Species", i) == species }.map { |i| df.numeric_at(column, i) }
 end
 
-iris = Datamunge::DataFrame.iris
+iris = Datamunge.data_iris
 
 setosa_petal = column_for_species(iris, "Petal.Length", "setosa")
 versicolor_petal = column_for_species(iris, "Petal.Length", "versicolor")

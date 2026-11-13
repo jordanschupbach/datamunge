@@ -1,3 +1,5 @@
+;; CMD: just TARGET=glmm_ex run-lisp
+
 ;;;; Generalized linear mixed models: a binomial GLMM on penguins and a Poisson GLMM on simulated store data.
 (require "asdf")
 (asdf:load-system "datamunge")
@@ -14,7 +16,7 @@
 ;; Predicting sex from body mass, grouped by island: unlike species (which is almost perfectly
 ;; confounded with island in this dataset -- Gentoo penguins occur on Biscoe island only), sex
 ;; is not tied to location, so this is a well-behaved fit.
-(let ((penguins (dm:data-frame-penguins))
+(let ((penguins (dm.data:penguins))
       (is-male '()) (body-mass '()) (island '()))
   (dotimes (i (dm:nrows penguins))
     (unless (or (dm:is-null penguins "sex" i)

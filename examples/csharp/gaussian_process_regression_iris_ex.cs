@@ -1,10 +1,12 @@
+// CMD: just TARGET=gaussian_process_regression_iris_ex run-csharp
+
 using System;
 
 class Program {
   static void Main() {
     const string FORMULA = "Petal.Length ~ Petal.Width";
 
-    var iris = DataFrame.iris();
+    var iris = datamunge.data_iris();
     Console.WriteLine($"iris: {iris.nrows()} rows x {iris.ncols()} cols");
     Console.WriteLine($"formula: {FORMULA}\n");
 

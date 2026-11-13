@@ -1,4 +1,6 @@
 <?php
+// CMD: just TARGET=lmm_ex run-php
+
 
 function dvector($values) {
     $out = new DVector(count($values));
@@ -13,7 +15,7 @@ function randn() {
 }
 
 print("=================== Random intercept on a real dataset (penguins) ===================\n");
-$penguins = DataFrame::penguins();
+$penguins = data_penguins();
 $species_model = new LMM($penguins, "body_mass_g ~ flipper_length_mm + bill_length_mm + (1 | species)");
 $species_model->print_summary();
 

@@ -1,5 +1,5 @@
-# CMD: nix develop .#r --command Rscript examples/r/glmm_ex.r
-# REPL: nix develop .#r --command R --no-save --quiet
+# CMD: nix develop .#r --command env R_LIBS_USER=build/r/library Rscript examples/r/glmm_ex.r
+# REPL: nix develop .#r --command env R_LIBS_USER=build/r/library R --no-save --quiet
 library(datamunger)
 
 
@@ -7,7 +7,7 @@ cat("=================== Binomial (logistic) mixed model on a real dataset (peng
 # Predicting sex from body mass, grouped by island: unlike species (which is almost perfectly
 # confounded with island in this dataset -- Gentoo penguins occur on Biscoe island only), sex
 # is not tied to location, so this is a well-behaved fit.
-penguins <- DataFrame$penguins()
+penguins <- data$penguins()
 n <- penguins$nrows()
 is_male <- c()
 body_mass <- c()

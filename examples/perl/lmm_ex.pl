@@ -1,10 +1,12 @@
+# CMD: just TARGET=lmm_ex run-perl
+
 use strict;
 use warnings;
 
 use Datamunge;
 
 print "=================== Random intercept on a real dataset (penguins) ===================\n";
-my $penguins = Datamunge::DataFrame::penguins();
+my $penguins = Datamunge::data_penguins();
 my $species_model = Datamunge::LMM->new($penguins, "body_mass_g ~ flipper_length_mm + bill_length_mm + (1 | species)");
 $species_model->print_summary();
 

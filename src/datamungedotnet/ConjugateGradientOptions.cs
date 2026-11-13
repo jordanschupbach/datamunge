@@ -9,6 +9,14 @@
 //------------------------------------------------------------------------------
 
 
+/// <summary>Configuration for ConjugateGradient; fields retain their documented native defaults. Supply finite values in the supported ranges. Controls are copied at construction; validation, stopping and loss scaling belong to optimize().</summary>
+/// Title: Example
+/// <code>      dm::optim::ConjugateGradientOptions o;
+///      std::print("{}\n",o.max_iterations); // 1000</code>
+///
+///
+///
+/// <seealso cref="ConjugateGradient"/>
 public class ConjugateGradientOptions : global::System.IDisposable {
   private global::System.Runtime.InteropServices.HandleRef swigCPtr;
   protected bool swigCMemOwn;

@@ -1,3 +1,5 @@
+# CMD: just TARGET=bayes_ex run-ruby
+
 require "octruby"
 
 # Note: the C++ bayes_ex.cpp builds its models with datamunge::bayes::AutodiffModel, which
@@ -131,7 +133,7 @@ puts "NUTS: mu ~ N(#{m}, #{s}^2), accept rate = #{result.accept_rate}, step size
      "divergences = #{result.num_divergences}"
 
 puts "\n=================== Bayesian logistic regression vs. GLM's MLE (iris) ===================\n"
-iris = Datamunge::DataFrame.iris
+iris = Datamunge.data_iris
 is_virginica = []
 petal_length = []
 iris.nrows.times do |i|

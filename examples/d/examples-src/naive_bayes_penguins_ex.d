@@ -1,3 +1,5 @@
+// CMD: just TARGET=naive_bayes_penguins_ex run-d
+
 module app;
 
 import std.stdio : writeln;
@@ -7,7 +9,7 @@ void main() {
   // Note: unlike the C++ example, this doesn't call drop_nulls() first (that method isn't
   // exposed on the SWIG-bound DataFrame facade) -- NaiveBayesClassifier drops incomplete rows
   // for its own formula columns internally when fitting.
-  auto penguins = DataFrame.penguins();
+  auto penguins = data_penguins();
   writeln("penguins: ", penguins.nrows(), " rows x ", penguins.ncols(), " cols\n");
 
   auto model = new NaiveBayesClassifier(penguins, "species ~ bill_length_mm + bill_depth_mm + island + sex");

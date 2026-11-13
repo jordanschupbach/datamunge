@@ -1,3 +1,5 @@
+(* CMD: just TARGET=lmm_ex run-ocaml *)
+
 open Swig
 open Datamunge
 
@@ -12,7 +14,7 @@ let gauss () =
 
 let () =
   print_endline "=================== Random intercept on a real dataset (penguins) ===================";
-  let penguins = _DataFrame_penguins C_void in
+  let penguins = _data_penguins C_void in
   let species_model = new_LMM (C_list [penguins; C_string "body_mass_g ~ flipper_length_mm + bill_length_mm + (1 | species)"]) in
   ignore (invoke species_model "print_summary" C_void);
 

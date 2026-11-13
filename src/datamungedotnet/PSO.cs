@@ -9,7 +9,17 @@
 //------------------------------------------------------------------------------
 
 
-/// <summary>Particle swarm optimization on an ArbitraryFunction within a box constraint: a        population of particles fly through the search space, each pulled toward its own        best-seen position and the best position found by (depending on topology) the        whole swarm or a local neighborhood. Derivative-free.</summary>
+/// <summary>PSO on the ArbitraryFunction callback interface. Box-constrained particle swarm with global or ring attraction and constant or linearly decayed inertia. Coordinates seed one clamped particle; returns the best visited feasible point. Stops after more than twenty small-best-improvement iterations or its budget. O(population_size*p) storage; no global-optimality certificate. The caller supplies finite, dimensionally consistent callbacks. Inputs are borrowed; coordinates mutate in place and can retain a partial state if a callback throws. Calls use local optimizer state and propagate callback exceptions; sharing a mutable objective across threads requires external synchronisation. Normal return alone is not a uniform convergence certificate.</summary>
+/// Title: Example
+/// <code>      const dm::optim::PSO optimizer;
+///      std::print("{}\n",optimizer.options().max_iterations); // 1000</code>
+///
+///
+///
+/// Title: References
+///  - J. Kennedy and R. Eberhart (1995), Particle Swarm Optimization, https://doi.org/10.1109/ICNN.1995.488968. This implementation adds the documented inertia, topology and clamping controls.
+///
+/// <seealso cref="PSOOptions, trace_optimize"/>
 public class PSO : global::System.IDisposable {
   private global::System.Runtime.InteropServices.HandleRef swigCPtr;
   protected bool swigCMemOwn;
@@ -57,17 +67,58 @@ public class PSO : global::System.IDisposable {
     }
   }
 
+  /// <summary>Store a copy of the controls without running the objective.</summary>
+  /// <param name="options"> Method-specific controls; defaults are listed by PSOOptions.</param> 
+  /// Title: Example
+  /// <code>      const dm::optim::PSO optimizer;
+  ///      std::print("{}\n",optimizer.options().max_iterations); // 1000</code>
+  ///
+  ///
+  ///
+  /// <seealso cref="optimize"/>
   public PSO(PSOOptions options) : this(datamungePINVOKE.new_PSO__SWIG_0(PSOOptions.getCPtr(options)), true) {
     if (datamungePINVOKE.SWIGPendingException.Pending) throw datamungePINVOKE.SWIGPendingException.Retrieve();
   }
 
+  /// <summary>Store a copy of the controls without running the objective.</summary>
+  /// Title: Example
+  /// <code>      const dm::optim::PSO optimizer;
+  ///      std::print("{}\n",optimizer.options().max_iterations); // 1000</code>
+  ///
+  ///
+  ///
+  /// <seealso cref="optimize"/>
   public PSO() : this(datamungePINVOKE.new_PSO__SWIG_1(), true) {
   }
 
-  /// <summary>Minimizes ``function`` within [``lower_bound``, ``upper_bound]``, updating        ``coordinates`` in place to the best point found, and returns its value. The        initial ``coordinates`` (clamped into bounds) seed one particle of the swarm.</summary>
+  /// <summary>Run PSO from the supplied point using the configured finite budget. Box-constrained particle swarm with global or ring attraction and constant or linearly decayed inertia. Coordinates seed one clamped particle; returns the best visited feasible point. Stops after more than twenty small-best-improvement iterations or its budget. O(population_size*p) storage; no global-optimality certificate.</summary>
+  /// <param name="function"> Borrowed ArbitraryFunction with matching finite output shapes.</param> 
+  /// <param name="coordinates"> Owned-by-caller finite start; overwritten with the native returned point.</param> 
+  /// <param name="lower_bound"> Matching finite inclusive lower box limits.</param> 
+  /// <param name="upper_bound"> Matching finite inclusive upper limits, greater than lower limits.</param> 
+  /// <returns>Objective at the native returned coordinates; not a stop-status code.</returns> 
+  /// <exception cref="std::invalid_argument"> PSO::optimize: population_size must be at least 2; PSO::optimize: topology must be 'global' or 'ring'; PSO::optimize: inertia_strategy must be 'constant' or 'linear_decay'.</exception> 
+  /// <exception cref="std::exception"> Exceptions from supplied callbacks propagate. Raw solvers do not uniformly reject nonfinite inputs.</exception> 
+  /// Title: Example
+  /// <code>      dm::optim::QuadraticObjective f({2,8},{1,-2});
+  ///      dm::optim::PSOOptions controls;controls.max_iterations=5;
+  ///      std::vector&lt;double&gt; x{0,0};
+  ///      const auto value=dm::optim::PSO(controls).optimize(f,x,std::vector&lt;double&gt;{-3,-3},std::vector&lt;double&gt;{3,3});
+  ///      std::print("{}\n",std::isfinite(value)); // true</code>
+  ///
+  ///
+  ///
+  /// <seealso cref="trace_optimize"/>
   public double optimize(ArbitraryFunction function, DVector coordinates, DVector lower_bound, DVector upper_bound) {
     double ret = datamungePINVOKE.PSO_optimize(swigCPtr, ArbitraryFunction.getCPtr(function), DVector.getCPtr(coordinates), DVector.getCPtr(lower_bound), DVector.getCPtr(upper_bound));
     if (datamungePINVOKE.SWIGPendingException.Pending) throw datamungePINVOKE.SWIGPendingException.Retrieve();
+    return ret;
+  }
+
+  /// <summary>Borrow this optimizer's stored configuration.</summary>
+  /// <returns>Const option reference, valid during this object's lifetime; no mutation.</returns>
+  public PSOOptions options() {
+    PSOOptions ret = new PSOOptions(datamungePINVOKE.PSO_options(swigCPtr), false);
     return ret;
   }
 

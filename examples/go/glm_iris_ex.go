@@ -1,3 +1,5 @@
+// CMD: just TARGET=glm_iris_ex run-go
+
 package main
 
 import (
@@ -15,7 +17,7 @@ func dvector(values []float64) datamunge.DVector {
 }
 
 func main() {
-	iris := datamunge.DataFrameIris()
+	iris := datamunge.DataIris()
 
 	isVirginica := []float64{}
 	petalLength := []float64{}

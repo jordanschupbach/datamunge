@@ -1,3 +1,5 @@
+// CMD: just TARGET=tensor_ex run-csharp
+
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -53,7 +55,7 @@ class Program {
     Console.WriteLine($"count(r >= 6) = {mask.sum()}");
 
     Console.WriteLine("\n=================== A real dataset as a Tensor ===================");
-    var iris = DataFrame.iris();
+    var iris = datamunge.data_iris();
     uint n = iris.nrows();
     var flat = new List<double>();
     for (uint i = 0; i < n; i++) {

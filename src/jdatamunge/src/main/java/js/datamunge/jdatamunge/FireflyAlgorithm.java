@@ -71,4 +71,12 @@ public class FireflyAlgorithm {
     return datamungeJNI.FireflyAlgorithm_optimize(swigCPtr, this, ArbitraryFunction.getCPtr(function), function, DVector.getCPtr(coordinates), coordinates, DVector.getCPtr(lower_bound), lower_bound, DVector.getCPtr(upper_bound), upper_bound);
   }
 
+  /**
+   *  The options this FireflyAlgorithm was configured with.<br>
+   *  @return The stored options.
+   */
+  public FireflyAlgorithmOptions options() {
+    return new FireflyAlgorithmOptions(datamungeJNI.FireflyAlgorithm_options(swigCPtr, this), false);
+  }
+
 }

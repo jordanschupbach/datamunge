@@ -1,6 +1,8 @@
+;; CMD: just TARGET=tree_iris_ex run-guile
+
 (use-modules (datamunge))
 
-(define iris (DataFrame-iris))
+(define iris (data_iris))
 (format #t "iris: ~a rows x ~a cols\n\n" (DataFrame-nrows iris) (DataFrame-ncols iris))
 
 (define model (new-DecisionTreeClassifier iris "Species ~ Petal.Length + Petal.Width"))

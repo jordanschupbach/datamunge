@@ -2,7 +2,7 @@
 *> Real shapefiles are large binary bundles, so this example first writes a tiny synthetic
 *> one by hand (two "counties": a plain square and one with a lake-shaped hole) in the ESRI
 *> byte layout ShapeLayer::read() expects, then reads it back through the public API.
-*> Run with `just run-cobol TARGET=gis_ex`.
+*> CMD: just TARGET=gis_ex run-cobol
 IDENTIFICATION DIVISION.
 PROGRAM-ID. GIS-EX.
 ENVIRONMENT DIVISION.

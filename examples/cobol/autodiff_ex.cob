@@ -1,6 +1,6 @@
 *> Automatic differentiation: forward mode (Dual), reverse mode (Tape/Var) and
 *> second-order forward mode (HyperDual), ending in Rosenbrock gradient descent.
-*> Run with `just run-cobol TARGET=autodiff_ex`.
+*> CMD: just TARGET=autodiff_ex run-cobol
 *>
 *> The C++ example also uses the template drivers datamunge::autodiff::derivative,
 *> gradient_forward, gradient_reverse, jacobian_forward and hessian; templates are

@@ -1,5 +1,5 @@
-# CMD: nix develop .#r --command Rscript examples/r/optim_advanced_ex.r
-# REPL: nix develop .#r --command R --no-save --quiet
+# CMD: nix develop .#r --command env R_LIBS_USER=build/r/library Rscript examples/r/optim_advanced_ex.r
+# REPL: nix develop .#r --command env R_LIBS_USER=build/r/library R --no-save --quiet
 # Objective functions are R6 subclasses of the native function-type interfaces
 # (ArbitraryFunction, DifferentiableFunction, HessianFunction, ResidualFunction, ...): the
 # optimizers call the R methods back from C++.

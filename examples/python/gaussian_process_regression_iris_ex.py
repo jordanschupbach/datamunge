@@ -4,7 +4,7 @@ from pydatamunge import datamunge as dm
 
 FORMULA = "Petal.Length ~ Petal.Width"
 
-iris = dm.DataFrame.iris()
+iris = dm.data.iris()
 print(f"iris: {iris.nrows()} rows x {iris.ncols()} cols")
 print(f"formula: {FORMULA}\n")
 

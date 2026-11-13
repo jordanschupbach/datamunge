@@ -53,102 +53,245 @@ public class HyperDual {
     }
   }
 
+  /**
+   *  A hyper-dual number value + eps1·ε₁ + eps2·ε₂ + eps1eps2·ε₁ε₂ (ε₁² = ε₂² = 0).<br>
+   * <br>
+   *  Seed input i with eps1 = 1 and input j with eps2 = 1 (both on the same input for a<br>
+   *  diagonal entry); the result's eps1eps2() is then the exact ∂²f/∂xᵢ∂xⱼ.<br>
+   *  @param value Real part, the function value.<br>
+   *  @param eps1 First derivative along the first seed direction (default 0).<br>
+   *  @param eps2 First derivative along the second seed direction (default 0).<br>
+   *  @param eps1eps2 Mixed second derivative part (default 0; leave 0 for inputs).<br>
+   *  <p alt="Example"><br>
+   *  {@code 
+   const dm::HyperDual x(3.0, 1.0, 1.0);
+   std::print("{}\n", x.multiply(x).eps1eps2());  // d²(x²)/dx² = 2
+   }</p>
+   */
   public HyperDual(double value, double eps1, double eps2, double eps1eps2) {
     this(datamungeJNI.new_HyperDual__SWIG_0(value, eps1, eps2, eps1eps2), true);
   }
 
+  /**
+   *  A hyper-dual number value + eps1·ε₁ + eps2·ε₂ + eps1eps2·ε₁ε₂ (ε₁² = ε₂² = 0).<br>
+   * <br>
+   *  Seed input i with eps1 = 1 and input j with eps2 = 1 (both on the same input for a<br>
+   *  diagonal entry); the result's eps1eps2() is then the exact ∂²f/∂xᵢ∂xⱼ.<br>
+   *  @param value Real part, the function value.<br>
+   *  @param eps1 First derivative along the first seed direction (default 0).<br>
+   *  @param eps2 First derivative along the second seed direction (default 0).<br>
+   *  <p alt="Example"><br>
+   *  {@code 
+   const dm::HyperDual x(3.0, 1.0, 1.0);
+   std::print("{}\n", x.multiply(x).eps1eps2());  // d²(x²)/dx² = 2
+   }</p>
+   */
   public HyperDual(double value, double eps1, double eps2) {
     this(datamungeJNI.new_HyperDual__SWIG_1(value, eps1, eps2), true);
   }
 
+  /**
+   *  A hyper-dual number value + eps1·ε₁ + eps2·ε₂ + eps1eps2·ε₁ε₂ (ε₁² = ε₂² = 0).<br>
+   * <br>
+   *  Seed input i with eps1 = 1 and input j with eps2 = 1 (both on the same input for a<br>
+   *  diagonal entry); the result's eps1eps2() is then the exact ∂²f/∂xᵢ∂xⱼ.<br>
+   *  @param value Real part, the function value.<br>
+   *  @param eps1 First derivative along the first seed direction (default 0).<br>
+   *  <p alt="Example"><br>
+   *  {@code 
+   const dm::HyperDual x(3.0, 1.0, 1.0);
+   std::print("{}\n", x.multiply(x).eps1eps2());  // d²(x²)/dx² = 2
+   }</p>
+   */
   public HyperDual(double value, double eps1) {
     this(datamungeJNI.new_HyperDual__SWIG_2(value, eps1), true);
   }
 
+  /**
+   *  A hyper-dual number value + eps1·ε₁ + eps2·ε₂ + eps1eps2·ε₁ε₂ (ε₁² = ε₂² = 0).<br>
+   * <br>
+   *  Seed input i with eps1 = 1 and input j with eps2 = 1 (both on the same input for a<br>
+   *  diagonal entry); the result's eps1eps2() is then the exact ∂²f/∂xᵢ∂xⱼ.<br>
+   *  @param value Real part, the function value.<br>
+   *  <p alt="Example"><br>
+   *  {@code 
+   const dm::HyperDual x(3.0, 1.0, 1.0);
+   std::print("{}\n", x.multiply(x).eps1eps2());  // d²(x²)/dx² = 2
+   }</p>
+   */
   public HyperDual(double value) {
     this(datamungeJNI.new_HyperDual__SWIG_3(value), true);
   }
 
+  /**
+   *  The real part: the function value.
+   */
   public double value() {
     return datamungeJNI.HyperDual_value(swigCPtr, this);
   }
 
+  /**
+   *  Derivative along the first seed direction (ε₁ part).
+   */
   public double eps1() {
     return datamungeJNI.HyperDual_eps1(swigCPtr, this);
   }
 
+  /**
+   *  Derivative along the second seed direction (ε₂ part).
+   */
   public double eps2() {
     return datamungeJNI.HyperDual_eps2(swigCPtr, this);
   }
 
+  /**
+   *  The mixed second derivative along both seed directions (ε₁ε₂ part): a Hessian entry.
+   */
   public double eps1eps2() {
     return datamungeJNI.HyperDual_eps1eps2(swigCPtr, this);
   }
 
+  /**
+   *  Sum: this + <code>other</code>, with first and mixed second derivatives.<br>
+   *  @param other Right operand.<br>
+   *  @return A new HyperDual; neither operand changes.
+   */
   public HyperDual add(HyperDual other) {
     return new HyperDual(datamungeJNI.HyperDual_add(swigCPtr, this, HyperDual.getCPtr(other), other), true);
   }
 
+  /**
+   *  Difference: this - <code>other</code>, with first and mixed second derivatives.<br>
+   *  @param other Right operand.<br>
+   *  @return A new HyperDual; neither operand changes.
+   */
   public HyperDual subtract(HyperDual other) {
     return new HyperDual(datamungeJNI.HyperDual_subtract(swigCPtr, this, HyperDual.getCPtr(other), other), true);
   }
 
+  /**
+   *  Product: this * <code>other</code>, with first and mixed second derivatives.<br>
+   *  @param other Right operand.<br>
+   *  @return A new HyperDual; neither operand changes.
+   */
   public HyperDual multiply(HyperDual other) {
     return new HyperDual(datamungeJNI.HyperDual_multiply(swigCPtr, this, HyperDual.getCPtr(other), other), true);
   }
 
+  /**
+   *  Quotient: this / <code>other</code>, with first and mixed second derivatives (IEEE inf/NaN when other is 0).<br>
+   *  @param other Right operand.<br>
+   *  @return A new HyperDual; neither operand changes.
+   */
   public HyperDual divide(HyperDual other) {
     return new HyperDual(datamungeJNI.HyperDual_divide(swigCPtr, this, HyperDual.getCPtr(other), other), true);
   }
 
+  /**
+   *  Negation -x, with its exact chain-rule derivative.<br>
+   *  @return A new HyperDual.
+   */
   public HyperDual negate() {
     return new HyperDual(datamungeJNI.HyperDual_negate(swigCPtr, this), true);
   }
 
+  /**
+   *  Adds a constant <code>scalar</code>, derivative parts unchanged.<br>
+   *  @param scalar Constant right operand.<br>
+   *  @return A new HyperDual.
+   */
   public HyperDual add_scalar(double scalar) {
     return new HyperDual(datamungeJNI.HyperDual_add_scalar(swigCPtr, this, scalar), true);
   }
 
+  /**
+   *  Subtracts a constant <code>scalar</code>, derivative parts unchanged.<br>
+   *  @param scalar Constant right operand.<br>
+   *  @return A new HyperDual.
+   */
   public HyperDual subtract_scalar(double scalar) {
     return new HyperDual(datamungeJNI.HyperDual_subtract_scalar(swigCPtr, this, scalar), true);
   }
 
+  /**
+   *  Multiplies by a constant <code>scalar</code>, derivative parts scaled accordingly.<br>
+   *  @param scalar Constant right operand.<br>
+   *  @return A new HyperDual.
+   */
   public HyperDual multiply_scalar(double scalar) {
     return new HyperDual(datamungeJNI.HyperDual_multiply_scalar(swigCPtr, this, scalar), true);
   }
 
+  /**
+   *  Divides by a constant <code>scalar</code>, derivative parts scaled accordingly.<br>
+   *  @param scalar Constant right operand.<br>
+   *  @return A new HyperDual.
+   */
   public HyperDual divide_scalar(double scalar) {
     return new HyperDual(datamungeJNI.HyperDual_divide_scalar(swigCPtr, this, scalar), true);
   }
 
+  /**
+   *  Power x^p for a constant exponent, with derivative p·x^(p-1).<br>
+   *  @param exponent Constant exponent p; non-integer p needs x ≥ 0 (NaN otherwise).<br>
+   *  @return A new HyperDual.
+   */
   public HyperDual pow(double exponent) {
     return new HyperDual(datamungeJNI.HyperDual_pow(swigCPtr, this, exponent), true);
   }
 
+  /**
+   *  Exponential e^x, with its exact chain-rule derivative.<br>
+   *  @return A new HyperDual.
+   */
   public HyperDual exp() {
     return new HyperDual(datamungeJNI.HyperDual_exp(swigCPtr, this), true);
   }
 
+  /**
+   *  Natural logarithm ln x (NaN for x &lt; 0, -inf at 0), with its exact chain-rule derivative.<br>
+   *  @return A new HyperDual.
+   */
   public HyperDual log() {
     return new HyperDual(datamungeJNI.HyperDual_log(swigCPtr, this), true);
   }
 
+  /**
+   *  Square root √x (NaN for x &lt; 0; infinite derivative at 0), with its exact chain-rule derivative.<br>
+   *  @return A new HyperDual.
+   */
   public HyperDual sqrt() {
     return new HyperDual(datamungeJNI.HyperDual_sqrt(swigCPtr, this), true);
   }
 
+  /**
+   *  Sine (radians), with its exact chain-rule derivative.<br>
+   *  @return A new HyperDual.
+   */
   public HyperDual sin() {
     return new HyperDual(datamungeJNI.HyperDual_sin(swigCPtr, this), true);
   }
 
+  /**
+   *  Cosine (radians), with its exact chain-rule derivative.<br>
+   *  @return A new HyperDual.
+   */
   public HyperDual cos() {
     return new HyperDual(datamungeJNI.HyperDual_cos(swigCPtr, this), true);
   }
 
+  /**
+   *  Tangent (radians), with its exact chain-rule derivative.<br>
+   *  @return A new HyperDual.
+   */
   public HyperDual tan() {
     return new HyperDual(datamungeJNI.HyperDual_tan(swigCPtr, this), true);
   }
 
+  /**
+   *  Hyperbolic tangent, with its exact chain-rule derivative.<br>
+   *  @return A new HyperDual.
+   */
   public HyperDual tanh() {
     return new HyperDual(datamungeJNI.HyperDual_tanh(swigCPtr, this), true);
   }

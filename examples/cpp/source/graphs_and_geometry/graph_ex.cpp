@@ -1,3 +1,5 @@
+// CMD: just TARGET=graph_ex run-cpp
+
 #include <datamunge/dstruct/dstruct.hpp>
 
 #include <iostream>

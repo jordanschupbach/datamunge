@@ -8,6 +8,9 @@
 
 package js.datamunge.jdatamunge;
 
+/**
+ *  Output of GibbsSampler::sample().
+ */
 public class GibbsResult {
   private transient long swigCPtr;
   protected transient boolean swigCMemOwn;
@@ -78,10 +81,16 @@ public class GibbsResult {
     return (cPtr == 0) ? null : new DVector(cPtr, false);
   }
 
+  /**
+   *  Per-coordinate step sizes after warmup.
+   */
   public void setFinal_step_sizes(DVector value) {
     datamungeJNI.GibbsResult_final_step_sizes_set(swigCPtr, this, DVector.getCPtr(value), value);
   }
 
+  /**
+   *  Per-coordinate step sizes after warmup.
+   */
   public DVector getFinal_step_sizes() {
     long cPtr = datamungeJNI.GibbsResult_final_step_sizes_get(swigCPtr, this);
     return (cPtr == 0) ? null : new DVector(cPtr, false);

@@ -1,3 +1,5 @@
+# CMD: just TARGET=bayes_ex run-perl
+
 use strict;
 use warnings;
 
@@ -159,7 +161,7 @@ print "NUTS: mu ~ N($m, $s^2), accept rate = " . $result->swig_accept_rate_get()
       ", divergences = " . $result->swig_num_divergences_get() . "\n";
 
 print "\n=================== Bayesian logistic regression vs. GLM's MLE (iris) ===================\n";
-my $iris = Datamunge::DataFrame::iris();
+my $iris = Datamunge::data_iris();
 my (@is_virginica, @petal_length);
 for (my $i = 0; $i < $iris->nrows(); $i++) {
   my $species = $iris->string_at("Species", $i);

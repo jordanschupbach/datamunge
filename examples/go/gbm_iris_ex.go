@@ -1,3 +1,5 @@
+// CMD: just TARGET=gbm_iris_ex run-go
+
 package main
 
 import (
@@ -6,7 +8,7 @@ import (
 )
 
 func main() {
-	iris := datamunge.DataFrameIris()
+	iris := datamunge.DataIris()
 	fmt.Printf("iris: %d rows x %d cols\n\n", iris.Nrows(), iris.Ncols())
 
 	model := datamunge.NewGBMClassifier(iris, "Species ~ Petal.Length + Petal.Width")

@@ -1,3 +1,5 @@
+// CMD: just TARGET=glmm_ex run-d
+
 module app;
 
 import std.stdio : writeln;
@@ -25,7 +27,7 @@ double gauss(ref Random rng) {
 
 void main() {
   writeln("=================== Binomial (logistic) mixed model on a real dataset (penguins) ===================");
-  auto penguins = DataFrame.penguins();
+  auto penguins = data_penguins();
   double[] is_male;
   double[] body_mass;
   string[] island;

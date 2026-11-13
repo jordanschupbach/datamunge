@@ -1,3 +1,5 @@
+(* CMD: just TARGET=clustering_ex run-ocaml *)
+
 open Swig
 open Datamunge
 
@@ -30,7 +32,7 @@ let report_purity cluster_labels species n_clusters =
   done
 
 let () =
-  let iris = _DataFrame_iris C_void in
+  let iris = _data_iris C_void in
   let n = get_int (invoke iris "nrows" C_void) in
   let species = Array.init n (fun i -> get_string (invoke iris "string_at" (C_list [C_string "Species"; C_int64 (Int64.of_int i)]))) in
   let features = sv ["Sepal.Length"; "Sepal.Width"; "Petal.Length"; "Petal.Width"] in

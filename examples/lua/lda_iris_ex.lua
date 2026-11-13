@@ -1,3 +1,5 @@
+-- CMD: just TARGET=lda_iris_ex run-lua
+
 local dm = require("datamunge")
 
 local function dv(t)
@@ -6,7 +8,7 @@ local function dv(t)
   return v
 end
 
-local iris = dm.DataFrame.iris()
+local iris = dm.data.iris()
 print("iris: " .. iris:nrows() .. " rows x " .. iris:ncols() .. " cols\n")
 
 local model = dm.LDA(iris, "Species ~ Sepal.Length + Sepal.Width + Petal.Length + Petal.Width")

@@ -1,3 +1,5 @@
+// CMD: just TARGET=cv_ex run-cpp
+
 #include <datamunge/cv/cv.hpp>
 #include <datamunge/image/imaging.hpp>
 

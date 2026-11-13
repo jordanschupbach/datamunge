@@ -1,3 +1,5 @@
+# CMD: just TARGET=tensor_ex run-perl
+
 use strict;
 use warnings;
 
@@ -49,7 +51,7 @@ print "r >= 6 -> " . $mask->to_string() . "\n";
 print "count(r >= 6) = " . $mask->sum() . "\n";
 
 print "\n=================== A real dataset as a Tensor ===================\n";
-my $iris = Datamunge::DataFrame::iris();
+my $iris = Datamunge::data_iris();
 my @flat;
 for (my $i = 0; $i < $iris->nrows(); $i++) {
   push @flat, $iris->numeric_at("Sepal.Length", $i);

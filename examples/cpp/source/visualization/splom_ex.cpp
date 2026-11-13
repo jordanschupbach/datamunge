@@ -1,3 +1,5 @@
+// CMD: just TARGET=splom_ex run-cpp
+
 // Demonstrates datamunge::graphics::Splom -- a generalized pairs plot: densities / stacked bars on the
 // diagonal, smooths with prediction bands above it and bivariate density contours below it (numeric
 // pairs), violins (numeric vs string) and chi-squared-shaded mosaics (string vs string).

@@ -1,3 +1,5 @@
+# CMD: just TARGET=ggplot_ex run-perl
+
 use strict;
 use warnings;
 
@@ -14,7 +16,7 @@ sub rgb {
   return $c;
 }
 
-my $iris = Datamunge::DataFrame::iris();
+my $iris = Datamunge::data_iris();
 
 # ggplot(iris, aes(x = Sepal.Length, y = Sepal.Width, color = Species)) + geom_point()
 my $scatter = Datamunge::GGPlot->new($iris, "Sepal.Length", "Sepal.Width", "Species");

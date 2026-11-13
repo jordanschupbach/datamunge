@@ -1,5 +1,5 @@
-# CMD: nix develop .#r --command Rscript examples/r/stl_ex.r
-# REPL: nix develop .#r --command R --no-save --quiet
+# CMD: nix develop .#r --command env R_LIBS_USER=build/r/library Rscript examples/r/stl_ex.r
+# REPL: nix develop .#r --command env R_LIBS_USER=build/r/library R --no-save --quiet
 # STL containers cross the binding as plain R values: std::vector as an atomic vector (or a
 # list for class elements), std::pair as list(first =, second =).
 library(datamunger)

@@ -1,7 +1,7 @@
 *> Linear mixed models: a random intercept on the penguins data, then a random intercept
 *> and slope on simulated multi-school data, with BLUPs and predictions.
 *> The simulation uses FUNCTION RANDOM, so its numbers differ from other languages' runs.
-*> Run with `just run-cobol TARGET=lmm_ex`.
+*> CMD: just TARGET=lmm_ex run-cobol
 IDENTIFICATION DIVISION.
 PROGRAM-ID. LMM-EX.
 DATA DIVISION.
@@ -48,9 +48,9 @@ COPY "datamunge.cpy".
 
 PROCEDURE DIVISION.
     DISPLAY "=================== Random intercept on a real dataset (penguins) ==================="
-    CALL "dm_data_frame_penguins" USING DM-DATA-FRAME-PENGUINS DM-STATUS
+    CALL "dm_data_penguins" USING DM-DATA-PENGUINS DM-STATUS
     PERFORM CHECK
-    MOVE DM-DATA-FRAME-PENGUINS-RESULT TO PENGUINS
+    MOVE DM-DATA-PENGUINS-RESULT TO PENGUINS
     MOVE PENGUINS TO DM-LMM-NEW-DATA
     MOVE "body_mass_g ~ flipper_length_mm + bill_length_mm + (1 | species)" TO DM-LMM-NEW-FORMULA
     CALL "dm_lmm_new" USING DM-LMM-NEW DM-STATUS

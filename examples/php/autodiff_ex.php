@@ -1,4 +1,6 @@
 <?php
+// CMD: just TARGET=autodiff_ex run-php
+
 
 // Note: SWIG's PHP backend renames the "Var" class to "c_Var" since "var" is a reserved PHP
 // keyword (confirmed via the "'var' is a PHP keyword, renaming to 'c_Var'" SWIG warning).

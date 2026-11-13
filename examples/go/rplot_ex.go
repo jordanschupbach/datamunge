@@ -1,3 +1,5 @@
+// CMD: just TARGET=rplot_ex run-go
+
 package main
 
 import (

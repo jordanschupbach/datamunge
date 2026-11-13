@@ -116,7 +116,7 @@ TEST(FigureTest, LdaWithMorePredictorsGivesDiscriminantPlot) {
 }
 
 TEST(FigureTest, LdaFacadeOverload) {
-  const std::unique_ptr<datamunge::DataFrame> iris(datamunge::DataFrame::iris());
+  const std::unique_ptr<datamunge::DataFrame> iris(datamunge::data::iris());
   const datamunge::LDA petals(*iris, "Species ~ Petal.Length + Petal.Width");
   EXPECT_EQ(datamunge::plot(petals).panel_count(), 2u);
 }

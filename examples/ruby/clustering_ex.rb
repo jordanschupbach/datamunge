@@ -1,3 +1,5 @@
+# CMD: just TARGET=clustering_ex run-ruby
+
 require "octruby"
 
 def report_purity(cluster_labels, species, n_clusters)
@@ -14,7 +16,7 @@ def report_purity(cluster_labels, species, n_clusters)
   end
 end
 
-iris = Datamunge::DataFrame.iris
+iris = Datamunge.data_iris
 species = (0...iris.nrows).map { |i| iris.string_at("Species", i) }
 features = ["Sepal.Length", "Sepal.Width", "Petal.Length", "Petal.Width"]
 

@@ -9,9 +9,21 @@
 package js.datamunge.jdatamunge;
 
 /**
- *  Full-batch AMSGrad (Reddi et al. 2018) on a DifferentiableFunction.  AMSGrad is Adam<br>
- *         with a non-decreasing per-coordinate second-moment estimate, giving it a more stable<br>
- *         effective learning-rate schedule.
+ *  AMSGrad on the DifferentiableFunction callback interface.<br>
+ *  Bias-corrected AMSGrad variant: maximises uncorrected second moments, then divides that maximum by 1-beta2^t. The corrected denominator need not be monotone, so the original uncorrected theorem is not automatically inherited. Tests the gradient used after updating; O(p) reset state.<br>
+ *  The caller supplies finite, dimensionally consistent callbacks. Inputs are borrowed;<br>
+ *  coordinates mutate in place and can retain a partial state if a callback throws.<br>
+ *  Calls use local optimizer state and propagate callback exceptions; sharing a mutable<br>
+ *  objective across threads requires external synchronisation. Normal return alone<br>
+ *  is not a uniform convergence certificate.<br>
+ *  <p alt="Example"><br>
+ *  {@code 
+ const dm::optim::AMSGrad optimizer;
+ std::print("{}\n",optimizer.options().max_iterations); // 10000
+ }</p><br>
+ *  <p alt="References"><br>
+ *  - S. Reddi, S. Kale and S. Kumar (2018), On the Convergence of Adam and Beyond, https://openreview.net/forum?id=ryQu7f-RZ<br>
+ *  </p>@see AMSGradOptions, trace_optimize()
  */
 public class AMSGrad {
   private transient long swigCPtr;
@@ -53,16 +65,61 @@ public class AMSGrad {
     }
   }
 
+  /**
+   *  Store a copy of the controls without running the objective.<br>
+   *  @param options Method-specific controls; defaults are listed by AMSGradOptions.<br>
+   *  <p alt="Example"><br>
+   *  {@code 
+   const dm::optim::AMSGrad optimizer;
+   std::print("{}\n",optimizer.options().max_iterations); // 10000
+   }</p><br>
+   *  @see optimize()
+   */
   public AMSGrad(AMSGradOptions options) {
     this(datamungeJNI.new_AMSGrad__SWIG_0(AMSGradOptions.getCPtr(options), options), true);
   }
 
+  /**
+   *  Store a copy of the controls without running the objective.<br>
+   *  <p alt="Example"><br>
+   *  {@code 
+   const dm::optim::AMSGrad optimizer;
+   std::print("{}\n",optimizer.options().max_iterations); // 10000
+   }</p><br>
+   *  @see optimize()
+   */
   public AMSGrad() {
     this(datamungeJNI.new_AMSGrad__SWIG_1(), true);
   }
 
+  /**
+   *  Run AMSGrad from the supplied point using the configured finite budget.<br>
+   *  Bias-corrected AMSGrad variant: maximises uncorrected second moments, then divides that maximum by 1-beta2^t. The corrected denominator need not be monotone, so the original uncorrected theorem is not automatically inherited. Tests the gradient used after updating; O(p) reset state.<br>
+   *  @param function Borrowed DifferentiableFunction with matching finite output shapes.<br>
+   *  @param coordinates Owned-by-caller finite start; overwritten with the native returned point.<br>
+   *  @return Objective at the native returned coordinates; not a stop-status code.<br>
+   *  @throws std::invalid_argument AMSGrad: step_size must be positive; AMSGrad: beta1 must be in [0, 1); AMSGrad: beta2 must be in [0, 1); AMSGrad: epsilon must be positive; AMSGrad: tolerance must be non-negative.<br>
+   *  @throws std::exception Exceptions from supplied callbacks propagate. Raw solvers do not uniformly reject nonfinite inputs.<br>
+   *  <p alt="Example"><br>
+   *  {@code 
+   dm::optim::QuadraticObjective f({2,8},{1,-2});
+   dm::optim::AMSGradOptions controls;controls.max_iterations=5;
+   std::vector<double> x{0,0};
+   const auto value=dm::optim::AMSGrad(controls).optimize(f,x);
+   std::print("{}\n",std::isfinite(value)); // true
+   }</p><br>
+   *  @see trace_optimize(), AMSGradOptions
+   */
   public double optimize(DifferentiableFunction function, DVector coordinates) {
     return datamungeJNI.AMSGrad_optimize(swigCPtr, this, DifferentiableFunction.getCPtr(function), function, DVector.getCPtr(coordinates), coordinates);
+  }
+
+  /**
+   *  Borrow this optimizer's stored configuration.<br>
+   *  @return Const option reference, valid during this object's lifetime; no mutation.
+   */
+  public AMSGradOptions options() {
+    return new AMSGradOptions(datamungeJNI.AMSGrad_options(swigCPtr, this), false);
   }
 
 }

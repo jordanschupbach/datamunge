@@ -1,3 +1,5 @@
+;; CMD: just TARGET=autodiff_ex run-guile
+
 (use-modules (datamunge))
 
 (define (rosenbrock-dual x0 x1)

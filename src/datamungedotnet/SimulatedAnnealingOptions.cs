@@ -9,6 +9,14 @@
 //------------------------------------------------------------------------------
 
 
+/// <summary>Configuration for SimulatedAnnealing; fields retain their documented native defaults. Supply finite values in the supported ranges. Controls are copied at construction; validation, stopping and loss scaling belong to optimize().</summary>
+/// Title: Example
+/// <code>      dm::optim::SimulatedAnnealingOptions o;
+///      std::print("{}\n",o.max_iterations); // 10000</code>
+///
+///
+///
+/// <seealso cref="SimulatedAnnealing"/>
 public class SimulatedAnnealingOptions : global::System.IDisposable {
   private global::System.Runtime.InteropServices.HandleRef swigCPtr;
   protected bool swigCMemOwn;
@@ -66,7 +74,6 @@ public class SimulatedAnnealingOptions : global::System.IDisposable {
     } 
   }
 
-  /// <summary>Multiplicative cooling factor applied to the temperature after every iteration.</summary>
   public double cooling_rate {
     set {
       datamungePINVOKE.SimulatedAnnealingOptions_cooling_rate_set(swigCPtr, value);
@@ -87,7 +94,6 @@ public class SimulatedAnnealingOptions : global::System.IDisposable {
     } 
   }
 
-  /// <summary>Standard deviation of the Gaussian perturbation proposed at each step.</summary>
   public double step_std_dev {
     set {
       datamungePINVOKE.SimulatedAnnealingOptions_step_std_dev_set(swigCPtr, value);

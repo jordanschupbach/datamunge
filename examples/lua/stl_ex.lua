@@ -1,3 +1,5 @@
+-- CMD: just TARGET=stl_ex run-lua
+
 local dm = require("datamunge")
 
 -- C++ std::vector and std::pair values are plain Lua tables: vectors are 1-based arrays and

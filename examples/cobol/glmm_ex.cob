@@ -1,7 +1,7 @@
 *> Generalized linear mixed models: a binomial (logistic) model on the penguins data,
 *> then a Poisson model on simulated multi-store counts, with BLUPs and predictions.
 *> The simulation uses FUNCTION RANDOM, so its numbers differ from other languages' runs.
-*> Run with `just run-cobol TARGET=glmm_ex`.
+*> CMD: just TARGET=glmm_ex run-cobol
 IDENTIFICATION DIVISION.
 PROGRAM-ID. GLMM-EX.
 DATA DIVISION.
@@ -58,9 +58,9 @@ PROCEDURE DIVISION.
     *> Predicting sex from body mass, grouped by island: unlike species (almost perfectly
     *> confounded with island here -- Gentoo penguins occur on Biscoe island only), sex
     *> is not tied to location, so this is a well-behaved fit.
-    CALL "dm_data_frame_penguins" USING DM-DATA-FRAME-PENGUINS DM-STATUS
+    CALL "dm_data_penguins" USING DM-DATA-PENGUINS DM-STATUS
     PERFORM CHECK
-    MOVE DM-DATA-FRAME-PENGUINS-RESULT TO PENGUINS
+    MOVE DM-DATA-PENGUINS-RESULT TO PENGUINS
     MOVE PENGUINS TO DM-DATA-FRAME-NROWS-SELF
     CALL "dm_data_frame_nrows" USING DM-DATA-FRAME-NROWS DM-STATUS
     PERFORM CHECK

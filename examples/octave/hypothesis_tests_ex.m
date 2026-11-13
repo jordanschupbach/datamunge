@@ -1,3 +1,5 @@
+% CMD: just TARGET=hypothesis_tests_ex run-octave
+
 1;
 
 datamunge;
@@ -47,7 +49,7 @@ function out = column_for_species(df, column, species)
   end
 endfunction
 
-iris = DataFrame_iris();
+iris = data_iris();
 
 setosa_petal = column_for_species(iris, "Petal.Length", "setosa");
 versicolor_petal = column_for_species(iris, "Petal.Length", "versicolor");

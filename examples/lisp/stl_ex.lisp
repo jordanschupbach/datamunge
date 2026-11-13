@@ -1,3 +1,5 @@
+;; CMD: just TARGET=stl_ex run-lisp
+
 ;;;; C++ std::vector and std::pair values in Lisp: vectors are 0-based Lisp vectors, pairs are lists.
 (require "asdf")
 (asdf:load-system "datamunge")

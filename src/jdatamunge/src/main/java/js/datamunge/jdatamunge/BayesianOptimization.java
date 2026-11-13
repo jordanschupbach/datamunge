@@ -8,6 +8,37 @@
 
 package js.datamunge.jdatamunge;
 
+/**
+ *  Minimises an expensive black-box function on a box with few evaluations.<br>
+ * <br>
+ *  The loop is:<br>
+ *  1. evaluate `initial_samples` points drawn uniformly in `[lower, upper]`;<br>
+ *  2. repeat `max_iterations` times: fit the surrogate to all observations, score `candidates`<br>
+ *     uniform random points with BayesianSurrogate::acquisition() (the incumbent being the<br>
+ *     smallest value so far), polish the best one by compass search on the acquisition (steps<br>
+ *     of 10% of each side, halved `refine_iterations` times, clipped to the box), and evaluate<br>
+ *     the objective there.<br>
+ * <br>
+ *  Only point evaluations of the objective are used, so it suits expensive simulations,<br>
+ *  experiments and hyperparameter tuning where each evaluation costs far more than the<br>
+ *  surrogate fit.<br>
+ * <br>
+ *  <p alt="Example"><br>
+ *  {@code 
+ struct Bowl : dm::optim::ArbitraryFunction {
+     double evaluate(const std::vector<double>& x) override { return (x[0] - 1.0) * (x[0] - 1.0); }
+ } bowl;
+ dm::optim::RBFGaussianProcessSurrogate gp({.fit_hyperparameters = true});
+ const auto result = dm::optim::BayesianOptimization({.initial_samples = 4, .max_iterations = 10})
+                         .run(bowl, {-3.0}, {3.0}, gp);
+ std::print("{:.3f} after {} evaluations\n", result.best_point[0], result.values.size());  // 1.002 after 14 evaluations
+ }</p><br>
+ *  @see RBFGaussianProcessSurrogate, expected_improvement() <p alt="References"><br>
+ *  - D. R. Jones, M. Schonlau and W. J. Welch (1998). "Efficient global optimization of expensive<br>
+ *    black-box functions". Journal of Global Optimization 13, 455–492.<br>
+ *  - B. Shahriari et al. (2016). "Taking the human out of the loop: a review of Bayesian<br>
+ *    optimization". Proceedings of the IEEE 104(1), 148–175.</p>
+ */
 public class BayesianOptimization {
   private transient long swigCPtr;
   protected transient boolean swigCMemOwn;
@@ -48,16 +79,55 @@ public class BayesianOptimization {
     }
   }
 
+  /**
+   *  Creates the optimizer.<br>
+   *  @param options  Design size, iteration count, seed and acquisition search settings.
+   */
   public BayesianOptimization(BayesianOptimizationOptions options) {
     this(datamungeJNI.new_BayesianOptimization__SWIG_0(BayesianOptimizationOptions.getCPtr(options), options), true);
   }
 
+  /**
+   *  Creates the optimizer.<br>
+   *  
+   */
   public BayesianOptimization() {
     this(datamungeJNI.new_BayesianOptimization__SWIG_1(), true);
   }
 
+  /**
+   *  Runs the loop and records every evaluation.<br>
+   *  @param function   Objective to minimise.<br>
+   *  @param lower      Lower corner of the box.<br>
+   *  @param upper      Upper corner of the box (each entry larger than in <code>lower)</code>.<br>
+   *  @param surrogate  Surrogate refitted before every proposal.<br>
+   *  @return The evaluations and the best point.<br>
+   *  @throws std::invalid_argument  If the bounds are empty, differ in length or are not increasing.
+   */
+  public BayesianOptimizationResult run(ArbitraryFunction function, DVector lower, DVector upper, BayesianSurrogate surrogate) {
+    return new BayesianOptimizationResult(datamungeJNI.BayesianOptimization_run(swigCPtr, this, ArbitraryFunction.getCPtr(function), function, DVector.getCPtr(lower), lower, DVector.getCPtr(upper), upper, BayesianSurrogate.getCPtr(surrogate), surrogate), true);
+  }
+
+  /**
+   *  Runs the loop and returns only the best value.<br>
+   *  @param function     Objective to minimise.<br>
+   *  @param coordinates  Output: the best point (its length must equal the bounds').<br>
+   *  @param lower        Lower corner of the box.<br>
+   *  @param upper        Upper corner of the box.<br>
+   *  @param surrogate    Surrogate refitted before every proposal.<br>
+   *  @return The smallest observed value.<br>
+   *  @throws std::invalid_argument  If the bounds do not match <code>coordinates</code> or are not increasing.
+   */
   public double optimize(ArbitraryFunction function, DVector coordinates, DVector lower, DVector upper, BayesianSurrogate surrogate) {
     return datamungeJNI.BayesianOptimization_optimize(swigCPtr, this, ArbitraryFunction.getCPtr(function), function, DVector.getCPtr(coordinates), coordinates, DVector.getCPtr(lower), lower, DVector.getCPtr(upper), upper, BayesianSurrogate.getCPtr(surrogate), surrogate);
+  }
+
+  /**
+   *  The options this BayesianOptimization was configured with.<br>
+   *  @return The stored options.
+   */
+  public BayesianOptimizationOptions options() {
+    return new BayesianOptimizationOptions(datamungeJNI.BayesianOptimization_options(swigCPtr, this), false);
   }
 
 }

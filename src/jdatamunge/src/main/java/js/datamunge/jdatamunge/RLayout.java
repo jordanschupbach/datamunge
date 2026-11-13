@@ -9,8 +9,33 @@
 package js.datamunge.jdatamunge;
 
 /**
- *  Tiles independently-built `Plot` objects into one multi-panel figure, mimicking R's<br>
- *  `par(mfrow = c(rows, cols))`.
+ *  Tiles independently built plots into one multi-panel figure, like R's<br>
+ *         `par(mfrow = c(rows, cols))` followed by one plot per panel.<br>
+ * <br>
+ *  Create it with create(rows, cols), then add() up to rows * cols panels; they fill the grid<br>
+ *  row by row. Each panel is copied (and its SVG rendered) at add() time, so later changes to<br>
+ *  the original plot do not show and panels need not outlive the layout. Each cell is<br>
+ *  `width / cols` by `(height - band) / rows` pixels, where band is title_band_px when a<br>
+ *  figure title is set and 0 otherwise; every panel is scaled from its own canvas size into its<br>
+ *  cell. The figure background is white. Unused cells stay empty.<br>
+ * <br>
+ *  <p alt="Example"><br>
+ *  {@code 
+ const auto x = dm::seql(0.0, 6.0, 30);
+ auto fig = dm::graphics::RLayout::create(1, 2)
+                .size(1200, 500)
+                .title("Two views")
+                .add(dm::Plot(x, dm::sin(x)).set_title("sin"))
+                .add(dm::Plot(x, dm::cos(x)).set_title("cos"));
+ std::print("{} panels in {}x{}\n", fig.panel_count(), fig.rows(), fig.cols());
+2 panels in 1x2
+ fig.save("two_views.svg");
+ }</p><br>
+ * <br>
+ *  <p alt="References"><br>
+ *  - R `par()` (`mfrow`): https://stat.ethz.ch/R-manual/R-devel/library/graphics/html/par.html</p><br>
+ * <br>
+ *  @see RPlot, RPlot#margins(), dm::Splom
  */
 public class RLayout {
   private transient long swigCPtr;
@@ -52,35 +77,348 @@ public class RLayout {
     }
   }
 
+  /**
+   *  Creates an empty layout with <code>rows</code> by <code>cols</code> cells, like R's<br>
+   *         `par(mfrow = c(rows, cols))`.<br>
+   * <br>
+   *  The figure starts at 960 by 640 pixels with no title.<br>
+   * <br>
+   *  @param rows  Number of panel rows; must be positive.<br>
+   *  @param cols  Number of panel columns; must be positive.<br>
+   *  @return The empty layout.<br>
+   *  @throws std::invalid_argument  If <code>rows</code> or <code>cols</code> is 0.<br>
+   * <br>
+   *  <p alt="Example"><br>
+   *  See RLayout.</p><br>
+   * <br>
+   *  <p alt="References"><br>
+   *  - R `par()` (`mfrow`): https://stat.ethz.ch/R-manual/R-devel/library/graphics/html/par.html</p><br>
+   * <br>
+   *  @see add()
+   */
   public static RLayout create(long rows, long cols) {
     return new RLayout(datamungeJNI.RLayout_create(rows, cols), true);
   }
 
+  /**
+   *  Copies <code>panel</code> into the next free cell, filling rows left to right, top to bottom.<br>
+   * <br>
+   *  The panel's SVG is rendered immediately and stored with the copy, so rendering errors<br>
+   *  surface here and later edits to the original plot have no effect on the layout.<br>
+   * <br>
+   *  @param panel  The plot to add; any RPlot (or other Plot) converts.<br>
+   *  @return This layout, for chaining.<br>
+   *  @throws std::invalid_argument  If all rows * cols cells are already filled.<br>
+   *  @throws std::runtime_error  If <code>panel</code> has no data series or its canvas is smaller than<br>
+   *          its margins.<br>
+   * <br>
+   *  <p alt="Example"><br>
+   *  {@code 
+   auto fig = dm::graphics::RLayout::create(1, 1).add(dm::Plot(dm::c(1.0, 2.0), dm::c(2.0, 1.0)));
+   try {
+     fig.add(dm::Plot(dm::c(1.0), dm::c(1.0)));
+   } catch (const std::invalid_argument& e) {
+     std::print("{}\n", e.what());  // RLayout::add: layout is already full
+   }
+   }</p><br>
+   *  @see panel(), panel_count()
+   */
   public RLayout add(Plot panel) {
     return new RLayout(datamungeJNI.RLayout_add(swigCPtr, this, Plot.getCPtr(panel), panel), false);
   }
 
+  /**
+   *  Sets the size of the whole figure in pixels (default 960 by 640).<br>
+   * <br>
+   *  Panels keep their own canvas sizes and are scaled into their cells, so text in a panel<br>
+   *  shrinks or grows with it; give panels a size close to their cell for readable labels.<br>
+   * <br>
+   *  @param width  Figure width in pixels.<br>
+   *  @param height  Figure height in pixels, including the title band.<br>
+   *  @return This layout, for chaining.<br>
+   * <br>
+   *  <p alt="Example"><br>
+   *  See RLayout.<br>
+   *  </p>@see title()
+   */
   public RLayout size(long width, long height) {
     return new RLayout(datamungeJNI.RLayout_size(swigCPtr, this, width, height), false);
   }
 
   /**
-   *  Renders the multi-panel figure as a standalone SVG document and returns it as a string.
+   *  Sets an optional figure-level heading drawn in a band above the panels, like R's<br>
+   *         `mtext(main, outer = TRUE)`; an empty string (the default) reserves no band.<br>
+   *  @param value  Heading text; the band is title_band_px pixels tall.<br>
+   *  @return This layout, for chaining.<br>
+   * <br>
+   *  <p alt="Example"><br>
+   *  See RLayout.</p><br>
+   * <br>
+   *  <p alt="References"><br>
+   *  - R `mtext()`: https://stat.ethz.ch/R-manual/R-devel/library/graphics/html/mtext.html</p><br>
+   * <br>
+   *  @see title_text()
+   */
+  public RLayout title(String value) {
+    return new RLayout(datamungeJNI.RLayout_title(swigCPtr, this, value), false);
+  }
+
+  /**
+   *  Returns the number of panel rows given to create().<br>
+   *  @return Row count (at least 1).
+   */
+  public long rows() {
+    return datamungeJNI.RLayout_rows(swigCPtr, this);
+  }
+
+  /**
+   *  Returns the number of panel columns given to create().<br>
+   *  @return Column count (at least 1).
+   */
+  public long cols() {
+    return datamungeJNI.RLayout_cols(swigCPtr, this);
+  }
+
+  /**
+   *  Returns the figure width in pixels.<br>
+   *  @return Width set by size() (default 960).
+   */
+  public long width() {
+    return datamungeJNI.RLayout_width(swigCPtr, this);
+  }
+
+  /**
+   *  Returns the figure height in pixels.<br>
+   *  @return Height set by size() (default 640).
+   */
+  public long height() {
+    return datamungeJNI.RLayout_height(swigCPtr, this);
+  }
+
+  /**
+   *  Returns how many panels have been added.<br>
+   *  @return Panel count, at most rows() * cols().
+   */
+  public long panel_count() {
+    return datamungeJNI.RLayout_panel_count(swigCPtr, this);
+  }
+
+  /**
+   *  Borrows the figure-level heading for the lifetime of this layout.<br>
+   *  @return The title; empty (the default) when none is drawn.
+   */
+  public String title_text() {
+    return datamungeJNI.RLayout_title_text(swigCPtr, this);
+  }
+
+  /**
+   *  Borrows the copy of the <code>index-th</code> added panel.<br>
+   *  @param index  Zero-based panel index, in the order panels were added.<br>
+   *  @return The stored copy, valid until the next add() or the layout's destruction.<br>
+   *  @throws std::out_of_range If <code>index</code> is not below panel_count().<br>
+   * <br>
+   *  <p alt="Example"><br>
+   *  {@code 
+   auto fig = dm::graphics::RLayout::create(1, 2).add(dm::Plot(dm::c(1.0), dm::c(1.0)).set_title("A"));
+   std::print("{}\n", fig.panel(0).title_text());  // A
+   }</p>
+   */
+  public Plot panel(long index) {
+    return new Plot(datamungeJNI.RLayout_panel(swigCPtr, this, index), false);
+  }
+
+  /**
+   *  Renders the multi-panel figure as a standalone SVG document and returns it as a string.<br>
+   * <br>
+   *  Each panel becomes a nested `&lt;svg&gt;` scaled into its cell. A layout with no panels renders<br>
+   *  as an empty white figure. The layout is not modified.<br>
+   * <br>
+   *  @return The complete SVG text.<br>
+   * <br>
+   *  <p alt="Example"><br>
+   *  {@code 
+   auto fig = dm::graphics::RLayout::create(2, 1).add(dm::Plot(dm::c(1.0, 2.0), dm::c(1.0, 2.0)));
+   std::print("{}\n", fig.to_svg().starts_with("<?xml"));  // true
+   }</p><br>
+   *  @see save()
    */
   public String to_svg() {
     return datamungeJNI.RLayout_to_svg(swigCPtr, this);
   }
 
+  /**
+   *  Saves the figure, choosing the format from the extension: `.svg` (or none) writes<br>
+   *         SVG, `.png` / `.pdf` write the same tiled raster the X11 viewer shows.<br>
+   * <br>
+   *  The extension is case-sensitive and an existing file is overwritten. Raster panels are<br>
+   *  re-rendered from the stored copies and scaled into their cells.<br>
+   * <br>
+   *  @param path  Destination file.<br>
+   *  @throws std::invalid_argument For any other extension.<br>
+   *  @throws std::runtime_error  If the file cannot be written.<br>
+   * <br>
+   *  <p alt="Example"><br>
+   *  See RLayout.<br>
+   *  </p>@see save_svg(), to_svg(), show()
+   */
   public void save(String path) {
     datamungeJNI.RLayout_save(swigCPtr, this, path);
   }
 
+  /**
+   *  Writes to_svg() to <code>path</code> regardless of its extension.<br>
+   *  @param path  Destination file; an existing file is overwritten.<br>
+   *  @throws std::runtime_error  If the file cannot be opened for writing.<br>
+   *  @see save()
+   */
   public void save_svg(String path) {
     datamungeJNI.RLayout_save_svg(swigCPtr, this, path);
+  }
+
+  /**
+   *  Renders the tiled figure as PNG image bytes (the raster save() writes for `.png`).<br>
+   *  @return The complete PNG file contents.<br>
+   *  @throws std::runtime_error  If a panel cannot be rendered.<br>
+   *  @see save_png(), to_svg()
+   */
+  public SWIGTYPE_p_std__vectorT_unsigned_char_t to_png() {
+    return new SWIGTYPE_p_std__vectorT_unsigned_char_t(datamungeJNI.RLayout_to_png(swigCPtr, this), true);
+  }
+
+  /**
+   *  Renders the tiled figure as a one-page PDF holding the raster image.<br>
+   *  @return The complete PDF file contents.<br>
+   *  @throws std::runtime_error  If a panel cannot be rendered.<br>
+   *  @see save_pdf(), to_png()
+   */
+  public SWIGTYPE_p_std__vectorT_unsigned_char_t to_pdf() {
+    return new SWIGTYPE_p_std__vectorT_unsigned_char_t(datamungeJNI.RLayout_to_pdf(swigCPtr, this), true);
+  }
+
+  /**
+   *  Writes to_png() to <code>path</code> regardless of its extension.<br>
+   *  @param path  Destination file; an existing file is overwritten.<br>
+   *  @throws std::runtime_error  If the file cannot be written or a panel cannot be rendered.
+   */
+  public void save_png(String path) {
+    datamungeJNI.RLayout_save_png(swigCPtr, this, path);
+  }
+
+  /**
+   *  Writes to_pdf() to <code>path</code> regardless of its extension.<br>
+   *  @param path  Destination file; an existing file is overwritten.<br>
+   *  @throws std::runtime_error  If the file cannot be written or a panel cannot be rendered.
+   */
+  public void save_pdf(String path) {
+    datamungeJNI.RLayout_save_pdf(swigCPtr, this, path);
+  }
+
+  /**
+   *  Resizes every stored panel's canvas to its cell, so text keeps its pixel size<br>
+   *         instead of being scaled with the panel.<br>
+   * <br>
+   *  Call it after size() and title() (the title band changes the cell height). Panels added<br>
+   *  later keep their own size until fit_panels() is called again. A cell whose shorter side is<br>
+   *  under min_panel_px gets a canvas scaled up to that side (same aspect ratio), so its text is<br>
+   *  drawn proportionally smaller instead of the margins overflowing the panel.<br>
+   *  @return This layout, for chaining.<br>
+   * <br>
+   *  <p alt="Example"><br>
+   *  {@code 
+   auto fig = dm::graphics::RLayout::create(1, 2)
+                  .add(dm::Plot(dm::c(1.0, 2.0), dm::c(2.0, 1.0)))
+                  .add(dm::Plot(dm::c(1.0, 2.0), dm::c(1.0, 2.0)))
+                  .size(1000, 400)
+                  .fit_panels();
+   std::print("{}x{}\n", fig.panel(0).width(), fig.panel(0).height());  // 500x400
+   }</p><br>
+   *  @see size()
+   */
+  public RLayout fit_panels() {
+    return new RLayout(datamungeJNI.RLayout_fit_panels(swigCPtr, this), false);
+  }
+
+  /**
+   *  Opens the tiled figure in the interactive X11 viewer; the toolbar zoom/pan buttons<br>
+   *         act on every panel's data bounds at once, keyboard zoom/pan scales the whole image.<br>
+   * <br>
+   *  Blocks until the window is closed (q or Escape). Use save() in headless code.<br>
+   * <br>
+   *  @param title_hint  Window title; empty (the default) uses title_text().<br>
+   *  @throws std::runtime_error If X11 support was not enabled at build time or no display is<br>
+   *          available.<br>
+   *  @throws std::invalid_argument  If no panel was added.<br>
+   * <br>
+   *  <p alt="Example"><br>
+   *  {@code 
+   const auto x = dm::seql(0.0, 6.0, 30);
+   dm::graphics::RLayout::create(1, 2)
+       .add(dm::Plot(x, dm::sin(x)))
+       .add(dm::Plot(x, dm::cos(x)))
+       .show("Trig");
+   }</p><br>
+   *  @see save(), Plot::show()
+   */
+  public void show(String title_hint) {
+    datamungeJNI.RLayout_show__SWIG_0(swigCPtr, this, title_hint);
+  }
+
+  /**
+   *  Opens the tiled figure in the interactive X11 viewer; the toolbar zoom/pan buttons<br>
+   *         act on every panel's data bounds at once, keyboard zoom/pan scales the whole image.<br>
+   * <br>
+   *  Blocks until the window is closed (q or Escape). Use save() in headless code.<br>
+   * <br>
+   *  @throws std::runtime_error If X11 support was not enabled at build time or no display is<br>
+   *          available.<br>
+   *  @throws std::invalid_argument  If no panel was added.<br>
+   * <br>
+   *  <p alt="Example"><br>
+   *  {@code 
+   const auto x = dm::seql(0.0, 6.0, 30);
+   dm::graphics::RLayout::create(1, 2)
+       .add(dm::Plot(x, dm::sin(x)))
+       .add(dm::Plot(x, dm::cos(x)))
+       .show("Trig");
+   }</p><br>
+   *  @see save(), Plot::show()
+   */
+  public void show() {
+    datamungeJNI.RLayout_show__SWIG_1(swigCPtr, this);
+  }
+
+  /**
+   *  Same as show(); kept as an alias for older code.<br>
+   *  @param title_hint  Window title; empty (the default) uses title_text().<br>
+   *  @throws std::runtime_error  As for show().<br>
+   *  @throws std::invalid_argument  If no panel was added.<br>
+   *  @see show()
+   */
+  public void view(String title_hint) {
+    datamungeJNI.RLayout_view__SWIG_0(swigCPtr, this, title_hint);
+  }
+
+  /**
+   *  Same as show(); kept as an alias for older code.<br>
+   *  @throws std::runtime_error  As for show().<br>
+   *  @throws std::invalid_argument  If no panel was added.<br>
+   *  @see show()
+   */
+  public void view() {
+    datamungeJNI.RLayout_view__SWIG_1(swigCPtr, this);
   }
 
   public RLayout() {
     this(datamungeJNI.new_RLayout(), true);
   }
 
+  /**
+   *  Height in pixels of the heading band reserved above the panels when a title is set.
+   */
+  public final static long title_band_px = datamungeJNI.RLayout_title_band_px_get();
+  /**
+   *  Smallest canvas side fit_panels() gives a panel; smaller cells get a larger canvas<br>
+   *         with the cell's aspect ratio, scaled down when drawn, so the margins still fit.
+   */
+  public final static long min_panel_px = datamungeJNI.RLayout_min_panel_px_get();
 }

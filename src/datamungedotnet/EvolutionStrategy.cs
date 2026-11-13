@@ -71,4 +71,11 @@ public class EvolutionStrategy : global::System.IDisposable {
     return ret;
   }
 
+  /// <summary>The options this EvolutionStrategy was configured with.</summary>
+  /// <returns>The stored options.</returns>
+  public EvolutionStrategyOptions options() {
+    EvolutionStrategyOptions ret = new EvolutionStrategyOptions(datamungePINVOKE.EvolutionStrategy_options(swigCPtr), false);
+    return ret;
+  }
+
 }

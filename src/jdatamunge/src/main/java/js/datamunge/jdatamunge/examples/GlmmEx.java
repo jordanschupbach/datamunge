@@ -22,7 +22,7 @@ public class GlmmEx {
 
   public static void run() {
     System.out.println("=================== Binomial (logistic) mixed model on a real dataset (penguins) ===================");
-    var penguins = DataFrame.penguins();
+    var penguins = datamunge.data_penguins();
     List<Double> isMale = new ArrayList<>();
     List<Double> bodyMass = new ArrayList<>();
     List<String> island = new ArrayList<>();

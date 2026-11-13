@@ -1,3 +1,5 @@
+# CMD: just TARGET=glmm_ex run-tcl
+
 package require Datamunge 0.0.1
 
 proc randn {} {
@@ -7,7 +9,7 @@ proc randn {} {
 }
 
 puts "=================== Binomial (logistic) mixed model on a real dataset (penguins) ==================="
-set penguins [datamunge::DataFrame_penguins]
+set penguins [datamunge::data_penguins]
 set is_male {}
 set body_mass {}
 set island {}

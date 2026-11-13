@@ -1,3 +1,5 @@
+-- CMD: just TARGET=rplot_ex run-lua
+
 -- Demonstrates dm.RPlot / dm.RLayout -- the R-base-graphics-style plotting library.
 local dm = require("datamunge")
 

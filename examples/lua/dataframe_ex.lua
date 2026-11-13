@@ -1,3 +1,5 @@
+-- CMD: just TARGET=dataframe_ex run-lua
+
 local dm = require("datamunge")
 
 -- Plain Lua tables never auto-convert to vector<T> parameters in Lua's SWIG bindings --

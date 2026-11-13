@@ -1,10 +1,12 @@
+;; CMD: just TARGET=tree_iris_ex run-lisp
+
 ;;;; Decision tree classifier on iris: summary, confusion matrix, misclassified rows and plots.
 (require "asdf")
 (asdf:load-system "datamunge")
 
 (setf *read-default-float-format* 'double-float)
 
-(defparameter *iris* (dm:data-frame-iris))
+(defparameter *iris* (dm.data:iris))
 (format t "iris: ~a rows x ~a cols~%~%" (dm:nrows *iris*) (dm:ncols *iris*))
 
 (defparameter *model* (dm:make-decision-tree-classifier *iris* "Species ~ Petal.Length + Petal.Width"))

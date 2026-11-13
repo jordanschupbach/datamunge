@@ -1,3 +1,5 @@
+;; CMD: just TARGET=tensor_ex run-lisp
+
 ;;;; Tensors: construction, shape ops, broadcasting, reductions, linear algebra, masks, iris.
 (require "asdf")
 (asdf:load-system "datamunge")
@@ -42,7 +44,7 @@
   (format t "count(r >= 6) = ~a~%" (dm:sum mask)))
 
 (format t "~%=================== A real dataset as a Tensor ===================~%")
-(let* ((iris (dm:data-frame-iris))
+(let* ((iris (dm.data:iris))
        (n (dm:nrows iris))
        (flat (loop for i below n
                    nconc (loop for column in '("Sepal.Length" "Sepal.Width" "Petal.Length" "Petal.Width")

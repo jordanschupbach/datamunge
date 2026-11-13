@@ -1,3 +1,5 @@
+// CMD: just TARGET=lmm_ex run-go
+
 package main
 
 import (
@@ -23,7 +25,7 @@ func randn() float64 {
 
 func main() {
 	fmt.Println("=================== Random intercept on a real dataset (penguins) ===================")
-	penguins := datamunge.DataFramePenguins()
+	penguins := datamunge.DataPenguins()
 	speciesModel := datamunge.NewLMM(penguins, "body_mass_g ~ flipper_length_mm + bill_length_mm + (1 | species)")
 	speciesModel.Print_summary()
 

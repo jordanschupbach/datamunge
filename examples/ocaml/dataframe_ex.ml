@@ -1,3 +1,5 @@
+(* CMD: just TARGET=dataframe_ex run-ocaml *)
+
 (* See lm_ex.ml for notes on this binding's conventions: invoke obj "method" args for
    methods, invoke obj "[field]" args for struct fields, invoke v "[]" (C_int i) for
    container indexing, and C_int64 (not C_int) for any std::size_t-typed argument. *)

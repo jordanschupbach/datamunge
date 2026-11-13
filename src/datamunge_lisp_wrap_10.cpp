@@ -1425,7 +1425,7 @@ template<> struct Value<datamunge::Vector<double>> {
 };
 } }
 namespace ROSETTA_LISP_MODULE {
-void rosetta_lisp_13(rosetta_lisp::Call& c) {
+void rosetta_lisp_12(rosetta_lisp::Call& c) {
     for (int pass = 1; pass < 2; ++pass) {
         const bool strict = pass == 0; (void)strict;
             {
@@ -1433,57 +1433,17 @@ void rosetta_lisp_13(rosetta_lisp::Call& c) {
                 if (c.args.size() >= 0 && n >= 2 && n <= 2) {
                     if (n == 2) {
                         rosetta_lisp::converting() = "argument 'a'";
-                        rosetta_lisp::Param<datamunge::algebra::Polynomial> p0(c.args[0]);
-                        rosetta_lisp::converting() = "argument 'b'";
-                        rosetta_lisp::Param<datamunge::algebra::Polynomial> p1(c.args[1]);
-                        rosetta_lisp::converting() = nullptr;
-                        rosetta_lisp::call(c, [&]() -> decltype(auto) { return ::datamunge::algebra::poly_gcd_pseudo_remainder_sequence(p0.get(), p1.get()); }, -1, rosetta_lisp::Return::automatic);
-                        return;
-                    }
-                }
-            }
-    }
-    rosetta_lisp::no_overload(c, "(poly-gcd-pseudo-remainder-sequence ...)", "    (poly-gcd-pseudo-remainder-sequence a b) → polynomial\n", 0);
-}
-void rosetta_lisp_29(rosetta_lisp::Call& c) {
-    for (int pass = 1; pass < 2; ++pass) {
-        const bool strict = pass == 0; (void)strict;
-            {
-                const std::size_t n = c.args.size() - 0;
-                if (c.args.size() >= 0 && n >= 1 && n <= 1) {
-                    if (n == 1) {
-                        rosetta_lisp::converting() = "argument 'p'";
                         rosetta_lisp::Param<const datamunge::algebra::Polynomial &> p0(c.args[0]);
+                        rosetta_lisp::converting() = "argument 'b'";
+                        rosetta_lisp::Param<const datamunge::algebra::Polynomial &> p1(c.args[1]);
                         rosetta_lisp::converting() = nullptr;
-                        rosetta_lisp::call(c, [&]() -> decltype(auto) { return ::datamunge::algebra::square_free_factorization(p0.get()); }, -1, rosetta_lisp::Return::automatic);
+                        rosetta_lisp::call(c, [&]() -> decltype(auto) { return ::datamunge::algebra::poly_extended_gcd(p0.get(), p1.get()); }, -1, rosetta_lisp::Return::automatic);
                         return;
                     }
                 }
             }
     }
-    rosetta_lisp::no_overload(c, "(square-free-factorization ...)", "    (square-free-factorization p) → (vector square-free-factor)\n", 0);
-}
-void rosetta_lisp_37(rosetta_lisp::Call& c) {
-    for (int pass = 1; pass < 2; ++pass) {
-        const bool strict = pass == 0; (void)strict;
-            {
-                const std::size_t n = c.args.size() - 0;
-                if (c.args.size() >= 0 && n >= 3 && n <= 3) {
-                    if (n == 3) {
-                        rosetta_lisp::converting() = "argument 'p'";
-                        rosetta_lisp::Param<const datamunge::algebra::MultivariatePolynomial &> p0(c.args[0]);
-                        rosetta_lisp::converting() = "argument 'basis'";
-                        rosetta_lisp::Param<const std::vector<datamunge::algebra::MultivariatePolynomial> &> p1(c.args[1]);
-                        rosetta_lisp::converting() = "argument 'order'";
-                        rosetta_lisp::Param<datamunge::algebra::MonomialOrder> p2(c.args[2]);
-                        rosetta_lisp::converting() = nullptr;
-                        rosetta_lisp::call(c, [&]() -> decltype(auto) { return ::datamunge::algebra::multivariate_reduce(p0.get(), p1.get(), p2.get()); }, -1, rosetta_lisp::Return::automatic);
-                        return;
-                    }
-                }
-            }
-    }
-    rosetta_lisp::no_overload(c, "(multivariate-reduce ...)", "    (multivariate-reduce p basis order) → multivariate-polynomial\n", 0);
+    rosetta_lisp::no_overload(c, "(poly-extended-gcd ...)", "    (poly-extended-gcd a b) → poly-extended-gcd-result\n", 0);
 }
 void rosetta_lisp_48(rosetta_lisp::Call& c) {
     for (int pass = 1; pass < 2; ++pass) {
@@ -1505,25 +1465,111 @@ void rosetta_lisp_48(rosetta_lisp::Call& c) {
     }
     rosetta_lisp::no_overload(c, "(berlekamp-null-space ...)", "    (berlekamp-null-space f p) → (vector (vector integer))\n", 0);
 }
-void rosetta_lisp_84(rosetta_lisp::Call& c) {
+void rosetta_lisp_52(rosetta_lisp::Call& c) {
+    for (int pass = 1; pass < 2; ++pass) {
+        const bool strict = pass == 0; (void)strict;
+            {
+                const std::size_t n = c.args.size() - 0;
+                if (c.args.size() >= 0 && n >= 2 && n <= 2) {
+                    if (n == 2) {
+                        rosetta_lisp::converting() = "argument 'p'";
+                        rosetta_lisp::Param<long long> p0(c.args[0]);
+                        rosetta_lisp::converting() = "argument 'd'";
+                        rosetta_lisp::Param<int> p1(c.args[1]);
+                        rosetta_lisp::converting() = nullptr;
+                        rosetta_lisp::call(c, [&]() -> decltype(auto) { return ::datamunge::algebra::count_monic_irreducibles(p0.get(), p1.get()); }, -1, rosetta_lisp::Return::automatic);
+                        return;
+                    }
+                }
+            }
+    }
+    rosetta_lisp::no_overload(c, "(count-monic-irreducibles ...)", "    (count-monic-irreducibles p d) → double-float\n", 0);
+}
+void rosetta_lisp_71(rosetta_lisp::Call& c) {
+    for (int pass = 1; pass < 2; ++pass) {
+        const bool strict = pass == 0; (void)strict;
+            {
+                const std::size_t n = c.args.size() - 0;
+                if (c.args.size() >= 0 && n >= 1 && n <= 5) {
+                    if (n == 1) {
+                        rosetta_lisp::converting() = "argument 'img'";
+                        rosetta_lisp::Param<const datamunge::image::Image &> p0(c.args[0]);
+                        rosetta_lisp::converting() = nullptr;
+                        rosetta_lisp::call(c, [&]() -> decltype(auto) { return ::datamunge::cv::harris_corners(p0.get()); }, -1, rosetta_lisp::Return::automatic);
+                        return;
+                    }
+                    if (n == 2) {
+                        rosetta_lisp::converting() = "argument 'img'";
+                        rosetta_lisp::Param<const datamunge::image::Image &> p0(c.args[0]);
+                        rosetta_lisp::converting() = "argument 'k'";
+                        rosetta_lisp::Param<double> p1(c.args[1]);
+                        rosetta_lisp::converting() = nullptr;
+                        rosetta_lisp::call(c, [&]() -> decltype(auto) { return ::datamunge::cv::harris_corners(p0.get(), p1.get()); }, -1, rosetta_lisp::Return::automatic);
+                        return;
+                    }
+                    if (n == 3) {
+                        rosetta_lisp::converting() = "argument 'img'";
+                        rosetta_lisp::Param<const datamunge::image::Image &> p0(c.args[0]);
+                        rosetta_lisp::converting() = "argument 'k'";
+                        rosetta_lisp::Param<double> p1(c.args[1]);
+                        rosetta_lisp::converting() = "argument 'sigma'";
+                        rosetta_lisp::Param<double> p2(c.args[2]);
+                        rosetta_lisp::converting() = nullptr;
+                        rosetta_lisp::call(c, [&]() -> decltype(auto) { return ::datamunge::cv::harris_corners(p0.get(), p1.get(), p2.get()); }, -1, rosetta_lisp::Return::automatic);
+                        return;
+                    }
+                    if (n == 4) {
+                        rosetta_lisp::converting() = "argument 'img'";
+                        rosetta_lisp::Param<const datamunge::image::Image &> p0(c.args[0]);
+                        rosetta_lisp::converting() = "argument 'k'";
+                        rosetta_lisp::Param<double> p1(c.args[1]);
+                        rosetta_lisp::converting() = "argument 'sigma'";
+                        rosetta_lisp::Param<double> p2(c.args[2]);
+                        rosetta_lisp::converting() = "argument 'threshold-ratio'";
+                        rosetta_lisp::Param<double> p3(c.args[3]);
+                        rosetta_lisp::converting() = nullptr;
+                        rosetta_lisp::call(c, [&]() -> decltype(auto) { return ::datamunge::cv::harris_corners(p0.get(), p1.get(), p2.get(), p3.get()); }, -1, rosetta_lisp::Return::automatic);
+                        return;
+                    }
+                    if (n == 5) {
+                        rosetta_lisp::converting() = "argument 'img'";
+                        rosetta_lisp::Param<const datamunge::image::Image &> p0(c.args[0]);
+                        rosetta_lisp::converting() = "argument 'k'";
+                        rosetta_lisp::Param<double> p1(c.args[1]);
+                        rosetta_lisp::converting() = "argument 'sigma'";
+                        rosetta_lisp::Param<double> p2(c.args[2]);
+                        rosetta_lisp::converting() = "argument 'threshold-ratio'";
+                        rosetta_lisp::Param<double> p3(c.args[3]);
+                        rosetta_lisp::converting() = "argument 'nms-radius'";
+                        rosetta_lisp::Param<int> p4(c.args[4]);
+                        rosetta_lisp::converting() = nullptr;
+                        rosetta_lisp::call(c, [&]() -> decltype(auto) { return ::datamunge::cv::harris_corners(p0.get(), p1.get(), p2.get(), p3.get(), p4.get()); }, -1, rosetta_lisp::Return::automatic);
+                        return;
+                    }
+                }
+            }
+    }
+    rosetta_lisp::no_overload(c, "(harris-corners ...)", "    (harris-corners img &optional (k 0.04d0) (sigma 1d0) (threshold-ratio 0.01d0) (nms-radius 3)) → (vector corner)\n", 0);
+}
+void rosetta_lisp_85(rosetta_lisp::Call& c) {
     for (int pass = 1; pass < 2; ++pass) {
         const bool strict = pass == 0; (void)strict;
             {
                 const std::size_t n = c.args.size() - 0;
                 if (c.args.size() >= 0 && n >= 1 && n <= 1) {
                     if (n == 1) {
-                        rosetta_lisp::converting() = "argument 'size'";
-                        rosetta_lisp::Param<int> p0(c.args[0]);
+                        rosetta_lisp::converting() = "argument 'sigma'";
+                        rosetta_lisp::Param<double> p0(c.args[0]);
                         rosetta_lisp::converting() = nullptr;
-                        rosetta_lisp::call(c, [&]() -> decltype(auto) { return ::datamunge::image::box_kernel(p0.get()); }, -1, rosetta_lisp::Return::automatic);
+                        rosetta_lisp::call(c, [&]() -> decltype(auto) { return ::datamunge::image::gaussian_kernel(p0.get()); }, -1, rosetta_lisp::Return::automatic);
                         return;
                     }
                 }
             }
     }
-    rosetta_lisp::no_overload(c, "(box-kernel ...)", "    (box-kernel size) → (vector double-float)\n", 0);
+    rosetta_lisp::no_overload(c, "(gaussian-kernel ...)", "    (gaussian-kernel sigma) → (vector double-float)\n", 0);
 }
-void rosetta_lisp_92(rosetta_lisp::Call& c) {
+void rosetta_lisp_100(rosetta_lisp::Call& c) {
     for (int pass = 1; pass < 2; ++pass) {
         const bool strict = pass == 0; (void)strict;
             {
@@ -1532,16 +1578,16 @@ void rosetta_lisp_92(rosetta_lisp::Call& c) {
                     if (n == 2) {
                         rosetta_lisp::converting() = "argument 'src'";
                         rosetta_lisp::Param<const datamunge::image::Image &> p0(c.args[0]);
-                        rosetta_lisp::converting() = "argument 'factor'";
-                        rosetta_lisp::Param<double> p1(c.args[1]);
+                        rosetta_lisp::converting() = "argument 'degrees'";
+                        rosetta_lisp::Param<int> p1(c.args[1]);
                         rosetta_lisp::converting() = nullptr;
-                        rosetta_lisp::call(c, [&]() -> decltype(auto) { return ::datamunge::image::adjust_contrast(p0.get(), p1.get()); }, -1, rosetta_lisp::Return::automatic);
+                        rosetta_lisp::call(c, [&]() -> decltype(auto) { return ::datamunge::image::rotate90(p0.get(), p1.get()); }, -1, rosetta_lisp::Return::automatic);
                         return;
                     }
                 }
             }
     }
-    rosetta_lisp::no_overload(c, "(adjust-contrast ...)", "    (adjust-contrast src factor) → image\n", 0);
+    rosetta_lisp::no_overload(c, "(rotate90 ...)", "    (rotate90 src degrees) → image\n", 0);
 }
 void rosetta_lisp_102(rosetta_lisp::Call& c) {
     for (int pass = 1; pass < 2; ++pass) {
@@ -1574,25 +1620,7 @@ void rosetta_lisp_102(rosetta_lisp::Call& c) {
     }
     rosetta_lisp::no_overload(c, "(gaussian-pyramid ...)", "    (gaussian-pyramid img levels &optional (sigma 1d0)) → (vector image)\n", 0);
 }
-void rosetta_lisp_121(rosetta_lisp::Call& c) {
-    for (int pass = 1; pass < 2; ++pass) {
-        const bool strict = pass == 0; (void)strict;
-            {
-                const std::size_t n = c.args.size() - 0;
-                if (c.args.size() >= 0 && n >= 1 && n <= 1) {
-                    if (n == 1) {
-                        rosetta_lisp::converting() = "argument 'points'";
-                        rosetta_lisp::Param<const std::vector<datamunge::geometry::Point2D> &> p0(c.args[0]);
-                        rosetta_lisp::converting() = nullptr;
-                        rosetta_lisp::call(c, [&]() -> decltype(auto) { return ::datamunge::fem::make_mesh2d_from_points(p0.get()); }, -1, rosetta_lisp::Return::automatic);
-                        return;
-                    }
-                }
-            }
-    }
-    rosetta_lisp::no_overload(c, "(make-mesh2d-from-points ...)", "    (make-mesh2d-from-points points) → mesh2-d\n", 0);
-}
-void rosetta_lisp_125(rosetta_lisp::Call& c) {
+void rosetta_lisp_144(rosetta_lisp::Call& c) {
     for (int pass = 1; pass < 2; ++pass) {
         const bool strict = pass == 0; (void)strict;
             {
@@ -1602,57 +1630,81 @@ void rosetta_lisp_125(rosetta_lisp::Call& c) {
                         rosetta_lisp::converting() = "argument 'points'";
                         rosetta_lisp::Param<std::vector<datamunge::geometry::Point2D>> p0(c.args[0]);
                         rosetta_lisp::converting() = nullptr;
-                        rosetta_lisp::call(c, [&]() -> decltype(auto) { return ::datamunge::geometry::convex_hull(p0.get()); }, -1, rosetta_lisp::Return::automatic);
+                        rosetta_lisp::call(c, [&]() -> decltype(auto) { return ::datamunge::geometry::min_enclosing_circle(p0.get()); }, -1, rosetta_lisp::Return::automatic);
                         return;
                     }
                 }
             }
     }
-    rosetta_lisp::no_overload(c, "(convex-hull ...)", "    (convex-hull points) → (vector point2-d)\n", 0);
+    rosetta_lisp::no_overload(c, "(min-enclosing-circle ...)", "    (min-enclosing-circle points) → circle\n", 0);
 }
-void rosetta_lisp_145(rosetta_lisp::Call& c) {
+void rosetta_lisp_156(rosetta_lisp::Call& c) {
     for (int pass = 1; pass < 2; ++pass) {
         const bool strict = pass == 0; (void)strict;
             {
                 const std::size_t n = c.args.size() - 0;
                 if (c.args.size() >= 0 && n >= 2 && n <= 2) {
                     if (n == 2) {
-                        rosetta_lisp::converting() = "argument 'point'";
-                        rosetta_lisp::Param<const datamunge::geometry::Point2D &> p0(c.args[0]);
-                        rosetta_lisp::converting() = "argument 'vertices'";
+                        rosetta_lisp::converting() = "argument 'subject'";
+                        rosetta_lisp::Param<const std::vector<datamunge::geometry::Point2D> &> p0(c.args[0]);
+                        rosetta_lisp::converting() = "argument 'clip'";
                         rosetta_lisp::Param<const std::vector<datamunge::geometry::Point2D> &> p1(c.args[1]);
                         rosetta_lisp::converting() = nullptr;
-                        rosetta_lisp::call(c, [&]() -> decltype(auto) { return ::datamunge::geometry::point_in_polygon(p0.get(), p1.get()); }, -1, rosetta_lisp::Return::automatic);
+                        rosetta_lisp::call(c, [&]() -> decltype(auto) { return ::datamunge::geometry::clip_polygon(p0.get(), p1.get()); }, -1, rosetta_lisp::Return::automatic);
                         return;
                     }
                 }
             }
     }
-    rosetta_lisp::no_overload(c, "(point-in-polygon ...)", "    (point-in-polygon point vertices) → boolean\n", 0);
+    rosetta_lisp::no_overload(c, "(clip-polygon ...)", "    (clip-polygon subject clip) → (vector point2-d)\n", 0);
 }
-void rosetta_lisp_150(rosetta_lisp::Call& c) {
+void rosetta_lisp_161(rosetta_lisp::Call& c) {
     for (int pass = 1; pass < 2; ++pass) {
         const bool strict = pass == 0; (void)strict;
             {
                 const std::size_t n = c.args.size() - 0;
                 if (c.args.size() >= 0 && n >= 3 && n <= 3) {
                     if (n == 3) {
-                        rosetta_lisp::converting() = "argument 'a'";
+                        rosetta_lisp::converting() = "argument 'p'";
                         rosetta_lisp::Param<const datamunge::geometry::Point2D &> p0(c.args[0]);
-                        rosetta_lisp::converting() = "argument 'b'";
+                        rosetta_lisp::converting() = "argument 'a'";
                         rosetta_lisp::Param<const datamunge::geometry::Point2D &> p1(c.args[1]);
-                        rosetta_lisp::converting() = "argument 'c'";
+                        rosetta_lisp::converting() = "argument 'b'";
                         rosetta_lisp::Param<const datamunge::geometry::Point2D &> p2(c.args[2]);
                         rosetta_lisp::converting() = nullptr;
-                        rosetta_lisp::call(c, [&]() -> decltype(auto) { return ::datamunge::geometry::orientation(p0.get(), p1.get(), p2.get()); }, -1, rosetta_lisp::Return::automatic);
+                        rosetta_lisp::call(c, [&]() -> decltype(auto) { return ::datamunge::geometry::detail::point_to_line_distance(p0.get(), p1.get(), p2.get()); }, -1, rosetta_lisp::Return::automatic);
                         return;
                     }
                 }
             }
     }
-    rosetta_lisp::no_overload(c, "(orientation ...)", "    (orientation a b c) → orientation\n", 0);
+    rosetta_lisp::no_overload(c, "(point-to-line-distance ...)", "    (point-to-line-distance p a b) → double-float\n", 0);
 }
-void rosetta_lisp_165(rosetta_lisp::Call& c) {
+void rosetta_lisp_167(rosetta_lisp::Call& c) {
+    for (int pass = 1; pass < 2; ++pass) {
+        const bool strict = pass == 0; (void)strict;
+            {
+                const std::size_t n = c.args.size() - 0;
+                if (c.args.size() >= 0 && n >= 4 && n <= 4) {
+                    if (n == 4) {
+                        rosetta_lisp::converting() = "argument 'img'";
+                        rosetta_lisp::Param<datamunge::image::Image &> p0(c.args[0]);
+                        rosetta_lisp::converting() = "argument 'x'";
+                        rosetta_lisp::Param<int> p1(c.args[1]);
+                        rosetta_lisp::converting() = "argument 'y'";
+                        rosetta_lisp::Param<int> p2(c.args[2]);
+                        rosetta_lisp::converting() = "argument 'color'";
+                        rosetta_lisp::Param<const datamunge::image::Pixel &> p3(c.args[3]);
+                        rosetta_lisp::converting() = nullptr;
+                        rosetta_lisp::call(c, [&]() -> decltype(auto) { return ::datamunge::image::detail::set_pixel_clipped(p0.get(), p1.get(), p2.get(), p3.get()); }, -1, rosetta_lisp::Return::automatic);
+                        return;
+                    }
+                }
+            }
+    }
+    rosetta_lisp::no_overload(c, "(set-pixel-clipped ...)", "    (set-pixel-clipped img x y color)\n", 0);
+}
+void rosetta_lisp_177(rosetta_lisp::Call& c) {
     for (int pass = 1; pass < 2; ++pass) {
         const bool strict = pass == 0; (void)strict;
             {
@@ -1662,15 +1714,15 @@ void rosetta_lisp_165(rosetta_lisp::Call& c) {
                         rosetta_lisp::converting() = "argument 'path'";
                         rosetta_lisp::Param<const std::__cxx11::basic_string<char> &> p0(c.args[0]);
                         rosetta_lisp::converting() = nullptr;
-                        rosetta_lisp::call(c, [&]() -> decltype(auto) { return ::datamunge::image::read_bmp(p0.get()); }, -1, rosetta_lisp::Return::automatic);
+                        rosetta_lisp::call(c, [&]() -> decltype(auto) { return ::datamunge::image::read_pbm(p0.get()); }, -1, rosetta_lisp::Return::automatic);
                         return;
                     }
                 }
             }
     }
-    rosetta_lisp::no_overload(c, "(read-bmp ...)", "    (read-bmp path) → image\n", 0);
+    rosetta_lisp::no_overload(c, "(read-pbm ...)", "    (read-pbm path) → image\n", 0);
 }
-void rosetta_lisp_181(rosetta_lisp::Call& c) {
+void rosetta_lisp_182(rosetta_lisp::Call& c) {
     for (int pass = 1; pass < 2; ++pass) {
         const bool strict = pass == 0; (void)strict;
             {
@@ -1684,7 +1736,7 @@ void rosetta_lisp_181(rosetta_lisp::Call& c) {
                         rosetta_lisp::converting() = "argument 'incumbent'";
                         rosetta_lisp::Param<double> p2(c.args[2]);
                         rosetta_lisp::converting() = nullptr;
-                        rosetta_lisp::call(c, [&]() -> decltype(auto) { return ::datamunge::optim::expected_improvement(p0.get(), p1.get(), p2.get()); }, -1, rosetta_lisp::Return::automatic);
+                        rosetta_lisp::call(c, [&]() -> decltype(auto) { return ::datamunge::optim::probability_of_improvement(p0.get(), p1.get(), p2.get()); }, -1, rosetta_lisp::Return::automatic);
                         return;
                     }
                     if (n == 4) {
@@ -1697,89 +1749,178 @@ void rosetta_lisp_181(rosetta_lisp::Call& c) {
                         rosetta_lisp::converting() = "argument 'exploration'";
                         rosetta_lisp::Param<double> p3(c.args[3]);
                         rosetta_lisp::converting() = nullptr;
-                        rosetta_lisp::call(c, [&]() -> decltype(auto) { return ::datamunge::optim::expected_improvement(p0.get(), p1.get(), p2.get(), p3.get()); }, -1, rosetta_lisp::Return::automatic);
+                        rosetta_lisp::call(c, [&]() -> decltype(auto) { return ::datamunge::optim::probability_of_improvement(p0.get(), p1.get(), p2.get(), p3.get()); }, -1, rosetta_lisp::Return::automatic);
                         return;
                     }
                 }
             }
     }
-    rosetta_lisp::no_overload(c, "(expected-improvement ...)", "    (expected-improvement mean sd incumbent &optional (exploration 0d0)) → double-float\n", 0);
+    rosetta_lisp::no_overload(c, "(probability-of-improvement ...)", "    (probability-of-improvement mean sd incumbent &optional (exploration 0d0)) → double-float\n", 0);
 }
-void rosetta_lisp_205(rosetta_lisp::Call& c) {
+void rosetta_lisp_202(rosetta_lisp::Call& c) {
     for (int pass = 1; pass < 2; ++pass) {
         const bool strict = pass == 0; (void)strict;
             {
                 const std::size_t n = c.args.size() - 0;
-                if (c.args.size() >= 0 && n >= 1 && n <= 3) {
-                    if (n == 1) {
-                        rosetta_lisp::converting() = "argument 'x'";
-                        rosetta_lisp::Param<const std::vector<double> &> p0(c.args[0]);
-                        rosetta_lisp::converting() = nullptr;
-                        rosetta_lisp::call(c, [&]() -> decltype(auto) { return ::datamunge::stats::wilcoxon_signed_rank_test(p0.get()); }, -1, rosetta_lisp::Return::automatic);
-                        return;
-                    }
+                if (c.args.size() >= 0 && n >= 2 && n <= 5) {
                     if (n == 2) {
                         rosetta_lisp::converting() = "argument 'x'";
                         rosetta_lisp::Param<const std::vector<double> &> p0(c.args[0]);
-                        rosetta_lisp::converting() = "argument 'mu'";
-                        rosetta_lisp::Param<double> p1(c.args[1]);
+                        rosetta_lisp::converting() = "argument 'y'";
+                        rosetta_lisp::Param<const std::vector<double> &> p1(c.args[1]);
                         rosetta_lisp::converting() = nullptr;
-                        rosetta_lisp::call(c, [&]() -> decltype(auto) { return ::datamunge::stats::wilcoxon_signed_rank_test(p0.get(), p1.get()); }, -1, rosetta_lisp::Return::automatic);
+                        rosetta_lisp::call(c, [&]() -> decltype(auto) { return ::datamunge::stats::t_test_two_sample(p0.get(), p1.get()); }, -1, rosetta_lisp::Return::automatic);
                         return;
                     }
                     if (n == 3) {
                         rosetta_lisp::converting() = "argument 'x'";
                         rosetta_lisp::Param<const std::vector<double> &> p0(c.args[0]);
-                        rosetta_lisp::converting() = "argument 'mu'";
-                        rosetta_lisp::Param<double> p1(c.args[1]);
-                        rosetta_lisp::converting() = "argument 'alternative'";
-                        rosetta_lisp::Param<datamunge::stats::Alternative> p2(c.args[2]);
+                        rosetta_lisp::converting() = "argument 'y'";
+                        rosetta_lisp::Param<const std::vector<double> &> p1(c.args[1]);
+                        rosetta_lisp::converting() = "argument 'equal-variance'";
+                        rosetta_lisp::Param<bool> p2(c.args[2]);
                         rosetta_lisp::converting() = nullptr;
-                        rosetta_lisp::call(c, [&]() -> decltype(auto) { return ::datamunge::stats::wilcoxon_signed_rank_test(p0.get(), p1.get(), p2.get()); }, -1, rosetta_lisp::Return::automatic);
+                        rosetta_lisp::call(c, [&]() -> decltype(auto) { return ::datamunge::stats::t_test_two_sample(p0.get(), p1.get(), p2.get()); }, -1, rosetta_lisp::Return::automatic);
+                        return;
+                    }
+                    if (n == 4) {
+                        rosetta_lisp::converting() = "argument 'x'";
+                        rosetta_lisp::Param<const std::vector<double> &> p0(c.args[0]);
+                        rosetta_lisp::converting() = "argument 'y'";
+                        rosetta_lisp::Param<const std::vector<double> &> p1(c.args[1]);
+                        rosetta_lisp::converting() = "argument 'equal-variance'";
+                        rosetta_lisp::Param<bool> p2(c.args[2]);
+                        rosetta_lisp::converting() = "argument 'alternative'";
+                        rosetta_lisp::Param<datamunge::stats::Alternative> p3(c.args[3]);
+                        rosetta_lisp::converting() = nullptr;
+                        rosetta_lisp::call(c, [&]() -> decltype(auto) { return ::datamunge::stats::t_test_two_sample(p0.get(), p1.get(), p2.get(), p3.get()); }, -1, rosetta_lisp::Return::automatic);
+                        return;
+                    }
+                    if (n == 5) {
+                        rosetta_lisp::converting() = "argument 'x'";
+                        rosetta_lisp::Param<const std::vector<double> &> p0(c.args[0]);
+                        rosetta_lisp::converting() = "argument 'y'";
+                        rosetta_lisp::Param<const std::vector<double> &> p1(c.args[1]);
+                        rosetta_lisp::converting() = "argument 'equal-variance'";
+                        rosetta_lisp::Param<bool> p2(c.args[2]);
+                        rosetta_lisp::converting() = "argument 'alternative'";
+                        rosetta_lisp::Param<datamunge::stats::Alternative> p3(c.args[3]);
+                        rosetta_lisp::converting() = "argument 'conf-level'";
+                        rosetta_lisp::Param<double> p4(c.args[4]);
+                        rosetta_lisp::converting() = nullptr;
+                        rosetta_lisp::call(c, [&]() -> decltype(auto) { return ::datamunge::stats::t_test_two_sample(p0.get(), p1.get(), p2.get(), p3.get(), p4.get()); }, -1, rosetta_lisp::Return::automatic);
                         return;
                     }
                 }
             }
     }
-    rosetta_lisp::no_overload(c, "(wilcoxon-signed-rank-test ...)", "    (wilcoxon-signed-rank-test x &optional (mu 0d0) (alternative :two-sided)) → hypothesis-test-result\n", 0);
+    rosetta_lisp::no_overload(c, "(t-test-two-sample ...)", "    (t-test-two-sample x y &optional (equal-variance nil) (alternative :two-sided) (conf-level 0.95d0)) → hypothesis-test-result\n", 0);
 }
-void rosetta_lisp_282(rosetta_lisp::Call& c) {
-    if (c.args.size() != 1) rosetta_lisp::fail("(re object) takes no further arguments");
-    auto* native = rosetta_lisp::native<datamunge::algebra::detail::Cplx>(c.args[0]);
-    c.result = rosetta_lisp::result<decltype((native->re))>(c, native->re, 0, rosetta_lisp::Return::automatic);
+void rosetta_lisp_219(rosetta_lisp::Call& c) {
+    for (int pass = 1; pass < 2; ++pass) {
+        const bool strict = pass == 0; (void)strict;
+            {
+                const std::size_t n = c.args.size() - 0;
+                if (c.args.size() >= 0 && n >= 0 && n <= 0) {
+                    if (n == 0) {
+                        rosetta_lisp::call(c, [&]() -> decltype(auto) { return ::datamunge::data::wine(); }, -1, rosetta_lisp::Return::automatic);
+                        return;
+                    }
+                }
+            }
+    }
+    rosetta_lisp::no_overload(c, "(wine ...)", "    (wine) → (or null data-frame)\n", 0);
 }
-void rosetta_lisp_283(rosetta_lisp::Call& c) {
-    if (c.args.size() != 2) rosetta_lisp::fail("(setf (re object) value) takes no further arguments");
-    auto* native = rosetta_lisp::native<datamunge::algebra::detail::Cplx>(c.args[0]);
-    using F = std::remove_cv_t<std::remove_reference_t<decltype(native->re)>>;
+void rosetta_lisp_236(rosetta_lisp::Call& c) {
+    for (int pass = 1; pass < 2; ++pass) {
+        const bool strict = pass == 0; (void)strict;
+            {
+                const std::size_t n = c.args.size() - 0;
+                if (c.args.size() >= 0 && n >= 3 && n <= 4) {
+                    if (n == 3) {
+                        rosetta_lisp::converting() = "argument 'bases'";
+                        rosetta_lisp::Param<std::vector<datamunge::fda::BSplineBasis>> p0(c.args[0]);
+                        rosetta_lisp::converting() = "argument 'points'";
+                        rosetta_lisp::Param<const std::vector<std::vector<double>> &> p1(c.args[1]);
+                        rosetta_lisp::converting() = "argument 'values'";
+                        rosetta_lisp::Param<const std::vector<double> &> p2(c.args[2]);
+                        rosetta_lisp::converting() = nullptr;
+                        rosetta_lisp::call(c, [&]() -> decltype(auto) { return ::datamunge::fda::fit_tensor_bspline(p0.get(), p1.get(), p2.get()); }, -1, rosetta_lisp::Return::automatic);
+                        return;
+                    }
+                    if (n == 4) {
+                        rosetta_lisp::converting() = "argument 'bases'";
+                        rosetta_lisp::Param<std::vector<datamunge::fda::BSplineBasis>> p0(c.args[0]);
+                        rosetta_lisp::converting() = "argument 'points'";
+                        rosetta_lisp::Param<const std::vector<std::vector<double>> &> p1(c.args[1]);
+                        rosetta_lisp::converting() = "argument 'values'";
+                        rosetta_lisp::Param<const std::vector<double> &> p2(c.args[2]);
+                        rosetta_lisp::converting() = "argument 'options'";
+                        rosetta_lisp::Param<const datamunge::fda::SplineSolveOptions &> p3(c.args[3]);
+                        rosetta_lisp::converting() = nullptr;
+                        rosetta_lisp::call(c, [&]() -> decltype(auto) { return ::datamunge::fda::fit_tensor_bspline(p0.get(), p1.get(), p2.get(), p3.get()); }, -1, rosetta_lisp::Return::automatic);
+                        return;
+                    }
+                }
+            }
+    }
+    rosetta_lisp::no_overload(c, "(fit-tensor-bspline ...)", "    (fit-tensor-bspline bases points values &optional (options (make-spline-solve-options))) → tensor-b-spline\n", 0);
+}
+void rosetta_lisp_241(rosetta_lisp::Call& c) {
+    for (int pass = 1; pass < 2; ++pass) {
+        const bool strict = pass == 0; (void)strict;
+            {
+                const std::size_t n = c.args.size() - 0;
+                if (c.args.size() >= 0 && n >= 1 && n <= 1) {
+                    if (n == 1) {
+                        rosetta_lisp::converting() = "argument 'seed'";
+                        rosetta_lisp::Param<unsigned long> p0(c.args[0]);
+                        rosetta_lisp::converting() = nullptr;
+                        rosetta_lisp::call(c, [&]() -> decltype(auto) { return ::datamunge::lisp_bindings::set_seed(p0.get()); }, -1, rosetta_lisp::Return::automatic);
+                        return;
+                    }
+                }
+            }
+    }
+    rosetta_lisp::no_overload(c, "(set-seed ...)", "    (set-seed seed)\n", 0);
+}
+void rosetta_lisp_288(rosetta_lisp::Call& c) {
+    if (c.args.size() != 1) rosetta_lisp::fail("(lower object) takes no further arguments");
+    auto* native = rosetta_lisp::native<datamunge::algebra::RealRootIntervals>(c.args[0]);
+    c.result = rosetta_lisp::result<decltype((native->lower))>(c, native->lower, 0, rosetta_lisp::Return::automatic);
+}
+void rosetta_lisp_289(rosetta_lisp::Call& c) {
+    if (c.args.size() != 2) rosetta_lisp::fail("(setf (lower object) value) takes no further arguments");
+    auto* native = rosetta_lisp::native<datamunge::algebra::RealRootIntervals>(c.args[0]);
+    using F = std::remove_cv_t<std::remove_reference_t<decltype(native->lower)>>;
     if constexpr (rosetta_lisp::bound_v<F>) {
         // (setf (field object) (field object)) after changing the field object in place.
-        if (rosetta_lisp::is_instance<F>(c.args[1]) && rosetta_lisp::native<F>(c.args[1]) == &native->re) return;
+        if (rosetta_lisp::is_instance<F>(c.args[1]) && rosetta_lisp::native<F>(c.args[1]) == &native->lower) return;
     }
-    rosetta_lisp::converting() = "field re";
+    rosetta_lisp::converting() = "field lower";
     rosetta_lisp::Param<const F&> converted(c.args[1]);
     rosetta_lisp::converting() = nullptr;
-    rosetta_lisp::assign_field(native->re, converted.get());
+    rosetta_lisp::assign_field(native->lower, converted.get());
 }
-void rosetta_lisp_284(rosetta_lisp::Call& c) {
-    if (c.args.size() != 1) rosetta_lisp::fail("(im object) takes no further arguments");
-    auto* native = rosetta_lisp::native<datamunge::algebra::detail::Cplx>(c.args[0]);
-    c.result = rosetta_lisp::result<decltype((native->im))>(c, native->im, 0, rosetta_lisp::Return::automatic);
+void rosetta_lisp_290(rosetta_lisp::Call& c) {
+    if (c.args.size() != 1) rosetta_lisp::fail("(upper object) takes no further arguments");
+    auto* native = rosetta_lisp::native<datamunge::algebra::RealRootIntervals>(c.args[0]);
+    c.result = rosetta_lisp::result<decltype((native->upper))>(c, native->upper, 0, rosetta_lisp::Return::automatic);
 }
-void rosetta_lisp_285(rosetta_lisp::Call& c) {
-    if (c.args.size() != 2) rosetta_lisp::fail("(setf (im object) value) takes no further arguments");
-    auto* native = rosetta_lisp::native<datamunge::algebra::detail::Cplx>(c.args[0]);
-    using F = std::remove_cv_t<std::remove_reference_t<decltype(native->im)>>;
+void rosetta_lisp_291(rosetta_lisp::Call& c) {
+    if (c.args.size() != 2) rosetta_lisp::fail("(setf (upper object) value) takes no further arguments");
+    auto* native = rosetta_lisp::native<datamunge::algebra::RealRootIntervals>(c.args[0]);
+    using F = std::remove_cv_t<std::remove_reference_t<decltype(native->upper)>>;
     if constexpr (rosetta_lisp::bound_v<F>) {
         // (setf (field object) (field object)) after changing the field object in place.
-        if (rosetta_lisp::is_instance<F>(c.args[1]) && rosetta_lisp::native<F>(c.args[1]) == &native->im) return;
+        if (rosetta_lisp::is_instance<F>(c.args[1]) && rosetta_lisp::native<F>(c.args[1]) == &native->upper) return;
     }
-    rosetta_lisp::converting() = "field im";
+    rosetta_lisp::converting() = "field upper";
     rosetta_lisp::Param<const F&> converted(c.args[1]);
     rosetta_lisp::converting() = nullptr;
-    rosetta_lisp::assign_field(native->im, converted.get());
+    rosetta_lisp::assign_field(native->upper, converted.get());
 }
-void rosetta_lisp_286(rosetta_lisp::Call& c) {
+void rosetta_lisp_292(rosetta_lisp::Call& c) {
     const unsigned long long subclass = c.args.empty() || c.args[0].kind != rosetta_lisp::tag_int ? 0 : static_cast<unsigned long long>(c.args[0].integer);
     (void)subclass;
     for (int pass = 1; pass < 2; ++pass) {
@@ -1788,247 +1929,76 @@ void rosetta_lisp_286(rosetta_lisp::Call& c) {
                 const std::size_t n = c.args.size() - 1;
                 if (c.args.size() >= 1 && n >= 0 && n <= 0) {
                     if (n == 0) {
-                        c.result = rosetta_lisp::object(new datamunge::algebra::detail::Cplx(), &rosetta_lisp::Info<datamunge::algebra::detail::Cplx>::value, rosetta_lisp::Ownership::owned, -1);
+                        c.result = rosetta_lisp::object(new datamunge::algebra::RealRootIntervals(), &rosetta_lisp::Info<datamunge::algebra::RealRootIntervals>::value, rosetta_lisp::Ownership::owned, -1);
                         return;
                     }
                 }
             }
     }
-    rosetta_lisp::no_overload(c, "(make-cplx ...)", "    (make-cplx) → cplx\n", 1);
+    rosetta_lisp::no_overload(c, "(make-real-root-intervals ...)", "    (make-real-root-intervals) → real-root-intervals\n", 1);
 }
-void rosetta_lisp_371(rosetta_lisp::Call& c) {
-    if (c.args.size() != 1) rosetta_lisp::fail("(samples object) takes no further arguments");
-    auto* native = rosetta_lisp::native<datamunge::bayes::GibbsResult>(c.args[0]);
-    c.result = rosetta_lisp::result<decltype((native->samples))>(c, native->samples, 0, rosetta_lisp::Return::automatic);
-}
-void rosetta_lisp_372(rosetta_lisp::Call& c) {
-    if (c.args.size() != 2) rosetta_lisp::fail("(setf (samples object) value) takes no further arguments");
-    auto* native = rosetta_lisp::native<datamunge::bayes::GibbsResult>(c.args[0]);
-    using F = std::remove_cv_t<std::remove_reference_t<decltype(native->samples)>>;
-    if constexpr (rosetta_lisp::bound_v<F>) {
-        // (setf (field object) (field object)) after changing the field object in place.
-        if (rosetta_lisp::is_instance<F>(c.args[1]) && rosetta_lisp::native<F>(c.args[1]) == &native->samples) return;
+void rosetta_lisp_506(rosetta_lisp::Call& c) {
+    for (int pass = 1; pass < 2; ++pass) {
+        const bool strict = pass == 0; (void)strict;
+            {
+                const std::size_t n = c.args.size() - 1;
+                if (c.args.size() >= 1 && n >= 2 && n <= 2) {
+                    auto* native = rosetta_lisp::native<datamunge::bayes::RandomWalkMetropolis>(c.args[0]);
+                    if (n == 2) {
+                        rosetta_lisp::converting() = "argument 'log-posterior'";
+                        rosetta_lisp::Param<datamunge::optim::ArbitraryFunction &> p0(c.args[1]);
+                        rosetta_lisp::converting() = "argument 'initial-params'";
+                        rosetta_lisp::Param<const std::vector<double> &> p1(c.args[2]);
+                        rosetta_lisp::converting() = nullptr;
+                        rosetta_lisp::call(c, [&]() -> decltype(auto) { return native->sample(p0.get(), p1.get()); }, 0, rosetta_lisp::Return::automatic);
+                        return;
+                    }
+                }
+            }
     }
-    rosetta_lisp::converting() = "field samples";
-    rosetta_lisp::Param<const F&> converted(c.args[1]);
-    rosetta_lisp::converting() = nullptr;
-    rosetta_lisp::assign_field(native->samples, converted.get());
+    rosetta_lisp::no_overload(c, "(sample ...)", "    (sample random-walk-metropolis log-posterior initial-params) → rwm-result\n", 1);
 }
-void rosetta_lisp_373(rosetta_lisp::Call& c) {
-    if (c.args.size() != 1) rosetta_lisp::fail("(accept-rates object) takes no further arguments");
-    auto* native = rosetta_lisp::native<datamunge::bayes::GibbsResult>(c.args[0]);
-    c.result = rosetta_lisp::result<decltype((native->accept_rates))>(c, native->accept_rates, 0, rosetta_lisp::Return::automatic);
-}
-void rosetta_lisp_374(rosetta_lisp::Call& c) {
-    if (c.args.size() != 2) rosetta_lisp::fail("(setf (accept-rates object) value) takes no further arguments");
-    auto* native = rosetta_lisp::native<datamunge::bayes::GibbsResult>(c.args[0]);
-    using F = std::remove_cv_t<std::remove_reference_t<decltype(native->accept_rates)>>;
-    if constexpr (rosetta_lisp::bound_v<F>) {
-        // (setf (field object) (field object)) after changing the field object in place.
-        if (rosetta_lisp::is_instance<F>(c.args[1]) && rosetta_lisp::native<F>(c.args[1]) == &native->accept_rates) return;
+void rosetta_lisp_507(rosetta_lisp::Call& c) {
+    for (int pass = 1; pass < 2; ++pass) {
+        const bool strict = pass == 0; (void)strict;
+            {
+                const std::size_t n = c.args.size() - 1;
+                if (c.args.size() >= 1 && n >= 0 && n <= 0) {
+                    auto* native = rosetta_lisp::native<datamunge::bayes::RandomWalkMetropolis>(c.args[0]);
+                    if (n == 0) {
+                        rosetta_lisp::call(c, [&]() -> decltype(auto) { return native->options(); }, 0, rosetta_lisp::Return::automatic);
+                        return;
+                    }
+                }
+            }
     }
-    rosetta_lisp::converting() = "field accept-rates";
-    rosetta_lisp::Param<const F&> converted(c.args[1]);
-    rosetta_lisp::converting() = nullptr;
-    rosetta_lisp::assign_field(native->accept_rates, converted.get());
+    rosetta_lisp::no_overload(c, "(options ...)", "    (options random-walk-metropolis) → rwm-options\n", 1);
 }
-void rosetta_lisp_375(rosetta_lisp::Call& c) {
-    if (c.args.size() != 1) rosetta_lisp::fail("(final-step-sizes object) takes no further arguments");
-    auto* native = rosetta_lisp::native<datamunge::bayes::GibbsResult>(c.args[0]);
-    c.result = rosetta_lisp::result<decltype((native->final_step_sizes))>(c, native->final_step_sizes, 0, rosetta_lisp::Return::automatic);
-}
-void rosetta_lisp_376(rosetta_lisp::Call& c) {
-    if (c.args.size() != 2) rosetta_lisp::fail("(setf (final-step-sizes object) value) takes no further arguments");
-    auto* native = rosetta_lisp::native<datamunge::bayes::GibbsResult>(c.args[0]);
-    using F = std::remove_cv_t<std::remove_reference_t<decltype(native->final_step_sizes)>>;
-    if constexpr (rosetta_lisp::bound_v<F>) {
-        // (setf (field object) (field object)) after changing the field object in place.
-        if (rosetta_lisp::is_instance<F>(c.args[1]) && rosetta_lisp::native<F>(c.args[1]) == &native->final_step_sizes) return;
-    }
-    rosetta_lisp::converting() = "field final-step-sizes";
-    rosetta_lisp::Param<const F&> converted(c.args[1]);
-    rosetta_lisp::converting() = nullptr;
-    rosetta_lisp::assign_field(native->final_step_sizes, converted.get());
-}
-void rosetta_lisp_377(rosetta_lisp::Call& c) {
+void rosetta_lisp_508(rosetta_lisp::Call& c) {
     const unsigned long long subclass = c.args.empty() || c.args[0].kind != rosetta_lisp::tag_int ? 0 : static_cast<unsigned long long>(c.args[0].integer);
     (void)subclass;
     for (int pass = 1; pass < 2; ++pass) {
         const bool strict = pass == 0; (void)strict;
             {
                 const std::size_t n = c.args.size() - 1;
-                if (c.args.size() >= 1 && n >= 0 && n <= 0) {
+                if (c.args.size() >= 1 && n >= 0 && n <= 1) {
                     if (n == 0) {
-                        c.result = rosetta_lisp::object(new datamunge::bayes::GibbsResult(), &rosetta_lisp::Info<datamunge::bayes::GibbsResult>::value, rosetta_lisp::Ownership::owned, -1);
+                        c.result = rosetta_lisp::object(new datamunge::bayes::RandomWalkMetropolis(), &rosetta_lisp::Info<datamunge::bayes::RandomWalkMetropolis>::value, rosetta_lisp::Ownership::owned, -1);
+                        return;
+                    }
+                    if (n == 1) {
+                        rosetta_lisp::converting() = "argument 'options'";
+                        rosetta_lisp::Param<datamunge::bayes::RWMOptions> p0(c.args[1]);
+                        rosetta_lisp::converting() = nullptr;
+                        c.result = rosetta_lisp::object(new datamunge::bayes::RandomWalkMetropolis(p0.get()), &rosetta_lisp::Info<datamunge::bayes::RandomWalkMetropolis>::value, rosetta_lisp::Ownership::owned, -1);
                         return;
                     }
                 }
             }
     }
-    rosetta_lisp::no_overload(c, "(make-gibbs-result ...)", "    (make-gibbs-result) → gibbs-result\n", 1);
+    rosetta_lisp::no_overload(c, "(make-random-walk-metropolis ...)", "    (make-random-walk-metropolis &optional (options (make-rwm-options))) → random-walk-metropolis\n", 1);
 }
-void rosetta_lisp_446(rosetta_lisp::Call& c) {
-    if (c.args.size() != 1) rosetta_lisp::fail("(samples object) takes no further arguments");
-    auto* native = rosetta_lisp::native<datamunge::bayes::NUTSResult>(c.args[0]);
-    c.result = rosetta_lisp::result<decltype((native->samples))>(c, native->samples, 0, rosetta_lisp::Return::automatic);
-}
-void rosetta_lisp_447(rosetta_lisp::Call& c) {
-    if (c.args.size() != 2) rosetta_lisp::fail("(setf (samples object) value) takes no further arguments");
-    auto* native = rosetta_lisp::native<datamunge::bayes::NUTSResult>(c.args[0]);
-    using F = std::remove_cv_t<std::remove_reference_t<decltype(native->samples)>>;
-    if constexpr (rosetta_lisp::bound_v<F>) {
-        // (setf (field object) (field object)) after changing the field object in place.
-        if (rosetta_lisp::is_instance<F>(c.args[1]) && rosetta_lisp::native<F>(c.args[1]) == &native->samples) return;
-    }
-    rosetta_lisp::converting() = "field samples";
-    rosetta_lisp::Param<const F&> converted(c.args[1]);
-    rosetta_lisp::converting() = nullptr;
-    rosetta_lisp::assign_field(native->samples, converted.get());
-}
-void rosetta_lisp_448(rosetta_lisp::Call& c) {
-    if (c.args.size() != 1) rosetta_lisp::fail("(accept-rate object) takes no further arguments");
-    auto* native = rosetta_lisp::native<datamunge::bayes::NUTSResult>(c.args[0]);
-    c.result = rosetta_lisp::result<decltype((native->accept_rate))>(c, native->accept_rate, 0, rosetta_lisp::Return::automatic);
-}
-void rosetta_lisp_449(rosetta_lisp::Call& c) {
-    if (c.args.size() != 2) rosetta_lisp::fail("(setf (accept-rate object) value) takes no further arguments");
-    auto* native = rosetta_lisp::native<datamunge::bayes::NUTSResult>(c.args[0]);
-    using F = std::remove_cv_t<std::remove_reference_t<decltype(native->accept_rate)>>;
-    if constexpr (rosetta_lisp::bound_v<F>) {
-        // (setf (field object) (field object)) after changing the field object in place.
-        if (rosetta_lisp::is_instance<F>(c.args[1]) && rosetta_lisp::native<F>(c.args[1]) == &native->accept_rate) return;
-    }
-    rosetta_lisp::converting() = "field accept-rate";
-    rosetta_lisp::Param<const F&> converted(c.args[1]);
-    rosetta_lisp::converting() = nullptr;
-    rosetta_lisp::assign_field(native->accept_rate, converted.get());
-}
-void rosetta_lisp_450(rosetta_lisp::Call& c) {
-    if (c.args.size() != 1) rosetta_lisp::fail("(final-step-size object) takes no further arguments");
-    auto* native = rosetta_lisp::native<datamunge::bayes::NUTSResult>(c.args[0]);
-    c.result = rosetta_lisp::result<decltype((native->final_step_size))>(c, native->final_step_size, 0, rosetta_lisp::Return::automatic);
-}
-void rosetta_lisp_451(rosetta_lisp::Call& c) {
-    if (c.args.size() != 2) rosetta_lisp::fail("(setf (final-step-size object) value) takes no further arguments");
-    auto* native = rosetta_lisp::native<datamunge::bayes::NUTSResult>(c.args[0]);
-    using F = std::remove_cv_t<std::remove_reference_t<decltype(native->final_step_size)>>;
-    if constexpr (rosetta_lisp::bound_v<F>) {
-        // (setf (field object) (field object)) after changing the field object in place.
-        if (rosetta_lisp::is_instance<F>(c.args[1]) && rosetta_lisp::native<F>(c.args[1]) == &native->final_step_size) return;
-    }
-    rosetta_lisp::converting() = "field final-step-size";
-    rosetta_lisp::Param<const F&> converted(c.args[1]);
-    rosetta_lisp::converting() = nullptr;
-    rosetta_lisp::assign_field(native->final_step_size, converted.get());
-}
-void rosetta_lisp_452(rosetta_lisp::Call& c) {
-    if (c.args.size() != 1) rosetta_lisp::fail("(num-divergences object) takes no further arguments");
-    auto* native = rosetta_lisp::native<datamunge::bayes::NUTSResult>(c.args[0]);
-    c.result = rosetta_lisp::result<decltype((native->num_divergences))>(c, native->num_divergences, 0, rosetta_lisp::Return::automatic);
-}
-void rosetta_lisp_453(rosetta_lisp::Call& c) {
-    if (c.args.size() != 2) rosetta_lisp::fail("(setf (num-divergences object) value) takes no further arguments");
-    auto* native = rosetta_lisp::native<datamunge::bayes::NUTSResult>(c.args[0]);
-    using F = std::remove_cv_t<std::remove_reference_t<decltype(native->num_divergences)>>;
-    if constexpr (rosetta_lisp::bound_v<F>) {
-        // (setf (field object) (field object)) after changing the field object in place.
-        if (rosetta_lisp::is_instance<F>(c.args[1]) && rosetta_lisp::native<F>(c.args[1]) == &native->num_divergences) return;
-    }
-    rosetta_lisp::converting() = "field num-divergences";
-    rosetta_lisp::Param<const F&> converted(c.args[1]);
-    rosetta_lisp::converting() = nullptr;
-    rosetta_lisp::assign_field(native->num_divergences, converted.get());
-}
-void rosetta_lisp_454(rosetta_lisp::Call& c) {
-    if (c.args.size() != 1) rosetta_lisp::fail("(divergent object) takes no further arguments");
-    auto* native = rosetta_lisp::native<datamunge::bayes::NUTSResult>(c.args[0]);
-    c.result = rosetta_lisp::result<decltype((native->divergent))>(c, native->divergent, 0, rosetta_lisp::Return::automatic);
-}
-void rosetta_lisp_455(rosetta_lisp::Call& c) {
-    if (c.args.size() != 2) rosetta_lisp::fail("(setf (divergent object) value) takes no further arguments");
-    auto* native = rosetta_lisp::native<datamunge::bayes::NUTSResult>(c.args[0]);
-    using F = std::remove_cv_t<std::remove_reference_t<decltype(native->divergent)>>;
-    if constexpr (rosetta_lisp::bound_v<F>) {
-        // (setf (field object) (field object)) after changing the field object in place.
-        if (rosetta_lisp::is_instance<F>(c.args[1]) && rosetta_lisp::native<F>(c.args[1]) == &native->divergent) return;
-    }
-    rosetta_lisp::converting() = "field divergent";
-    rosetta_lisp::Param<const F&> converted(c.args[1]);
-    rosetta_lisp::converting() = nullptr;
-    rosetta_lisp::assign_field(native->divergent, converted.get());
-}
-void rosetta_lisp_456(rosetta_lisp::Call& c) {
-    if (c.args.size() != 1) rosetta_lisp::fail("(tree-depth object) takes no further arguments");
-    auto* native = rosetta_lisp::native<datamunge::bayes::NUTSResult>(c.args[0]);
-    c.result = rosetta_lisp::result<decltype((native->tree_depth))>(c, native->tree_depth, 0, rosetta_lisp::Return::automatic);
-}
-void rosetta_lisp_457(rosetta_lisp::Call& c) {
-    if (c.args.size() != 2) rosetta_lisp::fail("(setf (tree-depth object) value) takes no further arguments");
-    auto* native = rosetta_lisp::native<datamunge::bayes::NUTSResult>(c.args[0]);
-    using F = std::remove_cv_t<std::remove_reference_t<decltype(native->tree_depth)>>;
-    if constexpr (rosetta_lisp::bound_v<F>) {
-        // (setf (field object) (field object)) after changing the field object in place.
-        if (rosetta_lisp::is_instance<F>(c.args[1]) && rosetta_lisp::native<F>(c.args[1]) == &native->tree_depth) return;
-    }
-    rosetta_lisp::converting() = "field tree-depth";
-    rosetta_lisp::Param<const F&> converted(c.args[1]);
-    rosetta_lisp::converting() = nullptr;
-    rosetta_lisp::assign_field(native->tree_depth, converted.get());
-}
-void rosetta_lisp_458(rosetta_lisp::Call& c) {
-    if (c.args.size() != 1) rosetta_lisp::fail("(n-leapfrog object) takes no further arguments");
-    auto* native = rosetta_lisp::native<datamunge::bayes::NUTSResult>(c.args[0]);
-    c.result = rosetta_lisp::result<decltype((native->n_leapfrog))>(c, native->n_leapfrog, 0, rosetta_lisp::Return::automatic);
-}
-void rosetta_lisp_459(rosetta_lisp::Call& c) {
-    if (c.args.size() != 2) rosetta_lisp::fail("(setf (n-leapfrog object) value) takes no further arguments");
-    auto* native = rosetta_lisp::native<datamunge::bayes::NUTSResult>(c.args[0]);
-    using F = std::remove_cv_t<std::remove_reference_t<decltype(native->n_leapfrog)>>;
-    if constexpr (rosetta_lisp::bound_v<F>) {
-        // (setf (field object) (field object)) after changing the field object in place.
-        if (rosetta_lisp::is_instance<F>(c.args[1]) && rosetta_lisp::native<F>(c.args[1]) == &native->n_leapfrog) return;
-    }
-    rosetta_lisp::converting() = "field n-leapfrog";
-    rosetta_lisp::Param<const F&> converted(c.args[1]);
-    rosetta_lisp::converting() = nullptr;
-    rosetta_lisp::assign_field(native->n_leapfrog, converted.get());
-}
-void rosetta_lisp_460(rosetta_lisp::Call& c) {
-    if (c.args.size() != 1) rosetta_lisp::fail("(energy object) takes no further arguments");
-    auto* native = rosetta_lisp::native<datamunge::bayes::NUTSResult>(c.args[0]);
-    c.result = rosetta_lisp::result<decltype((native->energy))>(c, native->energy, 0, rosetta_lisp::Return::automatic);
-}
-void rosetta_lisp_461(rosetta_lisp::Call& c) {
-    if (c.args.size() != 2) rosetta_lisp::fail("(setf (energy object) value) takes no further arguments");
-    auto* native = rosetta_lisp::native<datamunge::bayes::NUTSResult>(c.args[0]);
-    using F = std::remove_cv_t<std::remove_reference_t<decltype(native->energy)>>;
-    if constexpr (rosetta_lisp::bound_v<F>) {
-        // (setf (field object) (field object)) after changing the field object in place.
-        if (rosetta_lisp::is_instance<F>(c.args[1]) && rosetta_lisp::native<F>(c.args[1]) == &native->energy) return;
-    }
-    rosetta_lisp::converting() = "field energy";
-    rosetta_lisp::Param<const F&> converted(c.args[1]);
-    rosetta_lisp::converting() = nullptr;
-    rosetta_lisp::assign_field(native->energy, converted.get());
-}
-void rosetta_lisp_462(rosetta_lisp::Call& c) {
-    const unsigned long long subclass = c.args.empty() || c.args[0].kind != rosetta_lisp::tag_int ? 0 : static_cast<unsigned long long>(c.args[0].integer);
-    (void)subclass;
-    for (int pass = 1; pass < 2; ++pass) {
-        const bool strict = pass == 0; (void)strict;
-            {
-                const std::size_t n = c.args.size() - 1;
-                if (c.args.size() >= 1 && n >= 0 && n <= 0) {
-                    if (n == 0) {
-                        c.result = rosetta_lisp::object(new datamunge::bayes::NUTSResult(), &rosetta_lisp::Info<datamunge::bayes::NUTSResult>::value, rosetta_lisp::Ownership::owned, -1);
-                        return;
-                    }
-                }
-            }
-    }
-    rosetta_lisp::no_overload(c, "(make-nuts-result ...)", "    (make-nuts-result) → nuts-result\n", 1);
-}
-void rosetta_lisp_500(rosetta_lisp::Call& c) {
+void rosetta_lisp_518(rosetta_lisp::Call& c) {
     for (int pass = 1; pass < 2; ++pass) {
         const bool strict = pass == 0; (void)strict;
             {
@@ -2044,7 +2014,7 @@ void rosetta_lisp_500(rosetta_lisp::Call& c) {
     }
     rosetta_lisp::no_overload(c, "(width ...)", "    (width image) → integer\n", 1);
 }
-void rosetta_lisp_501(rosetta_lisp::Call& c) {
+void rosetta_lisp_519(rosetta_lisp::Call& c) {
     for (int pass = 1; pass < 2; ++pass) {
         const bool strict = pass == 0; (void)strict;
             {
@@ -2060,7 +2030,7 @@ void rosetta_lisp_501(rosetta_lisp::Call& c) {
     }
     rosetta_lisp::no_overload(c, "(height ...)", "    (height image) → integer\n", 1);
 }
-void rosetta_lisp_502(rosetta_lisp::Call& c) {
+void rosetta_lisp_520(rosetta_lisp::Call& c) {
     for (int pass = 1; pass < 2; ++pass) {
         const bool strict = pass == 0; (void)strict;
             {
@@ -2076,7 +2046,7 @@ void rosetta_lisp_502(rosetta_lisp::Call& c) {
     }
     rosetta_lisp::no_overload(c, "(mode ...)", "    (mode image) → image-mode\n", 1);
 }
-void rosetta_lisp_503(rosetta_lisp::Call& c) {
+void rosetta_lisp_521(rosetta_lisp::Call& c) {
     for (int pass = 1; pass < 2; ++pass) {
         const bool strict = pass == 0; (void)strict;
             {
@@ -2092,7 +2062,7 @@ void rosetta_lisp_503(rosetta_lisp::Call& c) {
     }
     rosetta_lisp::no_overload(c, "(channels ...)", "    (channels image) → integer\n", 1);
 }
-void rosetta_lisp_504(rosetta_lisp::Call& c) {
+void rosetta_lisp_522(rosetta_lisp::Call& c) {
     for (int pass = 0; pass < 2; ++pass) {
         const bool strict = pass == 0; (void)strict;
             {
@@ -2120,7 +2090,7 @@ void rosetta_lisp_504(rosetta_lisp::Call& c) {
     }
     rosetta_lisp::no_overload(c, "(data ...)", "    (data image) → (vector integer)\n    (data image) → (vector integer)\n", 1);
 }
-void rosetta_lisp_505(rosetta_lisp::Call& c) {
+void rosetta_lisp_523(rosetta_lisp::Call& c) {
     for (int pass = 1; pass < 2; ++pass) {
         const bool strict = pass == 0; (void)strict;
             {
@@ -2141,7 +2111,7 @@ void rosetta_lisp_505(rosetta_lisp::Call& c) {
     }
     rosetta_lisp::no_overload(c, "(get-pixel ...)", "    (get-pixel image x y) → pixel\n", 1);
 }
-void rosetta_lisp_506(rosetta_lisp::Call& c) {
+void rosetta_lisp_524(rosetta_lisp::Call& c) {
     for (int pass = 1; pass < 2; ++pass) {
         const bool strict = pass == 0; (void)strict;
             {
@@ -2164,7 +2134,7 @@ void rosetta_lisp_506(rosetta_lisp::Call& c) {
     }
     rosetta_lisp::no_overload(c, "(set-pixel ...)", "    (set-pixel image x y p)\n", 1);
 }
-void rosetta_lisp_507(rosetta_lisp::Call& c) {
+void rosetta_lisp_525(rosetta_lisp::Call& c) {
     for (int pass = 1; pass < 2; ++pass) {
         const bool strict = pass == 0; (void)strict;
             {
@@ -2183,7 +2153,7 @@ void rosetta_lisp_507(rosetta_lisp::Call& c) {
     }
     rosetta_lisp::no_overload(c, "(fill ...)", "    (fill image p)\n", 1);
 }
-void rosetta_lisp_508(rosetta_lisp::Call& c) {
+void rosetta_lisp_526(rosetta_lisp::Call& c) {
     for (int pass = 1; pass < 2; ++pass) {
         const bool strict = pass == 0; (void)strict;
             {
@@ -2201,7 +2171,7 @@ void rosetta_lisp_508(rosetta_lisp::Call& c) {
     }
     rosetta_lisp::no_overload(c, "(channel-count ...)", "    (channel-count mode) → integer\n", 0);
 }
-void rosetta_lisp_509(rosetta_lisp::Call& c) {
+void rosetta_lisp_527(rosetta_lisp::Call& c) {
     const unsigned long long subclass = c.args.empty() || c.args[0].kind != rosetta_lisp::tag_int ? 0 : static_cast<unsigned long long>(c.args[0].integer);
     (void)subclass;
     for (int pass = 0; pass < 2; ++pass) {
@@ -2268,50 +2238,68 @@ void rosetta_lisp_509(rosetta_lisp::Call& c) {
     }
     rosetta_lisp::no_overload(c, "(make-image ...)", "    (make-image) → image\n    (make-image width height &optional (mode :rgb)) → image\n    (make-image width height mode fill-color) → image\n", 1);
 }
-void rosetta_lisp_540(rosetta_lisp::Call& c) {
-    if (c.args.size() != 1) rosetta_lisp::fail("(rho object) takes no further arguments");
-    auto* native = rosetta_lisp::native<datamunge::cv::HoughLine>(c.args[0]);
-    c.result = rosetta_lisp::result<decltype((native->rho))>(c, native->rho, 0, rosetta_lisp::Return::automatic);
+void rosetta_lisp_565(rosetta_lisp::Call& c) {
+    if (c.args.size() != 1) rosetta_lisp::fail("(cx object) takes no further arguments");
+    auto* native = rosetta_lisp::native<datamunge::cv::HoughCircle>(c.args[0]);
+    c.result = rosetta_lisp::result<decltype((native->cx))>(c, native->cx, 0, rosetta_lisp::Return::automatic);
 }
-void rosetta_lisp_541(rosetta_lisp::Call& c) {
-    if (c.args.size() != 2) rosetta_lisp::fail("(setf (rho object) value) takes no further arguments");
-    auto* native = rosetta_lisp::native<datamunge::cv::HoughLine>(c.args[0]);
-    using F = std::remove_cv_t<std::remove_reference_t<decltype(native->rho)>>;
+void rosetta_lisp_566(rosetta_lisp::Call& c) {
+    if (c.args.size() != 2) rosetta_lisp::fail("(setf (cx object) value) takes no further arguments");
+    auto* native = rosetta_lisp::native<datamunge::cv::HoughCircle>(c.args[0]);
+    using F = std::remove_cv_t<std::remove_reference_t<decltype(native->cx)>>;
     if constexpr (rosetta_lisp::bound_v<F>) {
         // (setf (field object) (field object)) after changing the field object in place.
-        if (rosetta_lisp::is_instance<F>(c.args[1]) && rosetta_lisp::native<F>(c.args[1]) == &native->rho) return;
+        if (rosetta_lisp::is_instance<F>(c.args[1]) && rosetta_lisp::native<F>(c.args[1]) == &native->cx) return;
     }
-    rosetta_lisp::converting() = "field rho";
+    rosetta_lisp::converting() = "field cx";
     rosetta_lisp::Param<const F&> converted(c.args[1]);
     rosetta_lisp::converting() = nullptr;
-    rosetta_lisp::assign_field(native->rho, converted.get());
+    rosetta_lisp::assign_field(native->cx, converted.get());
 }
-void rosetta_lisp_542(rosetta_lisp::Call& c) {
-    if (c.args.size() != 1) rosetta_lisp::fail("(theta object) takes no further arguments");
-    auto* native = rosetta_lisp::native<datamunge::cv::HoughLine>(c.args[0]);
-    c.result = rosetta_lisp::result<decltype((native->theta))>(c, native->theta, 0, rosetta_lisp::Return::automatic);
+void rosetta_lisp_567(rosetta_lisp::Call& c) {
+    if (c.args.size() != 1) rosetta_lisp::fail("(cy object) takes no further arguments");
+    auto* native = rosetta_lisp::native<datamunge::cv::HoughCircle>(c.args[0]);
+    c.result = rosetta_lisp::result<decltype((native->cy))>(c, native->cy, 0, rosetta_lisp::Return::automatic);
 }
-void rosetta_lisp_543(rosetta_lisp::Call& c) {
-    if (c.args.size() != 2) rosetta_lisp::fail("(setf (theta object) value) takes no further arguments");
-    auto* native = rosetta_lisp::native<datamunge::cv::HoughLine>(c.args[0]);
-    using F = std::remove_cv_t<std::remove_reference_t<decltype(native->theta)>>;
+void rosetta_lisp_568(rosetta_lisp::Call& c) {
+    if (c.args.size() != 2) rosetta_lisp::fail("(setf (cy object) value) takes no further arguments");
+    auto* native = rosetta_lisp::native<datamunge::cv::HoughCircle>(c.args[0]);
+    using F = std::remove_cv_t<std::remove_reference_t<decltype(native->cy)>>;
     if constexpr (rosetta_lisp::bound_v<F>) {
         // (setf (field object) (field object)) after changing the field object in place.
-        if (rosetta_lisp::is_instance<F>(c.args[1]) && rosetta_lisp::native<F>(c.args[1]) == &native->theta) return;
+        if (rosetta_lisp::is_instance<F>(c.args[1]) && rosetta_lisp::native<F>(c.args[1]) == &native->cy) return;
     }
-    rosetta_lisp::converting() = "field theta";
+    rosetta_lisp::converting() = "field cy";
     rosetta_lisp::Param<const F&> converted(c.args[1]);
     rosetta_lisp::converting() = nullptr;
-    rosetta_lisp::assign_field(native->theta, converted.get());
+    rosetta_lisp::assign_field(native->cy, converted.get());
 }
-void rosetta_lisp_544(rosetta_lisp::Call& c) {
+void rosetta_lisp_569(rosetta_lisp::Call& c) {
+    if (c.args.size() != 1) rosetta_lisp::fail("(radius object) takes no further arguments");
+    auto* native = rosetta_lisp::native<datamunge::cv::HoughCircle>(c.args[0]);
+    c.result = rosetta_lisp::result<decltype((native->radius))>(c, native->radius, 0, rosetta_lisp::Return::automatic);
+}
+void rosetta_lisp_570(rosetta_lisp::Call& c) {
+    if (c.args.size() != 2) rosetta_lisp::fail("(setf (radius object) value) takes no further arguments");
+    auto* native = rosetta_lisp::native<datamunge::cv::HoughCircle>(c.args[0]);
+    using F = std::remove_cv_t<std::remove_reference_t<decltype(native->radius)>>;
+    if constexpr (rosetta_lisp::bound_v<F>) {
+        // (setf (field object) (field object)) after changing the field object in place.
+        if (rosetta_lisp::is_instance<F>(c.args[1]) && rosetta_lisp::native<F>(c.args[1]) == &native->radius) return;
+    }
+    rosetta_lisp::converting() = "field radius";
+    rosetta_lisp::Param<const F&> converted(c.args[1]);
+    rosetta_lisp::converting() = nullptr;
+    rosetta_lisp::assign_field(native->radius, converted.get());
+}
+void rosetta_lisp_571(rosetta_lisp::Call& c) {
     if (c.args.size() != 1) rosetta_lisp::fail("(votes object) takes no further arguments");
-    auto* native = rosetta_lisp::native<datamunge::cv::HoughLine>(c.args[0]);
+    auto* native = rosetta_lisp::native<datamunge::cv::HoughCircle>(c.args[0]);
     c.result = rosetta_lisp::result<decltype((native->votes))>(c, native->votes, 0, rosetta_lisp::Return::automatic);
 }
-void rosetta_lisp_545(rosetta_lisp::Call& c) {
+void rosetta_lisp_572(rosetta_lisp::Call& c) {
     if (c.args.size() != 2) rosetta_lisp::fail("(setf (votes object) value) takes no further arguments");
-    auto* native = rosetta_lisp::native<datamunge::cv::HoughLine>(c.args[0]);
+    auto* native = rosetta_lisp::native<datamunge::cv::HoughCircle>(c.args[0]);
     using F = std::remove_cv_t<std::remove_reference_t<decltype(native->votes)>>;
     if constexpr (rosetta_lisp::bound_v<F>) {
         // (setf (field object) (field object)) after changing the field object in place.
@@ -2322,7 +2310,7 @@ void rosetta_lisp_545(rosetta_lisp::Call& c) {
     rosetta_lisp::converting() = nullptr;
     rosetta_lisp::assign_field(native->votes, converted.get());
 }
-void rosetta_lisp_546(rosetta_lisp::Call& c) {
+void rosetta_lisp_573(rosetta_lisp::Call& c) {
     const unsigned long long subclass = c.args.empty() || c.args[0].kind != rosetta_lisp::tag_int ? 0 : static_cast<unsigned long long>(c.args[0].integer);
     (void)subclass;
     for (int pass = 1; pass < 2; ++pass) {
@@ -2331,105 +2319,42 @@ void rosetta_lisp_546(rosetta_lisp::Call& c) {
                 const std::size_t n = c.args.size() - 1;
                 if (c.args.size() >= 1 && n >= 0 && n <= 0) {
                     if (n == 0) {
-                        c.result = rosetta_lisp::object(new datamunge::cv::HoughLine(), &rosetta_lisp::Info<datamunge::cv::HoughLine>::value, rosetta_lisp::Ownership::owned, -1);
+                        c.result = rosetta_lisp::object(new datamunge::cv::HoughCircle(), &rosetta_lisp::Info<datamunge::cv::HoughCircle>::value, rosetta_lisp::Ownership::owned, -1);
                         return;
                     }
                 }
             }
     }
-    rosetta_lisp::no_overload(c, "(make-hough-line ...)", "    (make-hough-line) → hough-line\n", 1);
+    rosetta_lisp::no_overload(c, "(make-hough-circle ...)", "    (make-hough-circle) → hough-circle\n", 1);
 }
-void rosetta_lisp_879(rosetta_lisp::Call& c) {
-    if (c.args.size() != 1) rosetta_lisp::fail("(analysis object) takes no further arguments");
-    auto* native = rosetta_lisp::native<datamunge::geometry::ConvexHullTrace>(c.args[0]);
-    c.result = rosetta_lisp::result<decltype((native->analysis))>(c, native->analysis, 0, rosetta_lisp::Return::automatic);
-}
-void rosetta_lisp_880(rosetta_lisp::Call& c) {
-    if (c.args.size() != 2) rosetta_lisp::fail("(setf (analysis object) value) takes no further arguments");
-    auto* native = rosetta_lisp::native<datamunge::geometry::ConvexHullTrace>(c.args[0]);
-    using F = std::remove_cv_t<std::remove_reference_t<decltype(native->analysis)>>;
-    if constexpr (rosetta_lisp::bound_v<F>) {
-        // (setf (field object) (field object)) after changing the field object in place.
-        if (rosetta_lisp::is_instance<F>(c.args[1]) && rosetta_lisp::native<F>(c.args[1]) == &native->analysis) return;
+void rosetta_lisp_802(rosetta_lisp::Call& c) {
+    for (int pass = 1; pass < 2; ++pass) {
+        const bool strict = pass == 0; (void)strict;
+            {
+                const std::size_t n = c.args.size() - 1;
+                if (c.args.size() >= 1 && n >= 1 && n <= 1) {
+                    auto* native = rosetta_lisp::native<datamunge::filter::VectorFunction>(c.args[0]);
+                    if (n == 1) {
+                        rosetta_lisp::converting() = "argument 'x'";
+                        rosetta_lisp::Param<const std::vector<double> &> p0(c.args[1]);
+                        rosetta_lisp::converting() = nullptr;
+                        rosetta_lisp::call(c, [&]() -> decltype(auto) { if (rosetta_lisp::is_director(c.args[0])) { rosetta_lisp::pure_virtual("datamunge::filter::VectorFunction::evaluate"); } return native->evaluate(p0.get()); }, 0, rosetta_lisp::Return::automatic);
+                        return;
+                    }
+                }
+            }
     }
-    rosetta_lisp::converting() = "field analysis";
-    rosetta_lisp::Param<const F&> converted(c.args[1]);
-    rosetta_lisp::converting() = nullptr;
-    rosetta_lisp::assign_field(native->analysis, converted.get());
+    rosetta_lisp::no_overload(c, "(evaluate ...)", "    (evaluate vector-function x) → (vector double-float)\n", 1);
 }
-void rosetta_lisp_881(rosetta_lisp::Call& c) {
-    if (c.args.size() != 1) rosetta_lisp::fail("(sorted object) takes no further arguments");
-    auto* native = rosetta_lisp::native<datamunge::geometry::ConvexHullTrace>(c.args[0]);
-    c.result = rosetta_lisp::result<decltype((native->sorted))>(c, native->sorted, 0, rosetta_lisp::Return::automatic);
-}
-void rosetta_lisp_882(rosetta_lisp::Call& c) {
-    if (c.args.size() != 2) rosetta_lisp::fail("(setf (sorted object) value) takes no further arguments");
-    auto* native = rosetta_lisp::native<datamunge::geometry::ConvexHullTrace>(c.args[0]);
-    using F = std::remove_cv_t<std::remove_reference_t<decltype(native->sorted)>>;
-    if constexpr (rosetta_lisp::bound_v<F>) {
-        // (setf (field object) (field object)) after changing the field object in place.
-        if (rosetta_lisp::is_instance<F>(c.args[1]) && rosetta_lisp::native<F>(c.args[1]) == &native->sorted) return;
+struct rosetta_director_datamunge__filter__VectorFunction final : datamunge::filter::VectorFunction, rosetta_lisp::Director {
+    template<class... A> explicit rosetta_director_datamunge__filter__VectorFunction(A&&... arguments) : datamunge::filter::VectorFunction(std::forward<A>(arguments)...) {}
+    std::vector<double> evaluate(const std::vector<double> & a0) override {
+        if (rosetta_has_self())
+            return rosetta_lisp::invoke_override<std::vector<double>, const std::vector<double> &>(*this, 0, a0);
+        rosetta_lisp::pure_virtual("datamunge::filter::VectorFunction::evaluate");
     }
-    rosetta_lisp::converting() = "field sorted";
-    rosetta_lisp::Param<const F&> converted(c.args[1]);
-    rosetta_lisp::converting() = nullptr;
-    rosetta_lisp::assign_field(native->sorted, converted.get());
-}
-void rosetta_lisp_883(rosetta_lisp::Call& c) {
-    if (c.args.size() != 1) rosetta_lisp::fail("(events object) takes no further arguments");
-    auto* native = rosetta_lisp::native<datamunge::geometry::ConvexHullTrace>(c.args[0]);
-    c.result = rosetta_lisp::result<decltype((native->events))>(c, native->events, 0, rosetta_lisp::Return::automatic);
-}
-void rosetta_lisp_884(rosetta_lisp::Call& c) {
-    if (c.args.size() != 2) rosetta_lisp::fail("(setf (events object) value) takes no further arguments");
-    auto* native = rosetta_lisp::native<datamunge::geometry::ConvexHullTrace>(c.args[0]);
-    using F = std::remove_cv_t<std::remove_reference_t<decltype(native->events)>>;
-    if constexpr (rosetta_lisp::bound_v<F>) {
-        // (setf (field object) (field object)) after changing the field object in place.
-        if (rosetta_lisp::is_instance<F>(c.args[1]) && rosetta_lisp::native<F>(c.args[1]) == &native->events) return;
-    }
-    rosetta_lisp::converting() = "field events";
-    rosetta_lisp::Param<const F&> converted(c.args[1]);
-    rosetta_lisp::converting() = nullptr;
-    rosetta_lisp::assign_field(native->events, converted.get());
-}
-void rosetta_lisp_885(rosetta_lisp::Call& c) {
-    if (c.args.size() != 1) rosetta_lisp::fail("(lower object) takes no further arguments");
-    auto* native = rosetta_lisp::native<datamunge::geometry::ConvexHullTrace>(c.args[0]);
-    c.result = rosetta_lisp::result<decltype((native->lower))>(c, native->lower, 0, rosetta_lisp::Return::automatic);
-}
-void rosetta_lisp_886(rosetta_lisp::Call& c) {
-    if (c.args.size() != 2) rosetta_lisp::fail("(setf (lower object) value) takes no further arguments");
-    auto* native = rosetta_lisp::native<datamunge::geometry::ConvexHullTrace>(c.args[0]);
-    using F = std::remove_cv_t<std::remove_reference_t<decltype(native->lower)>>;
-    if constexpr (rosetta_lisp::bound_v<F>) {
-        // (setf (field object) (field object)) after changing the field object in place.
-        if (rosetta_lisp::is_instance<F>(c.args[1]) && rosetta_lisp::native<F>(c.args[1]) == &native->lower) return;
-    }
-    rosetta_lisp::converting() = "field lower";
-    rosetta_lisp::Param<const F&> converted(c.args[1]);
-    rosetta_lisp::converting() = nullptr;
-    rosetta_lisp::assign_field(native->lower, converted.get());
-}
-void rosetta_lisp_887(rosetta_lisp::Call& c) {
-    if (c.args.size() != 1) rosetta_lisp::fail("(upper object) takes no further arguments");
-    auto* native = rosetta_lisp::native<datamunge::geometry::ConvexHullTrace>(c.args[0]);
-    c.result = rosetta_lisp::result<decltype((native->upper))>(c, native->upper, 0, rosetta_lisp::Return::automatic);
-}
-void rosetta_lisp_888(rosetta_lisp::Call& c) {
-    if (c.args.size() != 2) rosetta_lisp::fail("(setf (upper object) value) takes no further arguments");
-    auto* native = rosetta_lisp::native<datamunge::geometry::ConvexHullTrace>(c.args[0]);
-    using F = std::remove_cv_t<std::remove_reference_t<decltype(native->upper)>>;
-    if constexpr (rosetta_lisp::bound_v<F>) {
-        // (setf (field object) (field object)) after changing the field object in place.
-        if (rosetta_lisp::is_instance<F>(c.args[1]) && rosetta_lisp::native<F>(c.args[1]) == &native->upper) return;
-    }
-    rosetta_lisp::converting() = "field upper";
-    rosetta_lisp::Param<const F&> converted(c.args[1]);
-    rosetta_lisp::converting() = nullptr;
-    rosetta_lisp::assign_field(native->upper, converted.get());
-}
-void rosetta_lisp_889(rosetta_lisp::Call& c) {
+};
+void rosetta_lisp_803(rosetta_lisp::Call& c) {
     const unsigned long long subclass = c.args.empty() || c.args[0].kind != rosetta_lisp::tag_int ? 0 : static_cast<unsigned long long>(c.args[0].integer);
     (void)subclass;
     for (int pass = 1; pass < 2; ++pass) {
@@ -2438,165 +2363,334 @@ void rosetta_lisp_889(rosetta_lisp::Call& c) {
                 const std::size_t n = c.args.size() - 1;
                 if (c.args.size() >= 1 && n >= 0 && n <= 0) {
                     if (n == 0) {
-                        c.result = rosetta_lisp::object(new datamunge::geometry::ConvexHullTrace(), &rosetta_lisp::Info<datamunge::geometry::ConvexHullTrace>::value, rosetta_lisp::Ownership::owned, -1);
+                        if (subclass) {
+                            auto* created = new rosetta_director_datamunge__filter__VectorFunction();
+                            c.result = rosetta_lisp::object(static_cast<datamunge::filter::VectorFunction*>(created), &rosetta_lisp::Info<datamunge::filter::VectorFunction>::value, rosetta_lisp::Ownership::owned, -1);
+                            c.result.holder->director = created;
+                            created->rosetta_holder = c.result.holder;
+                            created->rosetta_id = subclass;
+                            return;
+                        }
+                        rosetta_lisp::fail("vector-function is abstract; subclass it in Lisp with (defclass my-class (datamunge:vector-function) ())");
+                    }
+                }
+            }
+    }
+    rosetta_lisp::no_overload(c, "(make-vector-function ...)", "    (make-vector-function) → vector-function\n", 1);
+}
+void rosetta_lisp_804(rosetta_lisp::Call& c) {
+    for (int pass = 1; pass < 2; ++pass) {
+        const bool strict = pass == 0; (void)strict;
+            {
+                const std::size_t n = c.args.size() - 1;
+                if (c.args.size() >= 1 && n >= 0 && n <= 0) {
+                    auto* native = rosetta_lisp::native<datamunge::filter::EnsembleKalmanFilter>(c.args[0]);
+                    if (n == 0) {
+                        rosetta_lisp::call(c, [&]() -> decltype(auto) { return native->predict(); }, 0, rosetta_lisp::Return::automatic);
                         return;
                     }
                 }
             }
     }
-    rosetta_lisp::no_overload(c, "(make-convex-hull-trace ...)", "    (make-convex-hull-trace) → convex-hull-trace\n", 1);
+    rosetta_lisp::no_overload(c, "(predict ...)", "    (predict ensemble-kalman-filter)\n", 1);
 }
-void rosetta_lisp_1093(rosetta_lisp::Call& c) {
-    if (c.args.size() != 1) rosetta_lisp::fail("(a object) takes no further arguments");
-    auto* native = rosetta_lisp::native<datamunge::geometry::DTWTrace>(c.args[0]);
-    c.result = rosetta_lisp::result<decltype((native->a))>(c, native->a, 0, rosetta_lisp::Return::automatic);
-}
-void rosetta_lisp_1094(rosetta_lisp::Call& c) {
-    if (c.args.size() != 2) rosetta_lisp::fail("(setf (a object) value) takes no further arguments");
-    auto* native = rosetta_lisp::native<datamunge::geometry::DTWTrace>(c.args[0]);
-    using F = std::remove_cv_t<std::remove_reference_t<decltype(native->a)>>;
-    if constexpr (rosetta_lisp::bound_v<F>) {
-        // (setf (field object) (field object)) after changing the field object in place.
-        if (rosetta_lisp::is_instance<F>(c.args[1]) && rosetta_lisp::native<F>(c.args[1]) == &native->a) return;
+void rosetta_lisp_805(rosetta_lisp::Call& c) {
+    for (int pass = 1; pass < 2; ++pass) {
+        const bool strict = pass == 0; (void)strict;
+            {
+                const std::size_t n = c.args.size() - 1;
+                if (c.args.size() >= 1 && n >= 1 && n <= 1) {
+                    auto* native = rosetta_lisp::native<datamunge::filter::EnsembleKalmanFilter>(c.args[0]);
+                    if (n == 1) {
+                        rosetta_lisp::converting() = "argument 'z'";
+                        rosetta_lisp::Param<const std::vector<double> &> p0(c.args[1]);
+                        rosetta_lisp::converting() = nullptr;
+                        rosetta_lisp::call(c, [&]() -> decltype(auto) { return native->update(p0.get()); }, 0, rosetta_lisp::Return::automatic);
+                        return;
+                    }
+                }
+            }
     }
-    rosetta_lisp::converting() = "field a";
-    rosetta_lisp::Param<const F&> converted(c.args[1]);
-    rosetta_lisp::converting() = nullptr;
-    rosetta_lisp::assign_field(native->a, converted.get());
+    rosetta_lisp::no_overload(c, "(update ...)", "    (update ensemble-kalman-filter z)\n", 1);
 }
-void rosetta_lisp_1095(rosetta_lisp::Call& c) {
-    if (c.args.size() != 1) rosetta_lisp::fail("(b object) takes no further arguments");
-    auto* native = rosetta_lisp::native<datamunge::geometry::DTWTrace>(c.args[0]);
-    c.result = rosetta_lisp::result<decltype((native->b))>(c, native->b, 0, rosetta_lisp::Return::automatic);
-}
-void rosetta_lisp_1096(rosetta_lisp::Call& c) {
-    if (c.args.size() != 2) rosetta_lisp::fail("(setf (b object) value) takes no further arguments");
-    auto* native = rosetta_lisp::native<datamunge::geometry::DTWTrace>(c.args[0]);
-    using F = std::remove_cv_t<std::remove_reference_t<decltype(native->b)>>;
-    if constexpr (rosetta_lisp::bound_v<F>) {
-        // (setf (field object) (field object)) after changing the field object in place.
-        if (rosetta_lisp::is_instance<F>(c.args[1]) && rosetta_lisp::native<F>(c.args[1]) == &native->b) return;
+void rosetta_lisp_806(rosetta_lisp::Call& c) {
+    for (int pass = 1; pass < 2; ++pass) {
+        const bool strict = pass == 0; (void)strict;
+            {
+                const std::size_t n = c.args.size() - 1;
+                if (c.args.size() >= 1 && n >= 0 && n <= 0) {
+                    auto* native = rosetta_lisp::native<datamunge::filter::EnsembleKalmanFilter>(c.args[0]);
+                    if (n == 0) {
+                        rosetta_lisp::call(c, [&]() -> decltype(auto) { return native->state(); }, 0, rosetta_lisp::Return::automatic);
+                        return;
+                    }
+                }
+            }
     }
-    rosetta_lisp::converting() = "field b";
-    rosetta_lisp::Param<const F&> converted(c.args[1]);
-    rosetta_lisp::converting() = nullptr;
-    rosetta_lisp::assign_field(native->b, converted.get());
+    rosetta_lisp::no_overload(c, "(state ...)", "    (state ensemble-kalman-filter) → (vector double-float)\n", 1);
 }
-void rosetta_lisp_1097(rosetta_lisp::Call& c) {
-    if (c.args.size() != 1) rosetta_lisp::fail("(cumulative object) takes no further arguments");
-    auto* native = rosetta_lisp::native<datamunge::geometry::DTWTrace>(c.args[0]);
-    c.result = rosetta_lisp::result<decltype((native->cumulative))>(c, native->cumulative, 0, rosetta_lisp::Return::automatic);
-}
-void rosetta_lisp_1098(rosetta_lisp::Call& c) {
-    if (c.args.size() != 2) rosetta_lisp::fail("(setf (cumulative object) value) takes no further arguments");
-    auto* native = rosetta_lisp::native<datamunge::geometry::DTWTrace>(c.args[0]);
-    using F = std::remove_cv_t<std::remove_reference_t<decltype(native->cumulative)>>;
-    if constexpr (rosetta_lisp::bound_v<F>) {
-        // (setf (field object) (field object)) after changing the field object in place.
-        if (rosetta_lisp::is_instance<F>(c.args[1]) && rosetta_lisp::native<F>(c.args[1]) == &native->cumulative) return;
+void rosetta_lisp_807(rosetta_lisp::Call& c) {
+    for (int pass = 1; pass < 2; ++pass) {
+        const bool strict = pass == 0; (void)strict;
+            {
+                const std::size_t n = c.args.size() - 1;
+                if (c.args.size() >= 1 && n >= 0 && n <= 0) {
+                    auto* native = rosetta_lisp::native<datamunge::filter::EnsembleKalmanFilter>(c.args[0]);
+                    if (n == 0) {
+                        rosetta_lisp::call(c, [&]() -> decltype(auto) { return native->covariance(); }, 0, rosetta_lisp::Return::automatic);
+                        return;
+                    }
+                }
+            }
     }
-    rosetta_lisp::converting() = "field cumulative";
-    rosetta_lisp::Param<const F&> converted(c.args[1]);
-    rosetta_lisp::converting() = nullptr;
-    rosetta_lisp::assign_field(native->cumulative, converted.get());
+    rosetta_lisp::no_overload(c, "(covariance ...)", "    (covariance ensemble-kalman-filter) → (vector (vector double-float))\n", 1);
 }
-void rosetta_lisp_1099(rosetta_lisp::Call& c) {
-    if (c.args.size() != 1) rosetta_lisp::fail("(predecessors object) takes no further arguments");
-    auto* native = rosetta_lisp::native<datamunge::geometry::DTWTrace>(c.args[0]);
-    c.result = rosetta_lisp::result<decltype((native->predecessors))>(c, native->predecessors, 0, rosetta_lisp::Return::automatic);
-}
-void rosetta_lisp_1100(rosetta_lisp::Call& c) {
-    if (c.args.size() != 2) rosetta_lisp::fail("(setf (predecessors object) value) takes no further arguments");
-    auto* native = rosetta_lisp::native<datamunge::geometry::DTWTrace>(c.args[0]);
-    using F = std::remove_cv_t<std::remove_reference_t<decltype(native->predecessors)>>;
-    if constexpr (rosetta_lisp::bound_v<F>) {
-        // (setf (field object) (field object)) after changing the field object in place.
-        if (rosetta_lisp::is_instance<F>(c.args[1]) && rosetta_lisp::native<F>(c.args[1]) == &native->predecessors) return;
+void rosetta_lisp_808(rosetta_lisp::Call& c) {
+    for (int pass = 1; pass < 2; ++pass) {
+        const bool strict = pass == 0; (void)strict;
+            {
+                const std::size_t n = c.args.size() - 1;
+                if (c.args.size() >= 1 && n >= 1 && n <= 1) {
+                    auto* native = rosetta_lisp::native<datamunge::filter::EnsembleKalmanFilter>(c.args[0]);
+                    if (n == 1) {
+                        rosetta_lisp::converting() = "argument 'measurements'";
+                        rosetta_lisp::Param<const std::vector<std::vector<double>> &> p0(c.args[1]);
+                        rosetta_lisp::converting() = nullptr;
+                        rosetta_lisp::call(c, [&]() -> decltype(auto) { return native->filter(p0.get()); }, 0, rosetta_lisp::Return::automatic);
+                        return;
+                    }
+                }
+            }
     }
-    rosetta_lisp::converting() = "field predecessors";
-    rosetta_lisp::Param<const F&> converted(c.args[1]);
-    rosetta_lisp::converting() = nullptr;
-    rosetta_lisp::assign_field(native->predecessors, converted.get());
+    rosetta_lisp::no_overload(c, "(filter ...)", "    (filter ensemble-kalman-filter measurements) → (vector kalman-state)\n", 1);
 }
-void rosetta_lisp_1101(rosetta_lisp::Call& c) {
-    if (c.args.size() != 1) rosetta_lisp::fail("(result object) takes no further arguments");
-    auto* native = rosetta_lisp::native<datamunge::geometry::DTWTrace>(c.args[0]);
-    c.result = rosetta_lisp::result<decltype((native->result))>(c, native->result, 0, rosetta_lisp::Return::automatic);
-}
-void rosetta_lisp_1102(rosetta_lisp::Call& c) {
-    if (c.args.size() != 2) rosetta_lisp::fail("(setf (result object) value) takes no further arguments");
-    auto* native = rosetta_lisp::native<datamunge::geometry::DTWTrace>(c.args[0]);
-    using F = std::remove_cv_t<std::remove_reference_t<decltype(native->result)>>;
-    if constexpr (rosetta_lisp::bound_v<F>) {
-        // (setf (field object) (field object)) after changing the field object in place.
-        if (rosetta_lisp::is_instance<F>(c.args[1]) && rosetta_lisp::native<F>(c.args[1]) == &native->result) return;
-    }
-    rosetta_lisp::converting() = "field result";
-    rosetta_lisp::Param<const F&> converted(c.args[1]);
-    rosetta_lisp::converting() = nullptr;
-    rosetta_lisp::assign_field(native->result, converted.get());
-}
-void rosetta_lisp_1103(rosetta_lisp::Call& c) {
-    if (c.args.size() != 1) rosetta_lisp::fail("(work object) takes no further arguments");
-    auto* native = rosetta_lisp::native<datamunge::geometry::DTWTrace>(c.args[0]);
-    c.result = rosetta_lisp::result<decltype((native->work))>(c, native->work, 0, rosetta_lisp::Return::automatic);
-}
-void rosetta_lisp_1104(rosetta_lisp::Call& c) {
-    if (c.args.size() != 2) rosetta_lisp::fail("(setf (work object) value) takes no further arguments");
-    auto* native = rosetta_lisp::native<datamunge::geometry::DTWTrace>(c.args[0]);
-    using F = std::remove_cv_t<std::remove_reference_t<decltype(native->work)>>;
-    if constexpr (rosetta_lisp::bound_v<F>) {
-        // (setf (field object) (field object)) after changing the field object in place.
-        if (rosetta_lisp::is_instance<F>(c.args[1]) && rosetta_lisp::native<F>(c.args[1]) == &native->work) return;
-    }
-    rosetta_lisp::converting() = "field work";
-    rosetta_lisp::Param<const F&> converted(c.args[1]);
-    rosetta_lisp::converting() = nullptr;
-    rosetta_lisp::assign_field(native->work, converted.get());
-}
-void rosetta_lisp_1105(rosetta_lisp::Call& c) {
-    if (c.args.size() != 1) rosetta_lisp::fail("(captured-entries object) takes no further arguments");
-    auto* native = rosetta_lisp::native<datamunge::geometry::DTWTrace>(c.args[0]);
-    c.result = rosetta_lisp::result<decltype((native->captured_entries))>(c, native->captured_entries, 0, rosetta_lisp::Return::automatic);
-}
-void rosetta_lisp_1106(rosetta_lisp::Call& c) {
-    if (c.args.size() != 2) rosetta_lisp::fail("(setf (captured-entries object) value) takes no further arguments");
-    auto* native = rosetta_lisp::native<datamunge::geometry::DTWTrace>(c.args[0]);
-    using F = std::remove_cv_t<std::remove_reference_t<decltype(native->captured_entries)>>;
-    if constexpr (rosetta_lisp::bound_v<F>) {
-        // (setf (field object) (field object)) after changing the field object in place.
-        if (rosetta_lisp::is_instance<F>(c.args[1]) && rosetta_lisp::native<F>(c.args[1]) == &native->captured_entries) return;
-    }
-    rosetta_lisp::converting() = "field captured-entries";
-    rosetta_lisp::Param<const F&> converted(c.args[1]);
-    rosetta_lisp::converting() = nullptr;
-    rosetta_lisp::assign_field(native->captured_entries, converted.get());
-}
-void rosetta_lisp_1107(rosetta_lisp::Call& c) {
+void rosetta_lisp_809(rosetta_lisp::Call& c) {
     const unsigned long long subclass = c.args.empty() || c.args[0].kind != rosetta_lisp::tag_int ? 0 : static_cast<unsigned long long>(c.args[0].integer);
     (void)subclass;
     for (int pass = 1; pass < 2; ++pass) {
         const bool strict = pass == 0; (void)strict;
             {
                 const std::size_t n = c.args.size() - 1;
-                if (c.args.size() >= 1 && n >= 0 && n <= 0) {
-                    if (n == 0) {
-                        c.result = rosetta_lisp::object(new datamunge::geometry::DTWTrace(), &rosetta_lisp::Info<datamunge::geometry::DTWTrace>::value, rosetta_lisp::Ownership::owned, -1);
+                if (c.args.size() >= 1 && n >= 6 && n <= 8) {
+                    if (n == 6) {
+                        rosetta_lisp::converting() = "argument 'f'";
+                        rosetta_lisp::Param<datamunge::filter::VectorFunction &> p0(c.args[1]);
+                        rosetta_lisp::converting() = "argument 'h'";
+                        rosetta_lisp::Param<datamunge::filter::VectorFunction &> p1(c.args[2]);
+                        rosetta_lisp::converting() = "argument 'q'";
+                        rosetta_lisp::Param<std::vector<std::vector<double>>> p2(c.args[3]);
+                        rosetta_lisp::converting() = "argument 'r'";
+                        rosetta_lisp::Param<std::vector<std::vector<double>>> p3(c.args[4]);
+                        rosetta_lisp::converting() = "argument 'x0'";
+                        rosetta_lisp::Param<std::vector<double>> p4(c.args[5]);
+                        rosetta_lisp::converting() = "argument 'p0'";
+                        rosetta_lisp::Param<std::vector<std::vector<double>>> p5(c.args[6]);
+                        rosetta_lisp::converting() = nullptr;
+                        c.result = rosetta_lisp::object(new datamunge::filter::EnsembleKalmanFilter(p0.get(), p1.get(), p2.get(), p3.get(), p4.get(), p5.get()), &rosetta_lisp::Info<datamunge::filter::EnsembleKalmanFilter>::value, rosetta_lisp::Ownership::owned, -1);
+                        return;
+                    }
+                    if (n == 7) {
+                        rosetta_lisp::converting() = "argument 'f'";
+                        rosetta_lisp::Param<datamunge::filter::VectorFunction &> p0(c.args[1]);
+                        rosetta_lisp::converting() = "argument 'h'";
+                        rosetta_lisp::Param<datamunge::filter::VectorFunction &> p1(c.args[2]);
+                        rosetta_lisp::converting() = "argument 'q'";
+                        rosetta_lisp::Param<std::vector<std::vector<double>>> p2(c.args[3]);
+                        rosetta_lisp::converting() = "argument 'r'";
+                        rosetta_lisp::Param<std::vector<std::vector<double>>> p3(c.args[4]);
+                        rosetta_lisp::converting() = "argument 'x0'";
+                        rosetta_lisp::Param<std::vector<double>> p4(c.args[5]);
+                        rosetta_lisp::converting() = "argument 'p0'";
+                        rosetta_lisp::Param<std::vector<std::vector<double>>> p5(c.args[6]);
+                        rosetta_lisp::converting() = "argument 'ensemble-size'";
+                        rosetta_lisp::Param<int> p6(c.args[7]);
+                        rosetta_lisp::converting() = nullptr;
+                        c.result = rosetta_lisp::object(new datamunge::filter::EnsembleKalmanFilter(p0.get(), p1.get(), p2.get(), p3.get(), p4.get(), p5.get(), p6.get()), &rosetta_lisp::Info<datamunge::filter::EnsembleKalmanFilter>::value, rosetta_lisp::Ownership::owned, -1);
+                        return;
+                    }
+                    if (n == 8) {
+                        rosetta_lisp::converting() = "argument 'f'";
+                        rosetta_lisp::Param<datamunge::filter::VectorFunction &> p0(c.args[1]);
+                        rosetta_lisp::converting() = "argument 'h'";
+                        rosetta_lisp::Param<datamunge::filter::VectorFunction &> p1(c.args[2]);
+                        rosetta_lisp::converting() = "argument 'q'";
+                        rosetta_lisp::Param<std::vector<std::vector<double>>> p2(c.args[3]);
+                        rosetta_lisp::converting() = "argument 'r'";
+                        rosetta_lisp::Param<std::vector<std::vector<double>>> p3(c.args[4]);
+                        rosetta_lisp::converting() = "argument 'x0'";
+                        rosetta_lisp::Param<std::vector<double>> p4(c.args[5]);
+                        rosetta_lisp::converting() = "argument 'p0'";
+                        rosetta_lisp::Param<std::vector<std::vector<double>>> p5(c.args[6]);
+                        rosetta_lisp::converting() = "argument 'ensemble-size'";
+                        rosetta_lisp::Param<int> p6(c.args[7]);
+                        rosetta_lisp::converting() = "argument 'seed'";
+                        rosetta_lisp::Param<unsigned int> p7(c.args[8]);
+                        rosetta_lisp::converting() = nullptr;
+                        c.result = rosetta_lisp::object(new datamunge::filter::EnsembleKalmanFilter(p0.get(), p1.get(), p2.get(), p3.get(), p4.get(), p5.get(), p6.get(), p7.get()), &rosetta_lisp::Info<datamunge::filter::EnsembleKalmanFilter>::value, rosetta_lisp::Ownership::owned, -1);
                         return;
                     }
                 }
             }
     }
-    rosetta_lisp::no_overload(c, "(make-dtw-trace ...)", "    (make-dtw-trace) → dtw-trace\n", 1);
+    rosetta_lisp::no_overload(c, "(make-ensemble-kalman-filter ...)", "    (make-ensemble-kalman-filter f h q r x0 p0 &optional (ensemble-size 100) (seed 42)) → ensemble-kalman-filter\n", 1);
 }
-void rosetta_lisp_1212(rosetta_lisp::Call& c) {
+void rosetta_lisp_1126(rosetta_lisp::Call& c) {
+    for (int pass = 1; pass < 2; ++pass) {
+        const bool strict = pass == 0; (void)strict;
+            {
+                const std::size_t n = c.args.size() - 1;
+                if (c.args.size() >= 1 && n >= 0 && n <= 0) {
+                    auto* native = rosetta_lisp::native<datamunge::geometry::KDTree2D>(c.args[0]);
+                    if (n == 0) {
+                        rosetta_lisp::call(c, [&]() -> decltype(auto) { return native->empty(); }, 0, rosetta_lisp::Return::automatic);
+                        return;
+                    }
+                }
+            }
+    }
+    rosetta_lisp::no_overload(c, "(empty ...)", "    (empty kd-tree2-d) → boolean\n", 1);
+}
+void rosetta_lisp_1127(rosetta_lisp::Call& c) {
+    for (int pass = 1; pass < 2; ++pass) {
+        const bool strict = pass == 0; (void)strict;
+            {
+                const std::size_t n = c.args.size() - 1;
+                if (c.args.size() >= 1 && n >= 0 && n <= 0) {
+                    auto* native = rosetta_lisp::native<datamunge::geometry::KDTree2D>(c.args[0]);
+                    if (n == 0) {
+                        rosetta_lisp::call(c, [&]() -> decltype(auto) { return native->size(); }, 0, rosetta_lisp::Return::automatic);
+                        return;
+                    }
+                }
+            }
+    }
+    rosetta_lisp::no_overload(c, "(size ...)", "    (size kd-tree2-d) → integer\n", 1);
+}
+void rosetta_lisp_1128(rosetta_lisp::Call& c) {
+    for (int pass = 1; pass < 2; ++pass) {
+        const bool strict = pass == 0; (void)strict;
+            {
+                const std::size_t n = c.args.size() - 1;
+                if (c.args.size() >= 1 && n >= 1 && n <= 1) {
+                    auto* native = rosetta_lisp::native<datamunge::geometry::KDTree2D>(c.args[0]);
+                    if (n == 1) {
+                        rosetta_lisp::converting() = "argument 'query'";
+                        rosetta_lisp::Param<const datamunge::geometry::Point2D &> p0(c.args[1]);
+                        rosetta_lisp::converting() = nullptr;
+                        rosetta_lisp::call(c, [&]() -> decltype(auto) { return native->nearest(p0.get()); }, 0, rosetta_lisp::Return::automatic);
+                        return;
+                    }
+                }
+            }
+    }
+    rosetta_lisp::no_overload(c, "(nearest ...)", "    (nearest kd-tree2-d query) → point2-d\n", 1);
+}
+void rosetta_lisp_1129(rosetta_lisp::Call& c) {
+    for (int pass = 1; pass < 2; ++pass) {
+        const bool strict = pass == 0; (void)strict;
+            {
+                const std::size_t n = c.args.size() - 1;
+                if (c.args.size() >= 1 && n >= 2 && n <= 2) {
+                    auto* native = rosetta_lisp::native<datamunge::geometry::KDTree2D>(c.args[0]);
+                    if (n == 2) {
+                        rosetta_lisp::converting() = "argument 'query'";
+                        rosetta_lisp::Param<const datamunge::geometry::Point2D &> p0(c.args[1]);
+                        rosetta_lisp::converting() = "argument 'k'";
+                        rosetta_lisp::Param<unsigned long> p1(c.args[2]);
+                        rosetta_lisp::converting() = nullptr;
+                        rosetta_lisp::call(c, [&]() -> decltype(auto) { return native->k_nearest(p0.get(), p1.get()); }, 0, rosetta_lisp::Return::automatic);
+                        return;
+                    }
+                }
+            }
+    }
+    rosetta_lisp::no_overload(c, "(k-nearest ...)", "    (k-nearest kd-tree2-d query k) → (vector point2-d)\n", 1);
+}
+void rosetta_lisp_1130(rosetta_lisp::Call& c) {
+    for (int pass = 1; pass < 2; ++pass) {
+        const bool strict = pass == 0; (void)strict;
+            {
+                const std::size_t n = c.args.size() - 1;
+                if (c.args.size() >= 1 && n >= 2 && n <= 2) {
+                    auto* native = rosetta_lisp::native<datamunge::geometry::KDTree2D>(c.args[0]);
+                    if (n == 2) {
+                        rosetta_lisp::converting() = "argument 'query'";
+                        rosetta_lisp::Param<const datamunge::geometry::Point2D &> p0(c.args[1]);
+                        rosetta_lisp::converting() = "argument 'radius'";
+                        rosetta_lisp::Param<double> p1(c.args[2]);
+                        rosetta_lisp::converting() = nullptr;
+                        rosetta_lisp::call(c, [&]() -> decltype(auto) { return native->points_in_radius(p0.get(), p1.get()); }, 0, rosetta_lisp::Return::automatic);
+                        return;
+                    }
+                }
+            }
+    }
+    rosetta_lisp::no_overload(c, "(points-in-radius ...)", "    (points-in-radius kd-tree2-d query radius) → (vector point2-d)\n", 1);
+}
+void rosetta_lisp_1131(rosetta_lisp::Call& c) {
+    const unsigned long long subclass = c.args.empty() || c.args[0].kind != rosetta_lisp::tag_int ? 0 : static_cast<unsigned long long>(c.args[0].integer);
+    (void)subclass;
+    for (int pass = 1; pass < 2; ++pass) {
+        const bool strict = pass == 0; (void)strict;
+            {
+                const std::size_t n = c.args.size() - 1;
+                if (c.args.size() >= 1 && n >= 1 && n <= 1) {
+                    if (n == 1) {
+                        rosetta_lisp::converting() = "argument 'points'";
+                        rosetta_lisp::Param<std::vector<datamunge::geometry::Point2D>> p0(c.args[1]);
+                        rosetta_lisp::converting() = nullptr;
+                        c.result = rosetta_lisp::object(new datamunge::geometry::KDTree2D(p0.get()), &rosetta_lisp::Info<datamunge::geometry::KDTree2D>::value, rosetta_lisp::Ownership::owned, -1);
+                        return;
+                    }
+                }
+            }
+    }
+    rosetta_lisp::no_overload(c, "(make-kd-tree2-d ...)", "    (make-kd-tree2-d points) → kd-tree2-d\n", 1);
+}
+void rosetta_lisp_1171(rosetta_lisp::Call& c) {
+    if (c.args.size() != 1) rosetta_lisp::fail("(method object) takes no further arguments");
+    auto* native = rosetta_lisp::native<datamunge::ode::ODEOptions>(c.args[0]);
+    c.result = rosetta_lisp::result<decltype((native->method))>(c, native->method, 0, rosetta_lisp::Return::automatic);
+}
+void rosetta_lisp_1172(rosetta_lisp::Call& c) {
+    if (c.args.size() != 2) rosetta_lisp::fail("(setf (method object) value) takes no further arguments");
+    auto* native = rosetta_lisp::native<datamunge::ode::ODEOptions>(c.args[0]);
+    using F = std::remove_cv_t<std::remove_reference_t<decltype(native->method)>>;
+    if constexpr (rosetta_lisp::bound_v<F>) {
+        // (setf (field object) (field object)) after changing the field object in place.
+        if (rosetta_lisp::is_instance<F>(c.args[1]) && rosetta_lisp::native<F>(c.args[1]) == &native->method) return;
+    }
+    rosetta_lisp::converting() = "field method";
+    rosetta_lisp::Param<const F&> converted(c.args[1]);
+    rosetta_lisp::converting() = nullptr;
+    rosetta_lisp::assign_field(native->method, converted.get());
+}
+void rosetta_lisp_1173(rosetta_lisp::Call& c) {
+    if (c.args.size() != 1) rosetta_lisp::fail("(multistep-order object) takes no further arguments");
+    auto* native = rosetta_lisp::native<datamunge::ode::ODEOptions>(c.args[0]);
+    c.result = rosetta_lisp::result<decltype((native->multistep_order))>(c, native->multistep_order, 0, rosetta_lisp::Return::automatic);
+}
+void rosetta_lisp_1174(rosetta_lisp::Call& c) {
+    if (c.args.size() != 2) rosetta_lisp::fail("(setf (multistep-order object) value) takes no further arguments");
+    auto* native = rosetta_lisp::native<datamunge::ode::ODEOptions>(c.args[0]);
+    using F = std::remove_cv_t<std::remove_reference_t<decltype(native->multistep_order)>>;
+    if constexpr (rosetta_lisp::bound_v<F>) {
+        // (setf (field object) (field object)) after changing the field object in place.
+        if (rosetta_lisp::is_instance<F>(c.args[1]) && rosetta_lisp::native<F>(c.args[1]) == &native->multistep_order) return;
+    }
+    rosetta_lisp::converting() = "field multistep-order";
+    rosetta_lisp::Param<const F&> converted(c.args[1]);
+    rosetta_lisp::converting() = nullptr;
+    rosetta_lisp::assign_field(native->multistep_order, converted.get());
+}
+void rosetta_lisp_1175(rosetta_lisp::Call& c) {
     if (c.args.size() != 1) rosetta_lisp::fail("(step-size object) takes no further arguments");
-    auto* native = rosetta_lisp::native<datamunge::optim::AdaGradOptions>(c.args[0]);
+    auto* native = rosetta_lisp::native<datamunge::ode::ODEOptions>(c.args[0]);
     c.result = rosetta_lisp::result<decltype((native->step_size))>(c, native->step_size, 0, rosetta_lisp::Return::automatic);
 }
-void rosetta_lisp_1213(rosetta_lisp::Call& c) {
+void rosetta_lisp_1176(rosetta_lisp::Call& c) {
     if (c.args.size() != 2) rosetta_lisp::fail("(setf (step-size object) value) takes no further arguments");
-    auto* native = rosetta_lisp::native<datamunge::optim::AdaGradOptions>(c.args[0]);
+    auto* native = rosetta_lisp::native<datamunge::ode::ODEOptions>(c.args[0]);
     using F = std::remove_cv_t<std::remove_reference_t<decltype(native->step_size)>>;
     if constexpr (rosetta_lisp::bound_v<F>) {
         // (setf (field object) (field object)) after changing the field object in place.
@@ -2607,61 +2701,61 @@ void rosetta_lisp_1213(rosetta_lisp::Call& c) {
     rosetta_lisp::converting() = nullptr;
     rosetta_lisp::assign_field(native->step_size, converted.get());
 }
-void rosetta_lisp_1214(rosetta_lisp::Call& c) {
-    if (c.args.size() != 1) rosetta_lisp::fail("(epsilon object) takes no further arguments");
-    auto* native = rosetta_lisp::native<datamunge::optim::AdaGradOptions>(c.args[0]);
-    c.result = rosetta_lisp::result<decltype((native->epsilon))>(c, native->epsilon, 0, rosetta_lisp::Return::automatic);
+void rosetta_lisp_1177(rosetta_lisp::Call& c) {
+    if (c.args.size() != 1) rosetta_lisp::fail("(abs-tol object) takes no further arguments");
+    auto* native = rosetta_lisp::native<datamunge::ode::ODEOptions>(c.args[0]);
+    c.result = rosetta_lisp::result<decltype((native->abs_tol))>(c, native->abs_tol, 0, rosetta_lisp::Return::automatic);
 }
-void rosetta_lisp_1215(rosetta_lisp::Call& c) {
-    if (c.args.size() != 2) rosetta_lisp::fail("(setf (epsilon object) value) takes no further arguments");
-    auto* native = rosetta_lisp::native<datamunge::optim::AdaGradOptions>(c.args[0]);
-    using F = std::remove_cv_t<std::remove_reference_t<decltype(native->epsilon)>>;
+void rosetta_lisp_1178(rosetta_lisp::Call& c) {
+    if (c.args.size() != 2) rosetta_lisp::fail("(setf (abs-tol object) value) takes no further arguments");
+    auto* native = rosetta_lisp::native<datamunge::ode::ODEOptions>(c.args[0]);
+    using F = std::remove_cv_t<std::remove_reference_t<decltype(native->abs_tol)>>;
     if constexpr (rosetta_lisp::bound_v<F>) {
         // (setf (field object) (field object)) after changing the field object in place.
-        if (rosetta_lisp::is_instance<F>(c.args[1]) && rosetta_lisp::native<F>(c.args[1]) == &native->epsilon) return;
+        if (rosetta_lisp::is_instance<F>(c.args[1]) && rosetta_lisp::native<F>(c.args[1]) == &native->abs_tol) return;
     }
-    rosetta_lisp::converting() = "field epsilon";
+    rosetta_lisp::converting() = "field abs-tol";
     rosetta_lisp::Param<const F&> converted(c.args[1]);
     rosetta_lisp::converting() = nullptr;
-    rosetta_lisp::assign_field(native->epsilon, converted.get());
+    rosetta_lisp::assign_field(native->abs_tol, converted.get());
 }
-void rosetta_lisp_1216(rosetta_lisp::Call& c) {
-    if (c.args.size() != 1) rosetta_lisp::fail("(max-iterations object) takes no further arguments");
-    auto* native = rosetta_lisp::native<datamunge::optim::AdaGradOptions>(c.args[0]);
-    c.result = rosetta_lisp::result<decltype((native->max_iterations))>(c, native->max_iterations, 0, rosetta_lisp::Return::automatic);
+void rosetta_lisp_1179(rosetta_lisp::Call& c) {
+    if (c.args.size() != 1) rosetta_lisp::fail("(rel-tol object) takes no further arguments");
+    auto* native = rosetta_lisp::native<datamunge::ode::ODEOptions>(c.args[0]);
+    c.result = rosetta_lisp::result<decltype((native->rel_tol))>(c, native->rel_tol, 0, rosetta_lisp::Return::automatic);
 }
-void rosetta_lisp_1217(rosetta_lisp::Call& c) {
-    if (c.args.size() != 2) rosetta_lisp::fail("(setf (max-iterations object) value) takes no further arguments");
-    auto* native = rosetta_lisp::native<datamunge::optim::AdaGradOptions>(c.args[0]);
-    using F = std::remove_cv_t<std::remove_reference_t<decltype(native->max_iterations)>>;
+void rosetta_lisp_1180(rosetta_lisp::Call& c) {
+    if (c.args.size() != 2) rosetta_lisp::fail("(setf (rel-tol object) value) takes no further arguments");
+    auto* native = rosetta_lisp::native<datamunge::ode::ODEOptions>(c.args[0]);
+    using F = std::remove_cv_t<std::remove_reference_t<decltype(native->rel_tol)>>;
     if constexpr (rosetta_lisp::bound_v<F>) {
         // (setf (field object) (field object)) after changing the field object in place.
-        if (rosetta_lisp::is_instance<F>(c.args[1]) && rosetta_lisp::native<F>(c.args[1]) == &native->max_iterations) return;
+        if (rosetta_lisp::is_instance<F>(c.args[1]) && rosetta_lisp::native<F>(c.args[1]) == &native->rel_tol) return;
     }
-    rosetta_lisp::converting() = "field max-iterations";
+    rosetta_lisp::converting() = "field rel-tol";
     rosetta_lisp::Param<const F&> converted(c.args[1]);
     rosetta_lisp::converting() = nullptr;
-    rosetta_lisp::assign_field(native->max_iterations, converted.get());
+    rosetta_lisp::assign_field(native->rel_tol, converted.get());
 }
-void rosetta_lisp_1218(rosetta_lisp::Call& c) {
-    if (c.args.size() != 1) rosetta_lisp::fail("(tolerance object) takes no further arguments");
-    auto* native = rosetta_lisp::native<datamunge::optim::AdaGradOptions>(c.args[0]);
-    c.result = rosetta_lisp::result<decltype((native->tolerance))>(c, native->tolerance, 0, rosetta_lisp::Return::automatic);
+void rosetta_lisp_1181(rosetta_lisp::Call& c) {
+    if (c.args.size() != 1) rosetta_lisp::fail("(max-step object) takes no further arguments");
+    auto* native = rosetta_lisp::native<datamunge::ode::ODEOptions>(c.args[0]);
+    c.result = rosetta_lisp::result<decltype((native->max_step))>(c, native->max_step, 0, rosetta_lisp::Return::automatic);
 }
-void rosetta_lisp_1219(rosetta_lisp::Call& c) {
-    if (c.args.size() != 2) rosetta_lisp::fail("(setf (tolerance object) value) takes no further arguments");
-    auto* native = rosetta_lisp::native<datamunge::optim::AdaGradOptions>(c.args[0]);
-    using F = std::remove_cv_t<std::remove_reference_t<decltype(native->tolerance)>>;
+void rosetta_lisp_1182(rosetta_lisp::Call& c) {
+    if (c.args.size() != 2) rosetta_lisp::fail("(setf (max-step object) value) takes no further arguments");
+    auto* native = rosetta_lisp::native<datamunge::ode::ODEOptions>(c.args[0]);
+    using F = std::remove_cv_t<std::remove_reference_t<decltype(native->max_step)>>;
     if constexpr (rosetta_lisp::bound_v<F>) {
         // (setf (field object) (field object)) after changing the field object in place.
-        if (rosetta_lisp::is_instance<F>(c.args[1]) && rosetta_lisp::native<F>(c.args[1]) == &native->tolerance) return;
+        if (rosetta_lisp::is_instance<F>(c.args[1]) && rosetta_lisp::native<F>(c.args[1]) == &native->max_step) return;
     }
-    rosetta_lisp::converting() = "field tolerance";
+    rosetta_lisp::converting() = "field max-step";
     rosetta_lisp::Param<const F&> converted(c.args[1]);
     rosetta_lisp::converting() = nullptr;
-    rosetta_lisp::assign_field(native->tolerance, converted.get());
+    rosetta_lisp::assign_field(native->max_step, converted.get());
 }
-void rosetta_lisp_1220(rosetta_lisp::Call& c) {
+void rosetta_lisp_1183(rosetta_lisp::Call& c) {
     const unsigned long long subclass = c.args.empty() || c.args[0].kind != rosetta_lisp::tag_int ? 0 : static_cast<unsigned long long>(c.args[0].integer);
     (void)subclass;
     for (int pass = 1; pass < 2; ++pass) {
@@ -2670,24 +2764,24 @@ void rosetta_lisp_1220(rosetta_lisp::Call& c) {
                 const std::size_t n = c.args.size() - 1;
                 if (c.args.size() >= 1 && n >= 0 && n <= 0) {
                     if (n == 0) {
-                        c.result = rosetta_lisp::object(new datamunge::optim::AdaGradOptions(), &rosetta_lisp::Info<datamunge::optim::AdaGradOptions>::value, rosetta_lisp::Ownership::owned, -1);
+                        c.result = rosetta_lisp::object(new datamunge::ode::ODEOptions(), &rosetta_lisp::Info<datamunge::ode::ODEOptions>::value, rosetta_lisp::Ownership::owned, -1);
                         return;
                     }
                 }
             }
     }
-    rosetta_lisp::no_overload(c, "(make-ada-grad-options ...)", "    (make-ada-grad-options) → ada-grad-options\n", 1);
+    rosetta_lisp::no_overload(c, "(make-ode-options ...)", "    (make-ode-options) → ode-options\n", 1);
 }
-void rosetta_lisp_1277(rosetta_lisp::Call& c) {
+void rosetta_lisp_1227(rosetta_lisp::Call& c) {
     for (int pass = 1; pass < 2; ++pass) {
         const bool strict = pass == 0; (void)strict;
             {
                 const std::size_t n = c.args.size() - 1;
                 if (c.args.size() >= 1 && n >= 2 && n <= 2) {
-                    auto* native = rosetta_lisp::native<datamunge::optim::AugmentedLagrangian>(c.args[0]);
+                    auto* native = rosetta_lisp::native<datamunge::optim::Adam>(c.args[0]);
                     if (n == 2) {
                         rosetta_lisp::converting() = "argument 'function'";
-                        rosetta_lisp::Param<datamunge::optim::EqualityConstrainedFunction &> p0(c.args[1]);
+                        rosetta_lisp::Param<datamunge::optim::DifferentiableFunction &> p0(c.args[1]);
                         rosetta_lisp::converting() = "argument 'coordinates'";
                         rosetta_lisp::Param<std::vector<double> &> p1(c.args[2]);
                         rosetta_lisp::converting() = nullptr;
@@ -2698,15 +2792,15 @@ void rosetta_lisp_1277(rosetta_lisp::Call& c) {
                 }
             }
     }
-    rosetta_lisp::no_overload(c, "(optimize ...)", "    (optimize augmented-lagrangian function coordinates) → double-float\n", 1);
+    rosetta_lisp::no_overload(c, "(optimize ...)", "    (optimize adam function coordinates) → double-float\n", 1);
 }
-void rosetta_lisp_1278(rosetta_lisp::Call& c) {
+void rosetta_lisp_1228(rosetta_lisp::Call& c) {
     for (int pass = 1; pass < 2; ++pass) {
         const bool strict = pass == 0; (void)strict;
             {
                 const std::size_t n = c.args.size() - 1;
                 if (c.args.size() >= 1 && n >= 0 && n <= 0) {
-                    auto* native = rosetta_lisp::native<datamunge::optim::AugmentedLagrangian>(c.args[0]);
+                    auto* native = rosetta_lisp::native<datamunge::optim::Adam>(c.args[0]);
                     if (n == 0) {
                         rosetta_lisp::call(c, [&]() -> decltype(auto) { return native->options(); }, 0, rosetta_lisp::Return::automatic);
                         return;
@@ -2714,9 +2808,9 @@ void rosetta_lisp_1278(rosetta_lisp::Call& c) {
                 }
             }
     }
-    rosetta_lisp::no_overload(c, "(options ...)", "    (options augmented-lagrangian) → augmented-lagrangian-options\n", 1);
+    rosetta_lisp::no_overload(c, "(options ...)", "    (options adam) → adam-options\n", 1);
 }
-void rosetta_lisp_1279(rosetta_lisp::Call& c) {
+void rosetta_lisp_1229(rosetta_lisp::Call& c) {
     const unsigned long long subclass = c.args.empty() || c.args[0].kind != rosetta_lisp::tag_int ? 0 : static_cast<unsigned long long>(c.args[0].integer);
     (void)subclass;
     for (int pass = 1; pass < 2; ++pass) {
@@ -2725,28 +2819,233 @@ void rosetta_lisp_1279(rosetta_lisp::Call& c) {
                 const std::size_t n = c.args.size() - 1;
                 if (c.args.size() >= 1 && n >= 0 && n <= 1) {
                     if (n == 0) {
-                        c.result = rosetta_lisp::object(new datamunge::optim::AugmentedLagrangian(), &rosetta_lisp::Info<datamunge::optim::AugmentedLagrangian>::value, rosetta_lisp::Ownership::owned, -1);
+                        c.result = rosetta_lisp::object(new datamunge::optim::Adam(), &rosetta_lisp::Info<datamunge::optim::Adam>::value, rosetta_lisp::Ownership::owned, -1);
                         return;
                     }
                     if (n == 1) {
                         rosetta_lisp::converting() = "argument 'options'";
-                        rosetta_lisp::Param<datamunge::optim::AugmentedLagrangianOptions> p0(c.args[1]);
+                        rosetta_lisp::Param<datamunge::optim::AdamOptions> p0(c.args[1]);
                         rosetta_lisp::converting() = nullptr;
-                        c.result = rosetta_lisp::object(new datamunge::optim::AugmentedLagrangian(p0.get()), &rosetta_lisp::Info<datamunge::optim::AugmentedLagrangian>::value, rosetta_lisp::Ownership::owned, -1);
+                        c.result = rosetta_lisp::object(new datamunge::optim::Adam(p0.get()), &rosetta_lisp::Info<datamunge::optim::Adam>::value, rosetta_lisp::Ownership::owned, -1);
                         return;
                     }
                 }
             }
     }
-    rosetta_lisp::no_overload(c, "(make-augmented-lagrangian ...)", "    (make-augmented-lagrangian &optional (options (make-augmented-lagrangian-options))) → augmented-lagrangian\n", 1);
+    rosetta_lisp::no_overload(c, "(make-adam ...)", "    (make-adam &optional (options (make-adam-options))) → adam\n", 1);
 }
-void rosetta_lisp_1444(rosetta_lisp::Call& c) {
+void rosetta_lisp_1340(rosetta_lisp::Call& c) {
+    for (int pass = 1; pass < 2; ++pass) {
+        const bool strict = pass == 0; (void)strict;
+            {
+                const std::size_t n = c.args.size() - 1;
+                if (c.args.size() >= 1 && n >= 2 && n <= 2) {
+                    auto* native = rosetta_lisp::native<datamunge::optim::ConjugateGradient>(c.args[0]);
+                    if (n == 2) {
+                        rosetta_lisp::converting() = "argument 'function'";
+                        rosetta_lisp::Param<datamunge::optim::DifferentiableFunction &> p0(c.args[1]);
+                        rosetta_lisp::converting() = "argument 'coordinates'";
+                        rosetta_lisp::Param<std::vector<double> &> p1(c.args[2]);
+                        rosetta_lisp::converting() = nullptr;
+                        rosetta_lisp::call(c, [&]() -> decltype(auto) { return native->optimize(p0.get(), p1.get()); }, 0, rosetta_lisp::Return::automatic);
+                        p1.writeback(c, c.args[2]);
+                        return;
+                    }
+                }
+            }
+    }
+    rosetta_lisp::no_overload(c, "(optimize ...)", "    (optimize conjugate-gradient function coordinates) → double-float\n", 1);
+}
+void rosetta_lisp_1341(rosetta_lisp::Call& c) {
+    for (int pass = 1; pass < 2; ++pass) {
+        const bool strict = pass == 0; (void)strict;
+            {
+                const std::size_t n = c.args.size() - 1;
+                if (c.args.size() >= 1 && n >= 0 && n <= 0) {
+                    auto* native = rosetta_lisp::native<datamunge::optim::ConjugateGradient>(c.args[0]);
+                    if (n == 0) {
+                        rosetta_lisp::call(c, [&]() -> decltype(auto) { return native->options(); }, 0, rosetta_lisp::Return::automatic);
+                        return;
+                    }
+                }
+            }
+    }
+    rosetta_lisp::no_overload(c, "(options ...)", "    (options conjugate-gradient) → conjugate-gradient-options\n", 1);
+}
+void rosetta_lisp_1342(rosetta_lisp::Call& c) {
+    const unsigned long long subclass = c.args.empty() || c.args[0].kind != rosetta_lisp::tag_int ? 0 : static_cast<unsigned long long>(c.args[0].integer);
+    (void)subclass;
+    for (int pass = 1; pass < 2; ++pass) {
+        const bool strict = pass == 0; (void)strict;
+            {
+                const std::size_t n = c.args.size() - 1;
+                if (c.args.size() >= 1 && n >= 0 && n <= 1) {
+                    if (n == 0) {
+                        c.result = rosetta_lisp::object(new datamunge::optim::ConjugateGradient(), &rosetta_lisp::Info<datamunge::optim::ConjugateGradient>::value, rosetta_lisp::Ownership::owned, -1);
+                        return;
+                    }
+                    if (n == 1) {
+                        rosetta_lisp::converting() = "argument 'options'";
+                        rosetta_lisp::Param<datamunge::optim::ConjugateGradientOptions> p0(c.args[1]);
+                        rosetta_lisp::converting() = nullptr;
+                        c.result = rosetta_lisp::object(new datamunge::optim::ConjugateGradient(p0.get()), &rosetta_lisp::Info<datamunge::optim::ConjugateGradient>::value, rosetta_lisp::Ownership::owned, -1);
+                        return;
+                    }
+                }
+            }
+    }
+    rosetta_lisp::no_overload(c, "(make-conjugate-gradient ...)", "    (make-conjugate-gradient &optional (options (make-conjugate-gradient-options))) → conjugate-gradient\n", 1);
+}
+void rosetta_lisp_1391(rosetta_lisp::Call& c) {
+    if (c.args.size() != 1) rosetta_lisp::fail("(population-size object) takes no further arguments");
+    auto* native = rosetta_lisp::native<datamunge::optim::CuckooSearchOptions>(c.args[0]);
+    c.result = rosetta_lisp::result<decltype((native->population_size))>(c, native->population_size, 0, rosetta_lisp::Return::automatic);
+}
+void rosetta_lisp_1392(rosetta_lisp::Call& c) {
+    if (c.args.size() != 2) rosetta_lisp::fail("(setf (population-size object) value) takes no further arguments");
+    auto* native = rosetta_lisp::native<datamunge::optim::CuckooSearchOptions>(c.args[0]);
+    using F = std::remove_cv_t<std::remove_reference_t<decltype(native->population_size)>>;
+    if constexpr (rosetta_lisp::bound_v<F>) {
+        // (setf (field object) (field object)) after changing the field object in place.
+        if (rosetta_lisp::is_instance<F>(c.args[1]) && rosetta_lisp::native<F>(c.args[1]) == &native->population_size) return;
+    }
+    rosetta_lisp::converting() = "field population-size";
+    rosetta_lisp::Param<const F&> converted(c.args[1]);
+    rosetta_lisp::converting() = nullptr;
+    rosetta_lisp::assign_field(native->population_size, converted.get());
+}
+void rosetta_lisp_1393(rosetta_lisp::Call& c) {
+    if (c.args.size() != 1) rosetta_lisp::fail("(discovery-rate object) takes no further arguments");
+    auto* native = rosetta_lisp::native<datamunge::optim::CuckooSearchOptions>(c.args[0]);
+    c.result = rosetta_lisp::result<decltype((native->discovery_rate))>(c, native->discovery_rate, 0, rosetta_lisp::Return::automatic);
+}
+void rosetta_lisp_1394(rosetta_lisp::Call& c) {
+    if (c.args.size() != 2) rosetta_lisp::fail("(setf (discovery-rate object) value) takes no further arguments");
+    auto* native = rosetta_lisp::native<datamunge::optim::CuckooSearchOptions>(c.args[0]);
+    using F = std::remove_cv_t<std::remove_reference_t<decltype(native->discovery_rate)>>;
+    if constexpr (rosetta_lisp::bound_v<F>) {
+        // (setf (field object) (field object)) after changing the field object in place.
+        if (rosetta_lisp::is_instance<F>(c.args[1]) && rosetta_lisp::native<F>(c.args[1]) == &native->discovery_rate) return;
+    }
+    rosetta_lisp::converting() = "field discovery-rate";
+    rosetta_lisp::Param<const F&> converted(c.args[1]);
+    rosetta_lisp::converting() = nullptr;
+    rosetta_lisp::assign_field(native->discovery_rate, converted.get());
+}
+void rosetta_lisp_1395(rosetta_lisp::Call& c) {
+    if (c.args.size() != 1) rosetta_lisp::fail("(levy-beta object) takes no further arguments");
+    auto* native = rosetta_lisp::native<datamunge::optim::CuckooSearchOptions>(c.args[0]);
+    c.result = rosetta_lisp::result<decltype((native->levy_beta))>(c, native->levy_beta, 0, rosetta_lisp::Return::automatic);
+}
+void rosetta_lisp_1396(rosetta_lisp::Call& c) {
+    if (c.args.size() != 2) rosetta_lisp::fail("(setf (levy-beta object) value) takes no further arguments");
+    auto* native = rosetta_lisp::native<datamunge::optim::CuckooSearchOptions>(c.args[0]);
+    using F = std::remove_cv_t<std::remove_reference_t<decltype(native->levy_beta)>>;
+    if constexpr (rosetta_lisp::bound_v<F>) {
+        // (setf (field object) (field object)) after changing the field object in place.
+        if (rosetta_lisp::is_instance<F>(c.args[1]) && rosetta_lisp::native<F>(c.args[1]) == &native->levy_beta) return;
+    }
+    rosetta_lisp::converting() = "field levy-beta";
+    rosetta_lisp::Param<const F&> converted(c.args[1]);
+    rosetta_lisp::converting() = nullptr;
+    rosetta_lisp::assign_field(native->levy_beta, converted.get());
+}
+void rosetta_lisp_1397(rosetta_lisp::Call& c) {
+    if (c.args.size() != 1) rosetta_lisp::fail("(step-scale object) takes no further arguments");
+    auto* native = rosetta_lisp::native<datamunge::optim::CuckooSearchOptions>(c.args[0]);
+    c.result = rosetta_lisp::result<decltype((native->step_scale))>(c, native->step_scale, 0, rosetta_lisp::Return::automatic);
+}
+void rosetta_lisp_1398(rosetta_lisp::Call& c) {
+    if (c.args.size() != 2) rosetta_lisp::fail("(setf (step-scale object) value) takes no further arguments");
+    auto* native = rosetta_lisp::native<datamunge::optim::CuckooSearchOptions>(c.args[0]);
+    using F = std::remove_cv_t<std::remove_reference_t<decltype(native->step_scale)>>;
+    if constexpr (rosetta_lisp::bound_v<F>) {
+        // (setf (field object) (field object)) after changing the field object in place.
+        if (rosetta_lisp::is_instance<F>(c.args[1]) && rosetta_lisp::native<F>(c.args[1]) == &native->step_scale) return;
+    }
+    rosetta_lisp::converting() = "field step-scale";
+    rosetta_lisp::Param<const F&> converted(c.args[1]);
+    rosetta_lisp::converting() = nullptr;
+    rosetta_lisp::assign_field(native->step_scale, converted.get());
+}
+void rosetta_lisp_1399(rosetta_lisp::Call& c) {
+    if (c.args.size() != 1) rosetta_lisp::fail("(max-iterations object) takes no further arguments");
+    auto* native = rosetta_lisp::native<datamunge::optim::CuckooSearchOptions>(c.args[0]);
+    c.result = rosetta_lisp::result<decltype((native->max_iterations))>(c, native->max_iterations, 0, rosetta_lisp::Return::automatic);
+}
+void rosetta_lisp_1400(rosetta_lisp::Call& c) {
+    if (c.args.size() != 2) rosetta_lisp::fail("(setf (max-iterations object) value) takes no further arguments");
+    auto* native = rosetta_lisp::native<datamunge::optim::CuckooSearchOptions>(c.args[0]);
+    using F = std::remove_cv_t<std::remove_reference_t<decltype(native->max_iterations)>>;
+    if constexpr (rosetta_lisp::bound_v<F>) {
+        // (setf (field object) (field object)) after changing the field object in place.
+        if (rosetta_lisp::is_instance<F>(c.args[1]) && rosetta_lisp::native<F>(c.args[1]) == &native->max_iterations) return;
+    }
+    rosetta_lisp::converting() = "field max-iterations";
+    rosetta_lisp::Param<const F&> converted(c.args[1]);
+    rosetta_lisp::converting() = nullptr;
+    rosetta_lisp::assign_field(native->max_iterations, converted.get());
+}
+void rosetta_lisp_1401(rosetta_lisp::Call& c) {
+    if (c.args.size() != 1) rosetta_lisp::fail("(tolerance object) takes no further arguments");
+    auto* native = rosetta_lisp::native<datamunge::optim::CuckooSearchOptions>(c.args[0]);
+    c.result = rosetta_lisp::result<decltype((native->tolerance))>(c, native->tolerance, 0, rosetta_lisp::Return::automatic);
+}
+void rosetta_lisp_1402(rosetta_lisp::Call& c) {
+    if (c.args.size() != 2) rosetta_lisp::fail("(setf (tolerance object) value) takes no further arguments");
+    auto* native = rosetta_lisp::native<datamunge::optim::CuckooSearchOptions>(c.args[0]);
+    using F = std::remove_cv_t<std::remove_reference_t<decltype(native->tolerance)>>;
+    if constexpr (rosetta_lisp::bound_v<F>) {
+        // (setf (field object) (field object)) after changing the field object in place.
+        if (rosetta_lisp::is_instance<F>(c.args[1]) && rosetta_lisp::native<F>(c.args[1]) == &native->tolerance) return;
+    }
+    rosetta_lisp::converting() = "field tolerance";
+    rosetta_lisp::Param<const F&> converted(c.args[1]);
+    rosetta_lisp::converting() = nullptr;
+    rosetta_lisp::assign_field(native->tolerance, converted.get());
+}
+void rosetta_lisp_1403(rosetta_lisp::Call& c) {
+    if (c.args.size() != 1) rosetta_lisp::fail("(seed object) takes no further arguments");
+    auto* native = rosetta_lisp::native<datamunge::optim::CuckooSearchOptions>(c.args[0]);
+    c.result = rosetta_lisp::result<decltype((native->seed))>(c, native->seed, 0, rosetta_lisp::Return::automatic);
+}
+void rosetta_lisp_1404(rosetta_lisp::Call& c) {
+    if (c.args.size() != 2) rosetta_lisp::fail("(setf (seed object) value) takes no further arguments");
+    auto* native = rosetta_lisp::native<datamunge::optim::CuckooSearchOptions>(c.args[0]);
+    using F = std::remove_cv_t<std::remove_reference_t<decltype(native->seed)>>;
+    if constexpr (rosetta_lisp::bound_v<F>) {
+        // (setf (field object) (field object)) after changing the field object in place.
+        if (rosetta_lisp::is_instance<F>(c.args[1]) && rosetta_lisp::native<F>(c.args[1]) == &native->seed) return;
+    }
+    rosetta_lisp::converting() = "field seed";
+    rosetta_lisp::Param<const F&> converted(c.args[1]);
+    rosetta_lisp::converting() = nullptr;
+    rosetta_lisp::assign_field(native->seed, converted.get());
+}
+void rosetta_lisp_1405(rosetta_lisp::Call& c) {
+    const unsigned long long subclass = c.args.empty() || c.args[0].kind != rosetta_lisp::tag_int ? 0 : static_cast<unsigned long long>(c.args[0].integer);
+    (void)subclass;
+    for (int pass = 1; pass < 2; ++pass) {
+        const bool strict = pass == 0; (void)strict;
+            {
+                const std::size_t n = c.args.size() - 1;
+                if (c.args.size() >= 1 && n >= 0 && n <= 0) {
+                    if (n == 0) {
+                        c.result = rosetta_lisp::object(new datamunge::optim::CuckooSearchOptions(), &rosetta_lisp::Info<datamunge::optim::CuckooSearchOptions>::value, rosetta_lisp::Ownership::owned, -1);
+                        return;
+                    }
+                }
+            }
+    }
+    rosetta_lisp::no_overload(c, "(make-cuckoo-search-options ...)", "    (make-cuckoo-search-options) → cuckoo-search-options\n", 1);
+}
+void rosetta_lisp_1406(rosetta_lisp::Call& c) {
     for (int pass = 1; pass < 2; ++pass) {
         const bool strict = pass == 0; (void)strict;
             {
                 const std::size_t n = c.args.size() - 1;
                 if (c.args.size() >= 1 && n >= 4 && n <= 4) {
-                    auto* native = rosetta_lisp::native<datamunge::optim::EvolutionStrategy>(c.args[0]);
+                    auto* native = rosetta_lisp::native<datamunge::optim::CuckooSearch>(c.args[0]);
                     if (n == 4) {
                         rosetta_lisp::converting() = "argument 'function'";
                         rosetta_lisp::Param<datamunge::optim::ArbitraryFunction &> p0(c.args[1]);
@@ -2764,15 +3063,15 @@ void rosetta_lisp_1444(rosetta_lisp::Call& c) {
                 }
             }
     }
-    rosetta_lisp::no_overload(c, "(optimize ...)", "    (optimize evolution-strategy function coordinates lower-bound upper-bound) → double-float\n", 1);
+    rosetta_lisp::no_overload(c, "(optimize ...)", "    (optimize cuckoo-search function coordinates lower-bound upper-bound) → double-float\n", 1);
 }
-void rosetta_lisp_1445(rosetta_lisp::Call& c) {
+void rosetta_lisp_1407(rosetta_lisp::Call& c) {
     for (int pass = 1; pass < 2; ++pass) {
         const bool strict = pass == 0; (void)strict;
             {
                 const std::size_t n = c.args.size() - 1;
                 if (c.args.size() >= 1 && n >= 0 && n <= 0) {
-                    auto* native = rosetta_lisp::native<datamunge::optim::EvolutionStrategy>(c.args[0]);
+                    auto* native = rosetta_lisp::native<datamunge::optim::CuckooSearch>(c.args[0]);
                     if (n == 0) {
                         rosetta_lisp::call(c, [&]() -> decltype(auto) { return native->options(); }, 0, rosetta_lisp::Return::automatic);
                         return;
@@ -2780,9 +3079,9 @@ void rosetta_lisp_1445(rosetta_lisp::Call& c) {
                 }
             }
     }
-    rosetta_lisp::no_overload(c, "(options ...)", "    (options evolution-strategy) → evolution-strategy-options\n", 1);
+    rosetta_lisp::no_overload(c, "(options ...)", "    (options cuckoo-search) → cuckoo-search-options\n", 1);
 }
-void rosetta_lisp_1446(rosetta_lisp::Call& c) {
+void rosetta_lisp_1408(rosetta_lisp::Call& c) {
     const unsigned long long subclass = c.args.empty() || c.args[0].kind != rosetta_lisp::tag_int ? 0 : static_cast<unsigned long long>(c.args[0].integer);
     (void)subclass;
     for (int pass = 1; pass < 2; ++pass) {
@@ -2791,100 +3090,29 @@ void rosetta_lisp_1446(rosetta_lisp::Call& c) {
                 const std::size_t n = c.args.size() - 1;
                 if (c.args.size() >= 1 && n >= 0 && n <= 1) {
                     if (n == 0) {
-                        c.result = rosetta_lisp::object(new datamunge::optim::EvolutionStrategy(), &rosetta_lisp::Info<datamunge::optim::EvolutionStrategy>::value, rosetta_lisp::Ownership::owned, -1);
+                        c.result = rosetta_lisp::object(new datamunge::optim::CuckooSearch(), &rosetta_lisp::Info<datamunge::optim::CuckooSearch>::value, rosetta_lisp::Ownership::owned, -1);
                         return;
                     }
                     if (n == 1) {
                         rosetta_lisp::converting() = "argument 'options'";
-                        rosetta_lisp::Param<datamunge::optim::EvolutionStrategyOptions> p0(c.args[1]);
+                        rosetta_lisp::Param<datamunge::optim::CuckooSearchOptions> p0(c.args[1]);
                         rosetta_lisp::converting() = nullptr;
-                        c.result = rosetta_lisp::object(new datamunge::optim::EvolutionStrategy(p0.get()), &rosetta_lisp::Info<datamunge::optim::EvolutionStrategy>::value, rosetta_lisp::Ownership::owned, -1);
+                        c.result = rosetta_lisp::object(new datamunge::optim::CuckooSearch(p0.get()), &rosetta_lisp::Info<datamunge::optim::CuckooSearch>::value, rosetta_lisp::Ownership::owned, -1);
                         return;
                     }
                 }
             }
     }
-    rosetta_lisp::no_overload(c, "(make-evolution-strategy ...)", "    (make-evolution-strategy &optional (options (make-evolution-strategy-options))) → evolution-strategy\n", 1);
+    rosetta_lisp::no_overload(c, "(make-cuckoo-search ...)", "    (make-cuckoo-search &optional (options (make-cuckoo-search-options))) → cuckoo-search\n", 1);
 }
-void rosetta_lisp_1579(rosetta_lisp::Call& c) {
-    if (c.args.size() != 1) rosetta_lisp::fail("(initial-damping object) takes no further arguments");
-    auto* native = rosetta_lisp::native<datamunge::optim::LevenbergMarquardtOptions>(c.args[0]);
-    c.result = rosetta_lisp::result<decltype((native->initial_damping))>(c, native->initial_damping, 0, rosetta_lisp::Return::automatic);
-}
-void rosetta_lisp_1580(rosetta_lisp::Call& c) {
-    if (c.args.size() != 2) rosetta_lisp::fail("(setf (initial-damping object) value) takes no further arguments");
-    auto* native = rosetta_lisp::native<datamunge::optim::LevenbergMarquardtOptions>(c.args[0]);
-    using F = std::remove_cv_t<std::remove_reference_t<decltype(native->initial_damping)>>;
-    if constexpr (rosetta_lisp::bound_v<F>) {
-        // (setf (field object) (field object)) after changing the field object in place.
-        if (rosetta_lisp::is_instance<F>(c.args[1]) && rosetta_lisp::native<F>(c.args[1]) == &native->initial_damping) return;
-    }
-    rosetta_lisp::converting() = "field initial-damping";
-    rosetta_lisp::Param<const F&> converted(c.args[1]);
-    rosetta_lisp::converting() = nullptr;
-    rosetta_lisp::assign_field(native->initial_damping, converted.get());
-}
-void rosetta_lisp_1581(rosetta_lisp::Call& c) {
-    if (c.args.size() != 1) rosetta_lisp::fail("(max-iterations object) takes no further arguments");
-    auto* native = rosetta_lisp::native<datamunge::optim::LevenbergMarquardtOptions>(c.args[0]);
-    c.result = rosetta_lisp::result<decltype((native->max_iterations))>(c, native->max_iterations, 0, rosetta_lisp::Return::automatic);
-}
-void rosetta_lisp_1582(rosetta_lisp::Call& c) {
-    if (c.args.size() != 2) rosetta_lisp::fail("(setf (max-iterations object) value) takes no further arguments");
-    auto* native = rosetta_lisp::native<datamunge::optim::LevenbergMarquardtOptions>(c.args[0]);
-    using F = std::remove_cv_t<std::remove_reference_t<decltype(native->max_iterations)>>;
-    if constexpr (rosetta_lisp::bound_v<F>) {
-        // (setf (field object) (field object)) after changing the field object in place.
-        if (rosetta_lisp::is_instance<F>(c.args[1]) && rosetta_lisp::native<F>(c.args[1]) == &native->max_iterations) return;
-    }
-    rosetta_lisp::converting() = "field max-iterations";
-    rosetta_lisp::Param<const F&> converted(c.args[1]);
-    rosetta_lisp::converting() = nullptr;
-    rosetta_lisp::assign_field(native->max_iterations, converted.get());
-}
-void rosetta_lisp_1583(rosetta_lisp::Call& c) {
-    if (c.args.size() != 1) rosetta_lisp::fail("(tolerance object) takes no further arguments");
-    auto* native = rosetta_lisp::native<datamunge::optim::LevenbergMarquardtOptions>(c.args[0]);
-    c.result = rosetta_lisp::result<decltype((native->tolerance))>(c, native->tolerance, 0, rosetta_lisp::Return::automatic);
-}
-void rosetta_lisp_1584(rosetta_lisp::Call& c) {
-    if (c.args.size() != 2) rosetta_lisp::fail("(setf (tolerance object) value) takes no further arguments");
-    auto* native = rosetta_lisp::native<datamunge::optim::LevenbergMarquardtOptions>(c.args[0]);
-    using F = std::remove_cv_t<std::remove_reference_t<decltype(native->tolerance)>>;
-    if constexpr (rosetta_lisp::bound_v<F>) {
-        // (setf (field object) (field object)) after changing the field object in place.
-        if (rosetta_lisp::is_instance<F>(c.args[1]) && rosetta_lisp::native<F>(c.args[1]) == &native->tolerance) return;
-    }
-    rosetta_lisp::converting() = "field tolerance";
-    rosetta_lisp::Param<const F&> converted(c.args[1]);
-    rosetta_lisp::converting() = nullptr;
-    rosetta_lisp::assign_field(native->tolerance, converted.get());
-}
-void rosetta_lisp_1585(rosetta_lisp::Call& c) {
-    const unsigned long long subclass = c.args.empty() || c.args[0].kind != rosetta_lisp::tag_int ? 0 : static_cast<unsigned long long>(c.args[0].integer);
-    (void)subclass;
-    for (int pass = 1; pass < 2; ++pass) {
-        const bool strict = pass == 0; (void)strict;
-            {
-                const std::size_t n = c.args.size() - 1;
-                if (c.args.size() >= 1 && n >= 0 && n <= 0) {
-                    if (n == 0) {
-                        c.result = rosetta_lisp::object(new datamunge::optim::LevenbergMarquardtOptions(), &rosetta_lisp::Info<datamunge::optim::LevenbergMarquardtOptions>::value, rosetta_lisp::Ownership::owned, -1);
-                        return;
-                    }
-                }
-            }
-    }
-    rosetta_lisp::no_overload(c, "(make-levenberg-marquardt-options ...)", "    (make-levenberg-marquardt-options) → levenberg-marquardt-options\n", 1);
-}
-void rosetta_lisp_1619(rosetta_lisp::Call& c) {
+void rosetta_lisp_1525(rosetta_lisp::Call& c) {
     if (c.args.size() != 1) rosetta_lisp::fail("(step-size object) takes no further arguments");
-    auto* native = rosetta_lisp::native<datamunge::optim::NadamOptions>(c.args[0]);
+    auto* native = rosetta_lisp::native<datamunge::optim::GradientDescentOptions>(c.args[0]);
     c.result = rosetta_lisp::result<decltype((native->step_size))>(c, native->step_size, 0, rosetta_lisp::Return::automatic);
 }
-void rosetta_lisp_1620(rosetta_lisp::Call& c) {
+void rosetta_lisp_1526(rosetta_lisp::Call& c) {
     if (c.args.size() != 2) rosetta_lisp::fail("(setf (step-size object) value) takes no further arguments");
-    auto* native = rosetta_lisp::native<datamunge::optim::NadamOptions>(c.args[0]);
+    auto* native = rosetta_lisp::native<datamunge::optim::GradientDescentOptions>(c.args[0]);
     using F = std::remove_cv_t<std::remove_reference_t<decltype(native->step_size)>>;
     if constexpr (rosetta_lisp::bound_v<F>) {
         // (setf (field object) (field object)) after changing the field object in place.
@@ -2895,68 +3123,32 @@ void rosetta_lisp_1620(rosetta_lisp::Call& c) {
     rosetta_lisp::converting() = nullptr;
     rosetta_lisp::assign_field(native->step_size, converted.get());
 }
-void rosetta_lisp_1621(rosetta_lisp::Call& c) {
-    if (c.args.size() != 1) rosetta_lisp::fail("(beta1 object) takes no further arguments");
-    auto* native = rosetta_lisp::native<datamunge::optim::NadamOptions>(c.args[0]);
-    c.result = rosetta_lisp::result<decltype((native->beta1))>(c, native->beta1, 0, rosetta_lisp::Return::automatic);
+void rosetta_lisp_1527(rosetta_lisp::Call& c) {
+    if (c.args.size() != 1) rosetta_lisp::fail("(momentum object) takes no further arguments");
+    auto* native = rosetta_lisp::native<datamunge::optim::GradientDescentOptions>(c.args[0]);
+    c.result = rosetta_lisp::result<decltype((native->momentum))>(c, native->momentum, 0, rosetta_lisp::Return::automatic);
 }
-void rosetta_lisp_1622(rosetta_lisp::Call& c) {
-    if (c.args.size() != 2) rosetta_lisp::fail("(setf (beta1 object) value) takes no further arguments");
-    auto* native = rosetta_lisp::native<datamunge::optim::NadamOptions>(c.args[0]);
-    using F = std::remove_cv_t<std::remove_reference_t<decltype(native->beta1)>>;
+void rosetta_lisp_1528(rosetta_lisp::Call& c) {
+    if (c.args.size() != 2) rosetta_lisp::fail("(setf (momentum object) value) takes no further arguments");
+    auto* native = rosetta_lisp::native<datamunge::optim::GradientDescentOptions>(c.args[0]);
+    using F = std::remove_cv_t<std::remove_reference_t<decltype(native->momentum)>>;
     if constexpr (rosetta_lisp::bound_v<F>) {
         // (setf (field object) (field object)) after changing the field object in place.
-        if (rosetta_lisp::is_instance<F>(c.args[1]) && rosetta_lisp::native<F>(c.args[1]) == &native->beta1) return;
+        if (rosetta_lisp::is_instance<F>(c.args[1]) && rosetta_lisp::native<F>(c.args[1]) == &native->momentum) return;
     }
-    rosetta_lisp::converting() = "field beta1";
+    rosetta_lisp::converting() = "field momentum";
     rosetta_lisp::Param<const F&> converted(c.args[1]);
     rosetta_lisp::converting() = nullptr;
-    rosetta_lisp::assign_field(native->beta1, converted.get());
+    rosetta_lisp::assign_field(native->momentum, converted.get());
 }
-void rosetta_lisp_1623(rosetta_lisp::Call& c) {
-    if (c.args.size() != 1) rosetta_lisp::fail("(beta2 object) takes no further arguments");
-    auto* native = rosetta_lisp::native<datamunge::optim::NadamOptions>(c.args[0]);
-    c.result = rosetta_lisp::result<decltype((native->beta2))>(c, native->beta2, 0, rosetta_lisp::Return::automatic);
-}
-void rosetta_lisp_1624(rosetta_lisp::Call& c) {
-    if (c.args.size() != 2) rosetta_lisp::fail("(setf (beta2 object) value) takes no further arguments");
-    auto* native = rosetta_lisp::native<datamunge::optim::NadamOptions>(c.args[0]);
-    using F = std::remove_cv_t<std::remove_reference_t<decltype(native->beta2)>>;
-    if constexpr (rosetta_lisp::bound_v<F>) {
-        // (setf (field object) (field object)) after changing the field object in place.
-        if (rosetta_lisp::is_instance<F>(c.args[1]) && rosetta_lisp::native<F>(c.args[1]) == &native->beta2) return;
-    }
-    rosetta_lisp::converting() = "field beta2";
-    rosetta_lisp::Param<const F&> converted(c.args[1]);
-    rosetta_lisp::converting() = nullptr;
-    rosetta_lisp::assign_field(native->beta2, converted.get());
-}
-void rosetta_lisp_1625(rosetta_lisp::Call& c) {
-    if (c.args.size() != 1) rosetta_lisp::fail("(epsilon object) takes no further arguments");
-    auto* native = rosetta_lisp::native<datamunge::optim::NadamOptions>(c.args[0]);
-    c.result = rosetta_lisp::result<decltype((native->epsilon))>(c, native->epsilon, 0, rosetta_lisp::Return::automatic);
-}
-void rosetta_lisp_1626(rosetta_lisp::Call& c) {
-    if (c.args.size() != 2) rosetta_lisp::fail("(setf (epsilon object) value) takes no further arguments");
-    auto* native = rosetta_lisp::native<datamunge::optim::NadamOptions>(c.args[0]);
-    using F = std::remove_cv_t<std::remove_reference_t<decltype(native->epsilon)>>;
-    if constexpr (rosetta_lisp::bound_v<F>) {
-        // (setf (field object) (field object)) after changing the field object in place.
-        if (rosetta_lisp::is_instance<F>(c.args[1]) && rosetta_lisp::native<F>(c.args[1]) == &native->epsilon) return;
-    }
-    rosetta_lisp::converting() = "field epsilon";
-    rosetta_lisp::Param<const F&> converted(c.args[1]);
-    rosetta_lisp::converting() = nullptr;
-    rosetta_lisp::assign_field(native->epsilon, converted.get());
-}
-void rosetta_lisp_1627(rosetta_lisp::Call& c) {
+void rosetta_lisp_1529(rosetta_lisp::Call& c) {
     if (c.args.size() != 1) rosetta_lisp::fail("(max-iterations object) takes no further arguments");
-    auto* native = rosetta_lisp::native<datamunge::optim::NadamOptions>(c.args[0]);
+    auto* native = rosetta_lisp::native<datamunge::optim::GradientDescentOptions>(c.args[0]);
     c.result = rosetta_lisp::result<decltype((native->max_iterations))>(c, native->max_iterations, 0, rosetta_lisp::Return::automatic);
 }
-void rosetta_lisp_1628(rosetta_lisp::Call& c) {
+void rosetta_lisp_1530(rosetta_lisp::Call& c) {
     if (c.args.size() != 2) rosetta_lisp::fail("(setf (max-iterations object) value) takes no further arguments");
-    auto* native = rosetta_lisp::native<datamunge::optim::NadamOptions>(c.args[0]);
+    auto* native = rosetta_lisp::native<datamunge::optim::GradientDescentOptions>(c.args[0]);
     using F = std::remove_cv_t<std::remove_reference_t<decltype(native->max_iterations)>>;
     if constexpr (rosetta_lisp::bound_v<F>) {
         // (setf (field object) (field object)) after changing the field object in place.
@@ -2967,14 +3159,14 @@ void rosetta_lisp_1628(rosetta_lisp::Call& c) {
     rosetta_lisp::converting() = nullptr;
     rosetta_lisp::assign_field(native->max_iterations, converted.get());
 }
-void rosetta_lisp_1629(rosetta_lisp::Call& c) {
+void rosetta_lisp_1531(rosetta_lisp::Call& c) {
     if (c.args.size() != 1) rosetta_lisp::fail("(tolerance object) takes no further arguments");
-    auto* native = rosetta_lisp::native<datamunge::optim::NadamOptions>(c.args[0]);
+    auto* native = rosetta_lisp::native<datamunge::optim::GradientDescentOptions>(c.args[0]);
     c.result = rosetta_lisp::result<decltype((native->tolerance))>(c, native->tolerance, 0, rosetta_lisp::Return::automatic);
 }
-void rosetta_lisp_1630(rosetta_lisp::Call& c) {
+void rosetta_lisp_1532(rosetta_lisp::Call& c) {
     if (c.args.size() != 2) rosetta_lisp::fail("(setf (tolerance object) value) takes no further arguments");
-    auto* native = rosetta_lisp::native<datamunge::optim::NadamOptions>(c.args[0]);
+    auto* native = rosetta_lisp::native<datamunge::optim::GradientDescentOptions>(c.args[0]);
     using F = std::remove_cv_t<std::remove_reference_t<decltype(native->tolerance)>>;
     if constexpr (rosetta_lisp::bound_v<F>) {
         // (setf (field object) (field object)) after changing the field object in place.
@@ -2985,7 +3177,7 @@ void rosetta_lisp_1630(rosetta_lisp::Call& c) {
     rosetta_lisp::converting() = nullptr;
     rosetta_lisp::assign_field(native->tolerance, converted.get());
 }
-void rosetta_lisp_1631(rosetta_lisp::Call& c) {
+void rosetta_lisp_1533(rosetta_lisp::Call& c) {
     const unsigned long long subclass = c.args.empty() || c.args[0].kind != rosetta_lisp::tag_int ? 0 : static_cast<unsigned long long>(c.args[0].integer);
     (void)subclass;
     for (int pass = 1; pass < 2; ++pass) {
@@ -2994,127 +3186,246 @@ void rosetta_lisp_1631(rosetta_lisp::Call& c) {
                 const std::size_t n = c.args.size() - 1;
                 if (c.args.size() >= 1 && n >= 0 && n <= 0) {
                     if (n == 0) {
-                        c.result = rosetta_lisp::object(new datamunge::optim::NadamOptions(), &rosetta_lisp::Info<datamunge::optim::NadamOptions>::value, rosetta_lisp::Ownership::owned, -1);
+                        c.result = rosetta_lisp::object(new datamunge::optim::GradientDescentOptions(), &rosetta_lisp::Info<datamunge::optim::GradientDescentOptions>::value, rosetta_lisp::Ownership::owned, -1);
                         return;
                     }
                 }
             }
     }
-    rosetta_lisp::no_overload(c, "(make-nadam-options ...)", "    (make-nadam-options) → nadam-options\n", 1);
+    rosetta_lisp::no_overload(c, "(make-gradient-descent-options ...)", "    (make-gradient-descent-options) → gradient-descent-options\n", 1);
 }
-void rosetta_lisp_1839(rosetta_lisp::Call& c) {
-    for (int pass = 1; pass < 2; ++pass) {
-        const bool strict = pass == 0; (void)strict;
-            {
-                const std::size_t n = c.args.size() - 1;
-                if (c.args.size() >= 1 && n >= 2 && n <= 2) {
-                    auto* native = rosetta_lisp::native<datamunge::optim::SQP>(c.args[0]);
-                    if (n == 2) {
-                        rosetta_lisp::converting() = "argument 'function'";
-                        rosetta_lisp::Param<datamunge::optim::EqualityConstrainedFunction &> p0(c.args[1]);
-                        rosetta_lisp::converting() = "argument 'coordinates'";
-                        rosetta_lisp::Param<std::vector<double> &> p1(c.args[2]);
-                        rosetta_lisp::converting() = nullptr;
-                        rosetta_lisp::call(c, [&]() -> decltype(auto) { return native->optimize(p0.get(), p1.get()); }, 0, rosetta_lisp::Return::automatic);
-                        p1.writeback(c, c.args[2]);
-                        return;
-                    }
-                }
-            }
+void rosetta_lisp_1915(rosetta_lisp::Call& c) {
+    if (c.args.size() != 1) rosetta_lisp::fail("(p object) takes no further arguments");
+    auto* native = rosetta_lisp::native<datamunge::stats::ARIMAOptions>(c.args[0]);
+    c.result = rosetta_lisp::result<decltype((native->p))>(c, native->p, 0, rosetta_lisp::Return::automatic);
+}
+void rosetta_lisp_1916(rosetta_lisp::Call& c) {
+    if (c.args.size() != 2) rosetta_lisp::fail("(setf (p object) value) takes no further arguments");
+    auto* native = rosetta_lisp::native<datamunge::stats::ARIMAOptions>(c.args[0]);
+    using F = std::remove_cv_t<std::remove_reference_t<decltype(native->p)>>;
+    if constexpr (rosetta_lisp::bound_v<F>) {
+        // (setf (field object) (field object)) after changing the field object in place.
+        if (rosetta_lisp::is_instance<F>(c.args[1]) && rosetta_lisp::native<F>(c.args[1]) == &native->p) return;
     }
-    rosetta_lisp::no_overload(c, "(optimize ...)", "    (optimize sqp function coordinates) → double-float\n", 1);
+    rosetta_lisp::converting() = "field p";
+    rosetta_lisp::Param<const F&> converted(c.args[1]);
+    rosetta_lisp::converting() = nullptr;
+    rosetta_lisp::assign_field(native->p, converted.get());
 }
-void rosetta_lisp_1840(rosetta_lisp::Call& c) {
+void rosetta_lisp_1917(rosetta_lisp::Call& c) {
+    if (c.args.size() != 1) rosetta_lisp::fail("(d object) takes no further arguments");
+    auto* native = rosetta_lisp::native<datamunge::stats::ARIMAOptions>(c.args[0]);
+    c.result = rosetta_lisp::result<decltype((native->d))>(c, native->d, 0, rosetta_lisp::Return::automatic);
+}
+void rosetta_lisp_1918(rosetta_lisp::Call& c) {
+    if (c.args.size() != 2) rosetta_lisp::fail("(setf (d object) value) takes no further arguments");
+    auto* native = rosetta_lisp::native<datamunge::stats::ARIMAOptions>(c.args[0]);
+    using F = std::remove_cv_t<std::remove_reference_t<decltype(native->d)>>;
+    if constexpr (rosetta_lisp::bound_v<F>) {
+        // (setf (field object) (field object)) after changing the field object in place.
+        if (rosetta_lisp::is_instance<F>(c.args[1]) && rosetta_lisp::native<F>(c.args[1]) == &native->d) return;
+    }
+    rosetta_lisp::converting() = "field d";
+    rosetta_lisp::Param<const F&> converted(c.args[1]);
+    rosetta_lisp::converting() = nullptr;
+    rosetta_lisp::assign_field(native->d, converted.get());
+}
+void rosetta_lisp_1919(rosetta_lisp::Call& c) {
+    if (c.args.size() != 1) rosetta_lisp::fail("(q object) takes no further arguments");
+    auto* native = rosetta_lisp::native<datamunge::stats::ARIMAOptions>(c.args[0]);
+    c.result = rosetta_lisp::result<decltype((native->q))>(c, native->q, 0, rosetta_lisp::Return::automatic);
+}
+void rosetta_lisp_1920(rosetta_lisp::Call& c) {
+    if (c.args.size() != 2) rosetta_lisp::fail("(setf (q object) value) takes no further arguments");
+    auto* native = rosetta_lisp::native<datamunge::stats::ARIMAOptions>(c.args[0]);
+    using F = std::remove_cv_t<std::remove_reference_t<decltype(native->q)>>;
+    if constexpr (rosetta_lisp::bound_v<F>) {
+        // (setf (field object) (field object)) after changing the field object in place.
+        if (rosetta_lisp::is_instance<F>(c.args[1]) && rosetta_lisp::native<F>(c.args[1]) == &native->q) return;
+    }
+    rosetta_lisp::converting() = "field q";
+    rosetta_lisp::Param<const F&> converted(c.args[1]);
+    rosetta_lisp::converting() = nullptr;
+    rosetta_lisp::assign_field(native->q, converted.get());
+}
+void rosetta_lisp_1921(rosetta_lisp::Call& c) {
+    if (c.args.size() != 1) rosetta_lisp::fail("(seasonal-p object) takes no further arguments");
+    auto* native = rosetta_lisp::native<datamunge::stats::ARIMAOptions>(c.args[0]);
+    c.result = rosetta_lisp::result<decltype((native->seasonal_p))>(c, native->seasonal_p, 0, rosetta_lisp::Return::automatic);
+}
+void rosetta_lisp_1922(rosetta_lisp::Call& c) {
+    if (c.args.size() != 2) rosetta_lisp::fail("(setf (seasonal-p object) value) takes no further arguments");
+    auto* native = rosetta_lisp::native<datamunge::stats::ARIMAOptions>(c.args[0]);
+    using F = std::remove_cv_t<std::remove_reference_t<decltype(native->seasonal_p)>>;
+    if constexpr (rosetta_lisp::bound_v<F>) {
+        // (setf (field object) (field object)) after changing the field object in place.
+        if (rosetta_lisp::is_instance<F>(c.args[1]) && rosetta_lisp::native<F>(c.args[1]) == &native->seasonal_p) return;
+    }
+    rosetta_lisp::converting() = "field seasonal-p";
+    rosetta_lisp::Param<const F&> converted(c.args[1]);
+    rosetta_lisp::converting() = nullptr;
+    rosetta_lisp::assign_field(native->seasonal_p, converted.get());
+}
+void rosetta_lisp_1923(rosetta_lisp::Call& c) {
+    if (c.args.size() != 1) rosetta_lisp::fail("(seasonal-d object) takes no further arguments");
+    auto* native = rosetta_lisp::native<datamunge::stats::ARIMAOptions>(c.args[0]);
+    c.result = rosetta_lisp::result<decltype((native->seasonal_d))>(c, native->seasonal_d, 0, rosetta_lisp::Return::automatic);
+}
+void rosetta_lisp_1924(rosetta_lisp::Call& c) {
+    if (c.args.size() != 2) rosetta_lisp::fail("(setf (seasonal-d object) value) takes no further arguments");
+    auto* native = rosetta_lisp::native<datamunge::stats::ARIMAOptions>(c.args[0]);
+    using F = std::remove_cv_t<std::remove_reference_t<decltype(native->seasonal_d)>>;
+    if constexpr (rosetta_lisp::bound_v<F>) {
+        // (setf (field object) (field object)) after changing the field object in place.
+        if (rosetta_lisp::is_instance<F>(c.args[1]) && rosetta_lisp::native<F>(c.args[1]) == &native->seasonal_d) return;
+    }
+    rosetta_lisp::converting() = "field seasonal-d";
+    rosetta_lisp::Param<const F&> converted(c.args[1]);
+    rosetta_lisp::converting() = nullptr;
+    rosetta_lisp::assign_field(native->seasonal_d, converted.get());
+}
+void rosetta_lisp_1925(rosetta_lisp::Call& c) {
+    if (c.args.size() != 1) rosetta_lisp::fail("(seasonal-q object) takes no further arguments");
+    auto* native = rosetta_lisp::native<datamunge::stats::ARIMAOptions>(c.args[0]);
+    c.result = rosetta_lisp::result<decltype((native->seasonal_q))>(c, native->seasonal_q, 0, rosetta_lisp::Return::automatic);
+}
+void rosetta_lisp_1926(rosetta_lisp::Call& c) {
+    if (c.args.size() != 2) rosetta_lisp::fail("(setf (seasonal-q object) value) takes no further arguments");
+    auto* native = rosetta_lisp::native<datamunge::stats::ARIMAOptions>(c.args[0]);
+    using F = std::remove_cv_t<std::remove_reference_t<decltype(native->seasonal_q)>>;
+    if constexpr (rosetta_lisp::bound_v<F>) {
+        // (setf (field object) (field object)) after changing the field object in place.
+        if (rosetta_lisp::is_instance<F>(c.args[1]) && rosetta_lisp::native<F>(c.args[1]) == &native->seasonal_q) return;
+    }
+    rosetta_lisp::converting() = "field seasonal-q";
+    rosetta_lisp::Param<const F&> converted(c.args[1]);
+    rosetta_lisp::converting() = nullptr;
+    rosetta_lisp::assign_field(native->seasonal_q, converted.get());
+}
+void rosetta_lisp_1927(rosetta_lisp::Call& c) {
+    if (c.args.size() != 1) rosetta_lisp::fail("(seasonal-period object) takes no further arguments");
+    auto* native = rosetta_lisp::native<datamunge::stats::ARIMAOptions>(c.args[0]);
+    c.result = rosetta_lisp::result<decltype((native->seasonal_period))>(c, native->seasonal_period, 0, rosetta_lisp::Return::automatic);
+}
+void rosetta_lisp_1928(rosetta_lisp::Call& c) {
+    if (c.args.size() != 2) rosetta_lisp::fail("(setf (seasonal-period object) value) takes no further arguments");
+    auto* native = rosetta_lisp::native<datamunge::stats::ARIMAOptions>(c.args[0]);
+    using F = std::remove_cv_t<std::remove_reference_t<decltype(native->seasonal_period)>>;
+    if constexpr (rosetta_lisp::bound_v<F>) {
+        // (setf (field object) (field object)) after changing the field object in place.
+        if (rosetta_lisp::is_instance<F>(c.args[1]) && rosetta_lisp::native<F>(c.args[1]) == &native->seasonal_period) return;
+    }
+    rosetta_lisp::converting() = "field seasonal-period";
+    rosetta_lisp::Param<const F&> converted(c.args[1]);
+    rosetta_lisp::converting() = nullptr;
+    rosetta_lisp::assign_field(native->seasonal_period, converted.get());
+}
+void rosetta_lisp_1929(rosetta_lisp::Call& c) {
+    if (c.args.size() != 1) rosetta_lisp::fail("(include-mean object) takes no further arguments");
+    auto* native = rosetta_lisp::native<datamunge::stats::ARIMAOptions>(c.args[0]);
+    c.result = rosetta_lisp::result<decltype((native->include_mean))>(c, native->include_mean, 0, rosetta_lisp::Return::automatic);
+}
+void rosetta_lisp_1930(rosetta_lisp::Call& c) {
+    if (c.args.size() != 2) rosetta_lisp::fail("(setf (include-mean object) value) takes no further arguments");
+    auto* native = rosetta_lisp::native<datamunge::stats::ARIMAOptions>(c.args[0]);
+    using F = std::remove_cv_t<std::remove_reference_t<decltype(native->include_mean)>>;
+    if constexpr (rosetta_lisp::bound_v<F>) {
+        // (setf (field object) (field object)) after changing the field object in place.
+        if (rosetta_lisp::is_instance<F>(c.args[1]) && rosetta_lisp::native<F>(c.args[1]) == &native->include_mean) return;
+    }
+    rosetta_lisp::converting() = "field include-mean";
+    rosetta_lisp::Param<const F&> converted(c.args[1]);
+    rosetta_lisp::converting() = nullptr;
+    rosetta_lisp::assign_field(native->include_mean, converted.get());
+}
+void rosetta_lisp_1931(rosetta_lisp::Call& c) {
+    if (c.args.size() != 1) rosetta_lisp::fail("(de-population-size object) takes no further arguments");
+    auto* native = rosetta_lisp::native<datamunge::stats::ARIMAOptions>(c.args[0]);
+    c.result = rosetta_lisp::result<decltype((native->de_population_size))>(c, native->de_population_size, 0, rosetta_lisp::Return::automatic);
+}
+void rosetta_lisp_1932(rosetta_lisp::Call& c) {
+    if (c.args.size() != 2) rosetta_lisp::fail("(setf (de-population-size object) value) takes no further arguments");
+    auto* native = rosetta_lisp::native<datamunge::stats::ARIMAOptions>(c.args[0]);
+    using F = std::remove_cv_t<std::remove_reference_t<decltype(native->de_population_size)>>;
+    if constexpr (rosetta_lisp::bound_v<F>) {
+        // (setf (field object) (field object)) after changing the field object in place.
+        if (rosetta_lisp::is_instance<F>(c.args[1]) && rosetta_lisp::native<F>(c.args[1]) == &native->de_population_size) return;
+    }
+    rosetta_lisp::converting() = "field de-population-size";
+    rosetta_lisp::Param<const F&> converted(c.args[1]);
+    rosetta_lisp::converting() = nullptr;
+    rosetta_lisp::assign_field(native->de_population_size, converted.get());
+}
+void rosetta_lisp_1933(rosetta_lisp::Call& c) {
+    if (c.args.size() != 1) rosetta_lisp::fail("(de-max-generations object) takes no further arguments");
+    auto* native = rosetta_lisp::native<datamunge::stats::ARIMAOptions>(c.args[0]);
+    c.result = rosetta_lisp::result<decltype((native->de_max_generations))>(c, native->de_max_generations, 0, rosetta_lisp::Return::automatic);
+}
+void rosetta_lisp_1934(rosetta_lisp::Call& c) {
+    if (c.args.size() != 2) rosetta_lisp::fail("(setf (de-max-generations object) value) takes no further arguments");
+    auto* native = rosetta_lisp::native<datamunge::stats::ARIMAOptions>(c.args[0]);
+    using F = std::remove_cv_t<std::remove_reference_t<decltype(native->de_max_generations)>>;
+    if constexpr (rosetta_lisp::bound_v<F>) {
+        // (setf (field object) (field object)) after changing the field object in place.
+        if (rosetta_lisp::is_instance<F>(c.args[1]) && rosetta_lisp::native<F>(c.args[1]) == &native->de_max_generations) return;
+    }
+    rosetta_lisp::converting() = "field de-max-generations";
+    rosetta_lisp::Param<const F&> converted(c.args[1]);
+    rosetta_lisp::converting() = nullptr;
+    rosetta_lisp::assign_field(native->de_max_generations, converted.get());
+}
+void rosetta_lisp_1935(rosetta_lisp::Call& c) {
+    if (c.args.size() != 1) rosetta_lisp::fail("(coefficient-bound object) takes no further arguments");
+    auto* native = rosetta_lisp::native<datamunge::stats::ARIMAOptions>(c.args[0]);
+    c.result = rosetta_lisp::result<decltype((native->coefficient_bound))>(c, native->coefficient_bound, 0, rosetta_lisp::Return::automatic);
+}
+void rosetta_lisp_1936(rosetta_lisp::Call& c) {
+    if (c.args.size() != 2) rosetta_lisp::fail("(setf (coefficient-bound object) value) takes no further arguments");
+    auto* native = rosetta_lisp::native<datamunge::stats::ARIMAOptions>(c.args[0]);
+    using F = std::remove_cv_t<std::remove_reference_t<decltype(native->coefficient_bound)>>;
+    if constexpr (rosetta_lisp::bound_v<F>) {
+        // (setf (field object) (field object)) after changing the field object in place.
+        if (rosetta_lisp::is_instance<F>(c.args[1]) && rosetta_lisp::native<F>(c.args[1]) == &native->coefficient_bound) return;
+    }
+    rosetta_lisp::converting() = "field coefficient-bound";
+    rosetta_lisp::Param<const F&> converted(c.args[1]);
+    rosetta_lisp::converting() = nullptr;
+    rosetta_lisp::assign_field(native->coefficient_bound, converted.get());
+}
+void rosetta_lisp_1937(rosetta_lisp::Call& c) {
+    if (c.args.size() != 1) rosetta_lisp::fail("(seed object) takes no further arguments");
+    auto* native = rosetta_lisp::native<datamunge::stats::ARIMAOptions>(c.args[0]);
+    c.result = rosetta_lisp::result<decltype((native->seed))>(c, native->seed, 0, rosetta_lisp::Return::automatic);
+}
+void rosetta_lisp_1938(rosetta_lisp::Call& c) {
+    if (c.args.size() != 2) rosetta_lisp::fail("(setf (seed object) value) takes no further arguments");
+    auto* native = rosetta_lisp::native<datamunge::stats::ARIMAOptions>(c.args[0]);
+    using F = std::remove_cv_t<std::remove_reference_t<decltype(native->seed)>>;
+    if constexpr (rosetta_lisp::bound_v<F>) {
+        // (setf (field object) (field object)) after changing the field object in place.
+        if (rosetta_lisp::is_instance<F>(c.args[1]) && rosetta_lisp::native<F>(c.args[1]) == &native->seed) return;
+    }
+    rosetta_lisp::converting() = "field seed";
+    rosetta_lisp::Param<const F&> converted(c.args[1]);
+    rosetta_lisp::converting() = nullptr;
+    rosetta_lisp::assign_field(native->seed, converted.get());
+}
+void rosetta_lisp_1939(rosetta_lisp::Call& c) {
+    const unsigned long long subclass = c.args.empty() || c.args[0].kind != rosetta_lisp::tag_int ? 0 : static_cast<unsigned long long>(c.args[0].integer);
+    (void)subclass;
     for (int pass = 1; pass < 2; ++pass) {
         const bool strict = pass == 0; (void)strict;
             {
                 const std::size_t n = c.args.size() - 1;
                 if (c.args.size() >= 1 && n >= 0 && n <= 0) {
-                    auto* native = rosetta_lisp::native<datamunge::optim::SQP>(c.args[0]);
                     if (n == 0) {
-                        rosetta_lisp::call(c, [&]() -> decltype(auto) { return native->options(); }, 0, rosetta_lisp::Return::automatic);
+                        c.result = rosetta_lisp::object(new datamunge::stats::ARIMAOptions(), &rosetta_lisp::Info<datamunge::stats::ARIMAOptions>::value, rosetta_lisp::Ownership::owned, -1);
                         return;
                     }
                 }
             }
     }
-    rosetta_lisp::no_overload(c, "(options ...)", "    (options sqp) → sqp-options\n", 1);
-}
-void rosetta_lisp_1841(rosetta_lisp::Call& c) {
-    const unsigned long long subclass = c.args.empty() || c.args[0].kind != rosetta_lisp::tag_int ? 0 : static_cast<unsigned long long>(c.args[0].integer);
-    (void)subclass;
-    for (int pass = 1; pass < 2; ++pass) {
-        const bool strict = pass == 0; (void)strict;
-            {
-                const std::size_t n = c.args.size() - 1;
-                if (c.args.size() >= 1 && n >= 0 && n <= 1) {
-                    if (n == 0) {
-                        c.result = rosetta_lisp::object(new datamunge::optim::SQP(), &rosetta_lisp::Info<datamunge::optim::SQP>::value, rosetta_lisp::Ownership::owned, -1);
-                        return;
-                    }
-                    if (n == 1) {
-                        rosetta_lisp::converting() = "argument 'options'";
-                        rosetta_lisp::Param<datamunge::optim::SQPOptions> p0(c.args[1]);
-                        rosetta_lisp::converting() = nullptr;
-                        c.result = rosetta_lisp::object(new datamunge::optim::SQP(p0.get()), &rosetta_lisp::Info<datamunge::optim::SQP>::value, rosetta_lisp::Ownership::owned, -1);
-                        return;
-                    }
-                }
-            }
-    }
-    rosetta_lisp::no_overload(c, "(make-sqp ...)", "    (make-sqp &optional (options (make-sqp-options))) → sqp\n", 1);
-}
-void rosetta_lisp_1993(rosetta_lisp::Call& c) {
-    const unsigned long long subclass = c.args.empty() || c.args[0].kind != rosetta_lisp::tag_int ? 0 : static_cast<unsigned long long>(c.args[0].integer);
-    (void)subclass;
-    for (int pass = 1; pass < 2; ++pass) {
-        const bool strict = pass == 0; (void)strict;
-            {
-                const std::size_t n = c.args.size() - 1;
-                if (c.args.size() >= 1 && n >= 3 && n <= 5) {
-                    if (n == 3) {
-                        rosetta_lisp::converting() = "argument 'lower'";
-                        rosetta_lisp::Param<double> p0(c.args[1]);
-                        rosetta_lisp::converting() = "argument 'upper'";
-                        rosetta_lisp::Param<double> p1(c.args[2]);
-                        rosetta_lisp::converting() = "argument 'knots'";
-                        rosetta_lisp::Param<const std::vector<double> &> p2(c.args[3]);
-                        rosetta_lisp::converting() = nullptr;
-                        c.result = rosetta_lisp::object(new datamunge::Bspline(p0.get(), p1.get(), p2.get()), &rosetta_lisp::Info<datamunge::Bspline>::value, rosetta_lisp::Ownership::owned, -1);
-                        return;
-                    }
-                    if (n == 4) {
-                        rosetta_lisp::converting() = "argument 'lower'";
-                        rosetta_lisp::Param<double> p0(c.args[1]);
-                        rosetta_lisp::converting() = "argument 'upper'";
-                        rosetta_lisp::Param<double> p1(c.args[2]);
-                        rosetta_lisp::converting() = "argument 'knots'";
-                        rosetta_lisp::Param<const std::vector<double> &> p2(c.args[3]);
-                        rosetta_lisp::converting() = "argument 'degree'";
-                        rosetta_lisp::Param<unsigned long> p3(c.args[4]);
-                        rosetta_lisp::converting() = nullptr;
-                        c.result = rosetta_lisp::object(new datamunge::Bspline(p0.get(), p1.get(), p2.get(), p3.get()), &rosetta_lisp::Info<datamunge::Bspline>::value, rosetta_lisp::Ownership::owned, -1);
-                        return;
-                    }
-                    if (n == 5) {
-                        rosetta_lisp::converting() = "argument 'lower'";
-                        rosetta_lisp::Param<double> p0(c.args[1]);
-                        rosetta_lisp::converting() = "argument 'upper'";
-                        rosetta_lisp::Param<double> p1(c.args[2]);
-                        rosetta_lisp::converting() = "argument 'knots'";
-                        rosetta_lisp::Param<const std::vector<double> &> p2(c.args[3]);
-                        rosetta_lisp::converting() = "argument 'degree'";
-                        rosetta_lisp::Param<unsigned long> p3(c.args[4]);
-                        rosetta_lisp::converting() = "argument 'intercept'";
-                        rosetta_lisp::Param<bool> p4(c.args[5]);
-                        rosetta_lisp::converting() = nullptr;
-                        c.result = rosetta_lisp::object(new datamunge::Bspline(p0.get(), p1.get(), p2.get(), p3.get(), p4.get()), &rosetta_lisp::Info<datamunge::Bspline>::value, rosetta_lisp::Ownership::owned, -1);
-                        return;
-                    }
-                }
-            }
-    }
-    rosetta_lisp::no_overload(c, "(make-bspline ...)", "    (make-bspline lower upper knots &optional (degree 3) (intercept nil)) → bspline\n", 1);
+    rosetta_lisp::no_overload(c, "(make-arima-options ...)", "    (make-arima-options) → arima-options\n", 1);
 }
 void rosetta_lisp_2264(rosetta_lisp::Call& c) {
     for (int pass = 1; pass < 2; ++pass) {
@@ -3579,353 +3890,6 @@ void rosetta_lisp_2282(rosetta_lisp::Call& c) {
     }
     rosetta_lisp::no_overload(c, "(make-inla-mixed-model ...)", "    (make-inla-mixed-model data formula &optional (family \"gaussian\") (strategy \"grid\") (fixed-effect-prior-sd 1d3) (grid-points-per-dim 7) (grid-span 4d0) (mode-population-size 40) (mode-max-generations 200) (seed 42)) → inla-mixed-model\n", 1);
 }
-void rosetta_lisp_2313(rosetta_lisp::Call& c) {
-    for (int pass = 1; pass < 2; ++pass) {
-        const bool strict = pass == 0; (void)strict;
-            {
-                const std::size_t n = c.args.size() - 1;
-                if (c.args.size() >= 1 && n >= 0 && n <= 0) {
-                    auto* native = rosetta_lisp::native<datamunge::DecisionTreeClassifier>(c.args[0]);
-                    if (n == 0) {
-                        rosetta_lisp::call(c, [&]() -> decltype(auto) { return native->classes(); }, 0, rosetta_lisp::Return::automatic);
-                        return;
-                    }
-                }
-            }
-    }
-    rosetta_lisp::no_overload(c, "(classes ...)", "    (classes decision-tree-classifier) → (vector string)\n", 1);
-}
-void rosetta_lisp_2314(rosetta_lisp::Call& c) {
-    for (int pass = 1; pass < 2; ++pass) {
-        const bool strict = pass == 0; (void)strict;
-            {
-                const std::size_t n = c.args.size() - 1;
-                if (c.args.size() >= 1 && n >= 0 && n <= 0) {
-                    auto* native = rosetta_lisp::native<datamunge::DecisionTreeClassifier>(c.args[0]);
-                    if (n == 0) {
-                        rosetta_lisp::call(c, [&]() -> decltype(auto) { return native->predictor_names(); }, 0, rosetta_lisp::Return::automatic);
-                        return;
-                    }
-                }
-            }
-    }
-    rosetta_lisp::no_overload(c, "(predictor-names ...)", "    (predictor-names decision-tree-classifier) → (vector string)\n", 1);
-}
-void rosetta_lisp_2315(rosetta_lisp::Call& c) {
-    for (int pass = 1; pass < 2; ++pass) {
-        const bool strict = pass == 0; (void)strict;
-            {
-                const std::size_t n = c.args.size() - 1;
-                if (c.args.size() >= 1 && n >= 0 && n <= 0) {
-                    auto* native = rosetta_lisp::native<datamunge::DecisionTreeClassifier>(c.args[0]);
-                    if (n == 0) {
-                        rosetta_lisp::call(c, [&]() -> decltype(auto) { return native->observations(); }, 0, rosetta_lisp::Return::automatic);
-                        return;
-                    }
-                }
-            }
-    }
-    rosetta_lisp::no_overload(c, "(observations ...)", "    (observations decision-tree-classifier) → integer\n", 1);
-}
-void rosetta_lisp_2316(rosetta_lisp::Call& c) {
-    for (int pass = 1; pass < 2; ++pass) {
-        const bool strict = pass == 0; (void)strict;
-            {
-                const std::size_t n = c.args.size() - 1;
-                if (c.args.size() >= 1 && n >= 0 && n <= 0) {
-                    auto* native = rosetta_lisp::native<datamunge::DecisionTreeClassifier>(c.args[0]);
-                    if (n == 0) {
-                        rosetta_lisp::call(c, [&]() -> decltype(auto) { return native->node_count(); }, 0, rosetta_lisp::Return::automatic);
-                        return;
-                    }
-                }
-            }
-    }
-    rosetta_lisp::no_overload(c, "(node-count ...)", "    (node-count decision-tree-classifier) → integer\n", 1);
-}
-void rosetta_lisp_2317(rosetta_lisp::Call& c) {
-    for (int pass = 1; pass < 2; ++pass) {
-        const bool strict = pass == 0; (void)strict;
-            {
-                const std::size_t n = c.args.size() - 1;
-                if (c.args.size() >= 1 && n >= 0 && n <= 0) {
-                    auto* native = rosetta_lisp::native<datamunge::DecisionTreeClassifier>(c.args[0]);
-                    if (n == 0) {
-                        rosetta_lisp::call(c, [&]() -> decltype(auto) { return native->leaf_count(); }, 0, rosetta_lisp::Return::automatic);
-                        return;
-                    }
-                }
-            }
-    }
-    rosetta_lisp::no_overload(c, "(leaf-count ...)", "    (leaf-count decision-tree-classifier) → integer\n", 1);
-}
-void rosetta_lisp_2318(rosetta_lisp::Call& c) {
-    for (int pass = 1; pass < 2; ++pass) {
-        const bool strict = pass == 0; (void)strict;
-            {
-                const std::size_t n = c.args.size() - 1;
-                if (c.args.size() >= 1 && n >= 0 && n <= 0) {
-                    auto* native = rosetta_lisp::native<datamunge::DecisionTreeClassifier>(c.args[0]);
-                    if (n == 0) {
-                        rosetta_lisp::call(c, [&]() -> decltype(auto) { return native->depth(); }, 0, rosetta_lisp::Return::automatic);
-                        return;
-                    }
-                }
-            }
-    }
-    rosetta_lisp::no_overload(c, "(depth ...)", "    (depth decision-tree-classifier) → integer\n", 1);
-}
-void rosetta_lisp_2319(rosetta_lisp::Call& c) {
-    for (int pass = 1; pass < 2; ++pass) {
-        const bool strict = pass == 0; (void)strict;
-            {
-                const std::size_t n = c.args.size() - 1;
-                if (c.args.size() >= 1 && n >= 0 && n <= 0) {
-                    auto* native = rosetta_lisp::native<datamunge::DecisionTreeClassifier>(c.args[0]);
-                    if (n == 0) {
-                        rosetta_lisp::call(c, [&]() -> decltype(auto) { return native->feature_importance(); }, 0, rosetta_lisp::Return::automatic);
-                        return;
-                    }
-                }
-            }
-    }
-    rosetta_lisp::no_overload(c, "(feature-importance ...)", "    (feature-importance decision-tree-classifier) → (vector double-float)\n", 1);
-}
-void rosetta_lisp_2320(rosetta_lisp::Call& c) {
-    for (int pass = 1; pass < 2; ++pass) {
-        const bool strict = pass == 0; (void)strict;
-            {
-                const std::size_t n = c.args.size() - 1;
-                if (c.args.size() >= 1 && n >= 0 && n <= 0) {
-                    auto* native = rosetta_lisp::native<datamunge::DecisionTreeClassifier>(c.args[0]);
-                    if (n == 0) {
-                        rosetta_lisp::call(c, [&]() -> decltype(auto) { return native->training_accuracy(); }, 0, rosetta_lisp::Return::automatic);
-                        return;
-                    }
-                }
-            }
-    }
-    rosetta_lisp::no_overload(c, "(training-accuracy ...)", "    (training-accuracy decision-tree-classifier) → double-float\n", 1);
-}
-void rosetta_lisp_2321(rosetta_lisp::Call& c) {
-    for (int pass = 1; pass < 2; ++pass) {
-        const bool strict = pass == 0; (void)strict;
-            {
-                const std::size_t n = c.args.size() - 1;
-                if (c.args.size() >= 1 && n >= 0 && n <= 0) {
-                    auto* native = rosetta_lisp::native<datamunge::DecisionTreeClassifier>(c.args[0]);
-                    if (n == 0) {
-                        rosetta_lisp::call(c, [&]() -> decltype(auto) { return native->confusion_matrix(); }, 0, rosetta_lisp::Return::automatic);
-                        return;
-                    }
-                }
-            }
-    }
-    rosetta_lisp::no_overload(c, "(confusion-matrix ...)", "    (confusion-matrix decision-tree-classifier) → (or null data-frame)\n", 1);
-}
-void rosetta_lisp_2322(rosetta_lisp::Call& c) {
-    for (int pass = 1; pass < 2; ++pass) {
-        const bool strict = pass == 0; (void)strict;
-            {
-                const std::size_t n = c.args.size() - 1;
-                if (c.args.size() >= 1 && n >= 0 && n <= 0) {
-                    auto* native = rosetta_lisp::native<datamunge::DecisionTreeClassifier>(c.args[0]);
-                    if (n == 0) {
-                        rosetta_lisp::call(c, [&]() -> decltype(auto) { return native->summary(); }, 0, rosetta_lisp::Return::automatic);
-                        return;
-                    }
-                }
-            }
-    }
-    rosetta_lisp::no_overload(c, "(summary ...)", "    (summary decision-tree-classifier) → string\n", 1);
-}
-void rosetta_lisp_2323(rosetta_lisp::Call& c) {
-    for (int pass = 1; pass < 2; ++pass) {
-        const bool strict = pass == 0; (void)strict;
-            {
-                const std::size_t n = c.args.size() - 1;
-                if (c.args.size() >= 1 && n >= 0 && n <= 0) {
-                    auto* native = rosetta_lisp::native<datamunge::DecisionTreeClassifier>(c.args[0]);
-                    if (n == 0) {
-                        rosetta_lisp::call(c, [&]() -> decltype(auto) { return native->print_summary(); }, 0, rosetta_lisp::Return::automatic);
-                        return;
-                    }
-                }
-            }
-    }
-    rosetta_lisp::no_overload(c, "(print-summary ...)", "    (print-summary decision-tree-classifier)\n", 1);
-}
-void rosetta_lisp_2324(rosetta_lisp::Call& c) {
-    for (int pass = 1; pass < 2; ++pass) {
-        const bool strict = pass == 0; (void)strict;
-            {
-                const std::size_t n = c.args.size() - 1;
-                if (c.args.size() >= 1 && n >= 1 && n <= 1) {
-                    auto* native = rosetta_lisp::native<datamunge::DecisionTreeClassifier>(c.args[0]);
-                    if (n == 1) {
-                        rosetta_lisp::converting() = "argument 'newdata'";
-                        rosetta_lisp::Param<const datamunge::DataFrame &> p0(c.args[1]);
-                        rosetta_lisp::converting() = nullptr;
-                        rosetta_lisp::call(c, [&]() -> decltype(auto) { return native->predict(p0.get()); }, 0, rosetta_lisp::Return::automatic);
-                        return;
-                    }
-                }
-            }
-    }
-    rosetta_lisp::no_overload(c, "(predict ...)", "    (predict decision-tree-classifier newdata) → (vector string)\n", 1);
-}
-void rosetta_lisp_2325(rosetta_lisp::Call& c) {
-    for (int pass = 1; pass < 2; ++pass) {
-        const bool strict = pass == 0; (void)strict;
-            {
-                const std::size_t n = c.args.size() - 1;
-                if (c.args.size() >= 1 && n >= 1 && n <= 1) {
-                    auto* native = rosetta_lisp::native<datamunge::DecisionTreeClassifier>(c.args[0]);
-                    if (n == 1) {
-                        rosetta_lisp::converting() = "argument 'newdata'";
-                        rosetta_lisp::Param<const datamunge::DataFrame &> p0(c.args[1]);
-                        rosetta_lisp::converting() = nullptr;
-                        rosetta_lisp::call(c, [&]() -> decltype(auto) { return native->predict_frame(p0.get()); }, 0, rosetta_lisp::Return::automatic);
-                        return;
-                    }
-                }
-            }
-    }
-    rosetta_lisp::no_overload(c, "(predict-frame ...)", "    (predict-frame decision-tree-classifier newdata) → (or null data-frame)\n", 1);
-}
-void rosetta_lisp_2326(rosetta_lisp::Call& c) {
-    for (int pass = 1; pass < 2; ++pass) {
-        const bool strict = pass == 0; (void)strict;
-            {
-                const std::size_t n = c.args.size() - 1;
-                if (c.args.size() >= 1 && n >= 3 && n <= 3) {
-                    auto* native = rosetta_lisp::native<datamunge::DecisionTreeClassifier>(c.args[0]);
-                    if (n == 3) {
-                        rosetta_lisp::converting() = "argument 'data'";
-                        rosetta_lisp::Param<const datamunge::DataFrame &> p0(c.args[1]);
-                        rosetta_lisp::converting() = "argument 'x-feature'";
-                        rosetta_lisp::Param<const std::__cxx11::basic_string<char> &> p1(c.args[2]);
-                        rosetta_lisp::converting() = "argument 'y-feature'";
-                        rosetta_lisp::Param<const std::__cxx11::basic_string<char> &> p2(c.args[3]);
-                        rosetta_lisp::converting() = nullptr;
-                        rosetta_lisp::call(c, [&]() -> decltype(auto) { return native->plot_classification(p0.get(), p1.get(), p2.get()); }, 0, rosetta_lisp::Return::automatic);
-                        return;
-                    }
-                }
-            }
-    }
-    rosetta_lisp::no_overload(c, "(plot-classification ...)", "    (plot-classification decision-tree-classifier data x-feature y-feature) → r-plot\n", 1);
-}
-void rosetta_lisp_2327(rosetta_lisp::Call& c) {
-    for (int pass = 1; pass < 2; ++pass) {
-        const bool strict = pass == 0; (void)strict;
-            {
-                const std::size_t n = c.args.size() - 1;
-                if (c.args.size() >= 1 && n >= 2 && n <= 3) {
-                    auto* native = rosetta_lisp::native<datamunge::DecisionTreeClassifier>(c.args[0]);
-                    if (n == 2) {
-                        rosetta_lisp::converting() = "argument 'x-feature'";
-                        rosetta_lisp::Param<const std::__cxx11::basic_string<char> &> p0(c.args[1]);
-                        rosetta_lisp::converting() = "argument 'y-feature'";
-                        rosetta_lisp::Param<const std::__cxx11::basic_string<char> &> p1(c.args[2]);
-                        rosetta_lisp::converting() = nullptr;
-                        rosetta_lisp::call(c, [&]() -> decltype(auto) { return native->plot_decision_regions(p0.get(), p1.get()); }, 0, rosetta_lisp::Return::automatic);
-                        return;
-                    }
-                    if (n == 3) {
-                        rosetta_lisp::converting() = "argument 'x-feature'";
-                        rosetta_lisp::Param<const std::__cxx11::basic_string<char> &> p0(c.args[1]);
-                        rosetta_lisp::converting() = "argument 'y-feature'";
-                        rosetta_lisp::Param<const std::__cxx11::basic_string<char> &> p1(c.args[2]);
-                        rosetta_lisp::converting() = "argument 'grid-resolution'";
-                        rosetta_lisp::Param<unsigned long> p2(c.args[3]);
-                        rosetta_lisp::converting() = nullptr;
-                        rosetta_lisp::call(c, [&]() -> decltype(auto) { return native->plot_decision_regions(p0.get(), p1.get(), p2.get()); }, 0, rosetta_lisp::Return::automatic);
-                        return;
-                    }
-                }
-            }
-    }
-    rosetta_lisp::no_overload(c, "(plot-decision-regions ...)", "    (plot-decision-regions decision-tree-classifier x-feature y-feature &optional (grid-resolution 60)) → r-plot\n", 1);
-}
-void rosetta_lisp_2328(rosetta_lisp::Call& c) {
-    const unsigned long long subclass = c.args.empty() || c.args[0].kind != rosetta_lisp::tag_int ? 0 : static_cast<unsigned long long>(c.args[0].integer);
-    (void)subclass;
-    for (int pass = 1; pass < 2; ++pass) {
-        const bool strict = pass == 0; (void)strict;
-            {
-                const std::size_t n = c.args.size() - 1;
-                if (c.args.size() >= 1 && n >= 2 && n <= 6) {
-                    if (n == 2) {
-                        rosetta_lisp::converting() = "argument 'data'";
-                        rosetta_lisp::Param<const datamunge::DataFrame &> p0(c.args[1]);
-                        rosetta_lisp::converting() = "argument 'formula'";
-                        rosetta_lisp::Param<const std::__cxx11::basic_string<char> &> p1(c.args[2]);
-                        rosetta_lisp::converting() = nullptr;
-                        c.result = rosetta_lisp::object(new datamunge::DecisionTreeClassifier(p0.get(), p1.get()), &rosetta_lisp::Info<datamunge::DecisionTreeClassifier>::value, rosetta_lisp::Ownership::owned, -1);
-                        return;
-                    }
-                    if (n == 3) {
-                        rosetta_lisp::converting() = "argument 'data'";
-                        rosetta_lisp::Param<const datamunge::DataFrame &> p0(c.args[1]);
-                        rosetta_lisp::converting() = "argument 'formula'";
-                        rosetta_lisp::Param<const std::__cxx11::basic_string<char> &> p1(c.args[2]);
-                        rosetta_lisp::converting() = "argument 'max-depth'";
-                        rosetta_lisp::Param<unsigned long> p2(c.args[3]);
-                        rosetta_lisp::converting() = nullptr;
-                        c.result = rosetta_lisp::object(new datamunge::DecisionTreeClassifier(p0.get(), p1.get(), p2.get()), &rosetta_lisp::Info<datamunge::DecisionTreeClassifier>::value, rosetta_lisp::Ownership::owned, -1);
-                        return;
-                    }
-                    if (n == 4) {
-                        rosetta_lisp::converting() = "argument 'data'";
-                        rosetta_lisp::Param<const datamunge::DataFrame &> p0(c.args[1]);
-                        rosetta_lisp::converting() = "argument 'formula'";
-                        rosetta_lisp::Param<const std::__cxx11::basic_string<char> &> p1(c.args[2]);
-                        rosetta_lisp::converting() = "argument 'max-depth'";
-                        rosetta_lisp::Param<unsigned long> p2(c.args[3]);
-                        rosetta_lisp::converting() = "argument 'min-samples-split'";
-                        rosetta_lisp::Param<unsigned long> p3(c.args[4]);
-                        rosetta_lisp::converting() = nullptr;
-                        c.result = rosetta_lisp::object(new datamunge::DecisionTreeClassifier(p0.get(), p1.get(), p2.get(), p3.get()), &rosetta_lisp::Info<datamunge::DecisionTreeClassifier>::value, rosetta_lisp::Ownership::owned, -1);
-                        return;
-                    }
-                    if (n == 5) {
-                        rosetta_lisp::converting() = "argument 'data'";
-                        rosetta_lisp::Param<const datamunge::DataFrame &> p0(c.args[1]);
-                        rosetta_lisp::converting() = "argument 'formula'";
-                        rosetta_lisp::Param<const std::__cxx11::basic_string<char> &> p1(c.args[2]);
-                        rosetta_lisp::converting() = "argument 'max-depth'";
-                        rosetta_lisp::Param<unsigned long> p2(c.args[3]);
-                        rosetta_lisp::converting() = "argument 'min-samples-split'";
-                        rosetta_lisp::Param<unsigned long> p3(c.args[4]);
-                        rosetta_lisp::converting() = "argument 'min-samples-leaf'";
-                        rosetta_lisp::Param<unsigned long> p4(c.args[5]);
-                        rosetta_lisp::converting() = nullptr;
-                        c.result = rosetta_lisp::object(new datamunge::DecisionTreeClassifier(p0.get(), p1.get(), p2.get(), p3.get(), p4.get()), &rosetta_lisp::Info<datamunge::DecisionTreeClassifier>::value, rosetta_lisp::Ownership::owned, -1);
-                        return;
-                    }
-                    if (n == 6) {
-                        rosetta_lisp::converting() = "argument 'data'";
-                        rosetta_lisp::Param<const datamunge::DataFrame &> p0(c.args[1]);
-                        rosetta_lisp::converting() = "argument 'formula'";
-                        rosetta_lisp::Param<const std::__cxx11::basic_string<char> &> p1(c.args[2]);
-                        rosetta_lisp::converting() = "argument 'max-depth'";
-                        rosetta_lisp::Param<unsigned long> p2(c.args[3]);
-                        rosetta_lisp::converting() = "argument 'min-samples-split'";
-                        rosetta_lisp::Param<unsigned long> p3(c.args[4]);
-                        rosetta_lisp::converting() = "argument 'min-samples-leaf'";
-                        rosetta_lisp::Param<unsigned long> p4(c.args[5]);
-                        rosetta_lisp::converting() = "argument 'criterion'";
-                        rosetta_lisp::Param<const std::__cxx11::basic_string<char> &> p5(c.args[6]);
-                        rosetta_lisp::converting() = nullptr;
-                        c.result = rosetta_lisp::object(new datamunge::DecisionTreeClassifier(p0.get(), p1.get(), p2.get(), p3.get(), p4.get(), p5.get()), &rosetta_lisp::Info<datamunge::DecisionTreeClassifier>::value, rosetta_lisp::Ownership::owned, -1);
-                        return;
-                    }
-                }
-            }
-    }
-    rosetta_lisp::no_overload(c, "(make-decision-tree-classifier ...)", "    (make-decision-tree-classifier data formula &optional (max-depth 5) (min-samples-split 2) (min-samples-leaf 1) (criterion \"gini\")) → decision-tree-classifier\n", 1);
-}
 void rosetta_lisp_2400(rosetta_lisp::Call& c) {
     for (int pass = 1; pass < 2; ++pass) {
         const bool strict = pass == 0; (void)strict;
@@ -4362,340 +4326,320 @@ void rosetta_lisp_2421(rosetta_lisp::Call& c) {
     }
     rosetta_lisp::no_overload(c, "(make-ridge ...)", "    (make-ridge data formula &optional (lambda -1d0) (n-lambda 100) (cv-folds 5) (standardize t) (seed 42)) → ridge\n", 1);
 }
-void rosetta_lisp_2974(rosetta_lisp::Call& c) {
+void rosetta_lisp_2610(rosetta_lisp::Call& c) {
     for (int pass = 1; pass < 2; ++pass) {
         const bool strict = pass == 0; (void)strict;
             {
                 const std::size_t n = c.args.size() - 1;
                 if (c.args.size() >= 1 && n >= 0 && n <= 0) {
-                    auto* native = rosetta_lisp::native<datamunge::fda::TensorBSpline>(c.args[0]);
+                    auto* native = rosetta_lisp::native<datamunge::AgglomerativeClustering>(c.args[0]);
                     if (n == 0) {
-                        rosetta_lisp::call(c, [&]() -> decltype(auto) { return native->dimensions(); }, 0, rosetta_lisp::Return::automatic);
+                        rosetta_lisp::call(c, [&]() -> decltype(auto) { return native->feature_names(); }, 0, rosetta_lisp::Return::automatic);
                         return;
                     }
                 }
             }
     }
-    rosetta_lisp::no_overload(c, "(dimensions ...)", "    (dimensions tensor-b-spline) → integer\n", 1);
+    rosetta_lisp::no_overload(c, "(feature-names ...)", "    (feature-names agglomerative-clustering) → (vector string)\n", 1);
 }
-void rosetta_lisp_2975(rosetta_lisp::Call& c) {
+void rosetta_lisp_2611(rosetta_lisp::Call& c) {
     for (int pass = 1; pass < 2; ++pass) {
         const bool strict = pass == 0; (void)strict;
             {
                 const std::size_t n = c.args.size() - 1;
                 if (c.args.size() >= 1 && n >= 0 && n <= 0) {
-                    auto* native = rosetta_lisp::native<datamunge::fda::TensorBSpline>(c.args[0]);
+                    auto* native = rosetta_lisp::native<datamunge::AgglomerativeClustering>(c.args[0]);
                     if (n == 0) {
-                        rosetta_lisp::call(c, [&]() -> decltype(auto) { return native->bases(); }, 0, rosetta_lisp::Return::automatic);
+                        rosetta_lisp::call(c, [&]() -> decltype(auto) { return native->observations(); }, 0, rosetta_lisp::Return::automatic);
                         return;
                     }
                 }
             }
     }
-    rosetta_lisp::no_overload(c, "(bases ...)", "    (bases tensor-b-spline) → (vector b-spline-basis)\n", 1);
+    rosetta_lisp::no_overload(c, "(observations ...)", "    (observations agglomerative-clustering) → integer\n", 1);
 }
-void rosetta_lisp_2976(rosetta_lisp::Call& c) {
+void rosetta_lisp_2612(rosetta_lisp::Call& c) {
     for (int pass = 1; pass < 2; ++pass) {
         const bool strict = pass == 0; (void)strict;
             {
                 const std::size_t n = c.args.size() - 1;
                 if (c.args.size() >= 1 && n >= 0 && n <= 0) {
-                    auto* native = rosetta_lisp::native<datamunge::fda::TensorBSpline>(c.args[0]);
+                    auto* native = rosetta_lisp::native<datamunge::AgglomerativeClustering>(c.args[0]);
                     if (n == 0) {
-                        rosetta_lisp::call(c, [&]() -> decltype(auto) { return native->shape(); }, 0, rosetta_lisp::Return::automatic);
+                        rosetta_lisp::call(c, [&]() -> decltype(auto) { return native->labels(); }, 0, rosetta_lisp::Return::automatic);
                         return;
                     }
                 }
             }
     }
-    rosetta_lisp::no_overload(c, "(shape ...)", "    (shape tensor-b-spline) → (vector integer)\n", 1);
+    rosetta_lisp::no_overload(c, "(labels ...)", "    (labels agglomerative-clustering) → (vector integer)\n", 1);
 }
-void rosetta_lisp_2977(rosetta_lisp::Call& c) {
-    for (int pass = 1; pass < 2; ++pass) {
-        const bool strict = pass == 0; (void)strict;
-            {
-                const std::size_t n = c.args.size() - 1;
-                if (c.args.size() >= 1 && n >= 0 && n <= 0) {
-                    auto* native = rosetta_lisp::native<datamunge::fda::TensorBSpline>(c.args[0]);
-                    if (n == 0) {
-                        rosetta_lisp::call(c, [&]() -> decltype(auto) { return native->coefficient_count(); }, 0, rosetta_lisp::Return::automatic);
-                        return;
-                    }
-                }
-            }
-    }
-    rosetta_lisp::no_overload(c, "(coefficient-count ...)", "    (coefficient-count tensor-b-spline) → integer\n", 1);
-}
-void rosetta_lisp_2978(rosetta_lisp::Call& c) {
-    for (int pass = 1; pass < 2; ++pass) {
-        const bool strict = pass == 0; (void)strict;
-            {
-                const std::size_t n = c.args.size() - 1;
-                if (c.args.size() >= 1 && n >= 0 && n <= 0) {
-                    auto* native = rosetta_lisp::native<datamunge::fda::TensorBSpline>(c.args[0]);
-                    if (n == 0) {
-                        rosetta_lisp::call(c, [&]() -> decltype(auto) { return native->coefficients(); }, 0, rosetta_lisp::Return::automatic);
-                        return;
-                    }
-                }
-            }
-    }
-    rosetta_lisp::no_overload(c, "(coefficients ...)", "    (coefficients tensor-b-spline) → (vector double-float)\n", 1);
-}
-void rosetta_lisp_2979(rosetta_lisp::Call& c) {
-    for (int pass = 1; pass < 2; ++pass) {
-        const bool strict = pass == 0; (void)strict;
-            {
-                const std::size_t n = c.args.size() - 1;
-                if (c.args.size() >= 1 && n >= 0 && n <= 0) {
-                    auto* native = rosetta_lisp::native<datamunge::fda::TensorBSpline>(c.args[0]);
-                    if (n == 0) {
-                        rosetta_lisp::call(c, [&]() -> decltype(auto) { return native->domain_min(); }, 0, rosetta_lisp::Return::automatic);
-                        return;
-                    }
-                }
-            }
-    }
-    rosetta_lisp::no_overload(c, "(domain-min ...)", "    (domain-min tensor-b-spline) → (vector double-float)\n", 1);
-}
-void rosetta_lisp_2980(rosetta_lisp::Call& c) {
-    for (int pass = 1; pass < 2; ++pass) {
-        const bool strict = pass == 0; (void)strict;
-            {
-                const std::size_t n = c.args.size() - 1;
-                if (c.args.size() >= 1 && n >= 0 && n <= 0) {
-                    auto* native = rosetta_lisp::native<datamunge::fda::TensorBSpline>(c.args[0]);
-                    if (n == 0) {
-                        rosetta_lisp::call(c, [&]() -> decltype(auto) { return native->domain_max(); }, 0, rosetta_lisp::Return::automatic);
-                        return;
-                    }
-                }
-            }
-    }
-    rosetta_lisp::no_overload(c, "(domain-max ...)", "    (domain-max tensor-b-spline) → (vector double-float)\n", 1);
-}
-void rosetta_lisp_2981(rosetta_lisp::Call& c) {
+void rosetta_lisp_2613(rosetta_lisp::Call& c) {
     for (int pass = 1; pass < 2; ++pass) {
         const bool strict = pass == 0; (void)strict;
             {
                 const std::size_t n = c.args.size() - 1;
                 if (c.args.size() >= 1 && n >= 1 && n <= 1) {
-                    auto* native = rosetta_lisp::native<datamunge::fda::TensorBSpline>(c.args[0]);
+                    auto* native = rosetta_lisp::native<datamunge::AgglomerativeClustering>(c.args[0]);
                     if (n == 1) {
-                        rosetta_lisp::converting() = "argument 'index'";
-                        rosetta_lisp::Param<const std::vector<int> &> p0(c.args[1]);
+                        rosetta_lisp::converting() = "argument 'n-clusters'";
+                        rosetta_lisp::Param<unsigned long> p0(c.args[1]);
                         rosetta_lisp::converting() = nullptr;
-                        rosetta_lisp::call(c, [&]() -> decltype(auto) { return native->coefficient(p0.get()); }, 0, rosetta_lisp::Return::automatic);
+                        rosetta_lisp::call(c, [&]() -> decltype(auto) { return native->cut(p0.get()); }, 0, rosetta_lisp::Return::automatic);
                         return;
                     }
                 }
             }
     }
-    rosetta_lisp::no_overload(c, "(coefficient ...)", "    (coefficient tensor-b-spline index) → double-float\n", 1);
+    rosetta_lisp::no_overload(c, "(cut ...)", "    (cut agglomerative-clustering n-clusters) → (vector integer)\n", 1);
 }
-void rosetta_lisp_2982(rosetta_lisp::Call& c) {
-    for (int pass = 1; pass < 2; ++pass) {
-        const bool strict = pass == 0; (void)strict;
-            {
-                const std::size_t n = c.args.size() - 1;
-                if (c.args.size() >= 1 && n >= 2 && n <= 2) {
-                    auto* native = rosetta_lisp::native<datamunge::fda::TensorBSpline>(c.args[0]);
-                    if (n == 2) {
-                        rosetta_lisp::converting() = "argument 'index'";
-                        rosetta_lisp::Param<const std::vector<int> &> p0(c.args[1]);
-                        rosetta_lisp::converting() = "argument 'value'";
-                        rosetta_lisp::Param<double> p1(c.args[2]);
-                        rosetta_lisp::converting() = nullptr;
-                        rosetta_lisp::call(c, [&]() -> decltype(auto) { return native->set_coefficient(p0.get(), p1.get()); }, 0, rosetta_lisp::Return::automatic);
-                        return;
-                    }
-                }
-            }
-    }
-    rosetta_lisp::no_overload(c, "(set-coefficient ...)", "    (set-coefficient tensor-b-spline index value*)\n", 1);
-}
-void rosetta_lisp_2983(rosetta_lisp::Call& c) {
-    for (int pass = 0; pass < 2; ++pass) {
-        const bool strict = pass == 0; (void)strict;
-            {
-                const std::size_t n = c.args.size() - 1;
-                if (c.args.size() >= 1 && n >= 1 && n <= 1
-                    && rosetta_lisp::is_instance<datamunge::fda::TensorBSpline>(c.args[0])
-                    && (n <= 0 || rosetta_lisp::Param<double>::check(c.args[1], strict))) {
-                    auto* native = rosetta_lisp::native<datamunge::fda::TensorBSpline>(c.args[0]);
-                    if (n == 1) {
-                        rosetta_lisp::converting() = "argument 'x'";
-                        rosetta_lisp::Param<double> p0(c.args[1]);
-                        rosetta_lisp::converting() = nullptr;
-                        rosetta_lisp::call(c, [&]() -> decltype(auto) { return native->evaluate(p0.get()); }, 0, rosetta_lisp::Return::automatic);
-                        return;
-                    }
-                }
-            }
-            {
-                const std::size_t n = c.args.size() - 1;
-                if (c.args.size() >= 1 && n >= 1 && n <= 1
-                    && rosetta_lisp::is_instance<datamunge::fda::TensorBSpline>(c.args[0])
-                    && (n <= 0 || rosetta_lisp::Param<const std::vector<double> &>::check(c.args[1], strict))) {
-                    auto* native = rosetta_lisp::native<datamunge::fda::TensorBSpline>(c.args[0]);
-                    if (n == 1) {
-                        rosetta_lisp::converting() = "argument 'point'";
-                        rosetta_lisp::Param<const std::vector<double> &> p0(c.args[1]);
-                        rosetta_lisp::converting() = nullptr;
-                        rosetta_lisp::call(c, [&]() -> decltype(auto) { return native->evaluate(p0.get()); }, 0, rosetta_lisp::Return::automatic);
-                        return;
-                    }
-                }
-            }
-    }
-    rosetta_lisp::no_overload(c, "(evaluate ...)", "    (evaluate tensor-b-spline x) → double-float\n    (evaluate tensor-b-spline point) → double-float\n", 1);
-}
-void rosetta_lisp_2984(rosetta_lisp::Call& c) {
-    for (int pass = 1; pass < 2; ++pass) {
-        const bool strict = pass == 0; (void)strict;
-            {
-                const std::size_t n = c.args.size() - 1;
-                if (c.args.size() >= 1 && n >= 1 && n <= 1) {
-                    auto* native = rosetta_lisp::native<datamunge::fda::TensorBSpline>(c.args[0]);
-                    if (n == 1) {
-                        rosetta_lisp::converting() = "argument 'points'";
-                        rosetta_lisp::Param<const std::vector<std::vector<double>> &> p0(c.args[1]);
-                        rosetta_lisp::converting() = nullptr;
-                        rosetta_lisp::call(c, [&]() -> decltype(auto) { return native->evaluate_points(p0.get()); }, 0, rosetta_lisp::Return::automatic);
-                        return;
-                    }
-                }
-            }
-    }
-    rosetta_lisp::no_overload(c, "(evaluate-points ...)", "    (evaluate-points tensor-b-spline points) → (vector double-float)\n", 1);
-}
-void rosetta_lisp_2985(rosetta_lisp::Call& c) {
-    for (int pass = 1; pass < 2; ++pass) {
-        const bool strict = pass == 0; (void)strict;
-            {
-                const std::size_t n = c.args.size() - 1;
-                if (c.args.size() >= 1 && n >= 1 && n <= 1) {
-                    auto* native = rosetta_lisp::native<datamunge::fda::TensorBSpline>(c.args[0]);
-                    if (n == 1) {
-                        rosetta_lisp::converting() = "argument 'axes'";
-                        rosetta_lisp::Param<const std::vector<std::vector<double>> &> p0(c.args[1]);
-                        rosetta_lisp::converting() = nullptr;
-                        rosetta_lisp::call(c, [&]() -> decltype(auto) { return native->evaluate_grid(p0.get()); }, 0, rosetta_lisp::Return::automatic);
-                        return;
-                    }
-                }
-            }
-    }
-    rosetta_lisp::no_overload(c, "(evaluate-grid ...)", "    (evaluate-grid tensor-b-spline axes) → (vector double-float)\n", 1);
-}
-void rosetta_lisp_2986(rosetta_lisp::Call& c) {
+void rosetta_lisp_2614(rosetta_lisp::Call& c) {
     for (int pass = 1; pass < 2; ++pass) {
         const bool strict = pass == 0; (void)strict;
             {
                 const std::size_t n = c.args.size() - 1;
                 if (c.args.size() >= 1 && n >= 0 && n <= 0) {
-                    auto* native = rosetta_lisp::native<datamunge::fda::TensorBSpline>(c.args[0]);
+                    auto* native = rosetta_lisp::native<datamunge::AgglomerativeClustering>(c.args[0]);
                     if (n == 0) {
-                        rosetta_lisp::call(c, [&]() -> decltype(auto) { return native->dyadic_refine(); }, 0, rosetta_lisp::Return::automatic);
+                        rosetta_lisp::call(c, [&]() -> decltype(auto) { return native->num_merges(); }, 0, rosetta_lisp::Return::automatic);
                         return;
                     }
                 }
             }
     }
-    rosetta_lisp::no_overload(c, "(dyadic-refine ...)", "    (dyadic-refine tensor-b-spline) → tensor-b-spline\n", 1);
+    rosetta_lisp::no_overload(c, "(num-merges ...)", "    (num-merges agglomerative-clustering) → integer\n", 1);
 }
-void rosetta_lisp_2987(rosetta_lisp::Call& c) {
+void rosetta_lisp_2615(rosetta_lisp::Call& c) {
+    for (int pass = 1; pass < 2; ++pass) {
+        const bool strict = pass == 0; (void)strict;
+            {
+                const std::size_t n = c.args.size() - 1;
+                if (c.args.size() >= 1 && n >= 1 && n <= 1) {
+                    auto* native = rosetta_lisp::native<datamunge::AgglomerativeClustering>(c.args[0]);
+                    if (n == 1) {
+                        rosetta_lisp::converting() = "argument 'merge-index'";
+                        rosetta_lisp::Param<unsigned long> p0(c.args[1]);
+                        rosetta_lisp::converting() = nullptr;
+                        rosetta_lisp::call(c, [&]() -> decltype(auto) { return native->merge_cluster_a(p0.get()); }, 0, rosetta_lisp::Return::automatic);
+                        return;
+                    }
+                }
+            }
+    }
+    rosetta_lisp::no_overload(c, "(merge-cluster-a ...)", "    (merge-cluster-a agglomerative-clustering merge-index) → integer\n", 1);
+}
+void rosetta_lisp_2616(rosetta_lisp::Call& c) {
+    for (int pass = 1; pass < 2; ++pass) {
+        const bool strict = pass == 0; (void)strict;
+            {
+                const std::size_t n = c.args.size() - 1;
+                if (c.args.size() >= 1 && n >= 1 && n <= 1) {
+                    auto* native = rosetta_lisp::native<datamunge::AgglomerativeClustering>(c.args[0]);
+                    if (n == 1) {
+                        rosetta_lisp::converting() = "argument 'merge-index'";
+                        rosetta_lisp::Param<unsigned long> p0(c.args[1]);
+                        rosetta_lisp::converting() = nullptr;
+                        rosetta_lisp::call(c, [&]() -> decltype(auto) { return native->merge_cluster_b(p0.get()); }, 0, rosetta_lisp::Return::automatic);
+                        return;
+                    }
+                }
+            }
+    }
+    rosetta_lisp::no_overload(c, "(merge-cluster-b ...)", "    (merge-cluster-b agglomerative-clustering merge-index) → integer\n", 1);
+}
+void rosetta_lisp_2617(rosetta_lisp::Call& c) {
+    for (int pass = 1; pass < 2; ++pass) {
+        const bool strict = pass == 0; (void)strict;
+            {
+                const std::size_t n = c.args.size() - 1;
+                if (c.args.size() >= 1 && n >= 1 && n <= 1) {
+                    auto* native = rosetta_lisp::native<datamunge::AgglomerativeClustering>(c.args[0]);
+                    if (n == 1) {
+                        rosetta_lisp::converting() = "argument 'merge-index'";
+                        rosetta_lisp::Param<unsigned long> p0(c.args[1]);
+                        rosetta_lisp::converting() = nullptr;
+                        rosetta_lisp::call(c, [&]() -> decltype(auto) { return native->merge_distance(p0.get()); }, 0, rosetta_lisp::Return::automatic);
+                        return;
+                    }
+                }
+            }
+    }
+    rosetta_lisp::no_overload(c, "(merge-distance ...)", "    (merge-distance agglomerative-clustering merge-index) → double-float\n", 1);
+}
+void rosetta_lisp_2618(rosetta_lisp::Call& c) {
+    for (int pass = 1; pass < 2; ++pass) {
+        const bool strict = pass == 0; (void)strict;
+            {
+                const std::size_t n = c.args.size() - 1;
+                if (c.args.size() >= 1 && n >= 1 && n <= 1) {
+                    auto* native = rosetta_lisp::native<datamunge::AgglomerativeClustering>(c.args[0]);
+                    if (n == 1) {
+                        rosetta_lisp::converting() = "argument 'merge-index'";
+                        rosetta_lisp::Param<unsigned long> p0(c.args[1]);
+                        rosetta_lisp::converting() = nullptr;
+                        rosetta_lisp::call(c, [&]() -> decltype(auto) { return native->merge_size(p0.get()); }, 0, rosetta_lisp::Return::automatic);
+                        return;
+                    }
+                }
+            }
+    }
+    rosetta_lisp::no_overload(c, "(merge-size ...)", "    (merge-size agglomerative-clustering merge-index) → integer\n", 1);
+}
+void rosetta_lisp_2619(rosetta_lisp::Call& c) {
+    for (int pass = 1; pass < 2; ++pass) {
+        const bool strict = pass == 0; (void)strict;
+            {
+                const std::size_t n = c.args.size() - 1;
+                if (c.args.size() >= 1 && n >= 0 && n <= 0) {
+                    auto* native = rosetta_lisp::native<datamunge::AgglomerativeClustering>(c.args[0]);
+                    if (n == 0) {
+                        rosetta_lisp::call(c, [&]() -> decltype(auto) { return native->summary(); }, 0, rosetta_lisp::Return::automatic);
+                        return;
+                    }
+                }
+            }
+    }
+    rosetta_lisp::no_overload(c, "(summary ...)", "    (summary agglomerative-clustering) → string\n", 1);
+}
+void rosetta_lisp_2620(rosetta_lisp::Call& c) {
+    for (int pass = 1; pass < 2; ++pass) {
+        const bool strict = pass == 0; (void)strict;
+            {
+                const std::size_t n = c.args.size() - 1;
+                if (c.args.size() >= 1 && n >= 0 && n <= 0) {
+                    auto* native = rosetta_lisp::native<datamunge::AgglomerativeClustering>(c.args[0]);
+                    if (n == 0) {
+                        rosetta_lisp::call(c, [&]() -> decltype(auto) { return native->print_summary(); }, 0, rosetta_lisp::Return::automatic);
+                        return;
+                    }
+                }
+            }
+    }
+    rosetta_lisp::no_overload(c, "(print-summary ...)", "    (print-summary agglomerative-clustering)\n", 1);
+}
+void rosetta_lisp_2621(rosetta_lisp::Call& c) {
     const unsigned long long subclass = c.args.empty() || c.args[0].kind != rosetta_lisp::tag_int ? 0 : static_cast<unsigned long long>(c.args[0].integer);
     (void)subclass;
     for (int pass = 0; pass < 2; ++pass) {
         const bool strict = pass == 0; (void)strict;
             {
                 const std::size_t n = c.args.size() - 1;
-                if (c.args.size() >= 1 && n >= 2 && n <= 2
-                    && (n <= 0 || rosetta_lisp::Param<datamunge::fda::BSplineBasis>::check(c.args[1], strict))
-                    && (n <= 1 || rosetta_lisp::Param<std::vector<double>>::check(c.args[2], strict))) {
+                if (c.args.size() >= 1 && n >= 2 && n <= 5
+                    && (n <= 0 || rosetta_lisp::Param<const datamunge::DataFrame &>::check(c.args[1], strict))
+                    && (n <= 1 || rosetta_lisp::Param<const std::vector<std::__cxx11::basic_string<char>> &>::check(c.args[2], strict))
+                    && (n <= 2 || rosetta_lisp::Param<unsigned long>::check(c.args[3], strict))
+                    && (n <= 3 || rosetta_lisp::Param<const std::__cxx11::basic_string<char> &>::check(c.args[4], strict))
+                    && (n <= 4 || rosetta_lisp::Param<const std::__cxx11::basic_string<char> &>::check(c.args[5], strict))) {
                     if (n == 2) {
-                        rosetta_lisp::converting() = "argument 'basis'";
-                        rosetta_lisp::Param<datamunge::fda::BSplineBasis> p0(c.args[1]);
-                        rosetta_lisp::converting() = "argument 'coefficients'";
-                        rosetta_lisp::Param<std::vector<double>> p1(c.args[2]);
+                        rosetta_lisp::converting() = "argument 'data'";
+                        rosetta_lisp::Param<const datamunge::DataFrame &> p0(c.args[1]);
+                        rosetta_lisp::converting() = "argument 'feature-columns'";
+                        rosetta_lisp::Param<const std::vector<std::__cxx11::basic_string<char>> &> p1(c.args[2]);
                         rosetta_lisp::converting() = nullptr;
-                        c.result = rosetta_lisp::object(new datamunge::fda::TensorBSpline(p0.get(), p1.get()), &rosetta_lisp::Info<datamunge::fda::TensorBSpline>::value, rosetta_lisp::Ownership::owned, -1);
+                        c.result = rosetta_lisp::object(new datamunge::AgglomerativeClustering(p0.get(), p1.get()), &rosetta_lisp::Info<datamunge::AgglomerativeClustering>::value, rosetta_lisp::Ownership::owned, -1);
+                        return;
+                    }
+                    if (n == 3) {
+                        rosetta_lisp::converting() = "argument 'data'";
+                        rosetta_lisp::Param<const datamunge::DataFrame &> p0(c.args[1]);
+                        rosetta_lisp::converting() = "argument 'feature-columns'";
+                        rosetta_lisp::Param<const std::vector<std::__cxx11::basic_string<char>> &> p1(c.args[2]);
+                        rosetta_lisp::converting() = "argument 'n-clusters'";
+                        rosetta_lisp::Param<unsigned long> p2(c.args[3]);
+                        rosetta_lisp::converting() = nullptr;
+                        c.result = rosetta_lisp::object(new datamunge::AgglomerativeClustering(p0.get(), p1.get(), p2.get()), &rosetta_lisp::Info<datamunge::AgglomerativeClustering>::value, rosetta_lisp::Ownership::owned, -1);
+                        return;
+                    }
+                    if (n == 4) {
+                        rosetta_lisp::converting() = "argument 'data'";
+                        rosetta_lisp::Param<const datamunge::DataFrame &> p0(c.args[1]);
+                        rosetta_lisp::converting() = "argument 'feature-columns'";
+                        rosetta_lisp::Param<const std::vector<std::__cxx11::basic_string<char>> &> p1(c.args[2]);
+                        rosetta_lisp::converting() = "argument 'n-clusters'";
+                        rosetta_lisp::Param<unsigned long> p2(c.args[3]);
+                        rosetta_lisp::converting() = "argument 'linkage'";
+                        rosetta_lisp::Param<const std::__cxx11::basic_string<char> &> p3(c.args[4]);
+                        rosetta_lisp::converting() = nullptr;
+                        c.result = rosetta_lisp::object(new datamunge::AgglomerativeClustering(p0.get(), p1.get(), p2.get(), p3.get()), &rosetta_lisp::Info<datamunge::AgglomerativeClustering>::value, rosetta_lisp::Ownership::owned, -1);
+                        return;
+                    }
+                    if (n == 5) {
+                        rosetta_lisp::converting() = "argument 'data'";
+                        rosetta_lisp::Param<const datamunge::DataFrame &> p0(c.args[1]);
+                        rosetta_lisp::converting() = "argument 'feature-columns'";
+                        rosetta_lisp::Param<const std::vector<std::__cxx11::basic_string<char>> &> p1(c.args[2]);
+                        rosetta_lisp::converting() = "argument 'n-clusters'";
+                        rosetta_lisp::Param<unsigned long> p2(c.args[3]);
+                        rosetta_lisp::converting() = "argument 'linkage'";
+                        rosetta_lisp::Param<const std::__cxx11::basic_string<char> &> p3(c.args[4]);
+                        rosetta_lisp::converting() = "argument 'metric'";
+                        rosetta_lisp::Param<const std::__cxx11::basic_string<char> &> p4(c.args[5]);
+                        rosetta_lisp::converting() = nullptr;
+                        c.result = rosetta_lisp::object(new datamunge::AgglomerativeClustering(p0.get(), p1.get(), p2.get(), p3.get(), p4.get()), &rosetta_lisp::Info<datamunge::AgglomerativeClustering>::value, rosetta_lisp::Ownership::owned, -1);
                         return;
                     }
                 }
             }
             {
                 const std::size_t n = c.args.size() - 1;
-                if (c.args.size() >= 1 && n >= 2 && n <= 2
-                    && (n <= 0 || rosetta_lisp::Param<std::vector<datamunge::fda::BSplineBasis>>::check(c.args[1], strict))
-                    && (n <= 1 || rosetta_lisp::Param<std::vector<double>>::check(c.args[2], strict))) {
+                if (c.args.size() >= 1 && n >= 2 && n <= 5
+                    && (n <= 0 || rosetta_lisp::Param<const datamunge::DataFrame &>::check(c.args[1], strict))
+                    && (n <= 1 || rosetta_lisp::Param<const std::__cxx11::basic_string<char> &>::check(c.args[2], strict))
+                    && (n <= 2 || rosetta_lisp::Param<unsigned long>::check(c.args[3], strict))
+                    && (n <= 3 || rosetta_lisp::Param<const std::__cxx11::basic_string<char> &>::check(c.args[4], strict))
+                    && (n <= 4 || rosetta_lisp::Param<const std::__cxx11::basic_string<char> &>::check(c.args[5], strict))) {
                     if (n == 2) {
-                        rosetta_lisp::converting() = "argument 'bases'";
-                        rosetta_lisp::Param<std::vector<datamunge::fda::BSplineBasis>> p0(c.args[1]);
-                        rosetta_lisp::converting() = "argument 'coefficients'";
-                        rosetta_lisp::Param<std::vector<double>> p1(c.args[2]);
+                        rosetta_lisp::converting() = "argument 'data'";
+                        rosetta_lisp::Param<const datamunge::DataFrame &> p0(c.args[1]);
+                        rosetta_lisp::converting() = "argument 'encoded-feature-columns'";
+                        rosetta_lisp::Param<const std::__cxx11::basic_string<char> &> p1(c.args[2]);
                         rosetta_lisp::converting() = nullptr;
-                        c.result = rosetta_lisp::object(new datamunge::fda::TensorBSpline(p0.get(), p1.get()), &rosetta_lisp::Info<datamunge::fda::TensorBSpline>::value, rosetta_lisp::Ownership::owned, -1);
+                        c.result = rosetta_lisp::object(new datamunge::AgglomerativeClustering(p0.get(), p1.get()), &rosetta_lisp::Info<datamunge::AgglomerativeClustering>::value, rosetta_lisp::Ownership::owned, -1);
+                        return;
+                    }
+                    if (n == 3) {
+                        rosetta_lisp::converting() = "argument 'data'";
+                        rosetta_lisp::Param<const datamunge::DataFrame &> p0(c.args[1]);
+                        rosetta_lisp::converting() = "argument 'encoded-feature-columns'";
+                        rosetta_lisp::Param<const std::__cxx11::basic_string<char> &> p1(c.args[2]);
+                        rosetta_lisp::converting() = "argument 'n-clusters'";
+                        rosetta_lisp::Param<unsigned long> p2(c.args[3]);
+                        rosetta_lisp::converting() = nullptr;
+                        c.result = rosetta_lisp::object(new datamunge::AgglomerativeClustering(p0.get(), p1.get(), p2.get()), &rosetta_lisp::Info<datamunge::AgglomerativeClustering>::value, rosetta_lisp::Ownership::owned, -1);
+                        return;
+                    }
+                    if (n == 4) {
+                        rosetta_lisp::converting() = "argument 'data'";
+                        rosetta_lisp::Param<const datamunge::DataFrame &> p0(c.args[1]);
+                        rosetta_lisp::converting() = "argument 'encoded-feature-columns'";
+                        rosetta_lisp::Param<const std::__cxx11::basic_string<char> &> p1(c.args[2]);
+                        rosetta_lisp::converting() = "argument 'n-clusters'";
+                        rosetta_lisp::Param<unsigned long> p2(c.args[3]);
+                        rosetta_lisp::converting() = "argument 'linkage'";
+                        rosetta_lisp::Param<const std::__cxx11::basic_string<char> &> p3(c.args[4]);
+                        rosetta_lisp::converting() = nullptr;
+                        c.result = rosetta_lisp::object(new datamunge::AgglomerativeClustering(p0.get(), p1.get(), p2.get(), p3.get()), &rosetta_lisp::Info<datamunge::AgglomerativeClustering>::value, rosetta_lisp::Ownership::owned, -1);
+                        return;
+                    }
+                    if (n == 5) {
+                        rosetta_lisp::converting() = "argument 'data'";
+                        rosetta_lisp::Param<const datamunge::DataFrame &> p0(c.args[1]);
+                        rosetta_lisp::converting() = "argument 'encoded-feature-columns'";
+                        rosetta_lisp::Param<const std::__cxx11::basic_string<char> &> p1(c.args[2]);
+                        rosetta_lisp::converting() = "argument 'n-clusters'";
+                        rosetta_lisp::Param<unsigned long> p2(c.args[3]);
+                        rosetta_lisp::converting() = "argument 'linkage'";
+                        rosetta_lisp::Param<const std::__cxx11::basic_string<char> &> p3(c.args[4]);
+                        rosetta_lisp::converting() = "argument 'metric'";
+                        rosetta_lisp::Param<const std::__cxx11::basic_string<char> &> p4(c.args[5]);
+                        rosetta_lisp::converting() = nullptr;
+                        c.result = rosetta_lisp::object(new datamunge::AgglomerativeClustering(p0.get(), p1.get(), p2.get(), p3.get(), p4.get()), &rosetta_lisp::Info<datamunge::AgglomerativeClustering>::value, rosetta_lisp::Ownership::owned, -1);
                         return;
                     }
                 }
             }
     }
-    rosetta_lisp::no_overload(c, "(make-tensor-b-spline ...)", "    (make-tensor-b-spline basis coefficients) → tensor-b-spline\n    (make-tensor-b-spline bases coefficients) → tensor-b-spline\n", 1);
-}
-void rosetta_lisp_3009(rosetta_lisp::Call& c) {
-    if (c.args.size() != 1) rosetta_lisp::fail("(rows object) takes no further arguments");
-    auto* native = rosetta_lisp::native<datamunge::fda::detail::AxisRefinement>(c.args[0]);
-    c.result = rosetta_lisp::result<decltype((native->rows))>(c, native->rows, 0, rosetta_lisp::Return::automatic);
-}
-void rosetta_lisp_3010(rosetta_lisp::Call& c) {
-    if (c.args.size() != 2) rosetta_lisp::fail("(setf (rows object) value) takes no further arguments");
-    auto* native = rosetta_lisp::native<datamunge::fda::detail::AxisRefinement>(c.args[0]);
-    using F = std::remove_cv_t<std::remove_reference_t<decltype(native->rows)>>;
-    if constexpr (rosetta_lisp::bound_v<F>) {
-        // (setf (field object) (field object)) after changing the field object in place.
-        if (rosetta_lisp::is_instance<F>(c.args[1]) && rosetta_lisp::native<F>(c.args[1]) == &native->rows) return;
-    }
-    rosetta_lisp::converting() = "field rows";
-    rosetta_lisp::Param<const F&> converted(c.args[1]);
-    rosetta_lisp::converting() = nullptr;
-    rosetta_lisp::assign_field(native->rows, converted.get());
-}
-void rosetta_lisp_3011(rosetta_lisp::Call& c) {
-    if (c.args.size() != 1) rosetta_lisp::fail("(cols object) takes no further arguments");
-    auto* native = rosetta_lisp::native<datamunge::fda::detail::AxisRefinement>(c.args[0]);
-    c.result = rosetta_lisp::result<decltype((native->cols))>(c, native->cols, 0, rosetta_lisp::Return::automatic);
-}
-void rosetta_lisp_3012(rosetta_lisp::Call& c) {
-    if (c.args.size() != 2) rosetta_lisp::fail("(setf (cols object) value) takes no further arguments");
-    auto* native = rosetta_lisp::native<datamunge::fda::detail::AxisRefinement>(c.args[0]);
-    using F = std::remove_cv_t<std::remove_reference_t<decltype(native->cols)>>;
-    if constexpr (rosetta_lisp::bound_v<F>) {
-        // (setf (field object) (field object)) after changing the field object in place.
-        if (rosetta_lisp::is_instance<F>(c.args[1]) && rosetta_lisp::native<F>(c.args[1]) == &native->cols) return;
-    }
-    rosetta_lisp::converting() = "field cols";
-    rosetta_lisp::Param<const F&> converted(c.args[1]);
-    rosetta_lisp::converting() = nullptr;
-    rosetta_lisp::assign_field(native->cols, converted.get());
-}
-void rosetta_lisp_3013(rosetta_lisp::Call& c) {
-    const unsigned long long subclass = c.args.empty() || c.args[0].kind != rosetta_lisp::tag_int ? 0 : static_cast<unsigned long long>(c.args[0].integer);
-    (void)subclass;
-    for (int pass = 1; pass < 2; ++pass) {
-        const bool strict = pass == 0; (void)strict;
-            {
-                const std::size_t n = c.args.size() - 1;
-                if (c.args.size() >= 1 && n >= 0 && n <= 0) {
-                    if (n == 0) {
-                        c.result = rosetta_lisp::object(new datamunge::fda::detail::AxisRefinement(), &rosetta_lisp::Info<datamunge::fda::detail::AxisRefinement>::value, rosetta_lisp::Ownership::owned, -1);
-                        return;
-                    }
-                }
-            }
-    }
-    rosetta_lisp::no_overload(c, "(make-axis-refinement ...)", "    (make-axis-refinement) → axis-refinement\n", 1);
+    rosetta_lisp::no_overload(c, "(make-agglomerative-clustering ...)", "    (make-agglomerative-clustering data feature-columns &optional (n-clusters 2) (linkage \"ward\") (metric \"euclidean\")) → agglomerative-clustering\n    (make-agglomerative-clustering data encoded-feature-columns &optional (n-clusters 2) (linkage \"ward\") (metric \"euclidean\")) → agglomerative-clustering\n", 1);
 }
 void rosetta_lisp_3121(rosetta_lisp::Call& c) {
     for (int pass = 1; pass < 2; ++pass) {

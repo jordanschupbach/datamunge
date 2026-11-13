@@ -9,6 +9,17 @@
 //------------------------------------------------------------------------------
 
 
+/// <summary>Newton on the HessianFunction callback interface. Adds fixed damping to the supplied Hessian diagonal, solves with partial-pivot Gaussian elimination, and takes a full step. This is not a globalised line-search method; indefinite or nearly singular Hessians can increase the loss or produce huge steps. Stops on gradient norm. Dense O(p^3) solve/O(p^2) storage. The caller supplies finite, dimensionally consistent callbacks. Inputs are borrowed; coordinates mutate in place and can retain a partial state if a callback throws. Calls use local optimizer state and propagate callback exceptions; sharing a mutable objective across threads requires external synchronisation. Normal return alone is not a uniform convergence certificate.</summary>
+/// Title: Example
+/// <code>      const dm::optim::Newton optimizer;
+///      std::print("{}\n",optimizer.options().max_iterations); // 100</code>
+///
+///
+///
+/// Title: References
+///  - J. Nocedal and S. J. Wright (2006), Numerical Optimization, second edition, https://doi.org/10.1007/978-0-387-40065-5. The implemented variant and stopping rules are specified above.
+///
+/// <seealso cref="NewtonOptions, trace_optimize"/>
 public class Newton : global::System.IDisposable {
   private global::System.Runtime.InteropServices.HandleRef swigCPtr;
   protected bool swigCMemOwn;
@@ -56,16 +67,56 @@ public class Newton : global::System.IDisposable {
     }
   }
 
+  /// <summary>Store a copy of the controls without running the objective.</summary>
+  /// <param name="options"> Method-specific controls; defaults are listed by NewtonOptions.</param> 
+  /// Title: Example
+  /// <code>      const dm::optim::Newton optimizer;
+  ///      std::print("{}\n",optimizer.options().max_iterations); // 100</code>
+  ///
+  ///
+  ///
+  /// <seealso cref="optimize"/>
   public Newton(NewtonOptions options) : this(datamungePINVOKE.new_Newton__SWIG_0(NewtonOptions.getCPtr(options)), true) {
     if (datamungePINVOKE.SWIGPendingException.Pending) throw datamungePINVOKE.SWIGPendingException.Retrieve();
   }
 
+  /// <summary>Store a copy of the controls without running the objective.</summary>
+  /// Title: Example
+  /// <code>      const dm::optim::Newton optimizer;
+  ///      std::print("{}\n",optimizer.options().max_iterations); // 100</code>
+  ///
+  ///
+  ///
+  /// <seealso cref="optimize"/>
   public Newton() : this(datamungePINVOKE.new_Newton__SWIG_1(), true) {
   }
 
+  /// <summary>Run Newton from the supplied point using the configured finite budget. Adds fixed damping to the supplied Hessian diagonal, solves with partial-pivot Gaussian elimination, and takes a full step. This is not a globalised line-search method; indefinite or nearly singular Hessians can increase the loss or produce huge steps. Stops on gradient norm. Dense O(p^3) solve/O(p^2) storage.</summary>
+  /// <param name="function"> Borrowed HessianFunction with matching finite output shapes.</param> 
+  /// <param name="coordinates"> Owned-by-caller finite start; overwritten with the native returned point.</param> 
+  /// <returns>Objective at the native returned coordinates; not a stop-status code.</returns> 
+  /// <exception cref="std::invalid_argument"> Newton: Hessian has wrong dimension; Newton: singular Hessian.</exception> 
+  /// <exception cref="std::exception"> Exceptions from supplied callbacks propagate. Raw solvers do not uniformly reject nonfinite inputs.</exception> 
+  /// Title: Example
+  /// <code>      dm::optim::QuadraticObjective f({2,8},{1,-2});
+  ///      dm::optim::NewtonOptions controls;controls.max_iterations=5;
+  ///      std::vector&lt;double&gt; x{0,0};
+  ///      const auto value=dm::optim::Newton(controls).optimize(f,x);
+  ///      std::print("{}\n",std::isfinite(value)); // true</code>
+  ///
+  ///
+  ///
+  /// <seealso cref="trace_optimize"/>
   public double optimize(HessianFunction function, DVector coordinates) {
     double ret = datamungePINVOKE.Newton_optimize(swigCPtr, HessianFunction.getCPtr(function), DVector.getCPtr(coordinates));
     if (datamungePINVOKE.SWIGPendingException.Pending) throw datamungePINVOKE.SWIGPendingException.Retrieve();
+    return ret;
+  }
+
+  /// <summary>Borrow this optimizer's stored configuration.</summary>
+  /// <returns>Const option reference, valid during this object's lifetime; no mutation.</returns>
+  public NewtonOptions options() {
+    NewtonOptions ret = new NewtonOptions(datamungePINVOKE.Newton_options(swigCPtr), false);
     return ret;
   }
 

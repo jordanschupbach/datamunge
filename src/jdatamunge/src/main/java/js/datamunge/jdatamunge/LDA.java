@@ -126,6 +126,20 @@ public class LDA {
     datamungeJNI.LDA_print_summary(swigCPtr, this);
   }
 
+  /**
+   *  The fit as Markdown tables (priors, group means, coefficients, proportion of trace).
+   */
+  public String to_md(int digits) {
+    return datamungeJNI.LDA_to_md__SWIG_0(swigCPtr, this, digits);
+  }
+
+  /**
+   *  The fit as Markdown tables (priors, group means, coefficients, proportion of trace).
+   */
+  public String to_md() {
+    return datamungeJNI.LDA_to_md__SWIG_1(swigCPtr, this);
+  }
+
   public SVector predict(DataFrame newdata) {
     return new SVector(datamungeJNI.LDA_predict(swigCPtr, this, DataFrame.getCPtr(newdata), newdata), true);
   }
@@ -138,12 +152,29 @@ public class LDA {
     return (cPtr == 0) ? null : new DataFrame(cPtr, false);
   }
 
+  /**
+   *  LD1/LD2 scatter; with <code>decision_regions</code>, class regions shaded and boundaries drawn.
+   */
+  public RPlot plot_discriminants(boolean decision_regions) {
+    return new RPlot(datamungeJNI.LDA_plot_discriminants__SWIG_0(swigCPtr, this, decision_regions), true);
+  }
+
+  /**
+   *  LD1/LD2 scatter; with <code>decision_regions</code>, class regions shaded and boundaries drawn.
+   */
   public RPlot plot_discriminants() {
-    return new RPlot(datamungeJNI.LDA_plot_discriminants(swigCPtr, this), true);
+    return new RPlot(datamungeJNI.LDA_plot_discriminants__SWIG_1(swigCPtr, this), true);
   }
 
   public void save_discriminant_plot(String path) {
     datamungeJNI.LDA_save_discriminant_plot(swigCPtr, this, path);
+  }
+
+  /**
+   *  Decision regions in predictor space, for a model with exactly two predictors.
+   */
+  public RPlot plot_decision_regions() {
+    return new RPlot(datamungeJNI.LDA_plot_decision_regions(swigCPtr, this), true);
   }
 
 }

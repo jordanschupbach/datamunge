@@ -1,3 +1,5 @@
+// CMD: just TARGET=hierarchical_bspline_ex run-cpp
+
 #include <datamunge/fda/hierarchical_bspline.hpp>
 
 #include <cmath>

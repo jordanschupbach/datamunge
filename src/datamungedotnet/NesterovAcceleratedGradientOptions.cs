@@ -9,6 +9,14 @@
 //------------------------------------------------------------------------------
 
 
+/// <summary>Configuration for NesterovAcceleratedGradient; fields retain their documented native defaults. Supply finite values in the supported ranges. Controls are copied at construction; validation, stopping and loss scaling belong to optimize().</summary>
+/// Title: Example
+/// <code>      dm::optim::NesterovAcceleratedGradientOptions o;
+///      std::print("{}\n",o.max_iterations); // 10000</code>
+///
+///
+///
+/// <seealso cref="NesterovAcceleratedGradient"/>
 public class NesterovAcceleratedGradientOptions : global::System.IDisposable {
   private global::System.Runtime.InteropServices.HandleRef swigCPtr;
   protected bool swigCMemOwn;
@@ -66,7 +74,6 @@ public class NesterovAcceleratedGradientOptions : global::System.IDisposable {
     } 
   }
 
-  /// <summary>Momentum coefficient in [0, 1), typically 0.9.</summary>
   public double momentum {
     set {
       datamungePINVOKE.NesterovAcceleratedGradientOptions_momentum_set(swigCPtr, value);

@@ -1,3 +1,5 @@
+// CMD: just TARGET=rebot_arm run-cpp
+
 #include <dm/dm.hpp>
 #include <filesystem>
 #include <iostream>

@@ -9,6 +9,14 @@
 //------------------------------------------------------------------------------
 
 
+/// <summary>Configuration for RandomizedBlockCoordinateDescent; fields retain their documented native defaults. Supply finite values in the supported ranges. Controls are copied at construction; validation, stopping and loss scaling belong to optimize().</summary>
+/// Title: Example
+/// <code>      dm::optim::RandomizedBlockCoordinateDescentOptions o;
+///      std::print("{}\n",o.max_iterations); // 1000</code>
+///
+///
+///
+/// <seealso cref="RandomizedBlockCoordinateDescent"/>
 public class RandomizedBlockCoordinateDescentOptions : global::System.IDisposable {
   private global::System.Runtime.InteropServices.HandleRef swigCPtr;
   protected bool swigCMemOwn;
@@ -56,7 +64,6 @@ public class RandomizedBlockCoordinateDescentOptions : global::System.IDisposabl
     }
   }
 
-  /// <summary>Number of coordinates updated together in each block.</summary>
   public uint block_size {
     set {
       datamungePINVOKE.RandomizedBlockCoordinateDescentOptions_block_size_set(swigCPtr, value);
@@ -127,7 +134,6 @@ public class RandomizedBlockCoordinateDescentOptions : global::System.IDisposabl
     } 
   }
 
-  /// <summary>Seed for the reproducible random coordinate permutation generated each epoch.</summary>
   public ulong seed {
     set {
       datamungePINVOKE.RandomizedBlockCoordinateDescentOptions_seed_set(swigCPtr, value);

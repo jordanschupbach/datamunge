@@ -1,3 +1,5 @@
+;; CMD: just TARGET=datamunge_ex run-lisp
+
 ;;;; Smoke test of the basic bindings: vectors, pairs and a native Callback object.
 (require "asdf")
 (asdf:load-system "datamunge")

@@ -1,3 +1,5 @@
+;; CMD: just TARGET=lm_ex run-guile
+
 (use-modules (datamunge))
 
 (define hp (list 110.0 110.0 93.0 110.0 175.0 105.0 245.0 62.0 95.0 123.0))

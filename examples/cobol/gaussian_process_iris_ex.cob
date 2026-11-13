@@ -1,6 +1,7 @@
 *> Gaussian process regression on iris: Petal.Length ~ Petal.Width, with
 *> posterior confidence intervals in and far outside the training range.
-*> Run with `just run-cobol TARGET=gaussian_process_iris_ex` (GnuCOBOL limits source names to 31 characters).
+*> CMD: just TARGET=gaussian_process_iris_ex run-cobol
+*> (The name is shortened because GnuCOBOL limits source names to 31 characters.)
 IDENTIFICATION DIVISION.
 PROGRAM-ID. GAUSSIAN-PROCESS-IRIS-EX.
 DATA DIVISION.
@@ -26,9 +27,9 @@ COPY "datamunge.cpy".
 01 INT-2     PIC -(9)9.
 
 PROCEDURE DIVISION.
-    CALL "dm_data_frame_iris" USING DM-DATA-FRAME-IRIS DM-STATUS
+    CALL "dm_data_iris" USING DM-DATA-IRIS DM-STATUS
     PERFORM CHECK
-    MOVE DM-DATA-FRAME-IRIS-RESULT TO IRIS
+    MOVE DM-DATA-IRIS-RESULT TO IRIS
     MOVE IRIS TO DM-DATA-FRAME-NROWS-SELF
     CALL "dm_data_frame_nrows" USING DM-DATA-FRAME-NROWS DM-STATUS
     PERFORM CHECK

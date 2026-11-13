@@ -1,10 +1,10 @@
-# CMD: nix develop .#r --command Rscript examples/r/tree_iris_ex.r
-# REPL: nix develop .#r --command R --no-save --quiet
+# CMD: nix develop .#r --command env R_LIBS_USER=build/r/library Rscript examples/r/tree_iris_ex.r
+# REPL: nix develop .#r --command env R_LIBS_USER=build/r/library R --no-save --quiet
 # Note: DataFrame_numeric_at/string_at take a 0-based row index (matching the underlying
 # C++ API); vectors returned to R (like predict()'s result) are indexed the normal R way (1-based).
 library(datamunger)
 
-iris <- DataFrame$iris()
+iris <- data$iris()
 n <- iris$nrows()
 cat(n, "rows x", iris$ncols(), "cols\n\n")
 

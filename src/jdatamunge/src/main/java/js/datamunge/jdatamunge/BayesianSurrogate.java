@@ -9,7 +9,11 @@
 package js.datamunge.jdatamunge;
 
 /**
- *  Surrogate/acquisition extension point for bounded Bayesian optimization.
+ *  Surrogate/acquisition extension point for BayesianOptimization.<br>
+ * <br>
+ *  A surrogate is refitted to all observations before every proposal. acquisition() scores a<br>
+ *  candidate point; the optimizer evaluates the objective where the score is largest.<br>
+ *  RBFGaussianProcessSurrogate is the built-in implementation.
  */
 public class BayesianSurrogate {
   private transient long swigCPtr;
@@ -66,10 +70,21 @@ public class BayesianSurrogate {
     datamungeJNI.BayesianSurrogate_change_ownership(this, swigCPtr, true);
   }
 
+  /**
+   *  Fits the surrogate to the observations so far.<br>
+   *  @param points  Evaluated points, one per observation.<br>
+   *  @param values  Objective values at <code>points</code>.
+   */
   public void fit(DVectorVector points, DVector values) {
     datamungeJNI.BayesianSurrogate_fit(swigCPtr, this, DVectorVector.getCPtr(points), points, DVector.getCPtr(values), values);
   }
 
+  /**
+   *  Scores a candidate; larger means more worth evaluating.<br>
+   *  @param point      Candidate point.<br>
+   *  @param incumbent  Smallest objective value observed so far.<br>
+   *  @return The acquisition value.
+   */
   public double acquisition(DVector point, double incumbent) {
     return datamungeJNI.BayesianSurrogate_acquisition(swigCPtr, this, DVector.getCPtr(point), point, incumbent);
   }

@@ -1,3 +1,5 @@
+# CMD: just TARGET=elastic_net_iris_ex run-perl
+
 use strict;
 use warnings;
 
@@ -5,7 +7,7 @@ use Datamunge;
 
 my $FORMULA = "Petal.Length ~ Sepal.Length + Sepal.Width + Petal.Width + Sepal.Length:Petal.Width";
 
-my $iris = Datamunge::DataFrame::iris();
+my $iris = Datamunge::data_iris();
 print "iris: " . $iris->nrows() . " rows x " . $iris->ncols() . " cols\n";
 print "formula: $FORMULA\n\n";
 

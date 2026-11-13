@@ -1,3 +1,5 @@
+# CMD: just TARGET=bspline_ex run-perl
+
 use strict;
 use warnings;
 

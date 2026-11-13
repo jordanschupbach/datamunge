@@ -8,6 +8,9 @@
 
 package js.datamunge.jdatamunge;
 
+/**
+ *  Settings for GibbsSampler.
+ */
 public class GibbsOptions {
   private transient long swigCPtr;
   protected transient boolean swigCMemOwn;
@@ -48,18 +51,30 @@ public class GibbsOptions {
     }
   }
 
+  /**
+   *  Number of post-warmup sweeps kept.
+   */
   public void setNum_samples(long value) {
     datamungeJNI.GibbsOptions_num_samples_set(swigCPtr, this, value);
   }
 
+  /**
+   *  Number of post-warmup sweeps kept.
+   */
   public long getNum_samples() {
     return datamungeJNI.GibbsOptions_num_samples_get(swigCPtr, this);
   }
 
+  /**
+   *  Number of warmup sweeps (per-coordinate step adaptation).
+   */
   public void setNum_warmup(long value) {
     datamungeJNI.GibbsOptions_num_warmup_set(swigCPtr, this, value);
   }
 
+  /**
+   *  Number of warmup sweeps (per-coordinate step adaptation).
+   */
   public long getNum_warmup() {
     return datamungeJNI.GibbsOptions_num_warmup_get(swigCPtr, this);
   }
@@ -101,10 +116,16 @@ public class GibbsOptions {
     return datamungeJNI.GibbsOptions_target_accept_rate_get(swigCPtr, this);
   }
 
+  /**
+   *  Random seed.
+   */
   public void setSeed(java.math.BigInteger value) {
     datamungeJNI.GibbsOptions_seed_set(swigCPtr, this, value);
   }
 
+  /**
+   *  Random seed.
+   */
   public java.math.BigInteger getSeed() {
     return datamungeJNI.GibbsOptions_seed_get(swigCPtr, this);
   }

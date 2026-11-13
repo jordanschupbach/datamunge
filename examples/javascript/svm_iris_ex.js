@@ -1,12 +1,8 @@
+// CMD: just TARGET=svm_iris_ex run-javascript
+
 const datamunge = require("../../index.js");
 
-function dvector(values) {
-  const out = new datamunge.DVector(values.length);
-  for (let i = 0; i < values.length; i++) out.set(i, values[i]);
-  return out;
-}
-
-const iris = datamunge.DataFrame.iris();
+const iris = datamunge.data.iris();
 console.log(`iris: ${iris.nrows()} rows x ${iris.ncols()} cols\n`);
 
 console.log("=== RBF kernel (default) ===");
@@ -21,10 +17,10 @@ console.log(`Training accuracy: ${linearModel.training_accuracy() * 100.0}%`);
 console.log(`Support vectors: ${linearModel.num_support_vectors()}`);
 
 const newdata = new datamunge.DataFrame();
-newdata.add_numeric_column("Sepal.Length", dvector([5.1, 6.0, 6.5, 6.2]));
-newdata.add_numeric_column("Sepal.Width", dvector([3.5, 2.7, 3.0, 2.8]));
-newdata.add_numeric_column("Petal.Length", dvector([1.4, 4.5, 5.5, 4.8]));
-newdata.add_numeric_column("Petal.Width", dvector([0.2, 1.5, 2.0, 1.8]));
+newdata.add_numeric_column("Sepal.Length", [5.1, 6.0, 6.5, 6.2]);
+newdata.add_numeric_column("Sepal.Width", [3.5, 2.7, 3.0, 2.8]);
+newdata.add_numeric_column("Petal.Length", [1.4, 4.5, 5.5, 4.8]);
+newdata.add_numeric_column("Petal.Width", [0.2, 1.5, 2.0, 1.8]);
 
 console.log("\nRBF predictions for new flowers (votes out of 3 one-vs-one pairs):");
 console.log(rbfModel.predict_frame(newdata).to_string());

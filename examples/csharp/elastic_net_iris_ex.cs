@@ -1,10 +1,12 @@
+// CMD: just TARGET=elastic_net_iris_ex run-csharp
+
 using System;
 
 class Program {
   static void Main() {
     const string FORMULA = "Petal.Length ~ Sepal.Length + Sepal.Width + Petal.Width + Sepal.Length:Petal.Width";
 
-    var iris = DataFrame.iris();
+    var iris = datamunge.data_iris();
     Console.WriteLine($"iris: {iris.nrows()} rows x {iris.ncols()} cols");
     Console.WriteLine($"formula: {FORMULA}\n");
 

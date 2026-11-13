@@ -1,7 +1,7 @@
 *> Naive Bayes classification of penguin species from a mix of numeric (Gaussian) and
 *> categorical (frequency-table) predictors, with a bill-measurements-only model for plots.
 *> NaiveBayesClassifier drops incomplete rows for its own formula columns when fitting.
-*> Run with `just run-cobol TARGET=naive_bayes_penguins_ex`.
+*> CMD: just TARGET=naive_bayes_penguins_ex run-cobol
 IDENTIFICATION DIVISION.
 PROGRAM-ID. NAIVE-BAYES-PENGUINS-EX.
 DATA DIVISION.
@@ -40,9 +40,9 @@ COPY "datamunge.cpy".
 01 NUM-EDIT-2    PIC Z(8)9.
 
 PROCEDURE DIVISION.
-    CALL "dm_data_frame_penguins" USING DM-DATA-FRAME-PENGUINS DM-STATUS
+    CALL "dm_data_penguins" USING DM-DATA-PENGUINS DM-STATUS
     PERFORM CHECK
-    MOVE DM-DATA-FRAME-PENGUINS-RESULT TO PENGUINS
+    MOVE DM-DATA-PENGUINS-RESULT TO PENGUINS
     MOVE PENGUINS TO DM-DATA-FRAME-NROWS-SELF
     CALL "dm_data_frame_nrows" USING DM-DATA-FRAME-NROWS DM-STATUS
     PERFORM CHECK

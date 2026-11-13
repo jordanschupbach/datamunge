@@ -8,6 +8,17 @@
 
 package js.datamunge.jdatamunge;
 
+/**
+ *  Configuration for RMSProp; fields retain their documented native defaults.<br>
+ *  Supply finite values in the supported ranges. Controls are copied at construction;<br>
+ *  validation, stopping and loss scaling belong to optimize().<br>
+ *  <p alt="Example"><br>
+ *  {@code 
+ dm::optim::RMSPropOptions o;
+ std::print("{}\n",o.max_iterations); // 10000
+ }</p><br>
+ *  @see RMSProp
+ */
 public class RMSPropOptions {
   private transient long swigCPtr;
   protected transient boolean swigCMemOwn;
@@ -56,16 +67,10 @@ public class RMSPropOptions {
     return datamungeJNI.RMSPropOptions_step_size_get(swigCPtr, this);
   }
 
-  /**
-   *  Exponential decay of the per-coordinate squared-gradient average.
-   */
   public void setDecay_rate(double value) {
     datamungeJNI.RMSPropOptions_decay_rate_set(swigCPtr, this, value);
   }
 
-  /**
-   *  Exponential decay of the per-coordinate squared-gradient average.
-   */
   public double getDecay_rate() {
     return datamungeJNI.RMSPropOptions_decay_rate_get(swigCPtr, this);
   }

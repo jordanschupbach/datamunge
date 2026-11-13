@@ -1,3 +1,5 @@
+// CMD: just TARGET=naive_bayes_penguins_ex run-go
+
 package main
 
 import (
@@ -6,7 +8,7 @@ import (
 )
 
 func main() {
-	penguins := datamunge.DataFramePenguins()
+	penguins := datamunge.DataPenguins()
 	fmt.Printf("penguins: %d rows x %d cols\n\n", penguins.Nrows(), penguins.Ncols())
 
 	model := datamunge.NewNaiveBayesClassifier(penguins, "species ~ bill_length_mm + bill_depth_mm + island + sex")

@@ -1,7 +1,7 @@
-# CMD: nix develop .#r --command Rscript examples/r/lm_ex.r
-# REPL: nix develop .#r --command R --no-save --quiet
+# CMD: nix develop .#r --command env R_LIBS_USER=build/r/library Rscript examples/r/lm_ex.r
+# REPL: nix develop .#r --command env R_LIBS_USER=build/r/library R --no-save --quiet
 # Classes are R6 generators: construct with Class$new(...), call obj$method(...), read and
-# assign fields with obj$field. Static functions live on the generator (DataFrame$iris()).
+# assign fields with obj$field. Static functions live on the generator (data$iris()).
 library(datamunger)
 
 

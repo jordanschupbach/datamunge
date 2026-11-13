@@ -1,5 +1,5 @@
-# CMD: nix develop .#r --command Rscript examples/r/autodiff_ex.r
-# REPL: nix develop .#r --command R --no-save --quiet
+# CMD: nix develop .#r --command env R_LIBS_USER=build/r/library Rscript examples/r/autodiff_ex.r
+# REPL: nix develop .#r --command env R_LIBS_USER=build/r/library R --no-save --quiet
 # Note: the C++ autodiff_ex.cpp additionally demonstrates datamunge::autodiff::derivative/
 # gradient_forward/gradient_reverse/jacobian_forward/hessian -- generic C++ template driver
 # functions that work over any callable, but templates aren't bound in any scripting

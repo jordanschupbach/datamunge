@@ -11,7 +11,7 @@ public class KernelRegressionIrisEx {
   public static void run() {
     String formula = "Petal.Length ~ Petal.Width";
 
-    var iris = DataFrame.iris();
+    var iris = datamunge.data_iris();
     System.out.println("iris: " + iris.nrows() + " rows x " + iris.ncols() + " cols");
     System.out.println("formula: " + formula + "\n");
 

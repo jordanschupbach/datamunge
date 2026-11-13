@@ -1,3 +1,5 @@
+// CMD: just TARGET=linalg_ex run-cpp
+
 #include <datamunge/linalg/linalg.hpp>
 
 #include <iostream>

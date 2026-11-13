@@ -1,3 +1,5 @@
+# CMD: just TARGET=lmm_ex run-tcl
+
 package require Datamunge 0.0.1
 
 proc randn {} {
@@ -7,7 +9,7 @@ proc randn {} {
 }
 
 puts "=================== Random intercept on a real dataset (penguins) ==================="
-set penguins [datamunge::DataFrame_penguins]
+set penguins [datamunge::data_penguins]
 set species_model [datamunge::new_LMM $penguins "body_mass_g ~ flipper_length_mm + bill_length_mm + (1 | species)"]
 datamunge::LMM_print_summary $species_model
 

@@ -1,3 +1,5 @@
+// CMD: just TARGET=ggplot_ex run-d
+
 module app;
 
 // Demonstrates datamunge.GGPlot -- the ggplot2-style grammar-of-graphics library.
@@ -13,7 +15,7 @@ RGB rgb(int r, int g, int b) {
 }
 
 void main() {
-  auto iris = DataFrame.iris();
+  auto iris = data_iris();
 
   // ggplot(iris, aes(x = Sepal.Length, y = Sepal.Width, color = Species)) + geom_point()
   auto scatter = new GGPlot(iris, "Sepal.Length", "Sepal.Width", "Species");

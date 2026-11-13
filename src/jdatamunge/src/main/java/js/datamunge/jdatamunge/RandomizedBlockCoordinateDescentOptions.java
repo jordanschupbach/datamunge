@@ -8,6 +8,17 @@
 
 package js.datamunge.jdatamunge;
 
+/**
+ *  Configuration for RandomizedBlockCoordinateDescent; fields retain their documented native defaults.<br>
+ *  Supply finite values in the supported ranges. Controls are copied at construction;<br>
+ *  validation, stopping and loss scaling belong to optimize().<br>
+ *  <p alt="Example"><br>
+ *  {@code 
+ dm::optim::RandomizedBlockCoordinateDescentOptions o;
+ std::print("{}\n",o.max_iterations); // 1000
+ }</p><br>
+ *  @see RandomizedBlockCoordinateDescent
+ */
 public class RandomizedBlockCoordinateDescentOptions {
   private transient long swigCPtr;
   protected transient boolean swigCMemOwn;
@@ -48,16 +59,10 @@ public class RandomizedBlockCoordinateDescentOptions {
     }
   }
 
-  /**
-   *  Number of coordinates updated together in each block.
-   */
   public void setBlock_size(long value) {
     datamungeJNI.RandomizedBlockCoordinateDescentOptions_block_size_set(swigCPtr, this, value);
   }
 
-  /**
-   *  Number of coordinates updated together in each block.
-   */
   public long getBlock_size() {
     return datamungeJNI.RandomizedBlockCoordinateDescentOptions_block_size_get(swigCPtr, this);
   }
@@ -110,16 +115,10 @@ public class RandomizedBlockCoordinateDescentOptions {
     return datamungeJNI.RandomizedBlockCoordinateDescentOptions_max_line_search_trials_get(swigCPtr, this);
   }
 
-  /**
-   *  Seed for the reproducible random coordinate permutation generated each epoch.
-   */
   public void setSeed(java.math.BigInteger value) {
     datamungeJNI.RandomizedBlockCoordinateDescentOptions_seed_set(swigCPtr, this, value);
   }
 
-  /**
-   *  Seed for the reproducible random coordinate permutation generated each epoch.
-   */
   public java.math.BigInteger getSeed() {
     return datamungeJNI.RandomizedBlockCoordinateDescentOptions_seed_get(swigCPtr, this);
   }

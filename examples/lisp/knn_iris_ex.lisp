@@ -1,9 +1,11 @@
+;; CMD: just TARGET=knn_iris_ex run-lisp
+
 ;;;; k-nearest-neighbours classifier on iris: leave-one-out accuracy and decision regions for several k.
 (require "asdf")
 (asdf:load-system "datamunge")
 (setf *read-default-float-format* (quote double-float)) ; print doubles without a d0 suffix
 
-(defparameter *iris* (dm:data-frame-iris))
+(defparameter *iris* (dm.data:iris))
 (format t "iris: ~a rows x ~a cols~%~%" (dm:nrows *iris*) (dm:ncols *iris*))
 
 (defparameter *model* (dm:make-knn-classifier *iris* "Species ~ Petal.Length + Petal.Width"))

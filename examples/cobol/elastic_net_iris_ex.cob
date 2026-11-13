@@ -1,5 +1,5 @@
 *> Ridge, Lasso and Elastic Net regression on iris, with coefficient-path and CV plots.
-*> Run with `just run-cobol TARGET=elastic_net_iris_ex`.
+*> CMD: just TARGET=elastic_net_iris_ex run-cobol
 IDENTIFICATION DIVISION.
 PROGRAM-ID. ELASTIC-NET-IRIS-EX.
 DATA DIVISION.
@@ -18,9 +18,9 @@ COPY "datamunge.cpy".
 01 INT-2     PIC -(9)9.
 
 PROCEDURE DIVISION.
-    CALL "dm_data_frame_iris" USING DM-DATA-FRAME-IRIS DM-STATUS
+    CALL "dm_data_iris" USING DM-DATA-IRIS DM-STATUS
     PERFORM CHECK
-    MOVE DM-DATA-FRAME-IRIS-RESULT TO IRIS
+    MOVE DM-DATA-IRIS-RESULT TO IRIS
     PERFORM DISPLAY-IRIS-SHAPE
     DISPLAY "formula: " FUNCTION TRIM(FORMULA-TEXT)
     DISPLAY " "

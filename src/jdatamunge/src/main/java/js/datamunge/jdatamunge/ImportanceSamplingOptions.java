@@ -8,6 +8,9 @@
 
 package js.datamunge.jdatamunge;
 
+/**
+ *  Settings for ImportanceSampling.
+ */
 public class ImportanceSamplingOptions {
   private transient long swigCPtr;
   protected transient boolean swigCMemOwn;
@@ -48,18 +51,30 @@ public class ImportanceSamplingOptions {
     }
   }
 
+  /**
+   *  Number of proposal draws.
+   */
   public void setNum_samples(long value) {
     datamungeJNI.ImportanceSamplingOptions_num_samples_set(swigCPtr, this, value);
   }
 
+  /**
+   *  Number of proposal draws.
+   */
   public long getNum_samples() {
     return datamungeJNI.ImportanceSamplingOptions_num_samples_get(swigCPtr, this);
   }
 
+  /**
+   *  Random seed.
+   */
   public void setSeed(java.math.BigInteger value) {
     datamungeJNI.ImportanceSamplingOptions_seed_set(swigCPtr, this, value);
   }
 
+  /**
+   *  Random seed.
+   */
   public java.math.BigInteger getSeed() {
     return datamungeJNI.ImportanceSamplingOptions_seed_get(swigCPtr, this);
   }

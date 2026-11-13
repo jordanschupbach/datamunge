@@ -1,15 +1,11 @@
-const datamunge = require("../../index.js");
+// CMD: just TARGET=clustering_ex run-javascript
 
-function svector(values) {
-  const out = new datamunge.SVector(values.length);
-  for (let i = 0; i < values.length; i++) out.set(i, values[i]);
-  return out;
-}
+const datamunge = require("../../index.js");
 
 function reportPurity(clusterLabels, species, nClusters) {
   const votes = new Map();
-  for (let i = 0; i < clusterLabels.size(); i++) {
-    const label = clusterLabels.get(i);
+  for (let i = 0; i < clusterLabels.length; i++) {
+    const label = clusterLabels[i];
     if (label >= 0) {
       const key = `${label},${species[i]}`;
       votes.set(key, (votes.get(key) || 0) + 1);
@@ -35,11 +31,11 @@ function reportPurity(clusterLabels, species, nClusters) {
   }
 }
 
-const iris = datamunge.DataFrame.iris();
+const iris = datamunge.data.iris();
 const n = iris.nrows();
 const species = [];
 for (let i = 0; i < n; i++) species.push(iris.string_at("Species", i));
-const features = svector(["Sepal.Length", "Sepal.Width", "Petal.Length", "Petal.Width"]);
+const features = ["Sepal.Length", "Sepal.Width", "Petal.Length", "Petal.Width"];
 
 console.log("=================== K-means (k=3) on iris ===================");
 const kmeans = new datamunge.KMeans(iris, features, 3);

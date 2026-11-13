@@ -1,3 +1,5 @@
+;; CMD: just TARGET=naive_bayes_penguins_ex run-lisp
+
 ;;;; Naive Bayes on penguins: mixed numeric/categorical predictors, confusion matrix, misclassified rows, plots.
 (require "asdf")
 (asdf:load-system "datamunge")
@@ -7,7 +9,7 @@
 
 ;; Note: NaiveBayesClassifier drops incomplete rows for its own formula columns internally
 ;; when fitting, matching every other formula-based model in this library.
-(defparameter *penguins* (dm:data-frame-penguins))
+(defparameter *penguins* (dm.data:penguins))
 (format t "penguins: ~a rows x ~a cols~%~%" (dm:nrows *penguins*) (dm:ncols *penguins*))
 
 ;; A mix of numeric (Gaussian likelihood) and categorical (frequency-table likelihood)

@@ -9,9 +9,21 @@
 package js.datamunge.jdatamunge;
 
 /**
- *  Stochastic Variance Reduced Gradient (Johnson &amp; Zhang 2013) on a<br>
- *         DifferentiableSeparableFunction.  Each epoch uses a full-gradient snapshot as a<br>
- *         control variate, reducing the noise of individual component-gradient updates.
+ *  SVRG on the DifferentiableSeparableFunction callback interface.<br>
+ *  Uses mean component gradients: current_i-snapshot_i+full_snapshot_gradient/n. The division by n is essential for an unbiased mean-loss estimator and matches SGD/SAGA scale. Earlier code omitted it. Stops on absolute full-sum objective change per epoch. O(p) snapshot state, two component-gradient calls per inner update plus one full gradient per epoch.<br>
+ *  The caller supplies finite, dimensionally consistent callbacks. Inputs are borrowed;<br>
+ *  coordinates mutate in place and can retain a partial state if a callback throws.<br>
+ *  Calls use local optimizer state and propagate callback exceptions; sharing a mutable<br>
+ *  objective across threads requires external synchronisation. Normal return alone<br>
+ *  is not a uniform convergence certificate.<br>
+ *  <p alt="Example"><br>
+ *  {@code 
+ const dm::optim::SVRG optimizer;
+ std::print("{}\n",optimizer.options().max_epochs); // 100
+ }</p><br>
+ *  <p alt="References"><br>
+ *  - R. Johnson and T. Zhang (2013), Accelerating Stochastic Gradient Descent using Predictive Variance Reduction, https://proceedings.neurips.cc/paper/2013/hash/ac1dd209cbcc5e5d1c6e28598e8cbbe8-Abstract.html<br>
+ *  </p>@see SVRGOptions, trace_optimize()
  */
 public class SVRG {
   private transient long swigCPtr;
@@ -53,16 +65,61 @@ public class SVRG {
     }
   }
 
+  /**
+   *  Store a copy of the controls without running the objective.<br>
+   *  @param options Method-specific controls; defaults are listed by SVRGOptions.<br>
+   *  <p alt="Example"><br>
+   *  {@code 
+   const dm::optim::SVRG optimizer;
+   std::print("{}\n",optimizer.options().max_epochs); // 100
+   }</p><br>
+   *  @see optimize()
+   */
   public SVRG(SVRGOptions options) {
     this(datamungeJNI.new_SVRG__SWIG_0(SVRGOptions.getCPtr(options), options), true);
   }
 
+  /**
+   *  Store a copy of the controls without running the objective.<br>
+   *  <p alt="Example"><br>
+   *  {@code 
+   const dm::optim::SVRG optimizer;
+   std::print("{}\n",optimizer.options().max_epochs); // 100
+   }</p><br>
+   *  @see optimize()
+   */
   public SVRG() {
     this(datamungeJNI.new_SVRG__SWIG_1(), true);
   }
 
+  /**
+   *  Run SVRG from the supplied point using the configured finite budget.<br>
+   *  Uses mean component gradients: current_i-snapshot_i+full_snapshot_gradient/n. The division by n is essential for an unbiased mean-loss estimator and matches SGD/SAGA scale. Earlier code omitted it. Stops on absolute full-sum objective change per epoch. O(p) snapshot state, two component-gradient calls per inner update plus one full gradient per epoch.<br>
+   *  @param function Borrowed DifferentiableSeparableFunction with matching finite output shapes.<br>
+   *  @param coordinates Owned-by-caller finite start; overwritten with the native returned point.<br>
+   *  @return Objective at the native returned coordinates; not a stop-status code.<br>
+   *  @throws std::invalid_argument SVRG: step_size must be positive; SVRG: tolerance must be non-negative; SVRG: function has zero terms.<br>
+   *  @throws std::exception Exceptions from supplied callbacks propagate. Raw solvers do not uniformly reject nonfinite inputs.<br>
+   *  <p alt="Example"><br>
+   *  {@code 
+   dm::optim::LeastSquaresObjective f({{1},{1}},{1,3});
+   dm::optim::SVRGOptions controls;controls.max_epochs=5;
+   std::vector<double> x{0};
+   const auto value=dm::optim::SVRG(controls).optimize(f,x);
+   std::print("{}\n",std::isfinite(value)); // true
+   }</p><br>
+   *  @see trace_optimize(), SVRGOptions
+   */
   public double optimize(DifferentiableSeparableFunction function, DVector coordinates) {
     return datamungeJNI.SVRG_optimize(swigCPtr, this, DifferentiableSeparableFunction.getCPtr(function), function, DVector.getCPtr(coordinates), coordinates);
+  }
+
+  /**
+   *  Borrow this optimizer's stored configuration.<br>
+   *  @return Const option reference, valid during this object's lifetime; no mutation.
+   */
+  public SVRGOptions options() {
+    return new SVRGOptions(datamungeJNI.SVRG_options(swigCPtr, this), false);
   }
 
 }

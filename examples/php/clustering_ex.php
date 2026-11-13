@@ -1,4 +1,6 @@
 <?php
+// CMD: just TARGET=clustering_ex run-php
+
 
 function svector($values) {
     $out = new SVector(count($values));
@@ -35,7 +37,7 @@ function report_purity($cluster_labels, $species, $n_clusters) {
     }
 }
 
-$iris = DataFrame::iris();
+$iris = data_iris();
 $n = $iris->nrows();
 $species = array();
 for ($i = 0; $i < $n; $i++) $species[] = $iris->string_at("Species", $i);

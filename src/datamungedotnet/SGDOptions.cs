@@ -9,6 +9,14 @@
 //------------------------------------------------------------------------------
 
 
+/// <summary>Configuration for SGD; fields retain their documented native defaults. Supply finite values in the supported ranges. Controls are copied at construction; validation, stopping and loss scaling belong to optimize().</summary>
+/// Title: Example
+/// <code>      dm::optim::SGDOptions o;
+///      std::print("{}\n",o.max_epochs); // 100</code>
+///
+///
+///
+/// <seealso cref="SGD"/>
 public class SGDOptions : global::System.IDisposable {
   private global::System.Runtime.InteropServices.HandleRef swigCPtr;
   protected bool swigCMemOwn;
@@ -86,7 +94,6 @@ public class SGDOptions : global::System.IDisposable {
     } 
   }
 
-  /// <summary>Stops when the full-objective change between epochs drops below this.</summary>
   public double tolerance {
     set {
       datamungePINVOKE.SGDOptions_tolerance_set(swigCPtr, value);

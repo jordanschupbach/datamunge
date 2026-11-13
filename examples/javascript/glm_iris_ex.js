@@ -1,12 +1,8 @@
+// CMD: just TARGET=glm_iris_ex run-javascript
+
 const datamunge = require("../../index.js");
 
-function dvector(values) {
-  const out = new datamunge.DVector(values.length);
-  for (let i = 0; i < values.length; i++) out.set(i, values[i]);
-  return out;
-}
-
-const iris = datamunge.DataFrame.iris();
+const iris = datamunge.data.iris();
 
 const isVirginica = [];
 const petalLength = [];
@@ -22,9 +18,9 @@ for (let i = 0; i < n; i++) {
 }
 
 const sub = new datamunge.DataFrame();
-sub.add_numeric_column("Petal.Length", dvector(petalLength));
-sub.add_numeric_column("Petal.Width", dvector(petalWidth));
-sub.add_numeric_column("is_virginica", dvector(isVirginica));
+sub.add_numeric_column("Petal.Length", petalLength);
+sub.add_numeric_column("Petal.Width", petalWidth);
+sub.add_numeric_column("is_virginica", isVirginica);
 
 console.log("=================== Logistic regression (binomial, logit link) ===================");
 const logit = new datamunge.GLM(sub, "is_virginica ~ Petal.Length + Petal.Width", "binomial");
@@ -33,7 +29,7 @@ logit.print_summary();
 const fitted = logit.fitted_values();
 let correct = 0;
 for (let i = 0; i < isVirginica.length; i++) {
-  if ((fitted.get(i) >= 0.5) === (isVirginica[i] >= 0.5)) correct += 1;
+  if ((fitted[i] >= 0.5) === (isVirginica[i] >= 0.5)) correct += 1;
 }
 console.log(`\nResubstitution accuracy at 0.5 threshold: ${(100.0 * correct) / isVirginica.length}%`);
 
@@ -51,8 +47,8 @@ for (let i = 0; i < gridN; i++) {
   gridW.push(widthMean);
 }
 const grid = new datamunge.DataFrame();
-grid.add_numeric_column("Petal.Length", dvector(gridX));
-grid.add_numeric_column("Petal.Width", dvector(gridW));
+grid.add_numeric_column("Petal.Length", gridX);
+grid.add_numeric_column("Petal.Width", gridW);
 const curveFrame = logit.predict_frame(grid, "confidence");
 console.log("\nPredicted-probability curve (first 5 rows):");
 console.log(curveFrame.to_string(5));
@@ -67,9 +63,9 @@ for (let i = 0; i < n; i++) {
   allPetalLength.push(iris.numeric_at("Petal.Length", i));
 }
 const countData = new datamunge.DataFrame();
-countData.add_numeric_column("Sepal.Width", dvector(sepalWidth));
-countData.add_numeric_column("Petal.Length", dvector(allPetalLength));
-countData.add_numeric_column("count", dvector(count));
+countData.add_numeric_column("Sepal.Width", sepalWidth);
+countData.add_numeric_column("Petal.Length", allPetalLength);
+countData.add_numeric_column("count", count);
 
 const poisson = new datamunge.GLM(countData, "count ~ Sepal.Width + Petal.Length", "poisson");
 poisson.print_summary();

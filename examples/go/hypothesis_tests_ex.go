@@ -1,3 +1,5 @@
+// CMD: just TARGET=hypothesis_tests_ex run-go
+
 package main
 
 import (
@@ -51,7 +53,7 @@ func columnForSpecies(df datamunge.DataFrame, column string, species string) []f
 }
 
 func main() {
-	iris := datamunge.DataFrameIris()
+	iris := datamunge.DataIris()
 
 	setosaPetal := columnForSpecies(iris, "Petal.Length", "setosa")
 	versicolorPetal := columnForSpecies(iris, "Petal.Length", "versicolor")

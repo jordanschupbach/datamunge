@@ -1,4 +1,6 @@
 <?php
+// CMD: just TARGET=tensor_ex run-php
+
 
 function dvector($values) {
     $out = new DVector(count($values));
@@ -67,7 +69,7 @@ print("r >= 6 -> " . $mask->to_string() . "\n");
 print("count(r >= 6) = " . $mask->sum() . "\n");
 
 print("\n=================== A real dataset as a Tensor ===================\n");
-$iris = DataFrame::iris();
+$iris = data_iris();
 $n = $iris->nrows();
 $flat = array();
 for ($i = 0; $i < $n; $i++) {

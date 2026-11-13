@@ -71,4 +71,11 @@ public class ArtificialBeeColony : global::System.IDisposable {
     return ret;
   }
 
+  /// <summary>The options this ArtificialBeeColony was configured with.</summary>
+  /// <returns>The stored options.</returns>
+  public ArtificialBeeColonyOptions options() {
+    ArtificialBeeColonyOptions ret = new ArtificialBeeColonyOptions(datamungePINVOKE.ArtificialBeeColony_options(swigCPtr), false);
+    return ret;
+  }
+
 }

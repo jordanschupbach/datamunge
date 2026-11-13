@@ -1,3 +1,5 @@
+// CMD: just TARGET=optim_advanced_ex run-d
+
 module app;
 
 import std.stdio : writeln;

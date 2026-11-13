@@ -5,7 +5,7 @@ import random
 from pydatamunge import datamunge as dm
 
 print("=================== Random intercept on a real dataset (penguins) ===================")
-penguins = dm.DataFrame.penguins()
+penguins = dm.data.penguins()
 species_model = dm.LMM(penguins, "body_mass_g ~ flipper_length_mm + bill_length_mm + (1 | species)")
 species_model.print_summary()
 

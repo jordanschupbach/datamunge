@@ -1,3 +1,5 @@
+// CMD: just TARGET=forest_iris_ex run-cpp
+
 #include <datamunge/datasets/datasets.hpp>
 #include <datamunge/stats/stats.hpp>
 

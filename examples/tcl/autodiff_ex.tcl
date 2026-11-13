@@ -1,3 +1,6 @@
+# CMD: just TARGET=autodiff_ex run-tcl
+# CMD: nix develop .#tcl --command tclsh '/mnt/projects/datamunge/examples/tcl/autodiff_ex.tcl'
+
 package require Datamunge 0.0.1
 
 proc rosenbrock_dual {x0 x1} {
@@ -98,7 +101,7 @@ puts "\n=================== Gradient descent driven by reverse-mode gradients ==
 set point_x -1.2
 set point_y 1.0
 set learning_rate 0.001
-set n_steps 2000
+set n_steps 50000
 for {set step 0} {$step < $n_steps} {incr step} {
   set t [datamunge::new_Tape]
   set vx2 [datamunge::new_Var $t $point_x]

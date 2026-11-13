@@ -1,10 +1,6 @@
-const datamunge = require("../../index.js");
+// CMD: just TARGET=lmm_ex run-javascript
 
-function dvector(values) {
-  const out = new datamunge.DVector(values.length);
-  for (let i = 0; i < values.length; i++) out.set(i, values[i]);
-  return out;
-}
+const datamunge = require("../../index.js");
 
 function randn() {
   const u1 = Math.random();
@@ -13,7 +9,7 @@ function randn() {
 }
 
 console.log("=================== Random intercept on a real dataset (penguins) ===================");
-const penguins = datamunge.DataFrame.penguins();
+const penguins = datamunge.data.penguins();
 const speciesModel = new datamunge.LMM(penguins, "body_mass_g ~ flipper_length_mm + bill_length_mm + (1 | species)");
 speciesModel.print_summary();
 
@@ -40,9 +36,9 @@ for (let s = 0; s < nSchools; s++) {
 }
 
 const df = new datamunge.DataFrame();
-df.add_numeric_column("school", dvector(school));
-df.add_numeric_column("study_hours", dvector(studyHours));
-df.add_numeric_column("score", dvector(score));
+df.add_numeric_column("school", school);
+df.add_numeric_column("study_hours", studyHours);
+df.add_numeric_column("score", score);
 
 const model = new datamunge.LMM(df, "score ~ study_hours + (1 + study_hours | school)");
 model.print_summary();
@@ -53,16 +49,16 @@ console.log("\n--- Best Linear Unbiased Predictors (BLUPs) for a few schools ---
 const groupLabels = model.group_labels();
 for (let idx = 0; idx < 3; idx++) {
   const re = model.random_effects_for_group(idx);
-  console.log(`school ${groupLabels.get(idx)}: intercept shift=${re.get(0)}, slope shift=${re.get(1)}`);
+  console.log(`school ${groupLabels[idx]}: intercept shift=${re[0]}, slope shift=${re[1]}`);
 }
 
 console.log("\n--- Prediction: population-level vs. school-adjusted ---");
 const newdataPopulation = new datamunge.DataFrame();
-newdataPopulation.add_numeric_column("study_hours", dvector([5.0]));
+newdataPopulation.add_numeric_column("study_hours", [5.0]);
 const newdataSchool0 = new datamunge.DataFrame();
-newdataSchool0.add_numeric_column("study_hours", dvector([5.0]));
-newdataSchool0.add_numeric_column("school", dvector([0.0]));
+newdataSchool0.add_numeric_column("study_hours", [5.0]);
+newdataSchool0.add_numeric_column("school", [0.0]);
 const predPop = model.predict(newdataPopulation);
 const predS0 = model.predict(newdataSchool0);
-console.log(`5 study hours, unseen school:      ${predPop.get(0)} (fixed effects only)`);
-console.log(`5 study hours, school 0 (known):    ${predS0.get(0)} (fixed effects + school 0's BLUP)`);
+console.log(`5 study hours, unseen school:      ${predPop[0]} (fixed effects only)`);
+console.log(`5 study hours, school 0 (known):    ${predS0[0]} (fixed effects + school 0's BLUP)`);

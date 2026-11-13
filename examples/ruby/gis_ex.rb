@@ -1,3 +1,5 @@
+# CMD: just TARGET=gis_ex run-ruby
+
 require "octruby"
 require "tmpdir"
 

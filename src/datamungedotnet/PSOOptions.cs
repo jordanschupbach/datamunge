@@ -9,6 +9,14 @@
 //------------------------------------------------------------------------------
 
 
+/// <summary>Configuration for PSO; fields retain their documented native defaults. Supply finite values in the supported ranges. Controls are copied at construction; validation, stopping and loss scaling belong to optimize().</summary>
+/// Title: Example
+/// <code>      dm::optim::PSOOptions o;
+///      std::print("{}\n",o.max_iterations); // 1000</code>
+///
+///
+///
+/// <seealso cref="PSO"/>
 public class PSOOptions : global::System.IDisposable {
   private global::System.Runtime.InteropServices.HandleRef swigCPtr;
   protected bool swigCMemOwn;
@@ -106,7 +114,6 @@ public class PSOOptions : global::System.IDisposable {
     } 
   }
 
-  /// <summary>One of "global" (gbest -- every particle is attracted to the single best        particle found so far) or "ring" (lbest -- each particle is attracted to the        best particle within a small ring-shaped neighborhood; slower but less prone        to premature convergence).</summary>
   public string topology {
     set {
       datamungePINVOKE.PSOOptions_topology_set(swigCPtr, value);
@@ -119,7 +126,6 @@ public class PSOOptions : global::System.IDisposable {
     } 
   }
 
-  /// <summary>Neighbors considered on each side of a particle when topology == "ring".</summary>
   public uint ring_neighbors {
     set {
       datamungePINVOKE.PSOOptions_ring_neighbors_set(swigCPtr, value);
@@ -130,7 +136,6 @@ public class PSOOptions : global::System.IDisposable {
     } 
   }
 
-  /// <summary>One of "constant" or "linear_decay" (anneals from inertia_weight down to        final_inertia_weight over the course of the run).</summary>
   public string inertia_strategy {
     set {
       datamungePINVOKE.PSOOptions_inertia_strategy_set(swigCPtr, value);
@@ -153,7 +158,6 @@ public class PSOOptions : global::System.IDisposable {
     } 
   }
 
-  /// <summary>Stops after the global best has improved by less than this for 20 consecutive iterations.</summary>
   public double tolerance {
     set {
       datamungePINVOKE.PSOOptions_tolerance_set(swigCPtr, value);

@@ -8,22 +8,22 @@
 
 package js.datamunge.jdatamunge;
 
-public class SWIGTYPE_p_std__vectorT_datamunge__plot__LegendEntry_t {
+public class SWIGTYPE_p_datamunge__datasets__ImageBatch {
   private transient long swigCPtr;
 
-  protected SWIGTYPE_p_std__vectorT_datamunge__plot__LegendEntry_t(long cPtr, @SuppressWarnings("unused") boolean futureUse) {
+  protected SWIGTYPE_p_datamunge__datasets__ImageBatch(long cPtr, @SuppressWarnings("unused") boolean futureUse) {
     swigCPtr = cPtr;
   }
 
-  protected SWIGTYPE_p_std__vectorT_datamunge__plot__LegendEntry_t() {
+  protected SWIGTYPE_p_datamunge__datasets__ImageBatch() {
     swigCPtr = 0;
   }
 
-  protected static long getCPtr(SWIGTYPE_p_std__vectorT_datamunge__plot__LegendEntry_t obj) {
+  protected static long getCPtr(SWIGTYPE_p_datamunge__datasets__ImageBatch obj) {
     return (obj == null) ? 0 : obj.swigCPtr;
   }
 
-  protected static long swigRelease(SWIGTYPE_p_std__vectorT_datamunge__plot__LegendEntry_t obj) {
+  protected static long swigRelease(SWIGTYPE_p_datamunge__datasets__ImageBatch obj) {
     return (obj == null) ? 0 : obj.swigCPtr;
   }
 }

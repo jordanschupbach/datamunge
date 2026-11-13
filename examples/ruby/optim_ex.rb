@@ -1,3 +1,5 @@
+# CMD: just TARGET=optim_ex run-ruby
+
 require "octruby"
 
 # ---- Function types, defined via SWIG directors (Ruby subclasses of the bound C++
@@ -117,7 +119,7 @@ value = Datamunge::LBFGS.new.optimize(f, x)
 puts "f=#{value} x=#{x.to_a} (true minimum: f=0 at [1, 1])"
 
 puts "\n=================== DifferentiableSeparableFunction: SGD vs. closed-form LM ===================\n"
-iris = Datamunge::DataFrame.iris
+iris = Datamunge.data_iris
 sepal_length = (0...iris.nrows).map { |i| iris.numeric_at("Sepal.Length", i) }
 sepal_width = (0...iris.nrows).map { |i| iris.numeric_at("Sepal.Width", i) }
 petal_length = (0...iris.nrows).map { |i| iris.numeric_at("Petal.Length", i) }

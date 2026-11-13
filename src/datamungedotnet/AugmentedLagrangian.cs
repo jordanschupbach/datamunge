@@ -9,6 +9,17 @@
 //------------------------------------------------------------------------------
 
 
+/// <summary>AugmentedLagrangian on the EqualityConstrainedFunction callback interface. Uses fixed inner gradient steps on f+lambda*c+rho*||c||^2/2, capped so each displacement norm is at most one. Updates multipliers after each inner budget and doubles rho until feasibility tolerance or outer budget. No dual-stationarity test is exposed. Objective return alone is not a KKT certificate. The caller supplies finite, dimensionally consistent callbacks. Inputs are borrowed; coordinates mutate in place and can retain a partial state if a callback throws. Calls use local optimizer state and propagate callback exceptions; sharing a mutable objective across threads requires external synchronisation. Normal return alone is not a uniform convergence certificate.</summary>
+/// Title: Example
+/// <code>      const dm::optim::AugmentedLagrangian optimizer;
+///      std::print("{}\n",optimizer.options().max_outer_iterations); // 50</code>
+///
+///
+///
+/// Title: References
+///  - J. Nocedal and S. J. Wright (2006), Numerical Optimization, second edition, https://doi.org/10.1007/978-0-387-40065-5. The implemented variant and stopping rules are specified above.
+///
+/// <seealso cref="AugmentedLagrangianOptions, trace_optimize"/>
 public class AugmentedLagrangian : global::System.IDisposable {
   private global::System.Runtime.InteropServices.HandleRef swigCPtr;
   protected bool swigCMemOwn;
@@ -56,16 +67,56 @@ public class AugmentedLagrangian : global::System.IDisposable {
     }
   }
 
+  /// <summary>Store a copy of the controls without running the objective.</summary>
+  /// <param name="options"> Method-specific controls; defaults are listed by AugmentedLagrangianOptions.</param> 
+  /// Title: Example
+  /// <code>      const dm::optim::AugmentedLagrangian optimizer;
+  ///      std::print("{}\n",optimizer.options().max_outer_iterations); // 50</code>
+  ///
+  ///
+  ///
+  /// <seealso cref="optimize"/>
   public AugmentedLagrangian(AugmentedLagrangianOptions options) : this(datamungePINVOKE.new_AugmentedLagrangian__SWIG_0(AugmentedLagrangianOptions.getCPtr(options)), true) {
     if (datamungePINVOKE.SWIGPendingException.Pending) throw datamungePINVOKE.SWIGPendingException.Retrieve();
   }
 
+  /// <summary>Store a copy of the controls without running the objective.</summary>
+  /// Title: Example
+  /// <code>      const dm::optim::AugmentedLagrangian optimizer;
+  ///      std::print("{}\n",optimizer.options().max_outer_iterations); // 50</code>
+  ///
+  ///
+  ///
+  /// <seealso cref="optimize"/>
   public AugmentedLagrangian() : this(datamungePINVOKE.new_AugmentedLagrangian__SWIG_1(), true) {
   }
 
+  /// <summary>Run AugmentedLagrangian from the supplied point using the configured finite budget. Uses fixed inner gradient steps on f+lambda*c+rho*||c||^2/2, capped so each displacement norm is at most one. Updates multipliers after each inner budget and doubles rho until feasibility tolerance or outer budget. No dual-stationarity test is exposed. Objective return alone is not a KKT certificate.</summary>
+  /// <param name="function"> Borrowed EqualityConstrainedFunction with matching finite output shapes.</param> 
+  /// <param name="coordinates"> Owned-by-caller finite start; overwritten with the native returned point.</param> 
+  /// <returns>Objective at the native returned coordinates; not a stop-status code.</returns> 
+  /// <exception cref="std::invalid_argument"> AugmentedLagrangian: positive step_size and penalty required.</exception> 
+  /// <exception cref="std::exception"> Exceptions from supplied callbacks propagate. Raw solvers do not uniformly reject nonfinite inputs.</exception> 
+  /// Title: Example
+  /// <code>      dm::optim::EqualityQuadratic f({2,0},1);
+  ///      dm::optim::AugmentedLagrangianOptions controls;controls.max_outer_iterations=5;
+  ///      std::vector&lt;double&gt; x{0,0};
+  ///      const auto value=dm::optim::AugmentedLagrangian(controls).optimize(f,x);
+  ///      std::print("{}\n",std::isfinite(value)); // true</code>
+  ///
+  ///
+  ///
+  /// <seealso cref="trace_optimize"/>
   public double optimize(EqualityConstrainedFunction function, DVector coordinates) {
     double ret = datamungePINVOKE.AugmentedLagrangian_optimize(swigCPtr, EqualityConstrainedFunction.getCPtr(function), DVector.getCPtr(coordinates));
     if (datamungePINVOKE.SWIGPendingException.Pending) throw datamungePINVOKE.SWIGPendingException.Retrieve();
+    return ret;
+  }
+
+  /// <summary>Borrow this optimizer's stored configuration.</summary>
+  /// <returns>Const option reference, valid during this object's lifetime; no mutation.</returns>
+  public AugmentedLagrangianOptions options() {
+    AugmentedLagrangianOptions ret = new AugmentedLagrangianOptions(datamungePINVOKE.AugmentedLagrangian_options(swigCPtr), false);
     return ret;
   }
 

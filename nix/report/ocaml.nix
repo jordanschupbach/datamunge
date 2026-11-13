@@ -14,6 +14,6 @@ pkgs.mkShell {
     export OCAMLPATH="${datamungeocaml}/lib"
     export OCAMLTOP_INCLUDE_PATH="$(dirname "$(ocamlfind query findlib)")"
     export CAML_LD_LIBRARY_PATH="${datamungeocaml}/lib/stublibs:${datamunge}/lib/datamunge-${datamunge.version}"
-    export LD_LIBRARY_PATH="${datamunge}/lib/datamunge-${datamunge.version}"
+    export LD_LIBRARY_PATH="${datamunge}/lib/datamunge-${datamunge.version}''${LD_LIBRARY_PATH:+:$LD_LIBRARY_PATH}"
   '';
 }

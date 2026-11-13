@@ -5,7 +5,7 @@ TEST(DiffusionCompatibility, ExistingFacadesFormattingAndOwnedFrameMatchCanonica
   const auto input=dm::datasets::iris();
   const std::vector<std::string> columns{"Sepal.Length","Sepal.Width","Petal.Length","Petal.Width"};
   const dm::stats::DiffusionMaps core(input,columns,{2,5.5,.5,1});
-  const std::unique_ptr<dm::DataFrame> facade_input(dm::DataFrame::iris());
+  const std::unique_ptr<dm::DataFrame> facade_input(dm::data::iris());
   const dm::DiffusionMaps model(*facade_input,columns,2,5.5,.5,1);
   std::string encoded="4";encoded+='\x1e';
   for(std::size_t i=0;i<columns.size();++i){if(i)encoded+='\x1f';encoded+=columns[i];}

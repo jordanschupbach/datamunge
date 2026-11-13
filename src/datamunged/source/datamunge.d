@@ -2828,6 +2828,16 @@ class DataFrame {
     return ret;
   }
 
+  public string to_md(int digits) const {
+    string ret = std.conv.to!string(datamunge_im.DataFrame_to_md__SWIG_0(cast(void*)swigCPtr, digits));
+    return ret;
+  }
+
+  public string to_md() const {
+    string ret = std.conv.to!string(datamunge_im.DataFrame_to_md__SWIG_1(cast(void*)swigCPtr));
+    return ret;
+  }
+
   public bool is_numeric_column(string column_name) const {
     bool ret = datamunge_im.DataFrame_is_numeric_column(cast(void*)swigCPtr, (column_name ? std.string.toStringz(column_name) : null)) ? true : false;
     if (datamunge_im.SwigPendingException.isPending) throw datamunge_im.SwigPendingException.retrieve();
@@ -2852,15 +2862,241 @@ class DataFrame {
     return ret;
   }
 
-  public static DataFrame iris() {
-    void* cPtr = datamunge_im.DataFrame_iris();
+  public static DataFrame read_csv(string path, char delimiter) {
+    void* cPtr = datamunge_im.DataFrame_read_csv__SWIG_0((path ? std.string.toStringz(path) : null), delimiter);
+    DataFrame ret = (cPtr is null) ? null : new DataFrame(cPtr, false);
+    if (datamunge_im.SwigPendingException.isPending) throw datamunge_im.SwigPendingException.retrieve();
+    return ret;
+  }
+
+  public static DataFrame read_csv(string path) {
+    void* cPtr = datamunge_im.DataFrame_read_csv__SWIG_1((path ? std.string.toStringz(path) : null));
+    DataFrame ret = (cPtr is null) ? null : new DataFrame(cPtr, false);
+    if (datamunge_im.SwigPendingException.isPending) throw datamunge_im.SwigPendingException.retrieve();
+    return ret;
+  }
+
+  public static DataFrame parse_csv(string text, char delimiter) {
+    void* cPtr = datamunge_im.DataFrame_parse_csv__SWIG_0((text ? std.string.toStringz(text) : null), delimiter);
+    DataFrame ret = (cPtr is null) ? null : new DataFrame(cPtr, false);
+    if (datamunge_im.SwigPendingException.isPending) throw datamunge_im.SwigPendingException.retrieve();
+    return ret;
+  }
+
+  public static DataFrame parse_csv(string text) {
+    void* cPtr = datamunge_im.DataFrame_parse_csv__SWIG_1((text ? std.string.toStringz(text) : null));
+    DataFrame ret = (cPtr is null) ? null : new DataFrame(cPtr, false);
+    if (datamunge_im.SwigPendingException.isPending) throw datamunge_im.SwigPendingException.retrieve();
+    return ret;
+  }
+
+  public static DataFrame from_image_batch(SWIGTYPE_p_datamunge__datasets__ImageBatch batch) {
+    void* cPtr = datamunge_im.DataFrame_from_image_batch(SWIGTYPE_p_datamunge__datasets__ImageBatch.swigGetCPtr(batch));
+    DataFrame ret = (cPtr is null) ? null : new DataFrame(cPtr, false);
+    if (datamunge_im.SwigPendingException.isPending) throw datamunge_im.SwigPendingException.retrieve();
+    return ret;
+  }
+}
+
+DataFrame data_iris() {
+  void* cPtr = datamunge_im.data_iris();
+  DataFrame ret = (cPtr is null) ? null : new DataFrame(cPtr, false);
+  return ret;
+}
+
+DataFrame data_penguins() {
+  void* cPtr = datamunge_im.data_penguins();
+  DataFrame ret = (cPtr is null) ? null : new DataFrame(cPtr, false);
+  return ret;
+}
+
+DataFrame data_tooth_growth() {
+  void* cPtr = datamunge_im.data_tooth_growth();
+  DataFrame ret = (cPtr is null) ? null : new DataFrame(cPtr, false);
+  return ret;
+}
+
+DataFrame data_wine() {
+  void* cPtr = datamunge_im.data_wine();
+  DataFrame ret = (cPtr is null) ? null : new DataFrame(cPtr, false);
+  return ret;
+}
+
+DataFrame data_titanic() {
+  void* cPtr = datamunge_im.data_titanic();
+  DataFrame ret = (cPtr is null) ? null : new DataFrame(cPtr, false);
+  return ret;
+}
+
+DataFrame data_eight_schools() {
+  void* cPtr = datamunge_im.data_eight_schools();
+  DataFrame ret = (cPtr is null) ? null : new DataFrame(cPtr, false);
+  return ret;
+}
+
+DataFrame data_air_passengers() {
+  void* cPtr = datamunge_im.data_air_passengers();
+  DataFrame ret = (cPtr is null) ? null : new DataFrame(cPtr, false);
+  return ret;
+}
+
+DataFrame data_volcano() {
+  void* cPtr = datamunge_im.data_volcano();
+  DataFrame ret = (cPtr is null) ? null : new DataFrame(cPtr, false);
+  return ret;
+}
+
+DataFrame data_faithful() {
+  void* cPtr = datamunge_im.data_faithful();
+  DataFrame ret = (cPtr is null) ? null : new DataFrame(cPtr, false);
+  return ret;
+}
+
+DataFrame data_mtcars() {
+  void* cPtr = datamunge_im.data_mtcars();
+  DataFrame ret = (cPtr is null) ? null : new DataFrame(cPtr, false);
+  return ret;
+}
+
+DataFrame data_airquality() {
+  void* cPtr = datamunge_im.data_airquality();
+  DataFrame ret = (cPtr is null) ? null : new DataFrame(cPtr, false);
+  return ret;
+}
+
+DataFrame data_breast_cancer() {
+  void* cPtr = datamunge_im.data_breast_cancer();
+  DataFrame ret = (cPtr is null) ? null : new DataFrame(cPtr, false);
+  return ret;
+}
+
+DataFrame data_diabetes() {
+  void* cPtr = datamunge_im.data_diabetes();
+  DataFrame ret = (cPtr is null) ? null : new DataFrame(cPtr, false);
+  return ret;
+}
+
+DataFrame data_digits() {
+  void* cPtr = datamunge_im.data_digits();
+  DataFrame ret = (cPtr is null) ? null : new DataFrame(cPtr, false);
+  return ret;
+}
+
+DataFrame data_diamonds() {
+  void* cPtr = datamunge_im.data_diamonds();
+  DataFrame ret = (cPtr is null) ? null : new DataFrame(cPtr, false);
+  return ret;
+}
+
+DataFrame data_california_housing() {
+  void* cPtr = datamunge_im.data_california_housing();
+  DataFrame ret = (cPtr is null) ? null : new DataFrame(cPtr, false);
+  return ret;
+}
+
+DataFrame data_load(string name) {
+  void* cPtr = datamunge_im.data_load((name ? std.string.toStringz(name) : null));
+  DataFrame ret = (cPtr is null) ? null : new DataFrame(cPtr, false);
+  if (datamunge_im.SwigPendingException.isPending) throw datamunge_im.SwigPendingException.retrieve();
+  return ret;
+}
+
+DataFrame data_catalog() {
+  void* cPtr = datamunge_im.data_catalog();
+  DataFrame ret = (cPtr is null) ? null : new DataFrame(cPtr, false);
+  return ret;
+}
+
+class CsvReader {
+  private void* swigCPtr;
+  protected bool swigCMemOwn;
+
+  public this(void* cObject, bool ownCObject) {
+    swigCPtr = cObject;
+    swigCMemOwn = ownCObject;
+  }
+
+  public static void* swigGetCPtr(typeof(this) obj) {
+    return (obj is null) ? null : obj.swigCPtr;
+  }
+
+  public static void* swigRelease(typeof(this) obj) {
+    if (obj !is null) {
+      if (!obj.swigCMemOwn)
+        throw new Exception("Cannot release ownership as memory is not owned");
+      void* ptr = obj.swigCPtr;
+      obj.swigCMemOwn = false;
+      obj.dispose();
+      return ptr;
+    } else {
+      return null;
+    }
+  }
+
+  mixin datamunge_im.SwigOperatorDefinitions;
+
+  ~this() {
+    dispose();
+  }
+
+  public void dispose() {
+    synchronized(this) {
+      if (swigCPtr !is null) {
+        if (swigCMemOwn) {
+          swigCMemOwn = false;
+          datamunge_im.delete_CsvReader(cast(void*)swigCPtr);
+        }
+        swigCPtr = null;
+      }
+    }
+  }
+
+  public this(string path, int batch_size, char delimiter) {
+    this(datamunge_im.new_CsvReader__SWIG_0((path ? std.string.toStringz(path) : null), batch_size, delimiter), true);
+    if (datamunge_im.SwigPendingException.isPending) throw datamunge_im.SwigPendingException.retrieve();
+  }
+
+  public this(string path, int batch_size) {
+    this(datamunge_im.new_CsvReader__SWIG_1((path ? std.string.toStringz(path) : null), batch_size), true);
+    if (datamunge_im.SwigPendingException.isPending) throw datamunge_im.SwigPendingException.retrieve();
+  }
+
+  public this(string path) {
+    this(datamunge_im.new_CsvReader__SWIG_2((path ? std.string.toStringz(path) : null)), true);
+    if (datamunge_im.SwigPendingException.isPending) throw datamunge_im.SwigPendingException.retrieve();
+  }
+
+  public bool has_next() {
+    bool ret = datamunge_im.CsvReader_has_next(cast(void*)swigCPtr) ? true : false;
+    return ret;
+  }
+
+  public DataFrame next() {
+    void* cPtr = datamunge_im.CsvReader_next(cast(void*)swigCPtr);
     DataFrame ret = (cPtr is null) ? null : new DataFrame(cPtr, false);
     return ret;
   }
 
-  public static DataFrame penguins() {
-    void* cPtr = datamunge_im.DataFrame_penguins();
-    DataFrame ret = (cPtr is null) ? null : new DataFrame(cPtr, false);
+  public void reset() {
+    datamunge_im.CsvReader_reset(cast(void*)swigCPtr);
+  }
+
+  public int batch_size() const {
+    auto ret = datamunge_im.CsvReader_batch_size(cast(void*)swigCPtr);
+    return ret;
+  }
+
+  public void set_batch_size(int rows) {
+    datamunge_im.CsvReader_set_batch_size(cast(void*)swigCPtr, rows);
+  }
+
+  public SVector column_names() const {
+    SVector ret = new SVector(datamunge_im.CsvReader_column_names(cast(void*)swigCPtr), true);
+    return ret;
+  }
+
+  public double rows_read() const {
+    auto ret = datamunge_im.CsvReader_rows_read(cast(void*)swigCPtr);
     return ret;
   }
 }
@@ -3221,8 +3457,8 @@ class GGPlot {
     return ret;
   }
 
-  public GGPlot scale_color_manual(SWIGTYPE_p_std__vectorT_datamunge__plot__RGB_t values) {
-    GGPlot ret = new GGPlot(datamunge_im.GGPlot_scale_color_manual(cast(void*)swigCPtr, SWIGTYPE_p_std__vectorT_datamunge__plot__RGB_t.swigGetCPtr(values)), false);
+  public GGPlot scale_color_manual(SWIGTYPE_p_std__vectorT_datamunge__graphics__RGB_t values) {
+    GGPlot ret = new GGPlot(datamunge_im.GGPlot_scale_color_manual(cast(void*)swigCPtr, SWIGTYPE_p_std__vectorT_datamunge__graphics__RGB_t.swigGetCPtr(values)), false);
     if (datamunge_im.SwigPendingException.isPending) throw datamunge_im.SwigPendingException.retrieve();
     return ret;
   }
@@ -3272,6 +3508,256 @@ class GGPlot {
 
   public void show() const {
     datamunge_im.GGPlot_show__SWIG_1(cast(void*)swigCPtr);
+  }
+
+  public int rows() const {
+    auto ret = datamunge_im.GGPlot_rows(cast(void*)swigCPtr);
+    return ret;
+  }
+
+  public string x_column() const {
+    string ret = std.conv.to!string(datamunge_im.GGPlot_x_column(cast(void*)swigCPtr));
+    return ret;
+  }
+
+  public string y_column() const {
+    string ret = std.conv.to!string(datamunge_im.GGPlot_y_column(cast(void*)swigCPtr));
+    return ret;
+  }
+
+  public string color_column() const {
+    string ret = std.conv.to!string(datamunge_im.GGPlot_color_column(cast(void*)swigCPtr));
+    return ret;
+  }
+
+  public int layer_count() const {
+    auto ret = datamunge_im.GGPlot_layer_count(cast(void*)swigCPtr);
+    return ret;
+  }
+
+  public SVector layer_kinds() const {
+    SVector ret = new SVector(datamunge_im.GGPlot_layer_kinds(cast(void*)swigCPtr), true);
+    return ret;
+  }
+
+  public string theme_name() const {
+    string ret = std.conv.to!string(datamunge_im.GGPlot_theme_name(cast(void*)swigCPtr));
+    return ret;
+  }
+
+  public string facet_column() const {
+    string ret = std.conv.to!string(datamunge_im.GGPlot_facet_column(cast(void*)swigCPtr));
+    return ret;
+  }
+
+  public string title_text() const {
+    string ret = std.conv.to!string(datamunge_im.GGPlot_title_text(cast(void*)swigCPtr));
+    return ret;
+  }
+
+  public string x_label() const {
+    string ret = std.conv.to!string(datamunge_im.GGPlot_x_label(cast(void*)swigCPtr));
+    return ret;
+  }
+
+  public string y_label() const {
+    string ret = std.conv.to!string(datamunge_im.GGPlot_y_label(cast(void*)swigCPtr));
+    return ret;
+  }
+}
+
+class Splom {
+  private void* swigCPtr;
+  protected bool swigCMemOwn;
+
+  public this(void* cObject, bool ownCObject) {
+    swigCPtr = cObject;
+    swigCMemOwn = ownCObject;
+  }
+
+  public static void* swigGetCPtr(typeof(this) obj) {
+    return (obj is null) ? null : obj.swigCPtr;
+  }
+
+  public static void* swigRelease(typeof(this) obj) {
+    if (obj !is null) {
+      if (!obj.swigCMemOwn)
+        throw new Exception("Cannot release ownership as memory is not owned");
+      void* ptr = obj.swigCPtr;
+      obj.swigCMemOwn = false;
+      obj.dispose();
+      return ptr;
+    } else {
+      return null;
+    }
+  }
+
+  mixin datamunge_im.SwigOperatorDefinitions;
+
+  ~this() {
+    dispose();
+  }
+
+  public void dispose() {
+    synchronized(this) {
+      if (swigCPtr !is null) {
+        if (swigCMemOwn) {
+          swigCMemOwn = false;
+          datamunge_im.delete_Splom(cast(void*)swigCPtr);
+        }
+        swigCPtr = null;
+      }
+    }
+  }
+
+  public this(DataFrame data, SVector columns) {
+    this(datamunge_im.new_Splom__SWIG_0(DataFrame.swigGetCPtr(data), SVector.swigGetCPtr(columns)), true);
+    if (datamunge_im.SwigPendingException.isPending) throw datamunge_im.SwigPendingException.retrieve();
+  }
+
+  public this(DataFrame data) {
+    this(datamunge_im.new_Splom__SWIG_1(DataFrame.swigGetCPtr(data)), true);
+    if (datamunge_im.SwigPendingException.isPending) throw datamunge_im.SwigPendingException.retrieve();
+  }
+
+  public Splom title(string value) {
+    Splom ret = new Splom(datamunge_im.Splom_title(cast(void*)swigCPtr, (value ? std.string.toStringz(value) : null)), false);
+    if (datamunge_im.SwigPendingException.isPending) throw datamunge_im.SwigPendingException.retrieve();
+    return ret;
+  }
+
+  public Splom size(size_t width, size_t height) {
+    Splom ret = new Splom(datamunge_im.Splom_size(cast(void*)swigCPtr, width, height), false);
+    return ret;
+  }
+
+  public Splom color(RGB value) {
+    Splom ret = new Splom(datamunge_im.Splom_color(cast(void*)swigCPtr, RGB.swigGetCPtr(value)), false);
+    if (datamunge_im.SwigPendingException.isPending) throw datamunge_im.SwigPendingException.retrieve();
+    return ret;
+  }
+
+  public Splom group_by(string column, SWIGTYPE_p_std__vectorT_datamunge__graphics__RGB_t palette) {
+    Splom ret = new Splom(datamunge_im.Splom_group_by__SWIG_0(cast(void*)swigCPtr, (column ? std.string.toStringz(column) : null), SWIGTYPE_p_std__vectorT_datamunge__graphics__RGB_t.swigGetCPtr(palette)), false);
+    if (datamunge_im.SwigPendingException.isPending) throw datamunge_im.SwigPendingException.retrieve();
+    return ret;
+  }
+
+  public Splom group_by(string column) {
+    Splom ret = new Splom(datamunge_im.Splom_group_by__SWIG_1(cast(void*)swigCPtr, (column ? std.string.toStringz(column) : null)), false);
+    if (datamunge_im.SwigPendingException.isPending) throw datamunge_im.SwigPendingException.retrieve();
+    return ret;
+  }
+
+  public Splom point_colors(SWIGTYPE_p_std__vectorT_datamunge__graphics__RGB_t colors) {
+    Splom ret = new Splom(datamunge_im.Splom_point_colors(cast(void*)swigCPtr, SWIGTYPE_p_std__vectorT_datamunge__graphics__RGB_t.swigGetCPtr(colors)), false);
+    if (datamunge_im.SwigPendingException.isPending) throw datamunge_im.SwigPendingException.retrieve();
+    return ret;
+  }
+
+  public Splom level_palette(SWIGTYPE_p_std__vectorT_datamunge__graphics__RGB_t colors) {
+    Splom ret = new Splom(datamunge_im.Splom_level_palette(cast(void*)swigCPtr, SWIGTYPE_p_std__vectorT_datamunge__graphics__RGB_t.swigGetCPtr(colors)), false);
+    if (datamunge_im.SwigPendingException.isPending) throw datamunge_im.SwigPendingException.retrieve();
+    return ret;
+  }
+
+  public Splom marker_size(double value) {
+    Splom ret = new Splom(datamunge_im.Splom_marker_size(cast(void*)swigCPtr, value), false);
+    return ret;
+  }
+
+  public Splom diagonal_names() {
+    Splom ret = new Splom(datamunge_im.Splom_diagonal_names(cast(void*)swigCPtr), false);
+    return ret;
+  }
+
+  public Splom diagonal_density() {
+    Splom ret = new Splom(datamunge_im.Splom_diagonal_density(cast(void*)swigCPtr), false);
+    return ret;
+  }
+
+  public Splom diagonal_histogram() {
+    Splom ret = new Splom(datamunge_im.Splom_diagonal_histogram(cast(void*)swigCPtr), false);
+    return ret;
+  }
+
+  public Splom span(double value) {
+    Splom ret = new Splom(datamunge_im.Splom_span(cast(void*)swigCPtr, value), false);
+    return ret;
+  }
+
+  public Splom prediction_level(double value) {
+    Splom ret = new Splom(datamunge_im.Splom_prediction_level(cast(void*)swigCPtr, value), false);
+    return ret;
+  }
+
+  public Splom bins(size_t value) {
+    Splom ret = new Splom(datamunge_im.Splom_bins(cast(void*)swigCPtr, value), false);
+    return ret;
+  }
+
+  public Splom show_grid(bool enabled) {
+    Splom ret = new Splom(datamunge_im.Splom_show_grid__SWIG_0(cast(void*)swigCPtr, enabled), false);
+    return ret;
+  }
+
+  public Splom show_grid() {
+    Splom ret = new Splom(datamunge_im.Splom_show_grid__SWIG_1(cast(void*)swigCPtr), false);
+    return ret;
+  }
+
+  public SVector variables() const {
+    SVector ret = new SVector(datamunge_im.Splom_variables(cast(void*)swigCPtr), true);
+    return ret;
+  }
+
+  public SVector groups() const {
+    SVector ret = new SVector(datamunge_im.Splom_groups(cast(void*)swigCPtr), true);
+    return ret;
+  }
+
+  public string title_text() const {
+    string ret = std.conv.to!string(datamunge_im.Splom_title_text(cast(void*)swigCPtr));
+    return ret;
+  }
+
+  public int width() const {
+    auto ret = datamunge_im.Splom_width(cast(void*)swigCPtr);
+    return ret;
+  }
+
+  public int height() const {
+    auto ret = datamunge_im.Splom_height(cast(void*)swigCPtr);
+    return ret;
+  }
+
+  public RPlot panel(size_t row, size_t col) const {
+    RPlot ret = new RPlot(datamunge_im.Splom_panel(cast(void*)swigCPtr, row, col), true);
+    return ret;
+  }
+
+  public string to_svg() const {
+    string ret = std.conv.to!string(datamunge_im.Splom_to_svg(cast(void*)swigCPtr));
+    return ret;
+  }
+
+  public void save(string path) const {
+    datamunge_im.Splom_save(cast(void*)swigCPtr, (path ? std.string.toStringz(path) : null));
+    if (datamunge_im.SwigPendingException.isPending) throw datamunge_im.SwigPendingException.retrieve();
+  }
+
+  public void save_svg(string path) const {
+    datamunge_im.Splom_save_svg(cast(void*)swigCPtr, (path ? std.string.toStringz(path) : null));
+    if (datamunge_im.SwigPendingException.isPending) throw datamunge_im.SwigPendingException.retrieve();
+  }
+
+  public void show(string title_hint) const {
+    datamunge_im.Splom_show__SWIG_0(cast(void*)swigCPtr, (title_hint ? std.string.toStringz(title_hint) : null));
+    if (datamunge_im.SwigPendingException.isPending) throw datamunge_im.SwigPendingException.retrieve();
+  }
+
+  public void show() const {
+    datamunge_im.Splom_show__SWIG_1(cast(void*)swigCPtr);
   }
 }
 
@@ -4243,6 +4729,16 @@ class LDA {
     datamunge_im.LDA_print_summary(cast(void*)swigCPtr);
   }
 
+  public string to_md(int digits) const {
+    string ret = std.conv.to!string(datamunge_im.LDA_to_md__SWIG_0(cast(void*)swigCPtr, digits));
+    return ret;
+  }
+
+  public string to_md() const {
+    string ret = std.conv.to!string(datamunge_im.LDA_to_md__SWIG_1(cast(void*)swigCPtr));
+    return ret;
+  }
+
   public SVector predict(DataFrame newdata) const {
     SVector ret = new SVector(datamunge_im.LDA_predict(cast(void*)swigCPtr, DataFrame.swigGetCPtr(newdata)), true);
     if (datamunge_im.SwigPendingException.isPending) throw datamunge_im.SwigPendingException.retrieve();
@@ -4256,14 +4752,24 @@ class LDA {
     return ret;
   }
 
+  public RPlot plot_discriminants(bool decision_regions) const {
+    RPlot ret = new RPlot(datamunge_im.LDA_plot_discriminants__SWIG_0(cast(void*)swigCPtr, decision_regions), true);
+    return ret;
+  }
+
   public RPlot plot_discriminants() const {
-    RPlot ret = new RPlot(datamunge_im.LDA_plot_discriminants(cast(void*)swigCPtr), true);
+    RPlot ret = new RPlot(datamunge_im.LDA_plot_discriminants__SWIG_1(cast(void*)swigCPtr), true);
     return ret;
   }
 
   public void save_discriminant_plot(string path) const {
     datamunge_im.LDA_save_discriminant_plot(cast(void*)swigCPtr, (path ? std.string.toStringz(path) : null));
     if (datamunge_im.SwigPendingException.isPending) throw datamunge_im.SwigPendingException.retrieve();
+  }
+
+  public RPlot plot_decision_regions() const {
+    RPlot ret = new RPlot(datamunge_im.LDA_plot_decision_regions(cast(void*)swigCPtr), true);
+    return ret;
   }
 }
 
@@ -10833,12 +11339,25 @@ class RGB {
     this(datamunge_im.new_RGB__SWIG_0(), true);
   }
 
-  public this(int r, int g, int b, double alpha) {
-    this(datamunge_im.new_RGB__SWIG_1(r, g, b, alpha), true);
+  public this(int red, int green, int blue, double opacity) {
+    this(datamunge_im.new_RGB__SWIG_1(red, green, blue, opacity), true);
   }
 
-  public this(int r, int g, int b) {
-    this(datamunge_im.new_RGB__SWIG_2(r, g, b), true);
+  public this(int red, int green, int blue) {
+    this(datamunge_im.new_RGB__SWIG_2(red, green, blue), true);
+  }
+
+  public this(int red) {
+    this(datamunge_im.new_RGB__SWIG_3(red), true);
+  }
+
+  public this(int red, int green) {
+    this(datamunge_im.new_RGB__SWIG_4(red, green), true);
+  }
+
+  public this(string color) {
+    this(datamunge_im.new_RGB__SWIG_5((color ? std.string.toStringz(color) : null)), true);
+    if (datamunge_im.SwigPendingException.isPending) throw datamunge_im.SwigPendingException.retrieve();
   }
 }
 
@@ -10979,6 +11498,16 @@ class DataSeries {
 
   public bool filled() @property const {
     bool ret = datamunge_im.DataSeries_filled_get(cast(void*)swigCPtr) ? true : false;
+    return ret;
+  }
+
+  public void point_colors(SWIGTYPE_p_std__vectorT_datamunge__graphics__RGB_t value) @property {
+    datamunge_im.DataSeries_point_colors_set(cast(void*)swigCPtr, SWIGTYPE_p_std__vectorT_datamunge__graphics__RGB_t.swigGetCPtr(value));
+  }
+
+  public SWIGTYPE_p_std__vectorT_datamunge__graphics__RGB_t point_colors() @property const {
+    void* cPtr = datamunge_im.DataSeries_point_colors_get(cast(void*)swigCPtr);
+    SWIGTYPE_p_std__vectorT_datamunge__graphics__RGB_t ret = (cPtr is null) ? null : new SWIGTYPE_p_std__vectorT_datamunge__graphics__RGB_t(cPtr, false);
     return ret;
   }
 
@@ -11207,6 +11736,12 @@ class Plot {
     return ret;
   }
 
+  public Plot subtitle(string value) {
+    Plot ret = new Plot(datamunge_im.Plot_subtitle(cast(void*)swigCPtr, (value ? std.string.toStringz(value) : null)), false);
+    if (datamunge_im.SwigPendingException.isPending) throw datamunge_im.SwigPendingException.retrieve();
+    return ret;
+  }
+
   public Plot x_label(string value) {
     Plot ret = new Plot(datamunge_im.Plot_x_label(cast(void*)swigCPtr, (value ? std.string.toStringz(value) : null)), false);
     if (datamunge_im.SwigPendingException.isPending) throw datamunge_im.SwigPendingException.retrieve();
@@ -11273,6 +11808,44 @@ class Plot {
     return ret;
   }
 
+  public Plot x_ticks(DVector positions, SVector labels) {
+    Plot ret = new Plot(datamunge_im.Plot_x_ticks(cast(void*)swigCPtr, DVector.swigGetCPtr(positions), SVector.swigGetCPtr(labels)), false);
+    if (datamunge_im.SwigPendingException.isPending) throw datamunge_im.SwigPendingException.retrieve();
+    return ret;
+  }
+
+  public Plot y_tick_labels(SVector labels) {
+    Plot ret = new Plot(datamunge_im.Plot_y_tick_labels(cast(void*)swigCPtr, SVector.swigGetCPtr(labels)), false);
+    if (datamunge_im.SwigPendingException.isPending) throw datamunge_im.SwigPendingException.retrieve();
+    return ret;
+  }
+
+  public Plot y_ticks(DVector positions, SVector labels) {
+    Plot ret = new Plot(datamunge_im.Plot_y_ticks(cast(void*)swigCPtr, DVector.swigGetCPtr(positions), SVector.swigGetCPtr(labels)), false);
+    if (datamunge_im.SwigPendingException.isPending) throw datamunge_im.SwigPendingException.retrieve();
+    return ret;
+  }
+
+  public Plot margins(double left, double right, double top, double bottom) {
+    Plot ret = new Plot(datamunge_im.Plot_margins(cast(void*)swigCPtr, left, right, top, bottom), false);
+    return ret;
+  }
+
+  public Plot tick_font_size(double pixels) {
+    Plot ret = new Plot(datamunge_im.Plot_tick_font_size(cast(void*)swigCPtr, pixels), false);
+    return ret;
+  }
+
+  public Plot pretty_ticks(bool enabled) {
+    Plot ret = new Plot(datamunge_im.Plot_pretty_ticks__SWIG_0(cast(void*)swigCPtr, enabled), false);
+    return ret;
+  }
+
+  public Plot pretty_ticks() {
+    Plot ret = new Plot(datamunge_im.Plot_pretty_ticks__SWIG_1(cast(void*)swigCPtr), false);
+    return ret;
+  }
+
   public size_t width() const {
     auto ret = datamunge_im.Plot_width(cast(void*)swigCPtr);
     return ret;
@@ -11288,6 +11861,11 @@ class Plot {
     return ret;
   }
 
+  public string subtitle_text() const {
+    string ret = std.conv.to!string(datamunge_im.Plot_subtitle_text(cast(void*)swigCPtr));
+    return ret;
+  }
+
   public string x_label_text() const {
     string ret = std.conv.to!string(datamunge_im.Plot_x_label_text(cast(void*)swigCPtr));
     return ret;
@@ -11298,8 +11876,8 @@ class Plot {
     return ret;
   }
 
-  public SWIGTYPE_p_std__vectorT_datamunge__plot__DataSeries_t series() const {
-    SWIGTYPE_p_std__vectorT_datamunge__plot__DataSeries_t ret = new SWIGTYPE_p_std__vectorT_datamunge__plot__DataSeries_t(datamunge_im.Plot_series(cast(void*)swigCPtr), false);
+  public SWIGTYPE_p_std__vectorT_datamunge__graphics__DataSeries_t series() const {
+    SWIGTYPE_p_std__vectorT_datamunge__graphics__DataSeries_t ret = new SWIGTYPE_p_std__vectorT_datamunge__graphics__DataSeries_t(datamunge_im.Plot_series(cast(void*)swigCPtr), false);
     return ret;
   }
 
@@ -11363,13 +11941,63 @@ class Plot {
     return ret;
   }
 
-  public SWIGTYPE_p_std__vectorT_datamunge__plot__ABLine_t reference_lines() const {
-    SWIGTYPE_p_std__vectorT_datamunge__plot__ABLine_t ret = new SWIGTYPE_p_std__vectorT_datamunge__plot__ABLine_t(datamunge_im.Plot_reference_lines(cast(void*)swigCPtr), false);
+  public DVector x_tick_position_list() const {
+    DVector ret = new DVector(datamunge_im.Plot_x_tick_position_list(cast(void*)swigCPtr), false);
     return ret;
   }
 
-  public SWIGTYPE_p_std__vectorT_datamunge__plot__LegendEntry_t legend_entries() const {
-    SWIGTYPE_p_std__vectorT_datamunge__plot__LegendEntry_t ret = new SWIGTYPE_p_std__vectorT_datamunge__plot__LegendEntry_t(datamunge_im.Plot_legend_entries(cast(void*)swigCPtr), false);
+  public SVector y_tick_label_list() const {
+    SVector ret = new SVector(datamunge_im.Plot_y_tick_label_list(cast(void*)swigCPtr), false);
+    return ret;
+  }
+
+  public DVector y_tick_position_list() const {
+    DVector ret = new DVector(datamunge_im.Plot_y_tick_position_list(cast(void*)swigCPtr), false);
+    return ret;
+  }
+
+  public SWIGTYPE_p_std__vectorT_datamunge__graphics__ABLine_t reference_lines() const {
+    SWIGTYPE_p_std__vectorT_datamunge__graphics__ABLine_t ret = new SWIGTYPE_p_std__vectorT_datamunge__graphics__ABLine_t(datamunge_im.Plot_reference_lines(cast(void*)swigCPtr), false);
+    return ret;
+  }
+
+  public SWIGTYPE_p_std__vectorT_datamunge__graphics__LegendEntry_t legend_entries() const {
+    SWIGTYPE_p_std__vectorT_datamunge__graphics__LegendEntry_t ret = new SWIGTYPE_p_std__vectorT_datamunge__graphics__LegendEntry_t(datamunge_im.Plot_legend_entries(cast(void*)swigCPtr), false);
+    return ret;
+  }
+
+  public bool has_custom_margins() const {
+    bool ret = datamunge_im.Plot_has_custom_margins(cast(void*)swigCPtr) ? true : false;
+    return ret;
+  }
+
+  public double margin_left() const {
+    auto ret = datamunge_im.Plot_margin_left(cast(void*)swigCPtr);
+    return ret;
+  }
+
+  public double margin_right() const {
+    auto ret = datamunge_im.Plot_margin_right(cast(void*)swigCPtr);
+    return ret;
+  }
+
+  public double margin_top() const {
+    auto ret = datamunge_im.Plot_margin_top(cast(void*)swigCPtr);
+    return ret;
+  }
+
+  public double margin_bottom() const {
+    auto ret = datamunge_im.Plot_margin_bottom(cast(void*)swigCPtr);
+    return ret;
+  }
+
+  public double tick_font_px() const {
+    auto ret = datamunge_im.Plot_tick_font_px(cast(void*)swigCPtr);
+    return ret;
+  }
+
+  public bool pretty_ticks_enabled() const {
+    bool ret = datamunge_im.Plot_pretty_ticks_enabled(cast(void*)swigCPtr) ? true : false;
     return ret;
   }
 
@@ -11385,6 +12013,26 @@ class Plot {
 
   public void save_svg(string path) const {
     datamunge_im.Plot_save_svg(cast(void*)swigCPtr, (path ? std.string.toStringz(path) : null));
+    if (datamunge_im.SwigPendingException.isPending) throw datamunge_im.SwigPendingException.retrieve();
+  }
+
+  public SWIGTYPE_p_std__vectorT_unsigned_char_t to_png() const {
+    SWIGTYPE_p_std__vectorT_unsigned_char_t ret = new SWIGTYPE_p_std__vectorT_unsigned_char_t(datamunge_im.Plot_to_png(cast(void*)swigCPtr), true);
+    return ret;
+  }
+
+  public SWIGTYPE_p_std__vectorT_unsigned_char_t to_pdf() const {
+    SWIGTYPE_p_std__vectorT_unsigned_char_t ret = new SWIGTYPE_p_std__vectorT_unsigned_char_t(datamunge_im.Plot_to_pdf(cast(void*)swigCPtr), true);
+    return ret;
+  }
+
+  public void save_png(string path) const {
+    datamunge_im.Plot_save_png(cast(void*)swigCPtr, (path ? std.string.toStringz(path) : null));
+    if (datamunge_im.SwigPendingException.isPending) throw datamunge_im.SwigPendingException.retrieve();
+  }
+
+  public void save_pdf(string path) const {
+    datamunge_im.Plot_save_pdf(cast(void*)swigCPtr, (path ? std.string.toStringz(path) : null));
     if (datamunge_im.SwigPendingException.isPending) throw datamunge_im.SwigPendingException.retrieve();
   }
 
@@ -11455,6 +12103,15 @@ class RPlot : Plot {
     }
   }
 
+  public this() {
+    this(datamunge_im.new_RPlot__SWIG_0(), true);
+  }
+
+  public this(DVector x, DVector y) {
+    this(datamunge_im.new_RPlot__SWIG_1(DVector.swigGetCPtr(x), DVector.swigGetCPtr(y)), true);
+    if (datamunge_im.SwigPendingException.isPending) throw datamunge_im.SwigPendingException.retrieve();
+  }
+
   public static RPlot create() {
     RPlot ret = new RPlot(datamunge_im.RPlot_create(), true);
     return ret;
@@ -11474,6 +12131,14 @@ class RPlot : Plot {
   }
 
   alias Plot.title title;
+
+  public override RPlot subtitle(string value) {
+    RPlot ret = new RPlot(datamunge_im.RPlot_subtitle(cast(void*)swigCPtr, (value ? std.string.toStringz(value) : null)), false);
+    if (datamunge_im.SwigPendingException.isPending) throw datamunge_im.SwigPendingException.retrieve();
+    return ret;
+  }
+
+  alias Plot.subtitle subtitle;
 
   public override RPlot x_label(string value) {
     RPlot ret = new RPlot(datamunge_im.RPlot_x_label(cast(void*)swigCPtr, (value ? std.string.toStringz(value) : null)), false);
@@ -11499,6 +12164,42 @@ class RPlot : Plot {
 
   public RPlot ylab(string value) {
     RPlot ret = new RPlot(datamunge_im.RPlot_ylab(cast(void*)swigCPtr, (value ? std.string.toStringz(value) : null)), false);
+    if (datamunge_im.SwigPendingException.isPending) throw datamunge_im.SwigPendingException.retrieve();
+    return ret;
+  }
+
+  public RPlot set_title(string value) {
+    RPlot ret = new RPlot(datamunge_im.RPlot_set_title(cast(void*)swigCPtr, (value ? std.string.toStringz(value) : null)), false);
+    if (datamunge_im.SwigPendingException.isPending) throw datamunge_im.SwigPendingException.retrieve();
+    return ret;
+  }
+
+  public RPlot set_subtitle(string value) {
+    RPlot ret = new RPlot(datamunge_im.RPlot_set_subtitle(cast(void*)swigCPtr, (value ? std.string.toStringz(value) : null)), false);
+    if (datamunge_im.SwigPendingException.isPending) throw datamunge_im.SwigPendingException.retrieve();
+    return ret;
+  }
+
+  public RPlot set_xlab(string value) {
+    RPlot ret = new RPlot(datamunge_im.RPlot_set_xlab(cast(void*)swigCPtr, (value ? std.string.toStringz(value) : null)), false);
+    if (datamunge_im.SwigPendingException.isPending) throw datamunge_im.SwigPendingException.retrieve();
+    return ret;
+  }
+
+  public RPlot set_ylab(string value) {
+    RPlot ret = new RPlot(datamunge_im.RPlot_set_ylab(cast(void*)swigCPtr, (value ? std.string.toStringz(value) : null)), false);
+    if (datamunge_im.SwigPendingException.isPending) throw datamunge_im.SwigPendingException.retrieve();
+    return ret;
+  }
+
+  public RPlot set_col(RGB color) {
+    RPlot ret = new RPlot(datamunge_im.RPlot_set_col__SWIG_0(cast(void*)swigCPtr, RGB.swigGetCPtr(color)), false);
+    if (datamunge_im.SwigPendingException.isPending) throw datamunge_im.SwigPendingException.retrieve();
+    return ret;
+  }
+
+  public RPlot set_col(string color) {
+    RPlot ret = new RPlot(datamunge_im.RPlot_set_col__SWIG_1(cast(void*)swigCPtr, (color ? std.string.toStringz(color) : null)), false);
     if (datamunge_im.SwigPendingException.isPending) throw datamunge_im.SwigPendingException.retrieve();
     return ret;
   }
@@ -11553,6 +12254,16 @@ class RPlot : Plot {
 
   alias Plot.y_limits y_limits;
 
+  public RPlot xlim(double min_x, double max_x) {
+    RPlot ret = new RPlot(datamunge_im.RPlot_xlim(cast(void*)swigCPtr, min_x, max_x), false);
+    return ret;
+  }
+
+  public RPlot ylim(double min_y, double max_y) {
+    RPlot ret = new RPlot(datamunge_im.RPlot_ylim(cast(void*)swigCPtr, min_y, max_y), false);
+    return ret;
+  }
+
   public override RPlot hide_axes(bool enabled) {
     RPlot ret = new RPlot(datamunge_im.RPlot_hide_axes__SWIG_0(cast(void*)swigCPtr, enabled), false);
     return ret;
@@ -11572,6 +12283,56 @@ class RPlot : Plot {
   }
 
   alias Plot.x_tick_labels x_tick_labels;
+
+  public override RPlot x_ticks(DVector positions, SVector labels) {
+    RPlot ret = new RPlot(datamunge_im.RPlot_x_ticks(cast(void*)swigCPtr, DVector.swigGetCPtr(positions), SVector.swigGetCPtr(labels)), false);
+    if (datamunge_im.SwigPendingException.isPending) throw datamunge_im.SwigPendingException.retrieve();
+    return ret;
+  }
+
+  alias Plot.x_ticks x_ticks;
+
+  public override RPlot y_tick_labels(SVector labels) {
+    RPlot ret = new RPlot(datamunge_im.RPlot_y_tick_labels(cast(void*)swigCPtr, SVector.swigGetCPtr(labels)), false);
+    if (datamunge_im.SwigPendingException.isPending) throw datamunge_im.SwigPendingException.retrieve();
+    return ret;
+  }
+
+  alias Plot.y_tick_labels y_tick_labels;
+
+  public override RPlot y_ticks(DVector positions, SVector labels) {
+    RPlot ret = new RPlot(datamunge_im.RPlot_y_ticks(cast(void*)swigCPtr, DVector.swigGetCPtr(positions), SVector.swigGetCPtr(labels)), false);
+    if (datamunge_im.SwigPendingException.isPending) throw datamunge_im.SwigPendingException.retrieve();
+    return ret;
+  }
+
+  alias Plot.y_ticks y_ticks;
+
+  public override RPlot margins(double left, double right, double top, double bottom) {
+    RPlot ret = new RPlot(datamunge_im.RPlot_margins(cast(void*)swigCPtr, left, right, top, bottom), false);
+    return ret;
+  }
+
+  alias Plot.margins margins;
+
+  public override RPlot tick_font_size(double pixels) {
+    RPlot ret = new RPlot(datamunge_im.RPlot_tick_font_size(cast(void*)swigCPtr, pixels), false);
+    return ret;
+  }
+
+  alias Plot.tick_font_size tick_font_size;
+
+  public override RPlot pretty_ticks(bool enabled) {
+    RPlot ret = new RPlot(datamunge_im.RPlot_pretty_ticks__SWIG_0(cast(void*)swigCPtr, enabled), false);
+    return ret;
+  }
+
+  public override RPlot pretty_ticks() {
+    RPlot ret = new RPlot(datamunge_im.RPlot_pretty_ticks__SWIG_1(cast(void*)swigCPtr), false);
+    return ret;
+  }
+
+  alias Plot.pretty_ticks pretty_ticks;
 
   public static RPlot plot(DVector x, DVector y, string type, string label, RGB color) {
     RPlot ret = new RPlot(datamunge_im.RPlot_plot__SWIG_0(DVector.swigGetCPtr(x), DVector.swigGetCPtr(y), (type ? std.string.toStringz(type) : null), (label ? std.string.toStringz(label) : null), RGB.swigGetCPtr(color)), true);
@@ -11663,8 +12424,14 @@ class RPlot : Plot {
     return ret;
   }
 
-  public static RPlot pie(DVector values, SVector names, SWIGTYPE_p_std__vectorT_datamunge__plot__RGB_t colors) {
-    RPlot ret = new RPlot(datamunge_im.RPlot_pie__SWIG_0(DVector.swigGetCPtr(values), SVector.swigGetCPtr(names), SWIGTYPE_p_std__vectorT_datamunge__plot__RGB_t.swigGetCPtr(colors)), true);
+  public static RPlot boxplot(DVectorVector groups, SVector names, SWIGTYPE_p_std__vectorT_datamunge__graphics__RGB_t colors) {
+    RPlot ret = new RPlot(datamunge_im.RPlot_boxplot__SWIG_3(DVectorVector.swigGetCPtr(groups), SVector.swigGetCPtr(names), SWIGTYPE_p_std__vectorT_datamunge__graphics__RGB_t.swigGetCPtr(colors)), true);
+    if (datamunge_im.SwigPendingException.isPending) throw datamunge_im.SwigPendingException.retrieve();
+    return ret;
+  }
+
+  public static RPlot pie(DVector values, SVector names, SWIGTYPE_p_std__vectorT_datamunge__graphics__RGB_t colors) {
+    RPlot ret = new RPlot(datamunge_im.RPlot_pie__SWIG_0(DVector.swigGetCPtr(values), SVector.swigGetCPtr(names), SWIGTYPE_p_std__vectorT_datamunge__graphics__RGB_t.swigGetCPtr(colors)), true);
     if (datamunge_im.SwigPendingException.isPending) throw datamunge_im.SwigPendingException.retrieve();
     return ret;
   }
@@ -11743,6 +12510,18 @@ class RPlot : Plot {
 
   public RPlot points(DVector x, DVector y) {
     RPlot ret = new RPlot(datamunge_im.RPlot_points__SWIG_3(cast(void*)swigCPtr, DVector.swigGetCPtr(x), DVector.swigGetCPtr(y)), false);
+    if (datamunge_im.SwigPendingException.isPending) throw datamunge_im.SwigPendingException.retrieve();
+    return ret;
+  }
+
+  public RPlot points_colored(DVector x, DVector y, SWIGTYPE_p_std__vectorT_datamunge__graphics__RGB_t colors, double marker_size) {
+    RPlot ret = new RPlot(datamunge_im.RPlot_points_colored__SWIG_0(cast(void*)swigCPtr, DVector.swigGetCPtr(x), DVector.swigGetCPtr(y), SWIGTYPE_p_std__vectorT_datamunge__graphics__RGB_t.swigGetCPtr(colors), marker_size), false);
+    if (datamunge_im.SwigPendingException.isPending) throw datamunge_im.SwigPendingException.retrieve();
+    return ret;
+  }
+
+  public RPlot points_colored(DVector x, DVector y, SWIGTYPE_p_std__vectorT_datamunge__graphics__RGB_t colors) {
+    RPlot ret = new RPlot(datamunge_im.RPlot_points_colored__SWIG_1(cast(void*)swigCPtr, DVector.swigGetCPtr(x), DVector.swigGetCPtr(y), SWIGTYPE_p_std__vectorT_datamunge__graphics__RGB_t.swigGetCPtr(colors)), false);
     if (datamunge_im.SwigPendingException.isPending) throw datamunge_im.SwigPendingException.retrieve();
     return ret;
   }
@@ -11935,8 +12714,8 @@ class RPlot : Plot {
     return ret;
   }
 
-  public RPlot legend(SVector labels, SWIGTYPE_p_std__vectorT_datamunge__plot__RGB_t colors) {
-    RPlot ret = new RPlot(datamunge_im.RPlot_legend(cast(void*)swigCPtr, SVector.swigGetCPtr(labels), SWIGTYPE_p_std__vectorT_datamunge__plot__RGB_t.swigGetCPtr(colors)), false);
+  public RPlot legend(SVector labels, SWIGTYPE_p_std__vectorT_datamunge__graphics__RGB_t colors) {
+    RPlot ret = new RPlot(datamunge_im.RPlot_legend(cast(void*)swigCPtr, SVector.swigGetCPtr(labels), SWIGTYPE_p_std__vectorT_datamunge__graphics__RGB_t.swigGetCPtr(colors)), false);
     if (datamunge_im.SwigPendingException.isPending) throw datamunge_im.SwigPendingException.retrieve();
     return ret;
   }
@@ -11977,6 +12756,30 @@ class RPlot : Plot {
     return ret;
   }
 
+  public RPlot image(DVector x, DVector y, DVectorVector z, SWIGTYPE_p_std__vectorT_datamunge__graphics__RGB_t palette, double z_min, double z_max) {
+    RPlot ret = new RPlot(datamunge_im.RPlot_image__SWIG_0(cast(void*)swigCPtr, DVector.swigGetCPtr(x), DVector.swigGetCPtr(y), DVectorVector.swigGetCPtr(z), SWIGTYPE_p_std__vectorT_datamunge__graphics__RGB_t.swigGetCPtr(palette), z_min, z_max), false);
+    if (datamunge_im.SwigPendingException.isPending) throw datamunge_im.SwigPendingException.retrieve();
+    return ret;
+  }
+
+  public RPlot image(DVector x, DVector y, DVectorVector z, SWIGTYPE_p_std__vectorT_datamunge__graphics__RGB_t palette, double z_min) {
+    RPlot ret = new RPlot(datamunge_im.RPlot_image__SWIG_1(cast(void*)swigCPtr, DVector.swigGetCPtr(x), DVector.swigGetCPtr(y), DVectorVector.swigGetCPtr(z), SWIGTYPE_p_std__vectorT_datamunge__graphics__RGB_t.swigGetCPtr(palette), z_min), false);
+    if (datamunge_im.SwigPendingException.isPending) throw datamunge_im.SwigPendingException.retrieve();
+    return ret;
+  }
+
+  public RPlot image(DVector x, DVector y, DVectorVector z, SWIGTYPE_p_std__vectorT_datamunge__graphics__RGB_t palette) {
+    RPlot ret = new RPlot(datamunge_im.RPlot_image__SWIG_2(cast(void*)swigCPtr, DVector.swigGetCPtr(x), DVector.swigGetCPtr(y), DVectorVector.swigGetCPtr(z), SWIGTYPE_p_std__vectorT_datamunge__graphics__RGB_t.swigGetCPtr(palette)), false);
+    if (datamunge_im.SwigPendingException.isPending) throw datamunge_im.SwigPendingException.retrieve();
+    return ret;
+  }
+
+  public RPlot image(DVector x, DVector y, DVectorVector z) {
+    RPlot ret = new RPlot(datamunge_im.RPlot_image__SWIG_3(cast(void*)swigCPtr, DVector.swigGetCPtr(x), DVector.swigGetCPtr(y), DVectorVector.swigGetCPtr(z)), false);
+    if (datamunge_im.SwigPendingException.isPending) throw datamunge_im.SwigPendingException.retrieve();
+    return ret;
+  }
+
   public RPlot segments(DVector x0, DVector y0, DVector x1, DVector y1, RGB color, double stroke_width) {
     RPlot ret = new RPlot(datamunge_im.RPlot_segments__SWIG_0(cast(void*)swigCPtr, DVector.swigGetCPtr(x0), DVector.swigGetCPtr(y0), DVector.swigGetCPtr(x1), DVector.swigGetCPtr(y1), RGB.swigGetCPtr(color), stroke_width), false);
     if (datamunge_im.SwigPendingException.isPending) throw datamunge_im.SwigPendingException.retrieve();
@@ -11993,10 +12796,6 @@ class RPlot : Plot {
     RPlot ret = new RPlot(datamunge_im.RPlot_segments__SWIG_2(cast(void*)swigCPtr, DVector.swigGetCPtr(x0), DVector.swigGetCPtr(y0), DVector.swigGetCPtr(x1), DVector.swigGetCPtr(y1)), false);
     if (datamunge_im.SwigPendingException.isPending) throw datamunge_im.SwigPendingException.retrieve();
     return ret;
-  }
-
-  public this() {
-    this(datamunge_im.new_RPlot(), true);
   }
 }
 
@@ -12044,6 +12843,16 @@ class RLayout {
     }
   }
 
+  public static size_t title_band_px() @property {
+    auto ret = datamunge_im.RLayout_title_band_px_get();
+    return ret;
+  }
+
+  public static size_t min_panel_px() @property {
+    auto ret = datamunge_im.RLayout_min_panel_px_get();
+    return ret;
+  }
+
   public static RLayout create(size_t rows, size_t cols) {
     RLayout ret = new RLayout(datamunge_im.RLayout_create(rows, cols), true);
     return ret;
@@ -12057,6 +12866,47 @@ class RLayout {
 
   public RLayout size(size_t width, size_t height) {
     RLayout ret = new RLayout(datamunge_im.RLayout_size(cast(void*)swigCPtr, width, height), false);
+    return ret;
+  }
+
+  public RLayout title(string value) {
+    RLayout ret = new RLayout(datamunge_im.RLayout_title(cast(void*)swigCPtr, (value ? std.string.toStringz(value) : null)), false);
+    if (datamunge_im.SwigPendingException.isPending) throw datamunge_im.SwigPendingException.retrieve();
+    return ret;
+  }
+
+  public size_t rows() const {
+    auto ret = datamunge_im.RLayout_rows(cast(void*)swigCPtr);
+    return ret;
+  }
+
+  public size_t cols() const {
+    auto ret = datamunge_im.RLayout_cols(cast(void*)swigCPtr);
+    return ret;
+  }
+
+  public size_t width() const {
+    auto ret = datamunge_im.RLayout_width(cast(void*)swigCPtr);
+    return ret;
+  }
+
+  public size_t height() const {
+    auto ret = datamunge_im.RLayout_height(cast(void*)swigCPtr);
+    return ret;
+  }
+
+  public size_t panel_count() const {
+    auto ret = datamunge_im.RLayout_panel_count(cast(void*)swigCPtr);
+    return ret;
+  }
+
+  public string title_text() const {
+    string ret = std.conv.to!string(datamunge_im.RLayout_title_text(cast(void*)swigCPtr));
+    return ret;
+  }
+
+  public Plot panel(size_t index) const {
+    Plot ret = new Plot(datamunge_im.RLayout_panel(cast(void*)swigCPtr, index), false);
     return ret;
   }
 
@@ -12075,9 +12925,91 @@ class RLayout {
     if (datamunge_im.SwigPendingException.isPending) throw datamunge_im.SwigPendingException.retrieve();
   }
 
+  public SWIGTYPE_p_std__vectorT_unsigned_char_t to_png() const {
+    SWIGTYPE_p_std__vectorT_unsigned_char_t ret = new SWIGTYPE_p_std__vectorT_unsigned_char_t(datamunge_im.RLayout_to_png(cast(void*)swigCPtr), true);
+    return ret;
+  }
+
+  public SWIGTYPE_p_std__vectorT_unsigned_char_t to_pdf() const {
+    SWIGTYPE_p_std__vectorT_unsigned_char_t ret = new SWIGTYPE_p_std__vectorT_unsigned_char_t(datamunge_im.RLayout_to_pdf(cast(void*)swigCPtr), true);
+    return ret;
+  }
+
+  public void save_png(string path) const {
+    datamunge_im.RLayout_save_png(cast(void*)swigCPtr, (path ? std.string.toStringz(path) : null));
+    if (datamunge_im.SwigPendingException.isPending) throw datamunge_im.SwigPendingException.retrieve();
+  }
+
+  public void save_pdf(string path) const {
+    datamunge_im.RLayout_save_pdf(cast(void*)swigCPtr, (path ? std.string.toStringz(path) : null));
+    if (datamunge_im.SwigPendingException.isPending) throw datamunge_im.SwigPendingException.retrieve();
+  }
+
+  public RLayout fit_panels() {
+    RLayout ret = new RLayout(datamunge_im.RLayout_fit_panels(cast(void*)swigCPtr), false);
+    return ret;
+  }
+
+  public void show(string title_hint) const {
+    datamunge_im.RLayout_show__SWIG_0(cast(void*)swigCPtr, (title_hint ? std.string.toStringz(title_hint) : null));
+    if (datamunge_im.SwigPendingException.isPending) throw datamunge_im.SwigPendingException.retrieve();
+  }
+
+  public void show() const {
+    datamunge_im.RLayout_show__SWIG_1(cast(void*)swigCPtr);
+  }
+
+  public void view(string title_hint) const {
+    datamunge_im.RLayout_view__SWIG_0(cast(void*)swigCPtr, (title_hint ? std.string.toStringz(title_hint) : null));
+    if (datamunge_im.SwigPendingException.isPending) throw datamunge_im.SwigPendingException.retrieve();
+  }
+
+  public void view() const {
+    datamunge_im.RLayout_view__SWIG_1(cast(void*)swigCPtr);
+  }
+
   public this() {
     this(datamunge_im.new_RLayout(), true);
   }
+}
+
+SWIGTYPE_p_std__vectorT_datamunge__graphics__RGB_t terrain_colors(size_t n) {
+  SWIGTYPE_p_std__vectorT_datamunge__graphics__RGB_t ret = new SWIGTYPE_p_std__vectorT_datamunge__graphics__RGB_t(datamunge_im.terrain_colors(n), true);
+  return ret;
+}
+
+SWIGTYPE_p_std__vectorT_datamunge__graphics__RGB_t diverging_colors(size_t n) {
+  SWIGTYPE_p_std__vectorT_datamunge__graphics__RGB_t ret = new SWIGTYPE_p_std__vectorT_datamunge__graphics__RGB_t(datamunge_im.diverging_colors(n), true);
+  return ret;
+}
+
+SWIGTYPE_p_std__vectorT_datamunge__graphics__RGB_t viridis_colors(size_t n) {
+  SWIGTYPE_p_std__vectorT_datamunge__graphics__RGB_t ret = new SWIGTYPE_p_std__vectorT_datamunge__graphics__RGB_t(datamunge_im.viridis_colors(n), true);
+  return ret;
+}
+
+SWIGTYPE_p_std__vectorT_datamunge__graphics__RGB_t value_colors(DVector values, SWIGTYPE_p_std__vectorT_datamunge__graphics__RGB_t palette, double z_min, double z_max) {
+  SWIGTYPE_p_std__vectorT_datamunge__graphics__RGB_t ret = new SWIGTYPE_p_std__vectorT_datamunge__graphics__RGB_t(datamunge_im.value_colors__SWIG_0(DVector.swigGetCPtr(values), SWIGTYPE_p_std__vectorT_datamunge__graphics__RGB_t.swigGetCPtr(palette), z_min, z_max), true);
+  if (datamunge_im.SwigPendingException.isPending) throw datamunge_im.SwigPendingException.retrieve();
+  return ret;
+}
+
+SWIGTYPE_p_std__vectorT_datamunge__graphics__RGB_t value_colors(DVector values, SWIGTYPE_p_std__vectorT_datamunge__graphics__RGB_t palette, double z_min) {
+  SWIGTYPE_p_std__vectorT_datamunge__graphics__RGB_t ret = new SWIGTYPE_p_std__vectorT_datamunge__graphics__RGB_t(datamunge_im.value_colors__SWIG_1(DVector.swigGetCPtr(values), SWIGTYPE_p_std__vectorT_datamunge__graphics__RGB_t.swigGetCPtr(palette), z_min), true);
+  if (datamunge_im.SwigPendingException.isPending) throw datamunge_im.SwigPendingException.retrieve();
+  return ret;
+}
+
+SWIGTYPE_p_std__vectorT_datamunge__graphics__RGB_t value_colors(DVector values, SWIGTYPE_p_std__vectorT_datamunge__graphics__RGB_t palette) {
+  SWIGTYPE_p_std__vectorT_datamunge__graphics__RGB_t ret = new SWIGTYPE_p_std__vectorT_datamunge__graphics__RGB_t(datamunge_im.value_colors__SWIG_2(DVector.swigGetCPtr(values), SWIGTYPE_p_std__vectorT_datamunge__graphics__RGB_t.swigGetCPtr(palette)), true);
+  if (datamunge_im.SwigPendingException.isPending) throw datamunge_im.SwigPendingException.retrieve();
+  return ret;
+}
+
+SWIGTYPE_p_std__vectorT_datamunge__graphics__RGB_t value_colors(DVector values) {
+  SWIGTYPE_p_std__vectorT_datamunge__graphics__RGB_t ret = new SWIGTYPE_p_std__vectorT_datamunge__graphics__RGB_t(datamunge_im.value_colors__SWIG_3(DVector.swigGetCPtr(values)), true);
+  if (datamunge_im.SwigPendingException.isPending) throw datamunge_im.SwigPendingException.retrieve();
+  return ret;
 }
 
 void set_seed(ulong seed) {
@@ -12086,6 +13018,11 @@ void set_seed(ulong seed) {
 
 DVector unif(double lower, double upper, size_t n) {
   DVector ret = new DVector(datamunge_im.unif(lower, upper, n), true);
+  return ret;
+}
+
+DVector runif(double lower, double upper, size_t n) {
+  DVector ret = new DVector(datamunge_im.runif(lower, upper, n), true);
   return ret;
 }
 
@@ -12634,6 +13571,21 @@ class ARIMA {
 
   public DVector forecast(size_t horizon) const {
     DVector ret = new DVector(datamunge_im.ARIMA_forecast(cast(void*)swigCPtr, horizon), true);
+    return ret;
+  }
+
+  public DVector expanded_ar_coefficients() const {
+    DVector ret = new DVector(datamunge_im.ARIMA_expanded_ar_coefficients(cast(void*)swigCPtr), false);
+    return ret;
+  }
+
+  public DVector expanded_ma_coefficients() const {
+    DVector ret = new DVector(datamunge_im.ARIMA_expanded_ma_coefficients(cast(void*)swigCPtr), false);
+    return ret;
+  }
+
+  public DVector psi_weights(size_t count) const {
+    DVector ret = new DVector(datamunge_im.ARIMA_psi_weights(cast(void*)swigCPtr, count), true);
     return ret;
   }
 
@@ -13195,6 +14147,30 @@ HypothesisTestResult ks_test_one_sample_normal(DVector x) {
   return ret;
 }
 
+HypothesisTestResult ks_test_one_sample_uniform(DVector x, double lower, double upper, Alternative alternative) {
+  HypothesisTestResult ret = new HypothesisTestResult(datamunge_im.ks_test_one_sample_uniform__SWIG_0(DVector.swigGetCPtr(x), lower, upper, cast(int)alternative), true);
+  if (datamunge_im.SwigPendingException.isPending) throw datamunge_im.SwigPendingException.retrieve();
+  return ret;
+}
+
+HypothesisTestResult ks_test_one_sample_uniform(DVector x, double lower, double upper) {
+  HypothesisTestResult ret = new HypothesisTestResult(datamunge_im.ks_test_one_sample_uniform__SWIG_1(DVector.swigGetCPtr(x), lower, upper), true);
+  if (datamunge_im.SwigPendingException.isPending) throw datamunge_im.SwigPendingException.retrieve();
+  return ret;
+}
+
+HypothesisTestResult ks_test_one_sample_uniform(DVector x, double lower) {
+  HypothesisTestResult ret = new HypothesisTestResult(datamunge_im.ks_test_one_sample_uniform__SWIG_2(DVector.swigGetCPtr(x), lower), true);
+  if (datamunge_im.SwigPendingException.isPending) throw datamunge_im.SwigPendingException.retrieve();
+  return ret;
+}
+
+HypothesisTestResult ks_test_one_sample_uniform(DVector x) {
+  HypothesisTestResult ret = new HypothesisTestResult(datamunge_im.ks_test_one_sample_uniform__SWIG_3(DVector.swigGetCPtr(x)), true);
+  if (datamunge_im.SwigPendingException.isPending) throw datamunge_im.SwigPendingException.retrieve();
+  return ret;
+}
+
 HypothesisTestResult ks_test_two_sample(DVector x, DVector y, Alternative alternative) {
   HypothesisTestResult ret = new HypothesisTestResult(datamunge_im.ks_test_two_sample__SWIG_0(DVector.swigGetCPtr(x), DVector.swigGetCPtr(y), cast(int)alternative), true);
   if (datamunge_im.SwigPendingException.isPending) throw datamunge_im.SwigPendingException.retrieve();
@@ -13269,6 +14245,124 @@ HypothesisTestResult spearman_correlation_test(DVector x, DVector y, Alternative
 
 HypothesisTestResult spearman_correlation_test(DVector x, DVector y) {
   HypothesisTestResult ret = new HypothesisTestResult(datamunge_im.spearman_correlation_test__SWIG_1(DVector.swigGetCPtr(x), DVector.swigGetCPtr(y)), true);
+  if (datamunge_im.SwigPendingException.isPending) throw datamunge_im.SwigPendingException.retrieve();
+  return ret;
+}
+
+class KendallTau {
+  private void* swigCPtr;
+  protected bool swigCMemOwn;
+
+  public this(void* cObject, bool ownCObject) {
+    swigCPtr = cObject;
+    swigCMemOwn = ownCObject;
+  }
+
+  public static void* swigGetCPtr(typeof(this) obj) {
+    return (obj is null) ? null : obj.swigCPtr;
+  }
+
+  public static void* swigRelease(typeof(this) obj) {
+    if (obj !is null) {
+      if (!obj.swigCMemOwn)
+        throw new Exception("Cannot release ownership as memory is not owned");
+      void* ptr = obj.swigCPtr;
+      obj.swigCMemOwn = false;
+      obj.dispose();
+      return ptr;
+    } else {
+      return null;
+    }
+  }
+
+  mixin datamunge_im.SwigOperatorDefinitions;
+
+  ~this() {
+    dispose();
+  }
+
+  public void dispose() {
+    synchronized(this) {
+      if (swigCPtr !is null) {
+        if (swigCMemOwn) {
+          swigCMemOwn = false;
+          datamunge_im.delete_KendallTau(cast(void*)swigCPtr);
+        }
+        swigCPtr = null;
+      }
+    }
+  }
+
+  public void concordant(long value) @property {
+    datamunge_im.KendallTau_concordant_set(cast(void*)swigCPtr, value);
+  }
+
+  public long concordant() @property const {
+    auto ret = datamunge_im.KendallTau_concordant_get(cast(void*)swigCPtr);
+    return ret;
+  }
+
+  public void discordant(long value) @property {
+    datamunge_im.KendallTau_discordant_set(cast(void*)swigCPtr, value);
+  }
+
+  public long discordant() @property const {
+    auto ret = datamunge_im.KendallTau_discordant_get(cast(void*)swigCPtr);
+    return ret;
+  }
+
+  public void ties_x(long value) @property {
+    datamunge_im.KendallTau_ties_x_set(cast(void*)swigCPtr, value);
+  }
+
+  public long ties_x() @property const {
+    auto ret = datamunge_im.KendallTau_ties_x_get(cast(void*)swigCPtr);
+    return ret;
+  }
+
+  public void ties_y(long value) @property {
+    datamunge_im.KendallTau_ties_y_set(cast(void*)swigCPtr, value);
+  }
+
+  public long ties_y() @property const {
+    auto ret = datamunge_im.KendallTau_ties_y_get(cast(void*)swigCPtr);
+    return ret;
+  }
+
+  public void ties_xy(long value) @property {
+    datamunge_im.KendallTau_ties_xy_set(cast(void*)swigCPtr, value);
+  }
+
+  public long ties_xy() @property const {
+    auto ret = datamunge_im.KendallTau_ties_xy_get(cast(void*)swigCPtr);
+    return ret;
+  }
+
+  public void tau_a(double value) @property {
+    datamunge_im.KendallTau_tau_a_set(cast(void*)swigCPtr, value);
+  }
+
+  public double tau_a() @property const {
+    auto ret = datamunge_im.KendallTau_tau_a_get(cast(void*)swigCPtr);
+    return ret;
+  }
+
+  public void tau_b(double value) @property {
+    datamunge_im.KendallTau_tau_b_set(cast(void*)swigCPtr, value);
+  }
+
+  public double tau_b() @property const {
+    auto ret = datamunge_im.KendallTau_tau_b_get(cast(void*)swigCPtr);
+    return ret;
+  }
+
+  public this() {
+    this(datamunge_im.new_KendallTau(), true);
+  }
+}
+
+KendallTau kendall_tau(DVector x, DVector y) {
+  KendallTau ret = new KendallTau(datamunge_im.kendall_tau(DVector.swigGetCPtr(x), DVector.swigGetCPtr(y)), true);
   if (datamunge_im.SwigPendingException.isPending) throw datamunge_im.SwigPendingException.retrieve();
   return ret;
 }
@@ -14501,6 +15595,11 @@ class GradientDescent {
     if (datamunge_im.SwigPendingException.isPending) throw datamunge_im.SwigPendingException.retrieve();
     return ret;
   }
+
+  public GradientDescentOptions options() const {
+    GradientDescentOptions ret = new GradientDescentOptions(datamunge_im.GradientDescent_options(cast(void*)swigCPtr), false);
+    return ret;
+  }
 }
 
 class AdamOptions {
@@ -14664,6 +15763,11 @@ class Adam {
     if (datamunge_im.SwigPendingException.isPending) throw datamunge_im.SwigPendingException.retrieve();
     return ret;
   }
+
+  public AdamOptions options() const {
+    AdamOptions ret = new AdamOptions(datamunge_im.Adam_options(cast(void*)swigCPtr), false);
+    return ret;
+  }
 }
 
 class AdaGradOptions {
@@ -14809,6 +15913,11 @@ class AdaGrad {
     if (datamunge_im.SwigPendingException.isPending) throw datamunge_im.SwigPendingException.retrieve();
     return ret;
   }
+
+  public AdaGradOptions options() const {
+    AdaGradOptions ret = new AdaGradOptions(datamunge_im.AdaGrad_options(cast(void*)swigCPtr), false);
+    return ret;
+  }
 }
 
 class AdaDeltaOptions {
@@ -14952,6 +16061,11 @@ class AdaDelta {
   public double optimize(DifferentiableFunction _function, DVector coordinates) const {
     auto ret = datamunge_im.AdaDelta_optimize(cast(void*)swigCPtr, DifferentiableFunction.swigGetCPtr(_function), DVector.swigGetCPtr(coordinates));
     if (datamunge_im.SwigPendingException.isPending) throw datamunge_im.SwigPendingException.retrieve();
+    return ret;
+  }
+
+  public AdaDeltaOptions options() const {
+    AdaDeltaOptions ret = new AdaDeltaOptions(datamunge_im.AdaDelta_options(cast(void*)swigCPtr), false);
     return ret;
   }
 }
@@ -15117,6 +16231,11 @@ class AMSGrad {
     if (datamunge_im.SwigPendingException.isPending) throw datamunge_im.SwigPendingException.retrieve();
     return ret;
   }
+
+  public AMSGradOptions options() const {
+    AMSGradOptions ret = new AMSGradOptions(datamunge_im.AMSGrad_options(cast(void*)swigCPtr), false);
+    return ret;
+  }
 }
 
 class NadamOptions {
@@ -15280,6 +16399,11 @@ class Nadam {
     if (datamunge_im.SwigPendingException.isPending) throw datamunge_im.SwigPendingException.retrieve();
     return ret;
   }
+
+  public NadamOptions options() const {
+    NadamOptions ret = new NadamOptions(datamunge_im.Nadam_options(cast(void*)swigCPtr), false);
+    return ret;
+  }
 }
 
 class RMSPropOptions {
@@ -15432,6 +16556,11 @@ class RMSProp {
   public double optimize(DifferentiableFunction _function, DVector coordinates) const {
     auto ret = datamunge_im.RMSProp_optimize(cast(void*)swigCPtr, DifferentiableFunction.swigGetCPtr(_function), DVector.swigGetCPtr(coordinates));
     if (datamunge_im.SwigPendingException.isPending) throw datamunge_im.SwigPendingException.retrieve();
+    return ret;
+  }
+
+  public RMSPropOptions options() const {
+    RMSPropOptions ret = new RMSPropOptions(datamunge_im.RMSProp_options(cast(void*)swigCPtr), false);
     return ret;
   }
 }
@@ -15595,6 +16724,11 @@ class LBFGS {
   public double optimize(DifferentiableFunction _function, DVector coordinates) const {
     auto ret = datamunge_im.LBFGS_optimize(cast(void*)swigCPtr, DifferentiableFunction.swigGetCPtr(_function), DVector.swigGetCPtr(coordinates));
     if (datamunge_im.SwigPendingException.isPending) throw datamunge_im.SwigPendingException.retrieve();
+    return ret;
+  }
+
+  public LBFGSOptions options() const {
+    LBFGSOptions ret = new LBFGSOptions(datamunge_im.LBFGS_options(cast(void*)swigCPtr), false);
     return ret;
   }
 }
@@ -15769,6 +16903,11 @@ class NelderMead {
     if (datamunge_im.SwigPendingException.isPending) throw datamunge_im.SwigPendingException.retrieve();
     return ret;
   }
+
+  public NelderMeadOptions options() const {
+    NelderMeadOptions ret = new NelderMeadOptions(datamunge_im.NelderMead_options(cast(void*)swigCPtr), false);
+    return ret;
+  }
 }
 
 class SGDOptions {
@@ -15932,6 +17071,11 @@ class SGD {
     if (datamunge_im.SwigPendingException.isPending) throw datamunge_im.SwigPendingException.retrieve();
     return ret;
   }
+
+  public SGDOptions options() const {
+    SGDOptions ret = new SGDOptions(datamunge_im.SGD_options(cast(void*)swigCPtr), false);
+    return ret;
+  }
 }
 
 class SVRGOptions {
@@ -16086,6 +17230,11 @@ class SVRG {
     if (datamunge_im.SwigPendingException.isPending) throw datamunge_im.SwigPendingException.retrieve();
     return ret;
   }
+
+  public SVRGOptions options() const {
+    SVRGOptions ret = new SVRGOptions(datamunge_im.SVRG_options(cast(void*)swigCPtr), false);
+    return ret;
+  }
 }
 
 class SAGAOptions {
@@ -16229,6 +17378,11 @@ class SAGA {
   public double optimize(DifferentiableSeparableFunction _function, DVector coordinates) const {
     auto ret = datamunge_im.SAGA_optimize(cast(void*)swigCPtr, DifferentiableSeparableFunction.swigGetCPtr(_function), DVector.swigGetCPtr(coordinates));
     if (datamunge_im.SwigPendingException.isPending) throw datamunge_im.SwigPendingException.retrieve();
+    return ret;
+  }
+
+  public SAGAOptions options() const {
+    SAGAOptions ret = new SAGAOptions(datamunge_im.SAGA_options(cast(void*)swigCPtr), false);
     return ret;
   }
 }
@@ -16392,6 +17546,11 @@ class CoordinateDescent {
   public double optimize(DifferentiableFunction _function, DVector coordinates) const {
     auto ret = datamunge_im.CoordinateDescent_optimize(cast(void*)swigCPtr, DifferentiableFunction.swigGetCPtr(_function), DVector.swigGetCPtr(coordinates));
     if (datamunge_im.SwigPendingException.isPending) throw datamunge_im.SwigPendingException.retrieve();
+    return ret;
+  }
+
+  public CoordinateDescentOptions options() const {
+    CoordinateDescentOptions ret = new CoordinateDescentOptions(datamunge_im.CoordinateDescent_options(cast(void*)swigCPtr), false);
     return ret;
   }
 }
@@ -16575,6 +17734,11 @@ class RandomizedBlockCoordinateDescent {
     if (datamunge_im.SwigPendingException.isPending) throw datamunge_im.SwigPendingException.retrieve();
     return ret;
   }
+
+  public RandomizedBlockCoordinateDescentOptions options() const {
+    RandomizedBlockCoordinateDescentOptions ret = new RandomizedBlockCoordinateDescentOptions(datamunge_im.RandomizedBlockCoordinateDescent_options(cast(void*)swigCPtr), false);
+    return ret;
+  }
 }
 
 class NesterovAcceleratedGradientOptions {
@@ -16718,6 +17882,11 @@ class NesterovAcceleratedGradient {
   public double optimize(DifferentiableFunction _function, DVector coordinates) const {
     auto ret = datamunge_im.NesterovAcceleratedGradient_optimize(cast(void*)swigCPtr, DifferentiableFunction.swigGetCPtr(_function), DVector.swigGetCPtr(coordinates));
     if (datamunge_im.SwigPendingException.isPending) throw datamunge_im.SwigPendingException.retrieve();
+    return ret;
+  }
+
+  public NesterovAcceleratedGradientOptions options() const {
+    NesterovAcceleratedGradientOptions ret = new NesterovAcceleratedGradientOptions(datamunge_im.NesterovAcceleratedGradient_options(cast(void*)swigCPtr), false);
     return ret;
   }
 }
@@ -16874,6 +18043,11 @@ class ConjugateGradient {
     if (datamunge_im.SwigPendingException.isPending) throw datamunge_im.SwigPendingException.retrieve();
     return ret;
   }
+
+  public ConjugateGradientOptions options() const {
+    ConjugateGradientOptions ret = new ConjugateGradientOptions(datamunge_im.ConjugateGradient_options(cast(void*)swigCPtr), false);
+    return ret;
+  }
 }
 
 class CMAESOptions {
@@ -17028,6 +18202,11 @@ class CMAES {
     if (datamunge_im.SwigPendingException.isPending) throw datamunge_im.SwigPendingException.retrieve();
     return ret;
   }
+
+  public CMAESOptions options() const {
+    CMAESOptions ret = new CMAESOptions(datamunge_im.CMAES_options(cast(void*)swigCPtr), false);
+    return ret;
+  }
 }
 
 class SimulatedAnnealingOptions {
@@ -17180,6 +18359,11 @@ class SimulatedAnnealing {
   public double optimize(ArbitraryFunction _function, DVector coordinates) const {
     auto ret = datamunge_im.SimulatedAnnealing_optimize(cast(void*)swigCPtr, ArbitraryFunction.swigGetCPtr(_function), DVector.swigGetCPtr(coordinates));
     if (datamunge_im.SwigPendingException.isPending) throw datamunge_im.SwigPendingException.retrieve();
+    return ret;
+  }
+
+  public SimulatedAnnealingOptions options() const {
+    SimulatedAnnealingOptions ret = new SimulatedAnnealingOptions(datamunge_im.SimulatedAnnealing_options(cast(void*)swigCPtr), false);
     return ret;
   }
 }
@@ -17394,6 +18578,11 @@ class PSO {
     if (datamunge_im.SwigPendingException.isPending) throw datamunge_im.SwigPendingException.retrieve();
     return ret;
   }
+
+  public PSOOptions options() const {
+    PSOOptions ret = new PSOOptions(datamunge_im.PSO_options(cast(void*)swigCPtr), false);
+    return ret;
+  }
 }
 
 class DEOptions {
@@ -17577,6 +18766,11 @@ class DifferentialEvolution {
   public double optimize(ArbitraryFunction _function, DVector coordinates, DVector lower_bound, DVector upper_bound) const {
     auto ret = datamunge_im.DifferentialEvolution_optimize(cast(void*)swigCPtr, ArbitraryFunction.swigGetCPtr(_function), DVector.swigGetCPtr(coordinates), DVector.swigGetCPtr(lower_bound), DVector.swigGetCPtr(upper_bound));
     if (datamunge_im.SwigPendingException.isPending) throw datamunge_im.SwigPendingException.retrieve();
+    return ret;
+  }
+
+  public DEOptions options() const {
+    DEOptions ret = new DEOptions(datamunge_im.DifferentialEvolution_options(cast(void*)swigCPtr), false);
     return ret;
   }
 }
@@ -17809,6 +19003,11 @@ class GeneticAlgorithm {
     if (datamunge_im.SwigPendingException.isPending) throw datamunge_im.SwigPendingException.retrieve();
     return ret;
   }
+
+  public GAOptions options() const {
+    GAOptions ret = new GAOptions(datamunge_im.GeneticAlgorithm_options(cast(void*)swigCPtr), false);
+    return ret;
+  }
 }
 
 class ACOROptions {
@@ -17981,6 +19180,11 @@ class ACOR {
     if (datamunge_im.SwigPendingException.isPending) throw datamunge_im.SwigPendingException.retrieve();
     return ret;
   }
+
+  public ACOROptions options() const {
+    ACOROptions ret = new ACOROptions(datamunge_im.ACOR_options(cast(void*)swigCPtr), false);
+    return ret;
+  }
 }
 
 class ArtificialBeeColonyOptions {
@@ -18133,6 +19337,11 @@ class ArtificialBeeColony {
   public double optimize(ArbitraryFunction _function, DVector coordinates, DVector lower_bound, DVector upper_bound) const {
     auto ret = datamunge_im.ArtificialBeeColony_optimize(cast(void*)swigCPtr, ArbitraryFunction.swigGetCPtr(_function), DVector.swigGetCPtr(coordinates), DVector.swigGetCPtr(lower_bound), DVector.swigGetCPtr(upper_bound));
     if (datamunge_im.SwigPendingException.isPending) throw datamunge_im.SwigPendingException.retrieve();
+    return ret;
+  }
+
+  public ArtificialBeeColonyOptions options() const {
+    ArtificialBeeColonyOptions ret = new ArtificialBeeColonyOptions(datamunge_im.ArtificialBeeColony_options(cast(void*)swigCPtr), false);
     return ret;
   }
 }
@@ -18307,6 +19516,11 @@ class CrossEntropyMethod {
     if (datamunge_im.SwigPendingException.isPending) throw datamunge_im.SwigPendingException.retrieve();
     return ret;
   }
+
+  public CrossEntropyMethodOptions options() const {
+    CrossEntropyMethodOptions ret = new CrossEntropyMethodOptions(datamunge_im.CrossEntropyMethod_options(cast(void*)swigCPtr), false);
+    return ret;
+  }
 }
 
 class CuckooSearchOptions {
@@ -18477,6 +19691,11 @@ class CuckooSearch {
   public double optimize(ArbitraryFunction _function, DVector coordinates, DVector lower_bound, DVector upper_bound) const {
     auto ret = datamunge_im.CuckooSearch_optimize(cast(void*)swigCPtr, ArbitraryFunction.swigGetCPtr(_function), DVector.swigGetCPtr(coordinates), DVector.swigGetCPtr(lower_bound), DVector.swigGetCPtr(upper_bound));
     if (datamunge_im.SwigPendingException.isPending) throw datamunge_im.SwigPendingException.retrieve();
+    return ret;
+  }
+
+  public CuckooSearchOptions options() const {
+    CuckooSearchOptions ret = new CuckooSearchOptions(datamunge_im.CuckooSearch_options(cast(void*)swigCPtr), false);
     return ret;
   }
 }
@@ -18651,6 +19870,11 @@ class EstimationOfDistribution {
     if (datamunge_im.SwigPendingException.isPending) throw datamunge_im.SwigPendingException.retrieve();
     return ret;
   }
+
+  public EstimationOfDistributionOptions options() const {
+    EstimationOfDistributionOptions ret = new EstimationOfDistributionOptions(datamunge_im.EstimationOfDistribution_options(cast(void*)swigCPtr), false);
+    return ret;
+  }
 }
 
 class EvolutionStrategyOptions {
@@ -18823,6 +20047,11 @@ class EvolutionStrategy {
   public double optimize(ArbitraryFunction _function, DVector coordinates, DVector lower_bound, DVector upper_bound) const {
     auto ret = datamunge_im.EvolutionStrategy_optimize(cast(void*)swigCPtr, ArbitraryFunction.swigGetCPtr(_function), DVector.swigGetCPtr(coordinates), DVector.swigGetCPtr(lower_bound), DVector.swigGetCPtr(upper_bound));
     if (datamunge_im.SwigPendingException.isPending) throw datamunge_im.SwigPendingException.retrieve();
+    return ret;
+  }
+
+  public EvolutionStrategyOptions options() const {
+    EvolutionStrategyOptions ret = new EvolutionStrategyOptions(datamunge_im.EvolutionStrategy_options(cast(void*)swigCPtr), false);
     return ret;
   }
 }
@@ -19006,6 +20235,11 @@ class FireflyAlgorithm {
     if (datamunge_im.SwigPendingException.isPending) throw datamunge_im.SwigPendingException.retrieve();
     return ret;
   }
+
+  public FireflyAlgorithmOptions options() const {
+    FireflyAlgorithmOptions ret = new FireflyAlgorithmOptions(datamunge_im.FireflyAlgorithm_options(cast(void*)swigCPtr), false);
+    return ret;
+  }
 }
 
 class GreyWolfOptimizerOptions {
@@ -19149,6 +20383,11 @@ class GreyWolfOptimizer {
   public double optimize(ArbitraryFunction _function, DVector coordinates, DVector lower_bound, DVector upper_bound) const {
     auto ret = datamunge_im.GreyWolfOptimizer_optimize(cast(void*)swigCPtr, ArbitraryFunction.swigGetCPtr(_function), DVector.swigGetCPtr(coordinates), DVector.swigGetCPtr(lower_bound), DVector.swigGetCPtr(upper_bound));
     if (datamunge_im.SwigPendingException.isPending) throw datamunge_im.SwigPendingException.retrieve();
+    return ret;
+  }
+
+  public GreyWolfOptimizerOptions options() const {
+    GreyWolfOptimizerOptions ret = new GreyWolfOptimizerOptions(datamunge_im.GreyWolfOptimizer_options(cast(void*)swigCPtr), false);
     return ret;
   }
 }
@@ -19323,6 +20562,11 @@ class HarmonySearch {
     if (datamunge_im.SwigPendingException.isPending) throw datamunge_im.SwigPendingException.retrieve();
     return ret;
   }
+
+  public HarmonySearchOptions options() const {
+    HarmonySearchOptions ret = new HarmonySearchOptions(datamunge_im.HarmonySearch_options(cast(void*)swigCPtr), false);
+    return ret;
+  }
 }
 
 class ParallelTemperingOptions {
@@ -19495,6 +20739,11 @@ class ParallelTempering {
     if (datamunge_im.SwigPendingException.isPending) throw datamunge_im.SwigPendingException.retrieve();
     return ret;
   }
+
+  public ParallelTemperingOptions options() const {
+    ParallelTemperingOptions ret = new ParallelTemperingOptions(datamunge_im.ParallelTempering_options(cast(void*)swigCPtr), false);
+    return ret;
+  }
 }
 
 class WhaleOptimizationOptions {
@@ -19649,6 +20898,11 @@ class WhaleOptimization {
     if (datamunge_im.SwigPendingException.isPending) throw datamunge_im.SwigPendingException.retrieve();
     return ret;
   }
+
+  public WhaleOptimizationOptions options() const {
+    WhaleOptimizationOptions ret = new WhaleOptimizationOptions(datamunge_im.WhaleOptimization_options(cast(void*)swigCPtr), false);
+    return ret;
+  }
 }
 
 class FISTAOptions {
@@ -19783,6 +21037,11 @@ class FISTA {
   public double optimize(ProximalFunction _function, DVector coordinates) const {
     auto ret = datamunge_im.FISTA_optimize(cast(void*)swigCPtr, ProximalFunction.swigGetCPtr(_function), DVector.swigGetCPtr(coordinates));
     if (datamunge_im.SwigPendingException.isPending) throw datamunge_im.SwigPendingException.retrieve();
+    return ret;
+  }
+
+  public FISTAOptions options() const {
+    FISTAOptions ret = new FISTAOptions(datamunge_im.FISTA_options(cast(void*)swigCPtr), false);
     return ret;
   }
 }
@@ -19921,6 +21180,11 @@ class ProximalGradient {
     if (datamunge_im.SwigPendingException.isPending) throw datamunge_im.SwigPendingException.retrieve();
     return ret;
   }
+
+  public ProximalGradientOptions options() const {
+    ProximalGradientOptions ret = new ProximalGradientOptions(datamunge_im.ProximalGradient_options(cast(void*)swigCPtr), false);
+    return ret;
+  }
 }
 
 class LevenbergMarquardtOptions {
@@ -20057,6 +21321,11 @@ class LevenbergMarquardt {
     if (datamunge_im.SwigPendingException.isPending) throw datamunge_im.SwigPendingException.retrieve();
     return ret;
   }
+
+  public LevenbergMarquardtOptions options() const {
+    LevenbergMarquardtOptions ret = new LevenbergMarquardtOptions(datamunge_im.LevenbergMarquardt_options(cast(void*)swigCPtr), false);
+    return ret;
+  }
 }
 
 class NewtonOptions {
@@ -20191,6 +21460,11 @@ class Newton {
   public double optimize(HessianFunction _function, DVector coordinates) const {
     auto ret = datamunge_im.Newton_optimize(cast(void*)swigCPtr, HessianFunction.swigGetCPtr(_function), DVector.swigGetCPtr(coordinates));
     if (datamunge_im.SwigPendingException.isPending) throw datamunge_im.SwigPendingException.retrieve();
+    return ret;
+  }
+
+  public NewtonOptions options() const {
+    NewtonOptions ret = new NewtonOptions(datamunge_im.Newton_options(cast(void*)swigCPtr), false);
     return ret;
   }
 }
@@ -20336,6 +21610,11 @@ class TrustRegionNewton {
   public double optimize(HessianFunction _function, DVector coordinates) const {
     auto ret = datamunge_im.TrustRegionNewton_optimize(cast(void*)swigCPtr, HessianFunction.swigGetCPtr(_function), DVector.swigGetCPtr(coordinates));
     if (datamunge_im.SwigPendingException.isPending) throw datamunge_im.SwigPendingException.retrieve();
+    return ret;
+  }
+
+  public TrustRegionNewtonOptions options() const {
+    TrustRegionNewtonOptions ret = new TrustRegionNewtonOptions(datamunge_im.TrustRegionNewton_options(cast(void*)swigCPtr), false);
     return ret;
   }
 }
@@ -20492,6 +21771,11 @@ class AugmentedLagrangian {
     if (datamunge_im.SwigPendingException.isPending) throw datamunge_im.SwigPendingException.retrieve();
     return ret;
   }
+
+  public AugmentedLagrangianOptions options() const {
+    AugmentedLagrangianOptions ret = new AugmentedLagrangianOptions(datamunge_im.AugmentedLagrangian_options(cast(void*)swigCPtr), false);
+    return ret;
+  }
 }
 
 class SQPOptions {
@@ -20635,6 +21919,11 @@ class SQP {
   public double optimize(EqualityConstrainedFunction _function, DVector coordinates) const {
     auto ret = datamunge_im.SQP_optimize(cast(void*)swigCPtr, EqualityConstrainedFunction.swigGetCPtr(_function), DVector.swigGetCPtr(coordinates));
     if (datamunge_im.SwigPendingException.isPending) throw datamunge_im.SwigPendingException.retrieve();
+    return ret;
+  }
+
+  public SQPOptions options() const {
+    SQPOptions ret = new SQPOptions(datamunge_im.SQP_options(cast(void*)swigCPtr), false);
     return ret;
   }
 }
@@ -20789,6 +22078,11 @@ class InteriorPoint {
   public double optimize(InequalityConstrainedFunction _function, DVector coordinates) const {
     auto ret = datamunge_im.InteriorPoint_optimize(cast(void*)swigCPtr, InequalityConstrainedFunction.swigGetCPtr(_function), DVector.swigGetCPtr(coordinates));
     if (datamunge_im.SwigPendingException.isPending) throw datamunge_im.SwigPendingException.retrieve();
+    return ret;
+  }
+
+  public InteriorPointOptions options() const {
+    InteriorPointOptions ret = new InteriorPointOptions(datamunge_im.InteriorPoint_options(cast(void*)swigCPtr), false);
     return ret;
   }
 }
@@ -20960,8 +22254,134 @@ class BayesianOptimizationOptions {
     return ret;
   }
 
+  public void candidates(size_t value) @property {
+    datamunge_im.BayesianOptimizationOptions_candidates_set(cast(void*)swigCPtr, value);
+  }
+
+  public size_t candidates() @property const {
+    auto ret = datamunge_im.BayesianOptimizationOptions_candidates_get(cast(void*)swigCPtr);
+    return ret;
+  }
+
+  public void refine_iterations(size_t value) @property {
+    datamunge_im.BayesianOptimizationOptions_refine_iterations_set(cast(void*)swigCPtr, value);
+  }
+
+  public size_t refine_iterations() @property const {
+    auto ret = datamunge_im.BayesianOptimizationOptions_refine_iterations_get(cast(void*)swigCPtr);
+    return ret;
+  }
+
   public this() {
     this(datamunge_im.new_BayesianOptimizationOptions(), true);
+  }
+}
+
+class BayesianOptimizationResult {
+  private void* swigCPtr;
+  protected bool swigCMemOwn;
+
+  public this(void* cObject, bool ownCObject) {
+    swigCPtr = cObject;
+    swigCMemOwn = ownCObject;
+  }
+
+  public static void* swigGetCPtr(typeof(this) obj) {
+    return (obj is null) ? null : obj.swigCPtr;
+  }
+
+  public static void* swigRelease(typeof(this) obj) {
+    if (obj !is null) {
+      if (!obj.swigCMemOwn)
+        throw new Exception("Cannot release ownership as memory is not owned");
+      void* ptr = obj.swigCPtr;
+      obj.swigCMemOwn = false;
+      obj.dispose();
+      return ptr;
+    } else {
+      return null;
+    }
+  }
+
+  mixin datamunge_im.SwigOperatorDefinitions;
+
+  ~this() {
+    dispose();
+  }
+
+  public void dispose() {
+    synchronized(this) {
+      if (swigCPtr !is null) {
+        if (swigCMemOwn) {
+          swigCMemOwn = false;
+          datamunge_im.delete_BayesianOptimizationResult(cast(void*)swigCPtr);
+        }
+        swigCPtr = null;
+      }
+    }
+  }
+
+  public void best_point(DVector value) @property {
+    datamunge_im.BayesianOptimizationResult_best_point_set(cast(void*)swigCPtr, DVector.swigGetCPtr(value));
+  }
+
+  public DVector best_point() @property const {
+    void* cPtr = datamunge_im.BayesianOptimizationResult_best_point_get(cast(void*)swigCPtr);
+    DVector ret = (cPtr is null) ? null : new DVector(cPtr, false);
+    return ret;
+  }
+
+  public void best_value(double value) @property {
+    datamunge_im.BayesianOptimizationResult_best_value_set(cast(void*)swigCPtr, value);
+  }
+
+  public double best_value() @property const {
+    auto ret = datamunge_im.BayesianOptimizationResult_best_value_get(cast(void*)swigCPtr);
+    return ret;
+  }
+
+  public void points(DVectorVector value) @property {
+    datamunge_im.BayesianOptimizationResult_points_set(cast(void*)swigCPtr, DVectorVector.swigGetCPtr(value));
+  }
+
+  public DVectorVector points() @property const {
+    void* cPtr = datamunge_im.BayesianOptimizationResult_points_get(cast(void*)swigCPtr);
+    DVectorVector ret = (cPtr is null) ? null : new DVectorVector(cPtr, false);
+    return ret;
+  }
+
+  public void values(DVector value) @property {
+    datamunge_im.BayesianOptimizationResult_values_set(cast(void*)swigCPtr, DVector.swigGetCPtr(value));
+  }
+
+  public DVector values() @property const {
+    void* cPtr = datamunge_im.BayesianOptimizationResult_values_get(cast(void*)swigCPtr);
+    DVector ret = (cPtr is null) ? null : new DVector(cPtr, false);
+    return ret;
+  }
+
+  public void best_values(DVector value) @property {
+    datamunge_im.BayesianOptimizationResult_best_values_set(cast(void*)swigCPtr, DVector.swigGetCPtr(value));
+  }
+
+  public DVector best_values() @property const {
+    void* cPtr = datamunge_im.BayesianOptimizationResult_best_values_get(cast(void*)swigCPtr);
+    DVector ret = (cPtr is null) ? null : new DVector(cPtr, false);
+    return ret;
+  }
+
+  public void acquisition_values(DVector value) @property {
+    datamunge_im.BayesianOptimizationResult_acquisition_values_set(cast(void*)swigCPtr, DVector.swigGetCPtr(value));
+  }
+
+  public DVector acquisition_values() @property const {
+    void* cPtr = datamunge_im.BayesianOptimizationResult_acquisition_values_get(cast(void*)swigCPtr);
+    DVector ret = (cPtr is null) ? null : new DVector(cPtr, false);
+    return ret;
+  }
+
+  public this() {
+    this(datamunge_im.new_BayesianOptimizationResult(), true);
   }
 }
 
@@ -21018,10 +22438,108 @@ class BayesianOptimization {
     this(datamunge_im.new_BayesianOptimization__SWIG_1(), true);
   }
 
+  public BayesianOptimizationResult run(ArbitraryFunction _function, DVector lower, DVector upper, BayesianSurrogate surrogate) const {
+    BayesianOptimizationResult ret = new BayesianOptimizationResult(datamunge_im.BayesianOptimization_run(cast(void*)swigCPtr, ArbitraryFunction.swigGetCPtr(_function), DVector.swigGetCPtr(lower), DVector.swigGetCPtr(upper), BayesianSurrogate.swigGetCPtr(surrogate)), true);
+    if (datamunge_im.SwigPendingException.isPending) throw datamunge_im.SwigPendingException.retrieve();
+    return ret;
+  }
+
   public double optimize(ArbitraryFunction _function, DVector coordinates, DVector lower, DVector upper, BayesianSurrogate surrogate) const {
     auto ret = datamunge_im.BayesianOptimization_optimize(cast(void*)swigCPtr, ArbitraryFunction.swigGetCPtr(_function), DVector.swigGetCPtr(coordinates), DVector.swigGetCPtr(lower), DVector.swigGetCPtr(upper), BayesianSurrogate.swigGetCPtr(surrogate));
     if (datamunge_im.SwigPendingException.isPending) throw datamunge_im.SwigPendingException.retrieve();
     return ret;
+  }
+
+  public BayesianOptimizationOptions options() const {
+    BayesianOptimizationOptions ret = new BayesianOptimizationOptions(datamunge_im.BayesianOptimization_options(cast(void*)swigCPtr), false);
+    return ret;
+  }
+}
+
+double expected_improvement(double mean, double sd, double incumbent, double exploration) {
+  auto ret = datamunge_im.expected_improvement__SWIG_0(mean, sd, incumbent, exploration);
+  return ret;
+}
+
+double expected_improvement(double mean, double sd, double incumbent) {
+  auto ret = datamunge_im.expected_improvement__SWIG_1(mean, sd, incumbent);
+  return ret;
+}
+
+double probability_of_improvement(double mean, double sd, double incumbent, double exploration) {
+  auto ret = datamunge_im.probability_of_improvement__SWIG_0(mean, sd, incumbent, exploration);
+  return ret;
+}
+
+double probability_of_improvement(double mean, double sd, double incumbent) {
+  auto ret = datamunge_im.probability_of_improvement__SWIG_1(mean, sd, incumbent);
+  return ret;
+}
+
+class SurrogatePrediction {
+  private void* swigCPtr;
+  protected bool swigCMemOwn;
+
+  public this(void* cObject, bool ownCObject) {
+    swigCPtr = cObject;
+    swigCMemOwn = ownCObject;
+  }
+
+  public static void* swigGetCPtr(typeof(this) obj) {
+    return (obj is null) ? null : obj.swigCPtr;
+  }
+
+  public static void* swigRelease(typeof(this) obj) {
+    if (obj !is null) {
+      if (!obj.swigCMemOwn)
+        throw new Exception("Cannot release ownership as memory is not owned");
+      void* ptr = obj.swigCPtr;
+      obj.swigCMemOwn = false;
+      obj.dispose();
+      return ptr;
+    } else {
+      return null;
+    }
+  }
+
+  mixin datamunge_im.SwigOperatorDefinitions;
+
+  ~this() {
+    dispose();
+  }
+
+  public void dispose() {
+    synchronized(this) {
+      if (swigCPtr !is null) {
+        if (swigCMemOwn) {
+          swigCMemOwn = false;
+          datamunge_im.delete_SurrogatePrediction(cast(void*)swigCPtr);
+        }
+        swigCPtr = null;
+      }
+    }
+  }
+
+  public void mean(double value) @property {
+    datamunge_im.SurrogatePrediction_mean_set(cast(void*)swigCPtr, value);
+  }
+
+  public double mean() @property const {
+    auto ret = datamunge_im.SurrogatePrediction_mean_get(cast(void*)swigCPtr);
+    return ret;
+  }
+
+  public void sd(double value) @property {
+    datamunge_im.SurrogatePrediction_sd_set(cast(void*)swigCPtr, value);
+  }
+
+  public double sd() @property const {
+    auto ret = datamunge_im.SurrogatePrediction_sd_get(cast(void*)swigCPtr);
+    return ret;
+  }
+
+  public this() {
+    this(datamunge_im.new_SurrogatePrediction(), true);
   }
 }
 
@@ -21089,6 +22607,52 @@ class RBFGaussianProcessSurrogate : BayesianSurrogate {
   public override double acquisition(DVector point, double incumbent) {
     auto ret = datamunge_im.RBFGaussianProcessSurrogate_acquisition(cast(void*)swigCPtr, DVector.swigGetCPtr(point), incumbent);
     if (datamunge_im.SwigPendingException.isPending) throw datamunge_im.SwigPendingException.retrieve();
+    return ret;
+  }
+
+  public SurrogatePrediction predict(DVector point) const {
+    SurrogatePrediction ret = new SurrogatePrediction(datamunge_im.RBFGaussianProcessSurrogate_predict(cast(void*)swigCPtr, DVector.swigGetCPtr(point)), true);
+    if (datamunge_im.SwigPendingException.isPending) throw datamunge_im.SwigPendingException.retrieve();
+    return ret;
+  }
+
+  public double log_marginal_likelihood() const {
+    auto ret = datamunge_im.RBFGaussianProcessSurrogate_log_marginal_likelihood(cast(void*)swigCPtr);
+    return ret;
+  }
+
+  public double length_scale() const {
+    auto ret = datamunge_im.RBFGaussianProcessSurrogate_length_scale(cast(void*)swigCPtr);
+    return ret;
+  }
+
+  public double noise() const {
+    auto ret = datamunge_im.RBFGaussianProcessSurrogate_noise(cast(void*)swigCPtr);
+    return ret;
+  }
+
+  public double signal_variance() const {
+    auto ret = datamunge_im.RBFGaussianProcessSurrogate_signal_variance(cast(void*)swigCPtr);
+    return ret;
+  }
+
+  public double prior_mean() const {
+    auto ret = datamunge_im.RBFGaussianProcessSurrogate_prior_mean(cast(void*)swigCPtr);
+    return ret;
+  }
+
+  public double value_scale() const {
+    auto ret = datamunge_im.RBFGaussianProcessSurrogate_value_scale(cast(void*)swigCPtr);
+    return ret;
+  }
+
+  public DVectorVector points() const {
+    DVectorVector ret = new DVectorVector(datamunge_im.RBFGaussianProcessSurrogate_points(cast(void*)swigCPtr), false);
+    return ret;
+  }
+
+  public DVector values() const {
+    DVector ret = new DVector(datamunge_im.RBFGaussianProcessSurrogate_values(cast(void*)swigCPtr), false);
     return ret;
   }
 }
@@ -21225,6 +22789,11 @@ class MAP {
   public double optimize(DifferentiableFunction log_posterior, DVector coordinates) const {
     auto ret = datamunge_im.MAP_optimize(cast(void*)swigCPtr, DifferentiableFunction.swigGetCPtr(log_posterior), DVector.swigGetCPtr(coordinates));
     if (datamunge_im.SwigPendingException.isPending) throw datamunge_im.SwigPendingException.retrieve();
+    return ret;
+  }
+
+  public MAPOptions options() const {
+    MAPOptions ret = new MAPOptions(datamunge_im.MAP_options(cast(void*)swigCPtr), false);
     return ret;
   }
 }
@@ -21467,6 +23036,21 @@ class HMC {
     if (datamunge_im.SwigPendingException.isPending) throw datamunge_im.SwigPendingException.retrieve();
     return ret;
   }
+
+  public HMCOptions options() const {
+    HMCOptions ret = new HMCOptions(datamunge_im.HMC_options(cast(void*)swigCPtr), false);
+    return ret;
+  }
+}
+
+double leapfrog_gaussian_acceptance(double step_size, size_t num_steps, double sd, size_t angles) {
+  auto ret = datamunge_im.leapfrog_gaussian_acceptance__SWIG_0(step_size, num_steps, sd, angles);
+  return ret;
+}
+
+double leapfrog_gaussian_acceptance(double step_size, size_t num_steps, double sd) {
+  auto ret = datamunge_im.leapfrog_gaussian_acceptance__SWIG_1(step_size, num_steps, sd);
+  return ret;
 }
 
 class NUTSOptions {
@@ -21662,6 +23246,46 @@ class NUTSResult {
     return ret;
   }
 
+  public void divergent(IVector value) @property {
+    datamunge_im.NUTSResult_divergent_set(cast(void*)swigCPtr, IVector.swigGetCPtr(value));
+  }
+
+  public IVector divergent() @property const {
+    void* cPtr = datamunge_im.NUTSResult_divergent_get(cast(void*)swigCPtr);
+    IVector ret = (cPtr is null) ? null : new IVector(cPtr, false);
+    return ret;
+  }
+
+  public void tree_depth(IVector value) @property {
+    datamunge_im.NUTSResult_tree_depth_set(cast(void*)swigCPtr, IVector.swigGetCPtr(value));
+  }
+
+  public IVector tree_depth() @property const {
+    void* cPtr = datamunge_im.NUTSResult_tree_depth_get(cast(void*)swigCPtr);
+    IVector ret = (cPtr is null) ? null : new IVector(cPtr, false);
+    return ret;
+  }
+
+  public void n_leapfrog(IVector value) @property {
+    datamunge_im.NUTSResult_n_leapfrog_set(cast(void*)swigCPtr, IVector.swigGetCPtr(value));
+  }
+
+  public IVector n_leapfrog() @property const {
+    void* cPtr = datamunge_im.NUTSResult_n_leapfrog_get(cast(void*)swigCPtr);
+    IVector ret = (cPtr is null) ? null : new IVector(cPtr, false);
+    return ret;
+  }
+
+  public void energy(DVector value) @property {
+    datamunge_im.NUTSResult_energy_set(cast(void*)swigCPtr, DVector.swigGetCPtr(value));
+  }
+
+  public DVector energy() @property const {
+    void* cPtr = datamunge_im.NUTSResult_energy_get(cast(void*)swigCPtr);
+    DVector ret = (cPtr is null) ? null : new DVector(cPtr, false);
+    return ret;
+  }
+
   public this() {
     this(datamunge_im.new_NUTSResult(), true);
   }
@@ -21723,6 +23347,11 @@ class NUTS {
   public NUTSResult sample(DifferentiableFunction log_posterior, DVector initial_params) const {
     NUTSResult ret = new NUTSResult(datamunge_im.NUTS_sample(cast(void*)swigCPtr, DifferentiableFunction.swigGetCPtr(log_posterior), DVector.swigGetCPtr(initial_params)), true);
     if (datamunge_im.SwigPendingException.isPending) throw datamunge_im.SwigPendingException.retrieve();
+    return ret;
+  }
+
+  public NUTSOptions options() const {
+    NUTSOptions ret = new NUTSOptions(datamunge_im.NUTS_options(cast(void*)swigCPtr), false);
     return ret;
   }
 }
@@ -21816,6 +23445,15 @@ class RWMOptions {
     return ret;
   }
 
+  public void adapt_covariance(bool value) @property {
+    datamunge_im.RWMOptions_adapt_covariance_set(cast(void*)swigCPtr, value);
+  }
+
+  public bool adapt_covariance() @property const {
+    bool ret = datamunge_im.RWMOptions_adapt_covariance_get(cast(void*)swigCPtr) ? true : false;
+    return ret;
+  }
+
   public this() {
     this(datamunge_im.new_RWMOptions(), true);
   }
@@ -21893,6 +23531,16 @@ class RWMResult {
     return ret;
   }
 
+  public void proposal_covariance(DVectorVector value) @property {
+    datamunge_im.RWMResult_proposal_covariance_set(cast(void*)swigCPtr, DVectorVector.swigGetCPtr(value));
+  }
+
+  public DVectorVector proposal_covariance() @property const {
+    void* cPtr = datamunge_im.RWMResult_proposal_covariance_get(cast(void*)swigCPtr);
+    DVectorVector ret = (cPtr is null) ? null : new DVectorVector(cPtr, false);
+    return ret;
+  }
+
   public this() {
     this(datamunge_im.new_RWMResult(), true);
   }
@@ -21954,6 +23602,11 @@ class RandomWalkMetropolis {
   public RWMResult sample(ArbitraryFunction log_posterior, DVector initial_params) const {
     RWMResult ret = new RWMResult(datamunge_im.RandomWalkMetropolis_sample(cast(void*)swigCPtr, ArbitraryFunction.swigGetCPtr(log_posterior), DVector.swigGetCPtr(initial_params)), true);
     if (datamunge_im.SwigPendingException.isPending) throw datamunge_im.SwigPendingException.retrieve();
+    return ret;
+  }
+
+  public RWMOptions options() const {
+    RWMOptions ret = new RWMOptions(datamunge_im.RandomWalkMetropolis_options(cast(void*)swigCPtr), false);
     return ret;
   }
 }
@@ -22190,6 +23843,11 @@ class GibbsSampler {
     if (datamunge_im.SwigPendingException.isPending) throw datamunge_im.SwigPendingException.retrieve();
     return ret;
   }
+
+  public GibbsOptions options() const {
+    GibbsOptions ret = new GibbsOptions(datamunge_im.GibbsSampler_options(cast(void*)swigCPtr), false);
+    return ret;
+  }
 }
 
 class ImportanceSamplingOptions {
@@ -22404,6 +24062,16 @@ class ImportanceSampling {
     if (datamunge_im.SwigPendingException.isPending) throw datamunge_im.SwigPendingException.retrieve();
     return ret;
   }
+
+  public ImportanceSamplingOptions options() const {
+    ImportanceSamplingOptions ret = new ImportanceSamplingOptions(datamunge_im.ImportanceSampling_options(cast(void*)swigCPtr), false);
+    return ret;
+  }
+}
+
+double gaussian_importance_efficiency(double scale, int dimension) {
+  auto ret = datamunge_im.gaussian_importance_efficiency(scale, dimension);
+  return ret;
 }
 
 class RHS {
@@ -22715,31 +24383,14 @@ class ODESolver {
     if (datamunge_im.SwigPendingException.isPending) throw datamunge_im.SwigPendingException.retrieve();
     return ret;
   }
+
+  public ODEOptions options() const {
+    ODEOptions ret = new ODEOptions(datamunge_im.ODESolver_options(cast(void*)swigCPtr), false);
+    return ret;
+  }
 }
 
-class SWIGTYPE_p_std__vectorT_datamunge__plot__RGB_t {
-  private void* swigCPtr;
-
-  public this(void* cObject, bool futureUse) {
-    swigCPtr = cObject;
-  }
-
-  protected this() {
-    swigCPtr = null;
-  }
-
-  public static void* swigGetCPtr(typeof(this) obj) {
-    return (obj is null) ? null : obj.swigCPtr;
-  }
-
-  public static void* swigRelease(typeof(this) obj) {
-    return (obj is null) ? null : obj.swigCPtr;
-  }
-
-  mixin datamunge_im.SwigOperatorDefinitions;
-}
-
-class SWIGTYPE_p_std__vectorT_datamunge__plot__LegendEntry_t {
+class SWIGTYPE_p_datamunge__datasets__ImageBatch {
   private void* swigCPtr;
 
   public this(void* cObject, bool futureUse) {
@@ -22783,7 +24434,7 @@ class SWIGTYPE_p_datamunge__image__Image {
   mixin datamunge_im.SwigOperatorDefinitions;
 }
 
-class SWIGTYPE_p_std__vectorT_datamunge__plot__DataSeries_t {
+class SWIGTYPE_p_std__vectorT_datamunge__graphics__DataSeries_t {
   private void* swigCPtr;
 
   public this(void* cObject, bool futureUse) {
@@ -22805,7 +24456,73 @@ class SWIGTYPE_p_std__vectorT_datamunge__plot__DataSeries_t {
   mixin datamunge_im.SwigOperatorDefinitions;
 }
 
-class SWIGTYPE_p_std__vectorT_datamunge__plot__ABLine_t {
+class SWIGTYPE_p_std__vectorT_datamunge__graphics__LegendEntry_t {
+  private void* swigCPtr;
+
+  public this(void* cObject, bool futureUse) {
+    swigCPtr = cObject;
+  }
+
+  protected this() {
+    swigCPtr = null;
+  }
+
+  public static void* swigGetCPtr(typeof(this) obj) {
+    return (obj is null) ? null : obj.swigCPtr;
+  }
+
+  public static void* swigRelease(typeof(this) obj) {
+    return (obj is null) ? null : obj.swigCPtr;
+  }
+
+  mixin datamunge_im.SwigOperatorDefinitions;
+}
+
+class SWIGTYPE_p_std__vectorT_datamunge__graphics__ABLine_t {
+  private void* swigCPtr;
+
+  public this(void* cObject, bool futureUse) {
+    swigCPtr = cObject;
+  }
+
+  protected this() {
+    swigCPtr = null;
+  }
+
+  public static void* swigGetCPtr(typeof(this) obj) {
+    return (obj is null) ? null : obj.swigCPtr;
+  }
+
+  public static void* swigRelease(typeof(this) obj) {
+    return (obj is null) ? null : obj.swigCPtr;
+  }
+
+  mixin datamunge_im.SwigOperatorDefinitions;
+}
+
+class SWIGTYPE_p_std__vectorT_unsigned_char_t {
+  private void* swigCPtr;
+
+  public this(void* cObject, bool futureUse) {
+    swigCPtr = cObject;
+  }
+
+  protected this() {
+    swigCPtr = null;
+  }
+
+  public static void* swigGetCPtr(typeof(this) obj) {
+    return (obj is null) ? null : obj.swigCPtr;
+  }
+
+  public static void* swigRelease(typeof(this) obj) {
+    return (obj is null) ? null : obj.swigCPtr;
+  }
+
+  mixin datamunge_im.SwigOperatorDefinitions;
+}
+
+class SWIGTYPE_p_std__vectorT_datamunge__graphics__RGB_t {
   private void* swigCPtr;
 
   public this(void* cObject, bool futureUse) {

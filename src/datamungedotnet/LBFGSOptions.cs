@@ -9,6 +9,14 @@
 //------------------------------------------------------------------------------
 
 
+/// <summary>Configuration for LBFGS; fields retain their documented native defaults. Supply finite values in the supported ranges. Controls are copied at construction; validation, stopping and loss scaling belong to optimize().</summary>
+/// Title: Example
+/// <code>      dm::optim::LBFGSOptions o;
+///      std::print("{}\n",o.max_iterations); // 500</code>
+///
+///
+///
+/// <seealso cref="LBFGS"/>
 public class LBFGSOptions : global::System.IDisposable {
   private global::System.Runtime.InteropServices.HandleRef swigCPtr;
   protected bool swigCMemOwn;
@@ -66,7 +74,6 @@ public class LBFGSOptions : global::System.IDisposable {
     } 
   }
 
-  /// <summary>Stops when the gradient norm drops below this.</summary>
   public double tolerance {
     set {
       datamungePINVOKE.LBFGSOptions_tolerance_set(swigCPtr, value);
@@ -77,7 +84,6 @@ public class LBFGSOptions : global::System.IDisposable {
     } 
   }
 
-  /// <summary>Number of (s, y) curvature pairs retained for the two-loop recursion.</summary>
   public uint history_size {
     set {
       datamungePINVOKE.LBFGSOptions_history_size_set(swigCPtr, value);
@@ -88,7 +94,6 @@ public class LBFGSOptions : global::System.IDisposable {
     } 
   }
 
-  /// <summary>Armijo sufficient-decrease constant for the line search.</summary>
   public double armijo_c1 {
     set {
       datamungePINVOKE.LBFGSOptions_armijo_c1_set(swigCPtr, value);
@@ -99,7 +104,6 @@ public class LBFGSOptions : global::System.IDisposable {
     } 
   }
 
-  /// <summary>Weak-Wolfe curvature constant for the line search (typical value for L-BFGS).</summary>
   public double wolfe_c2 {
     set {
       datamungePINVOKE.LBFGSOptions_wolfe_c2_set(swigCPtr, value);

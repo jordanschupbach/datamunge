@@ -60,7 +60,7 @@ public class DataFrame : global::System.IDisposable {
   public DataFrame() : this(datamungePINVOKE.new_DataFrame(), true) {
   }
 
-  /// <summary>Equivalent to the default constructor, exposed as a static factory (like iris()/        penguins()) as a workaround for a SWIG R-backend bug where the plain no-argument        constructor's ownership-flagged pointer breaks method dispatch on the result.</summary>
+  /// <summary>Equivalent to the default constructor, exposed as a static factory (like read_csv())        as a workaround for a SWIG R-backend bug where the plain no-argument        constructor's ownership-flagged pointer breaks method dispatch on the result.</summary>
   public static DataFrame empty() {
     global::System.IntPtr cPtr = datamungePINVOKE.DataFrame_empty();
     DataFrame ret = (cPtr == global::System.IntPtr.Zero) ? null : new DataFrame(cPtr, false);
@@ -568,6 +568,18 @@ public class DataFrame : global::System.IDisposable {
     return ret;
   }
 
+  /// <summary>The frame as a Markdown table (numeric columns right-aligned, at most ``digits``        decimals each), like knitr::kable(); see dstruct::DataFrame::to_md().</summary>
+  public string to_md(int digits) {
+    string ret = datamungePINVOKE.DataFrame_to_md__SWIG_0(swigCPtr, digits);
+    return ret;
+  }
+
+  /// <summary>The frame as a Markdown table (numeric columns right-aligned, at most ``digits``        decimals each), like knitr::kable(); see dstruct::DataFrame::to_md().</summary>
+  public string to_md() {
+    string ret = datamungePINVOKE.DataFrame_to_md__SWIG_1(swigCPtr);
+    return ret;
+  }
+
   /// <summary>true if column_name holds numeric values, false if it holds strings.</summary>
   public bool is_numeric_column(string column_name) {
     bool ret = datamungePINVOKE.DataFrame_is_numeric_column(swigCPtr, column_name);
@@ -595,15 +607,50 @@ public class DataFrame : global::System.IDisposable {
     return ret;
   }
 
-  public static DataFrame iris() {
-    global::System.IntPtr cPtr = datamungePINVOKE.DataFrame_iris();
+  /// <summary>Reads a whole CSV file, typing columns automatically; see datasets::read_csv().</summary>
+  /// <param name="path"> The file to read.</param> 
+  /// <param name="delimiter"> The field separator.</param> 
+  /// <exception cref="std::runtime_error"> if the file cannot be read or is malformed.</exception>
+  public static DataFrame read_csv(string path, char delimiter) {
+    global::System.IntPtr cPtr = datamungePINVOKE.DataFrame_read_csv__SWIG_0(path, delimiter);
     DataFrame ret = (cPtr == global::System.IntPtr.Zero) ? null : new DataFrame(cPtr, false);
+    if (datamungePINVOKE.SWIGPendingException.Pending) throw datamungePINVOKE.SWIGPendingException.Retrieve();
     return ret;
   }
 
-  public static DataFrame penguins() {
-    global::System.IntPtr cPtr = datamungePINVOKE.DataFrame_penguins();
+  /// <summary>Reads a whole CSV file, typing columns automatically; see datasets::read_csv().</summary>
+  /// <param name="path"> The file to read.</param> 
+  /// <exception cref="std::runtime_error"> if the file cannot be read or is malformed.</exception>
+  public static DataFrame read_csv(string path) {
+    global::System.IntPtr cPtr = datamungePINVOKE.DataFrame_read_csv__SWIG_1(path);
     DataFrame ret = (cPtr == global::System.IntPtr.Zero) ? null : new DataFrame(cPtr, false);
+    if (datamungePINVOKE.SWIGPendingException.Pending) throw datamungePINVOKE.SWIGPendingException.Retrieve();
+    return ret;
+  }
+
+  /// <summary>Parses CSV text, typing columns automatically; see datasets::parse_csv().</summary>
+  /// <exception cref="std::runtime_error"> if the text is malformed.</exception>
+  public static DataFrame parse_csv(string text, char delimiter) {
+    global::System.IntPtr cPtr = datamungePINVOKE.DataFrame_parse_csv__SWIG_0(text, delimiter);
+    DataFrame ret = (cPtr == global::System.IntPtr.Zero) ? null : new DataFrame(cPtr, false);
+    if (datamungePINVOKE.SWIGPendingException.Pending) throw datamungePINVOKE.SWIGPendingException.Retrieve();
+    return ret;
+  }
+
+  /// <summary>Parses CSV text, typing columns automatically; see datasets::parse_csv().</summary>
+  /// <exception cref="std::runtime_error"> if the text is malformed.</exception>
+  public static DataFrame parse_csv(string text) {
+    global::System.IntPtr cPtr = datamungePINVOKE.DataFrame_parse_csv__SWIG_1(text);
+    DataFrame ret = (cPtr == global::System.IntPtr.Zero) ? null : new DataFrame(cPtr, false);
+    if (datamungePINVOKE.SWIGPendingException.Pending) throw datamungePINVOKE.SWIGPendingException.Retrieve();
+    return ret;
+  }
+
+  /// <summary>An ImageLoader batch as a table (`pixel_0`.., `label`, `index`); see        datasets::to_dataframe().</summary>
+  public static DataFrame from_image_batch(SWIGTYPE_p_datamunge__datasets__ImageBatch batch) {
+    global::System.IntPtr cPtr = datamungePINVOKE.DataFrame_from_image_batch(SWIGTYPE_p_datamunge__datasets__ImageBatch.getCPtr(batch));
+    DataFrame ret = (cPtr == global::System.IntPtr.Zero) ? null : new DataFrame(cPtr, false);
+    if (datamungePINVOKE.SWIGPendingException.Pending) throw datamungePINVOKE.SWIGPendingException.Retrieve();
     return ret;
   }
 

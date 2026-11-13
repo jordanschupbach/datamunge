@@ -1,8 +1,10 @@
+% CMD: just TARGET=knn_iris_ex run-octave
+
 1;
 
 datamunge;
 
-iris = DataFrame_iris();
+iris = data_iris();
 printf("iris: %d rows x %d cols\n\n", DataFrame_nrows(iris), DataFrame_ncols(iris));
 
 model = KNNClassifier(iris, "Species ~ Petal.Length + Petal.Width");

@@ -1,3 +1,5 @@
+;; CMD: just TARGET=bspline_ex run-lisp
+
 ;;;; Tensor-product B-spline regression: fit z ~ bs(x, y) to a smooth surface and predict.
 (require "asdf")
 (asdf:load-system "datamunge")

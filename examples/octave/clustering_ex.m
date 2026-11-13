@@ -1,3 +1,5 @@
+% CMD: just TARGET=clustering_ex run-octave
+
 1;
 
 datamunge;
@@ -47,7 +49,7 @@ function report_purity(cluster_labels, species, n_clusters)
   end
 endfunction
 
-iris = DataFrame_iris();
+iris = data_iris();
 n = DataFrame_nrows(iris);
 species = {};
 for i = 0:(n - 1)

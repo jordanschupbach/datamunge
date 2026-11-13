@@ -5,18 +5,18 @@
 # dm.data_home() (set DATAMUNGE_DATA_OFFLINE=1 to skip them).
 from pydatamunge import datamunge as dm
 
-print(dm.DataFrame.dataset_catalog().to_md())
+print(dm.data.catalog().to_md())
 
-wine = dm.DataFrame.wine()
+wine = dm.data.wine()
 print(f"wine: {wine.nrows()} wines x {wine.ncols()} columns")
 
-titanic = dm.DataFrame.titanic()
+titanic = dm.data.titanic()
 print(f"titanic: {titanic.nrows()} passengers; first is {titanic.string_at('Name', 0)}")
 
-print(dm.DataFrame.eight_schools().to_md())
+print(dm.data.eight_schools().to_md())
 
 try:
-    diamonds = dm.DataFrame.diamonds()
+    diamonds = dm.data.diamonds()
     print(f"diamonds: {diamonds.nrows()} rows, columns {list(diamonds.columns())}")
     # Stream the cached CSV 10000 rows at a time.
     reader = dm.CsvReader(dm.fetch("diamonds"), 10000)

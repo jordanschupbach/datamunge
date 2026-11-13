@@ -9,6 +9,7 @@
 //------------------------------------------------------------------------------
 
 
+///  Output of RandomWalkMetropolis::sample().
 public class RWMResult : global::System.IDisposable {
   private global::System.Runtime.InteropServices.HandleRef swigCPtr;
   protected bool swigCMemOwn;
@@ -79,12 +80,25 @@ public class RWMResult : global::System.IDisposable {
     } 
   }
 
+  /// <summary>Step size used after warmup.</summary>
   public double final_step_size {
     set {
       datamungePINVOKE.RWMResult_final_step_size_set(swigCPtr, value);
     } 
     get {
       double ret = datamungePINVOKE.RWMResult_final_step_size_get(swigCPtr);
+      return ret;
+    } 
+  }
+
+  /// <summary>Learned proposal covariance :math:`\hat\Sigma` (before scaling by the step size);        empty unless RWMOptions::adapt_covariance was set and warmup had at least 8 iterations.</summary>
+  public DVectorVector proposal_covariance {
+    set {
+      datamungePINVOKE.RWMResult_proposal_covariance_set(swigCPtr, DVectorVector.getCPtr(value));
+    } 
+    get {
+      global::System.IntPtr cPtr = datamungePINVOKE.RWMResult_proposal_covariance_get(swigCPtr);
+      DVectorVector ret = (cPtr == global::System.IntPtr.Zero) ? null : new DVectorVector(cPtr, false);
       return ret;
     } 
   }

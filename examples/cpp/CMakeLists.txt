@@ -39,7 +39,7 @@ include(cmake/lib_sources.cmake)
 foreach(ENTRY ${EXAMPLES_})
   get_filename_component(EXAMPLE_NAME ${ENTRY} NAME_WE)
   add_executable(${EXAMPLE_NAME} ${ENTRY})
-  set_target_properties(${EXAMPLE_NAME} PROPERTIES CXX_STANDARD 17)
+  set_target_properties(${EXAMPLE_NAME} PROPERTIES CXX_STANDARD 20)
   set_property(TARGET ${EXAMPLE_NAME} PROPERTY CXX_STANDARD_REQUIRED ON)
   if(EXAMPLE_NAME STREQUAL "playground" OR EXAMPLE_NAME STREQUAL "courier_offscreen" OR EXAMPLE_NAME STREQUAL "rebot_arm")
     # The interactive API sketch uses the standard C++23 <print> header.

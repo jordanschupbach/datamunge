@@ -133,6 +133,18 @@ public class LDA : global::System.IDisposable {
     datamungePINVOKE.LDA_print_summary(swigCPtr);
   }
 
+  /// <summary>The fit as Markdown tables (priors, group means, coefficients, proportion of trace).</summary>
+  public string to_md(int digits) {
+    string ret = datamungePINVOKE.LDA_to_md__SWIG_0(swigCPtr, digits);
+    return ret;
+  }
+
+  /// <summary>The fit as Markdown tables (priors, group means, coefficients, proportion of trace).</summary>
+  public string to_md() {
+    string ret = datamungePINVOKE.LDA_to_md__SWIG_1(swigCPtr);
+    return ret;
+  }
+
   public SVector predict(DataFrame newdata) {
     SVector ret = new SVector(datamungePINVOKE.LDA_predict(swigCPtr, DataFrame.getCPtr(newdata)), true);
     if (datamungePINVOKE.SWIGPendingException.Pending) throw datamungePINVOKE.SWIGPendingException.Retrieve();
@@ -147,14 +159,27 @@ public class LDA : global::System.IDisposable {
     return ret;
   }
 
+  /// <summary>LD1/LD2 scatter; with ``decision_regions``, class regions shaded and boundaries drawn.</summary>
+  public RPlot plot_discriminants(bool decision_regions) {
+    RPlot ret = new RPlot(datamungePINVOKE.LDA_plot_discriminants__SWIG_0(swigCPtr, decision_regions), true);
+    return ret;
+  }
+
+  /// <summary>LD1/LD2 scatter; with ``decision_regions``, class regions shaded and boundaries drawn.</summary>
   public RPlot plot_discriminants() {
-    RPlot ret = new RPlot(datamungePINVOKE.LDA_plot_discriminants(swigCPtr), true);
+    RPlot ret = new RPlot(datamungePINVOKE.LDA_plot_discriminants__SWIG_1(swigCPtr), true);
     return ret;
   }
 
   public void save_discriminant_plot(string path) {
     datamungePINVOKE.LDA_save_discriminant_plot(swigCPtr, path);
     if (datamungePINVOKE.SWIGPendingException.Pending) throw datamungePINVOKE.SWIGPendingException.Retrieve();
+  }
+
+  /// <summary>Decision regions in predictor space, for a model with exactly two predictors.</summary>
+  public RPlot plot_decision_regions() {
+    RPlot ret = new RPlot(datamungePINVOKE.LDA_plot_decision_regions(swigCPtr), true);
+    return ret;
   }
 
 }

@@ -71,4 +71,11 @@ public class GreyWolfOptimizer : global::System.IDisposable {
     return ret;
   }
 
+  /// <summary>The options this GreyWolfOptimizer was configured with.</summary>
+  /// <returns>The stored options.</returns>
+  public GreyWolfOptimizerOptions options() {
+    GreyWolfOptimizerOptions ret = new GreyWolfOptimizerOptions(datamungePINVOKE.GreyWolfOptimizer_options(swigCPtr), false);
+    return ret;
+  }
+
 }

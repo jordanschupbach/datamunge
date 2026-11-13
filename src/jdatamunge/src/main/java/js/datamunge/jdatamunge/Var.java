@@ -52,88 +52,178 @@ public class Var {
   }
 
   /**
-   *  Records a new independent leaf variable on <code>tape</code>.
+   *  Records a new independent leaf variable on <code>tape</code>.<br>
+   *  @param tape The tape that records this variable and every expression built from it;<br>
+   *         it must outlive the Var, and operands of one expression must share it.<br>
+   *  @param value The leaf's value.
    */
   public Var(Tape tape, double value) {
     this(datamungeJNI.new_Var(Tape.getCPtr(tape), tape, value), true);
   }
 
+  /**
+   *  The value of this node.
+   */
   public double value() {
     return datamungeJNI.Var_value(swigCPtr, this);
   }
 
+  /**
+   *  This node's index on its Tape: where to read its gradient in Tape::backward()'s result.
+   */
   public long index() {
     return datamungeJNI.Var_index(swigCPtr, this);
   }
 
+  /**
+   *  Sum: this + <code>other</code>, with the node recorded on the shared Tape.<br>
+   *  @param other Right operand (recorded on the same Tape).<br>
+   *  @return A new Var; neither operand changes.
+   */
   public Var add(Var other) {
     return new Var(datamungeJNI.Var_add(swigCPtr, this, Var.getCPtr(other), other), true);
   }
 
+  /**
+   *  Difference: this - <code>other</code>, with the node recorded on the shared Tape.<br>
+   *  @param other Right operand (recorded on the same Tape).<br>
+   *  @return A new Var; neither operand changes.
+   */
   public Var subtract(Var other) {
     return new Var(datamungeJNI.Var_subtract(swigCPtr, this, Var.getCPtr(other), other), true);
   }
 
+  /**
+   *  Product: this * <code>other</code>, with the node recorded on the shared Tape.<br>
+   *  @param other Right operand (recorded on the same Tape).<br>
+   *  @return A new Var; neither operand changes.
+   */
   public Var multiply(Var other) {
     return new Var(datamungeJNI.Var_multiply(swigCPtr, this, Var.getCPtr(other), other), true);
   }
 
+  /**
+   *  Quotient: this / <code>other</code>, with the node recorded on the shared Tape (IEEE inf/NaN when other is 0).<br>
+   *  @param other Right operand (recorded on the same Tape).<br>
+   *  @return A new Var; neither operand changes.
+   */
   public Var divide(Var other) {
     return new Var(datamungeJNI.Var_divide(swigCPtr, this, Var.getCPtr(other), other), true);
   }
 
+  /**
+   *  Negation -x, with its exact chain-rule derivative.<br>
+   *  @return A new Var.
+   */
   public Var negate() {
     return new Var(datamungeJNI.Var_negate(swigCPtr, this), true);
   }
 
+  /**
+   *  Adds a constant <code>scalar</code>, recorded on the Tape.<br>
+   *  @param scalar Constant right operand.<br>
+   *  @return A new Var.
+   */
   public Var add_scalar(double scalar) {
     return new Var(datamungeJNI.Var_add_scalar(swigCPtr, this, scalar), true);
   }
 
+  /**
+   *  Subtracts a constant <code>scalar</code>, recorded on the Tape.<br>
+   *  @param scalar Constant right operand.<br>
+   *  @return A new Var.
+   */
   public Var subtract_scalar(double scalar) {
     return new Var(datamungeJNI.Var_subtract_scalar(swigCPtr, this, scalar), true);
   }
 
+  /**
+   *  Multiplies by a constant <code>scalar</code>, recorded on the Tape.<br>
+   *  @param scalar Constant right operand.<br>
+   *  @return A new Var.
+   */
   public Var multiply_scalar(double scalar) {
     return new Var(datamungeJNI.Var_multiply_scalar(swigCPtr, this, scalar), true);
   }
 
+  /**
+   *  Divides by a constant <code>scalar</code>, recorded on the Tape.<br>
+   *  @param scalar Constant right operand.<br>
+   *  @return A new Var.
+   */
   public Var divide_scalar(double scalar) {
     return new Var(datamungeJNI.Var_divide_scalar(swigCPtr, this, scalar), true);
   }
 
+  /**
+   *  Power x^p for a constant exponent, with derivative p·x^(p-1).<br>
+   *  @param exponent Constant exponent p; non-integer p needs x ≥ 0 (NaN otherwise).<br>
+   *  @return A new Var.
+   */
   public Var pow(double exponent) {
     return new Var(datamungeJNI.Var_pow(swigCPtr, this, exponent), true);
   }
 
+  /**
+   *  Exponential e^x, with its exact chain-rule derivative.<br>
+   *  @return A new Var.
+   */
   public Var exp() {
     return new Var(datamungeJNI.Var_exp(swigCPtr, this), true);
   }
 
+  /**
+   *  Natural logarithm ln x (NaN for x &lt; 0, -inf at 0), with its exact chain-rule derivative.<br>
+   *  @return A new Var.
+   */
   public Var log() {
     return new Var(datamungeJNI.Var_log(swigCPtr, this), true);
   }
 
+  /**
+   *  Square root √x (NaN for x &lt; 0; infinite derivative at 0), with its exact chain-rule derivative.<br>
+   *  @return A new Var.
+   */
   public Var sqrt() {
     return new Var(datamungeJNI.Var_sqrt(swigCPtr, this), true);
   }
 
+  /**
+   *  Sine (radians), with its exact chain-rule derivative.<br>
+   *  @return A new Var.
+   */
   public Var sin() {
     return new Var(datamungeJNI.Var_sin(swigCPtr, this), true);
   }
 
+  /**
+   *  Cosine (radians), with its exact chain-rule derivative.<br>
+   *  @return A new Var.
+   */
   public Var cos() {
     return new Var(datamungeJNI.Var_cos(swigCPtr, this), true);
   }
 
+  /**
+   *  Tangent (radians), with its exact chain-rule derivative.<br>
+   *  @return A new Var.
+   */
   public Var tan() {
     return new Var(datamungeJNI.Var_tan(swigCPtr, this), true);
   }
 
+  /**
+   *  Hyperbolic tangent, with its exact chain-rule derivative.<br>
+   *  @return A new Var.
+   */
   public Var tanh() {
     return new Var(datamungeJNI.Var_tanh(swigCPtr, this), true);
   }
 
+  /**
+   *  Absolute value |x| (the derivative at 0 uses the x ≥ 0 branch), with its exact chain-rule derivative.<br>
+   *  @return A new Var.
+   */
   public Var abs() {
     return new Var(datamungeJNI.Var_abs(swigCPtr, this), true);
   }

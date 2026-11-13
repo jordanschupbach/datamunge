@@ -1,3 +1,5 @@
+// CMD: just TARGET=timeseries_ex run-d
+
 module app;
 
 import std.stdio : writeln;

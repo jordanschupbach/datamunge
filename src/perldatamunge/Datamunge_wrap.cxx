@@ -1958,208 +1958,215 @@ namespace Swig {
 #define SWIGTYPE_p_datamunge__AgglomerativeClustering swig_types[1]
 #define SWIGTYPE_p_datamunge__BSplineRegression swig_types[2]
 #define SWIGTYPE_p_datamunge__Callback swig_types[3]
-#define SWIGTYPE_p_datamunge__DBSCAN swig_types[4]
-#define SWIGTYPE_p_datamunge__DataFrame swig_types[5]
-#define SWIGTYPE_p_datamunge__DecisionTreeClassifier swig_types[6]
-#define SWIGTYPE_p_datamunge__DecisionTreeRegressor swig_types[7]
-#define SWIGTYPE_p_datamunge__DiffusionMaps swig_types[8]
-#define SWIGTYPE_p_datamunge__Dual swig_types[9]
-#define SWIGTYPE_p_datamunge__ElasticNet swig_types[10]
-#define SWIGTYPE_p_datamunge__GBMClassifier swig_types[11]
-#define SWIGTYPE_p_datamunge__GBMRegressor swig_types[12]
-#define SWIGTYPE_p_datamunge__GGPlot swig_types[13]
-#define SWIGTYPE_p_datamunge__GLM swig_types[14]
-#define SWIGTYPE_p_datamunge__GLMM swig_types[15]
-#define SWIGTYPE_p_datamunge__GaussianProcessRegression swig_types[16]
-#define SWIGTYPE_p_datamunge__HyperDual swig_types[17]
-#define SWIGTYPE_p_datamunge__INLAMixedModel swig_types[18]
-#define SWIGTYPE_p_datamunge__Isomap swig_types[19]
-#define SWIGTYPE_p_datamunge__KMeans swig_types[20]
-#define SWIGTYPE_p_datamunge__KNNClassifier swig_types[21]
-#define SWIGTYPE_p_datamunge__KNNRegressor swig_types[22]
-#define SWIGTYPE_p_datamunge__KernelPCA swig_types[23]
-#define SWIGTYPE_p_datamunge__KernelRegression swig_types[24]
-#define SWIGTYPE_p_datamunge__LDA swig_types[25]
-#define SWIGTYPE_p_datamunge__LLE swig_types[26]
-#define SWIGTYPE_p_datamunge__LM swig_types[27]
-#define SWIGTYPE_p_datamunge__LMM swig_types[28]
-#define SWIGTYPE_p_datamunge__LaplacianEigenmaps swig_types[29]
-#define SWIGTYPE_p_datamunge__Lasso swig_types[30]
-#define SWIGTYPE_p_datamunge__MDS swig_types[31]
-#define SWIGTYPE_p_datamunge__NaiveBayesClassifier swig_types[32]
-#define SWIGTYPE_p_datamunge__PCA swig_types[33]
-#define SWIGTYPE_p_datamunge__PSplineRegression swig_types[34]
-#define SWIGTYPE_p_datamunge__RandomForestClassifier swig_types[35]
-#define SWIGTYPE_p_datamunge__RandomForestRegressor swig_types[36]
-#define SWIGTYPE_p_datamunge__Ridge swig_types[37]
-#define SWIGTYPE_p_datamunge__SVM swig_types[38]
-#define SWIGTYPE_p_datamunge__SammonMapping swig_types[39]
-#define SWIGTYPE_p_datamunge__ShapeLayer swig_types[40]
-#define SWIGTYPE_p_datamunge__TSNE swig_types[41]
-#define SWIGTYPE_p_datamunge__Tape swig_types[42]
-#define SWIGTYPE_p_datamunge__Tensor swig_types[43]
-#define SWIGTYPE_p_datamunge__UMAP swig_types[44]
-#define SWIGTYPE_p_datamunge__Var swig_types[45]
-#define SWIGTYPE_p_datamunge__XGBoostClassifier swig_types[46]
-#define SWIGTYPE_p_datamunge__XGBoostRegressor swig_types[47]
-#define SWIGTYPE_p_datamunge__bayes__GibbsOptions swig_types[48]
-#define SWIGTYPE_p_datamunge__bayes__GibbsResult swig_types[49]
-#define SWIGTYPE_p_datamunge__bayes__GibbsSampler swig_types[50]
-#define SWIGTYPE_p_datamunge__bayes__HMC swig_types[51]
-#define SWIGTYPE_p_datamunge__bayes__HMCOptions swig_types[52]
-#define SWIGTYPE_p_datamunge__bayes__HMCResult swig_types[53]
-#define SWIGTYPE_p_datamunge__bayes__ImportanceSampling swig_types[54]
-#define SWIGTYPE_p_datamunge__bayes__ImportanceSamplingOptions swig_types[55]
-#define SWIGTYPE_p_datamunge__bayes__ImportanceSamplingResult swig_types[56]
-#define SWIGTYPE_p_datamunge__bayes__MAP swig_types[57]
-#define SWIGTYPE_p_datamunge__bayes__MAPOptions swig_types[58]
-#define SWIGTYPE_p_datamunge__bayes__NUTS swig_types[59]
-#define SWIGTYPE_p_datamunge__bayes__NUTSOptions swig_types[60]
-#define SWIGTYPE_p_datamunge__bayes__NUTSResult swig_types[61]
-#define SWIGTYPE_p_datamunge__bayes__RWMOptions swig_types[62]
-#define SWIGTYPE_p_datamunge__bayes__RWMResult swig_types[63]
-#define SWIGTYPE_p_datamunge__bayes__RandomWalkMetropolis swig_types[64]
-#define SWIGTYPE_p_datamunge__image__Image swig_types[65]
-#define SWIGTYPE_p_datamunge__ode__ODEOptions swig_types[66]
-#define SWIGTYPE_p_datamunge__ode__ODESolution swig_types[67]
-#define SWIGTYPE_p_datamunge__ode__ODESolver swig_types[68]
-#define SWIGTYPE_p_datamunge__ode__RHS swig_types[69]
-#define SWIGTYPE_p_datamunge__optim__ACOR swig_types[70]
-#define SWIGTYPE_p_datamunge__optim__ACOROptions swig_types[71]
-#define SWIGTYPE_p_datamunge__optim__AMSGrad swig_types[72]
-#define SWIGTYPE_p_datamunge__optim__AMSGradOptions swig_types[73]
-#define SWIGTYPE_p_datamunge__optim__AdaDelta swig_types[74]
-#define SWIGTYPE_p_datamunge__optim__AdaDeltaOptions swig_types[75]
-#define SWIGTYPE_p_datamunge__optim__AdaGrad swig_types[76]
-#define SWIGTYPE_p_datamunge__optim__AdaGradOptions swig_types[77]
-#define SWIGTYPE_p_datamunge__optim__Adam swig_types[78]
-#define SWIGTYPE_p_datamunge__optim__AdamOptions swig_types[79]
-#define SWIGTYPE_p_datamunge__optim__ArbitraryFunction swig_types[80]
-#define SWIGTYPE_p_datamunge__optim__ArtificialBeeColony swig_types[81]
-#define SWIGTYPE_p_datamunge__optim__ArtificialBeeColonyOptions swig_types[82]
-#define SWIGTYPE_p_datamunge__optim__AugmentedLagrangian swig_types[83]
-#define SWIGTYPE_p_datamunge__optim__AugmentedLagrangianOptions swig_types[84]
-#define SWIGTYPE_p_datamunge__optim__BayesianOptimization swig_types[85]
-#define SWIGTYPE_p_datamunge__optim__BayesianOptimizationOptions swig_types[86]
-#define SWIGTYPE_p_datamunge__optim__BayesianSurrogate swig_types[87]
-#define SWIGTYPE_p_datamunge__optim__CMAES swig_types[88]
-#define SWIGTYPE_p_datamunge__optim__CMAESOptions swig_types[89]
-#define SWIGTYPE_p_datamunge__optim__ConjugateGradient swig_types[90]
-#define SWIGTYPE_p_datamunge__optim__ConjugateGradientOptions swig_types[91]
-#define SWIGTYPE_p_datamunge__optim__CoordinateDescent swig_types[92]
-#define SWIGTYPE_p_datamunge__optim__CoordinateDescentOptions swig_types[93]
-#define SWIGTYPE_p_datamunge__optim__CrossEntropyMethod swig_types[94]
-#define SWIGTYPE_p_datamunge__optim__CrossEntropyMethodOptions swig_types[95]
-#define SWIGTYPE_p_datamunge__optim__CuckooSearch swig_types[96]
-#define SWIGTYPE_p_datamunge__optim__CuckooSearchOptions swig_types[97]
-#define SWIGTYPE_p_datamunge__optim__DEOptions swig_types[98]
-#define SWIGTYPE_p_datamunge__optim__DifferentiableFunction swig_types[99]
-#define SWIGTYPE_p_datamunge__optim__DifferentiableSeparableFunction swig_types[100]
-#define SWIGTYPE_p_datamunge__optim__DifferentialEvolution swig_types[101]
-#define SWIGTYPE_p_datamunge__optim__EqualityConstrainedFunction swig_types[102]
-#define SWIGTYPE_p_datamunge__optim__EstimationOfDistribution swig_types[103]
-#define SWIGTYPE_p_datamunge__optim__EstimationOfDistributionOptions swig_types[104]
-#define SWIGTYPE_p_datamunge__optim__EvolutionStrategy swig_types[105]
-#define SWIGTYPE_p_datamunge__optim__EvolutionStrategyOptions swig_types[106]
-#define SWIGTYPE_p_datamunge__optim__FISTA swig_types[107]
-#define SWIGTYPE_p_datamunge__optim__FISTAOptions swig_types[108]
-#define SWIGTYPE_p_datamunge__optim__FireflyAlgorithm swig_types[109]
-#define SWIGTYPE_p_datamunge__optim__FireflyAlgorithmOptions swig_types[110]
-#define SWIGTYPE_p_datamunge__optim__GAOptions swig_types[111]
-#define SWIGTYPE_p_datamunge__optim__GeneticAlgorithm swig_types[112]
-#define SWIGTYPE_p_datamunge__optim__GradientDescent swig_types[113]
-#define SWIGTYPE_p_datamunge__optim__GradientDescentOptions swig_types[114]
-#define SWIGTYPE_p_datamunge__optim__GreyWolfOptimizer swig_types[115]
-#define SWIGTYPE_p_datamunge__optim__GreyWolfOptimizerOptions swig_types[116]
-#define SWIGTYPE_p_datamunge__optim__HarmonySearch swig_types[117]
-#define SWIGTYPE_p_datamunge__optim__HarmonySearchOptions swig_types[118]
-#define SWIGTYPE_p_datamunge__optim__HessianFunction swig_types[119]
-#define SWIGTYPE_p_datamunge__optim__InequalityConstrainedFunction swig_types[120]
-#define SWIGTYPE_p_datamunge__optim__InteriorPoint swig_types[121]
-#define SWIGTYPE_p_datamunge__optim__InteriorPointOptions swig_types[122]
-#define SWIGTYPE_p_datamunge__optim__LBFGS swig_types[123]
-#define SWIGTYPE_p_datamunge__optim__LBFGSOptions swig_types[124]
-#define SWIGTYPE_p_datamunge__optim__LevenbergMarquardt swig_types[125]
-#define SWIGTYPE_p_datamunge__optim__LevenbergMarquardtOptions swig_types[126]
-#define SWIGTYPE_p_datamunge__optim__Nadam swig_types[127]
-#define SWIGTYPE_p_datamunge__optim__NadamOptions swig_types[128]
-#define SWIGTYPE_p_datamunge__optim__NelderMead swig_types[129]
-#define SWIGTYPE_p_datamunge__optim__NelderMeadOptions swig_types[130]
-#define SWIGTYPE_p_datamunge__optim__NesterovAcceleratedGradient swig_types[131]
-#define SWIGTYPE_p_datamunge__optim__NesterovAcceleratedGradientOptions swig_types[132]
-#define SWIGTYPE_p_datamunge__optim__Newton swig_types[133]
-#define SWIGTYPE_p_datamunge__optim__NewtonOptions swig_types[134]
-#define SWIGTYPE_p_datamunge__optim__PSO swig_types[135]
-#define SWIGTYPE_p_datamunge__optim__PSOOptions swig_types[136]
-#define SWIGTYPE_p_datamunge__optim__ParallelTempering swig_types[137]
-#define SWIGTYPE_p_datamunge__optim__ParallelTemperingOptions swig_types[138]
-#define SWIGTYPE_p_datamunge__optim__ProximalFunction swig_types[139]
-#define SWIGTYPE_p_datamunge__optim__ProximalGradient swig_types[140]
-#define SWIGTYPE_p_datamunge__optim__ProximalGradientOptions swig_types[141]
-#define SWIGTYPE_p_datamunge__optim__RBFGaussianProcessSurrogate swig_types[142]
-#define SWIGTYPE_p_datamunge__optim__RMSProp swig_types[143]
-#define SWIGTYPE_p_datamunge__optim__RMSPropOptions swig_types[144]
-#define SWIGTYPE_p_datamunge__optim__RandomizedBlockCoordinateDescent swig_types[145]
-#define SWIGTYPE_p_datamunge__optim__RandomizedBlockCoordinateDescentOptions swig_types[146]
-#define SWIGTYPE_p_datamunge__optim__ResidualFunction swig_types[147]
-#define SWIGTYPE_p_datamunge__optim__SAGA swig_types[148]
-#define SWIGTYPE_p_datamunge__optim__SAGAOptions swig_types[149]
-#define SWIGTYPE_p_datamunge__optim__SGD swig_types[150]
-#define SWIGTYPE_p_datamunge__optim__SGDOptions swig_types[151]
-#define SWIGTYPE_p_datamunge__optim__SQP swig_types[152]
-#define SWIGTYPE_p_datamunge__optim__SQPOptions swig_types[153]
-#define SWIGTYPE_p_datamunge__optim__SVRG swig_types[154]
-#define SWIGTYPE_p_datamunge__optim__SVRGOptions swig_types[155]
-#define SWIGTYPE_p_datamunge__optim__SeparableFunction swig_types[156]
-#define SWIGTYPE_p_datamunge__optim__SimulatedAnnealing swig_types[157]
-#define SWIGTYPE_p_datamunge__optim__SimulatedAnnealingOptions swig_types[158]
-#define SWIGTYPE_p_datamunge__optim__TrustRegionNewton swig_types[159]
-#define SWIGTYPE_p_datamunge__optim__TrustRegionNewtonOptions swig_types[160]
-#define SWIGTYPE_p_datamunge__optim__WhaleOptimization swig_types[161]
-#define SWIGTYPE_p_datamunge__optim__WhaleOptimizationOptions swig_types[162]
-#define SWIGTYPE_p_datamunge__plot__ABLine swig_types[163]
-#define SWIGTYPE_p_datamunge__plot__DataSeries swig_types[164]
-#define SWIGTYPE_p_datamunge__plot__LegendEntry swig_types[165]
-#define SWIGTYPE_p_datamunge__plot__Plot swig_types[166]
-#define SWIGTYPE_p_datamunge__plot__RGB swig_types[167]
-#define SWIGTYPE_p_datamunge__plot__RLayout swig_types[168]
-#define SWIGTYPE_p_datamunge__plot__RPlot swig_types[169]
-#define SWIGTYPE_p_datamunge__stats__ARIMA swig_types[170]
-#define SWIGTYPE_p_datamunge__stats__ARIMAOptions swig_types[171]
-#define SWIGTYPE_p_datamunge__stats__ExponentialSmoothing swig_types[172]
-#define SWIGTYPE_p_datamunge__stats__ExponentialSmoothingOptions swig_types[173]
-#define SWIGTYPE_p_datamunge__stats__HypothesisTestResult swig_types[174]
-#define SWIGTYPE_p_difference_type swig_types[175]
-#define SWIGTYPE_p_first_type swig_types[176]
-#define SWIGTYPE_p_int swig_types[177]
-#define SWIGTYPE_p_long_long swig_types[178]
-#define SWIGTYPE_p_second_type swig_types[179]
-#define SWIGTYPE_p_short swig_types[180]
-#define SWIGTYPE_p_signed_char swig_types[181]
-#define SWIGTYPE_p_size_t swig_types[182]
-#define SWIGTYPE_p_size_type swig_types[183]
-#define SWIGTYPE_p_std__out_of_range swig_types[184]
-#define SWIGTYPE_p_std__pairT_double_double_t swig_types[185]
-#define SWIGTYPE_p_std__pairT_int_int_t swig_types[186]
-#define SWIGTYPE_p_std__pairT_std__string_std__string_t swig_types[187]
-#define SWIGTYPE_p_std__pairT_std__vectorT_double_t_std__vectorT_double_t_t swig_types[188]
-#define SWIGTYPE_p_std__vectorT_datamunge__plot__ABLine_t swig_types[189]
-#define SWIGTYPE_p_std__vectorT_datamunge__plot__DataSeries_t swig_types[190]
-#define SWIGTYPE_p_std__vectorT_datamunge__plot__LegendEntry_t swig_types[191]
-#define SWIGTYPE_p_std__vectorT_datamunge__plot__RGB_t swig_types[192]
-#define SWIGTYPE_p_std__vectorT_double_t swig_types[193]
-#define SWIGTYPE_p_std__vectorT_int_t swig_types[194]
-#define SWIGTYPE_p_std__vectorT_size_t_t swig_types[195]
-#define SWIGTYPE_p_std__vectorT_std__size_t_t swig_types[196]
-#define SWIGTYPE_p_std__vectorT_std__string_t swig_types[197]
-#define SWIGTYPE_p_std__vectorT_std__vectorT_double_t_t swig_types[198]
-#define SWIGTYPE_p_unsigned_char swig_types[199]
-#define SWIGTYPE_p_unsigned_int swig_types[200]
-#define SWIGTYPE_p_unsigned_long_long swig_types[201]
-#define SWIGTYPE_p_unsigned_short swig_types[202]
-#define SWIGTYPE_p_value_type swig_types[203]
-static swig_type_info *swig_types[205];
-static swig_module_info swig_module = {swig_types, 204, 0, 0, 0, 0};
+#define SWIGTYPE_p_datamunge__CsvReader swig_types[4]
+#define SWIGTYPE_p_datamunge__DBSCAN swig_types[5]
+#define SWIGTYPE_p_datamunge__DataFrame swig_types[6]
+#define SWIGTYPE_p_datamunge__DecisionTreeClassifier swig_types[7]
+#define SWIGTYPE_p_datamunge__DecisionTreeRegressor swig_types[8]
+#define SWIGTYPE_p_datamunge__DiffusionMaps swig_types[9]
+#define SWIGTYPE_p_datamunge__Dual swig_types[10]
+#define SWIGTYPE_p_datamunge__ElasticNet swig_types[11]
+#define SWIGTYPE_p_datamunge__GBMClassifier swig_types[12]
+#define SWIGTYPE_p_datamunge__GBMRegressor swig_types[13]
+#define SWIGTYPE_p_datamunge__GGPlot swig_types[14]
+#define SWIGTYPE_p_datamunge__GLM swig_types[15]
+#define SWIGTYPE_p_datamunge__GLMM swig_types[16]
+#define SWIGTYPE_p_datamunge__GaussianProcessRegression swig_types[17]
+#define SWIGTYPE_p_datamunge__HyperDual swig_types[18]
+#define SWIGTYPE_p_datamunge__INLAMixedModel swig_types[19]
+#define SWIGTYPE_p_datamunge__Isomap swig_types[20]
+#define SWIGTYPE_p_datamunge__KMeans swig_types[21]
+#define SWIGTYPE_p_datamunge__KNNClassifier swig_types[22]
+#define SWIGTYPE_p_datamunge__KNNRegressor swig_types[23]
+#define SWIGTYPE_p_datamunge__KernelPCA swig_types[24]
+#define SWIGTYPE_p_datamunge__KernelRegression swig_types[25]
+#define SWIGTYPE_p_datamunge__LDA swig_types[26]
+#define SWIGTYPE_p_datamunge__LLE swig_types[27]
+#define SWIGTYPE_p_datamunge__LM swig_types[28]
+#define SWIGTYPE_p_datamunge__LMM swig_types[29]
+#define SWIGTYPE_p_datamunge__LaplacianEigenmaps swig_types[30]
+#define SWIGTYPE_p_datamunge__Lasso swig_types[31]
+#define SWIGTYPE_p_datamunge__MDS swig_types[32]
+#define SWIGTYPE_p_datamunge__NaiveBayesClassifier swig_types[33]
+#define SWIGTYPE_p_datamunge__PCA swig_types[34]
+#define SWIGTYPE_p_datamunge__PSplineRegression swig_types[35]
+#define SWIGTYPE_p_datamunge__RandomForestClassifier swig_types[36]
+#define SWIGTYPE_p_datamunge__RandomForestRegressor swig_types[37]
+#define SWIGTYPE_p_datamunge__Ridge swig_types[38]
+#define SWIGTYPE_p_datamunge__SVM swig_types[39]
+#define SWIGTYPE_p_datamunge__SammonMapping swig_types[40]
+#define SWIGTYPE_p_datamunge__ShapeLayer swig_types[41]
+#define SWIGTYPE_p_datamunge__Splom swig_types[42]
+#define SWIGTYPE_p_datamunge__TSNE swig_types[43]
+#define SWIGTYPE_p_datamunge__Tape swig_types[44]
+#define SWIGTYPE_p_datamunge__Tensor swig_types[45]
+#define SWIGTYPE_p_datamunge__UMAP swig_types[46]
+#define SWIGTYPE_p_datamunge__Var swig_types[47]
+#define SWIGTYPE_p_datamunge__XGBoostClassifier swig_types[48]
+#define SWIGTYPE_p_datamunge__XGBoostRegressor swig_types[49]
+#define SWIGTYPE_p_datamunge__bayes__GibbsOptions swig_types[50]
+#define SWIGTYPE_p_datamunge__bayes__GibbsResult swig_types[51]
+#define SWIGTYPE_p_datamunge__bayes__GibbsSampler swig_types[52]
+#define SWIGTYPE_p_datamunge__bayes__HMC swig_types[53]
+#define SWIGTYPE_p_datamunge__bayes__HMCOptions swig_types[54]
+#define SWIGTYPE_p_datamunge__bayes__HMCResult swig_types[55]
+#define SWIGTYPE_p_datamunge__bayes__ImportanceSampling swig_types[56]
+#define SWIGTYPE_p_datamunge__bayes__ImportanceSamplingOptions swig_types[57]
+#define SWIGTYPE_p_datamunge__bayes__ImportanceSamplingResult swig_types[58]
+#define SWIGTYPE_p_datamunge__bayes__MAP swig_types[59]
+#define SWIGTYPE_p_datamunge__bayes__MAPOptions swig_types[60]
+#define SWIGTYPE_p_datamunge__bayes__NUTS swig_types[61]
+#define SWIGTYPE_p_datamunge__bayes__NUTSOptions swig_types[62]
+#define SWIGTYPE_p_datamunge__bayes__NUTSResult swig_types[63]
+#define SWIGTYPE_p_datamunge__bayes__RWMOptions swig_types[64]
+#define SWIGTYPE_p_datamunge__bayes__RWMResult swig_types[65]
+#define SWIGTYPE_p_datamunge__bayes__RandomWalkMetropolis swig_types[66]
+#define SWIGTYPE_p_datamunge__datasets__ImageBatch swig_types[67]
+#define SWIGTYPE_p_datamunge__graphics__ABLine swig_types[68]
+#define SWIGTYPE_p_datamunge__graphics__DataSeries swig_types[69]
+#define SWIGTYPE_p_datamunge__graphics__LegendEntry swig_types[70]
+#define SWIGTYPE_p_datamunge__graphics__Plot swig_types[71]
+#define SWIGTYPE_p_datamunge__graphics__RGB swig_types[72]
+#define SWIGTYPE_p_datamunge__graphics__RLayout swig_types[73]
+#define SWIGTYPE_p_datamunge__graphics__RPlot swig_types[74]
+#define SWIGTYPE_p_datamunge__image__Image swig_types[75]
+#define SWIGTYPE_p_datamunge__ode__ODEOptions swig_types[76]
+#define SWIGTYPE_p_datamunge__ode__ODESolution swig_types[77]
+#define SWIGTYPE_p_datamunge__ode__ODESolver swig_types[78]
+#define SWIGTYPE_p_datamunge__ode__RHS swig_types[79]
+#define SWIGTYPE_p_datamunge__optim__ACOR swig_types[80]
+#define SWIGTYPE_p_datamunge__optim__ACOROptions swig_types[81]
+#define SWIGTYPE_p_datamunge__optim__AMSGrad swig_types[82]
+#define SWIGTYPE_p_datamunge__optim__AMSGradOptions swig_types[83]
+#define SWIGTYPE_p_datamunge__optim__AdaDelta swig_types[84]
+#define SWIGTYPE_p_datamunge__optim__AdaDeltaOptions swig_types[85]
+#define SWIGTYPE_p_datamunge__optim__AdaGrad swig_types[86]
+#define SWIGTYPE_p_datamunge__optim__AdaGradOptions swig_types[87]
+#define SWIGTYPE_p_datamunge__optim__Adam swig_types[88]
+#define SWIGTYPE_p_datamunge__optim__AdamOptions swig_types[89]
+#define SWIGTYPE_p_datamunge__optim__ArbitraryFunction swig_types[90]
+#define SWIGTYPE_p_datamunge__optim__ArtificialBeeColony swig_types[91]
+#define SWIGTYPE_p_datamunge__optim__ArtificialBeeColonyOptions swig_types[92]
+#define SWIGTYPE_p_datamunge__optim__AugmentedLagrangian swig_types[93]
+#define SWIGTYPE_p_datamunge__optim__AugmentedLagrangianOptions swig_types[94]
+#define SWIGTYPE_p_datamunge__optim__BayesianOptimization swig_types[95]
+#define SWIGTYPE_p_datamunge__optim__BayesianOptimizationOptions swig_types[96]
+#define SWIGTYPE_p_datamunge__optim__BayesianOptimizationResult swig_types[97]
+#define SWIGTYPE_p_datamunge__optim__BayesianSurrogate swig_types[98]
+#define SWIGTYPE_p_datamunge__optim__CMAES swig_types[99]
+#define SWIGTYPE_p_datamunge__optim__CMAESOptions swig_types[100]
+#define SWIGTYPE_p_datamunge__optim__ConjugateGradient swig_types[101]
+#define SWIGTYPE_p_datamunge__optim__ConjugateGradientOptions swig_types[102]
+#define SWIGTYPE_p_datamunge__optim__CoordinateDescent swig_types[103]
+#define SWIGTYPE_p_datamunge__optim__CoordinateDescentOptions swig_types[104]
+#define SWIGTYPE_p_datamunge__optim__CrossEntropyMethod swig_types[105]
+#define SWIGTYPE_p_datamunge__optim__CrossEntropyMethodOptions swig_types[106]
+#define SWIGTYPE_p_datamunge__optim__CuckooSearch swig_types[107]
+#define SWIGTYPE_p_datamunge__optim__CuckooSearchOptions swig_types[108]
+#define SWIGTYPE_p_datamunge__optim__DEOptions swig_types[109]
+#define SWIGTYPE_p_datamunge__optim__DifferentiableFunction swig_types[110]
+#define SWIGTYPE_p_datamunge__optim__DifferentiableSeparableFunction swig_types[111]
+#define SWIGTYPE_p_datamunge__optim__DifferentialEvolution swig_types[112]
+#define SWIGTYPE_p_datamunge__optim__EqualityConstrainedFunction swig_types[113]
+#define SWIGTYPE_p_datamunge__optim__EstimationOfDistribution swig_types[114]
+#define SWIGTYPE_p_datamunge__optim__EstimationOfDistributionOptions swig_types[115]
+#define SWIGTYPE_p_datamunge__optim__EvolutionStrategy swig_types[116]
+#define SWIGTYPE_p_datamunge__optim__EvolutionStrategyOptions swig_types[117]
+#define SWIGTYPE_p_datamunge__optim__FISTA swig_types[118]
+#define SWIGTYPE_p_datamunge__optim__FISTAOptions swig_types[119]
+#define SWIGTYPE_p_datamunge__optim__FireflyAlgorithm swig_types[120]
+#define SWIGTYPE_p_datamunge__optim__FireflyAlgorithmOptions swig_types[121]
+#define SWIGTYPE_p_datamunge__optim__GAOptions swig_types[122]
+#define SWIGTYPE_p_datamunge__optim__GeneticAlgorithm swig_types[123]
+#define SWIGTYPE_p_datamunge__optim__GradientDescent swig_types[124]
+#define SWIGTYPE_p_datamunge__optim__GradientDescentOptions swig_types[125]
+#define SWIGTYPE_p_datamunge__optim__GreyWolfOptimizer swig_types[126]
+#define SWIGTYPE_p_datamunge__optim__GreyWolfOptimizerOptions swig_types[127]
+#define SWIGTYPE_p_datamunge__optim__HarmonySearch swig_types[128]
+#define SWIGTYPE_p_datamunge__optim__HarmonySearchOptions swig_types[129]
+#define SWIGTYPE_p_datamunge__optim__HessianFunction swig_types[130]
+#define SWIGTYPE_p_datamunge__optim__InequalityConstrainedFunction swig_types[131]
+#define SWIGTYPE_p_datamunge__optim__InteriorPoint swig_types[132]
+#define SWIGTYPE_p_datamunge__optim__InteriorPointOptions swig_types[133]
+#define SWIGTYPE_p_datamunge__optim__LBFGS swig_types[134]
+#define SWIGTYPE_p_datamunge__optim__LBFGSOptions swig_types[135]
+#define SWIGTYPE_p_datamunge__optim__LevenbergMarquardt swig_types[136]
+#define SWIGTYPE_p_datamunge__optim__LevenbergMarquardtOptions swig_types[137]
+#define SWIGTYPE_p_datamunge__optim__Nadam swig_types[138]
+#define SWIGTYPE_p_datamunge__optim__NadamOptions swig_types[139]
+#define SWIGTYPE_p_datamunge__optim__NelderMead swig_types[140]
+#define SWIGTYPE_p_datamunge__optim__NelderMeadOptions swig_types[141]
+#define SWIGTYPE_p_datamunge__optim__NesterovAcceleratedGradient swig_types[142]
+#define SWIGTYPE_p_datamunge__optim__NesterovAcceleratedGradientOptions swig_types[143]
+#define SWIGTYPE_p_datamunge__optim__Newton swig_types[144]
+#define SWIGTYPE_p_datamunge__optim__NewtonOptions swig_types[145]
+#define SWIGTYPE_p_datamunge__optim__PSO swig_types[146]
+#define SWIGTYPE_p_datamunge__optim__PSOOptions swig_types[147]
+#define SWIGTYPE_p_datamunge__optim__ParallelTempering swig_types[148]
+#define SWIGTYPE_p_datamunge__optim__ParallelTemperingOptions swig_types[149]
+#define SWIGTYPE_p_datamunge__optim__ProximalFunction swig_types[150]
+#define SWIGTYPE_p_datamunge__optim__ProximalGradient swig_types[151]
+#define SWIGTYPE_p_datamunge__optim__ProximalGradientOptions swig_types[152]
+#define SWIGTYPE_p_datamunge__optim__RBFGaussianProcessSurrogate swig_types[153]
+#define SWIGTYPE_p_datamunge__optim__RMSProp swig_types[154]
+#define SWIGTYPE_p_datamunge__optim__RMSPropOptions swig_types[155]
+#define SWIGTYPE_p_datamunge__optim__RandomizedBlockCoordinateDescent swig_types[156]
+#define SWIGTYPE_p_datamunge__optim__RandomizedBlockCoordinateDescentOptions swig_types[157]
+#define SWIGTYPE_p_datamunge__optim__ResidualFunction swig_types[158]
+#define SWIGTYPE_p_datamunge__optim__SAGA swig_types[159]
+#define SWIGTYPE_p_datamunge__optim__SAGAOptions swig_types[160]
+#define SWIGTYPE_p_datamunge__optim__SGD swig_types[161]
+#define SWIGTYPE_p_datamunge__optim__SGDOptions swig_types[162]
+#define SWIGTYPE_p_datamunge__optim__SQP swig_types[163]
+#define SWIGTYPE_p_datamunge__optim__SQPOptions swig_types[164]
+#define SWIGTYPE_p_datamunge__optim__SVRG swig_types[165]
+#define SWIGTYPE_p_datamunge__optim__SVRGOptions swig_types[166]
+#define SWIGTYPE_p_datamunge__optim__SeparableFunction swig_types[167]
+#define SWIGTYPE_p_datamunge__optim__SimulatedAnnealing swig_types[168]
+#define SWIGTYPE_p_datamunge__optim__SimulatedAnnealingOptions swig_types[169]
+#define SWIGTYPE_p_datamunge__optim__SurrogatePrediction swig_types[170]
+#define SWIGTYPE_p_datamunge__optim__TrustRegionNewton swig_types[171]
+#define SWIGTYPE_p_datamunge__optim__TrustRegionNewtonOptions swig_types[172]
+#define SWIGTYPE_p_datamunge__optim__WhaleOptimization swig_types[173]
+#define SWIGTYPE_p_datamunge__optim__WhaleOptimizationOptions swig_types[174]
+#define SWIGTYPE_p_datamunge__stats__ARIMA swig_types[175]
+#define SWIGTYPE_p_datamunge__stats__ARIMAOptions swig_types[176]
+#define SWIGTYPE_p_datamunge__stats__ExponentialSmoothing swig_types[177]
+#define SWIGTYPE_p_datamunge__stats__ExponentialSmoothingOptions swig_types[178]
+#define SWIGTYPE_p_datamunge__stats__HypothesisTestResult swig_types[179]
+#define SWIGTYPE_p_datamunge__stats__KendallTau swig_types[180]
+#define SWIGTYPE_p_difference_type swig_types[181]
+#define SWIGTYPE_p_first_type swig_types[182]
+#define SWIGTYPE_p_int swig_types[183]
+#define SWIGTYPE_p_long_long swig_types[184]
+#define SWIGTYPE_p_second_type swig_types[185]
+#define SWIGTYPE_p_short swig_types[186]
+#define SWIGTYPE_p_signed_char swig_types[187]
+#define SWIGTYPE_p_size_t swig_types[188]
+#define SWIGTYPE_p_size_type swig_types[189]
+#define SWIGTYPE_p_std__out_of_range swig_types[190]
+#define SWIGTYPE_p_std__pairT_double_double_t swig_types[191]
+#define SWIGTYPE_p_std__pairT_int_int_t swig_types[192]
+#define SWIGTYPE_p_std__pairT_std__string_std__string_t swig_types[193]
+#define SWIGTYPE_p_std__pairT_std__vectorT_double_t_std__vectorT_double_t_t swig_types[194]
+#define SWIGTYPE_p_std__vectorT_datamunge__graphics__ABLine_t swig_types[195]
+#define SWIGTYPE_p_std__vectorT_datamunge__graphics__DataSeries_t swig_types[196]
+#define SWIGTYPE_p_std__vectorT_datamunge__graphics__LegendEntry_t swig_types[197]
+#define SWIGTYPE_p_std__vectorT_datamunge__graphics__RGB_t swig_types[198]
+#define SWIGTYPE_p_std__vectorT_double_t swig_types[199]
+#define SWIGTYPE_p_std__vectorT_int_t swig_types[200]
+#define SWIGTYPE_p_std__vectorT_size_t_t swig_types[201]
+#define SWIGTYPE_p_std__vectorT_std__size_t_t swig_types[202]
+#define SWIGTYPE_p_std__vectorT_std__string_t swig_types[203]
+#define SWIGTYPE_p_std__vectorT_std__vectorT_double_t_t swig_types[204]
+#define SWIGTYPE_p_std__vectorT_unsigned_char_t swig_types[205]
+#define SWIGTYPE_p_unsigned_char swig_types[206]
+#define SWIGTYPE_p_unsigned_int swig_types[207]
+#define SWIGTYPE_p_unsigned_long_long swig_types[208]
+#define SWIGTYPE_p_unsigned_short swig_types[209]
+#define SWIGTYPE_p_value_type swig_types[210]
+static swig_type_info *swig_types[212];
+static swig_module_info swig_module = {swig_types, 211, 0, 0, 0, 0};
 #define SWIG_TypeQuery(name) SWIG_TypeQueryModule(&swig_module, &swig_module, name)
 #define SWIG_MangledTypeQuery(name) SWIG_MangledTypeQueryModule(&swig_module, &swig_module, name)
 
@@ -2904,10 +2911,121 @@ SWIG_AsVal_bool SWIG_PERL_DECL_ARGS_2(SV *obj, bool* val)
   }
 }
 
-SWIGINTERN datamunge::graphics::RGB *new_datamunge_plot_RGB__SWIG_0(){ return new datamunge::graphics::RGB(); }
-SWIGINTERN datamunge::graphics::RGB *new_datamunge_plot_RGB__SWIG_1(int r,int g,int b,double alpha=1.0){
-    return new datamunge::graphics::RGB{r, g, b, alpha};
+
+SWIGINTERN int
+SWIG_AsCharArray(SV * obj, char *val, size_t size)
+{ 
+  char* cptr = 0; size_t csize = 0; int alloc = SWIG_OLDOBJ;
+  int res = SWIG_AsCharPtrAndSize(obj, &cptr, &csize, &alloc);
+  if (SWIG_IsOK(res)) {
+    /* special case of single char conversion when we don't need space for NUL */
+    if (size == 1 && csize == 2 && cptr && !cptr[1]) --csize;
+    if (csize <= size) {
+      if (val) {
+	if (csize) memcpy(val, cptr, csize*sizeof(char));
+	if (csize < size) memset(val + csize, 0, (size - csize)*sizeof(char));
+      }
+      if (alloc == SWIG_NEWOBJ) {
+	delete[] cptr;
+	res = SWIG_DelNewMask(res);
+      }      
+      return res;
+    }
+    if (alloc == SWIG_NEWOBJ) delete[] cptr;
   }
+  return SWIG_TypeError;
+}
+
+
+SWIGINTERN int
+SWIG_AsVal_char SWIG_PERL_DECL_ARGS_2(SV * obj, char *val)
+{    
+  int res = SWIG_AsCharArray(obj, val, 1);
+  if (!SWIG_IsOK(res)) {
+    long v;
+    res = SWIG_AddCast(SWIG_AsVal_long SWIG_PERL_CALL_ARGS_2(obj, &v));
+    if (SWIG_IsOK(res)) {
+      if ((CHAR_MIN <= v) && (v <= CHAR_MAX)) {
+	if (val) *val = static_cast< char >(v);
+      } else {
+	res = SWIG_OverflowError;
+      }
+    }
+  }
+  return res;
+}
+
+
+#ifdef SWIG_LONG_LONG_AVAILABLE
+SWIGINTERN int
+SWIG_AsVal_long_SS_long SWIG_PERL_DECL_ARGS_2(SV *obj, long long *val)
+{
+  if (SvUOK(obj)) {
+    UV v = SvUV(obj);
+    /* pretty sure this could allow v == LLONG MAX */
+    if (UVSIZE < sizeof(*val) || v < LLONG_MAX) {
+      if (val) *val = v;
+      return SWIG_OK;
+    }
+    return SWIG_OverflowError;
+  } else if (SvIOK(obj)) {
+    IV v = SvIV(obj);
+    if (IVSIZE <= sizeof(*val) || (v >= LLONG_MIN && v <= LLONG_MAX)) {
+      if (val) *val = v;
+      return SWIG_OK;
+    }
+    return SWIG_OverflowError;
+  } else {
+    int dispatch = 0;
+    const char *nptr = SvPV_nolen(obj);
+    if (nptr) {
+      char *endptr;
+      long long v;
+      errno = 0;
+      v = strtoll(nptr, &endptr,0);
+      if (errno == ERANGE) {
+	errno = 0;
+	return SWIG_OverflowError;
+      } else {
+	if (*endptr == '\0') {
+	  if (val) *val = v;
+	  return SWIG_Str2NumCast(SWIG_OK);
+	}
+      }
+    }
+    if (!dispatch) {
+      const double mant_max = 1LL << DBL_MANT_DIG;
+      const double mant_min = -mant_max;
+      double d;
+      int res = SWIG_AddCast(SWIG_AsVal_double SWIG_PERL_CALL_ARGS_2(obj,&d));
+      if (SWIG_IsOK(res) && SWIG_CanCastAsInteger(&d, mant_min, mant_max)) {
+	if (val) *val = (long long)(d);
+	return res;
+      }
+    }
+  }
+  return SWIG_TypeError; 
+}
+#endif
+
+
+#ifdef SWIG_LONG_LONG_AVAILABLE
+SWIGINTERNINLINE SV *
+SWIG_From_long_SS_long  SWIG_PERL_DECL_ARGS_1(long long value)
+{
+  SV *sv;
+  if (IVSIZE >= sizeof(value) || (value >= IV_MIN && value <= IV_MAX))
+    sv = newSViv((IV)(value));
+  else {
+    //sv = newSVpvf("%lld", value); doesn't work in non 64bit Perl
+    char temp[256];
+    SWIG_snprintf(temp, sizeof(temp), "%lld", value);
+    sv = newSVpv(temp, 0);
+  }
+  return sv_2mortal(sv);
+}
+#endif
+
 #include "Datamunge_wrap.h"
 
 #ifdef __cplusplus
@@ -16613,6 +16731,144 @@ XS(_wrap_DataFrame_to_string) {
 }
 
 
+XS(_wrap_DataFrame_to_md__SWIG_0) {
+  {
+    datamunge::DataFrame *arg1 = 0 ;
+    int arg2 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    int val2 ;
+    int ecode2 = 0 ;
+    int argvi = 0;
+    std::string result;
+    dXSARGS;
+    
+    if ((items < 2) || (items > 2)) {
+      SWIG_croak("Usage: DataFrame_to_md(self,digits);");
+    }
+    res1 = SWIG_ConvertPtr(ST(0), &argp1,SWIGTYPE_p_datamunge__DataFrame, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "DataFrame_to_md" "', argument " "1"" of type '" "datamunge::DataFrame const *""'"); 
+    }
+    arg1 = reinterpret_cast< datamunge::DataFrame * >(argp1);
+    ecode2 = SWIG_AsVal_int SWIG_PERL_CALL_ARGS_2(ST(1), &val2);
+    if (!SWIG_IsOK(ecode2)) {
+      SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "DataFrame_to_md" "', argument " "2"" of type '" "int""'");
+    } 
+    arg2 = static_cast< int >(val2);
+    result = ((datamunge::DataFrame const *)arg1)->to_md(arg2);
+    ST(argvi) = SWIG_From_std_string  SWIG_PERL_CALL_ARGS_1(static_cast< std::string >(result)); argvi++ ;
+    
+    
+    XSRETURN(argvi);
+    fail:;
+    
+    
+  }
+  SWIG_croak_null();
+}
+
+
+XS(_wrap_DataFrame_to_md__SWIG_1) {
+  {
+    datamunge::DataFrame *arg1 = 0 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    int argvi = 0;
+    std::string result;
+    dXSARGS;
+    
+    if ((items < 1) || (items > 1)) {
+      SWIG_croak("Usage: DataFrame_to_md(self);");
+    }
+    res1 = SWIG_ConvertPtr(ST(0), &argp1,SWIGTYPE_p_datamunge__DataFrame, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "DataFrame_to_md" "', argument " "1"" of type '" "datamunge::DataFrame const *""'"); 
+    }
+    arg1 = reinterpret_cast< datamunge::DataFrame * >(argp1);
+    result = ((datamunge::DataFrame const *)arg1)->to_md();
+    ST(argvi) = SWIG_From_std_string  SWIG_PERL_CALL_ARGS_1(static_cast< std::string >(result)); argvi++ ;
+    
+    XSRETURN(argvi);
+    fail:;
+    
+  }
+  SWIG_croak_null();
+}
+
+
+XS(_wrap_DataFrame_to_md) {
+  dXSARGS;
+  
+  {
+    unsigned long _index = 0;
+    SWIG_TypeRank _rank = 0; 
+    if (items == 1) {
+      SWIG_TypeRank _ranki = 0;
+      SWIG_TypeRank _rankm = 0;
+      SWIG_TypeRank _pi = 1;
+      int _v = 0;
+      {
+        void *vptr = 0;
+        int res = SWIG_ConvertPtr(ST(0), &vptr, SWIGTYPE_p_datamunge__DataFrame, 0);
+        _v = SWIG_CheckState(res);
+      }
+      if (!_v) goto check_1;
+      _ranki += _v*_pi;
+      _rankm += _pi;
+      _pi *= SWIG_MAXCASTRANK;
+      if (!_index || (_ranki < _rank)) {
+        _rank = _ranki; _index = 1;
+        if (_rank == _rankm) goto dispatch;
+      }
+    }
+  check_1:
+    
+    if (items == 2) {
+      SWIG_TypeRank _ranki = 0;
+      SWIG_TypeRank _rankm = 0;
+      SWIG_TypeRank _pi = 1;
+      int _v = 0;
+      {
+        void *vptr = 0;
+        int res = SWIG_ConvertPtr(ST(0), &vptr, SWIGTYPE_p_datamunge__DataFrame, 0);
+        _v = SWIG_CheckState(res);
+      }
+      if (!_v) goto check_2;
+      _ranki += _v*_pi;
+      _rankm += _pi;
+      _pi *= SWIG_MAXCASTRANK;
+      {
+        {
+          int res = SWIG_AsVal_int SWIG_PERL_CALL_ARGS_2(ST(1), NULL);
+          _v = SWIG_CheckState(res);
+        }
+      }
+      if (!_v) goto check_2;
+      _ranki += _v*_pi;
+      _rankm += _pi;
+      _pi *= SWIG_MAXCASTRANK;
+      if (!_index || (_ranki < _rank)) {
+        _rank = _ranki; _index = 2;
+        if (_rank == _rankm) goto dispatch;
+      }
+    }
+  check_2:
+    
+  dispatch:
+    switch(_index) {
+    case 1:
+      PUSHMARK(MARK); SWIG_CALLXS(_wrap_DataFrame_to_md__SWIG_1); return;
+    case 2:
+      PUSHMARK(MARK); SWIG_CALLXS(_wrap_DataFrame_to_md__SWIG_0); return;
+    }
+  }
+  
+  croak("No matching function for overloaded 'DataFrame_to_md'");
+  XSRETURN(0);
+}
+
+
 XS(_wrap_DataFrame_is_numeric_column) {
   {
     datamunge::DataFrame *arg1 = 0 ;
@@ -16815,37 +17071,324 @@ XS(_wrap_DataFrame_string_at) {
 }
 
 
-XS(_wrap_DataFrame_iris) {
+XS(_wrap_DataFrame_read_csv__SWIG_0) {
   {
+    std::string *arg1 = 0 ;
+    char arg2 ;
+    int res1 = SWIG_OLDOBJ ;
+    char val2 ;
+    int ecode2 = 0 ;
     int argvi = 0;
     datamunge::DataFrame *result = 0 ;
     dXSARGS;
     
-    if ((items < 0) || (items > 0)) {
-      SWIG_croak("Usage: DataFrame_iris();");
+    if ((items < 2) || (items > 2)) {
+      SWIG_croak("Usage: DataFrame_read_csv(path,delimiter);");
     }
-    result = (datamunge::DataFrame *)datamunge::DataFrame::iris();
+    {
+      std::string *ptr = (std::string *)0;
+      res1 = SWIG_AsPtr_std_string SWIG_PERL_CALL_ARGS_2(ST(0), &ptr);
+      if (!SWIG_IsOK(res1)) {
+        SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "DataFrame_read_csv" "', argument " "1"" of type '" "std::string const &""'"); 
+      }
+      if (!ptr) {
+        SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "DataFrame_read_csv" "', argument " "1"" of type '" "std::string const &""'"); 
+      }
+      arg1 = ptr;
+    }
+    ecode2 = SWIG_AsVal_char SWIG_PERL_CALL_ARGS_2(ST(1), &val2);
+    if (!SWIG_IsOK(ecode2)) {
+      SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "DataFrame_read_csv" "', argument " "2"" of type '" "char""'");
+    } 
+    arg2 = static_cast< char >(val2);
+    result = (datamunge::DataFrame *)datamunge::DataFrame::read_csv((std::string const &)*arg1,arg2);
     ST(argvi) = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__DataFrame, 0 | SWIG_SHADOW); argvi++ ;
+    if (SWIG_IsNewObj(res1)) delete arg1;
+    
     XSRETURN(argvi);
     fail:;
+    if (SWIG_IsNewObj(res1)) delete arg1;
+    
   }
   SWIG_croak_null();
 }
 
 
-XS(_wrap_DataFrame_penguins) {
+XS(_wrap_DataFrame_read_csv__SWIG_1) {
   {
+    std::string *arg1 = 0 ;
+    int res1 = SWIG_OLDOBJ ;
     int argvi = 0;
     datamunge::DataFrame *result = 0 ;
     dXSARGS;
     
-    if ((items < 0) || (items > 0)) {
-      SWIG_croak("Usage: DataFrame_penguins();");
+    if ((items < 1) || (items > 1)) {
+      SWIG_croak("Usage: DataFrame_read_csv(path);");
     }
-    result = (datamunge::DataFrame *)datamunge::DataFrame::penguins();
+    {
+      std::string *ptr = (std::string *)0;
+      res1 = SWIG_AsPtr_std_string SWIG_PERL_CALL_ARGS_2(ST(0), &ptr);
+      if (!SWIG_IsOK(res1)) {
+        SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "DataFrame_read_csv" "', argument " "1"" of type '" "std::string const &""'"); 
+      }
+      if (!ptr) {
+        SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "DataFrame_read_csv" "', argument " "1"" of type '" "std::string const &""'"); 
+      }
+      arg1 = ptr;
+    }
+    result = (datamunge::DataFrame *)datamunge::DataFrame::read_csv((std::string const &)*arg1);
     ST(argvi) = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__DataFrame, 0 | SWIG_SHADOW); argvi++ ;
+    if (SWIG_IsNewObj(res1)) delete arg1;
     XSRETURN(argvi);
     fail:;
+    if (SWIG_IsNewObj(res1)) delete arg1;
+  }
+  SWIG_croak_null();
+}
+
+
+XS(_wrap_DataFrame_read_csv) {
+  dXSARGS;
+  
+  {
+    unsigned long _index = 0;
+    SWIG_TypeRank _rank = 0; 
+    if (items == 1) {
+      SWIG_TypeRank _ranki = 0;
+      SWIG_TypeRank _rankm = 0;
+      SWIG_TypeRank _pi = 1;
+      int _v = 0;
+      {
+        int res = SWIG_AsPtr_std_string SWIG_PERL_CALL_ARGS_2(ST(0), (std::string**)(0));
+        _v = SWIG_CheckState(res);
+      }
+      if (!_v) goto check_1;
+      _ranki += _v*_pi;
+      _rankm += _pi;
+      _pi *= SWIG_MAXCASTRANK;
+      if (!_index || (_ranki < _rank)) {
+        _rank = _ranki; _index = 1;
+        if (_rank == _rankm) goto dispatch;
+      }
+    }
+  check_1:
+    
+    if (items == 2) {
+      SWIG_TypeRank _ranki = 0;
+      SWIG_TypeRank _rankm = 0;
+      SWIG_TypeRank _pi = 1;
+      int _v = 0;
+      {
+        int res = SWIG_AsPtr_std_string SWIG_PERL_CALL_ARGS_2(ST(0), (std::string**)(0));
+        _v = SWIG_CheckState(res);
+      }
+      if (!_v) goto check_2;
+      _ranki += _v*_pi;
+      _rankm += _pi;
+      _pi *= SWIG_MAXCASTRANK;
+      {
+        {
+          int res = SWIG_AsVal_char SWIG_PERL_CALL_ARGS_2(ST(1), NULL);
+          _v = SWIG_CheckState(res);
+        }
+      }
+      if (!_v) goto check_2;
+      _ranki += _v*_pi;
+      _rankm += _pi;
+      _pi *= SWIG_MAXCASTRANK;
+      if (!_index || (_ranki < _rank)) {
+        _rank = _ranki; _index = 2;
+        if (_rank == _rankm) goto dispatch;
+      }
+    }
+  check_2:
+    
+  dispatch:
+    switch(_index) {
+    case 1:
+      PUSHMARK(MARK); SWIG_CALLXS(_wrap_DataFrame_read_csv__SWIG_1); return;
+    case 2:
+      PUSHMARK(MARK); SWIG_CALLXS(_wrap_DataFrame_read_csv__SWIG_0); return;
+    }
+  }
+  
+  croak("No matching function for overloaded 'DataFrame_read_csv'");
+  XSRETURN(0);
+}
+
+
+XS(_wrap_DataFrame_parse_csv__SWIG_0) {
+  {
+    std::string *arg1 = 0 ;
+    char arg2 ;
+    int res1 = SWIG_OLDOBJ ;
+    char val2 ;
+    int ecode2 = 0 ;
+    int argvi = 0;
+    datamunge::DataFrame *result = 0 ;
+    dXSARGS;
+    
+    if ((items < 2) || (items > 2)) {
+      SWIG_croak("Usage: DataFrame_parse_csv(text,delimiter);");
+    }
+    {
+      std::string *ptr = (std::string *)0;
+      res1 = SWIG_AsPtr_std_string SWIG_PERL_CALL_ARGS_2(ST(0), &ptr);
+      if (!SWIG_IsOK(res1)) {
+        SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "DataFrame_parse_csv" "', argument " "1"" of type '" "std::string const &""'"); 
+      }
+      if (!ptr) {
+        SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "DataFrame_parse_csv" "', argument " "1"" of type '" "std::string const &""'"); 
+      }
+      arg1 = ptr;
+    }
+    ecode2 = SWIG_AsVal_char SWIG_PERL_CALL_ARGS_2(ST(1), &val2);
+    if (!SWIG_IsOK(ecode2)) {
+      SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "DataFrame_parse_csv" "', argument " "2"" of type '" "char""'");
+    } 
+    arg2 = static_cast< char >(val2);
+    result = (datamunge::DataFrame *)datamunge::DataFrame::parse_csv((std::string const &)*arg1,arg2);
+    ST(argvi) = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__DataFrame, 0 | SWIG_SHADOW); argvi++ ;
+    if (SWIG_IsNewObj(res1)) delete arg1;
+    
+    XSRETURN(argvi);
+    fail:;
+    if (SWIG_IsNewObj(res1)) delete arg1;
+    
+  }
+  SWIG_croak_null();
+}
+
+
+XS(_wrap_DataFrame_parse_csv__SWIG_1) {
+  {
+    std::string *arg1 = 0 ;
+    int res1 = SWIG_OLDOBJ ;
+    int argvi = 0;
+    datamunge::DataFrame *result = 0 ;
+    dXSARGS;
+    
+    if ((items < 1) || (items > 1)) {
+      SWIG_croak("Usage: DataFrame_parse_csv(text);");
+    }
+    {
+      std::string *ptr = (std::string *)0;
+      res1 = SWIG_AsPtr_std_string SWIG_PERL_CALL_ARGS_2(ST(0), &ptr);
+      if (!SWIG_IsOK(res1)) {
+        SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "DataFrame_parse_csv" "', argument " "1"" of type '" "std::string const &""'"); 
+      }
+      if (!ptr) {
+        SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "DataFrame_parse_csv" "', argument " "1"" of type '" "std::string const &""'"); 
+      }
+      arg1 = ptr;
+    }
+    result = (datamunge::DataFrame *)datamunge::DataFrame::parse_csv((std::string const &)*arg1);
+    ST(argvi) = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__DataFrame, 0 | SWIG_SHADOW); argvi++ ;
+    if (SWIG_IsNewObj(res1)) delete arg1;
+    XSRETURN(argvi);
+    fail:;
+    if (SWIG_IsNewObj(res1)) delete arg1;
+  }
+  SWIG_croak_null();
+}
+
+
+XS(_wrap_DataFrame_parse_csv) {
+  dXSARGS;
+  
+  {
+    unsigned long _index = 0;
+    SWIG_TypeRank _rank = 0; 
+    if (items == 1) {
+      SWIG_TypeRank _ranki = 0;
+      SWIG_TypeRank _rankm = 0;
+      SWIG_TypeRank _pi = 1;
+      int _v = 0;
+      {
+        int res = SWIG_AsPtr_std_string SWIG_PERL_CALL_ARGS_2(ST(0), (std::string**)(0));
+        _v = SWIG_CheckState(res);
+      }
+      if (!_v) goto check_1;
+      _ranki += _v*_pi;
+      _rankm += _pi;
+      _pi *= SWIG_MAXCASTRANK;
+      if (!_index || (_ranki < _rank)) {
+        _rank = _ranki; _index = 1;
+        if (_rank == _rankm) goto dispatch;
+      }
+    }
+  check_1:
+    
+    if (items == 2) {
+      SWIG_TypeRank _ranki = 0;
+      SWIG_TypeRank _rankm = 0;
+      SWIG_TypeRank _pi = 1;
+      int _v = 0;
+      {
+        int res = SWIG_AsPtr_std_string SWIG_PERL_CALL_ARGS_2(ST(0), (std::string**)(0));
+        _v = SWIG_CheckState(res);
+      }
+      if (!_v) goto check_2;
+      _ranki += _v*_pi;
+      _rankm += _pi;
+      _pi *= SWIG_MAXCASTRANK;
+      {
+        {
+          int res = SWIG_AsVal_char SWIG_PERL_CALL_ARGS_2(ST(1), NULL);
+          _v = SWIG_CheckState(res);
+        }
+      }
+      if (!_v) goto check_2;
+      _ranki += _v*_pi;
+      _rankm += _pi;
+      _pi *= SWIG_MAXCASTRANK;
+      if (!_index || (_ranki < _rank)) {
+        _rank = _ranki; _index = 2;
+        if (_rank == _rankm) goto dispatch;
+      }
+    }
+  check_2:
+    
+  dispatch:
+    switch(_index) {
+    case 1:
+      PUSHMARK(MARK); SWIG_CALLXS(_wrap_DataFrame_parse_csv__SWIG_1); return;
+    case 2:
+      PUSHMARK(MARK); SWIG_CALLXS(_wrap_DataFrame_parse_csv__SWIG_0); return;
+    }
+  }
+  
+  croak("No matching function for overloaded 'DataFrame_parse_csv'");
+  XSRETURN(0);
+}
+
+
+XS(_wrap_DataFrame_from_image_batch) {
+  {
+    datamunge::datasets::ImageBatch *arg1 = 0 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    int argvi = 0;
+    datamunge::DataFrame *result = 0 ;
+    dXSARGS;
+    
+    if ((items < 1) || (items > 1)) {
+      SWIG_croak("Usage: DataFrame_from_image_batch(batch);");
+    }
+    res1 = SWIG_ConvertPtr(ST(0), &argp1, SWIGTYPE_p_datamunge__datasets__ImageBatch,  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "DataFrame_from_image_batch" "', argument " "1"" of type '" "datamunge::datasets::ImageBatch const &""'"); 
+    }
+    if (!argp1) {
+      SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "DataFrame_from_image_batch" "', argument " "1"" of type '" "datamunge::datasets::ImageBatch const &""'"); 
+    }
+    arg1 = reinterpret_cast< datamunge::datasets::ImageBatch * >(argp1);
+    result = (datamunge::DataFrame *)datamunge::DataFrame::from_image_batch((datamunge::datasets::ImageBatch const &)*arg1);
+    ST(argvi) = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__DataFrame, 0 | SWIG_SHADOW); argvi++ ;
+    
+    XSRETURN(argvi);
+    fail:;
+    
   }
   SWIG_croak_null();
 }
@@ -16867,6 +17410,829 @@ XS(_wrap_delete_DataFrame) {
       SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "delete_DataFrame" "', argument " "1"" of type '" "datamunge::DataFrame *""'"); 
     }
     arg1 = reinterpret_cast< datamunge::DataFrame * >(argp1);
+    delete arg1;
+    ST(argvi) = &PL_sv_undef;
+    
+    XSRETURN(argvi);
+    fail:;
+    
+  }
+  SWIG_croak_null();
+}
+
+
+XS(_wrap_data_iris) {
+  {
+    int argvi = 0;
+    datamunge::DataFrame *result = 0 ;
+    dXSARGS;
+    
+    if ((items < 0) || (items > 0)) {
+      SWIG_croak("Usage: data_iris();");
+    }
+    result = (datamunge::DataFrame *)datamunge::data::iris();
+    ST(argvi) = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__DataFrame, 0 | SWIG_SHADOW); argvi++ ;
+    XSRETURN(argvi);
+    fail:;
+  }
+  SWIG_croak_null();
+}
+
+
+XS(_wrap_data_penguins) {
+  {
+    int argvi = 0;
+    datamunge::DataFrame *result = 0 ;
+    dXSARGS;
+    
+    if ((items < 0) || (items > 0)) {
+      SWIG_croak("Usage: data_penguins();");
+    }
+    result = (datamunge::DataFrame *)datamunge::data::penguins();
+    ST(argvi) = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__DataFrame, 0 | SWIG_SHADOW); argvi++ ;
+    XSRETURN(argvi);
+    fail:;
+  }
+  SWIG_croak_null();
+}
+
+
+XS(_wrap_data_tooth_growth) {
+  {
+    int argvi = 0;
+    datamunge::DataFrame *result = 0 ;
+    dXSARGS;
+    
+    if ((items < 0) || (items > 0)) {
+      SWIG_croak("Usage: data_tooth_growth();");
+    }
+    result = (datamunge::DataFrame *)datamunge::data::tooth_growth();
+    ST(argvi) = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__DataFrame, 0 | SWIG_SHADOW); argvi++ ;
+    XSRETURN(argvi);
+    fail:;
+  }
+  SWIG_croak_null();
+}
+
+
+XS(_wrap_data_wine) {
+  {
+    int argvi = 0;
+    datamunge::DataFrame *result = 0 ;
+    dXSARGS;
+    
+    if ((items < 0) || (items > 0)) {
+      SWIG_croak("Usage: data_wine();");
+    }
+    result = (datamunge::DataFrame *)datamunge::data::wine();
+    ST(argvi) = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__DataFrame, 0 | SWIG_SHADOW); argvi++ ;
+    XSRETURN(argvi);
+    fail:;
+  }
+  SWIG_croak_null();
+}
+
+
+XS(_wrap_data_titanic) {
+  {
+    int argvi = 0;
+    datamunge::DataFrame *result = 0 ;
+    dXSARGS;
+    
+    if ((items < 0) || (items > 0)) {
+      SWIG_croak("Usage: data_titanic();");
+    }
+    result = (datamunge::DataFrame *)datamunge::data::titanic();
+    ST(argvi) = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__DataFrame, 0 | SWIG_SHADOW); argvi++ ;
+    XSRETURN(argvi);
+    fail:;
+  }
+  SWIG_croak_null();
+}
+
+
+XS(_wrap_data_eight_schools) {
+  {
+    int argvi = 0;
+    datamunge::DataFrame *result = 0 ;
+    dXSARGS;
+    
+    if ((items < 0) || (items > 0)) {
+      SWIG_croak("Usage: data_eight_schools();");
+    }
+    result = (datamunge::DataFrame *)datamunge::data::eight_schools();
+    ST(argvi) = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__DataFrame, 0 | SWIG_SHADOW); argvi++ ;
+    XSRETURN(argvi);
+    fail:;
+  }
+  SWIG_croak_null();
+}
+
+
+XS(_wrap_data_air_passengers) {
+  {
+    int argvi = 0;
+    datamunge::DataFrame *result = 0 ;
+    dXSARGS;
+    
+    if ((items < 0) || (items > 0)) {
+      SWIG_croak("Usage: data_air_passengers();");
+    }
+    result = (datamunge::DataFrame *)datamunge::data::air_passengers();
+    ST(argvi) = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__DataFrame, 0 | SWIG_SHADOW); argvi++ ;
+    XSRETURN(argvi);
+    fail:;
+  }
+  SWIG_croak_null();
+}
+
+
+XS(_wrap_data_volcano) {
+  {
+    int argvi = 0;
+    datamunge::DataFrame *result = 0 ;
+    dXSARGS;
+    
+    if ((items < 0) || (items > 0)) {
+      SWIG_croak("Usage: data_volcano();");
+    }
+    result = (datamunge::DataFrame *)datamunge::data::volcano();
+    ST(argvi) = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__DataFrame, 0 | SWIG_SHADOW); argvi++ ;
+    XSRETURN(argvi);
+    fail:;
+  }
+  SWIG_croak_null();
+}
+
+
+XS(_wrap_data_faithful) {
+  {
+    int argvi = 0;
+    datamunge::DataFrame *result = 0 ;
+    dXSARGS;
+    
+    if ((items < 0) || (items > 0)) {
+      SWIG_croak("Usage: data_faithful();");
+    }
+    result = (datamunge::DataFrame *)datamunge::data::faithful();
+    ST(argvi) = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__DataFrame, 0 | SWIG_SHADOW); argvi++ ;
+    XSRETURN(argvi);
+    fail:;
+  }
+  SWIG_croak_null();
+}
+
+
+XS(_wrap_data_mtcars) {
+  {
+    int argvi = 0;
+    datamunge::DataFrame *result = 0 ;
+    dXSARGS;
+    
+    if ((items < 0) || (items > 0)) {
+      SWIG_croak("Usage: data_mtcars();");
+    }
+    result = (datamunge::DataFrame *)datamunge::data::mtcars();
+    ST(argvi) = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__DataFrame, 0 | SWIG_SHADOW); argvi++ ;
+    XSRETURN(argvi);
+    fail:;
+  }
+  SWIG_croak_null();
+}
+
+
+XS(_wrap_data_airquality) {
+  {
+    int argvi = 0;
+    datamunge::DataFrame *result = 0 ;
+    dXSARGS;
+    
+    if ((items < 0) || (items > 0)) {
+      SWIG_croak("Usage: data_airquality();");
+    }
+    result = (datamunge::DataFrame *)datamunge::data::airquality();
+    ST(argvi) = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__DataFrame, 0 | SWIG_SHADOW); argvi++ ;
+    XSRETURN(argvi);
+    fail:;
+  }
+  SWIG_croak_null();
+}
+
+
+XS(_wrap_data_breast_cancer) {
+  {
+    int argvi = 0;
+    datamunge::DataFrame *result = 0 ;
+    dXSARGS;
+    
+    if ((items < 0) || (items > 0)) {
+      SWIG_croak("Usage: data_breast_cancer();");
+    }
+    result = (datamunge::DataFrame *)datamunge::data::breast_cancer();
+    ST(argvi) = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__DataFrame, 0 | SWIG_SHADOW); argvi++ ;
+    XSRETURN(argvi);
+    fail:;
+  }
+  SWIG_croak_null();
+}
+
+
+XS(_wrap_data_diabetes) {
+  {
+    int argvi = 0;
+    datamunge::DataFrame *result = 0 ;
+    dXSARGS;
+    
+    if ((items < 0) || (items > 0)) {
+      SWIG_croak("Usage: data_diabetes();");
+    }
+    result = (datamunge::DataFrame *)datamunge::data::diabetes();
+    ST(argvi) = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__DataFrame, 0 | SWIG_SHADOW); argvi++ ;
+    XSRETURN(argvi);
+    fail:;
+  }
+  SWIG_croak_null();
+}
+
+
+XS(_wrap_data_digits) {
+  {
+    int argvi = 0;
+    datamunge::DataFrame *result = 0 ;
+    dXSARGS;
+    
+    if ((items < 0) || (items > 0)) {
+      SWIG_croak("Usage: data_digits();");
+    }
+    result = (datamunge::DataFrame *)datamunge::data::digits();
+    ST(argvi) = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__DataFrame, 0 | SWIG_SHADOW); argvi++ ;
+    XSRETURN(argvi);
+    fail:;
+  }
+  SWIG_croak_null();
+}
+
+
+XS(_wrap_data_diamonds) {
+  {
+    int argvi = 0;
+    datamunge::DataFrame *result = 0 ;
+    dXSARGS;
+    
+    if ((items < 0) || (items > 0)) {
+      SWIG_croak("Usage: data_diamonds();");
+    }
+    result = (datamunge::DataFrame *)datamunge::data::diamonds();
+    ST(argvi) = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__DataFrame, 0 | SWIG_SHADOW); argvi++ ;
+    XSRETURN(argvi);
+    fail:;
+  }
+  SWIG_croak_null();
+}
+
+
+XS(_wrap_data_california_housing) {
+  {
+    int argvi = 0;
+    datamunge::DataFrame *result = 0 ;
+    dXSARGS;
+    
+    if ((items < 0) || (items > 0)) {
+      SWIG_croak("Usage: data_california_housing();");
+    }
+    result = (datamunge::DataFrame *)datamunge::data::california_housing();
+    ST(argvi) = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__DataFrame, 0 | SWIG_SHADOW); argvi++ ;
+    XSRETURN(argvi);
+    fail:;
+  }
+  SWIG_croak_null();
+}
+
+
+XS(_wrap_data_load) {
+  {
+    std::string *arg1 = 0 ;
+    int res1 = SWIG_OLDOBJ ;
+    int argvi = 0;
+    datamunge::DataFrame *result = 0 ;
+    dXSARGS;
+    
+    if ((items < 1) || (items > 1)) {
+      SWIG_croak("Usage: data_load(name);");
+    }
+    {
+      std::string *ptr = (std::string *)0;
+      res1 = SWIG_AsPtr_std_string SWIG_PERL_CALL_ARGS_2(ST(0), &ptr);
+      if (!SWIG_IsOK(res1)) {
+        SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "data_load" "', argument " "1"" of type '" "std::string const &""'"); 
+      }
+      if (!ptr) {
+        SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "data_load" "', argument " "1"" of type '" "std::string const &""'"); 
+      }
+      arg1 = ptr;
+    }
+    result = (datamunge::DataFrame *)datamunge::data::load((std::string const &)*arg1);
+    ST(argvi) = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__DataFrame, 0 | SWIG_SHADOW); argvi++ ;
+    if (SWIG_IsNewObj(res1)) delete arg1;
+    XSRETURN(argvi);
+    fail:;
+    if (SWIG_IsNewObj(res1)) delete arg1;
+  }
+  SWIG_croak_null();
+}
+
+
+XS(_wrap_data_catalog) {
+  {
+    int argvi = 0;
+    datamunge::DataFrame *result = 0 ;
+    dXSARGS;
+    
+    if ((items < 0) || (items > 0)) {
+      SWIG_croak("Usage: data_catalog();");
+    }
+    result = (datamunge::DataFrame *)datamunge::data::catalog();
+    ST(argvi) = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__DataFrame, 0 | SWIG_SHADOW); argvi++ ;
+    XSRETURN(argvi);
+    fail:;
+  }
+  SWIG_croak_null();
+}
+
+
+XS(_wrap_new_CsvReader__SWIG_0) {
+  {
+    std::string *arg1 = 0 ;
+    int arg2 ;
+    char arg3 ;
+    int res1 = SWIG_OLDOBJ ;
+    int val2 ;
+    int ecode2 = 0 ;
+    char val3 ;
+    int ecode3 = 0 ;
+    int argvi = 0;
+    datamunge::CsvReader *result = 0 ;
+    dXSARGS;
+    
+    if ((items < 3) || (items > 3)) {
+      SWIG_croak("Usage: new_CsvReader(path,batch_size,delimiter);");
+    }
+    {
+      std::string *ptr = (std::string *)0;
+      res1 = SWIG_AsPtr_std_string SWIG_PERL_CALL_ARGS_2(ST(0), &ptr);
+      if (!SWIG_IsOK(res1)) {
+        SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "new_CsvReader" "', argument " "1"" of type '" "std::string const &""'"); 
+      }
+      if (!ptr) {
+        SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "new_CsvReader" "', argument " "1"" of type '" "std::string const &""'"); 
+      }
+      arg1 = ptr;
+    }
+    ecode2 = SWIG_AsVal_int SWIG_PERL_CALL_ARGS_2(ST(1), &val2);
+    if (!SWIG_IsOK(ecode2)) {
+      SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "new_CsvReader" "', argument " "2"" of type '" "int""'");
+    } 
+    arg2 = static_cast< int >(val2);
+    ecode3 = SWIG_AsVal_char SWIG_PERL_CALL_ARGS_2(ST(2), &val3);
+    if (!SWIG_IsOK(ecode3)) {
+      SWIG_exception_fail(SWIG_ArgError(ecode3), "in method '" "new_CsvReader" "', argument " "3"" of type '" "char""'");
+    } 
+    arg3 = static_cast< char >(val3);
+    result = (datamunge::CsvReader *)new datamunge::CsvReader((std::string const &)*arg1,arg2,arg3);
+    ST(argvi) = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__CsvReader, SWIG_OWNER | SWIG_SHADOW); argvi++ ;
+    if (SWIG_IsNewObj(res1)) delete arg1;
+    
+    
+    XSRETURN(argvi);
+    fail:;
+    if (SWIG_IsNewObj(res1)) delete arg1;
+    
+    
+  }
+  SWIG_croak_null();
+}
+
+
+XS(_wrap_new_CsvReader__SWIG_1) {
+  {
+    std::string *arg1 = 0 ;
+    int arg2 ;
+    int res1 = SWIG_OLDOBJ ;
+    int val2 ;
+    int ecode2 = 0 ;
+    int argvi = 0;
+    datamunge::CsvReader *result = 0 ;
+    dXSARGS;
+    
+    if ((items < 2) || (items > 2)) {
+      SWIG_croak("Usage: new_CsvReader(path,batch_size);");
+    }
+    {
+      std::string *ptr = (std::string *)0;
+      res1 = SWIG_AsPtr_std_string SWIG_PERL_CALL_ARGS_2(ST(0), &ptr);
+      if (!SWIG_IsOK(res1)) {
+        SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "new_CsvReader" "', argument " "1"" of type '" "std::string const &""'"); 
+      }
+      if (!ptr) {
+        SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "new_CsvReader" "', argument " "1"" of type '" "std::string const &""'"); 
+      }
+      arg1 = ptr;
+    }
+    ecode2 = SWIG_AsVal_int SWIG_PERL_CALL_ARGS_2(ST(1), &val2);
+    if (!SWIG_IsOK(ecode2)) {
+      SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "new_CsvReader" "', argument " "2"" of type '" "int""'");
+    } 
+    arg2 = static_cast< int >(val2);
+    result = (datamunge::CsvReader *)new datamunge::CsvReader((std::string const &)*arg1,arg2);
+    ST(argvi) = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__CsvReader, SWIG_OWNER | SWIG_SHADOW); argvi++ ;
+    if (SWIG_IsNewObj(res1)) delete arg1;
+    
+    XSRETURN(argvi);
+    fail:;
+    if (SWIG_IsNewObj(res1)) delete arg1;
+    
+  }
+  SWIG_croak_null();
+}
+
+
+XS(_wrap_new_CsvReader__SWIG_2) {
+  {
+    std::string *arg1 = 0 ;
+    int res1 = SWIG_OLDOBJ ;
+    int argvi = 0;
+    datamunge::CsvReader *result = 0 ;
+    dXSARGS;
+    
+    if ((items < 1) || (items > 1)) {
+      SWIG_croak("Usage: new_CsvReader(path);");
+    }
+    {
+      std::string *ptr = (std::string *)0;
+      res1 = SWIG_AsPtr_std_string SWIG_PERL_CALL_ARGS_2(ST(0), &ptr);
+      if (!SWIG_IsOK(res1)) {
+        SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "new_CsvReader" "', argument " "1"" of type '" "std::string const &""'"); 
+      }
+      if (!ptr) {
+        SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "new_CsvReader" "', argument " "1"" of type '" "std::string const &""'"); 
+      }
+      arg1 = ptr;
+    }
+    result = (datamunge::CsvReader *)new datamunge::CsvReader((std::string const &)*arg1);
+    ST(argvi) = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__CsvReader, SWIG_OWNER | SWIG_SHADOW); argvi++ ;
+    if (SWIG_IsNewObj(res1)) delete arg1;
+    XSRETURN(argvi);
+    fail:;
+    if (SWIG_IsNewObj(res1)) delete arg1;
+  }
+  SWIG_croak_null();
+}
+
+
+XS(_wrap_new_CsvReader) {
+  dXSARGS;
+  
+  {
+    unsigned long _index = 0;
+    SWIG_TypeRank _rank = 0; 
+    if (items == 1) {
+      SWIG_TypeRank _ranki = 0;
+      SWIG_TypeRank _rankm = 0;
+      SWIG_TypeRank _pi = 1;
+      int _v = 0;
+      {
+        int res = SWIG_AsPtr_std_string SWIG_PERL_CALL_ARGS_2(ST(0), (std::string**)(0));
+        _v = SWIG_CheckState(res);
+      }
+      if (!_v) goto check_1;
+      _ranki += _v*_pi;
+      _rankm += _pi;
+      _pi *= SWIG_MAXCASTRANK;
+      if (!_index || (_ranki < _rank)) {
+        _rank = _ranki; _index = 1;
+        if (_rank == _rankm) goto dispatch;
+      }
+    }
+  check_1:
+    
+    if (items == 2) {
+      SWIG_TypeRank _ranki = 0;
+      SWIG_TypeRank _rankm = 0;
+      SWIG_TypeRank _pi = 1;
+      int _v = 0;
+      {
+        int res = SWIG_AsPtr_std_string SWIG_PERL_CALL_ARGS_2(ST(0), (std::string**)(0));
+        _v = SWIG_CheckState(res);
+      }
+      if (!_v) goto check_2;
+      _ranki += _v*_pi;
+      _rankm += _pi;
+      _pi *= SWIG_MAXCASTRANK;
+      {
+        {
+          int res = SWIG_AsVal_int SWIG_PERL_CALL_ARGS_2(ST(1), NULL);
+          _v = SWIG_CheckState(res);
+        }
+      }
+      if (!_v) goto check_2;
+      _ranki += _v*_pi;
+      _rankm += _pi;
+      _pi *= SWIG_MAXCASTRANK;
+      if (!_index || (_ranki < _rank)) {
+        _rank = _ranki; _index = 2;
+        if (_rank == _rankm) goto dispatch;
+      }
+    }
+  check_2:
+    
+    if (items == 3) {
+      SWIG_TypeRank _ranki = 0;
+      SWIG_TypeRank _rankm = 0;
+      SWIG_TypeRank _pi = 1;
+      int _v = 0;
+      {
+        int res = SWIG_AsPtr_std_string SWIG_PERL_CALL_ARGS_2(ST(0), (std::string**)(0));
+        _v = SWIG_CheckState(res);
+      }
+      if (!_v) goto check_3;
+      _ranki += _v*_pi;
+      _rankm += _pi;
+      _pi *= SWIG_MAXCASTRANK;
+      {
+        {
+          int res = SWIG_AsVal_int SWIG_PERL_CALL_ARGS_2(ST(1), NULL);
+          _v = SWIG_CheckState(res);
+        }
+      }
+      if (!_v) goto check_3;
+      _ranki += _v*_pi;
+      _rankm += _pi;
+      _pi *= SWIG_MAXCASTRANK;
+      {
+        {
+          int res = SWIG_AsVal_char SWIG_PERL_CALL_ARGS_2(ST(2), NULL);
+          _v = SWIG_CheckState(res);
+        }
+      }
+      if (!_v) goto check_3;
+      _ranki += _v*_pi;
+      _rankm += _pi;
+      _pi *= SWIG_MAXCASTRANK;
+      if (!_index || (_ranki < _rank)) {
+        _rank = _ranki; _index = 3;
+        if (_rank == _rankm) goto dispatch;
+      }
+    }
+  check_3:
+    
+  dispatch:
+    switch(_index) {
+    case 1:
+      PUSHMARK(MARK); SWIG_CALLXS(_wrap_new_CsvReader__SWIG_2); return;
+    case 2:
+      PUSHMARK(MARK); SWIG_CALLXS(_wrap_new_CsvReader__SWIG_1); return;
+    case 3:
+      PUSHMARK(MARK); SWIG_CALLXS(_wrap_new_CsvReader__SWIG_0); return;
+    }
+  }
+  
+  croak("No matching function for overloaded 'new_CsvReader'");
+  XSRETURN(0);
+}
+
+
+XS(_wrap_CsvReader_has_next) {
+  {
+    datamunge::CsvReader *arg1 = 0 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    int argvi = 0;
+    bool result;
+    dXSARGS;
+    
+    if ((items < 1) || (items > 1)) {
+      SWIG_croak("Usage: CsvReader_has_next(self);");
+    }
+    res1 = SWIG_ConvertPtr(ST(0), &argp1,SWIGTYPE_p_datamunge__CsvReader, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "CsvReader_has_next" "', argument " "1"" of type '" "datamunge::CsvReader *""'"); 
+    }
+    arg1 = reinterpret_cast< datamunge::CsvReader * >(argp1);
+    result = (bool)(arg1)->has_next();
+    ST(argvi) = SWIG_From_bool  SWIG_PERL_CALL_ARGS_1(static_cast< bool >(result)); argvi++ ;
+    
+    XSRETURN(argvi);
+    fail:;
+    
+  }
+  SWIG_croak_null();
+}
+
+
+XS(_wrap_CsvReader_next) {
+  {
+    datamunge::CsvReader *arg1 = 0 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    int argvi = 0;
+    datamunge::DataFrame *result = 0 ;
+    dXSARGS;
+    
+    if ((items < 1) || (items > 1)) {
+      SWIG_croak("Usage: CsvReader_next(self);");
+    }
+    res1 = SWIG_ConvertPtr(ST(0), &argp1,SWIGTYPE_p_datamunge__CsvReader, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "CsvReader_next" "', argument " "1"" of type '" "datamunge::CsvReader *""'"); 
+    }
+    arg1 = reinterpret_cast< datamunge::CsvReader * >(argp1);
+    result = (datamunge::DataFrame *)(arg1)->next();
+    ST(argvi) = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__DataFrame, 0 | SWIG_SHADOW); argvi++ ;
+    
+    XSRETURN(argvi);
+    fail:;
+    
+  }
+  SWIG_croak_null();
+}
+
+
+XS(_wrap_CsvReader_reset) {
+  {
+    datamunge::CsvReader *arg1 = 0 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    int argvi = 0;
+    dXSARGS;
+    
+    if ((items < 1) || (items > 1)) {
+      SWIG_croak("Usage: CsvReader_reset(self);");
+    }
+    res1 = SWIG_ConvertPtr(ST(0), &argp1,SWIGTYPE_p_datamunge__CsvReader, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "CsvReader_reset" "', argument " "1"" of type '" "datamunge::CsvReader *""'"); 
+    }
+    arg1 = reinterpret_cast< datamunge::CsvReader * >(argp1);
+    (arg1)->reset();
+    ST(argvi) = &PL_sv_undef;
+    
+    XSRETURN(argvi);
+    fail:;
+    
+  }
+  SWIG_croak_null();
+}
+
+
+XS(_wrap_CsvReader_batch_size) {
+  {
+    datamunge::CsvReader *arg1 = 0 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    int argvi = 0;
+    int result;
+    dXSARGS;
+    
+    if ((items < 1) || (items > 1)) {
+      SWIG_croak("Usage: CsvReader_batch_size(self);");
+    }
+    res1 = SWIG_ConvertPtr(ST(0), &argp1,SWIGTYPE_p_datamunge__CsvReader, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "CsvReader_batch_size" "', argument " "1"" of type '" "datamunge::CsvReader const *""'"); 
+    }
+    arg1 = reinterpret_cast< datamunge::CsvReader * >(argp1);
+    result = (int)((datamunge::CsvReader const *)arg1)->batch_size();
+    ST(argvi) = SWIG_From_int  SWIG_PERL_CALL_ARGS_1(static_cast< int >(result)); argvi++ ;
+    
+    XSRETURN(argvi);
+    fail:;
+    
+  }
+  SWIG_croak_null();
+}
+
+
+XS(_wrap_CsvReader_set_batch_size) {
+  {
+    datamunge::CsvReader *arg1 = 0 ;
+    int arg2 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    int val2 ;
+    int ecode2 = 0 ;
+    int argvi = 0;
+    dXSARGS;
+    
+    if ((items < 2) || (items > 2)) {
+      SWIG_croak("Usage: CsvReader_set_batch_size(self,rows);");
+    }
+    res1 = SWIG_ConvertPtr(ST(0), &argp1,SWIGTYPE_p_datamunge__CsvReader, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "CsvReader_set_batch_size" "', argument " "1"" of type '" "datamunge::CsvReader *""'"); 
+    }
+    arg1 = reinterpret_cast< datamunge::CsvReader * >(argp1);
+    ecode2 = SWIG_AsVal_int SWIG_PERL_CALL_ARGS_2(ST(1), &val2);
+    if (!SWIG_IsOK(ecode2)) {
+      SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "CsvReader_set_batch_size" "', argument " "2"" of type '" "int""'");
+    } 
+    arg2 = static_cast< int >(val2);
+    (arg1)->set_batch_size(arg2);
+    ST(argvi) = &PL_sv_undef;
+    
+    
+    XSRETURN(argvi);
+    fail:;
+    
+    
+  }
+  SWIG_croak_null();
+}
+
+
+XS(_wrap_CsvReader_column_names) {
+  {
+    datamunge::CsvReader *arg1 = 0 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    int argvi = 0;
+    std::vector< std::string > result;
+    dXSARGS;
+    
+    if ((items < 1) || (items > 1)) {
+      SWIG_croak("Usage: CsvReader_column_names(self);");
+    }
+    res1 = SWIG_ConvertPtr(ST(0), &argp1,SWIGTYPE_p_datamunge__CsvReader, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "CsvReader_column_names" "', argument " "1"" of type '" "datamunge::CsvReader const *""'"); 
+    }
+    arg1 = reinterpret_cast< datamunge::CsvReader * >(argp1);
+    result = ((datamunge::CsvReader const *)arg1)->column_names();
+    {
+      size_t len = (&result)->size();
+      SV **svs = new SV*[len];
+      for (size_t i=0; i<len; i++) {
+        svs[i] = sv_newmortal();
+        SwigSvFromString(svs[i], result[i]);
+      }
+      AV *myav = av_make(len, svs);
+      delete[] svs;
+      ST(argvi) = newRV_noinc((SV*) myav);
+      sv_2mortal(ST(argvi));
+      argvi++;
+    }
+    
+    XSRETURN(argvi);
+    fail:;
+    
+  }
+  SWIG_croak_null();
+}
+
+
+XS(_wrap_CsvReader_rows_read) {
+  {
+    datamunge::CsvReader *arg1 = 0 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    int argvi = 0;
+    double result;
+    dXSARGS;
+    
+    if ((items < 1) || (items > 1)) {
+      SWIG_croak("Usage: CsvReader_rows_read(self);");
+    }
+    res1 = SWIG_ConvertPtr(ST(0), &argp1,SWIGTYPE_p_datamunge__CsvReader, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "CsvReader_rows_read" "', argument " "1"" of type '" "datamunge::CsvReader const *""'"); 
+    }
+    arg1 = reinterpret_cast< datamunge::CsvReader * >(argp1);
+    result = (double)((datamunge::CsvReader const *)arg1)->rows_read();
+    ST(argvi) = SWIG_From_double  SWIG_PERL_CALL_ARGS_1(static_cast< double >(result)); argvi++ ;
+    
+    XSRETURN(argvi);
+    fail:;
+    
+  }
+  SWIG_croak_null();
+}
+
+
+XS(_wrap_delete_CsvReader) {
+  {
+    datamunge::CsvReader *arg1 = 0 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    int argvi = 0;
+    dXSARGS;
+    
+    if ((items < 1) || (items > 1)) {
+      SWIG_croak("Usage: delete_CsvReader(self);");
+    }
+    res1 = SWIG_ConvertPtr(ST(0), &argp1,SWIGTYPE_p_datamunge__CsvReader, SWIG_POINTER_DISOWN |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "delete_CsvReader" "', argument " "1"" of type '" "datamunge::CsvReader *""'"); 
+    }
+    arg1 = reinterpret_cast< datamunge::CsvReader * >(argp1);
     delete arg1;
     ST(argvi) = &PL_sv_undef;
     
@@ -17334,8 +18700,8 @@ XS(_wrap_ShapeLayer_point_y) {
 XS(_wrap_ShapeLayer_plot__SWIG_0) {
   {
     datamunge::ShapeLayer *arg1 = 0 ;
-    SwigValueWrapper< datamunge::graphics::RGB > arg2 ;
-    SwigValueWrapper< datamunge::graphics::RGB > arg3 ;
+    datamunge::graphics::RGB arg2 ;
+    datamunge::graphics::RGB arg3 ;
     std::size_t arg4 ;
     std::size_t arg5 ;
     void *argp1 = 0 ;
@@ -17361,7 +18727,7 @@ XS(_wrap_ShapeLayer_plot__SWIG_0) {
     }
     arg1 = reinterpret_cast< datamunge::ShapeLayer * >(argp1);
     {
-      res2 = SWIG_ConvertPtr(ST(1), &argp2, SWIGTYPE_p_datamunge__plot__RGB,  0 );
+      res2 = SWIG_ConvertPtr(ST(1), &argp2, SWIGTYPE_p_datamunge__graphics__RGB,  0 );
       if (!SWIG_IsOK(res2)) {
         SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "ShapeLayer_plot" "', argument " "2"" of type '" "datamunge::graphics::RGB""'"); 
       }  
@@ -17372,7 +18738,7 @@ XS(_wrap_ShapeLayer_plot__SWIG_0) {
       }
     }
     {
-      res3 = SWIG_ConvertPtr(ST(2), &argp3, SWIGTYPE_p_datamunge__plot__RGB,  0 );
+      res3 = SWIG_ConvertPtr(ST(2), &argp3, SWIGTYPE_p_datamunge__graphics__RGB,  0 );
       if (!SWIG_IsOK(res3)) {
         SWIG_exception_fail(SWIG_ArgError(res3), "in method '" "ShapeLayer_plot" "', argument " "3"" of type '" "datamunge::graphics::RGB""'"); 
       }  
@@ -17393,7 +18759,7 @@ XS(_wrap_ShapeLayer_plot__SWIG_0) {
     } 
     arg5 = static_cast< std::size_t >(val5);
     result = ((datamunge::ShapeLayer const *)arg1)->plot(SWIG_STD_MOVE(*(&arg2)),SWIG_STD_MOVE(*(&arg3)),SWIG_STD_MOVE(*(&arg4)),SWIG_STD_MOVE(*(&arg5)));
-    ST(argvi) = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN | SWIG_SHADOW); argvi++ ;
+    ST(argvi) = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__graphics__RPlot, SWIG_POINTER_OWN | SWIG_SHADOW); argvi++ ;
     
     
     
@@ -17410,8 +18776,8 @@ XS(_wrap_ShapeLayer_plot__SWIG_0) {
 XS(_wrap_ShapeLayer_plot__SWIG_1) {
   {
     datamunge::ShapeLayer *arg1 = 0 ;
-    SwigValueWrapper< datamunge::graphics::RGB > arg2 ;
-    SwigValueWrapper< datamunge::graphics::RGB > arg3 ;
+    datamunge::graphics::RGB arg2 ;
+    datamunge::graphics::RGB arg3 ;
     std::size_t arg4 ;
     void *argp1 = 0 ;
     int res1 = 0 ;
@@ -17434,7 +18800,7 @@ XS(_wrap_ShapeLayer_plot__SWIG_1) {
     }
     arg1 = reinterpret_cast< datamunge::ShapeLayer * >(argp1);
     {
-      res2 = SWIG_ConvertPtr(ST(1), &argp2, SWIGTYPE_p_datamunge__plot__RGB,  0 );
+      res2 = SWIG_ConvertPtr(ST(1), &argp2, SWIGTYPE_p_datamunge__graphics__RGB,  0 );
       if (!SWIG_IsOK(res2)) {
         SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "ShapeLayer_plot" "', argument " "2"" of type '" "datamunge::graphics::RGB""'"); 
       }  
@@ -17445,7 +18811,7 @@ XS(_wrap_ShapeLayer_plot__SWIG_1) {
       }
     }
     {
-      res3 = SWIG_ConvertPtr(ST(2), &argp3, SWIGTYPE_p_datamunge__plot__RGB,  0 );
+      res3 = SWIG_ConvertPtr(ST(2), &argp3, SWIGTYPE_p_datamunge__graphics__RGB,  0 );
       if (!SWIG_IsOK(res3)) {
         SWIG_exception_fail(SWIG_ArgError(res3), "in method '" "ShapeLayer_plot" "', argument " "3"" of type '" "datamunge::graphics::RGB""'"); 
       }  
@@ -17461,7 +18827,7 @@ XS(_wrap_ShapeLayer_plot__SWIG_1) {
     } 
     arg4 = static_cast< std::size_t >(val4);
     result = ((datamunge::ShapeLayer const *)arg1)->plot(SWIG_STD_MOVE(*(&arg2)),SWIG_STD_MOVE(*(&arg3)),SWIG_STD_MOVE(*(&arg4)));
-    ST(argvi) = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN | SWIG_SHADOW); argvi++ ;
+    ST(argvi) = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__graphics__RPlot, SWIG_POINTER_OWN | SWIG_SHADOW); argvi++ ;
     
     
     XSRETURN(argvi);
@@ -17476,8 +18842,8 @@ XS(_wrap_ShapeLayer_plot__SWIG_1) {
 XS(_wrap_ShapeLayer_plot__SWIG_2) {
   {
     datamunge::ShapeLayer *arg1 = 0 ;
-    SwigValueWrapper< datamunge::graphics::RGB > arg2 ;
-    SwigValueWrapper< datamunge::graphics::RGB > arg3 ;
+    datamunge::graphics::RGB arg2 ;
+    datamunge::graphics::RGB arg3 ;
     void *argp1 = 0 ;
     int res1 = 0 ;
     void *argp2 = 0 ;
@@ -17497,7 +18863,7 @@ XS(_wrap_ShapeLayer_plot__SWIG_2) {
     }
     arg1 = reinterpret_cast< datamunge::ShapeLayer * >(argp1);
     {
-      res2 = SWIG_ConvertPtr(ST(1), &argp2, SWIGTYPE_p_datamunge__plot__RGB,  0 );
+      res2 = SWIG_ConvertPtr(ST(1), &argp2, SWIGTYPE_p_datamunge__graphics__RGB,  0 );
       if (!SWIG_IsOK(res2)) {
         SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "ShapeLayer_plot" "', argument " "2"" of type '" "datamunge::graphics::RGB""'"); 
       }  
@@ -17508,7 +18874,7 @@ XS(_wrap_ShapeLayer_plot__SWIG_2) {
       }
     }
     {
-      res3 = SWIG_ConvertPtr(ST(2), &argp3, SWIGTYPE_p_datamunge__plot__RGB,  0 );
+      res3 = SWIG_ConvertPtr(ST(2), &argp3, SWIGTYPE_p_datamunge__graphics__RGB,  0 );
       if (!SWIG_IsOK(res3)) {
         SWIG_exception_fail(SWIG_ArgError(res3), "in method '" "ShapeLayer_plot" "', argument " "3"" of type '" "datamunge::graphics::RGB""'"); 
       }  
@@ -17519,7 +18885,7 @@ XS(_wrap_ShapeLayer_plot__SWIG_2) {
       }
     }
     result = ((datamunge::ShapeLayer const *)arg1)->plot(SWIG_STD_MOVE(*(&arg2)),SWIG_STD_MOVE(*(&arg3)));
-    ST(argvi) = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN | SWIG_SHADOW); argvi++ ;
+    ST(argvi) = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__graphics__RPlot, SWIG_POINTER_OWN | SWIG_SHADOW); argvi++ ;
     
     XSRETURN(argvi);
     fail:;
@@ -17532,7 +18898,7 @@ XS(_wrap_ShapeLayer_plot__SWIG_2) {
 XS(_wrap_ShapeLayer_plot__SWIG_3) {
   {
     datamunge::ShapeLayer *arg1 = 0 ;
-    SwigValueWrapper< datamunge::graphics::RGB > arg2 ;
+    datamunge::graphics::RGB arg2 ;
     void *argp1 = 0 ;
     int res1 = 0 ;
     void *argp2 = 0 ;
@@ -17550,7 +18916,7 @@ XS(_wrap_ShapeLayer_plot__SWIG_3) {
     }
     arg1 = reinterpret_cast< datamunge::ShapeLayer * >(argp1);
     {
-      res2 = SWIG_ConvertPtr(ST(1), &argp2, SWIGTYPE_p_datamunge__plot__RGB,  0 );
+      res2 = SWIG_ConvertPtr(ST(1), &argp2, SWIGTYPE_p_datamunge__graphics__RGB,  0 );
       if (!SWIG_IsOK(res2)) {
         SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "ShapeLayer_plot" "', argument " "2"" of type '" "datamunge::graphics::RGB""'"); 
       }  
@@ -17561,7 +18927,7 @@ XS(_wrap_ShapeLayer_plot__SWIG_3) {
       }
     }
     result = ((datamunge::ShapeLayer const *)arg1)->plot(SWIG_STD_MOVE(*(&arg2)));
-    ST(argvi) = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN | SWIG_SHADOW); argvi++ ;
+    ST(argvi) = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__graphics__RPlot, SWIG_POINTER_OWN | SWIG_SHADOW); argvi++ ;
     
     XSRETURN(argvi);
     fail:;
@@ -17589,7 +18955,7 @@ XS(_wrap_ShapeLayer_plot__SWIG_4) {
     }
     arg1 = reinterpret_cast< datamunge::ShapeLayer * >(argp1);
     result = ((datamunge::ShapeLayer const *)arg1)->plot();
-    ST(argvi) = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN | SWIG_SHADOW); argvi++ ;
+    ST(argvi) = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__graphics__RPlot, SWIG_POINTER_OWN | SWIG_SHADOW); argvi++ ;
     
     XSRETURN(argvi);
     fail:;
@@ -17642,7 +19008,7 @@ XS(_wrap_ShapeLayer_plot) {
       _pi *= SWIG_MAXCASTRANK;
       {
         void *vptr = 0;
-        int res = SWIG_ConvertPtr(ST(1), &vptr, SWIGTYPE_p_datamunge__plot__RGB, SWIG_POINTER_NO_NULL);
+        int res = SWIG_ConvertPtr(ST(1), &vptr, SWIGTYPE_p_datamunge__graphics__RGB, SWIG_POINTER_NO_NULL);
         _v = SWIG_CheckState(res);
       }
       if (!_v) goto check_2;
@@ -17672,7 +19038,7 @@ XS(_wrap_ShapeLayer_plot) {
       _pi *= SWIG_MAXCASTRANK;
       {
         void *vptr = 0;
-        int res = SWIG_ConvertPtr(ST(1), &vptr, SWIGTYPE_p_datamunge__plot__RGB, SWIG_POINTER_NO_NULL);
+        int res = SWIG_ConvertPtr(ST(1), &vptr, SWIGTYPE_p_datamunge__graphics__RGB, SWIG_POINTER_NO_NULL);
         _v = SWIG_CheckState(res);
       }
       if (!_v) goto check_3;
@@ -17681,7 +19047,7 @@ XS(_wrap_ShapeLayer_plot) {
       _pi *= SWIG_MAXCASTRANK;
       {
         void *vptr = 0;
-        int res = SWIG_ConvertPtr(ST(2), &vptr, SWIGTYPE_p_datamunge__plot__RGB, SWIG_POINTER_NO_NULL);
+        int res = SWIG_ConvertPtr(ST(2), &vptr, SWIGTYPE_p_datamunge__graphics__RGB, SWIG_POINTER_NO_NULL);
         _v = SWIG_CheckState(res);
       }
       if (!_v) goto check_3;
@@ -17711,7 +19077,7 @@ XS(_wrap_ShapeLayer_plot) {
       _pi *= SWIG_MAXCASTRANK;
       {
         void *vptr = 0;
-        int res = SWIG_ConvertPtr(ST(1), &vptr, SWIGTYPE_p_datamunge__plot__RGB, SWIG_POINTER_NO_NULL);
+        int res = SWIG_ConvertPtr(ST(1), &vptr, SWIGTYPE_p_datamunge__graphics__RGB, SWIG_POINTER_NO_NULL);
         _v = SWIG_CheckState(res);
       }
       if (!_v) goto check_4;
@@ -17720,7 +19086,7 @@ XS(_wrap_ShapeLayer_plot) {
       _pi *= SWIG_MAXCASTRANK;
       {
         void *vptr = 0;
-        int res = SWIG_ConvertPtr(ST(2), &vptr, SWIGTYPE_p_datamunge__plot__RGB, SWIG_POINTER_NO_NULL);
+        int res = SWIG_ConvertPtr(ST(2), &vptr, SWIGTYPE_p_datamunge__graphics__RGB, SWIG_POINTER_NO_NULL);
         _v = SWIG_CheckState(res);
       }
       if (!_v) goto check_4;
@@ -17760,7 +19126,7 @@ XS(_wrap_ShapeLayer_plot) {
       _pi *= SWIG_MAXCASTRANK;
       {
         void *vptr = 0;
-        int res = SWIG_ConvertPtr(ST(1), &vptr, SWIGTYPE_p_datamunge__plot__RGB, SWIG_POINTER_NO_NULL);
+        int res = SWIG_ConvertPtr(ST(1), &vptr, SWIGTYPE_p_datamunge__graphics__RGB, SWIG_POINTER_NO_NULL);
         _v = SWIG_CheckState(res);
       }
       if (!_v) goto check_5;
@@ -17769,7 +19135,7 @@ XS(_wrap_ShapeLayer_plot) {
       _pi *= SWIG_MAXCASTRANK;
       {
         void *vptr = 0;
-        int res = SWIG_ConvertPtr(ST(2), &vptr, SWIGTYPE_p_datamunge__plot__RGB, SWIG_POINTER_NO_NULL);
+        int res = SWIG_ConvertPtr(ST(2), &vptr, SWIGTYPE_p_datamunge__graphics__RGB, SWIG_POINTER_NO_NULL);
         _v = SWIG_CheckState(res);
       }
       if (!_v) goto check_5;
@@ -18484,7 +19850,7 @@ XS(_wrap_new_GGPlot) {
 XS(_wrap_GGPlot_geom_point__SWIG_0) {
   {
     datamunge::GGPlot *arg1 = 0 ;
-    SwigValueWrapper< datamunge::graphics::RGB > arg2 ;
+    datamunge::graphics::RGB arg2 ;
     double arg3 ;
     void *argp1 = 0 ;
     int res1 = 0 ;
@@ -18505,7 +19871,7 @@ XS(_wrap_GGPlot_geom_point__SWIG_0) {
     }
     arg1 = reinterpret_cast< datamunge::GGPlot * >(argp1);
     {
-      res2 = SWIG_ConvertPtr(ST(1), &argp2, SWIGTYPE_p_datamunge__plot__RGB,  0 );
+      res2 = SWIG_ConvertPtr(ST(1), &argp2, SWIGTYPE_p_datamunge__graphics__RGB,  0 );
       if (!SWIG_IsOK(res2)) {
         SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "GGPlot_geom_point" "', argument " "2"" of type '" "datamunge::graphics::RGB""'"); 
       }  
@@ -18536,7 +19902,7 @@ XS(_wrap_GGPlot_geom_point__SWIG_0) {
 XS(_wrap_GGPlot_geom_point__SWIG_1) {
   {
     datamunge::GGPlot *arg1 = 0 ;
-    SwigValueWrapper< datamunge::graphics::RGB > arg2 ;
+    datamunge::graphics::RGB arg2 ;
     void *argp1 = 0 ;
     int res1 = 0 ;
     void *argp2 = 0 ;
@@ -18554,7 +19920,7 @@ XS(_wrap_GGPlot_geom_point__SWIG_1) {
     }
     arg1 = reinterpret_cast< datamunge::GGPlot * >(argp1);
     {
-      res2 = SWIG_ConvertPtr(ST(1), &argp2, SWIGTYPE_p_datamunge__plot__RGB,  0 );
+      res2 = SWIG_ConvertPtr(ST(1), &argp2, SWIGTYPE_p_datamunge__graphics__RGB,  0 );
       if (!SWIG_IsOK(res2)) {
         SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "GGPlot_geom_point" "', argument " "2"" of type '" "datamunge::graphics::RGB""'"); 
       }  
@@ -18646,7 +20012,7 @@ XS(_wrap_GGPlot_geom_point) {
       _pi *= SWIG_MAXCASTRANK;
       {
         void *vptr = 0;
-        int res = SWIG_ConvertPtr(ST(1), &vptr, SWIGTYPE_p_datamunge__plot__RGB, SWIG_POINTER_NO_NULL);
+        int res = SWIG_ConvertPtr(ST(1), &vptr, SWIGTYPE_p_datamunge__graphics__RGB, SWIG_POINTER_NO_NULL);
         _v = SWIG_CheckState(res);
       }
       if (!_v) goto check_2;
@@ -18676,7 +20042,7 @@ XS(_wrap_GGPlot_geom_point) {
       _pi *= SWIG_MAXCASTRANK;
       {
         void *vptr = 0;
-        int res = SWIG_ConvertPtr(ST(1), &vptr, SWIGTYPE_p_datamunge__plot__RGB, SWIG_POINTER_NO_NULL);
+        int res = SWIG_ConvertPtr(ST(1), &vptr, SWIGTYPE_p_datamunge__graphics__RGB, SWIG_POINTER_NO_NULL);
         _v = SWIG_CheckState(res);
       }
       if (!_v) goto check_3;
@@ -18719,7 +20085,7 @@ XS(_wrap_GGPlot_geom_point) {
 XS(_wrap_GGPlot_geom_line__SWIG_0) {
   {
     datamunge::GGPlot *arg1 = 0 ;
-    SwigValueWrapper< datamunge::graphics::RGB > arg2 ;
+    datamunge::graphics::RGB arg2 ;
     double arg3 ;
     void *argp1 = 0 ;
     int res1 = 0 ;
@@ -18740,7 +20106,7 @@ XS(_wrap_GGPlot_geom_line__SWIG_0) {
     }
     arg1 = reinterpret_cast< datamunge::GGPlot * >(argp1);
     {
-      res2 = SWIG_ConvertPtr(ST(1), &argp2, SWIGTYPE_p_datamunge__plot__RGB,  0 );
+      res2 = SWIG_ConvertPtr(ST(1), &argp2, SWIGTYPE_p_datamunge__graphics__RGB,  0 );
       if (!SWIG_IsOK(res2)) {
         SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "GGPlot_geom_line" "', argument " "2"" of type '" "datamunge::graphics::RGB""'"); 
       }  
@@ -18771,7 +20137,7 @@ XS(_wrap_GGPlot_geom_line__SWIG_0) {
 XS(_wrap_GGPlot_geom_line__SWIG_1) {
   {
     datamunge::GGPlot *arg1 = 0 ;
-    SwigValueWrapper< datamunge::graphics::RGB > arg2 ;
+    datamunge::graphics::RGB arg2 ;
     void *argp1 = 0 ;
     int res1 = 0 ;
     void *argp2 = 0 ;
@@ -18789,7 +20155,7 @@ XS(_wrap_GGPlot_geom_line__SWIG_1) {
     }
     arg1 = reinterpret_cast< datamunge::GGPlot * >(argp1);
     {
-      res2 = SWIG_ConvertPtr(ST(1), &argp2, SWIGTYPE_p_datamunge__plot__RGB,  0 );
+      res2 = SWIG_ConvertPtr(ST(1), &argp2, SWIGTYPE_p_datamunge__graphics__RGB,  0 );
       if (!SWIG_IsOK(res2)) {
         SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "GGPlot_geom_line" "', argument " "2"" of type '" "datamunge::graphics::RGB""'"); 
       }  
@@ -18881,7 +20247,7 @@ XS(_wrap_GGPlot_geom_line) {
       _pi *= SWIG_MAXCASTRANK;
       {
         void *vptr = 0;
-        int res = SWIG_ConvertPtr(ST(1), &vptr, SWIGTYPE_p_datamunge__plot__RGB, SWIG_POINTER_NO_NULL);
+        int res = SWIG_ConvertPtr(ST(1), &vptr, SWIGTYPE_p_datamunge__graphics__RGB, SWIG_POINTER_NO_NULL);
         _v = SWIG_CheckState(res);
       }
       if (!_v) goto check_2;
@@ -18911,7 +20277,7 @@ XS(_wrap_GGPlot_geom_line) {
       _pi *= SWIG_MAXCASTRANK;
       {
         void *vptr = 0;
-        int res = SWIG_ConvertPtr(ST(1), &vptr, SWIGTYPE_p_datamunge__plot__RGB, SWIG_POINTER_NO_NULL);
+        int res = SWIG_ConvertPtr(ST(1), &vptr, SWIGTYPE_p_datamunge__graphics__RGB, SWIG_POINTER_NO_NULL);
         _v = SWIG_CheckState(res);
       }
       if (!_v) goto check_3;
@@ -18954,7 +20320,7 @@ XS(_wrap_GGPlot_geom_line) {
 XS(_wrap_GGPlot_geom_bar__SWIG_0) {
   {
     datamunge::GGPlot *arg1 = 0 ;
-    SwigValueWrapper< datamunge::graphics::RGB > arg2 ;
+    datamunge::graphics::RGB arg2 ;
     void *argp1 = 0 ;
     int res1 = 0 ;
     void *argp2 = 0 ;
@@ -18972,7 +20338,7 @@ XS(_wrap_GGPlot_geom_bar__SWIG_0) {
     }
     arg1 = reinterpret_cast< datamunge::GGPlot * >(argp1);
     {
-      res2 = SWIG_ConvertPtr(ST(1), &argp2, SWIGTYPE_p_datamunge__plot__RGB,  0 );
+      res2 = SWIG_ConvertPtr(ST(1), &argp2, SWIGTYPE_p_datamunge__graphics__RGB,  0 );
       if (!SWIG_IsOK(res2)) {
         SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "GGPlot_geom_bar" "', argument " "2"" of type '" "datamunge::graphics::RGB""'"); 
       }  
@@ -19064,7 +20430,7 @@ XS(_wrap_GGPlot_geom_bar) {
       _pi *= SWIG_MAXCASTRANK;
       {
         void *vptr = 0;
-        int res = SWIG_ConvertPtr(ST(1), &vptr, SWIGTYPE_p_datamunge__plot__RGB, SWIG_POINTER_NO_NULL);
+        int res = SWIG_ConvertPtr(ST(1), &vptr, SWIGTYPE_p_datamunge__graphics__RGB, SWIG_POINTER_NO_NULL);
         _v = SWIG_CheckState(res);
       }
       if (!_v) goto check_2;
@@ -19095,7 +20461,7 @@ XS(_wrap_GGPlot_geom_bar) {
 XS(_wrap_GGPlot_geom_col__SWIG_0) {
   {
     datamunge::GGPlot *arg1 = 0 ;
-    SwigValueWrapper< datamunge::graphics::RGB > arg2 ;
+    datamunge::graphics::RGB arg2 ;
     void *argp1 = 0 ;
     int res1 = 0 ;
     void *argp2 = 0 ;
@@ -19113,7 +20479,7 @@ XS(_wrap_GGPlot_geom_col__SWIG_0) {
     }
     arg1 = reinterpret_cast< datamunge::GGPlot * >(argp1);
     {
-      res2 = SWIG_ConvertPtr(ST(1), &argp2, SWIGTYPE_p_datamunge__plot__RGB,  0 );
+      res2 = SWIG_ConvertPtr(ST(1), &argp2, SWIGTYPE_p_datamunge__graphics__RGB,  0 );
       if (!SWIG_IsOK(res2)) {
         SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "GGPlot_geom_col" "', argument " "2"" of type '" "datamunge::graphics::RGB""'"); 
       }  
@@ -19205,7 +20571,7 @@ XS(_wrap_GGPlot_geom_col) {
       _pi *= SWIG_MAXCASTRANK;
       {
         void *vptr = 0;
-        int res = SWIG_ConvertPtr(ST(1), &vptr, SWIGTYPE_p_datamunge__plot__RGB, SWIG_POINTER_NO_NULL);
+        int res = SWIG_ConvertPtr(ST(1), &vptr, SWIGTYPE_p_datamunge__graphics__RGB, SWIG_POINTER_NO_NULL);
         _v = SWIG_CheckState(res);
       }
       if (!_v) goto check_2;
@@ -19237,7 +20603,7 @@ XS(_wrap_GGPlot_geom_histogram__SWIG_0) {
   {
     datamunge::GGPlot *arg1 = 0 ;
     std::size_t arg2 ;
-    SwigValueWrapper< datamunge::graphics::RGB > arg3 ;
+    datamunge::graphics::RGB arg3 ;
     void *argp1 = 0 ;
     int res1 = 0 ;
     size_t val2 ;
@@ -19262,7 +20628,7 @@ XS(_wrap_GGPlot_geom_histogram__SWIG_0) {
     } 
     arg2 = static_cast< std::size_t >(val2);
     {
-      res3 = SWIG_ConvertPtr(ST(2), &argp3, SWIGTYPE_p_datamunge__plot__RGB,  0 );
+      res3 = SWIG_ConvertPtr(ST(2), &argp3, SWIGTYPE_p_datamunge__graphics__RGB,  0 );
       if (!SWIG_IsOK(res3)) {
         SWIG_exception_fail(SWIG_ArgError(res3), "in method '" "GGPlot_geom_histogram" "', argument " "3"" of type '" "datamunge::graphics::RGB""'"); 
       }  
@@ -19435,7 +20801,7 @@ XS(_wrap_GGPlot_geom_histogram) {
       _pi *= SWIG_MAXCASTRANK;
       {
         void *vptr = 0;
-        int res = SWIG_ConvertPtr(ST(2), &vptr, SWIGTYPE_p_datamunge__plot__RGB, SWIG_POINTER_NO_NULL);
+        int res = SWIG_ConvertPtr(ST(2), &vptr, SWIGTYPE_p_datamunge__graphics__RGB, SWIG_POINTER_NO_NULL);
         _v = SWIG_CheckState(res);
       }
       if (!_v) goto check_3;
@@ -19468,7 +20834,7 @@ XS(_wrap_GGPlot_geom_histogram) {
 XS(_wrap_GGPlot_geom_boxplot__SWIG_0) {
   {
     datamunge::GGPlot *arg1 = 0 ;
-    SwigValueWrapper< datamunge::graphics::RGB > arg2 ;
+    datamunge::graphics::RGB arg2 ;
     void *argp1 = 0 ;
     int res1 = 0 ;
     void *argp2 = 0 ;
@@ -19486,7 +20852,7 @@ XS(_wrap_GGPlot_geom_boxplot__SWIG_0) {
     }
     arg1 = reinterpret_cast< datamunge::GGPlot * >(argp1);
     {
-      res2 = SWIG_ConvertPtr(ST(1), &argp2, SWIGTYPE_p_datamunge__plot__RGB,  0 );
+      res2 = SWIG_ConvertPtr(ST(1), &argp2, SWIGTYPE_p_datamunge__graphics__RGB,  0 );
       if (!SWIG_IsOK(res2)) {
         SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "GGPlot_geom_boxplot" "', argument " "2"" of type '" "datamunge::graphics::RGB""'"); 
       }  
@@ -19578,7 +20944,7 @@ XS(_wrap_GGPlot_geom_boxplot) {
       _pi *= SWIG_MAXCASTRANK;
       {
         void *vptr = 0;
-        int res = SWIG_ConvertPtr(ST(1), &vptr, SWIGTYPE_p_datamunge__plot__RGB, SWIG_POINTER_NO_NULL);
+        int res = SWIG_ConvertPtr(ST(1), &vptr, SWIGTYPE_p_datamunge__graphics__RGB, SWIG_POINTER_NO_NULL);
         _v = SWIG_CheckState(res);
       }
       if (!_v) goto check_2;
@@ -19609,7 +20975,7 @@ XS(_wrap_GGPlot_geom_boxplot) {
 XS(_wrap_GGPlot_geom_smooth__SWIG_0) {
   {
     datamunge::GGPlot *arg1 = 0 ;
-    SwigValueWrapper< datamunge::graphics::RGB > arg2 ;
+    datamunge::graphics::RGB arg2 ;
     void *argp1 = 0 ;
     int res1 = 0 ;
     void *argp2 = 0 ;
@@ -19627,7 +20993,7 @@ XS(_wrap_GGPlot_geom_smooth__SWIG_0) {
     }
     arg1 = reinterpret_cast< datamunge::GGPlot * >(argp1);
     {
-      res2 = SWIG_ConvertPtr(ST(1), &argp2, SWIGTYPE_p_datamunge__plot__RGB,  0 );
+      res2 = SWIG_ConvertPtr(ST(1), &argp2, SWIGTYPE_p_datamunge__graphics__RGB,  0 );
       if (!SWIG_IsOK(res2)) {
         SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "GGPlot_geom_smooth" "', argument " "2"" of type '" "datamunge::graphics::RGB""'"); 
       }  
@@ -19719,7 +21085,7 @@ XS(_wrap_GGPlot_geom_smooth) {
       _pi *= SWIG_MAXCASTRANK;
       {
         void *vptr = 0;
-        int res = SWIG_ConvertPtr(ST(1), &vptr, SWIGTYPE_p_datamunge__plot__RGB, SWIG_POINTER_NO_NULL);
+        int res = SWIG_ConvertPtr(ST(1), &vptr, SWIGTYPE_p_datamunge__graphics__RGB, SWIG_POINTER_NO_NULL);
         _v = SWIG_CheckState(res);
       }
       if (!_v) goto check_2;
@@ -19750,7 +21116,7 @@ XS(_wrap_GGPlot_geom_smooth) {
 XS(_wrap_GGPlot_geom_area__SWIG_0) {
   {
     datamunge::GGPlot *arg1 = 0 ;
-    SwigValueWrapper< datamunge::graphics::RGB > arg2 ;
+    datamunge::graphics::RGB arg2 ;
     void *argp1 = 0 ;
     int res1 = 0 ;
     void *argp2 = 0 ;
@@ -19768,7 +21134,7 @@ XS(_wrap_GGPlot_geom_area__SWIG_0) {
     }
     arg1 = reinterpret_cast< datamunge::GGPlot * >(argp1);
     {
-      res2 = SWIG_ConvertPtr(ST(1), &argp2, SWIGTYPE_p_datamunge__plot__RGB,  0 );
+      res2 = SWIG_ConvertPtr(ST(1), &argp2, SWIGTYPE_p_datamunge__graphics__RGB,  0 );
       if (!SWIG_IsOK(res2)) {
         SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "GGPlot_geom_area" "', argument " "2"" of type '" "datamunge::graphics::RGB""'"); 
       }  
@@ -19860,7 +21226,7 @@ XS(_wrap_GGPlot_geom_area) {
       _pi *= SWIG_MAXCASTRANK;
       {
         void *vptr = 0;
-        int res = SWIG_ConvertPtr(ST(1), &vptr, SWIGTYPE_p_datamunge__plot__RGB, SWIG_POINTER_NO_NULL);
+        int res = SWIG_ConvertPtr(ST(1), &vptr, SWIGTYPE_p_datamunge__graphics__RGB, SWIG_POINTER_NO_NULL);
         _v = SWIG_CheckState(res);
       }
       if (!_v) goto check_2;
@@ -19893,7 +21259,7 @@ XS(_wrap_GGPlot_geom_ribbon__SWIG_0) {
     datamunge::GGPlot *arg1 = 0 ;
     std::string *arg2 = 0 ;
     std::string *arg3 = 0 ;
-    SwigValueWrapper< datamunge::graphics::RGB > arg4 ;
+    datamunge::graphics::RGB arg4 ;
     void *argp1 = 0 ;
     int res1 = 0 ;
     int res2 = SWIG_OLDOBJ ;
@@ -19935,7 +21301,7 @@ XS(_wrap_GGPlot_geom_ribbon__SWIG_0) {
       arg3 = ptr;
     }
     {
-      res4 = SWIG_ConvertPtr(ST(3), &argp4, SWIGTYPE_p_datamunge__plot__RGB,  0 );
+      res4 = SWIG_ConvertPtr(ST(3), &argp4, SWIGTYPE_p_datamunge__graphics__RGB,  0 );
       if (!SWIG_IsOK(res4)) {
         SWIG_exception_fail(SWIG_ArgError(res4), "in method '" "GGPlot_geom_ribbon" "', argument " "4"" of type '" "datamunge::graphics::RGB""'"); 
       }  
@@ -20093,7 +21459,7 @@ XS(_wrap_GGPlot_geom_ribbon) {
       _pi *= SWIG_MAXCASTRANK;
       {
         void *vptr = 0;
-        int res = SWIG_ConvertPtr(ST(3), &vptr, SWIGTYPE_p_datamunge__plot__RGB, SWIG_POINTER_NO_NULL);
+        int res = SWIG_ConvertPtr(ST(3), &vptr, SWIGTYPE_p_datamunge__graphics__RGB, SWIG_POINTER_NO_NULL);
         _v = SWIG_CheckState(res);
       }
       if (!_v) goto check_2;
@@ -20124,7 +21490,7 @@ XS(_wrap_GGPlot_geom_ribbon) {
 XS(_wrap_GGPlot_geom_density__SWIG_0) {
   {
     datamunge::GGPlot *arg1 = 0 ;
-    SwigValueWrapper< datamunge::graphics::RGB > arg2 ;
+    datamunge::graphics::RGB arg2 ;
     void *argp1 = 0 ;
     int res1 = 0 ;
     void *argp2 = 0 ;
@@ -20142,7 +21508,7 @@ XS(_wrap_GGPlot_geom_density__SWIG_0) {
     }
     arg1 = reinterpret_cast< datamunge::GGPlot * >(argp1);
     {
-      res2 = SWIG_ConvertPtr(ST(1), &argp2, SWIGTYPE_p_datamunge__plot__RGB,  0 );
+      res2 = SWIG_ConvertPtr(ST(1), &argp2, SWIGTYPE_p_datamunge__graphics__RGB,  0 );
       if (!SWIG_IsOK(res2)) {
         SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "GGPlot_geom_density" "', argument " "2"" of type '" "datamunge::graphics::RGB""'"); 
       }  
@@ -20234,7 +21600,7 @@ XS(_wrap_GGPlot_geom_density) {
       _pi *= SWIG_MAXCASTRANK;
       {
         void *vptr = 0;
-        int res = SWIG_ConvertPtr(ST(1), &vptr, SWIGTYPE_p_datamunge__plot__RGB, SWIG_POINTER_NO_NULL);
+        int res = SWIG_ConvertPtr(ST(1), &vptr, SWIGTYPE_p_datamunge__graphics__RGB, SWIG_POINTER_NO_NULL);
         _v = SWIG_CheckState(res);
       }
       if (!_v) goto check_2;
@@ -20550,7 +21916,7 @@ XS(_wrap_GGPlot_scale_color_manual) {
       SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "GGPlot_scale_color_manual" "', argument " "1"" of type '" "datamunge::GGPlot *""'"); 
     }
     arg1 = reinterpret_cast< datamunge::GGPlot * >(argp1);
-    res2 = SWIG_ConvertPtr(ST(1), &argp2, SWIGTYPE_p_std__vectorT_datamunge__plot__RGB_t,  0 );
+    res2 = SWIG_ConvertPtr(ST(1), &argp2, SWIGTYPE_p_std__vectorT_datamunge__graphics__RGB_t,  0 );
     if (!SWIG_IsOK(res2)) {
       SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "GGPlot_scale_color_manual" "', argument " "2"" of type '" "std::vector< datamunge::graphics::RGB > const &""'"); 
     }
@@ -21180,6 +22546,326 @@ XS(_wrap_GGPlot_show) {
 }
 
 
+XS(_wrap_GGPlot_rows) {
+  {
+    datamunge::GGPlot *arg1 = 0 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    int argvi = 0;
+    int result;
+    dXSARGS;
+    
+    if ((items < 1) || (items > 1)) {
+      SWIG_croak("Usage: GGPlot_rows(self);");
+    }
+    res1 = SWIG_ConvertPtr(ST(0), &argp1,SWIGTYPE_p_datamunge__GGPlot, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "GGPlot_rows" "', argument " "1"" of type '" "datamunge::GGPlot const *""'"); 
+    }
+    arg1 = reinterpret_cast< datamunge::GGPlot * >(argp1);
+    result = (int)((datamunge::GGPlot const *)arg1)->rows();
+    ST(argvi) = SWIG_From_int  SWIG_PERL_CALL_ARGS_1(static_cast< int >(result)); argvi++ ;
+    
+    XSRETURN(argvi);
+    fail:;
+    
+  }
+  SWIG_croak_null();
+}
+
+
+XS(_wrap_GGPlot_x_column) {
+  {
+    datamunge::GGPlot *arg1 = 0 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    int argvi = 0;
+    std::string result;
+    dXSARGS;
+    
+    if ((items < 1) || (items > 1)) {
+      SWIG_croak("Usage: GGPlot_x_column(self);");
+    }
+    res1 = SWIG_ConvertPtr(ST(0), &argp1,SWIGTYPE_p_datamunge__GGPlot, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "GGPlot_x_column" "', argument " "1"" of type '" "datamunge::GGPlot const *""'"); 
+    }
+    arg1 = reinterpret_cast< datamunge::GGPlot * >(argp1);
+    result = ((datamunge::GGPlot const *)arg1)->x_column();
+    ST(argvi) = SWIG_From_std_string  SWIG_PERL_CALL_ARGS_1(static_cast< std::string >(result)); argvi++ ;
+    
+    XSRETURN(argvi);
+    fail:;
+    
+  }
+  SWIG_croak_null();
+}
+
+
+XS(_wrap_GGPlot_y_column) {
+  {
+    datamunge::GGPlot *arg1 = 0 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    int argvi = 0;
+    std::string result;
+    dXSARGS;
+    
+    if ((items < 1) || (items > 1)) {
+      SWIG_croak("Usage: GGPlot_y_column(self);");
+    }
+    res1 = SWIG_ConvertPtr(ST(0), &argp1,SWIGTYPE_p_datamunge__GGPlot, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "GGPlot_y_column" "', argument " "1"" of type '" "datamunge::GGPlot const *""'"); 
+    }
+    arg1 = reinterpret_cast< datamunge::GGPlot * >(argp1);
+    result = ((datamunge::GGPlot const *)arg1)->y_column();
+    ST(argvi) = SWIG_From_std_string  SWIG_PERL_CALL_ARGS_1(static_cast< std::string >(result)); argvi++ ;
+    
+    XSRETURN(argvi);
+    fail:;
+    
+  }
+  SWIG_croak_null();
+}
+
+
+XS(_wrap_GGPlot_color_column) {
+  {
+    datamunge::GGPlot *arg1 = 0 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    int argvi = 0;
+    std::string result;
+    dXSARGS;
+    
+    if ((items < 1) || (items > 1)) {
+      SWIG_croak("Usage: GGPlot_color_column(self);");
+    }
+    res1 = SWIG_ConvertPtr(ST(0), &argp1,SWIGTYPE_p_datamunge__GGPlot, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "GGPlot_color_column" "', argument " "1"" of type '" "datamunge::GGPlot const *""'"); 
+    }
+    arg1 = reinterpret_cast< datamunge::GGPlot * >(argp1);
+    result = ((datamunge::GGPlot const *)arg1)->color_column();
+    ST(argvi) = SWIG_From_std_string  SWIG_PERL_CALL_ARGS_1(static_cast< std::string >(result)); argvi++ ;
+    
+    XSRETURN(argvi);
+    fail:;
+    
+  }
+  SWIG_croak_null();
+}
+
+
+XS(_wrap_GGPlot_layer_count) {
+  {
+    datamunge::GGPlot *arg1 = 0 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    int argvi = 0;
+    int result;
+    dXSARGS;
+    
+    if ((items < 1) || (items > 1)) {
+      SWIG_croak("Usage: GGPlot_layer_count(self);");
+    }
+    res1 = SWIG_ConvertPtr(ST(0), &argp1,SWIGTYPE_p_datamunge__GGPlot, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "GGPlot_layer_count" "', argument " "1"" of type '" "datamunge::GGPlot const *""'"); 
+    }
+    arg1 = reinterpret_cast< datamunge::GGPlot * >(argp1);
+    result = (int)((datamunge::GGPlot const *)arg1)->layer_count();
+    ST(argvi) = SWIG_From_int  SWIG_PERL_CALL_ARGS_1(static_cast< int >(result)); argvi++ ;
+    
+    XSRETURN(argvi);
+    fail:;
+    
+  }
+  SWIG_croak_null();
+}
+
+
+XS(_wrap_GGPlot_layer_kinds) {
+  {
+    datamunge::GGPlot *arg1 = 0 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    int argvi = 0;
+    std::vector< std::string > result;
+    dXSARGS;
+    
+    if ((items < 1) || (items > 1)) {
+      SWIG_croak("Usage: GGPlot_layer_kinds(self);");
+    }
+    res1 = SWIG_ConvertPtr(ST(0), &argp1,SWIGTYPE_p_datamunge__GGPlot, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "GGPlot_layer_kinds" "', argument " "1"" of type '" "datamunge::GGPlot const *""'"); 
+    }
+    arg1 = reinterpret_cast< datamunge::GGPlot * >(argp1);
+    result = ((datamunge::GGPlot const *)arg1)->layer_kinds();
+    {
+      size_t len = (&result)->size();
+      SV **svs = new SV*[len];
+      for (size_t i=0; i<len; i++) {
+        svs[i] = sv_newmortal();
+        SwigSvFromString(svs[i], result[i]);
+      }
+      AV *myav = av_make(len, svs);
+      delete[] svs;
+      ST(argvi) = newRV_noinc((SV*) myav);
+      sv_2mortal(ST(argvi));
+      argvi++;
+    }
+    
+    XSRETURN(argvi);
+    fail:;
+    
+  }
+  SWIG_croak_null();
+}
+
+
+XS(_wrap_GGPlot_theme_name) {
+  {
+    datamunge::GGPlot *arg1 = 0 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    int argvi = 0;
+    std::string result;
+    dXSARGS;
+    
+    if ((items < 1) || (items > 1)) {
+      SWIG_croak("Usage: GGPlot_theme_name(self);");
+    }
+    res1 = SWIG_ConvertPtr(ST(0), &argp1,SWIGTYPE_p_datamunge__GGPlot, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "GGPlot_theme_name" "', argument " "1"" of type '" "datamunge::GGPlot const *""'"); 
+    }
+    arg1 = reinterpret_cast< datamunge::GGPlot * >(argp1);
+    result = ((datamunge::GGPlot const *)arg1)->theme_name();
+    ST(argvi) = SWIG_From_std_string  SWIG_PERL_CALL_ARGS_1(static_cast< std::string >(result)); argvi++ ;
+    
+    XSRETURN(argvi);
+    fail:;
+    
+  }
+  SWIG_croak_null();
+}
+
+
+XS(_wrap_GGPlot_facet_column) {
+  {
+    datamunge::GGPlot *arg1 = 0 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    int argvi = 0;
+    std::string result;
+    dXSARGS;
+    
+    if ((items < 1) || (items > 1)) {
+      SWIG_croak("Usage: GGPlot_facet_column(self);");
+    }
+    res1 = SWIG_ConvertPtr(ST(0), &argp1,SWIGTYPE_p_datamunge__GGPlot, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "GGPlot_facet_column" "', argument " "1"" of type '" "datamunge::GGPlot const *""'"); 
+    }
+    arg1 = reinterpret_cast< datamunge::GGPlot * >(argp1);
+    result = ((datamunge::GGPlot const *)arg1)->facet_column();
+    ST(argvi) = SWIG_From_std_string  SWIG_PERL_CALL_ARGS_1(static_cast< std::string >(result)); argvi++ ;
+    
+    XSRETURN(argvi);
+    fail:;
+    
+  }
+  SWIG_croak_null();
+}
+
+
+XS(_wrap_GGPlot_title_text) {
+  {
+    datamunge::GGPlot *arg1 = 0 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    int argvi = 0;
+    std::string result;
+    dXSARGS;
+    
+    if ((items < 1) || (items > 1)) {
+      SWIG_croak("Usage: GGPlot_title_text(self);");
+    }
+    res1 = SWIG_ConvertPtr(ST(0), &argp1,SWIGTYPE_p_datamunge__GGPlot, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "GGPlot_title_text" "', argument " "1"" of type '" "datamunge::GGPlot const *""'"); 
+    }
+    arg1 = reinterpret_cast< datamunge::GGPlot * >(argp1);
+    result = ((datamunge::GGPlot const *)arg1)->title_text();
+    ST(argvi) = SWIG_From_std_string  SWIG_PERL_CALL_ARGS_1(static_cast< std::string >(result)); argvi++ ;
+    
+    XSRETURN(argvi);
+    fail:;
+    
+  }
+  SWIG_croak_null();
+}
+
+
+XS(_wrap_GGPlot_x_label) {
+  {
+    datamunge::GGPlot *arg1 = 0 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    int argvi = 0;
+    std::string result;
+    dXSARGS;
+    
+    if ((items < 1) || (items > 1)) {
+      SWIG_croak("Usage: GGPlot_x_label(self);");
+    }
+    res1 = SWIG_ConvertPtr(ST(0), &argp1,SWIGTYPE_p_datamunge__GGPlot, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "GGPlot_x_label" "', argument " "1"" of type '" "datamunge::GGPlot const *""'"); 
+    }
+    arg1 = reinterpret_cast< datamunge::GGPlot * >(argp1);
+    result = ((datamunge::GGPlot const *)arg1)->x_label();
+    ST(argvi) = SWIG_From_std_string  SWIG_PERL_CALL_ARGS_1(static_cast< std::string >(result)); argvi++ ;
+    
+    XSRETURN(argvi);
+    fail:;
+    
+  }
+  SWIG_croak_null();
+}
+
+
+XS(_wrap_GGPlot_y_label) {
+  {
+    datamunge::GGPlot *arg1 = 0 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    int argvi = 0;
+    std::string result;
+    dXSARGS;
+    
+    if ((items < 1) || (items > 1)) {
+      SWIG_croak("Usage: GGPlot_y_label(self);");
+    }
+    res1 = SWIG_ConvertPtr(ST(0), &argp1,SWIGTYPE_p_datamunge__GGPlot, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "GGPlot_y_label" "', argument " "1"" of type '" "datamunge::GGPlot const *""'"); 
+    }
+    arg1 = reinterpret_cast< datamunge::GGPlot * >(argp1);
+    result = ((datamunge::GGPlot const *)arg1)->y_label();
+    ST(argvi) = SWIG_From_std_string  SWIG_PERL_CALL_ARGS_1(static_cast< std::string >(result)); argvi++ ;
+    
+    XSRETURN(argvi);
+    fail:;
+    
+  }
+  SWIG_croak_null();
+}
+
+
 XS(_wrap_delete_GGPlot) {
   {
     datamunge::GGPlot *arg1 = 0 ;
@@ -21196,6 +22882,1462 @@ XS(_wrap_delete_GGPlot) {
       SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "delete_GGPlot" "', argument " "1"" of type '" "datamunge::GGPlot *""'"); 
     }
     arg1 = reinterpret_cast< datamunge::GGPlot * >(argp1);
+    delete arg1;
+    ST(argvi) = &PL_sv_undef;
+    
+    XSRETURN(argvi);
+    fail:;
+    
+  }
+  SWIG_croak_null();
+}
+
+
+XS(_wrap_new_Splom__SWIG_0) {
+  {
+    datamunge::DataFrame *arg1 = 0 ;
+    std::vector< std::string > *arg2 = 0 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    std::vector< std::string > temp2 ;
+    std::vector< std::string > *v2 ;
+    int argvi = 0;
+    datamunge::Splom *result = 0 ;
+    dXSARGS;
+    
+    if ((items < 2) || (items > 2)) {
+      SWIG_croak("Usage: new_Splom(data,columns);");
+    }
+    res1 = SWIG_ConvertPtr(ST(0), &argp1, SWIGTYPE_p_datamunge__DataFrame,  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "new_Splom" "', argument " "1"" of type '" "datamunge::DataFrame const &""'"); 
+    }
+    if (!argp1) {
+      SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "new_Splom" "', argument " "1"" of type '" "datamunge::DataFrame const &""'"); 
+    }
+    arg1 = reinterpret_cast< datamunge::DataFrame * >(argp1);
+    {
+      if (SWIG_ConvertPtr(ST(1),(void **) &v2, 
+          SWIGTYPE_p_std__vectorT_std__string_t,1) != -1) {
+        arg2 = v2;
+      } else if (SvROK(ST(1))) {
+        AV *av = (AV *)SvRV(ST(1));
+        if (SvTYPE(av) != SVt_PVAV)
+        SWIG_croak("Type error in argument 2 of new_Splom. "
+          "Expected an array of ""std::string");
+        SV **tv;
+        SSize_t len = av_len(av) + 1;
+        for (int i=0; i<len; i++) {
+          tv = av_fetch(av, i, 0);
+          if (SvPOK(*tv)) {
+            temp2.push_back((std::string)SwigSvToString(*tv));
+          } else {
+            SWIG_croak("Type error in argument 2 of "
+              "new_Splom. "
+              "Expected an array of ""std::string");
+          }
+        }
+        arg2 = &temp2;
+      } else {
+        SWIG_croak("Type error in argument 2 of new_Splom. "
+          "Expected an array of ""std::string");
+      }
+    }
+    result = (datamunge::Splom *)new datamunge::Splom((datamunge::DataFrame const &)*arg1,(std::vector< std::string > const &)*arg2);
+    ST(argvi) = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__Splom, SWIG_OWNER | SWIG_SHADOW); argvi++ ;
+    
+    
+    XSRETURN(argvi);
+    fail:;
+    
+    
+  }
+  SWIG_croak_null();
+}
+
+
+XS(_wrap_new_Splom__SWIG_1) {
+  {
+    datamunge::DataFrame *arg1 = 0 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    int argvi = 0;
+    datamunge::Splom *result = 0 ;
+    dXSARGS;
+    
+    if ((items < 1) || (items > 1)) {
+      SWIG_croak("Usage: new_Splom(data);");
+    }
+    res1 = SWIG_ConvertPtr(ST(0), &argp1, SWIGTYPE_p_datamunge__DataFrame,  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "new_Splom" "', argument " "1"" of type '" "datamunge::DataFrame const &""'"); 
+    }
+    if (!argp1) {
+      SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "new_Splom" "', argument " "1"" of type '" "datamunge::DataFrame const &""'"); 
+    }
+    arg1 = reinterpret_cast< datamunge::DataFrame * >(argp1);
+    result = (datamunge::Splom *)new datamunge::Splom((datamunge::DataFrame const &)*arg1);
+    ST(argvi) = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__Splom, SWIG_OWNER | SWIG_SHADOW); argvi++ ;
+    
+    XSRETURN(argvi);
+    fail:;
+    
+  }
+  SWIG_croak_null();
+}
+
+
+XS(_wrap_new_Splom) {
+  dXSARGS;
+  
+  {
+    unsigned long _index = 0;
+    SWIG_TypeRank _rank = 0; 
+    if (items == 1) {
+      SWIG_TypeRank _ranki = 0;
+      SWIG_TypeRank _rankm = 0;
+      SWIG_TypeRank _pi = 1;
+      int _v = 0;
+      {
+        void *vptr = 0;
+        int res = SWIG_ConvertPtr(ST(0), &vptr, SWIGTYPE_p_datamunge__DataFrame, SWIG_POINTER_NO_NULL);
+        _v = SWIG_CheckState(res);
+      }
+      if (!_v) goto check_1;
+      _ranki += _v*_pi;
+      _rankm += _pi;
+      _pi *= SWIG_MAXCASTRANK;
+      if (!_index || (_ranki < _rank)) {
+        _rank = _ranki; _index = 1;
+        if (_rank == _rankm) goto dispatch;
+      }
+    }
+  check_1:
+    
+    if (items == 2) {
+      SWIG_TypeRank _ranki = 0;
+      SWIG_TypeRank _rankm = 0;
+      SWIG_TypeRank _pi = 1;
+      int _v = 0;
+      {
+        void *vptr = 0;
+        int res = SWIG_ConvertPtr(ST(0), &vptr, SWIGTYPE_p_datamunge__DataFrame, SWIG_POINTER_NO_NULL);
+        _v = SWIG_CheckState(res);
+      }
+      if (!_v) goto check_2;
+      _ranki += _v*_pi;
+      _rankm += _pi;
+      _pi *= SWIG_MAXCASTRANK;
+      {
+        {
+          {
+            /* wrapped vector? */
+            std::vector< std::string >* v;
+            if (SWIG_ConvertPtr(ST(1),(void **) &v, 
+                SWIGTYPE_p_std__vectorT_std__string_t,0) != -1) {
+              _v = 1;
+            } else if (SvROK(ST(1))) {
+              /* native sequence? */
+              AV *av = (AV *)SvRV(ST(1));
+              if (SvTYPE(av) == SVt_PVAV) {
+                SSize_t len = av_len(av) + 1;
+                if (len == 0) {
+                  /* an empty sequence can be of any type */
+                  _v = 1;
+                } else {
+                  /* check the first element only */
+                  SV **tv = av_fetch(av, 0, 0);
+                  if (SvPOK(*tv))
+                  _v = 1;
+                  else
+                  _v = 0;
+                }
+              }
+            } else {
+              _v = 0;
+            }
+          }
+        }
+      }
+      if (!_v) goto check_2;
+      _ranki += _v*_pi;
+      _rankm += _pi;
+      _pi *= SWIG_MAXCASTRANK;
+      if (!_index || (_ranki < _rank)) {
+        _rank = _ranki; _index = 2;
+        if (_rank == _rankm) goto dispatch;
+      }
+    }
+  check_2:
+    
+  dispatch:
+    switch(_index) {
+    case 1:
+      PUSHMARK(MARK); SWIG_CALLXS(_wrap_new_Splom__SWIG_1); return;
+    case 2:
+      PUSHMARK(MARK); SWIG_CALLXS(_wrap_new_Splom__SWIG_0); return;
+    }
+  }
+  
+  croak("No matching function for overloaded 'new_Splom'");
+  XSRETURN(0);
+}
+
+
+XS(_wrap_Splom_title) {
+  {
+    datamunge::Splom *arg1 = 0 ;
+    std::string *arg2 = 0 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    int res2 = SWIG_OLDOBJ ;
+    int argvi = 0;
+    datamunge::Splom *result = 0 ;
+    dXSARGS;
+    
+    if ((items < 2) || (items > 2)) {
+      SWIG_croak("Usage: Splom_title(self,value);");
+    }
+    res1 = SWIG_ConvertPtr(ST(0), &argp1,SWIGTYPE_p_datamunge__Splom, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "Splom_title" "', argument " "1"" of type '" "datamunge::Splom *""'"); 
+    }
+    arg1 = reinterpret_cast< datamunge::Splom * >(argp1);
+    {
+      std::string *ptr = (std::string *)0;
+      res2 = SWIG_AsPtr_std_string SWIG_PERL_CALL_ARGS_2(ST(1), &ptr);
+      if (!SWIG_IsOK(res2)) {
+        SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "Splom_title" "', argument " "2"" of type '" "std::string const &""'"); 
+      }
+      if (!ptr) {
+        SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "Splom_title" "', argument " "2"" of type '" "std::string const &""'"); 
+      }
+      arg2 = ptr;
+    }
+    result = (datamunge::Splom *) &(arg1)->title((std::string const &)*arg2);
+    ST(argvi) = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__Splom, 0 | SWIG_SHADOW); argvi++ ;
+    
+    if (SWIG_IsNewObj(res2)) delete arg2;
+    XSRETURN(argvi);
+    fail:;
+    
+    if (SWIG_IsNewObj(res2)) delete arg2;
+  }
+  SWIG_croak_null();
+}
+
+
+XS(_wrap_Splom_size) {
+  {
+    datamunge::Splom *arg1 = 0 ;
+    std::size_t arg2 ;
+    std::size_t arg3 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    size_t val2 ;
+    int ecode2 = 0 ;
+    size_t val3 ;
+    int ecode3 = 0 ;
+    int argvi = 0;
+    datamunge::Splom *result = 0 ;
+    dXSARGS;
+    
+    if ((items < 3) || (items > 3)) {
+      SWIG_croak("Usage: Splom_size(self,width,height);");
+    }
+    res1 = SWIG_ConvertPtr(ST(0), &argp1,SWIGTYPE_p_datamunge__Splom, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "Splom_size" "', argument " "1"" of type '" "datamunge::Splom *""'"); 
+    }
+    arg1 = reinterpret_cast< datamunge::Splom * >(argp1);
+    ecode2 = SWIG_AsVal_size_t SWIG_PERL_CALL_ARGS_2(ST(1), &val2);
+    if (!SWIG_IsOK(ecode2)) {
+      SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "Splom_size" "', argument " "2"" of type '" "std::size_t""'");
+    } 
+    arg2 = static_cast< std::size_t >(val2);
+    ecode3 = SWIG_AsVal_size_t SWIG_PERL_CALL_ARGS_2(ST(2), &val3);
+    if (!SWIG_IsOK(ecode3)) {
+      SWIG_exception_fail(SWIG_ArgError(ecode3), "in method '" "Splom_size" "', argument " "3"" of type '" "std::size_t""'");
+    } 
+    arg3 = static_cast< std::size_t >(val3);
+    result = (datamunge::Splom *) &(arg1)->size(SWIG_STD_MOVE(*(&arg2)),SWIG_STD_MOVE(*(&arg3)));
+    ST(argvi) = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__Splom, 0 | SWIG_SHADOW); argvi++ ;
+    
+    
+    
+    XSRETURN(argvi);
+    fail:;
+    
+    
+    
+  }
+  SWIG_croak_null();
+}
+
+
+XS(_wrap_Splom_color) {
+  {
+    datamunge::Splom *arg1 = 0 ;
+    datamunge::graphics::RGB arg2 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    void *argp2 = 0 ;
+    int res2 = 0 ;
+    int argvi = 0;
+    datamunge::Splom *result = 0 ;
+    dXSARGS;
+    
+    if ((items < 2) || (items > 2)) {
+      SWIG_croak("Usage: Splom_color(self,value);");
+    }
+    res1 = SWIG_ConvertPtr(ST(0), &argp1,SWIGTYPE_p_datamunge__Splom, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "Splom_color" "', argument " "1"" of type '" "datamunge::Splom *""'"); 
+    }
+    arg1 = reinterpret_cast< datamunge::Splom * >(argp1);
+    {
+      res2 = SWIG_ConvertPtr(ST(1), &argp2, SWIGTYPE_p_datamunge__graphics__RGB,  0 );
+      if (!SWIG_IsOK(res2)) {
+        SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "Splom_color" "', argument " "2"" of type '" "datamunge::graphics::RGB""'"); 
+      }  
+      if (!argp2) {
+        SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "Splom_color" "', argument " "2"" of type '" "datamunge::graphics::RGB""'");
+      } else {
+        arg2 = *(reinterpret_cast< datamunge::graphics::RGB * >(argp2));
+      }
+    }
+    result = (datamunge::Splom *) &(arg1)->color(SWIG_STD_MOVE(*(&arg2)));
+    ST(argvi) = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__Splom, 0 | SWIG_SHADOW); argvi++ ;
+    
+    XSRETURN(argvi);
+    fail:;
+    
+  }
+  SWIG_croak_null();
+}
+
+
+XS(_wrap_Splom_group_by__SWIG_0) {
+  {
+    datamunge::Splom *arg1 = 0 ;
+    std::string *arg2 = 0 ;
+    std::vector< datamunge::graphics::RGB > *arg3 = 0 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    int res2 = SWIG_OLDOBJ ;
+    void *argp3 = 0 ;
+    int res3 = 0 ;
+    int argvi = 0;
+    datamunge::Splom *result = 0 ;
+    dXSARGS;
+    
+    if ((items < 3) || (items > 3)) {
+      SWIG_croak("Usage: Splom_group_by(self,column,palette);");
+    }
+    res1 = SWIG_ConvertPtr(ST(0), &argp1,SWIGTYPE_p_datamunge__Splom, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "Splom_group_by" "', argument " "1"" of type '" "datamunge::Splom *""'"); 
+    }
+    arg1 = reinterpret_cast< datamunge::Splom * >(argp1);
+    {
+      std::string *ptr = (std::string *)0;
+      res2 = SWIG_AsPtr_std_string SWIG_PERL_CALL_ARGS_2(ST(1), &ptr);
+      if (!SWIG_IsOK(res2)) {
+        SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "Splom_group_by" "', argument " "2"" of type '" "std::string const &""'"); 
+      }
+      if (!ptr) {
+        SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "Splom_group_by" "', argument " "2"" of type '" "std::string const &""'"); 
+      }
+      arg2 = ptr;
+    }
+    res3 = SWIG_ConvertPtr(ST(2), &argp3, SWIGTYPE_p_std__vectorT_datamunge__graphics__RGB_t,  0 );
+    if (!SWIG_IsOK(res3)) {
+      SWIG_exception_fail(SWIG_ArgError(res3), "in method '" "Splom_group_by" "', argument " "3"" of type '" "std::vector< datamunge::graphics::RGB > const &""'"); 
+    }
+    if (!argp3) {
+      SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "Splom_group_by" "', argument " "3"" of type '" "std::vector< datamunge::graphics::RGB > const &""'"); 
+    }
+    arg3 = reinterpret_cast< std::vector< datamunge::graphics::RGB > * >(argp3);
+    result = (datamunge::Splom *) &(arg1)->group_by((std::string const &)*arg2,(std::vector< datamunge::graphics::RGB > const &)*arg3);
+    ST(argvi) = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__Splom, 0 | SWIG_SHADOW); argvi++ ;
+    
+    if (SWIG_IsNewObj(res2)) delete arg2;
+    
+    XSRETURN(argvi);
+    fail:;
+    
+    if (SWIG_IsNewObj(res2)) delete arg2;
+    
+  }
+  SWIG_croak_null();
+}
+
+
+XS(_wrap_Splom_group_by__SWIG_1) {
+  {
+    datamunge::Splom *arg1 = 0 ;
+    std::string *arg2 = 0 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    int res2 = SWIG_OLDOBJ ;
+    int argvi = 0;
+    datamunge::Splom *result = 0 ;
+    dXSARGS;
+    
+    if ((items < 2) || (items > 2)) {
+      SWIG_croak("Usage: Splom_group_by(self,column);");
+    }
+    res1 = SWIG_ConvertPtr(ST(0), &argp1,SWIGTYPE_p_datamunge__Splom, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "Splom_group_by" "', argument " "1"" of type '" "datamunge::Splom *""'"); 
+    }
+    arg1 = reinterpret_cast< datamunge::Splom * >(argp1);
+    {
+      std::string *ptr = (std::string *)0;
+      res2 = SWIG_AsPtr_std_string SWIG_PERL_CALL_ARGS_2(ST(1), &ptr);
+      if (!SWIG_IsOK(res2)) {
+        SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "Splom_group_by" "', argument " "2"" of type '" "std::string const &""'"); 
+      }
+      if (!ptr) {
+        SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "Splom_group_by" "', argument " "2"" of type '" "std::string const &""'"); 
+      }
+      arg2 = ptr;
+    }
+    result = (datamunge::Splom *) &(arg1)->group_by((std::string const &)*arg2);
+    ST(argvi) = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__Splom, 0 | SWIG_SHADOW); argvi++ ;
+    
+    if (SWIG_IsNewObj(res2)) delete arg2;
+    XSRETURN(argvi);
+    fail:;
+    
+    if (SWIG_IsNewObj(res2)) delete arg2;
+  }
+  SWIG_croak_null();
+}
+
+
+XS(_wrap_Splom_group_by) {
+  dXSARGS;
+  
+  {
+    unsigned long _index = 0;
+    SWIG_TypeRank _rank = 0; 
+    if (items == 2) {
+      SWIG_TypeRank _ranki = 0;
+      SWIG_TypeRank _rankm = 0;
+      SWIG_TypeRank _pi = 1;
+      int _v = 0;
+      {
+        void *vptr = 0;
+        int res = SWIG_ConvertPtr(ST(0), &vptr, SWIGTYPE_p_datamunge__Splom, 0);
+        _v = SWIG_CheckState(res);
+      }
+      if (!_v) goto check_1;
+      _ranki += _v*_pi;
+      _rankm += _pi;
+      _pi *= SWIG_MAXCASTRANK;
+      {
+        int res = SWIG_AsPtr_std_string SWIG_PERL_CALL_ARGS_2(ST(1), (std::string**)(0));
+        _v = SWIG_CheckState(res);
+      }
+      if (!_v) goto check_1;
+      _ranki += _v*_pi;
+      _rankm += _pi;
+      _pi *= SWIG_MAXCASTRANK;
+      if (!_index || (_ranki < _rank)) {
+        _rank = _ranki; _index = 1;
+        if (_rank == _rankm) goto dispatch;
+      }
+    }
+  check_1:
+    
+    if (items == 3) {
+      SWIG_TypeRank _ranki = 0;
+      SWIG_TypeRank _rankm = 0;
+      SWIG_TypeRank _pi = 1;
+      int _v = 0;
+      {
+        void *vptr = 0;
+        int res = SWIG_ConvertPtr(ST(0), &vptr, SWIGTYPE_p_datamunge__Splom, 0);
+        _v = SWIG_CheckState(res);
+      }
+      if (!_v) goto check_2;
+      _ranki += _v*_pi;
+      _rankm += _pi;
+      _pi *= SWIG_MAXCASTRANK;
+      {
+        int res = SWIG_AsPtr_std_string SWIG_PERL_CALL_ARGS_2(ST(1), (std::string**)(0));
+        _v = SWIG_CheckState(res);
+      }
+      if (!_v) goto check_2;
+      _ranki += _v*_pi;
+      _rankm += _pi;
+      _pi *= SWIG_MAXCASTRANK;
+      {
+        void *vptr = 0;
+        int res = SWIG_ConvertPtr(ST(2), &vptr, SWIGTYPE_p_std__vectorT_datamunge__graphics__RGB_t, SWIG_POINTER_NO_NULL);
+        _v = SWIG_CheckState(res);
+      }
+      if (!_v) goto check_2;
+      _ranki += _v*_pi;
+      _rankm += _pi;
+      _pi *= SWIG_MAXCASTRANK;
+      if (!_index || (_ranki < _rank)) {
+        _rank = _ranki; _index = 2;
+        if (_rank == _rankm) goto dispatch;
+      }
+    }
+  check_2:
+    
+  dispatch:
+    switch(_index) {
+    case 1:
+      PUSHMARK(MARK); SWIG_CALLXS(_wrap_Splom_group_by__SWIG_1); return;
+    case 2:
+      PUSHMARK(MARK); SWIG_CALLXS(_wrap_Splom_group_by__SWIG_0); return;
+    }
+  }
+  
+  croak("No matching function for overloaded 'Splom_group_by'");
+  XSRETURN(0);
+}
+
+
+XS(_wrap_Splom_point_colors) {
+  {
+    datamunge::Splom *arg1 = 0 ;
+    std::vector< datamunge::graphics::RGB > *arg2 = 0 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    void *argp2 = 0 ;
+    int res2 = 0 ;
+    int argvi = 0;
+    datamunge::Splom *result = 0 ;
+    dXSARGS;
+    
+    if ((items < 2) || (items > 2)) {
+      SWIG_croak("Usage: Splom_point_colors(self,colors);");
+    }
+    res1 = SWIG_ConvertPtr(ST(0), &argp1,SWIGTYPE_p_datamunge__Splom, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "Splom_point_colors" "', argument " "1"" of type '" "datamunge::Splom *""'"); 
+    }
+    arg1 = reinterpret_cast< datamunge::Splom * >(argp1);
+    res2 = SWIG_ConvertPtr(ST(1), &argp2, SWIGTYPE_p_std__vectorT_datamunge__graphics__RGB_t,  0 );
+    if (!SWIG_IsOK(res2)) {
+      SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "Splom_point_colors" "', argument " "2"" of type '" "std::vector< datamunge::graphics::RGB > const &""'"); 
+    }
+    if (!argp2) {
+      SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "Splom_point_colors" "', argument " "2"" of type '" "std::vector< datamunge::graphics::RGB > const &""'"); 
+    }
+    arg2 = reinterpret_cast< std::vector< datamunge::graphics::RGB > * >(argp2);
+    result = (datamunge::Splom *) &(arg1)->point_colors((std::vector< datamunge::graphics::RGB > const &)*arg2);
+    ST(argvi) = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__Splom, 0 | SWIG_SHADOW); argvi++ ;
+    
+    
+    XSRETURN(argvi);
+    fail:;
+    
+    
+  }
+  SWIG_croak_null();
+}
+
+
+XS(_wrap_Splom_level_palette) {
+  {
+    datamunge::Splom *arg1 = 0 ;
+    std::vector< datamunge::graphics::RGB > *arg2 = 0 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    void *argp2 = 0 ;
+    int res2 = 0 ;
+    int argvi = 0;
+    datamunge::Splom *result = 0 ;
+    dXSARGS;
+    
+    if ((items < 2) || (items > 2)) {
+      SWIG_croak("Usage: Splom_level_palette(self,colors);");
+    }
+    res1 = SWIG_ConvertPtr(ST(0), &argp1,SWIGTYPE_p_datamunge__Splom, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "Splom_level_palette" "', argument " "1"" of type '" "datamunge::Splom *""'"); 
+    }
+    arg1 = reinterpret_cast< datamunge::Splom * >(argp1);
+    res2 = SWIG_ConvertPtr(ST(1), &argp2, SWIGTYPE_p_std__vectorT_datamunge__graphics__RGB_t,  0 );
+    if (!SWIG_IsOK(res2)) {
+      SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "Splom_level_palette" "', argument " "2"" of type '" "std::vector< datamunge::graphics::RGB > const &""'"); 
+    }
+    if (!argp2) {
+      SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "Splom_level_palette" "', argument " "2"" of type '" "std::vector< datamunge::graphics::RGB > const &""'"); 
+    }
+    arg2 = reinterpret_cast< std::vector< datamunge::graphics::RGB > * >(argp2);
+    result = (datamunge::Splom *) &(arg1)->level_palette((std::vector< datamunge::graphics::RGB > const &)*arg2);
+    ST(argvi) = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__Splom, 0 | SWIG_SHADOW); argvi++ ;
+    
+    
+    XSRETURN(argvi);
+    fail:;
+    
+    
+  }
+  SWIG_croak_null();
+}
+
+
+XS(_wrap_Splom_marker_size) {
+  {
+    datamunge::Splom *arg1 = 0 ;
+    double arg2 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    double val2 ;
+    int ecode2 = 0 ;
+    int argvi = 0;
+    datamunge::Splom *result = 0 ;
+    dXSARGS;
+    
+    if ((items < 2) || (items > 2)) {
+      SWIG_croak("Usage: Splom_marker_size(self,value);");
+    }
+    res1 = SWIG_ConvertPtr(ST(0), &argp1,SWIGTYPE_p_datamunge__Splom, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "Splom_marker_size" "', argument " "1"" of type '" "datamunge::Splom *""'"); 
+    }
+    arg1 = reinterpret_cast< datamunge::Splom * >(argp1);
+    ecode2 = SWIG_AsVal_double SWIG_PERL_CALL_ARGS_2(ST(1), &val2);
+    if (!SWIG_IsOK(ecode2)) {
+      SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "Splom_marker_size" "', argument " "2"" of type '" "double""'");
+    } 
+    arg2 = static_cast< double >(val2);
+    result = (datamunge::Splom *) &(arg1)->marker_size(arg2);
+    ST(argvi) = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__Splom, 0 | SWIG_SHADOW); argvi++ ;
+    
+    
+    XSRETURN(argvi);
+    fail:;
+    
+    
+  }
+  SWIG_croak_null();
+}
+
+
+XS(_wrap_Splom_diagonal_names) {
+  {
+    datamunge::Splom *arg1 = 0 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    int argvi = 0;
+    datamunge::Splom *result = 0 ;
+    dXSARGS;
+    
+    if ((items < 1) || (items > 1)) {
+      SWIG_croak("Usage: Splom_diagonal_names(self);");
+    }
+    res1 = SWIG_ConvertPtr(ST(0), &argp1,SWIGTYPE_p_datamunge__Splom, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "Splom_diagonal_names" "', argument " "1"" of type '" "datamunge::Splom *""'"); 
+    }
+    arg1 = reinterpret_cast< datamunge::Splom * >(argp1);
+    result = (datamunge::Splom *) &(arg1)->diagonal_names();
+    ST(argvi) = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__Splom, 0 | SWIG_SHADOW); argvi++ ;
+    
+    XSRETURN(argvi);
+    fail:;
+    
+  }
+  SWIG_croak_null();
+}
+
+
+XS(_wrap_Splom_diagonal_density) {
+  {
+    datamunge::Splom *arg1 = 0 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    int argvi = 0;
+    datamunge::Splom *result = 0 ;
+    dXSARGS;
+    
+    if ((items < 1) || (items > 1)) {
+      SWIG_croak("Usage: Splom_diagonal_density(self);");
+    }
+    res1 = SWIG_ConvertPtr(ST(0), &argp1,SWIGTYPE_p_datamunge__Splom, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "Splom_diagonal_density" "', argument " "1"" of type '" "datamunge::Splom *""'"); 
+    }
+    arg1 = reinterpret_cast< datamunge::Splom * >(argp1);
+    result = (datamunge::Splom *) &(arg1)->diagonal_density();
+    ST(argvi) = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__Splom, 0 | SWIG_SHADOW); argvi++ ;
+    
+    XSRETURN(argvi);
+    fail:;
+    
+  }
+  SWIG_croak_null();
+}
+
+
+XS(_wrap_Splom_diagonal_histogram) {
+  {
+    datamunge::Splom *arg1 = 0 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    int argvi = 0;
+    datamunge::Splom *result = 0 ;
+    dXSARGS;
+    
+    if ((items < 1) || (items > 1)) {
+      SWIG_croak("Usage: Splom_diagonal_histogram(self);");
+    }
+    res1 = SWIG_ConvertPtr(ST(0), &argp1,SWIGTYPE_p_datamunge__Splom, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "Splom_diagonal_histogram" "', argument " "1"" of type '" "datamunge::Splom *""'"); 
+    }
+    arg1 = reinterpret_cast< datamunge::Splom * >(argp1);
+    result = (datamunge::Splom *) &(arg1)->diagonal_histogram();
+    ST(argvi) = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__Splom, 0 | SWIG_SHADOW); argvi++ ;
+    
+    XSRETURN(argvi);
+    fail:;
+    
+  }
+  SWIG_croak_null();
+}
+
+
+XS(_wrap_Splom_span) {
+  {
+    datamunge::Splom *arg1 = 0 ;
+    double arg2 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    double val2 ;
+    int ecode2 = 0 ;
+    int argvi = 0;
+    datamunge::Splom *result = 0 ;
+    dXSARGS;
+    
+    if ((items < 2) || (items > 2)) {
+      SWIG_croak("Usage: Splom_span(self,value);");
+    }
+    res1 = SWIG_ConvertPtr(ST(0), &argp1,SWIGTYPE_p_datamunge__Splom, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "Splom_span" "', argument " "1"" of type '" "datamunge::Splom *""'"); 
+    }
+    arg1 = reinterpret_cast< datamunge::Splom * >(argp1);
+    ecode2 = SWIG_AsVal_double SWIG_PERL_CALL_ARGS_2(ST(1), &val2);
+    if (!SWIG_IsOK(ecode2)) {
+      SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "Splom_span" "', argument " "2"" of type '" "double""'");
+    } 
+    arg2 = static_cast< double >(val2);
+    result = (datamunge::Splom *) &(arg1)->span(arg2);
+    ST(argvi) = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__Splom, 0 | SWIG_SHADOW); argvi++ ;
+    
+    
+    XSRETURN(argvi);
+    fail:;
+    
+    
+  }
+  SWIG_croak_null();
+}
+
+
+XS(_wrap_Splom_prediction_level) {
+  {
+    datamunge::Splom *arg1 = 0 ;
+    double arg2 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    double val2 ;
+    int ecode2 = 0 ;
+    int argvi = 0;
+    datamunge::Splom *result = 0 ;
+    dXSARGS;
+    
+    if ((items < 2) || (items > 2)) {
+      SWIG_croak("Usage: Splom_prediction_level(self,value);");
+    }
+    res1 = SWIG_ConvertPtr(ST(0), &argp1,SWIGTYPE_p_datamunge__Splom, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "Splom_prediction_level" "', argument " "1"" of type '" "datamunge::Splom *""'"); 
+    }
+    arg1 = reinterpret_cast< datamunge::Splom * >(argp1);
+    ecode2 = SWIG_AsVal_double SWIG_PERL_CALL_ARGS_2(ST(1), &val2);
+    if (!SWIG_IsOK(ecode2)) {
+      SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "Splom_prediction_level" "', argument " "2"" of type '" "double""'");
+    } 
+    arg2 = static_cast< double >(val2);
+    result = (datamunge::Splom *) &(arg1)->prediction_level(arg2);
+    ST(argvi) = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__Splom, 0 | SWIG_SHADOW); argvi++ ;
+    
+    
+    XSRETURN(argvi);
+    fail:;
+    
+    
+  }
+  SWIG_croak_null();
+}
+
+
+XS(_wrap_Splom_bins) {
+  {
+    datamunge::Splom *arg1 = 0 ;
+    std::size_t arg2 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    size_t val2 ;
+    int ecode2 = 0 ;
+    int argvi = 0;
+    datamunge::Splom *result = 0 ;
+    dXSARGS;
+    
+    if ((items < 2) || (items > 2)) {
+      SWIG_croak("Usage: Splom_bins(self,value);");
+    }
+    res1 = SWIG_ConvertPtr(ST(0), &argp1,SWIGTYPE_p_datamunge__Splom, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "Splom_bins" "', argument " "1"" of type '" "datamunge::Splom *""'"); 
+    }
+    arg1 = reinterpret_cast< datamunge::Splom * >(argp1);
+    ecode2 = SWIG_AsVal_size_t SWIG_PERL_CALL_ARGS_2(ST(1), &val2);
+    if (!SWIG_IsOK(ecode2)) {
+      SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "Splom_bins" "', argument " "2"" of type '" "std::size_t""'");
+    } 
+    arg2 = static_cast< std::size_t >(val2);
+    result = (datamunge::Splom *) &(arg1)->bins(SWIG_STD_MOVE(*(&arg2)));
+    ST(argvi) = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__Splom, 0 | SWIG_SHADOW); argvi++ ;
+    
+    
+    XSRETURN(argvi);
+    fail:;
+    
+    
+  }
+  SWIG_croak_null();
+}
+
+
+XS(_wrap_Splom_show_grid__SWIG_0) {
+  {
+    datamunge::Splom *arg1 = 0 ;
+    bool arg2 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    bool val2 ;
+    int ecode2 = 0 ;
+    int argvi = 0;
+    datamunge::Splom *result = 0 ;
+    dXSARGS;
+    
+    if ((items < 2) || (items > 2)) {
+      SWIG_croak("Usage: Splom_show_grid(self,enabled);");
+    }
+    res1 = SWIG_ConvertPtr(ST(0), &argp1,SWIGTYPE_p_datamunge__Splom, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "Splom_show_grid" "', argument " "1"" of type '" "datamunge::Splom *""'"); 
+    }
+    arg1 = reinterpret_cast< datamunge::Splom * >(argp1);
+    ecode2 = SWIG_AsVal_bool SWIG_PERL_CALL_ARGS_2(ST(1), &val2);
+    if (!SWIG_IsOK(ecode2)) {
+      SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "Splom_show_grid" "', argument " "2"" of type '" "bool""'");
+    } 
+    arg2 = static_cast< bool >(val2);
+    result = (datamunge::Splom *) &(arg1)->show_grid(arg2);
+    ST(argvi) = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__Splom, 0 | SWIG_SHADOW); argvi++ ;
+    
+    
+    XSRETURN(argvi);
+    fail:;
+    
+    
+  }
+  SWIG_croak_null();
+}
+
+
+XS(_wrap_Splom_show_grid__SWIG_1) {
+  {
+    datamunge::Splom *arg1 = 0 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    int argvi = 0;
+    datamunge::Splom *result = 0 ;
+    dXSARGS;
+    
+    if ((items < 1) || (items > 1)) {
+      SWIG_croak("Usage: Splom_show_grid(self);");
+    }
+    res1 = SWIG_ConvertPtr(ST(0), &argp1,SWIGTYPE_p_datamunge__Splom, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "Splom_show_grid" "', argument " "1"" of type '" "datamunge::Splom *""'"); 
+    }
+    arg1 = reinterpret_cast< datamunge::Splom * >(argp1);
+    result = (datamunge::Splom *) &(arg1)->show_grid();
+    ST(argvi) = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__Splom, 0 | SWIG_SHADOW); argvi++ ;
+    
+    XSRETURN(argvi);
+    fail:;
+    
+  }
+  SWIG_croak_null();
+}
+
+
+XS(_wrap_Splom_show_grid) {
+  dXSARGS;
+  
+  {
+    unsigned long _index = 0;
+    SWIG_TypeRank _rank = 0; 
+    if (items == 1) {
+      SWIG_TypeRank _ranki = 0;
+      SWIG_TypeRank _rankm = 0;
+      SWIG_TypeRank _pi = 1;
+      int _v = 0;
+      {
+        void *vptr = 0;
+        int res = SWIG_ConvertPtr(ST(0), &vptr, SWIGTYPE_p_datamunge__Splom, 0);
+        _v = SWIG_CheckState(res);
+      }
+      if (!_v) goto check_1;
+      _ranki += _v*_pi;
+      _rankm += _pi;
+      _pi *= SWIG_MAXCASTRANK;
+      if (!_index || (_ranki < _rank)) {
+        _rank = _ranki; _index = 1;
+        if (_rank == _rankm) goto dispatch;
+      }
+    }
+  check_1:
+    
+    if (items == 2) {
+      SWIG_TypeRank _ranki = 0;
+      SWIG_TypeRank _rankm = 0;
+      SWIG_TypeRank _pi = 1;
+      int _v = 0;
+      {
+        void *vptr = 0;
+        int res = SWIG_ConvertPtr(ST(0), &vptr, SWIGTYPE_p_datamunge__Splom, 0);
+        _v = SWIG_CheckState(res);
+      }
+      if (!_v) goto check_2;
+      _ranki += _v*_pi;
+      _rankm += _pi;
+      _pi *= SWIG_MAXCASTRANK;
+      {
+        {
+          int res = SWIG_AsVal_bool SWIG_PERL_CALL_ARGS_2(ST(1), NULL);
+          _v = SWIG_CheckState(res);
+        }
+      }
+      if (!_v) goto check_2;
+      _ranki += _v*_pi;
+      _rankm += _pi;
+      _pi *= SWIG_MAXCASTRANK;
+      if (!_index || (_ranki < _rank)) {
+        _rank = _ranki; _index = 2;
+        if (_rank == _rankm) goto dispatch;
+      }
+    }
+  check_2:
+    
+  dispatch:
+    switch(_index) {
+    case 1:
+      PUSHMARK(MARK); SWIG_CALLXS(_wrap_Splom_show_grid__SWIG_1); return;
+    case 2:
+      PUSHMARK(MARK); SWIG_CALLXS(_wrap_Splom_show_grid__SWIG_0); return;
+    }
+  }
+  
+  croak("No matching function for overloaded 'Splom_show_grid'");
+  XSRETURN(0);
+}
+
+
+XS(_wrap_Splom_variables) {
+  {
+    datamunge::Splom *arg1 = 0 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    int argvi = 0;
+    std::vector< std::string > result;
+    dXSARGS;
+    
+    if ((items < 1) || (items > 1)) {
+      SWIG_croak("Usage: Splom_variables(self);");
+    }
+    res1 = SWIG_ConvertPtr(ST(0), &argp1,SWIGTYPE_p_datamunge__Splom, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "Splom_variables" "', argument " "1"" of type '" "datamunge::Splom const *""'"); 
+    }
+    arg1 = reinterpret_cast< datamunge::Splom * >(argp1);
+    result = ((datamunge::Splom const *)arg1)->variables();
+    {
+      size_t len = (&result)->size();
+      SV **svs = new SV*[len];
+      for (size_t i=0; i<len; i++) {
+        svs[i] = sv_newmortal();
+        SwigSvFromString(svs[i], result[i]);
+      }
+      AV *myav = av_make(len, svs);
+      delete[] svs;
+      ST(argvi) = newRV_noinc((SV*) myav);
+      sv_2mortal(ST(argvi));
+      argvi++;
+    }
+    
+    XSRETURN(argvi);
+    fail:;
+    
+  }
+  SWIG_croak_null();
+}
+
+
+XS(_wrap_Splom_groups) {
+  {
+    datamunge::Splom *arg1 = 0 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    int argvi = 0;
+    std::vector< std::string > result;
+    dXSARGS;
+    
+    if ((items < 1) || (items > 1)) {
+      SWIG_croak("Usage: Splom_groups(self);");
+    }
+    res1 = SWIG_ConvertPtr(ST(0), &argp1,SWIGTYPE_p_datamunge__Splom, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "Splom_groups" "', argument " "1"" of type '" "datamunge::Splom const *""'"); 
+    }
+    arg1 = reinterpret_cast< datamunge::Splom * >(argp1);
+    result = ((datamunge::Splom const *)arg1)->groups();
+    {
+      size_t len = (&result)->size();
+      SV **svs = new SV*[len];
+      for (size_t i=0; i<len; i++) {
+        svs[i] = sv_newmortal();
+        SwigSvFromString(svs[i], result[i]);
+      }
+      AV *myav = av_make(len, svs);
+      delete[] svs;
+      ST(argvi) = newRV_noinc((SV*) myav);
+      sv_2mortal(ST(argvi));
+      argvi++;
+    }
+    
+    XSRETURN(argvi);
+    fail:;
+    
+  }
+  SWIG_croak_null();
+}
+
+
+XS(_wrap_Splom_title_text) {
+  {
+    datamunge::Splom *arg1 = 0 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    int argvi = 0;
+    std::string result;
+    dXSARGS;
+    
+    if ((items < 1) || (items > 1)) {
+      SWIG_croak("Usage: Splom_title_text(self);");
+    }
+    res1 = SWIG_ConvertPtr(ST(0), &argp1,SWIGTYPE_p_datamunge__Splom, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "Splom_title_text" "', argument " "1"" of type '" "datamunge::Splom const *""'"); 
+    }
+    arg1 = reinterpret_cast< datamunge::Splom * >(argp1);
+    result = ((datamunge::Splom const *)arg1)->title_text();
+    ST(argvi) = SWIG_From_std_string  SWIG_PERL_CALL_ARGS_1(static_cast< std::string >(result)); argvi++ ;
+    
+    XSRETURN(argvi);
+    fail:;
+    
+  }
+  SWIG_croak_null();
+}
+
+
+XS(_wrap_Splom_width) {
+  {
+    datamunge::Splom *arg1 = 0 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    int argvi = 0;
+    int result;
+    dXSARGS;
+    
+    if ((items < 1) || (items > 1)) {
+      SWIG_croak("Usage: Splom_width(self);");
+    }
+    res1 = SWIG_ConvertPtr(ST(0), &argp1,SWIGTYPE_p_datamunge__Splom, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "Splom_width" "', argument " "1"" of type '" "datamunge::Splom const *""'"); 
+    }
+    arg1 = reinterpret_cast< datamunge::Splom * >(argp1);
+    result = (int)((datamunge::Splom const *)arg1)->width();
+    ST(argvi) = SWIG_From_int  SWIG_PERL_CALL_ARGS_1(static_cast< int >(result)); argvi++ ;
+    
+    XSRETURN(argvi);
+    fail:;
+    
+  }
+  SWIG_croak_null();
+}
+
+
+XS(_wrap_Splom_height) {
+  {
+    datamunge::Splom *arg1 = 0 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    int argvi = 0;
+    int result;
+    dXSARGS;
+    
+    if ((items < 1) || (items > 1)) {
+      SWIG_croak("Usage: Splom_height(self);");
+    }
+    res1 = SWIG_ConvertPtr(ST(0), &argp1,SWIGTYPE_p_datamunge__Splom, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "Splom_height" "', argument " "1"" of type '" "datamunge::Splom const *""'"); 
+    }
+    arg1 = reinterpret_cast< datamunge::Splom * >(argp1);
+    result = (int)((datamunge::Splom const *)arg1)->height();
+    ST(argvi) = SWIG_From_int  SWIG_PERL_CALL_ARGS_1(static_cast< int >(result)); argvi++ ;
+    
+    XSRETURN(argvi);
+    fail:;
+    
+  }
+  SWIG_croak_null();
+}
+
+
+XS(_wrap_Splom_panel) {
+  {
+    datamunge::Splom *arg1 = 0 ;
+    std::size_t arg2 ;
+    std::size_t arg3 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    size_t val2 ;
+    int ecode2 = 0 ;
+    size_t val3 ;
+    int ecode3 = 0 ;
+    int argvi = 0;
+    datamunge::graphics::RPlot result;
+    dXSARGS;
+    
+    if ((items < 3) || (items > 3)) {
+      SWIG_croak("Usage: Splom_panel(self,row,col);");
+    }
+    res1 = SWIG_ConvertPtr(ST(0), &argp1,SWIGTYPE_p_datamunge__Splom, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "Splom_panel" "', argument " "1"" of type '" "datamunge::Splom const *""'"); 
+    }
+    arg1 = reinterpret_cast< datamunge::Splom * >(argp1);
+    ecode2 = SWIG_AsVal_size_t SWIG_PERL_CALL_ARGS_2(ST(1), &val2);
+    if (!SWIG_IsOK(ecode2)) {
+      SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "Splom_panel" "', argument " "2"" of type '" "std::size_t""'");
+    } 
+    arg2 = static_cast< std::size_t >(val2);
+    ecode3 = SWIG_AsVal_size_t SWIG_PERL_CALL_ARGS_2(ST(2), &val3);
+    if (!SWIG_IsOK(ecode3)) {
+      SWIG_exception_fail(SWIG_ArgError(ecode3), "in method '" "Splom_panel" "', argument " "3"" of type '" "std::size_t""'");
+    } 
+    arg3 = static_cast< std::size_t >(val3);
+    result = ((datamunge::Splom const *)arg1)->panel(SWIG_STD_MOVE(*(&arg2)),SWIG_STD_MOVE(*(&arg3)));
+    ST(argvi) = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__graphics__RPlot, SWIG_POINTER_OWN | SWIG_SHADOW); argvi++ ;
+    
+    
+    
+    XSRETURN(argvi);
+    fail:;
+    
+    
+    
+  }
+  SWIG_croak_null();
+}
+
+
+XS(_wrap_Splom_to_svg) {
+  {
+    datamunge::Splom *arg1 = 0 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    int argvi = 0;
+    std::string result;
+    dXSARGS;
+    
+    if ((items < 1) || (items > 1)) {
+      SWIG_croak("Usage: Splom_to_svg(self);");
+    }
+    res1 = SWIG_ConvertPtr(ST(0), &argp1,SWIGTYPE_p_datamunge__Splom, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "Splom_to_svg" "', argument " "1"" of type '" "datamunge::Splom const *""'"); 
+    }
+    arg1 = reinterpret_cast< datamunge::Splom * >(argp1);
+    result = ((datamunge::Splom const *)arg1)->to_svg();
+    ST(argvi) = SWIG_From_std_string  SWIG_PERL_CALL_ARGS_1(static_cast< std::string >(result)); argvi++ ;
+    
+    XSRETURN(argvi);
+    fail:;
+    
+  }
+  SWIG_croak_null();
+}
+
+
+XS(_wrap_Splom_save) {
+  {
+    datamunge::Splom *arg1 = 0 ;
+    std::string *arg2 = 0 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    int res2 = SWIG_OLDOBJ ;
+    int argvi = 0;
+    dXSARGS;
+    
+    if ((items < 2) || (items > 2)) {
+      SWIG_croak("Usage: Splom_save(self,path);");
+    }
+    res1 = SWIG_ConvertPtr(ST(0), &argp1,SWIGTYPE_p_datamunge__Splom, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "Splom_save" "', argument " "1"" of type '" "datamunge::Splom const *""'"); 
+    }
+    arg1 = reinterpret_cast< datamunge::Splom * >(argp1);
+    {
+      std::string *ptr = (std::string *)0;
+      res2 = SWIG_AsPtr_std_string SWIG_PERL_CALL_ARGS_2(ST(1), &ptr);
+      if (!SWIG_IsOK(res2)) {
+        SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "Splom_save" "', argument " "2"" of type '" "std::string const &""'"); 
+      }
+      if (!ptr) {
+        SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "Splom_save" "', argument " "2"" of type '" "std::string const &""'"); 
+      }
+      arg2 = ptr;
+    }
+    ((datamunge::Splom const *)arg1)->save((std::string const &)*arg2);
+    ST(argvi) = &PL_sv_undef;
+    
+    if (SWIG_IsNewObj(res2)) delete arg2;
+    XSRETURN(argvi);
+    fail:;
+    
+    if (SWIG_IsNewObj(res2)) delete arg2;
+  }
+  SWIG_croak_null();
+}
+
+
+XS(_wrap_Splom_save_svg) {
+  {
+    datamunge::Splom *arg1 = 0 ;
+    std::string *arg2 = 0 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    int res2 = SWIG_OLDOBJ ;
+    int argvi = 0;
+    dXSARGS;
+    
+    if ((items < 2) || (items > 2)) {
+      SWIG_croak("Usage: Splom_save_svg(self,path);");
+    }
+    res1 = SWIG_ConvertPtr(ST(0), &argp1,SWIGTYPE_p_datamunge__Splom, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "Splom_save_svg" "', argument " "1"" of type '" "datamunge::Splom const *""'"); 
+    }
+    arg1 = reinterpret_cast< datamunge::Splom * >(argp1);
+    {
+      std::string *ptr = (std::string *)0;
+      res2 = SWIG_AsPtr_std_string SWIG_PERL_CALL_ARGS_2(ST(1), &ptr);
+      if (!SWIG_IsOK(res2)) {
+        SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "Splom_save_svg" "', argument " "2"" of type '" "std::string const &""'"); 
+      }
+      if (!ptr) {
+        SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "Splom_save_svg" "', argument " "2"" of type '" "std::string const &""'"); 
+      }
+      arg2 = ptr;
+    }
+    ((datamunge::Splom const *)arg1)->save_svg((std::string const &)*arg2);
+    ST(argvi) = &PL_sv_undef;
+    
+    if (SWIG_IsNewObj(res2)) delete arg2;
+    XSRETURN(argvi);
+    fail:;
+    
+    if (SWIG_IsNewObj(res2)) delete arg2;
+  }
+  SWIG_croak_null();
+}
+
+
+XS(_wrap_Splom_show__SWIG_0) {
+  {
+    datamunge::Splom *arg1 = 0 ;
+    std::string *arg2 = 0 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    int res2 = SWIG_OLDOBJ ;
+    int argvi = 0;
+    dXSARGS;
+    
+    if ((items < 2) || (items > 2)) {
+      SWIG_croak("Usage: Splom_show(self,title_hint);");
+    }
+    res1 = SWIG_ConvertPtr(ST(0), &argp1,SWIGTYPE_p_datamunge__Splom, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "Splom_show" "', argument " "1"" of type '" "datamunge::Splom const *""'"); 
+    }
+    arg1 = reinterpret_cast< datamunge::Splom * >(argp1);
+    {
+      std::string *ptr = (std::string *)0;
+      res2 = SWIG_AsPtr_std_string SWIG_PERL_CALL_ARGS_2(ST(1), &ptr);
+      if (!SWIG_IsOK(res2)) {
+        SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "Splom_show" "', argument " "2"" of type '" "std::string const &""'"); 
+      }
+      if (!ptr) {
+        SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "Splom_show" "', argument " "2"" of type '" "std::string const &""'"); 
+      }
+      arg2 = ptr;
+    }
+    ((datamunge::Splom const *)arg1)->show((std::string const &)*arg2);
+    ST(argvi) = &PL_sv_undef;
+    
+    if (SWIG_IsNewObj(res2)) delete arg2;
+    XSRETURN(argvi);
+    fail:;
+    
+    if (SWIG_IsNewObj(res2)) delete arg2;
+  }
+  SWIG_croak_null();
+}
+
+
+XS(_wrap_Splom_show__SWIG_1) {
+  {
+    datamunge::Splom *arg1 = 0 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    int argvi = 0;
+    dXSARGS;
+    
+    if ((items < 1) || (items > 1)) {
+      SWIG_croak("Usage: Splom_show(self);");
+    }
+    res1 = SWIG_ConvertPtr(ST(0), &argp1,SWIGTYPE_p_datamunge__Splom, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "Splom_show" "', argument " "1"" of type '" "datamunge::Splom const *""'"); 
+    }
+    arg1 = reinterpret_cast< datamunge::Splom * >(argp1);
+    ((datamunge::Splom const *)arg1)->show();
+    ST(argvi) = &PL_sv_undef;
+    
+    XSRETURN(argvi);
+    fail:;
+    
+  }
+  SWIG_croak_null();
+}
+
+
+XS(_wrap_Splom_show) {
+  dXSARGS;
+  
+  {
+    unsigned long _index = 0;
+    SWIG_TypeRank _rank = 0; 
+    if (items == 1) {
+      SWIG_TypeRank _ranki = 0;
+      SWIG_TypeRank _rankm = 0;
+      SWIG_TypeRank _pi = 1;
+      int _v = 0;
+      {
+        void *vptr = 0;
+        int res = SWIG_ConvertPtr(ST(0), &vptr, SWIGTYPE_p_datamunge__Splom, 0);
+        _v = SWIG_CheckState(res);
+      }
+      if (!_v) goto check_1;
+      _ranki += _v*_pi;
+      _rankm += _pi;
+      _pi *= SWIG_MAXCASTRANK;
+      if (!_index || (_ranki < _rank)) {
+        _rank = _ranki; _index = 1;
+        if (_rank == _rankm) goto dispatch;
+      }
+    }
+  check_1:
+    
+    if (items == 2) {
+      SWIG_TypeRank _ranki = 0;
+      SWIG_TypeRank _rankm = 0;
+      SWIG_TypeRank _pi = 1;
+      int _v = 0;
+      {
+        void *vptr = 0;
+        int res = SWIG_ConvertPtr(ST(0), &vptr, SWIGTYPE_p_datamunge__Splom, 0);
+        _v = SWIG_CheckState(res);
+      }
+      if (!_v) goto check_2;
+      _ranki += _v*_pi;
+      _rankm += _pi;
+      _pi *= SWIG_MAXCASTRANK;
+      {
+        int res = SWIG_AsPtr_std_string SWIG_PERL_CALL_ARGS_2(ST(1), (std::string**)(0));
+        _v = SWIG_CheckState(res);
+      }
+      if (!_v) goto check_2;
+      _ranki += _v*_pi;
+      _rankm += _pi;
+      _pi *= SWIG_MAXCASTRANK;
+      if (!_index || (_ranki < _rank)) {
+        _rank = _ranki; _index = 2;
+        if (_rank == _rankm) goto dispatch;
+      }
+    }
+  check_2:
+    
+  dispatch:
+    switch(_index) {
+    case 1:
+      PUSHMARK(MARK); SWIG_CALLXS(_wrap_Splom_show__SWIG_1); return;
+    case 2:
+      PUSHMARK(MARK); SWIG_CALLXS(_wrap_Splom_show__SWIG_0); return;
+    }
+  }
+  
+  croak("No matching function for overloaded 'Splom_show'");
+  XSRETURN(0);
+}
+
+
+XS(_wrap_delete_Splom) {
+  {
+    datamunge::Splom *arg1 = 0 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    int argvi = 0;
+    dXSARGS;
+    
+    if ((items < 1) || (items > 1)) {
+      SWIG_croak("Usage: delete_Splom(self);");
+    }
+    res1 = SWIG_ConvertPtr(ST(0), &argp1,SWIGTYPE_p_datamunge__Splom, SWIG_POINTER_DISOWN |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "delete_Splom" "', argument " "1"" of type '" "datamunge::Splom *""'"); 
+    }
+    arg1 = reinterpret_cast< datamunge::Splom * >(argp1);
     delete arg1;
     ST(argvi) = &PL_sv_undef;
     
@@ -22899,7 +26041,7 @@ XS(_wrap_LM_plot_residuals_vs_fitted) {
     }
     arg1 = reinterpret_cast< datamunge::LM * >(argp1);
     result = ((datamunge::LM const *)arg1)->plot_residuals_vs_fitted();
-    ST(argvi) = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN | SWIG_SHADOW); argvi++ ;
+    ST(argvi) = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__graphics__RPlot, SWIG_POINTER_OWN | SWIG_SHADOW); argvi++ ;
     
     XSRETURN(argvi);
     fail:;
@@ -22927,7 +26069,7 @@ XS(_wrap_LM_plot_normal_qq) {
     }
     arg1 = reinterpret_cast< datamunge::LM * >(argp1);
     result = ((datamunge::LM const *)arg1)->plot_normal_qq();
-    ST(argvi) = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN | SWIG_SHADOW); argvi++ ;
+    ST(argvi) = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__graphics__RPlot, SWIG_POINTER_OWN | SWIG_SHADOW); argvi++ ;
     
     XSRETURN(argvi);
     fail:;
@@ -22955,7 +26097,7 @@ XS(_wrap_LM_plot_scale_location) {
     }
     arg1 = reinterpret_cast< datamunge::LM * >(argp1);
     result = ((datamunge::LM const *)arg1)->plot_scale_location();
-    ST(argvi) = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN | SWIG_SHADOW); argvi++ ;
+    ST(argvi) = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__graphics__RPlot, SWIG_POINTER_OWN | SWIG_SHADOW); argvi++ ;
     
     XSRETURN(argvi);
     fail:;
@@ -22983,7 +26125,7 @@ XS(_wrap_LM_plot_residuals_vs_leverage) {
     }
     arg1 = reinterpret_cast< datamunge::LM * >(argp1);
     result = ((datamunge::LM const *)arg1)->plot_residuals_vs_leverage();
-    ST(argvi) = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN | SWIG_SHADOW); argvi++ ;
+    ST(argvi) = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__graphics__RPlot, SWIG_POINTER_OWN | SWIG_SHADOW); argvi++ ;
     
     XSRETURN(argvi);
     fail:;
@@ -29716,6 +32858,144 @@ XS(_wrap_LDA_print_summary) {
 }
 
 
+XS(_wrap_LDA_to_md__SWIG_0) {
+  {
+    datamunge::LDA *arg1 = 0 ;
+    int arg2 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    int val2 ;
+    int ecode2 = 0 ;
+    int argvi = 0;
+    std::string result;
+    dXSARGS;
+    
+    if ((items < 2) || (items > 2)) {
+      SWIG_croak("Usage: LDA_to_md(self,digits);");
+    }
+    res1 = SWIG_ConvertPtr(ST(0), &argp1,SWIGTYPE_p_datamunge__LDA, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "LDA_to_md" "', argument " "1"" of type '" "datamunge::LDA const *""'"); 
+    }
+    arg1 = reinterpret_cast< datamunge::LDA * >(argp1);
+    ecode2 = SWIG_AsVal_int SWIG_PERL_CALL_ARGS_2(ST(1), &val2);
+    if (!SWIG_IsOK(ecode2)) {
+      SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "LDA_to_md" "', argument " "2"" of type '" "int""'");
+    } 
+    arg2 = static_cast< int >(val2);
+    result = ((datamunge::LDA const *)arg1)->to_md(arg2);
+    ST(argvi) = SWIG_From_std_string  SWIG_PERL_CALL_ARGS_1(static_cast< std::string >(result)); argvi++ ;
+    
+    
+    XSRETURN(argvi);
+    fail:;
+    
+    
+  }
+  SWIG_croak_null();
+}
+
+
+XS(_wrap_LDA_to_md__SWIG_1) {
+  {
+    datamunge::LDA *arg1 = 0 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    int argvi = 0;
+    std::string result;
+    dXSARGS;
+    
+    if ((items < 1) || (items > 1)) {
+      SWIG_croak("Usage: LDA_to_md(self);");
+    }
+    res1 = SWIG_ConvertPtr(ST(0), &argp1,SWIGTYPE_p_datamunge__LDA, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "LDA_to_md" "', argument " "1"" of type '" "datamunge::LDA const *""'"); 
+    }
+    arg1 = reinterpret_cast< datamunge::LDA * >(argp1);
+    result = ((datamunge::LDA const *)arg1)->to_md();
+    ST(argvi) = SWIG_From_std_string  SWIG_PERL_CALL_ARGS_1(static_cast< std::string >(result)); argvi++ ;
+    
+    XSRETURN(argvi);
+    fail:;
+    
+  }
+  SWIG_croak_null();
+}
+
+
+XS(_wrap_LDA_to_md) {
+  dXSARGS;
+  
+  {
+    unsigned long _index = 0;
+    SWIG_TypeRank _rank = 0; 
+    if (items == 1) {
+      SWIG_TypeRank _ranki = 0;
+      SWIG_TypeRank _rankm = 0;
+      SWIG_TypeRank _pi = 1;
+      int _v = 0;
+      {
+        void *vptr = 0;
+        int res = SWIG_ConvertPtr(ST(0), &vptr, SWIGTYPE_p_datamunge__LDA, 0);
+        _v = SWIG_CheckState(res);
+      }
+      if (!_v) goto check_1;
+      _ranki += _v*_pi;
+      _rankm += _pi;
+      _pi *= SWIG_MAXCASTRANK;
+      if (!_index || (_ranki < _rank)) {
+        _rank = _ranki; _index = 1;
+        if (_rank == _rankm) goto dispatch;
+      }
+    }
+  check_1:
+    
+    if (items == 2) {
+      SWIG_TypeRank _ranki = 0;
+      SWIG_TypeRank _rankm = 0;
+      SWIG_TypeRank _pi = 1;
+      int _v = 0;
+      {
+        void *vptr = 0;
+        int res = SWIG_ConvertPtr(ST(0), &vptr, SWIGTYPE_p_datamunge__LDA, 0);
+        _v = SWIG_CheckState(res);
+      }
+      if (!_v) goto check_2;
+      _ranki += _v*_pi;
+      _rankm += _pi;
+      _pi *= SWIG_MAXCASTRANK;
+      {
+        {
+          int res = SWIG_AsVal_int SWIG_PERL_CALL_ARGS_2(ST(1), NULL);
+          _v = SWIG_CheckState(res);
+        }
+      }
+      if (!_v) goto check_2;
+      _ranki += _v*_pi;
+      _rankm += _pi;
+      _pi *= SWIG_MAXCASTRANK;
+      if (!_index || (_ranki < _rank)) {
+        _rank = _ranki; _index = 2;
+        if (_rank == _rankm) goto dispatch;
+      }
+    }
+  check_2:
+    
+  dispatch:
+    switch(_index) {
+    case 1:
+      PUSHMARK(MARK); SWIG_CALLXS(_wrap_LDA_to_md__SWIG_1); return;
+    case 2:
+      PUSHMARK(MARK); SWIG_CALLXS(_wrap_LDA_to_md__SWIG_0); return;
+    }
+  }
+  
+  croak("No matching function for overloaded 'LDA_to_md'");
+  XSRETURN(0);
+}
+
+
 XS(_wrap_LDA_predict) {
   {
     datamunge::LDA *arg1 = 0 ;
@@ -29810,7 +33090,45 @@ XS(_wrap_LDA_predict_frame) {
 }
 
 
-XS(_wrap_LDA_plot_discriminants) {
+XS(_wrap_LDA_plot_discriminants__SWIG_0) {
+  {
+    datamunge::LDA *arg1 = 0 ;
+    bool arg2 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    bool val2 ;
+    int ecode2 = 0 ;
+    int argvi = 0;
+    datamunge::graphics::RPlot result;
+    dXSARGS;
+    
+    if ((items < 2) || (items > 2)) {
+      SWIG_croak("Usage: LDA_plot_discriminants(self,decision_regions);");
+    }
+    res1 = SWIG_ConvertPtr(ST(0), &argp1,SWIGTYPE_p_datamunge__LDA, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "LDA_plot_discriminants" "', argument " "1"" of type '" "datamunge::LDA const *""'"); 
+    }
+    arg1 = reinterpret_cast< datamunge::LDA * >(argp1);
+    ecode2 = SWIG_AsVal_bool SWIG_PERL_CALL_ARGS_2(ST(1), &val2);
+    if (!SWIG_IsOK(ecode2)) {
+      SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "LDA_plot_discriminants" "', argument " "2"" of type '" "bool""'");
+    } 
+    arg2 = static_cast< bool >(val2);
+    result = ((datamunge::LDA const *)arg1)->plot_discriminants(arg2);
+    ST(argvi) = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__graphics__RPlot, SWIG_POINTER_OWN | SWIG_SHADOW); argvi++ ;
+    
+    
+    XSRETURN(argvi);
+    fail:;
+    
+    
+  }
+  SWIG_croak_null();
+}
+
+
+XS(_wrap_LDA_plot_discriminants__SWIG_1) {
   {
     datamunge::LDA *arg1 = 0 ;
     void *argp1 = 0 ;
@@ -29828,13 +33146,85 @@ XS(_wrap_LDA_plot_discriminants) {
     }
     arg1 = reinterpret_cast< datamunge::LDA * >(argp1);
     result = ((datamunge::LDA const *)arg1)->plot_discriminants();
-    ST(argvi) = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN | SWIG_SHADOW); argvi++ ;
+    ST(argvi) = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__graphics__RPlot, SWIG_POINTER_OWN | SWIG_SHADOW); argvi++ ;
     
     XSRETURN(argvi);
     fail:;
     
   }
   SWIG_croak_null();
+}
+
+
+XS(_wrap_LDA_plot_discriminants) {
+  dXSARGS;
+  
+  {
+    unsigned long _index = 0;
+    SWIG_TypeRank _rank = 0; 
+    if (items == 1) {
+      SWIG_TypeRank _ranki = 0;
+      SWIG_TypeRank _rankm = 0;
+      SWIG_TypeRank _pi = 1;
+      int _v = 0;
+      {
+        void *vptr = 0;
+        int res = SWIG_ConvertPtr(ST(0), &vptr, SWIGTYPE_p_datamunge__LDA, 0);
+        _v = SWIG_CheckState(res);
+      }
+      if (!_v) goto check_1;
+      _ranki += _v*_pi;
+      _rankm += _pi;
+      _pi *= SWIG_MAXCASTRANK;
+      if (!_index || (_ranki < _rank)) {
+        _rank = _ranki; _index = 1;
+        if (_rank == _rankm) goto dispatch;
+      }
+    }
+  check_1:
+    
+    if (items == 2) {
+      SWIG_TypeRank _ranki = 0;
+      SWIG_TypeRank _rankm = 0;
+      SWIG_TypeRank _pi = 1;
+      int _v = 0;
+      {
+        void *vptr = 0;
+        int res = SWIG_ConvertPtr(ST(0), &vptr, SWIGTYPE_p_datamunge__LDA, 0);
+        _v = SWIG_CheckState(res);
+      }
+      if (!_v) goto check_2;
+      _ranki += _v*_pi;
+      _rankm += _pi;
+      _pi *= SWIG_MAXCASTRANK;
+      {
+        {
+          int res = SWIG_AsVal_bool SWIG_PERL_CALL_ARGS_2(ST(1), NULL);
+          _v = SWIG_CheckState(res);
+        }
+      }
+      if (!_v) goto check_2;
+      _ranki += _v*_pi;
+      _rankm += _pi;
+      _pi *= SWIG_MAXCASTRANK;
+      if (!_index || (_ranki < _rank)) {
+        _rank = _ranki; _index = 2;
+        if (_rank == _rankm) goto dispatch;
+      }
+    }
+  check_2:
+    
+  dispatch:
+    switch(_index) {
+    case 1:
+      PUSHMARK(MARK); SWIG_CALLXS(_wrap_LDA_plot_discriminants__SWIG_1); return;
+    case 2:
+      PUSHMARK(MARK); SWIG_CALLXS(_wrap_LDA_plot_discriminants__SWIG_0); return;
+    }
+  }
+  
+  croak("No matching function for overloaded 'LDA_plot_discriminants'");
+  XSRETURN(0);
 }
 
 
@@ -29875,6 +33265,34 @@ XS(_wrap_LDA_save_discriminant_plot) {
     fail:;
     
     if (SWIG_IsNewObj(res2)) delete arg2;
+  }
+  SWIG_croak_null();
+}
+
+
+XS(_wrap_LDA_plot_decision_regions) {
+  {
+    datamunge::LDA *arg1 = 0 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    int argvi = 0;
+    datamunge::graphics::RPlot result;
+    dXSARGS;
+    
+    if ((items < 1) || (items > 1)) {
+      SWIG_croak("Usage: LDA_plot_decision_regions(self);");
+    }
+    res1 = SWIG_ConvertPtr(ST(0), &argp1,SWIGTYPE_p_datamunge__LDA, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "LDA_plot_decision_regions" "', argument " "1"" of type '" "datamunge::LDA const *""'"); 
+    }
+    arg1 = reinterpret_cast< datamunge::LDA * >(argp1);
+    result = ((datamunge::LDA const *)arg1)->plot_decision_regions();
+    ST(argvi) = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__graphics__RPlot, SWIG_POINTER_OWN | SWIG_SHADOW); argvi++ ;
+    
+    XSRETURN(argvi);
+    fail:;
+    
   }
   SWIG_croak_null();
 }
@@ -32364,7 +35782,7 @@ XS(_wrap_DecisionTreeClassifier_plot_classification) {
       arg4 = ptr;
     }
     result = ((datamunge::DecisionTreeClassifier const *)arg1)->plot_classification((datamunge::DataFrame const &)*arg2,(std::string const &)*arg3,(std::string const &)*arg4);
-    ST(argvi) = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN | SWIG_SHADOW); argvi++ ;
+    ST(argvi) = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__graphics__RPlot, SWIG_POINTER_OWN | SWIG_SHADOW); argvi++ ;
     
     
     if (SWIG_IsNewObj(res3)) delete arg3;
@@ -32432,7 +35850,7 @@ XS(_wrap_DecisionTreeClassifier_plot_decision_regions__SWIG_0) {
     } 
     arg4 = static_cast< std::size_t >(val4);
     result = ((datamunge::DecisionTreeClassifier const *)arg1)->plot_decision_regions((std::string const &)*arg2,(std::string const &)*arg3,SWIG_STD_MOVE(*(&arg4)));
-    ST(argvi) = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN | SWIG_SHADOW); argvi++ ;
+    ST(argvi) = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__graphics__RPlot, SWIG_POINTER_OWN | SWIG_SHADOW); argvi++ ;
     
     if (SWIG_IsNewObj(res2)) delete arg2;
     if (SWIG_IsNewObj(res3)) delete arg3;
@@ -32492,7 +35910,7 @@ XS(_wrap_DecisionTreeClassifier_plot_decision_regions__SWIG_1) {
       arg3 = ptr;
     }
     result = ((datamunge::DecisionTreeClassifier const *)arg1)->plot_decision_regions((std::string const &)*arg2,(std::string const &)*arg3);
-    ST(argvi) = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN | SWIG_SHADOW); argvi++ ;
+    ST(argvi) = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__graphics__RPlot, SWIG_POINTER_OWN | SWIG_SHADOW); argvi++ ;
     
     if (SWIG_IsNewObj(res2)) delete arg2;
     if (SWIG_IsNewObj(res3)) delete arg3;
@@ -33495,7 +36913,7 @@ XS(_wrap_DecisionTreeRegressor_plot_predicted_vs_actual) {
     }
     arg1 = reinterpret_cast< datamunge::DecisionTreeRegressor * >(argp1);
     result = ((datamunge::DecisionTreeRegressor const *)arg1)->plot_predicted_vs_actual();
-    ST(argvi) = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN | SWIG_SHADOW); argvi++ ;
+    ST(argvi) = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__graphics__RPlot, SWIG_POINTER_OWN | SWIG_SHADOW); argvi++ ;
     
     XSRETURN(argvi);
     fail:;
@@ -33523,7 +36941,7 @@ XS(_wrap_DecisionTreeRegressor_plot_residuals_vs_fitted) {
     }
     arg1 = reinterpret_cast< datamunge::DecisionTreeRegressor * >(argp1);
     result = ((datamunge::DecisionTreeRegressor const *)arg1)->plot_residuals_vs_fitted();
-    ST(argvi) = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN | SWIG_SHADOW); argvi++ ;
+    ST(argvi) = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__graphics__RPlot, SWIG_POINTER_OWN | SWIG_SHADOW); argvi++ ;
     
     XSRETURN(argvi);
     fail:;
@@ -35750,7 +39168,7 @@ XS(_wrap_RandomForestClassifier_plot_classification) {
       arg4 = ptr;
     }
     result = ((datamunge::RandomForestClassifier const *)arg1)->plot_classification((datamunge::DataFrame const &)*arg2,(std::string const &)*arg3,(std::string const &)*arg4);
-    ST(argvi) = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN | SWIG_SHADOW); argvi++ ;
+    ST(argvi) = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__graphics__RPlot, SWIG_POINTER_OWN | SWIG_SHADOW); argvi++ ;
     
     
     if (SWIG_IsNewObj(res3)) delete arg3;
@@ -35818,7 +39236,7 @@ XS(_wrap_RandomForestClassifier_plot_decision_regions__SWIG_0) {
     } 
     arg4 = static_cast< std::size_t >(val4);
     result = ((datamunge::RandomForestClassifier const *)arg1)->plot_decision_regions((std::string const &)*arg2,(std::string const &)*arg3,SWIG_STD_MOVE(*(&arg4)));
-    ST(argvi) = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN | SWIG_SHADOW); argvi++ ;
+    ST(argvi) = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__graphics__RPlot, SWIG_POINTER_OWN | SWIG_SHADOW); argvi++ ;
     
     if (SWIG_IsNewObj(res2)) delete arg2;
     if (SWIG_IsNewObj(res3)) delete arg3;
@@ -35878,7 +39296,7 @@ XS(_wrap_RandomForestClassifier_plot_decision_regions__SWIG_1) {
       arg3 = ptr;
     }
     result = ((datamunge::RandomForestClassifier const *)arg1)->plot_decision_regions((std::string const &)*arg2,(std::string const &)*arg3);
-    ST(argvi) = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN | SWIG_SHADOW); argvi++ ;
+    ST(argvi) = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__graphics__RPlot, SWIG_POINTER_OWN | SWIG_SHADOW); argvi++ ;
     
     if (SWIG_IsNewObj(res2)) delete arg2;
     if (SWIG_IsNewObj(res3)) delete arg3;
@@ -37894,7 +41312,7 @@ XS(_wrap_RandomForestRegressor_plot_predicted_vs_actual) {
     }
     arg1 = reinterpret_cast< datamunge::RandomForestRegressor * >(argp1);
     result = ((datamunge::RandomForestRegressor const *)arg1)->plot_predicted_vs_actual();
-    ST(argvi) = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN | SWIG_SHADOW); argvi++ ;
+    ST(argvi) = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__graphics__RPlot, SWIG_POINTER_OWN | SWIG_SHADOW); argvi++ ;
     
     XSRETURN(argvi);
     fail:;
@@ -37922,7 +41340,7 @@ XS(_wrap_RandomForestRegressor_plot_residuals_vs_fitted) {
     }
     arg1 = reinterpret_cast< datamunge::RandomForestRegressor * >(argp1);
     result = ((datamunge::RandomForestRegressor const *)arg1)->plot_residuals_vs_fitted();
-    ST(argvi) = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN | SWIG_SHADOW); argvi++ ;
+    ST(argvi) = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__graphics__RPlot, SWIG_POINTER_OWN | SWIG_SHADOW); argvi++ ;
     
     XSRETURN(argvi);
     fail:;
@@ -39580,7 +42998,7 @@ XS(_wrap_ElasticNet_plot_coefficient_path) {
     }
     arg1 = reinterpret_cast< datamunge::ElasticNet * >(argp1);
     result = ((datamunge::ElasticNet const *)arg1)->plot_coefficient_path();
-    ST(argvi) = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN | SWIG_SHADOW); argvi++ ;
+    ST(argvi) = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__graphics__RPlot, SWIG_POINTER_OWN | SWIG_SHADOW); argvi++ ;
     
     XSRETURN(argvi);
     fail:;
@@ -39608,7 +43026,7 @@ XS(_wrap_ElasticNet_plot_cv_curve) {
     }
     arg1 = reinterpret_cast< datamunge::ElasticNet * >(argp1);
     result = ((datamunge::ElasticNet const *)arg1)->plot_cv_curve();
-    ST(argvi) = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN | SWIG_SHADOW); argvi++ ;
+    ST(argvi) = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__graphics__RPlot, SWIG_POINTER_OWN | SWIG_SHADOW); argvi++ ;
     
     XSRETURN(argvi);
     fail:;
@@ -39636,7 +43054,7 @@ XS(_wrap_ElasticNet_plot_predicted_vs_actual) {
     }
     arg1 = reinterpret_cast< datamunge::ElasticNet * >(argp1);
     result = ((datamunge::ElasticNet const *)arg1)->plot_predicted_vs_actual();
-    ST(argvi) = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN | SWIG_SHADOW); argvi++ ;
+    ST(argvi) = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__graphics__RPlot, SWIG_POINTER_OWN | SWIG_SHADOW); argvi++ ;
     
     XSRETURN(argvi);
     fail:;
@@ -39664,7 +43082,7 @@ XS(_wrap_ElasticNet_plot_residuals_vs_fitted) {
     }
     arg1 = reinterpret_cast< datamunge::ElasticNet * >(argp1);
     result = ((datamunge::ElasticNet const *)arg1)->plot_residuals_vs_fitted();
-    ST(argvi) = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN | SWIG_SHADOW); argvi++ ;
+    ST(argvi) = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__graphics__RPlot, SWIG_POINTER_OWN | SWIG_SHADOW); argvi++ ;
     
     XSRETURN(argvi);
     fail:;
@@ -41069,7 +44487,7 @@ XS(_wrap_Ridge_plot_coefficient_path) {
     }
     arg1 = reinterpret_cast< datamunge::Ridge * >(argp1);
     result = ((datamunge::Ridge const *)arg1)->plot_coefficient_path();
-    ST(argvi) = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN | SWIG_SHADOW); argvi++ ;
+    ST(argvi) = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__graphics__RPlot, SWIG_POINTER_OWN | SWIG_SHADOW); argvi++ ;
     
     XSRETURN(argvi);
     fail:;
@@ -41097,7 +44515,7 @@ XS(_wrap_Ridge_plot_cv_curve) {
     }
     arg1 = reinterpret_cast< datamunge::Ridge * >(argp1);
     result = ((datamunge::Ridge const *)arg1)->plot_cv_curve();
-    ST(argvi) = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN | SWIG_SHADOW); argvi++ ;
+    ST(argvi) = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__graphics__RPlot, SWIG_POINTER_OWN | SWIG_SHADOW); argvi++ ;
     
     XSRETURN(argvi);
     fail:;
@@ -41125,7 +44543,7 @@ XS(_wrap_Ridge_plot_predicted_vs_actual) {
     }
     arg1 = reinterpret_cast< datamunge::Ridge * >(argp1);
     result = ((datamunge::Ridge const *)arg1)->plot_predicted_vs_actual();
-    ST(argvi) = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN | SWIG_SHADOW); argvi++ ;
+    ST(argvi) = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__graphics__RPlot, SWIG_POINTER_OWN | SWIG_SHADOW); argvi++ ;
     
     XSRETURN(argvi);
     fail:;
@@ -41153,7 +44571,7 @@ XS(_wrap_Ridge_plot_residuals_vs_fitted) {
     }
     arg1 = reinterpret_cast< datamunge::Ridge * >(argp1);
     result = ((datamunge::Ridge const *)arg1)->plot_residuals_vs_fitted();
-    ST(argvi) = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN | SWIG_SHADOW); argvi++ ;
+    ST(argvi) = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__graphics__RPlot, SWIG_POINTER_OWN | SWIG_SHADOW); argvi++ ;
     
     XSRETURN(argvi);
     fail:;
@@ -42586,7 +46004,7 @@ XS(_wrap_Lasso_plot_coefficient_path) {
     }
     arg1 = reinterpret_cast< datamunge::Lasso * >(argp1);
     result = ((datamunge::Lasso const *)arg1)->plot_coefficient_path();
-    ST(argvi) = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN | SWIG_SHADOW); argvi++ ;
+    ST(argvi) = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__graphics__RPlot, SWIG_POINTER_OWN | SWIG_SHADOW); argvi++ ;
     
     XSRETURN(argvi);
     fail:;
@@ -42614,7 +46032,7 @@ XS(_wrap_Lasso_plot_cv_curve) {
     }
     arg1 = reinterpret_cast< datamunge::Lasso * >(argp1);
     result = ((datamunge::Lasso const *)arg1)->plot_cv_curve();
-    ST(argvi) = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN | SWIG_SHADOW); argvi++ ;
+    ST(argvi) = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__graphics__RPlot, SWIG_POINTER_OWN | SWIG_SHADOW); argvi++ ;
     
     XSRETURN(argvi);
     fail:;
@@ -42642,7 +46060,7 @@ XS(_wrap_Lasso_plot_predicted_vs_actual) {
     }
     arg1 = reinterpret_cast< datamunge::Lasso * >(argp1);
     result = ((datamunge::Lasso const *)arg1)->plot_predicted_vs_actual();
-    ST(argvi) = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN | SWIG_SHADOW); argvi++ ;
+    ST(argvi) = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__graphics__RPlot, SWIG_POINTER_OWN | SWIG_SHADOW); argvi++ ;
     
     XSRETURN(argvi);
     fail:;
@@ -42670,7 +46088,7 @@ XS(_wrap_Lasso_plot_residuals_vs_fitted) {
     }
     arg1 = reinterpret_cast< datamunge::Lasso * >(argp1);
     result = ((datamunge::Lasso const *)arg1)->plot_residuals_vs_fitted();
-    ST(argvi) = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN | SWIG_SHADOW); argvi++ ;
+    ST(argvi) = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__graphics__RPlot, SWIG_POINTER_OWN | SWIG_SHADOW); argvi++ ;
     
     XSRETURN(argvi);
     fail:;
@@ -43713,7 +47131,7 @@ XS(_wrap_KNNClassifier_plot_classification) {
       arg4 = ptr;
     }
     result = ((datamunge::KNNClassifier const *)arg1)->plot_classification((datamunge::DataFrame const &)*arg2,(std::string const &)*arg3,(std::string const &)*arg4);
-    ST(argvi) = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN | SWIG_SHADOW); argvi++ ;
+    ST(argvi) = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__graphics__RPlot, SWIG_POINTER_OWN | SWIG_SHADOW); argvi++ ;
     
     
     if (SWIG_IsNewObj(res3)) delete arg3;
@@ -43781,7 +47199,7 @@ XS(_wrap_KNNClassifier_plot_decision_regions__SWIG_0) {
     } 
     arg4 = static_cast< std::size_t >(val4);
     result = ((datamunge::KNNClassifier const *)arg1)->plot_decision_regions((std::string const &)*arg2,(std::string const &)*arg3,SWIG_STD_MOVE(*(&arg4)));
-    ST(argvi) = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN | SWIG_SHADOW); argvi++ ;
+    ST(argvi) = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__graphics__RPlot, SWIG_POINTER_OWN | SWIG_SHADOW); argvi++ ;
     
     if (SWIG_IsNewObj(res2)) delete arg2;
     if (SWIG_IsNewObj(res3)) delete arg3;
@@ -43841,7 +47259,7 @@ XS(_wrap_KNNClassifier_plot_decision_regions__SWIG_1) {
       arg3 = ptr;
     }
     result = ((datamunge::KNNClassifier const *)arg1)->plot_decision_regions((std::string const &)*arg2,(std::string const &)*arg3);
-    ST(argvi) = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN | SWIG_SHADOW); argvi++ ;
+    ST(argvi) = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__graphics__RPlot, SWIG_POINTER_OWN | SWIG_SHADOW); argvi++ ;
     
     if (SWIG_IsNewObj(res2)) delete arg2;
     if (SWIG_IsNewObj(res3)) delete arg3;
@@ -44914,7 +48332,7 @@ XS(_wrap_KNNRegressor_plot_predicted_vs_actual) {
     }
     arg1 = reinterpret_cast< datamunge::KNNRegressor * >(argp1);
     result = ((datamunge::KNNRegressor const *)arg1)->plot_predicted_vs_actual();
-    ST(argvi) = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN | SWIG_SHADOW); argvi++ ;
+    ST(argvi) = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__graphics__RPlot, SWIG_POINTER_OWN | SWIG_SHADOW); argvi++ ;
     
     XSRETURN(argvi);
     fail:;
@@ -44942,7 +48360,7 @@ XS(_wrap_KNNRegressor_plot_residuals_vs_fitted) {
     }
     arg1 = reinterpret_cast< datamunge::KNNRegressor * >(argp1);
     result = ((datamunge::KNNRegressor const *)arg1)->plot_residuals_vs_fitted();
-    ST(argvi) = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN | SWIG_SHADOW); argvi++ ;
+    ST(argvi) = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__graphics__RPlot, SWIG_POINTER_OWN | SWIG_SHADOW); argvi++ ;
     
     XSRETURN(argvi);
     fail:;
@@ -48407,7 +51825,7 @@ XS(_wrap_PCA_plot_scores__SWIG_0) {
     } 
     arg3 = static_cast< std::size_t >(val3);
     result = ((datamunge::PCA const *)arg1)->plot_scores(SWIG_STD_MOVE(*(&arg2)),SWIG_STD_MOVE(*(&arg3)));
-    ST(argvi) = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN | SWIG_SHADOW); argvi++ ;
+    ST(argvi) = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__graphics__RPlot, SWIG_POINTER_OWN | SWIG_SHADOW); argvi++ ;
     
     
     
@@ -48447,7 +51865,7 @@ XS(_wrap_PCA_plot_scores__SWIG_1) {
     } 
     arg2 = static_cast< std::size_t >(val2);
     result = ((datamunge::PCA const *)arg1)->plot_scores(SWIG_STD_MOVE(*(&arg2)));
-    ST(argvi) = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN | SWIG_SHADOW); argvi++ ;
+    ST(argvi) = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__graphics__RPlot, SWIG_POINTER_OWN | SWIG_SHADOW); argvi++ ;
     
     
     XSRETURN(argvi);
@@ -48477,7 +51895,7 @@ XS(_wrap_PCA_plot_scores__SWIG_2) {
     }
     arg1 = reinterpret_cast< datamunge::PCA * >(argp1);
     result = ((datamunge::PCA const *)arg1)->plot_scores();
-    ST(argvi) = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN | SWIG_SHADOW); argvi++ ;
+    ST(argvi) = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__graphics__RPlot, SWIG_POINTER_OWN | SWIG_SHADOW); argvi++ ;
     
     XSRETURN(argvi);
     fail:;
@@ -48666,7 +52084,7 @@ XS(_wrap_PCA_plot_scores_grouped__SWIG_0) {
     } 
     arg4 = static_cast< std::size_t >(val4);
     result = ((datamunge::PCA const *)arg1)->plot_scores_grouped((std::vector< std::string > const &)*arg2,SWIG_STD_MOVE(*(&arg3)),SWIG_STD_MOVE(*(&arg4)));
-    ST(argvi) = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN | SWIG_SHADOW); argvi++ ;
+    ST(argvi) = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__graphics__RPlot, SWIG_POINTER_OWN | SWIG_SHADOW); argvi++ ;
     
     
     
@@ -48738,7 +52156,7 @@ XS(_wrap_PCA_plot_scores_grouped__SWIG_1) {
     } 
     arg3 = static_cast< std::size_t >(val3);
     result = ((datamunge::PCA const *)arg1)->plot_scores_grouped((std::vector< std::string > const &)*arg2,SWIG_STD_MOVE(*(&arg3)));
-    ST(argvi) = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN | SWIG_SHADOW); argvi++ ;
+    ST(argvi) = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__graphics__RPlot, SWIG_POINTER_OWN | SWIG_SHADOW); argvi++ ;
     
     
     
@@ -48800,7 +52218,7 @@ XS(_wrap_PCA_plot_scores_grouped__SWIG_2) {
       }
     }
     result = ((datamunge::PCA const *)arg1)->plot_scores_grouped((std::vector< std::string > const &)*arg2);
-    ST(argvi) = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN | SWIG_SHADOW); argvi++ ;
+    ST(argvi) = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__graphics__RPlot, SWIG_POINTER_OWN | SWIG_SHADOW); argvi++ ;
     
     
     XSRETURN(argvi);
@@ -49050,7 +52468,7 @@ XS(_wrap_PCA_plot_scree) {
     }
     arg1 = reinterpret_cast< datamunge::PCA * >(argp1);
     result = ((datamunge::PCA const *)arg1)->plot_scree();
-    ST(argvi) = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN | SWIG_SHADOW); argvi++ ;
+    ST(argvi) = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__graphics__RPlot, SWIG_POINTER_OWN | SWIG_SHADOW); argvi++ ;
     
     XSRETURN(argvi);
     fail:;
@@ -50195,7 +53613,7 @@ XS(_wrap_MDS_plot_embedding__SWIG_0) {
     } 
     arg3 = static_cast< std::size_t >(val3);
     result = ((datamunge::MDS const *)arg1)->plot_embedding(SWIG_STD_MOVE(*(&arg2)),SWIG_STD_MOVE(*(&arg3)));
-    ST(argvi) = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN | SWIG_SHADOW); argvi++ ;
+    ST(argvi) = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__graphics__RPlot, SWIG_POINTER_OWN | SWIG_SHADOW); argvi++ ;
     
     
     
@@ -50235,7 +53653,7 @@ XS(_wrap_MDS_plot_embedding__SWIG_1) {
     } 
     arg2 = static_cast< std::size_t >(val2);
     result = ((datamunge::MDS const *)arg1)->plot_embedding(SWIG_STD_MOVE(*(&arg2)));
-    ST(argvi) = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN | SWIG_SHADOW); argvi++ ;
+    ST(argvi) = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__graphics__RPlot, SWIG_POINTER_OWN | SWIG_SHADOW); argvi++ ;
     
     
     XSRETURN(argvi);
@@ -50265,7 +53683,7 @@ XS(_wrap_MDS_plot_embedding__SWIG_2) {
     }
     arg1 = reinterpret_cast< datamunge::MDS * >(argp1);
     result = ((datamunge::MDS const *)arg1)->plot_embedding();
-    ST(argvi) = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN | SWIG_SHADOW); argvi++ ;
+    ST(argvi) = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__graphics__RPlot, SWIG_POINTER_OWN | SWIG_SHADOW); argvi++ ;
     
     XSRETURN(argvi);
     fail:;
@@ -50454,7 +53872,7 @@ XS(_wrap_MDS_plot_embedding_grouped__SWIG_0) {
     } 
     arg4 = static_cast< std::size_t >(val4);
     result = ((datamunge::MDS const *)arg1)->plot_embedding_grouped((std::vector< std::string > const &)*arg2,SWIG_STD_MOVE(*(&arg3)),SWIG_STD_MOVE(*(&arg4)));
-    ST(argvi) = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN | SWIG_SHADOW); argvi++ ;
+    ST(argvi) = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__graphics__RPlot, SWIG_POINTER_OWN | SWIG_SHADOW); argvi++ ;
     
     
     
@@ -50526,7 +53944,7 @@ XS(_wrap_MDS_plot_embedding_grouped__SWIG_1) {
     } 
     arg3 = static_cast< std::size_t >(val3);
     result = ((datamunge::MDS const *)arg1)->plot_embedding_grouped((std::vector< std::string > const &)*arg2,SWIG_STD_MOVE(*(&arg3)));
-    ST(argvi) = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN | SWIG_SHADOW); argvi++ ;
+    ST(argvi) = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__graphics__RPlot, SWIG_POINTER_OWN | SWIG_SHADOW); argvi++ ;
     
     
     
@@ -50588,7 +54006,7 @@ XS(_wrap_MDS_plot_embedding_grouped__SWIG_2) {
       }
     }
     result = ((datamunge::MDS const *)arg1)->plot_embedding_grouped((std::vector< std::string > const &)*arg2);
-    ST(argvi) = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN | SWIG_SHADOW); argvi++ ;
+    ST(argvi) = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__graphics__RPlot, SWIG_POINTER_OWN | SWIG_SHADOW); argvi++ ;
     
     
     XSRETURN(argvi);
@@ -52273,7 +55691,7 @@ XS(_wrap_Isomap_plot_embedding__SWIG_0) {
     } 
     arg3 = static_cast< std::size_t >(val3);
     result = ((datamunge::Isomap const *)arg1)->plot_embedding(SWIG_STD_MOVE(*(&arg2)),SWIG_STD_MOVE(*(&arg3)));
-    ST(argvi) = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN | SWIG_SHADOW); argvi++ ;
+    ST(argvi) = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__graphics__RPlot, SWIG_POINTER_OWN | SWIG_SHADOW); argvi++ ;
     
     
     
@@ -52313,7 +55731,7 @@ XS(_wrap_Isomap_plot_embedding__SWIG_1) {
     } 
     arg2 = static_cast< std::size_t >(val2);
     result = ((datamunge::Isomap const *)arg1)->plot_embedding(SWIG_STD_MOVE(*(&arg2)));
-    ST(argvi) = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN | SWIG_SHADOW); argvi++ ;
+    ST(argvi) = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__graphics__RPlot, SWIG_POINTER_OWN | SWIG_SHADOW); argvi++ ;
     
     
     XSRETURN(argvi);
@@ -52343,7 +55761,7 @@ XS(_wrap_Isomap_plot_embedding__SWIG_2) {
     }
     arg1 = reinterpret_cast< datamunge::Isomap * >(argp1);
     result = ((datamunge::Isomap const *)arg1)->plot_embedding();
-    ST(argvi) = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN | SWIG_SHADOW); argvi++ ;
+    ST(argvi) = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__graphics__RPlot, SWIG_POINTER_OWN | SWIG_SHADOW); argvi++ ;
     
     XSRETURN(argvi);
     fail:;
@@ -52532,7 +55950,7 @@ XS(_wrap_Isomap_plot_embedding_grouped__SWIG_0) {
     } 
     arg4 = static_cast< std::size_t >(val4);
     result = ((datamunge::Isomap const *)arg1)->plot_embedding_grouped((std::vector< std::string > const &)*arg2,SWIG_STD_MOVE(*(&arg3)),SWIG_STD_MOVE(*(&arg4)));
-    ST(argvi) = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN | SWIG_SHADOW); argvi++ ;
+    ST(argvi) = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__graphics__RPlot, SWIG_POINTER_OWN | SWIG_SHADOW); argvi++ ;
     
     
     
@@ -52604,7 +56022,7 @@ XS(_wrap_Isomap_plot_embedding_grouped__SWIG_1) {
     } 
     arg3 = static_cast< std::size_t >(val3);
     result = ((datamunge::Isomap const *)arg1)->plot_embedding_grouped((std::vector< std::string > const &)*arg2,SWIG_STD_MOVE(*(&arg3)));
-    ST(argvi) = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN | SWIG_SHADOW); argvi++ ;
+    ST(argvi) = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__graphics__RPlot, SWIG_POINTER_OWN | SWIG_SHADOW); argvi++ ;
     
     
     
@@ -52666,7 +56084,7 @@ XS(_wrap_Isomap_plot_embedding_grouped__SWIG_2) {
       }
     }
     result = ((datamunge::Isomap const *)arg1)->plot_embedding_grouped((std::vector< std::string > const &)*arg2);
-    ST(argvi) = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN | SWIG_SHADOW); argvi++ ;
+    ST(argvi) = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__graphics__RPlot, SWIG_POINTER_OWN | SWIG_SHADOW); argvi++ ;
     
     
     XSRETURN(argvi);
@@ -54681,7 +58099,7 @@ XS(_wrap_LLE_plot_embedding__SWIG_0) {
     } 
     arg3 = static_cast< std::size_t >(val3);
     result = ((datamunge::LLE const *)arg1)->plot_embedding(SWIG_STD_MOVE(*(&arg2)),SWIG_STD_MOVE(*(&arg3)));
-    ST(argvi) = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN | SWIG_SHADOW); argvi++ ;
+    ST(argvi) = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__graphics__RPlot, SWIG_POINTER_OWN | SWIG_SHADOW); argvi++ ;
     
     
     
@@ -54721,7 +58139,7 @@ XS(_wrap_LLE_plot_embedding__SWIG_1) {
     } 
     arg2 = static_cast< std::size_t >(val2);
     result = ((datamunge::LLE const *)arg1)->plot_embedding(SWIG_STD_MOVE(*(&arg2)));
-    ST(argvi) = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN | SWIG_SHADOW); argvi++ ;
+    ST(argvi) = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__graphics__RPlot, SWIG_POINTER_OWN | SWIG_SHADOW); argvi++ ;
     
     
     XSRETURN(argvi);
@@ -54751,7 +58169,7 @@ XS(_wrap_LLE_plot_embedding__SWIG_2) {
     }
     arg1 = reinterpret_cast< datamunge::LLE * >(argp1);
     result = ((datamunge::LLE const *)arg1)->plot_embedding();
-    ST(argvi) = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN | SWIG_SHADOW); argvi++ ;
+    ST(argvi) = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__graphics__RPlot, SWIG_POINTER_OWN | SWIG_SHADOW); argvi++ ;
     
     XSRETURN(argvi);
     fail:;
@@ -54940,7 +58358,7 @@ XS(_wrap_LLE_plot_embedding_grouped__SWIG_0) {
     } 
     arg4 = static_cast< std::size_t >(val4);
     result = ((datamunge::LLE const *)arg1)->plot_embedding_grouped((std::vector< std::string > const &)*arg2,SWIG_STD_MOVE(*(&arg3)),SWIG_STD_MOVE(*(&arg4)));
-    ST(argvi) = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN | SWIG_SHADOW); argvi++ ;
+    ST(argvi) = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__graphics__RPlot, SWIG_POINTER_OWN | SWIG_SHADOW); argvi++ ;
     
     
     
@@ -55012,7 +58430,7 @@ XS(_wrap_LLE_plot_embedding_grouped__SWIG_1) {
     } 
     arg3 = static_cast< std::size_t >(val3);
     result = ((datamunge::LLE const *)arg1)->plot_embedding_grouped((std::vector< std::string > const &)*arg2,SWIG_STD_MOVE(*(&arg3)));
-    ST(argvi) = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN | SWIG_SHADOW); argvi++ ;
+    ST(argvi) = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__graphics__RPlot, SWIG_POINTER_OWN | SWIG_SHADOW); argvi++ ;
     
     
     
@@ -55074,7 +58492,7 @@ XS(_wrap_LLE_plot_embedding_grouped__SWIG_2) {
       }
     }
     result = ((datamunge::LLE const *)arg1)->plot_embedding_grouped((std::vector< std::string > const &)*arg2);
-    ST(argvi) = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN | SWIG_SHADOW); argvi++ ;
+    ST(argvi) = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__graphics__RPlot, SWIG_POINTER_OWN | SWIG_SHADOW); argvi++ ;
     
     
     XSRETURN(argvi);
@@ -60721,7 +64139,7 @@ XS(_wrap_TSNE_plot_embedding__SWIG_0) {
     } 
     arg3 = static_cast< std::size_t >(val3);
     result = ((datamunge::TSNE const *)arg1)->plot_embedding(SWIG_STD_MOVE(*(&arg2)),SWIG_STD_MOVE(*(&arg3)));
-    ST(argvi) = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN | SWIG_SHADOW); argvi++ ;
+    ST(argvi) = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__graphics__RPlot, SWIG_POINTER_OWN | SWIG_SHADOW); argvi++ ;
     
     
     
@@ -60761,7 +64179,7 @@ XS(_wrap_TSNE_plot_embedding__SWIG_1) {
     } 
     arg2 = static_cast< std::size_t >(val2);
     result = ((datamunge::TSNE const *)arg1)->plot_embedding(SWIG_STD_MOVE(*(&arg2)));
-    ST(argvi) = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN | SWIG_SHADOW); argvi++ ;
+    ST(argvi) = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__graphics__RPlot, SWIG_POINTER_OWN | SWIG_SHADOW); argvi++ ;
     
     
     XSRETURN(argvi);
@@ -60791,7 +64209,7 @@ XS(_wrap_TSNE_plot_embedding__SWIG_2) {
     }
     arg1 = reinterpret_cast< datamunge::TSNE * >(argp1);
     result = ((datamunge::TSNE const *)arg1)->plot_embedding();
-    ST(argvi) = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN | SWIG_SHADOW); argvi++ ;
+    ST(argvi) = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__graphics__RPlot, SWIG_POINTER_OWN | SWIG_SHADOW); argvi++ ;
     
     XSRETURN(argvi);
     fail:;
@@ -60980,7 +64398,7 @@ XS(_wrap_TSNE_plot_embedding_grouped__SWIG_0) {
     } 
     arg4 = static_cast< std::size_t >(val4);
     result = ((datamunge::TSNE const *)arg1)->plot_embedding_grouped((std::vector< std::string > const &)*arg2,SWIG_STD_MOVE(*(&arg3)),SWIG_STD_MOVE(*(&arg4)));
-    ST(argvi) = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN | SWIG_SHADOW); argvi++ ;
+    ST(argvi) = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__graphics__RPlot, SWIG_POINTER_OWN | SWIG_SHADOW); argvi++ ;
     
     
     
@@ -61052,7 +64470,7 @@ XS(_wrap_TSNE_plot_embedding_grouped__SWIG_1) {
     } 
     arg3 = static_cast< std::size_t >(val3);
     result = ((datamunge::TSNE const *)arg1)->plot_embedding_grouped((std::vector< std::string > const &)*arg2,SWIG_STD_MOVE(*(&arg3)));
-    ST(argvi) = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN | SWIG_SHADOW); argvi++ ;
+    ST(argvi) = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__graphics__RPlot, SWIG_POINTER_OWN | SWIG_SHADOW); argvi++ ;
     
     
     
@@ -61114,7 +64532,7 @@ XS(_wrap_TSNE_plot_embedding_grouped__SWIG_2) {
       }
     }
     result = ((datamunge::TSNE const *)arg1)->plot_embedding_grouped((std::vector< std::string > const &)*arg2);
-    ST(argvi) = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN | SWIG_SHADOW); argvi++ ;
+    ST(argvi) = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__graphics__RPlot, SWIG_POINTER_OWN | SWIG_SHADOW); argvi++ ;
     
     
     XSRETURN(argvi);
@@ -62765,7 +66183,7 @@ XS(_wrap_LaplacianEigenmaps_plot_embedding__SWIG_0) {
     } 
     arg3 = static_cast< std::size_t >(val3);
     result = ((datamunge::LaplacianEigenmaps const *)arg1)->plot_embedding(SWIG_STD_MOVE(*(&arg2)),SWIG_STD_MOVE(*(&arg3)));
-    ST(argvi) = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN | SWIG_SHADOW); argvi++ ;
+    ST(argvi) = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__graphics__RPlot, SWIG_POINTER_OWN | SWIG_SHADOW); argvi++ ;
     
     
     
@@ -62805,7 +66223,7 @@ XS(_wrap_LaplacianEigenmaps_plot_embedding__SWIG_1) {
     } 
     arg2 = static_cast< std::size_t >(val2);
     result = ((datamunge::LaplacianEigenmaps const *)arg1)->plot_embedding(SWIG_STD_MOVE(*(&arg2)));
-    ST(argvi) = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN | SWIG_SHADOW); argvi++ ;
+    ST(argvi) = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__graphics__RPlot, SWIG_POINTER_OWN | SWIG_SHADOW); argvi++ ;
     
     
     XSRETURN(argvi);
@@ -62835,7 +66253,7 @@ XS(_wrap_LaplacianEigenmaps_plot_embedding__SWIG_2) {
     }
     arg1 = reinterpret_cast< datamunge::LaplacianEigenmaps * >(argp1);
     result = ((datamunge::LaplacianEigenmaps const *)arg1)->plot_embedding();
-    ST(argvi) = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN | SWIG_SHADOW); argvi++ ;
+    ST(argvi) = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__graphics__RPlot, SWIG_POINTER_OWN | SWIG_SHADOW); argvi++ ;
     
     XSRETURN(argvi);
     fail:;
@@ -63024,7 +66442,7 @@ XS(_wrap_LaplacianEigenmaps_plot_embedding_grouped__SWIG_0) {
     } 
     arg4 = static_cast< std::size_t >(val4);
     result = ((datamunge::LaplacianEigenmaps const *)arg1)->plot_embedding_grouped((std::vector< std::string > const &)*arg2,SWIG_STD_MOVE(*(&arg3)),SWIG_STD_MOVE(*(&arg4)));
-    ST(argvi) = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN | SWIG_SHADOW); argvi++ ;
+    ST(argvi) = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__graphics__RPlot, SWIG_POINTER_OWN | SWIG_SHADOW); argvi++ ;
     
     
     
@@ -63096,7 +66514,7 @@ XS(_wrap_LaplacianEigenmaps_plot_embedding_grouped__SWIG_1) {
     } 
     arg3 = static_cast< std::size_t >(val3);
     result = ((datamunge::LaplacianEigenmaps const *)arg1)->plot_embedding_grouped((std::vector< std::string > const &)*arg2,SWIG_STD_MOVE(*(&arg3)));
-    ST(argvi) = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN | SWIG_SHADOW); argvi++ ;
+    ST(argvi) = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__graphics__RPlot, SWIG_POINTER_OWN | SWIG_SHADOW); argvi++ ;
     
     
     
@@ -63158,7 +66576,7 @@ XS(_wrap_LaplacianEigenmaps_plot_embedding_grouped__SWIG_2) {
       }
     }
     result = ((datamunge::LaplacianEigenmaps const *)arg1)->plot_embedding_grouped((std::vector< std::string > const &)*arg2);
-    ST(argvi) = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN | SWIG_SHADOW); argvi++ ;
+    ST(argvi) = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__graphics__RPlot, SWIG_POINTER_OWN | SWIG_SHADOW); argvi++ ;
     
     
     XSRETURN(argvi);
@@ -65167,7 +68585,7 @@ XS(_wrap_DiffusionMaps_plot_embedding__SWIG_0) {
     } 
     arg3 = static_cast< std::size_t >(val3);
     result = ((datamunge::DiffusionMaps const *)arg1)->plot_embedding(SWIG_STD_MOVE(*(&arg2)),SWIG_STD_MOVE(*(&arg3)));
-    ST(argvi) = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN | SWIG_SHADOW); argvi++ ;
+    ST(argvi) = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__graphics__RPlot, SWIG_POINTER_OWN | SWIG_SHADOW); argvi++ ;
     
     
     
@@ -65207,7 +68625,7 @@ XS(_wrap_DiffusionMaps_plot_embedding__SWIG_1) {
     } 
     arg2 = static_cast< std::size_t >(val2);
     result = ((datamunge::DiffusionMaps const *)arg1)->plot_embedding(SWIG_STD_MOVE(*(&arg2)));
-    ST(argvi) = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN | SWIG_SHADOW); argvi++ ;
+    ST(argvi) = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__graphics__RPlot, SWIG_POINTER_OWN | SWIG_SHADOW); argvi++ ;
     
     
     XSRETURN(argvi);
@@ -65237,7 +68655,7 @@ XS(_wrap_DiffusionMaps_plot_embedding__SWIG_2) {
     }
     arg1 = reinterpret_cast< datamunge::DiffusionMaps * >(argp1);
     result = ((datamunge::DiffusionMaps const *)arg1)->plot_embedding();
-    ST(argvi) = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN | SWIG_SHADOW); argvi++ ;
+    ST(argvi) = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__graphics__RPlot, SWIG_POINTER_OWN | SWIG_SHADOW); argvi++ ;
     
     XSRETURN(argvi);
     fail:;
@@ -65426,7 +68844,7 @@ XS(_wrap_DiffusionMaps_plot_embedding_grouped__SWIG_0) {
     } 
     arg4 = static_cast< std::size_t >(val4);
     result = ((datamunge::DiffusionMaps const *)arg1)->plot_embedding_grouped((std::vector< std::string > const &)*arg2,SWIG_STD_MOVE(*(&arg3)),SWIG_STD_MOVE(*(&arg4)));
-    ST(argvi) = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN | SWIG_SHADOW); argvi++ ;
+    ST(argvi) = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__graphics__RPlot, SWIG_POINTER_OWN | SWIG_SHADOW); argvi++ ;
     
     
     
@@ -65498,7 +68916,7 @@ XS(_wrap_DiffusionMaps_plot_embedding_grouped__SWIG_1) {
     } 
     arg3 = static_cast< std::size_t >(val3);
     result = ((datamunge::DiffusionMaps const *)arg1)->plot_embedding_grouped((std::vector< std::string > const &)*arg2,SWIG_STD_MOVE(*(&arg3)));
-    ST(argvi) = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN | SWIG_SHADOW); argvi++ ;
+    ST(argvi) = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__graphics__RPlot, SWIG_POINTER_OWN | SWIG_SHADOW); argvi++ ;
     
     
     
@@ -65560,7 +68978,7 @@ XS(_wrap_DiffusionMaps_plot_embedding_grouped__SWIG_2) {
       }
     }
     result = ((datamunge::DiffusionMaps const *)arg1)->plot_embedding_grouped((std::vector< std::string > const &)*arg2);
-    ST(argvi) = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN | SWIG_SHADOW); argvi++ ;
+    ST(argvi) = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__graphics__RPlot, SWIG_POINTER_OWN | SWIG_SHADOW); argvi++ ;
     
     
     XSRETURN(argvi);
@@ -67991,7 +71409,7 @@ XS(_wrap_KernelPCA_plot_embedding__SWIG_0) {
     } 
     arg3 = static_cast< std::size_t >(val3);
     result = ((datamunge::KernelPCA const *)arg1)->plot_embedding(SWIG_STD_MOVE(*(&arg2)),SWIG_STD_MOVE(*(&arg3)));
-    ST(argvi) = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN | SWIG_SHADOW); argvi++ ;
+    ST(argvi) = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__graphics__RPlot, SWIG_POINTER_OWN | SWIG_SHADOW); argvi++ ;
     
     
     
@@ -68031,7 +71449,7 @@ XS(_wrap_KernelPCA_plot_embedding__SWIG_1) {
     } 
     arg2 = static_cast< std::size_t >(val2);
     result = ((datamunge::KernelPCA const *)arg1)->plot_embedding(SWIG_STD_MOVE(*(&arg2)));
-    ST(argvi) = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN | SWIG_SHADOW); argvi++ ;
+    ST(argvi) = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__graphics__RPlot, SWIG_POINTER_OWN | SWIG_SHADOW); argvi++ ;
     
     
     XSRETURN(argvi);
@@ -68061,7 +71479,7 @@ XS(_wrap_KernelPCA_plot_embedding__SWIG_2) {
     }
     arg1 = reinterpret_cast< datamunge::KernelPCA * >(argp1);
     result = ((datamunge::KernelPCA const *)arg1)->plot_embedding();
-    ST(argvi) = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN | SWIG_SHADOW); argvi++ ;
+    ST(argvi) = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__graphics__RPlot, SWIG_POINTER_OWN | SWIG_SHADOW); argvi++ ;
     
     XSRETURN(argvi);
     fail:;
@@ -68250,7 +71668,7 @@ XS(_wrap_KernelPCA_plot_embedding_grouped__SWIG_0) {
     } 
     arg4 = static_cast< std::size_t >(val4);
     result = ((datamunge::KernelPCA const *)arg1)->plot_embedding_grouped((std::vector< std::string > const &)*arg2,SWIG_STD_MOVE(*(&arg3)),SWIG_STD_MOVE(*(&arg4)));
-    ST(argvi) = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN | SWIG_SHADOW); argvi++ ;
+    ST(argvi) = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__graphics__RPlot, SWIG_POINTER_OWN | SWIG_SHADOW); argvi++ ;
     
     
     
@@ -68322,7 +71740,7 @@ XS(_wrap_KernelPCA_plot_embedding_grouped__SWIG_1) {
     } 
     arg3 = static_cast< std::size_t >(val3);
     result = ((datamunge::KernelPCA const *)arg1)->plot_embedding_grouped((std::vector< std::string > const &)*arg2,SWIG_STD_MOVE(*(&arg3)));
-    ST(argvi) = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN | SWIG_SHADOW); argvi++ ;
+    ST(argvi) = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__graphics__RPlot, SWIG_POINTER_OWN | SWIG_SHADOW); argvi++ ;
     
     
     
@@ -68384,7 +71802,7 @@ XS(_wrap_KernelPCA_plot_embedding_grouped__SWIG_2) {
       }
     }
     result = ((datamunge::KernelPCA const *)arg1)->plot_embedding_grouped((std::vector< std::string > const &)*arg2);
-    ST(argvi) = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN | SWIG_SHADOW); argvi++ ;
+    ST(argvi) = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__graphics__RPlot, SWIG_POINTER_OWN | SWIG_SHADOW); argvi++ ;
     
     
     XSRETURN(argvi);
@@ -71257,7 +74675,7 @@ XS(_wrap_SammonMapping_plot_embedding__SWIG_0) {
     } 
     arg3 = static_cast< std::size_t >(val3);
     result = ((datamunge::SammonMapping const *)arg1)->plot_embedding(SWIG_STD_MOVE(*(&arg2)),SWIG_STD_MOVE(*(&arg3)));
-    ST(argvi) = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN | SWIG_SHADOW); argvi++ ;
+    ST(argvi) = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__graphics__RPlot, SWIG_POINTER_OWN | SWIG_SHADOW); argvi++ ;
     
     
     
@@ -71297,7 +74715,7 @@ XS(_wrap_SammonMapping_plot_embedding__SWIG_1) {
     } 
     arg2 = static_cast< std::size_t >(val2);
     result = ((datamunge::SammonMapping const *)arg1)->plot_embedding(SWIG_STD_MOVE(*(&arg2)));
-    ST(argvi) = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN | SWIG_SHADOW); argvi++ ;
+    ST(argvi) = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__graphics__RPlot, SWIG_POINTER_OWN | SWIG_SHADOW); argvi++ ;
     
     
     XSRETURN(argvi);
@@ -71327,7 +74745,7 @@ XS(_wrap_SammonMapping_plot_embedding__SWIG_2) {
     }
     arg1 = reinterpret_cast< datamunge::SammonMapping * >(argp1);
     result = ((datamunge::SammonMapping const *)arg1)->plot_embedding();
-    ST(argvi) = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN | SWIG_SHADOW); argvi++ ;
+    ST(argvi) = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__graphics__RPlot, SWIG_POINTER_OWN | SWIG_SHADOW); argvi++ ;
     
     XSRETURN(argvi);
     fail:;
@@ -71516,7 +74934,7 @@ XS(_wrap_SammonMapping_plot_embedding_grouped__SWIG_0) {
     } 
     arg4 = static_cast< std::size_t >(val4);
     result = ((datamunge::SammonMapping const *)arg1)->plot_embedding_grouped((std::vector< std::string > const &)*arg2,SWIG_STD_MOVE(*(&arg3)),SWIG_STD_MOVE(*(&arg4)));
-    ST(argvi) = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN | SWIG_SHADOW); argvi++ ;
+    ST(argvi) = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__graphics__RPlot, SWIG_POINTER_OWN | SWIG_SHADOW); argvi++ ;
     
     
     
@@ -71588,7 +75006,7 @@ XS(_wrap_SammonMapping_plot_embedding_grouped__SWIG_1) {
     } 
     arg3 = static_cast< std::size_t >(val3);
     result = ((datamunge::SammonMapping const *)arg1)->plot_embedding_grouped((std::vector< std::string > const &)*arg2,SWIG_STD_MOVE(*(&arg3)));
-    ST(argvi) = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN | SWIG_SHADOW); argvi++ ;
+    ST(argvi) = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__graphics__RPlot, SWIG_POINTER_OWN | SWIG_SHADOW); argvi++ ;
     
     
     
@@ -71650,7 +75068,7 @@ XS(_wrap_SammonMapping_plot_embedding_grouped__SWIG_2) {
       }
     }
     result = ((datamunge::SammonMapping const *)arg1)->plot_embedding_grouped((std::vector< std::string > const &)*arg2);
-    ST(argvi) = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN | SWIG_SHADOW); argvi++ ;
+    ST(argvi) = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__graphics__RPlot, SWIG_POINTER_OWN | SWIG_SHADOW); argvi++ ;
     
     
     XSRETURN(argvi);
@@ -75543,7 +78961,7 @@ XS(_wrap_UMAP_plot_embedding__SWIG_0) {
     } 
     arg3 = static_cast< std::size_t >(val3);
     result = ((datamunge::UMAP const *)arg1)->plot_embedding(SWIG_STD_MOVE(*(&arg2)),SWIG_STD_MOVE(*(&arg3)));
-    ST(argvi) = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN | SWIG_SHADOW); argvi++ ;
+    ST(argvi) = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__graphics__RPlot, SWIG_POINTER_OWN | SWIG_SHADOW); argvi++ ;
     
     
     
@@ -75583,7 +79001,7 @@ XS(_wrap_UMAP_plot_embedding__SWIG_1) {
     } 
     arg2 = static_cast< std::size_t >(val2);
     result = ((datamunge::UMAP const *)arg1)->plot_embedding(SWIG_STD_MOVE(*(&arg2)));
-    ST(argvi) = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN | SWIG_SHADOW); argvi++ ;
+    ST(argvi) = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__graphics__RPlot, SWIG_POINTER_OWN | SWIG_SHADOW); argvi++ ;
     
     
     XSRETURN(argvi);
@@ -75613,7 +79031,7 @@ XS(_wrap_UMAP_plot_embedding__SWIG_2) {
     }
     arg1 = reinterpret_cast< datamunge::UMAP * >(argp1);
     result = ((datamunge::UMAP const *)arg1)->plot_embedding();
-    ST(argvi) = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN | SWIG_SHADOW); argvi++ ;
+    ST(argvi) = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__graphics__RPlot, SWIG_POINTER_OWN | SWIG_SHADOW); argvi++ ;
     
     XSRETURN(argvi);
     fail:;
@@ -75802,7 +79220,7 @@ XS(_wrap_UMAP_plot_embedding_grouped__SWIG_0) {
     } 
     arg4 = static_cast< std::size_t >(val4);
     result = ((datamunge::UMAP const *)arg1)->plot_embedding_grouped((std::vector< std::string > const &)*arg2,SWIG_STD_MOVE(*(&arg3)),SWIG_STD_MOVE(*(&arg4)));
-    ST(argvi) = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN | SWIG_SHADOW); argvi++ ;
+    ST(argvi) = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__graphics__RPlot, SWIG_POINTER_OWN | SWIG_SHADOW); argvi++ ;
     
     
     
@@ -75874,7 +79292,7 @@ XS(_wrap_UMAP_plot_embedding_grouped__SWIG_1) {
     } 
     arg3 = static_cast< std::size_t >(val3);
     result = ((datamunge::UMAP const *)arg1)->plot_embedding_grouped((std::vector< std::string > const &)*arg2,SWIG_STD_MOVE(*(&arg3)));
-    ST(argvi) = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN | SWIG_SHADOW); argvi++ ;
+    ST(argvi) = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__graphics__RPlot, SWIG_POINTER_OWN | SWIG_SHADOW); argvi++ ;
     
     
     
@@ -75936,7 +79354,7 @@ XS(_wrap_UMAP_plot_embedding_grouped__SWIG_2) {
       }
     }
     result = ((datamunge::UMAP const *)arg1)->plot_embedding_grouped((std::vector< std::string > const &)*arg2);
-    ST(argvi) = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN | SWIG_SHADOW); argvi++ ;
+    ST(argvi) = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__graphics__RPlot, SWIG_POINTER_OWN | SWIG_SHADOW); argvi++ ;
     
     
     XSRETURN(argvi);
@@ -80651,7 +84069,7 @@ XS(_wrap_GBMClassifier_plot_classification) {
       arg4 = ptr;
     }
     result = ((datamunge::GBMClassifier const *)arg1)->plot_classification((datamunge::DataFrame const &)*arg2,(std::string const &)*arg3,(std::string const &)*arg4);
-    ST(argvi) = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN | SWIG_SHADOW); argvi++ ;
+    ST(argvi) = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__graphics__RPlot, SWIG_POINTER_OWN | SWIG_SHADOW); argvi++ ;
     
     
     if (SWIG_IsNewObj(res3)) delete arg3;
@@ -80719,7 +84137,7 @@ XS(_wrap_GBMClassifier_plot_decision_regions__SWIG_0) {
     } 
     arg4 = static_cast< std::size_t >(val4);
     result = ((datamunge::GBMClassifier const *)arg1)->plot_decision_regions((std::string const &)*arg2,(std::string const &)*arg3,SWIG_STD_MOVE(*(&arg4)));
-    ST(argvi) = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN | SWIG_SHADOW); argvi++ ;
+    ST(argvi) = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__graphics__RPlot, SWIG_POINTER_OWN | SWIG_SHADOW); argvi++ ;
     
     if (SWIG_IsNewObj(res2)) delete arg2;
     if (SWIG_IsNewObj(res3)) delete arg3;
@@ -80779,7 +84197,7 @@ XS(_wrap_GBMClassifier_plot_decision_regions__SWIG_1) {
       arg3 = ptr;
     }
     result = ((datamunge::GBMClassifier const *)arg1)->plot_decision_regions((std::string const &)*arg2,(std::string const &)*arg3);
-    ST(argvi) = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN | SWIG_SHADOW); argvi++ ;
+    ST(argvi) = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__graphics__RPlot, SWIG_POINTER_OWN | SWIG_SHADOW); argvi++ ;
     
     if (SWIG_IsNewObj(res2)) delete arg2;
     if (SWIG_IsNewObj(res3)) delete arg3;
@@ -80915,7 +84333,7 @@ XS(_wrap_GBMClassifier_plot_training_deviance) {
     }
     arg1 = reinterpret_cast< datamunge::GBMClassifier * >(argp1);
     result = ((datamunge::GBMClassifier const *)arg1)->plot_training_deviance();
-    ST(argvi) = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN | SWIG_SHADOW); argvi++ ;
+    ST(argvi) = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__graphics__RPlot, SWIG_POINTER_OWN | SWIG_SHADOW); argvi++ ;
     
     XSRETURN(argvi);
     fail:;
@@ -82542,7 +85960,7 @@ XS(_wrap_GBMRegressor_plot_predicted_vs_actual) {
     }
     arg1 = reinterpret_cast< datamunge::GBMRegressor * >(argp1);
     result = ((datamunge::GBMRegressor const *)arg1)->plot_predicted_vs_actual();
-    ST(argvi) = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN | SWIG_SHADOW); argvi++ ;
+    ST(argvi) = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__graphics__RPlot, SWIG_POINTER_OWN | SWIG_SHADOW); argvi++ ;
     
     XSRETURN(argvi);
     fail:;
@@ -82570,7 +85988,7 @@ XS(_wrap_GBMRegressor_plot_residuals_vs_fitted) {
     }
     arg1 = reinterpret_cast< datamunge::GBMRegressor * >(argp1);
     result = ((datamunge::GBMRegressor const *)arg1)->plot_residuals_vs_fitted();
-    ST(argvi) = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN | SWIG_SHADOW); argvi++ ;
+    ST(argvi) = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__graphics__RPlot, SWIG_POINTER_OWN | SWIG_SHADOW); argvi++ ;
     
     XSRETURN(argvi);
     fail:;
@@ -82598,7 +86016,7 @@ XS(_wrap_GBMRegressor_plot_training_deviance) {
     }
     arg1 = reinterpret_cast< datamunge::GBMRegressor * >(argp1);
     result = ((datamunge::GBMRegressor const *)arg1)->plot_training_deviance();
-    ST(argvi) = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN | SWIG_SHADOW); argvi++ ;
+    ST(argvi) = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__graphics__RPlot, SWIG_POINTER_OWN | SWIG_SHADOW); argvi++ ;
     
     XSRETURN(argvi);
     fail:;
@@ -85371,7 +88789,7 @@ XS(_wrap_XGBoostClassifier_plot_classification) {
       arg4 = ptr;
     }
     result = ((datamunge::XGBoostClassifier const *)arg1)->plot_classification((datamunge::DataFrame const &)*arg2,(std::string const &)*arg3,(std::string const &)*arg4);
-    ST(argvi) = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN | SWIG_SHADOW); argvi++ ;
+    ST(argvi) = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__graphics__RPlot, SWIG_POINTER_OWN | SWIG_SHADOW); argvi++ ;
     
     
     if (SWIG_IsNewObj(res3)) delete arg3;
@@ -85439,7 +88857,7 @@ XS(_wrap_XGBoostClassifier_plot_decision_regions__SWIG_0) {
     } 
     arg4 = static_cast< std::size_t >(val4);
     result = ((datamunge::XGBoostClassifier const *)arg1)->plot_decision_regions((std::string const &)*arg2,(std::string const &)*arg3,SWIG_STD_MOVE(*(&arg4)));
-    ST(argvi) = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN | SWIG_SHADOW); argvi++ ;
+    ST(argvi) = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__graphics__RPlot, SWIG_POINTER_OWN | SWIG_SHADOW); argvi++ ;
     
     if (SWIG_IsNewObj(res2)) delete arg2;
     if (SWIG_IsNewObj(res3)) delete arg3;
@@ -85499,7 +88917,7 @@ XS(_wrap_XGBoostClassifier_plot_decision_regions__SWIG_1) {
       arg3 = ptr;
     }
     result = ((datamunge::XGBoostClassifier const *)arg1)->plot_decision_regions((std::string const &)*arg2,(std::string const &)*arg3);
-    ST(argvi) = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN | SWIG_SHADOW); argvi++ ;
+    ST(argvi) = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__graphics__RPlot, SWIG_POINTER_OWN | SWIG_SHADOW); argvi++ ;
     
     if (SWIG_IsNewObj(res2)) delete arg2;
     if (SWIG_IsNewObj(res3)) delete arg3;
@@ -85635,7 +89053,7 @@ XS(_wrap_XGBoostClassifier_plot_training_deviance) {
     }
     arg1 = reinterpret_cast< datamunge::XGBoostClassifier * >(argp1);
     result = ((datamunge::XGBoostClassifier const *)arg1)->plot_training_deviance();
-    ST(argvi) = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN | SWIG_SHADOW); argvi++ ;
+    ST(argvi) = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__graphics__RPlot, SWIG_POINTER_OWN | SWIG_SHADOW); argvi++ ;
     
     XSRETURN(argvi);
     fail:;
@@ -88330,7 +91748,7 @@ XS(_wrap_XGBoostRegressor_plot_predicted_vs_actual) {
     }
     arg1 = reinterpret_cast< datamunge::XGBoostRegressor * >(argp1);
     result = ((datamunge::XGBoostRegressor const *)arg1)->plot_predicted_vs_actual();
-    ST(argvi) = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN | SWIG_SHADOW); argvi++ ;
+    ST(argvi) = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__graphics__RPlot, SWIG_POINTER_OWN | SWIG_SHADOW); argvi++ ;
     
     XSRETURN(argvi);
     fail:;
@@ -88358,7 +91776,7 @@ XS(_wrap_XGBoostRegressor_plot_residuals_vs_fitted) {
     }
     arg1 = reinterpret_cast< datamunge::XGBoostRegressor * >(argp1);
     result = ((datamunge::XGBoostRegressor const *)arg1)->plot_residuals_vs_fitted();
-    ST(argvi) = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN | SWIG_SHADOW); argvi++ ;
+    ST(argvi) = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__graphics__RPlot, SWIG_POINTER_OWN | SWIG_SHADOW); argvi++ ;
     
     XSRETURN(argvi);
     fail:;
@@ -88386,7 +91804,7 @@ XS(_wrap_XGBoostRegressor_plot_training_deviance) {
     }
     arg1 = reinterpret_cast< datamunge::XGBoostRegressor * >(argp1);
     result = ((datamunge::XGBoostRegressor const *)arg1)->plot_training_deviance();
-    ST(argvi) = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN | SWIG_SHADOW); argvi++ ;
+    ST(argvi) = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__graphics__RPlot, SWIG_POINTER_OWN | SWIG_SHADOW); argvi++ ;
     
     XSRETURN(argvi);
     fail:;
@@ -89481,7 +92899,7 @@ XS(_wrap_KernelRegression_plot_fit__SWIG_0) {
     } 
     arg3 = static_cast< std::size_t >(val3);
     result = ((datamunge::KernelRegression const *)arg1)->plot_fit((datamunge::DataFrame const &)*arg2,SWIG_STD_MOVE(*(&arg3)));
-    ST(argvi) = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN | SWIG_SHADOW); argvi++ ;
+    ST(argvi) = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__graphics__RPlot, SWIG_POINTER_OWN | SWIG_SHADOW); argvi++ ;
     
     
     
@@ -89524,7 +92942,7 @@ XS(_wrap_KernelRegression_plot_fit__SWIG_1) {
     }
     arg2 = reinterpret_cast< datamunge::DataFrame * >(argp2);
     result = ((datamunge::KernelRegression const *)arg1)->plot_fit((datamunge::DataFrame const &)*arg2);
-    ST(argvi) = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN | SWIG_SHADOW); argvi++ ;
+    ST(argvi) = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__graphics__RPlot, SWIG_POINTER_OWN | SWIG_SHADOW); argvi++ ;
     
     
     XSRETURN(argvi);
@@ -89644,7 +93062,7 @@ XS(_wrap_KernelRegression_plot_predicted_vs_actual) {
     }
     arg1 = reinterpret_cast< datamunge::KernelRegression * >(argp1);
     result = ((datamunge::KernelRegression const *)arg1)->plot_predicted_vs_actual();
-    ST(argvi) = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN | SWIG_SHADOW); argvi++ ;
+    ST(argvi) = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__graphics__RPlot, SWIG_POINTER_OWN | SWIG_SHADOW); argvi++ ;
     
     XSRETURN(argvi);
     fail:;
@@ -89672,7 +93090,7 @@ XS(_wrap_KernelRegression_plot_residuals_vs_fitted) {
     }
     arg1 = reinterpret_cast< datamunge::KernelRegression * >(argp1);
     result = ((datamunge::KernelRegression const *)arg1)->plot_residuals_vs_fitted();
-    ST(argvi) = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN | SWIG_SHADOW); argvi++ ;
+    ST(argvi) = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__graphics__RPlot, SWIG_POINTER_OWN | SWIG_SHADOW); argvi++ ;
     
     XSRETURN(argvi);
     fail:;
@@ -89700,7 +93118,7 @@ XS(_wrap_KernelRegression_plot_cv_curve) {
     }
     arg1 = reinterpret_cast< datamunge::KernelRegression * >(argp1);
     result = ((datamunge::KernelRegression const *)arg1)->plot_cv_curve();
-    ST(argvi) = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN | SWIG_SHADOW); argvi++ ;
+    ST(argvi) = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__graphics__RPlot, SWIG_POINTER_OWN | SWIG_SHADOW); argvi++ ;
     
     XSRETURN(argvi);
     fail:;
@@ -91381,7 +94799,7 @@ XS(_wrap_GaussianProcessRegression_plot_fit__SWIG_0) {
     } 
     arg4 = static_cast< double >(val4);
     result = ((datamunge::GaussianProcessRegression const *)arg1)->plot_fit((datamunge::DataFrame const &)*arg2,SWIG_STD_MOVE(*(&arg3)),arg4);
-    ST(argvi) = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN | SWIG_SHADOW); argvi++ ;
+    ST(argvi) = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__graphics__RPlot, SWIG_POINTER_OWN | SWIG_SHADOW); argvi++ ;
     
     
     
@@ -91434,7 +94852,7 @@ XS(_wrap_GaussianProcessRegression_plot_fit__SWIG_1) {
     } 
     arg3 = static_cast< std::size_t >(val3);
     result = ((datamunge::GaussianProcessRegression const *)arg1)->plot_fit((datamunge::DataFrame const &)*arg2,SWIG_STD_MOVE(*(&arg3)));
-    ST(argvi) = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN | SWIG_SHADOW); argvi++ ;
+    ST(argvi) = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__graphics__RPlot, SWIG_POINTER_OWN | SWIG_SHADOW); argvi++ ;
     
     
     
@@ -91477,7 +94895,7 @@ XS(_wrap_GaussianProcessRegression_plot_fit__SWIG_2) {
     }
     arg2 = reinterpret_cast< datamunge::DataFrame * >(argp2);
     result = ((datamunge::GaussianProcessRegression const *)arg1)->plot_fit((datamunge::DataFrame const &)*arg2);
-    ST(argvi) = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN | SWIG_SHADOW); argvi++ ;
+    ST(argvi) = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__graphics__RPlot, SWIG_POINTER_OWN | SWIG_SHADOW); argvi++ ;
     
     
     XSRETURN(argvi);
@@ -91649,7 +95067,7 @@ XS(_wrap_GaussianProcessRegression_plot_predicted_vs_actual) {
     }
     arg1 = reinterpret_cast< datamunge::GaussianProcessRegression * >(argp1);
     result = ((datamunge::GaussianProcessRegression const *)arg1)->plot_predicted_vs_actual();
-    ST(argvi) = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN | SWIG_SHADOW); argvi++ ;
+    ST(argvi) = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__graphics__RPlot, SWIG_POINTER_OWN | SWIG_SHADOW); argvi++ ;
     
     XSRETURN(argvi);
     fail:;
@@ -91677,7 +95095,7 @@ XS(_wrap_GaussianProcessRegression_plot_residuals_vs_fitted) {
     }
     arg1 = reinterpret_cast< datamunge::GaussianProcessRegression * >(argp1);
     result = ((datamunge::GaussianProcessRegression const *)arg1)->plot_residuals_vs_fitted();
-    ST(argvi) = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN | SWIG_SHADOW); argvi++ ;
+    ST(argvi) = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__graphics__RPlot, SWIG_POINTER_OWN | SWIG_SHADOW); argvi++ ;
     
     XSRETURN(argvi);
     fail:;
@@ -91705,7 +95123,7 @@ XS(_wrap_GaussianProcessRegression_plot_length_scale_profile) {
     }
     arg1 = reinterpret_cast< datamunge::GaussianProcessRegression * >(argp1);
     result = ((datamunge::GaussianProcessRegression const *)arg1)->plot_length_scale_profile();
-    ST(argvi) = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN | SWIG_SHADOW); argvi++ ;
+    ST(argvi) = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__graphics__RPlot, SWIG_POINTER_OWN | SWIG_SHADOW); argvi++ ;
     
     XSRETURN(argvi);
     fail:;
@@ -92457,7 +95875,7 @@ XS(_wrap_NaiveBayesClassifier_plot_classification) {
       arg4 = ptr;
     }
     result = ((datamunge::NaiveBayesClassifier const *)arg1)->plot_classification((datamunge::DataFrame const &)*arg2,(std::string const &)*arg3,(std::string const &)*arg4);
-    ST(argvi) = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN | SWIG_SHADOW); argvi++ ;
+    ST(argvi) = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__graphics__RPlot, SWIG_POINTER_OWN | SWIG_SHADOW); argvi++ ;
     
     
     if (SWIG_IsNewObj(res3)) delete arg3;
@@ -92525,7 +95943,7 @@ XS(_wrap_NaiveBayesClassifier_plot_decision_regions__SWIG_0) {
     } 
     arg4 = static_cast< std::size_t >(val4);
     result = ((datamunge::NaiveBayesClassifier const *)arg1)->plot_decision_regions((std::string const &)*arg2,(std::string const &)*arg3,SWIG_STD_MOVE(*(&arg4)));
-    ST(argvi) = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN | SWIG_SHADOW); argvi++ ;
+    ST(argvi) = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__graphics__RPlot, SWIG_POINTER_OWN | SWIG_SHADOW); argvi++ ;
     
     if (SWIG_IsNewObj(res2)) delete arg2;
     if (SWIG_IsNewObj(res3)) delete arg3;
@@ -92585,7 +96003,7 @@ XS(_wrap_NaiveBayesClassifier_plot_decision_regions__SWIG_1) {
       arg3 = ptr;
     }
     result = ((datamunge::NaiveBayesClassifier const *)arg1)->plot_decision_regions((std::string const &)*arg2,(std::string const &)*arg3);
-    ST(argvi) = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN | SWIG_SHADOW); argvi++ ;
+    ST(argvi) = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__graphics__RPlot, SWIG_POINTER_OWN | SWIG_SHADOW); argvi++ ;
     
     if (SWIG_IsNewObj(res2)) delete arg2;
     if (SWIG_IsNewObj(res3)) delete arg3;
@@ -94823,7 +98241,7 @@ XS(_wrap_GLM_plot_residuals_vs_fitted) {
     }
     arg1 = reinterpret_cast< datamunge::GLM * >(argp1);
     result = ((datamunge::GLM const *)arg1)->plot_residuals_vs_fitted();
-    ST(argvi) = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN | SWIG_SHADOW); argvi++ ;
+    ST(argvi) = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__graphics__RPlot, SWIG_POINTER_OWN | SWIG_SHADOW); argvi++ ;
     
     XSRETURN(argvi);
     fail:;
@@ -94851,7 +98269,7 @@ XS(_wrap_GLM_plot_normal_qq) {
     }
     arg1 = reinterpret_cast< datamunge::GLM * >(argp1);
     result = ((datamunge::GLM const *)arg1)->plot_normal_qq();
-    ST(argvi) = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN | SWIG_SHADOW); argvi++ ;
+    ST(argvi) = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__graphics__RPlot, SWIG_POINTER_OWN | SWIG_SHADOW); argvi++ ;
     
     XSRETURN(argvi);
     fail:;
@@ -94879,7 +98297,7 @@ XS(_wrap_GLM_plot_scale_location) {
     }
     arg1 = reinterpret_cast< datamunge::GLM * >(argp1);
     result = ((datamunge::GLM const *)arg1)->plot_scale_location();
-    ST(argvi) = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN | SWIG_SHADOW); argvi++ ;
+    ST(argvi) = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__graphics__RPlot, SWIG_POINTER_OWN | SWIG_SHADOW); argvi++ ;
     
     XSRETURN(argvi);
     fail:;
@@ -94907,7 +98325,7 @@ XS(_wrap_GLM_plot_residuals_vs_leverage) {
     }
     arg1 = reinterpret_cast< datamunge::GLM * >(argp1);
     result = ((datamunge::GLM const *)arg1)->plot_residuals_vs_leverage();
-    ST(argvi) = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN | SWIG_SHADOW); argvi++ ;
+    ST(argvi) = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__graphics__RPlot, SWIG_POINTER_OWN | SWIG_SHADOW); argvi++ ;
     
     XSRETURN(argvi);
     fail:;
@@ -103373,7 +106791,7 @@ XS(_wrap_RGB_r_set) {
     if ((items < 2) || (items > 2)) {
       SWIG_croak("Usage: RGB_r_set(self,r);");
     }
-    res1 = SWIG_ConvertPtr(ST(0), &argp1,SWIGTYPE_p_datamunge__plot__RGB, 0 |  0 );
+    res1 = SWIG_ConvertPtr(ST(0), &argp1,SWIGTYPE_p_datamunge__graphics__RGB, 0 |  0 );
     if (!SWIG_IsOK(res1)) {
       SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "RGB_r_set" "', argument " "1"" of type '" "datamunge::graphics::RGB *""'"); 
     }
@@ -103408,7 +106826,7 @@ XS(_wrap_RGB_r_get) {
     if ((items < 1) || (items > 1)) {
       SWIG_croak("Usage: RGB_r_get(self);");
     }
-    res1 = SWIG_ConvertPtr(ST(0), &argp1,SWIGTYPE_p_datamunge__plot__RGB, 0 |  0 );
+    res1 = SWIG_ConvertPtr(ST(0), &argp1,SWIGTYPE_p_datamunge__graphics__RGB, 0 |  0 );
     if (!SWIG_IsOK(res1)) {
       SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "RGB_r_get" "', argument " "1"" of type '" "datamunge::graphics::RGB *""'"); 
     }
@@ -103438,7 +106856,7 @@ XS(_wrap_RGB_g_set) {
     if ((items < 2) || (items > 2)) {
       SWIG_croak("Usage: RGB_g_set(self,g);");
     }
-    res1 = SWIG_ConvertPtr(ST(0), &argp1,SWIGTYPE_p_datamunge__plot__RGB, 0 |  0 );
+    res1 = SWIG_ConvertPtr(ST(0), &argp1,SWIGTYPE_p_datamunge__graphics__RGB, 0 |  0 );
     if (!SWIG_IsOK(res1)) {
       SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "RGB_g_set" "', argument " "1"" of type '" "datamunge::graphics::RGB *""'"); 
     }
@@ -103473,7 +106891,7 @@ XS(_wrap_RGB_g_get) {
     if ((items < 1) || (items > 1)) {
       SWIG_croak("Usage: RGB_g_get(self);");
     }
-    res1 = SWIG_ConvertPtr(ST(0), &argp1,SWIGTYPE_p_datamunge__plot__RGB, 0 |  0 );
+    res1 = SWIG_ConvertPtr(ST(0), &argp1,SWIGTYPE_p_datamunge__graphics__RGB, 0 |  0 );
     if (!SWIG_IsOK(res1)) {
       SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "RGB_g_get" "', argument " "1"" of type '" "datamunge::graphics::RGB *""'"); 
     }
@@ -103503,7 +106921,7 @@ XS(_wrap_RGB_b_set) {
     if ((items < 2) || (items > 2)) {
       SWIG_croak("Usage: RGB_b_set(self,b);");
     }
-    res1 = SWIG_ConvertPtr(ST(0), &argp1,SWIGTYPE_p_datamunge__plot__RGB, 0 |  0 );
+    res1 = SWIG_ConvertPtr(ST(0), &argp1,SWIGTYPE_p_datamunge__graphics__RGB, 0 |  0 );
     if (!SWIG_IsOK(res1)) {
       SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "RGB_b_set" "', argument " "1"" of type '" "datamunge::graphics::RGB *""'"); 
     }
@@ -103538,7 +106956,7 @@ XS(_wrap_RGB_b_get) {
     if ((items < 1) || (items > 1)) {
       SWIG_croak("Usage: RGB_b_get(self);");
     }
-    res1 = SWIG_ConvertPtr(ST(0), &argp1,SWIGTYPE_p_datamunge__plot__RGB, 0 |  0 );
+    res1 = SWIG_ConvertPtr(ST(0), &argp1,SWIGTYPE_p_datamunge__graphics__RGB, 0 |  0 );
     if (!SWIG_IsOK(res1)) {
       SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "RGB_b_get" "', argument " "1"" of type '" "datamunge::graphics::RGB *""'"); 
     }
@@ -103568,7 +106986,7 @@ XS(_wrap_RGB_alpha_set) {
     if ((items < 2) || (items > 2)) {
       SWIG_croak("Usage: RGB_alpha_set(self,alpha);");
     }
-    res1 = SWIG_ConvertPtr(ST(0), &argp1,SWIGTYPE_p_datamunge__plot__RGB, 0 |  0 );
+    res1 = SWIG_ConvertPtr(ST(0), &argp1,SWIGTYPE_p_datamunge__graphics__RGB, 0 |  0 );
     if (!SWIG_IsOK(res1)) {
       SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "RGB_alpha_set" "', argument " "1"" of type '" "datamunge::graphics::RGB *""'"); 
     }
@@ -103603,7 +107021,7 @@ XS(_wrap_RGB_alpha_get) {
     if ((items < 1) || (items > 1)) {
       SWIG_croak("Usage: RGB_alpha_get(self);");
     }
-    res1 = SWIG_ConvertPtr(ST(0), &argp1,SWIGTYPE_p_datamunge__plot__RGB, 0 |  0 );
+    res1 = SWIG_ConvertPtr(ST(0), &argp1,SWIGTYPE_p_datamunge__graphics__RGB, 0 |  0 );
     if (!SWIG_IsOK(res1)) {
       SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "RGB_alpha_get" "', argument " "1"" of type '" "datamunge::graphics::RGB *""'"); 
     }
@@ -103628,8 +107046,8 @@ XS(_wrap_new_RGB__SWIG_0) {
     if ((items < 0) || (items > 0)) {
       SWIG_croak("Usage: new_RGB();");
     }
-    result = (datamunge::graphics::RGB *)new_datamunge_plot_RGB__SWIG_0();
-    ST(argvi) = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__plot__RGB, SWIG_OWNER | SWIG_SHADOW); argvi++ ;
+    result = (datamunge::graphics::RGB *)new datamunge::graphics::RGB();
+    ST(argvi) = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__graphics__RGB, SWIG_OWNER | SWIG_SHADOW); argvi++ ;
     XSRETURN(argvi);
     fail:;
   }
@@ -103656,7 +107074,7 @@ XS(_wrap_new_RGB__SWIG_1) {
     dXSARGS;
     
     if ((items < 4) || (items > 4)) {
-      SWIG_croak("Usage: new_RGB(r,g,b,alpha);");
+      SWIG_croak("Usage: new_RGB(red,green,blue,opacity);");
     }
     ecode1 = SWIG_AsVal_int SWIG_PERL_CALL_ARGS_2(ST(0), &val1);
     if (!SWIG_IsOK(ecode1)) {
@@ -103678,8 +107096,8 @@ XS(_wrap_new_RGB__SWIG_1) {
       SWIG_exception_fail(SWIG_ArgError(ecode4), "in method '" "new_RGB" "', argument " "4"" of type '" "double""'");
     } 
     arg4 = static_cast< double >(val4);
-    result = (datamunge::graphics::RGB *)new_datamunge_plot_RGB__SWIG_1(arg1,arg2,arg3,arg4);
-    ST(argvi) = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__plot__RGB, SWIG_OWNER | SWIG_SHADOW); argvi++ ;
+    result = (datamunge::graphics::RGB *)new datamunge::graphics::RGB(arg1,arg2,arg3,arg4);
+    ST(argvi) = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__graphics__RGB, SWIG_OWNER | SWIG_SHADOW); argvi++ ;
     
     
     
@@ -103711,7 +107129,7 @@ XS(_wrap_new_RGB__SWIG_2) {
     dXSARGS;
     
     if ((items < 3) || (items > 3)) {
-      SWIG_croak("Usage: new_RGB(r,g,b);");
+      SWIG_croak("Usage: new_RGB(red,green,blue);");
     }
     ecode1 = SWIG_AsVal_int SWIG_PERL_CALL_ARGS_2(ST(0), &val1);
     if (!SWIG_IsOK(ecode1)) {
@@ -103728,8 +107146,8 @@ XS(_wrap_new_RGB__SWIG_2) {
       SWIG_exception_fail(SWIG_ArgError(ecode3), "in method '" "new_RGB" "', argument " "3"" of type '" "int""'");
     } 
     arg3 = static_cast< int >(val3);
-    result = (datamunge::graphics::RGB *)new_datamunge_plot_RGB__SWIG_1(arg1,arg2,arg3);
-    ST(argvi) = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__plot__RGB, SWIG_OWNER | SWIG_SHADOW); argvi++ ;
+    result = (datamunge::graphics::RGB *)new datamunge::graphics::RGB(arg1,arg2,arg3);
+    ST(argvi) = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__graphics__RGB, SWIG_OWNER | SWIG_SHADOW); argvi++ ;
     
     
     
@@ -103738,6 +107156,105 @@ XS(_wrap_new_RGB__SWIG_2) {
     
     
     
+  }
+  SWIG_croak_null();
+}
+
+
+XS(_wrap_new_RGB__SWIG_3) {
+  {
+    int arg1 ;
+    int val1 ;
+    int ecode1 = 0 ;
+    int argvi = 0;
+    datamunge::graphics::RGB *result = 0 ;
+    dXSARGS;
+    
+    if ((items < 1) || (items > 1)) {
+      SWIG_croak("Usage: new_RGB(red);");
+    }
+    ecode1 = SWIG_AsVal_int SWIG_PERL_CALL_ARGS_2(ST(0), &val1);
+    if (!SWIG_IsOK(ecode1)) {
+      SWIG_exception_fail(SWIG_ArgError(ecode1), "in method '" "new_RGB" "', argument " "1"" of type '" "int""'");
+    } 
+    arg1 = static_cast< int >(val1);
+    result = (datamunge::graphics::RGB *)new datamunge::graphics::RGB(arg1);
+    ST(argvi) = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__graphics__RGB, SWIG_OWNER | SWIG_SHADOW); argvi++ ;
+    
+    XSRETURN(argvi);
+    fail:;
+    
+  }
+  SWIG_croak_null();
+}
+
+
+XS(_wrap_new_RGB__SWIG_4) {
+  {
+    int arg1 ;
+    int arg2 ;
+    int val1 ;
+    int ecode1 = 0 ;
+    int val2 ;
+    int ecode2 = 0 ;
+    int argvi = 0;
+    datamunge::graphics::RGB *result = 0 ;
+    dXSARGS;
+    
+    if ((items < 2) || (items > 2)) {
+      SWIG_croak("Usage: new_RGB(red,green);");
+    }
+    ecode1 = SWIG_AsVal_int SWIG_PERL_CALL_ARGS_2(ST(0), &val1);
+    if (!SWIG_IsOK(ecode1)) {
+      SWIG_exception_fail(SWIG_ArgError(ecode1), "in method '" "new_RGB" "', argument " "1"" of type '" "int""'");
+    } 
+    arg1 = static_cast< int >(val1);
+    ecode2 = SWIG_AsVal_int SWIG_PERL_CALL_ARGS_2(ST(1), &val2);
+    if (!SWIG_IsOK(ecode2)) {
+      SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "new_RGB" "', argument " "2"" of type '" "int""'");
+    } 
+    arg2 = static_cast< int >(val2);
+    result = (datamunge::graphics::RGB *)new datamunge::graphics::RGB(arg1,arg2);
+    ST(argvi) = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__graphics__RGB, SWIG_OWNER | SWIG_SHADOW); argvi++ ;
+    
+    
+    XSRETURN(argvi);
+    fail:;
+    
+    
+  }
+  SWIG_croak_null();
+}
+
+
+XS(_wrap_new_RGB__SWIG_5) {
+  {
+    std::string *arg1 = 0 ;
+    int res1 = SWIG_OLDOBJ ;
+    int argvi = 0;
+    datamunge::graphics::RGB *result = 0 ;
+    dXSARGS;
+    
+    if ((items < 1) || (items > 1)) {
+      SWIG_croak("Usage: new_RGB(color);");
+    }
+    {
+      std::string *ptr = (std::string *)0;
+      res1 = SWIG_AsPtr_std_string SWIG_PERL_CALL_ARGS_2(ST(0), &ptr);
+      if (!SWIG_IsOK(res1)) {
+        SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "new_RGB" "', argument " "1"" of type '" "std::string const &""'"); 
+      }
+      if (!ptr) {
+        SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "new_RGB" "', argument " "1"" of type '" "std::string const &""'"); 
+      }
+      arg1 = ptr;
+    }
+    result = (datamunge::graphics::RGB *)new datamunge::graphics::RGB((std::string const &)*arg1);
+    ST(argvi) = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__graphics__RGB, SWIG_OWNER | SWIG_SHADOW); argvi++ ;
+    if (SWIG_IsNewObj(res1)) delete arg1;
+    XSRETURN(argvi);
+    fail:;
+    if (SWIG_IsNewObj(res1)) delete arg1;
   }
   SWIG_croak_null();
 }
@@ -103757,7 +107274,7 @@ XS(_wrap_new_RGB) {
         if (_rank == _rankm) goto dispatch;
       }
     }
-    if (items == 3) {
+    if (items == 1) {
       SWIG_TypeRank _ranki = 0;
       SWIG_TypeRank _rankm = 0;
       SWIG_TypeRank _pi = 1;
@@ -103765,26 +107282,6 @@ XS(_wrap_new_RGB) {
       {
         {
           int res = SWIG_AsVal_int SWIG_PERL_CALL_ARGS_2(ST(0), NULL);
-          _v = SWIG_CheckState(res);
-        }
-      }
-      if (!_v) goto check_2;
-      _ranki += _v*_pi;
-      _rankm += _pi;
-      _pi *= SWIG_MAXCASTRANK;
-      {
-        {
-          int res = SWIG_AsVal_int SWIG_PERL_CALL_ARGS_2(ST(1), NULL);
-          _v = SWIG_CheckState(res);
-        }
-      }
-      if (!_v) goto check_2;
-      _ranki += _v*_pi;
-      _rankm += _pi;
-      _pi *= SWIG_MAXCASTRANK;
-      {
-        {
-          int res = SWIG_AsVal_int SWIG_PERL_CALL_ARGS_2(ST(2), NULL);
           _v = SWIG_CheckState(res);
         }
       }
@@ -103799,46 +107296,14 @@ XS(_wrap_new_RGB) {
     }
   check_2:
     
-    if (items == 4) {
+    if (items == 1) {
       SWIG_TypeRank _ranki = 0;
       SWIG_TypeRank _rankm = 0;
       SWIG_TypeRank _pi = 1;
       int _v = 0;
       {
-        {
-          int res = SWIG_AsVal_int SWIG_PERL_CALL_ARGS_2(ST(0), NULL);
-          _v = SWIG_CheckState(res);
-        }
-      }
-      if (!_v) goto check_3;
-      _ranki += _v*_pi;
-      _rankm += _pi;
-      _pi *= SWIG_MAXCASTRANK;
-      {
-        {
-          int res = SWIG_AsVal_int SWIG_PERL_CALL_ARGS_2(ST(1), NULL);
-          _v = SWIG_CheckState(res);
-        }
-      }
-      if (!_v) goto check_3;
-      _ranki += _v*_pi;
-      _rankm += _pi;
-      _pi *= SWIG_MAXCASTRANK;
-      {
-        {
-          int res = SWIG_AsVal_int SWIG_PERL_CALL_ARGS_2(ST(2), NULL);
-          _v = SWIG_CheckState(res);
-        }
-      }
-      if (!_v) goto check_3;
-      _ranki += _v*_pi;
-      _rankm += _pi;
-      _pi *= SWIG_MAXCASTRANK;
-      {
-        {
-          int res = SWIG_AsVal_double SWIG_PERL_CALL_ARGS_2(ST(3), NULL);
-          _v = SWIG_CheckState(res);
-        }
+        int res = SWIG_AsPtr_std_string SWIG_PERL_CALL_ARGS_2(ST(0), (std::string**)(0));
+        _v = SWIG_CheckState(res);
       }
       if (!_v) goto check_3;
       _ranki += _v*_pi;
@@ -103851,13 +107316,145 @@ XS(_wrap_new_RGB) {
     }
   check_3:
     
+    if (items == 2) {
+      SWIG_TypeRank _ranki = 0;
+      SWIG_TypeRank _rankm = 0;
+      SWIG_TypeRank _pi = 1;
+      int _v = 0;
+      {
+        {
+          int res = SWIG_AsVal_int SWIG_PERL_CALL_ARGS_2(ST(0), NULL);
+          _v = SWIG_CheckState(res);
+        }
+      }
+      if (!_v) goto check_4;
+      _ranki += _v*_pi;
+      _rankm += _pi;
+      _pi *= SWIG_MAXCASTRANK;
+      {
+        {
+          int res = SWIG_AsVal_int SWIG_PERL_CALL_ARGS_2(ST(1), NULL);
+          _v = SWIG_CheckState(res);
+        }
+      }
+      if (!_v) goto check_4;
+      _ranki += _v*_pi;
+      _rankm += _pi;
+      _pi *= SWIG_MAXCASTRANK;
+      if (!_index || (_ranki < _rank)) {
+        _rank = _ranki; _index = 4;
+        if (_rank == _rankm) goto dispatch;
+      }
+    }
+  check_4:
+    
+    if (items == 3) {
+      SWIG_TypeRank _ranki = 0;
+      SWIG_TypeRank _rankm = 0;
+      SWIG_TypeRank _pi = 1;
+      int _v = 0;
+      {
+        {
+          int res = SWIG_AsVal_int SWIG_PERL_CALL_ARGS_2(ST(0), NULL);
+          _v = SWIG_CheckState(res);
+        }
+      }
+      if (!_v) goto check_5;
+      _ranki += _v*_pi;
+      _rankm += _pi;
+      _pi *= SWIG_MAXCASTRANK;
+      {
+        {
+          int res = SWIG_AsVal_int SWIG_PERL_CALL_ARGS_2(ST(1), NULL);
+          _v = SWIG_CheckState(res);
+        }
+      }
+      if (!_v) goto check_5;
+      _ranki += _v*_pi;
+      _rankm += _pi;
+      _pi *= SWIG_MAXCASTRANK;
+      {
+        {
+          int res = SWIG_AsVal_int SWIG_PERL_CALL_ARGS_2(ST(2), NULL);
+          _v = SWIG_CheckState(res);
+        }
+      }
+      if (!_v) goto check_5;
+      _ranki += _v*_pi;
+      _rankm += _pi;
+      _pi *= SWIG_MAXCASTRANK;
+      if (!_index || (_ranki < _rank)) {
+        _rank = _ranki; _index = 5;
+        if (_rank == _rankm) goto dispatch;
+      }
+    }
+  check_5:
+    
+    if (items == 4) {
+      SWIG_TypeRank _ranki = 0;
+      SWIG_TypeRank _rankm = 0;
+      SWIG_TypeRank _pi = 1;
+      int _v = 0;
+      {
+        {
+          int res = SWIG_AsVal_int SWIG_PERL_CALL_ARGS_2(ST(0), NULL);
+          _v = SWIG_CheckState(res);
+        }
+      }
+      if (!_v) goto check_6;
+      _ranki += _v*_pi;
+      _rankm += _pi;
+      _pi *= SWIG_MAXCASTRANK;
+      {
+        {
+          int res = SWIG_AsVal_int SWIG_PERL_CALL_ARGS_2(ST(1), NULL);
+          _v = SWIG_CheckState(res);
+        }
+      }
+      if (!_v) goto check_6;
+      _ranki += _v*_pi;
+      _rankm += _pi;
+      _pi *= SWIG_MAXCASTRANK;
+      {
+        {
+          int res = SWIG_AsVal_int SWIG_PERL_CALL_ARGS_2(ST(2), NULL);
+          _v = SWIG_CheckState(res);
+        }
+      }
+      if (!_v) goto check_6;
+      _ranki += _v*_pi;
+      _rankm += _pi;
+      _pi *= SWIG_MAXCASTRANK;
+      {
+        {
+          int res = SWIG_AsVal_double SWIG_PERL_CALL_ARGS_2(ST(3), NULL);
+          _v = SWIG_CheckState(res);
+        }
+      }
+      if (!_v) goto check_6;
+      _ranki += _v*_pi;
+      _rankm += _pi;
+      _pi *= SWIG_MAXCASTRANK;
+      if (!_index || (_ranki < _rank)) {
+        _rank = _ranki; _index = 6;
+        if (_rank == _rankm) goto dispatch;
+      }
+    }
+  check_6:
+    
   dispatch:
     switch(_index) {
     case 1:
       PUSHMARK(MARK); SWIG_CALLXS(_wrap_new_RGB__SWIG_0); return;
     case 2:
-      PUSHMARK(MARK); SWIG_CALLXS(_wrap_new_RGB__SWIG_2); return;
+      PUSHMARK(MARK); SWIG_CALLXS(_wrap_new_RGB__SWIG_3); return;
     case 3:
+      PUSHMARK(MARK); SWIG_CALLXS(_wrap_new_RGB__SWIG_5); return;
+    case 4:
+      PUSHMARK(MARK); SWIG_CALLXS(_wrap_new_RGB__SWIG_4); return;
+    case 5:
+      PUSHMARK(MARK); SWIG_CALLXS(_wrap_new_RGB__SWIG_2); return;
+    case 6:
       PUSHMARK(MARK); SWIG_CALLXS(_wrap_new_RGB__SWIG_1); return;
     }
   }
@@ -103878,7 +107475,7 @@ XS(_wrap_delete_RGB) {
     if ((items < 1) || (items > 1)) {
       SWIG_croak("Usage: delete_RGB(self);");
     }
-    res1 = SWIG_ConvertPtr(ST(0), &argp1,SWIGTYPE_p_datamunge__plot__RGB, SWIG_POINTER_DISOWN |  0 );
+    res1 = SWIG_ConvertPtr(ST(0), &argp1,SWIGTYPE_p_datamunge__graphics__RGB, SWIG_POINTER_DISOWN |  0 );
     if (!SWIG_IsOK(res1)) {
       SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "delete_RGB" "', argument " "1"" of type '" "datamunge::graphics::RGB *""'"); 
     }
@@ -103908,7 +107505,7 @@ XS(_wrap_DataSeries_kind_set) {
     if ((items < 2) || (items > 2)) {
       SWIG_croak("Usage: DataSeries_kind_set(self,kind);");
     }
-    res1 = SWIG_ConvertPtr(ST(0), &argp1,SWIGTYPE_p_datamunge__plot__DataSeries, 0 |  0 );
+    res1 = SWIG_ConvertPtr(ST(0), &argp1,SWIGTYPE_p_datamunge__graphics__DataSeries, 0 |  0 );
     if (!SWIG_IsOK(res1)) {
       SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "DataSeries_kind_set" "', argument " "1"" of type '" "datamunge::graphics::DataSeries *""'"); 
     }
@@ -103943,7 +107540,7 @@ XS(_wrap_DataSeries_kind_get) {
     if ((items < 1) || (items > 1)) {
       SWIG_croak("Usage: DataSeries_kind_get(self);");
     }
-    res1 = SWIG_ConvertPtr(ST(0), &argp1,SWIGTYPE_p_datamunge__plot__DataSeries, 0 |  0 );
+    res1 = SWIG_ConvertPtr(ST(0), &argp1,SWIGTYPE_p_datamunge__graphics__DataSeries, 0 |  0 );
     if (!SWIG_IsOK(res1)) {
       SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "DataSeries_kind_get" "', argument " "1"" of type '" "datamunge::graphics::DataSeries *""'"); 
     }
@@ -103973,7 +107570,7 @@ XS(_wrap_DataSeries_x_set) {
     if ((items < 2) || (items > 2)) {
       SWIG_croak("Usage: DataSeries_x_set(self,x);");
     }
-    res1 = SWIG_ConvertPtr(ST(0), &argp1,SWIGTYPE_p_datamunge__plot__DataSeries, 0 |  0 );
+    res1 = SWIG_ConvertPtr(ST(0), &argp1,SWIGTYPE_p_datamunge__graphics__DataSeries, 0 |  0 );
     if (!SWIG_IsOK(res1)) {
       SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "DataSeries_x_set" "', argument " "1"" of type '" "datamunge::graphics::DataSeries *""'"); 
     }
@@ -104008,7 +107605,7 @@ XS(_wrap_DataSeries_x_get) {
     if ((items < 1) || (items > 1)) {
       SWIG_croak("Usage: DataSeries_x_get(self);");
     }
-    res1 = SWIG_ConvertPtr(ST(0), &argp1,SWIGTYPE_p_datamunge__plot__DataSeries, 0 |  0 );
+    res1 = SWIG_ConvertPtr(ST(0), &argp1,SWIGTYPE_p_datamunge__graphics__DataSeries, 0 |  0 );
     if (!SWIG_IsOK(res1)) {
       SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "DataSeries_x_get" "', argument " "1"" of type '" "datamunge::graphics::DataSeries *""'"); 
     }
@@ -104038,7 +107635,7 @@ XS(_wrap_DataSeries_y_set) {
     if ((items < 2) || (items > 2)) {
       SWIG_croak("Usage: DataSeries_y_set(self,y);");
     }
-    res1 = SWIG_ConvertPtr(ST(0), &argp1,SWIGTYPE_p_datamunge__plot__DataSeries, 0 |  0 );
+    res1 = SWIG_ConvertPtr(ST(0), &argp1,SWIGTYPE_p_datamunge__graphics__DataSeries, 0 |  0 );
     if (!SWIG_IsOK(res1)) {
       SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "DataSeries_y_set" "', argument " "1"" of type '" "datamunge::graphics::DataSeries *""'"); 
     }
@@ -104073,7 +107670,7 @@ XS(_wrap_DataSeries_y_get) {
     if ((items < 1) || (items > 1)) {
       SWIG_croak("Usage: DataSeries_y_get(self);");
     }
-    res1 = SWIG_ConvertPtr(ST(0), &argp1,SWIGTYPE_p_datamunge__plot__DataSeries, 0 |  0 );
+    res1 = SWIG_ConvertPtr(ST(0), &argp1,SWIGTYPE_p_datamunge__graphics__DataSeries, 0 |  0 );
     if (!SWIG_IsOK(res1)) {
       SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "DataSeries_y_get" "', argument " "1"" of type '" "datamunge::graphics::DataSeries *""'"); 
     }
@@ -104102,7 +107699,7 @@ XS(_wrap_DataSeries_label_set) {
     if ((items < 2) || (items > 2)) {
       SWIG_croak("Usage: DataSeries_label_set(self,label);");
     }
-    res1 = SWIG_ConvertPtr(ST(0), &argp1,SWIGTYPE_p_datamunge__plot__DataSeries, 0 |  0 );
+    res1 = SWIG_ConvertPtr(ST(0), &argp1,SWIGTYPE_p_datamunge__graphics__DataSeries, 0 |  0 );
     if (!SWIG_IsOK(res1)) {
       SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "DataSeries_label_set" "', argument " "1"" of type '" "datamunge::graphics::DataSeries *""'"); 
     }
@@ -104143,7 +107740,7 @@ XS(_wrap_DataSeries_label_get) {
     if ((items < 1) || (items > 1)) {
       SWIG_croak("Usage: DataSeries_label_get(self);");
     }
-    res1 = SWIG_ConvertPtr(ST(0), &argp1,SWIGTYPE_p_datamunge__plot__DataSeries, 0 |  0 );
+    res1 = SWIG_ConvertPtr(ST(0), &argp1,SWIGTYPE_p_datamunge__graphics__DataSeries, 0 |  0 );
     if (!SWIG_IsOK(res1)) {
       SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "DataSeries_label_get" "', argument " "1"" of type '" "datamunge::graphics::DataSeries *""'"); 
     }
@@ -104162,7 +107759,7 @@ XS(_wrap_DataSeries_label_get) {
 XS(_wrap_DataSeries_color_set) {
   {
     datamunge::graphics::DataSeries *arg1 = 0 ;
-    datamunge::graphics::RGB *arg2 = 0 ;
+    datamunge::graphics::RGBA *arg2 = 0 ;
     void *argp1 = 0 ;
     int res1 = 0 ;
     void *argp2 = 0 ;
@@ -104173,16 +107770,16 @@ XS(_wrap_DataSeries_color_set) {
     if ((items < 2) || (items > 2)) {
       SWIG_croak("Usage: DataSeries_color_set(self,color);");
     }
-    res1 = SWIG_ConvertPtr(ST(0), &argp1,SWIGTYPE_p_datamunge__plot__DataSeries, 0 |  0 );
+    res1 = SWIG_ConvertPtr(ST(0), &argp1,SWIGTYPE_p_datamunge__graphics__DataSeries, 0 |  0 );
     if (!SWIG_IsOK(res1)) {
       SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "DataSeries_color_set" "', argument " "1"" of type '" "datamunge::graphics::DataSeries *""'"); 
     }
     arg1 = reinterpret_cast< datamunge::graphics::DataSeries * >(argp1);
-    res2 = SWIG_ConvertPtr(ST(1), &argp2,SWIGTYPE_p_datamunge__plot__RGB, 0 |  0 );
+    res2 = SWIG_ConvertPtr(ST(1), &argp2,SWIGTYPE_p_datamunge__graphics__RGB, 0 |  0 );
     if (!SWIG_IsOK(res2)) {
-      SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "DataSeries_color_set" "', argument " "2"" of type '" "datamunge::graphics::RGB *""'"); 
+      SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "DataSeries_color_set" "', argument " "2"" of type '" "datamunge::graphics::RGBA *""'"); 
     }
-    arg2 = reinterpret_cast< datamunge::graphics::RGB * >(argp2);
+    arg2 = reinterpret_cast< datamunge::graphics::RGBA * >(argp2);
     if (arg1) (arg1)->color = *arg2;
     ST(argvi) = &PL_sv_undef;
     
@@ -104202,19 +107799,19 @@ XS(_wrap_DataSeries_color_get) {
     void *argp1 = 0 ;
     int res1 = 0 ;
     int argvi = 0;
-    datamunge::graphics::RGB *result = 0 ;
+    datamunge::graphics::RGBA *result = 0 ;
     dXSARGS;
     
     if ((items < 1) || (items > 1)) {
       SWIG_croak("Usage: DataSeries_color_get(self);");
     }
-    res1 = SWIG_ConvertPtr(ST(0), &argp1,SWIGTYPE_p_datamunge__plot__DataSeries, 0 |  0 );
+    res1 = SWIG_ConvertPtr(ST(0), &argp1,SWIGTYPE_p_datamunge__graphics__DataSeries, 0 |  0 );
     if (!SWIG_IsOK(res1)) {
       SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "DataSeries_color_get" "', argument " "1"" of type '" "datamunge::graphics::DataSeries *""'"); 
     }
     arg1 = reinterpret_cast< datamunge::graphics::DataSeries * >(argp1);
-    result = (datamunge::graphics::RGB *)& ((arg1)->color);
-    ST(argvi) = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__plot__RGB, 0 | SWIG_SHADOW); argvi++ ;
+    result = (datamunge::graphics::RGBA *)& ((arg1)->color);
+    ST(argvi) = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__graphics__RGB, 0 | SWIG_SHADOW); argvi++ ;
     
     XSRETURN(argvi);
     fail:;
@@ -104238,7 +107835,7 @@ XS(_wrap_DataSeries_stroke_width_set) {
     if ((items < 2) || (items > 2)) {
       SWIG_croak("Usage: DataSeries_stroke_width_set(self,stroke_width);");
     }
-    res1 = SWIG_ConvertPtr(ST(0), &argp1,SWIGTYPE_p_datamunge__plot__DataSeries, 0 |  0 );
+    res1 = SWIG_ConvertPtr(ST(0), &argp1,SWIGTYPE_p_datamunge__graphics__DataSeries, 0 |  0 );
     if (!SWIG_IsOK(res1)) {
       SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "DataSeries_stroke_width_set" "', argument " "1"" of type '" "datamunge::graphics::DataSeries *""'"); 
     }
@@ -104273,7 +107870,7 @@ XS(_wrap_DataSeries_stroke_width_get) {
     if ((items < 1) || (items > 1)) {
       SWIG_croak("Usage: DataSeries_stroke_width_get(self);");
     }
-    res1 = SWIG_ConvertPtr(ST(0), &argp1,SWIGTYPE_p_datamunge__plot__DataSeries, 0 |  0 );
+    res1 = SWIG_ConvertPtr(ST(0), &argp1,SWIGTYPE_p_datamunge__graphics__DataSeries, 0 |  0 );
     if (!SWIG_IsOK(res1)) {
       SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "DataSeries_stroke_width_get" "', argument " "1"" of type '" "datamunge::graphics::DataSeries *""'"); 
     }
@@ -104303,7 +107900,7 @@ XS(_wrap_DataSeries_marker_size_set) {
     if ((items < 2) || (items > 2)) {
       SWIG_croak("Usage: DataSeries_marker_size_set(self,marker_size);");
     }
-    res1 = SWIG_ConvertPtr(ST(0), &argp1,SWIGTYPE_p_datamunge__plot__DataSeries, 0 |  0 );
+    res1 = SWIG_ConvertPtr(ST(0), &argp1,SWIGTYPE_p_datamunge__graphics__DataSeries, 0 |  0 );
     if (!SWIG_IsOK(res1)) {
       SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "DataSeries_marker_size_set" "', argument " "1"" of type '" "datamunge::graphics::DataSeries *""'"); 
     }
@@ -104338,7 +107935,7 @@ XS(_wrap_DataSeries_marker_size_get) {
     if ((items < 1) || (items > 1)) {
       SWIG_croak("Usage: DataSeries_marker_size_get(self);");
     }
-    res1 = SWIG_ConvertPtr(ST(0), &argp1,SWIGTYPE_p_datamunge__plot__DataSeries, 0 |  0 );
+    res1 = SWIG_ConvertPtr(ST(0), &argp1,SWIGTYPE_p_datamunge__graphics__DataSeries, 0 |  0 );
     if (!SWIG_IsOK(res1)) {
       SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "DataSeries_marker_size_get" "', argument " "1"" of type '" "datamunge::graphics::DataSeries *""'"); 
     }
@@ -104368,7 +107965,7 @@ XS(_wrap_DataSeries_bar_width_set) {
     if ((items < 2) || (items > 2)) {
       SWIG_croak("Usage: DataSeries_bar_width_set(self,bar_width);");
     }
-    res1 = SWIG_ConvertPtr(ST(0), &argp1,SWIGTYPE_p_datamunge__plot__DataSeries, 0 |  0 );
+    res1 = SWIG_ConvertPtr(ST(0), &argp1,SWIGTYPE_p_datamunge__graphics__DataSeries, 0 |  0 );
     if (!SWIG_IsOK(res1)) {
       SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "DataSeries_bar_width_set" "', argument " "1"" of type '" "datamunge::graphics::DataSeries *""'"); 
     }
@@ -104403,7 +108000,7 @@ XS(_wrap_DataSeries_bar_width_get) {
     if ((items < 1) || (items > 1)) {
       SWIG_croak("Usage: DataSeries_bar_width_get(self);");
     }
-    res1 = SWIG_ConvertPtr(ST(0), &argp1,SWIGTYPE_p_datamunge__plot__DataSeries, 0 |  0 );
+    res1 = SWIG_ConvertPtr(ST(0), &argp1,SWIGTYPE_p_datamunge__graphics__DataSeries, 0 |  0 );
     if (!SWIG_IsOK(res1)) {
       SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "DataSeries_bar_width_get" "', argument " "1"" of type '" "datamunge::graphics::DataSeries *""'"); 
     }
@@ -104433,7 +108030,7 @@ XS(_wrap_DataSeries_filled_set) {
     if ((items < 2) || (items > 2)) {
       SWIG_croak("Usage: DataSeries_filled_set(self,filled);");
     }
-    res1 = SWIG_ConvertPtr(ST(0), &argp1,SWIGTYPE_p_datamunge__plot__DataSeries, 0 |  0 );
+    res1 = SWIG_ConvertPtr(ST(0), &argp1,SWIGTYPE_p_datamunge__graphics__DataSeries, 0 |  0 );
     if (!SWIG_IsOK(res1)) {
       SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "DataSeries_filled_set" "', argument " "1"" of type '" "datamunge::graphics::DataSeries *""'"); 
     }
@@ -104468,13 +108065,78 @@ XS(_wrap_DataSeries_filled_get) {
     if ((items < 1) || (items > 1)) {
       SWIG_croak("Usage: DataSeries_filled_get(self);");
     }
-    res1 = SWIG_ConvertPtr(ST(0), &argp1,SWIGTYPE_p_datamunge__plot__DataSeries, 0 |  0 );
+    res1 = SWIG_ConvertPtr(ST(0), &argp1,SWIGTYPE_p_datamunge__graphics__DataSeries, 0 |  0 );
     if (!SWIG_IsOK(res1)) {
       SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "DataSeries_filled_get" "', argument " "1"" of type '" "datamunge::graphics::DataSeries *""'"); 
     }
     arg1 = reinterpret_cast< datamunge::graphics::DataSeries * >(argp1);
     result = (bool) ((arg1)->filled);
     ST(argvi) = SWIG_From_bool  SWIG_PERL_CALL_ARGS_1(static_cast< bool >(result)); argvi++ ;
+    
+    XSRETURN(argvi);
+    fail:;
+    
+  }
+  SWIG_croak_null();
+}
+
+
+XS(_wrap_DataSeries_point_colors_set) {
+  {
+    datamunge::graphics::DataSeries *arg1 = 0 ;
+    std::vector< datamunge::graphics::RGBA > *arg2 = 0 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    void *argp2 = 0 ;
+    int res2 = 0 ;
+    int argvi = 0;
+    dXSARGS;
+    
+    if ((items < 2) || (items > 2)) {
+      SWIG_croak("Usage: DataSeries_point_colors_set(self,point_colors);");
+    }
+    res1 = SWIG_ConvertPtr(ST(0), &argp1,SWIGTYPE_p_datamunge__graphics__DataSeries, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "DataSeries_point_colors_set" "', argument " "1"" of type '" "datamunge::graphics::DataSeries *""'"); 
+    }
+    arg1 = reinterpret_cast< datamunge::graphics::DataSeries * >(argp1);
+    res2 = SWIG_ConvertPtr(ST(1), &argp2,SWIGTYPE_p_std__vectorT_datamunge__graphics__RGB_t, 0 |  0 );
+    if (!SWIG_IsOK(res2)) {
+      SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "DataSeries_point_colors_set" "', argument " "2"" of type '" "std::vector< datamunge::graphics::RGBA > *""'"); 
+    }
+    arg2 = reinterpret_cast< std::vector< datamunge::graphics::RGBA > * >(argp2);
+    if (arg1) (arg1)->point_colors = *arg2;
+    ST(argvi) = &PL_sv_undef;
+    
+    
+    XSRETURN(argvi);
+    fail:;
+    
+    
+  }
+  SWIG_croak_null();
+}
+
+
+XS(_wrap_DataSeries_point_colors_get) {
+  {
+    datamunge::graphics::DataSeries *arg1 = 0 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    int argvi = 0;
+    std::vector< datamunge::graphics::RGBA > *result = 0 ;
+    dXSARGS;
+    
+    if ((items < 1) || (items > 1)) {
+      SWIG_croak("Usage: DataSeries_point_colors_get(self);");
+    }
+    res1 = SWIG_ConvertPtr(ST(0), &argp1,SWIGTYPE_p_datamunge__graphics__DataSeries, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "DataSeries_point_colors_get" "', argument " "1"" of type '" "datamunge::graphics::DataSeries *""'"); 
+    }
+    arg1 = reinterpret_cast< datamunge::graphics::DataSeries * >(argp1);
+    result = (std::vector< datamunge::graphics::RGBA > *)& ((arg1)->point_colors);
+    ST(argvi) = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_std__vectorT_datamunge__graphics__RGB_t, 0 | 0); argvi++ ;
     
     XSRETURN(argvi);
     fail:;
@@ -104494,7 +108156,7 @@ XS(_wrap_new_DataSeries) {
       SWIG_croak("Usage: new_DataSeries();");
     }
     result = (datamunge::graphics::DataSeries *)new datamunge::graphics::DataSeries();
-    ST(argvi) = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__plot__DataSeries, SWIG_OWNER | SWIG_SHADOW); argvi++ ;
+    ST(argvi) = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__graphics__DataSeries, SWIG_OWNER | SWIG_SHADOW); argvi++ ;
     XSRETURN(argvi);
     fail:;
   }
@@ -104513,7 +108175,7 @@ XS(_wrap_delete_DataSeries) {
     if ((items < 1) || (items > 1)) {
       SWIG_croak("Usage: delete_DataSeries(self);");
     }
-    res1 = SWIG_ConvertPtr(ST(0), &argp1,SWIGTYPE_p_datamunge__plot__DataSeries, SWIG_POINTER_DISOWN |  0 );
+    res1 = SWIG_ConvertPtr(ST(0), &argp1,SWIGTYPE_p_datamunge__graphics__DataSeries, SWIG_POINTER_DISOWN |  0 );
     if (!SWIG_IsOK(res1)) {
       SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "delete_DataSeries" "', argument " "1"" of type '" "datamunge::graphics::DataSeries *""'"); 
     }
@@ -104543,7 +108205,7 @@ XS(_wrap_ABLine_vertical_set) {
     if ((items < 2) || (items > 2)) {
       SWIG_croak("Usage: ABLine_vertical_set(self,vertical);");
     }
-    res1 = SWIG_ConvertPtr(ST(0), &argp1,SWIGTYPE_p_datamunge__plot__ABLine, 0 |  0 );
+    res1 = SWIG_ConvertPtr(ST(0), &argp1,SWIGTYPE_p_datamunge__graphics__ABLine, 0 |  0 );
     if (!SWIG_IsOK(res1)) {
       SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "ABLine_vertical_set" "', argument " "1"" of type '" "datamunge::graphics::ABLine *""'"); 
     }
@@ -104578,7 +108240,7 @@ XS(_wrap_ABLine_vertical_get) {
     if ((items < 1) || (items > 1)) {
       SWIG_croak("Usage: ABLine_vertical_get(self);");
     }
-    res1 = SWIG_ConvertPtr(ST(0), &argp1,SWIGTYPE_p_datamunge__plot__ABLine, 0 |  0 );
+    res1 = SWIG_ConvertPtr(ST(0), &argp1,SWIGTYPE_p_datamunge__graphics__ABLine, 0 |  0 );
     if (!SWIG_IsOK(res1)) {
       SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "ABLine_vertical_get" "', argument " "1"" of type '" "datamunge::graphics::ABLine *""'"); 
     }
@@ -104608,7 +108270,7 @@ XS(_wrap_ABLine_value_set) {
     if ((items < 2) || (items > 2)) {
       SWIG_croak("Usage: ABLine_value_set(self,value);");
     }
-    res1 = SWIG_ConvertPtr(ST(0), &argp1,SWIGTYPE_p_datamunge__plot__ABLine, 0 |  0 );
+    res1 = SWIG_ConvertPtr(ST(0), &argp1,SWIGTYPE_p_datamunge__graphics__ABLine, 0 |  0 );
     if (!SWIG_IsOK(res1)) {
       SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "ABLine_value_set" "', argument " "1"" of type '" "datamunge::graphics::ABLine *""'"); 
     }
@@ -104643,7 +108305,7 @@ XS(_wrap_ABLine_value_get) {
     if ((items < 1) || (items > 1)) {
       SWIG_croak("Usage: ABLine_value_get(self);");
     }
-    res1 = SWIG_ConvertPtr(ST(0), &argp1,SWIGTYPE_p_datamunge__plot__ABLine, 0 |  0 );
+    res1 = SWIG_ConvertPtr(ST(0), &argp1,SWIGTYPE_p_datamunge__graphics__ABLine, 0 |  0 );
     if (!SWIG_IsOK(res1)) {
       SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "ABLine_value_get" "', argument " "1"" of type '" "datamunge::graphics::ABLine *""'"); 
     }
@@ -104673,7 +108335,7 @@ XS(_wrap_ABLine_slope_set) {
     if ((items < 2) || (items > 2)) {
       SWIG_croak("Usage: ABLine_slope_set(self,slope);");
     }
-    res1 = SWIG_ConvertPtr(ST(0), &argp1,SWIGTYPE_p_datamunge__plot__ABLine, 0 |  0 );
+    res1 = SWIG_ConvertPtr(ST(0), &argp1,SWIGTYPE_p_datamunge__graphics__ABLine, 0 |  0 );
     if (!SWIG_IsOK(res1)) {
       SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "ABLine_slope_set" "', argument " "1"" of type '" "datamunge::graphics::ABLine *""'"); 
     }
@@ -104708,7 +108370,7 @@ XS(_wrap_ABLine_slope_get) {
     if ((items < 1) || (items > 1)) {
       SWIG_croak("Usage: ABLine_slope_get(self);");
     }
-    res1 = SWIG_ConvertPtr(ST(0), &argp1,SWIGTYPE_p_datamunge__plot__ABLine, 0 |  0 );
+    res1 = SWIG_ConvertPtr(ST(0), &argp1,SWIGTYPE_p_datamunge__graphics__ABLine, 0 |  0 );
     if (!SWIG_IsOK(res1)) {
       SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "ABLine_slope_get" "', argument " "1"" of type '" "datamunge::graphics::ABLine *""'"); 
     }
@@ -104727,7 +108389,7 @@ XS(_wrap_ABLine_slope_get) {
 XS(_wrap_ABLine_color_set) {
   {
     datamunge::graphics::ABLine *arg1 = 0 ;
-    datamunge::graphics::RGB *arg2 = 0 ;
+    datamunge::graphics::RGBA *arg2 = 0 ;
     void *argp1 = 0 ;
     int res1 = 0 ;
     void *argp2 = 0 ;
@@ -104738,16 +108400,16 @@ XS(_wrap_ABLine_color_set) {
     if ((items < 2) || (items > 2)) {
       SWIG_croak("Usage: ABLine_color_set(self,color);");
     }
-    res1 = SWIG_ConvertPtr(ST(0), &argp1,SWIGTYPE_p_datamunge__plot__ABLine, 0 |  0 );
+    res1 = SWIG_ConvertPtr(ST(0), &argp1,SWIGTYPE_p_datamunge__graphics__ABLine, 0 |  0 );
     if (!SWIG_IsOK(res1)) {
       SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "ABLine_color_set" "', argument " "1"" of type '" "datamunge::graphics::ABLine *""'"); 
     }
     arg1 = reinterpret_cast< datamunge::graphics::ABLine * >(argp1);
-    res2 = SWIG_ConvertPtr(ST(1), &argp2,SWIGTYPE_p_datamunge__plot__RGB, 0 |  0 );
+    res2 = SWIG_ConvertPtr(ST(1), &argp2,SWIGTYPE_p_datamunge__graphics__RGB, 0 |  0 );
     if (!SWIG_IsOK(res2)) {
-      SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "ABLine_color_set" "', argument " "2"" of type '" "datamunge::graphics::RGB *""'"); 
+      SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "ABLine_color_set" "', argument " "2"" of type '" "datamunge::graphics::RGBA *""'"); 
     }
-    arg2 = reinterpret_cast< datamunge::graphics::RGB * >(argp2);
+    arg2 = reinterpret_cast< datamunge::graphics::RGBA * >(argp2);
     if (arg1) (arg1)->color = *arg2;
     ST(argvi) = &PL_sv_undef;
     
@@ -104767,19 +108429,19 @@ XS(_wrap_ABLine_color_get) {
     void *argp1 = 0 ;
     int res1 = 0 ;
     int argvi = 0;
-    datamunge::graphics::RGB *result = 0 ;
+    datamunge::graphics::RGBA *result = 0 ;
     dXSARGS;
     
     if ((items < 1) || (items > 1)) {
       SWIG_croak("Usage: ABLine_color_get(self);");
     }
-    res1 = SWIG_ConvertPtr(ST(0), &argp1,SWIGTYPE_p_datamunge__plot__ABLine, 0 |  0 );
+    res1 = SWIG_ConvertPtr(ST(0), &argp1,SWIGTYPE_p_datamunge__graphics__ABLine, 0 |  0 );
     if (!SWIG_IsOK(res1)) {
       SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "ABLine_color_get" "', argument " "1"" of type '" "datamunge::graphics::ABLine *""'"); 
     }
     arg1 = reinterpret_cast< datamunge::graphics::ABLine * >(argp1);
-    result = (datamunge::graphics::RGB *)& ((arg1)->color);
-    ST(argvi) = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__plot__RGB, 0 | SWIG_SHADOW); argvi++ ;
+    result = (datamunge::graphics::RGBA *)& ((arg1)->color);
+    ST(argvi) = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__graphics__RGB, 0 | SWIG_SHADOW); argvi++ ;
     
     XSRETURN(argvi);
     fail:;
@@ -104803,7 +108465,7 @@ XS(_wrap_ABLine_stroke_width_set) {
     if ((items < 2) || (items > 2)) {
       SWIG_croak("Usage: ABLine_stroke_width_set(self,stroke_width);");
     }
-    res1 = SWIG_ConvertPtr(ST(0), &argp1,SWIGTYPE_p_datamunge__plot__ABLine, 0 |  0 );
+    res1 = SWIG_ConvertPtr(ST(0), &argp1,SWIGTYPE_p_datamunge__graphics__ABLine, 0 |  0 );
     if (!SWIG_IsOK(res1)) {
       SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "ABLine_stroke_width_set" "', argument " "1"" of type '" "datamunge::graphics::ABLine *""'"); 
     }
@@ -104838,7 +108500,7 @@ XS(_wrap_ABLine_stroke_width_get) {
     if ((items < 1) || (items > 1)) {
       SWIG_croak("Usage: ABLine_stroke_width_get(self);");
     }
-    res1 = SWIG_ConvertPtr(ST(0), &argp1,SWIGTYPE_p_datamunge__plot__ABLine, 0 |  0 );
+    res1 = SWIG_ConvertPtr(ST(0), &argp1,SWIGTYPE_p_datamunge__graphics__ABLine, 0 |  0 );
     if (!SWIG_IsOK(res1)) {
       SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "ABLine_stroke_width_get" "', argument " "1"" of type '" "datamunge::graphics::ABLine *""'"); 
     }
@@ -104864,7 +108526,7 @@ XS(_wrap_new_ABLine) {
       SWIG_croak("Usage: new_ABLine();");
     }
     result = (datamunge::graphics::ABLine *)new datamunge::graphics::ABLine();
-    ST(argvi) = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__plot__ABLine, SWIG_OWNER | SWIG_SHADOW); argvi++ ;
+    ST(argvi) = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__graphics__ABLine, SWIG_OWNER | SWIG_SHADOW); argvi++ ;
     XSRETURN(argvi);
     fail:;
   }
@@ -104883,7 +108545,7 @@ XS(_wrap_delete_ABLine) {
     if ((items < 1) || (items > 1)) {
       SWIG_croak("Usage: delete_ABLine(self);");
     }
-    res1 = SWIG_ConvertPtr(ST(0), &argp1,SWIGTYPE_p_datamunge__plot__ABLine, SWIG_POINTER_DISOWN |  0 );
+    res1 = SWIG_ConvertPtr(ST(0), &argp1,SWIGTYPE_p_datamunge__graphics__ABLine, SWIG_POINTER_DISOWN |  0 );
     if (!SWIG_IsOK(res1)) {
       SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "delete_ABLine" "', argument " "1"" of type '" "datamunge::graphics::ABLine *""'"); 
     }
@@ -104912,7 +108574,7 @@ XS(_wrap_LegendEntry_label_set) {
     if ((items < 2) || (items > 2)) {
       SWIG_croak("Usage: LegendEntry_label_set(self,label);");
     }
-    res1 = SWIG_ConvertPtr(ST(0), &argp1,SWIGTYPE_p_datamunge__plot__LegendEntry, 0 |  0 );
+    res1 = SWIG_ConvertPtr(ST(0), &argp1,SWIGTYPE_p_datamunge__graphics__LegendEntry, 0 |  0 );
     if (!SWIG_IsOK(res1)) {
       SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "LegendEntry_label_set" "', argument " "1"" of type '" "datamunge::graphics::LegendEntry *""'"); 
     }
@@ -104953,7 +108615,7 @@ XS(_wrap_LegendEntry_label_get) {
     if ((items < 1) || (items > 1)) {
       SWIG_croak("Usage: LegendEntry_label_get(self);");
     }
-    res1 = SWIG_ConvertPtr(ST(0), &argp1,SWIGTYPE_p_datamunge__plot__LegendEntry, 0 |  0 );
+    res1 = SWIG_ConvertPtr(ST(0), &argp1,SWIGTYPE_p_datamunge__graphics__LegendEntry, 0 |  0 );
     if (!SWIG_IsOK(res1)) {
       SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "LegendEntry_label_get" "', argument " "1"" of type '" "datamunge::graphics::LegendEntry *""'"); 
     }
@@ -104972,7 +108634,7 @@ XS(_wrap_LegendEntry_label_get) {
 XS(_wrap_LegendEntry_color_set) {
   {
     datamunge::graphics::LegendEntry *arg1 = 0 ;
-    datamunge::graphics::RGB *arg2 = 0 ;
+    datamunge::graphics::RGBA *arg2 = 0 ;
     void *argp1 = 0 ;
     int res1 = 0 ;
     void *argp2 = 0 ;
@@ -104983,16 +108645,16 @@ XS(_wrap_LegendEntry_color_set) {
     if ((items < 2) || (items > 2)) {
       SWIG_croak("Usage: LegendEntry_color_set(self,color);");
     }
-    res1 = SWIG_ConvertPtr(ST(0), &argp1,SWIGTYPE_p_datamunge__plot__LegendEntry, 0 |  0 );
+    res1 = SWIG_ConvertPtr(ST(0), &argp1,SWIGTYPE_p_datamunge__graphics__LegendEntry, 0 |  0 );
     if (!SWIG_IsOK(res1)) {
       SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "LegendEntry_color_set" "', argument " "1"" of type '" "datamunge::graphics::LegendEntry *""'"); 
     }
     arg1 = reinterpret_cast< datamunge::graphics::LegendEntry * >(argp1);
-    res2 = SWIG_ConvertPtr(ST(1), &argp2,SWIGTYPE_p_datamunge__plot__RGB, 0 |  0 );
+    res2 = SWIG_ConvertPtr(ST(1), &argp2,SWIGTYPE_p_datamunge__graphics__RGB, 0 |  0 );
     if (!SWIG_IsOK(res2)) {
-      SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "LegendEntry_color_set" "', argument " "2"" of type '" "datamunge::graphics::RGB *""'"); 
+      SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "LegendEntry_color_set" "', argument " "2"" of type '" "datamunge::graphics::RGBA *""'"); 
     }
-    arg2 = reinterpret_cast< datamunge::graphics::RGB * >(argp2);
+    arg2 = reinterpret_cast< datamunge::graphics::RGBA * >(argp2);
     if (arg1) (arg1)->color = *arg2;
     ST(argvi) = &PL_sv_undef;
     
@@ -105012,19 +108674,19 @@ XS(_wrap_LegendEntry_color_get) {
     void *argp1 = 0 ;
     int res1 = 0 ;
     int argvi = 0;
-    datamunge::graphics::RGB *result = 0 ;
+    datamunge::graphics::RGBA *result = 0 ;
     dXSARGS;
     
     if ((items < 1) || (items > 1)) {
       SWIG_croak("Usage: LegendEntry_color_get(self);");
     }
-    res1 = SWIG_ConvertPtr(ST(0), &argp1,SWIGTYPE_p_datamunge__plot__LegendEntry, 0 |  0 );
+    res1 = SWIG_ConvertPtr(ST(0), &argp1,SWIGTYPE_p_datamunge__graphics__LegendEntry, 0 |  0 );
     if (!SWIG_IsOK(res1)) {
       SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "LegendEntry_color_get" "', argument " "1"" of type '" "datamunge::graphics::LegendEntry *""'"); 
     }
     arg1 = reinterpret_cast< datamunge::graphics::LegendEntry * >(argp1);
-    result = (datamunge::graphics::RGB *)& ((arg1)->color);
-    ST(argvi) = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__plot__RGB, 0 | SWIG_SHADOW); argvi++ ;
+    result = (datamunge::graphics::RGBA *)& ((arg1)->color);
+    ST(argvi) = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__graphics__RGB, 0 | SWIG_SHADOW); argvi++ ;
     
     XSRETURN(argvi);
     fail:;
@@ -105044,7 +108706,7 @@ XS(_wrap_new_LegendEntry) {
       SWIG_croak("Usage: new_LegendEntry();");
     }
     result = (datamunge::graphics::LegendEntry *)new datamunge::graphics::LegendEntry();
-    ST(argvi) = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__plot__LegendEntry, SWIG_OWNER | SWIG_SHADOW); argvi++ ;
+    ST(argvi) = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__graphics__LegendEntry, SWIG_OWNER | SWIG_SHADOW); argvi++ ;
     XSRETURN(argvi);
     fail:;
   }
@@ -105063,7 +108725,7 @@ XS(_wrap_delete_LegendEntry) {
     if ((items < 1) || (items > 1)) {
       SWIG_croak("Usage: delete_LegendEntry(self);");
     }
-    res1 = SWIG_ConvertPtr(ST(0), &argp1,SWIGTYPE_p_datamunge__plot__LegendEntry, SWIG_POINTER_DISOWN |  0 );
+    res1 = SWIG_ConvertPtr(ST(0), &argp1,SWIGTYPE_p_datamunge__graphics__LegendEntry, SWIG_POINTER_DISOWN |  0 );
     if (!SWIG_IsOK(res1)) {
       SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "delete_LegendEntry" "', argument " "1"" of type '" "datamunge::graphics::LegendEntry *""'"); 
     }
@@ -105090,7 +108752,7 @@ XS(_wrap_delete_Plot) {
     if ((items < 1) || (items > 1)) {
       SWIG_croak("Usage: delete_Plot(self);");
     }
-    res1 = SWIG_ConvertPtr(ST(0), &argp1,SWIGTYPE_p_datamunge__plot__Plot, SWIG_POINTER_DISOWN |  0 );
+    res1 = SWIG_ConvertPtr(ST(0), &argp1,SWIGTYPE_p_datamunge__graphics__Plot, SWIG_POINTER_DISOWN |  0 );
     if (!SWIG_IsOK(res1)) {
       SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "delete_Plot" "', argument " "1"" of type '" "datamunge::graphics::Plot *""'"); 
     }
@@ -105124,7 +108786,7 @@ XS(_wrap_Plot_size) {
     if ((items < 3) || (items > 3)) {
       SWIG_croak("Usage: Plot_size(self,width,height);");
     }
-    res1 = SWIG_ConvertPtr(ST(0), &argp1,SWIGTYPE_p_datamunge__plot__Plot, 0 |  0 );
+    res1 = SWIG_ConvertPtr(ST(0), &argp1,SWIGTYPE_p_datamunge__graphics__Plot, 0 |  0 );
     if (!SWIG_IsOK(res1)) {
       SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "Plot_size" "', argument " "1"" of type '" "datamunge::graphics::Plot *""'"); 
     }
@@ -105140,7 +108802,7 @@ XS(_wrap_Plot_size) {
     } 
     arg3 = static_cast< std::size_t >(val3);
     result = (datamunge::graphics::Plot *) &(arg1)->size(SWIG_STD_MOVE(*(&arg2)),SWIG_STD_MOVE(*(&arg3)));
-    ST(argvi) = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__plot__Plot, 0 | SWIG_SHADOW); argvi++ ;
+    ST(argvi) = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__graphics__Plot, 0 | SWIG_SHADOW); argvi++ ;
     
     
     
@@ -105167,7 +108829,7 @@ XS(_wrap_Plot_title) {
     if ((items < 2) || (items > 2)) {
       SWIG_croak("Usage: Plot_title(self,value);");
     }
-    res1 = SWIG_ConvertPtr(ST(0), &argp1,SWIGTYPE_p_datamunge__plot__Plot, 0 |  0 );
+    res1 = SWIG_ConvertPtr(ST(0), &argp1,SWIGTYPE_p_datamunge__graphics__Plot, 0 |  0 );
     if (!SWIG_IsOK(res1)) {
       SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "Plot_title" "', argument " "1"" of type '" "datamunge::graphics::Plot *""'"); 
     }
@@ -105182,7 +108844,47 @@ XS(_wrap_Plot_title) {
       if (SWIG_IsNewObj(res)) delete ptr;
     }
     result = (datamunge::graphics::Plot *) &(arg1)->title(SWIG_STD_MOVE(*(&arg2)));
-    ST(argvi) = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__plot__Plot, 0 | SWIG_SHADOW); argvi++ ;
+    ST(argvi) = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__graphics__Plot, 0 | SWIG_SHADOW); argvi++ ;
+    
+    
+    XSRETURN(argvi);
+    fail:;
+    
+    
+  }
+  SWIG_croak_null();
+}
+
+
+XS(_wrap_Plot_subtitle) {
+  {
+    datamunge::graphics::Plot *arg1 = 0 ;
+    std::string arg2 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    int argvi = 0;
+    datamunge::graphics::Plot *result = 0 ;
+    dXSARGS;
+    
+    if ((items < 2) || (items > 2)) {
+      SWIG_croak("Usage: Plot_subtitle(self,value);");
+    }
+    res1 = SWIG_ConvertPtr(ST(0), &argp1,SWIGTYPE_p_datamunge__graphics__Plot, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "Plot_subtitle" "', argument " "1"" of type '" "datamunge::graphics::Plot *""'"); 
+    }
+    arg1 = reinterpret_cast< datamunge::graphics::Plot * >(argp1);
+    {
+      std::string *ptr = (std::string *)0;
+      int res = SWIG_AsPtr_std_string SWIG_PERL_CALL_ARGS_2(ST(1), &ptr);
+      if (!SWIG_IsOK(res) || !ptr) {
+        SWIG_exception_fail(SWIG_ArgError((ptr ? res : SWIG_TypeError)), "in method '" "Plot_subtitle" "', argument " "2"" of type '" "std::string""'"); 
+      }
+      arg2 = *ptr;
+      if (SWIG_IsNewObj(res)) delete ptr;
+    }
+    result = (datamunge::graphics::Plot *) &(arg1)->subtitle(SWIG_STD_MOVE(*(&arg2)));
+    ST(argvi) = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__graphics__Plot, 0 | SWIG_SHADOW); argvi++ ;
     
     
     XSRETURN(argvi);
@@ -105207,7 +108909,7 @@ XS(_wrap_Plot_x_label) {
     if ((items < 2) || (items > 2)) {
       SWIG_croak("Usage: Plot_x_label(self,value);");
     }
-    res1 = SWIG_ConvertPtr(ST(0), &argp1,SWIGTYPE_p_datamunge__plot__Plot, 0 |  0 );
+    res1 = SWIG_ConvertPtr(ST(0), &argp1,SWIGTYPE_p_datamunge__graphics__Plot, 0 |  0 );
     if (!SWIG_IsOK(res1)) {
       SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "Plot_x_label" "', argument " "1"" of type '" "datamunge::graphics::Plot *""'"); 
     }
@@ -105222,7 +108924,7 @@ XS(_wrap_Plot_x_label) {
       if (SWIG_IsNewObj(res)) delete ptr;
     }
     result = (datamunge::graphics::Plot *) &(arg1)->x_label(SWIG_STD_MOVE(*(&arg2)));
-    ST(argvi) = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__plot__Plot, 0 | SWIG_SHADOW); argvi++ ;
+    ST(argvi) = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__graphics__Plot, 0 | SWIG_SHADOW); argvi++ ;
     
     
     XSRETURN(argvi);
@@ -105247,7 +108949,7 @@ XS(_wrap_Plot_y_label) {
     if ((items < 2) || (items > 2)) {
       SWIG_croak("Usage: Plot_y_label(self,value);");
     }
-    res1 = SWIG_ConvertPtr(ST(0), &argp1,SWIGTYPE_p_datamunge__plot__Plot, 0 |  0 );
+    res1 = SWIG_ConvertPtr(ST(0), &argp1,SWIGTYPE_p_datamunge__graphics__Plot, 0 |  0 );
     if (!SWIG_IsOK(res1)) {
       SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "Plot_y_label" "', argument " "1"" of type '" "datamunge::graphics::Plot *""'"); 
     }
@@ -105262,7 +108964,7 @@ XS(_wrap_Plot_y_label) {
       if (SWIG_IsNewObj(res)) delete ptr;
     }
     result = (datamunge::graphics::Plot *) &(arg1)->y_label(SWIG_STD_MOVE(*(&arg2)));
-    ST(argvi) = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__plot__Plot, 0 | SWIG_SHADOW); argvi++ ;
+    ST(argvi) = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__graphics__Plot, 0 | SWIG_SHADOW); argvi++ ;
     
     
     XSRETURN(argvi);
@@ -105277,7 +108979,7 @@ XS(_wrap_Plot_y_label) {
 XS(_wrap_Plot_background) {
   {
     datamunge::graphics::Plot *arg1 = 0 ;
-    SwigValueWrapper< datamunge::graphics::RGB > arg2 ;
+    datamunge::graphics::RGBA arg2 ;
     void *argp1 = 0 ;
     int res1 = 0 ;
     void *argp2 = 0 ;
@@ -105289,24 +108991,24 @@ XS(_wrap_Plot_background) {
     if ((items < 2) || (items > 2)) {
       SWIG_croak("Usage: Plot_background(self,color);");
     }
-    res1 = SWIG_ConvertPtr(ST(0), &argp1,SWIGTYPE_p_datamunge__plot__Plot, 0 |  0 );
+    res1 = SWIG_ConvertPtr(ST(0), &argp1,SWIGTYPE_p_datamunge__graphics__Plot, 0 |  0 );
     if (!SWIG_IsOK(res1)) {
       SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "Plot_background" "', argument " "1"" of type '" "datamunge::graphics::Plot *""'"); 
     }
     arg1 = reinterpret_cast< datamunge::graphics::Plot * >(argp1);
     {
-      res2 = SWIG_ConvertPtr(ST(1), &argp2, SWIGTYPE_p_datamunge__plot__RGB,  0 );
+      res2 = SWIG_ConvertPtr(ST(1), &argp2, SWIGTYPE_p_datamunge__graphics__RGB,  0 );
       if (!SWIG_IsOK(res2)) {
-        SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "Plot_background" "', argument " "2"" of type '" "datamunge::graphics::RGB""'"); 
+        SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "Plot_background" "', argument " "2"" of type '" "datamunge::graphics::RGBA""'"); 
       }  
       if (!argp2) {
-        SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "Plot_background" "', argument " "2"" of type '" "datamunge::graphics::RGB""'");
+        SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "Plot_background" "', argument " "2"" of type '" "datamunge::graphics::RGBA""'");
       } else {
-        arg2 = *(reinterpret_cast< datamunge::graphics::RGB * >(argp2));
+        arg2 = *(reinterpret_cast< datamunge::graphics::RGBA * >(argp2));
       }
     }
     result = (datamunge::graphics::Plot *) &(arg1)->background(SWIG_STD_MOVE(*(&arg2)));
-    ST(argvi) = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__plot__Plot, 0 | SWIG_SHADOW); argvi++ ;
+    ST(argvi) = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__graphics__Plot, 0 | SWIG_SHADOW); argvi++ ;
     
     XSRETURN(argvi);
     fail:;
@@ -105319,7 +109021,7 @@ XS(_wrap_Plot_background) {
 XS(_wrap_Plot_axis_color) {
   {
     datamunge::graphics::Plot *arg1 = 0 ;
-    SwigValueWrapper< datamunge::graphics::RGB > arg2 ;
+    datamunge::graphics::RGBA arg2 ;
     void *argp1 = 0 ;
     int res1 = 0 ;
     void *argp2 = 0 ;
@@ -105331,24 +109033,24 @@ XS(_wrap_Plot_axis_color) {
     if ((items < 2) || (items > 2)) {
       SWIG_croak("Usage: Plot_axis_color(self,color);");
     }
-    res1 = SWIG_ConvertPtr(ST(0), &argp1,SWIGTYPE_p_datamunge__plot__Plot, 0 |  0 );
+    res1 = SWIG_ConvertPtr(ST(0), &argp1,SWIGTYPE_p_datamunge__graphics__Plot, 0 |  0 );
     if (!SWIG_IsOK(res1)) {
       SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "Plot_axis_color" "', argument " "1"" of type '" "datamunge::graphics::Plot *""'"); 
     }
     arg1 = reinterpret_cast< datamunge::graphics::Plot * >(argp1);
     {
-      res2 = SWIG_ConvertPtr(ST(1), &argp2, SWIGTYPE_p_datamunge__plot__RGB,  0 );
+      res2 = SWIG_ConvertPtr(ST(1), &argp2, SWIGTYPE_p_datamunge__graphics__RGB,  0 );
       if (!SWIG_IsOK(res2)) {
-        SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "Plot_axis_color" "', argument " "2"" of type '" "datamunge::graphics::RGB""'"); 
+        SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "Plot_axis_color" "', argument " "2"" of type '" "datamunge::graphics::RGBA""'"); 
       }  
       if (!argp2) {
-        SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "Plot_axis_color" "', argument " "2"" of type '" "datamunge::graphics::RGB""'");
+        SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "Plot_axis_color" "', argument " "2"" of type '" "datamunge::graphics::RGBA""'");
       } else {
-        arg2 = *(reinterpret_cast< datamunge::graphics::RGB * >(argp2));
+        arg2 = *(reinterpret_cast< datamunge::graphics::RGBA * >(argp2));
       }
     }
     result = (datamunge::graphics::Plot *) &(arg1)->axis_color(SWIG_STD_MOVE(*(&arg2)));
-    ST(argvi) = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__plot__Plot, 0 | SWIG_SHADOW); argvi++ ;
+    ST(argvi) = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__graphics__Plot, 0 | SWIG_SHADOW); argvi++ ;
     
     XSRETURN(argvi);
     fail:;
@@ -105361,7 +109063,7 @@ XS(_wrap_Plot_axis_color) {
 XS(_wrap_Plot_grid_color) {
   {
     datamunge::graphics::Plot *arg1 = 0 ;
-    SwigValueWrapper< datamunge::graphics::RGB > arg2 ;
+    datamunge::graphics::RGBA arg2 ;
     void *argp1 = 0 ;
     int res1 = 0 ;
     void *argp2 = 0 ;
@@ -105373,24 +109075,24 @@ XS(_wrap_Plot_grid_color) {
     if ((items < 2) || (items > 2)) {
       SWIG_croak("Usage: Plot_grid_color(self,color);");
     }
-    res1 = SWIG_ConvertPtr(ST(0), &argp1,SWIGTYPE_p_datamunge__plot__Plot, 0 |  0 );
+    res1 = SWIG_ConvertPtr(ST(0), &argp1,SWIGTYPE_p_datamunge__graphics__Plot, 0 |  0 );
     if (!SWIG_IsOK(res1)) {
       SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "Plot_grid_color" "', argument " "1"" of type '" "datamunge::graphics::Plot *""'"); 
     }
     arg1 = reinterpret_cast< datamunge::graphics::Plot * >(argp1);
     {
-      res2 = SWIG_ConvertPtr(ST(1), &argp2, SWIGTYPE_p_datamunge__plot__RGB,  0 );
+      res2 = SWIG_ConvertPtr(ST(1), &argp2, SWIGTYPE_p_datamunge__graphics__RGB,  0 );
       if (!SWIG_IsOK(res2)) {
-        SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "Plot_grid_color" "', argument " "2"" of type '" "datamunge::graphics::RGB""'"); 
+        SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "Plot_grid_color" "', argument " "2"" of type '" "datamunge::graphics::RGBA""'"); 
       }  
       if (!argp2) {
-        SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "Plot_grid_color" "', argument " "2"" of type '" "datamunge::graphics::RGB""'");
+        SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "Plot_grid_color" "', argument " "2"" of type '" "datamunge::graphics::RGBA""'");
       } else {
-        arg2 = *(reinterpret_cast< datamunge::graphics::RGB * >(argp2));
+        arg2 = *(reinterpret_cast< datamunge::graphics::RGBA * >(argp2));
       }
     }
     result = (datamunge::graphics::Plot *) &(arg1)->grid_color(SWIG_STD_MOVE(*(&arg2)));
-    ST(argvi) = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__plot__Plot, 0 | SWIG_SHADOW); argvi++ ;
+    ST(argvi) = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__graphics__Plot, 0 | SWIG_SHADOW); argvi++ ;
     
     XSRETURN(argvi);
     fail:;
@@ -105415,7 +109117,7 @@ XS(_wrap_Plot_show_grid__SWIG_0) {
     if ((items < 2) || (items > 2)) {
       SWIG_croak("Usage: Plot_show_grid(self,enabled);");
     }
-    res1 = SWIG_ConvertPtr(ST(0), &argp1,SWIGTYPE_p_datamunge__plot__Plot, 0 |  0 );
+    res1 = SWIG_ConvertPtr(ST(0), &argp1,SWIGTYPE_p_datamunge__graphics__Plot, 0 |  0 );
     if (!SWIG_IsOK(res1)) {
       SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "Plot_show_grid" "', argument " "1"" of type '" "datamunge::graphics::Plot *""'"); 
     }
@@ -105426,7 +109128,7 @@ XS(_wrap_Plot_show_grid__SWIG_0) {
     } 
     arg2 = static_cast< bool >(val2);
     result = (datamunge::graphics::Plot *) &(arg1)->show_grid(arg2);
-    ST(argvi) = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__plot__Plot, 0 | SWIG_SHADOW); argvi++ ;
+    ST(argvi) = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__graphics__Plot, 0 | SWIG_SHADOW); argvi++ ;
     
     
     XSRETURN(argvi);
@@ -105450,13 +109152,13 @@ XS(_wrap_Plot_show_grid__SWIG_1) {
     if ((items < 1) || (items > 1)) {
       SWIG_croak("Usage: Plot_show_grid(self);");
     }
-    res1 = SWIG_ConvertPtr(ST(0), &argp1,SWIGTYPE_p_datamunge__plot__Plot, 0 |  0 );
+    res1 = SWIG_ConvertPtr(ST(0), &argp1,SWIGTYPE_p_datamunge__graphics__Plot, 0 |  0 );
     if (!SWIG_IsOK(res1)) {
       SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "Plot_show_grid" "', argument " "1"" of type '" "datamunge::graphics::Plot *""'"); 
     }
     arg1 = reinterpret_cast< datamunge::graphics::Plot * >(argp1);
     result = (datamunge::graphics::Plot *) &(arg1)->show_grid();
-    ST(argvi) = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__plot__Plot, 0 | SWIG_SHADOW); argvi++ ;
+    ST(argvi) = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__graphics__Plot, 0 | SWIG_SHADOW); argvi++ ;
     
     XSRETURN(argvi);
     fail:;
@@ -105479,7 +109181,7 @@ XS(_wrap_Plot_show_grid) {
       int _v = 0;
       {
         void *vptr = 0;
-        int res = SWIG_ConvertPtr(ST(0), &vptr, SWIGTYPE_p_datamunge__plot__Plot, 0);
+        int res = SWIG_ConvertPtr(ST(0), &vptr, SWIGTYPE_p_datamunge__graphics__Plot, 0);
         _v = SWIG_CheckState(res);
       }
       if (!_v) goto check_1;
@@ -105500,7 +109202,7 @@ XS(_wrap_Plot_show_grid) {
       int _v = 0;
       {
         void *vptr = 0;
-        int res = SWIG_ConvertPtr(ST(0), &vptr, SWIGTYPE_p_datamunge__plot__Plot, 0);
+        int res = SWIG_ConvertPtr(ST(0), &vptr, SWIGTYPE_p_datamunge__graphics__Plot, 0);
         _v = SWIG_CheckState(res);
       }
       if (!_v) goto check_2;
@@ -105556,7 +109258,7 @@ XS(_wrap_Plot_x_limits) {
     if ((items < 3) || (items > 3)) {
       SWIG_croak("Usage: Plot_x_limits(self,min_x,max_x);");
     }
-    res1 = SWIG_ConvertPtr(ST(0), &argp1,SWIGTYPE_p_datamunge__plot__Plot, 0 |  0 );
+    res1 = SWIG_ConvertPtr(ST(0), &argp1,SWIGTYPE_p_datamunge__graphics__Plot, 0 |  0 );
     if (!SWIG_IsOK(res1)) {
       SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "Plot_x_limits" "', argument " "1"" of type '" "datamunge::graphics::Plot *""'"); 
     }
@@ -105572,7 +109274,7 @@ XS(_wrap_Plot_x_limits) {
     } 
     arg3 = static_cast< double >(val3);
     result = (datamunge::graphics::Plot *) &(arg1)->x_limits(arg2,arg3);
-    ST(argvi) = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__plot__Plot, 0 | SWIG_SHADOW); argvi++ ;
+    ST(argvi) = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__graphics__Plot, 0 | SWIG_SHADOW); argvi++ ;
     
     
     
@@ -105604,7 +109306,7 @@ XS(_wrap_Plot_y_limits) {
     if ((items < 3) || (items > 3)) {
       SWIG_croak("Usage: Plot_y_limits(self,min_y,max_y);");
     }
-    res1 = SWIG_ConvertPtr(ST(0), &argp1,SWIGTYPE_p_datamunge__plot__Plot, 0 |  0 );
+    res1 = SWIG_ConvertPtr(ST(0), &argp1,SWIGTYPE_p_datamunge__graphics__Plot, 0 |  0 );
     if (!SWIG_IsOK(res1)) {
       SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "Plot_y_limits" "', argument " "1"" of type '" "datamunge::graphics::Plot *""'"); 
     }
@@ -105620,7 +109322,7 @@ XS(_wrap_Plot_y_limits) {
     } 
     arg3 = static_cast< double >(val3);
     result = (datamunge::graphics::Plot *) &(arg1)->y_limits(arg2,arg3);
-    ST(argvi) = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__plot__Plot, 0 | SWIG_SHADOW); argvi++ ;
+    ST(argvi) = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__graphics__Plot, 0 | SWIG_SHADOW); argvi++ ;
     
     
     
@@ -105649,7 +109351,7 @@ XS(_wrap_Plot_hide_axes__SWIG_0) {
     if ((items < 2) || (items > 2)) {
       SWIG_croak("Usage: Plot_hide_axes(self,enabled);");
     }
-    res1 = SWIG_ConvertPtr(ST(0), &argp1,SWIGTYPE_p_datamunge__plot__Plot, 0 |  0 );
+    res1 = SWIG_ConvertPtr(ST(0), &argp1,SWIGTYPE_p_datamunge__graphics__Plot, 0 |  0 );
     if (!SWIG_IsOK(res1)) {
       SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "Plot_hide_axes" "', argument " "1"" of type '" "datamunge::graphics::Plot *""'"); 
     }
@@ -105660,7 +109362,7 @@ XS(_wrap_Plot_hide_axes__SWIG_0) {
     } 
     arg2 = static_cast< bool >(val2);
     result = (datamunge::graphics::Plot *) &(arg1)->hide_axes(arg2);
-    ST(argvi) = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__plot__Plot, 0 | SWIG_SHADOW); argvi++ ;
+    ST(argvi) = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__graphics__Plot, 0 | SWIG_SHADOW); argvi++ ;
     
     
     XSRETURN(argvi);
@@ -105684,13 +109386,13 @@ XS(_wrap_Plot_hide_axes__SWIG_1) {
     if ((items < 1) || (items > 1)) {
       SWIG_croak("Usage: Plot_hide_axes(self);");
     }
-    res1 = SWIG_ConvertPtr(ST(0), &argp1,SWIGTYPE_p_datamunge__plot__Plot, 0 |  0 );
+    res1 = SWIG_ConvertPtr(ST(0), &argp1,SWIGTYPE_p_datamunge__graphics__Plot, 0 |  0 );
     if (!SWIG_IsOK(res1)) {
       SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "Plot_hide_axes" "', argument " "1"" of type '" "datamunge::graphics::Plot *""'"); 
     }
     arg1 = reinterpret_cast< datamunge::graphics::Plot * >(argp1);
     result = (datamunge::graphics::Plot *) &(arg1)->hide_axes();
-    ST(argvi) = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__plot__Plot, 0 | SWIG_SHADOW); argvi++ ;
+    ST(argvi) = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__graphics__Plot, 0 | SWIG_SHADOW); argvi++ ;
     
     XSRETURN(argvi);
     fail:;
@@ -105713,7 +109415,7 @@ XS(_wrap_Plot_hide_axes) {
       int _v = 0;
       {
         void *vptr = 0;
-        int res = SWIG_ConvertPtr(ST(0), &vptr, SWIGTYPE_p_datamunge__plot__Plot, 0);
+        int res = SWIG_ConvertPtr(ST(0), &vptr, SWIGTYPE_p_datamunge__graphics__Plot, 0);
         _v = SWIG_CheckState(res);
       }
       if (!_v) goto check_1;
@@ -105734,7 +109436,7 @@ XS(_wrap_Plot_hide_axes) {
       int _v = 0;
       {
         void *vptr = 0;
-        int res = SWIG_ConvertPtr(ST(0), &vptr, SWIGTYPE_p_datamunge__plot__Plot, 0);
+        int res = SWIG_ConvertPtr(ST(0), &vptr, SWIGTYPE_p_datamunge__graphics__Plot, 0);
         _v = SWIG_CheckState(res);
       }
       if (!_v) goto check_2;
@@ -105786,7 +109488,7 @@ XS(_wrap_Plot_x_tick_labels) {
     if ((items < 2) || (items > 2)) {
       SWIG_croak("Usage: Plot_x_tick_labels(self,labels);");
     }
-    res1 = SWIG_ConvertPtr(ST(0), &argp1,SWIGTYPE_p_datamunge__plot__Plot, 0 |  0 );
+    res1 = SWIG_ConvertPtr(ST(0), &argp1,SWIGTYPE_p_datamunge__graphics__Plot, 0 |  0 );
     if (!SWIG_IsOK(res1)) {
       SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "Plot_x_tick_labels" "', argument " "1"" of type '" "datamunge::graphics::Plot *""'"); 
     }
@@ -105818,13 +109520,481 @@ XS(_wrap_Plot_x_tick_labels) {
       }
     }
     result = (datamunge::graphics::Plot *) &(arg1)->x_tick_labels(SWIG_STD_MOVE(*(&arg2)));
-    ST(argvi) = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__plot__Plot, 0 | SWIG_SHADOW); argvi++ ;
+    ST(argvi) = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__graphics__Plot, 0 | SWIG_SHADOW); argvi++ ;
     
     XSRETURN(argvi);
     fail:;
     
   }
   SWIG_croak_null();
+}
+
+
+XS(_wrap_Plot_x_ticks) {
+  {
+    datamunge::graphics::Plot *arg1 = 0 ;
+    std::vector< double > arg2 ;
+    std::vector< std::string > arg3 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    std::vector< double > *v2 ;
+    std::vector< std::string > *v3 ;
+    int argvi = 0;
+    datamunge::graphics::Plot *result = 0 ;
+    dXSARGS;
+    
+    if ((items < 3) || (items > 3)) {
+      SWIG_croak("Usage: Plot_x_ticks(self,positions,labels);");
+    }
+    res1 = SWIG_ConvertPtr(ST(0), &argp1,SWIGTYPE_p_datamunge__graphics__Plot, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "Plot_x_ticks" "', argument " "1"" of type '" "datamunge::graphics::Plot *""'"); 
+    }
+    arg1 = reinterpret_cast< datamunge::graphics::Plot * >(argp1);
+    {
+      if (SWIG_ConvertPtr(ST(1),(void **) &v2, 
+          SWIGTYPE_p_std__vectorT_double_t,1) != -1){
+        arg2 = *v2;
+      } else if (SvROK(ST(1))) {
+        AV *av = (AV *)SvRV(ST(1));
+        if (SvTYPE(av) != SVt_PVAV)
+        SWIG_croak("Type error in argument 2 of Plot_x_ticks. "
+          "Expected an array of ""double");
+        SV **tv;
+        SSize_t len = av_len(av) + 1;
+        for (int i=0; i<len; i++) {
+          tv = av_fetch(av, i, 0);
+          if (SvNIOK(*tv)) {
+            (&arg2)->push_back((double)SwigSvToNumber(*tv));
+          } else {
+            SWIG_croak("Type error in argument 2 of "
+              "Plot_x_ticks. "
+              "Expected an array of ""double");
+          }
+        }
+      } else {
+        SWIG_croak("Type error in argument 2 of Plot_x_ticks. "
+          "Expected an array of ""double");
+      }
+    }
+    {
+      if (SWIG_ConvertPtr(ST(2),(void **) &v3, 
+          SWIGTYPE_p_std__vectorT_std__string_t,1) != -1){
+        arg3 = *v3;
+      } else if (SvROK(ST(2))) {
+        AV *av = (AV *)SvRV(ST(2));
+        if (SvTYPE(av) != SVt_PVAV)
+        SWIG_croak("Type error in argument 3 of Plot_x_ticks. "
+          "Expected an array of ""std::string");
+        SV **tv;
+        SSize_t len = av_len(av) + 1;
+        for (int i=0; i<len; i++) {
+          tv = av_fetch(av, i, 0);
+          if (SvPOK(*tv)) {
+            (&arg3)->push_back((std::string)SwigSvToString(*tv));
+          } else {
+            SWIG_croak("Type error in argument 3 of "
+              "Plot_x_ticks. "
+              "Expected an array of ""std::string");
+          }
+        }
+      } else {
+        SWIG_croak("Type error in argument 3 of Plot_x_ticks. "
+          "Expected an array of ""std::string");
+      }
+    }
+    result = (datamunge::graphics::Plot *) &(arg1)->x_ticks(SWIG_STD_MOVE(*(&arg2)),SWIG_STD_MOVE(*(&arg3)));
+    ST(argvi) = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__graphics__Plot, 0 | SWIG_SHADOW); argvi++ ;
+    
+    XSRETURN(argvi);
+    fail:;
+    
+  }
+  SWIG_croak_null();
+}
+
+
+XS(_wrap_Plot_y_tick_labels) {
+  {
+    datamunge::graphics::Plot *arg1 = 0 ;
+    std::vector< std::string > arg2 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    std::vector< std::string > *v2 ;
+    int argvi = 0;
+    datamunge::graphics::Plot *result = 0 ;
+    dXSARGS;
+    
+    if ((items < 2) || (items > 2)) {
+      SWIG_croak("Usage: Plot_y_tick_labels(self,labels);");
+    }
+    res1 = SWIG_ConvertPtr(ST(0), &argp1,SWIGTYPE_p_datamunge__graphics__Plot, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "Plot_y_tick_labels" "', argument " "1"" of type '" "datamunge::graphics::Plot *""'"); 
+    }
+    arg1 = reinterpret_cast< datamunge::graphics::Plot * >(argp1);
+    {
+      if (SWIG_ConvertPtr(ST(1),(void **) &v2, 
+          SWIGTYPE_p_std__vectorT_std__string_t,1) != -1){
+        arg2 = *v2;
+      } else if (SvROK(ST(1))) {
+        AV *av = (AV *)SvRV(ST(1));
+        if (SvTYPE(av) != SVt_PVAV)
+        SWIG_croak("Type error in argument 2 of Plot_y_tick_labels. "
+          "Expected an array of ""std::string");
+        SV **tv;
+        SSize_t len = av_len(av) + 1;
+        for (int i=0; i<len; i++) {
+          tv = av_fetch(av, i, 0);
+          if (SvPOK(*tv)) {
+            (&arg2)->push_back((std::string)SwigSvToString(*tv));
+          } else {
+            SWIG_croak("Type error in argument 2 of "
+              "Plot_y_tick_labels. "
+              "Expected an array of ""std::string");
+          }
+        }
+      } else {
+        SWIG_croak("Type error in argument 2 of Plot_y_tick_labels. "
+          "Expected an array of ""std::string");
+      }
+    }
+    result = (datamunge::graphics::Plot *) &(arg1)->y_tick_labels(SWIG_STD_MOVE(*(&arg2)));
+    ST(argvi) = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__graphics__Plot, 0 | SWIG_SHADOW); argvi++ ;
+    
+    XSRETURN(argvi);
+    fail:;
+    
+  }
+  SWIG_croak_null();
+}
+
+
+XS(_wrap_Plot_y_ticks) {
+  {
+    datamunge::graphics::Plot *arg1 = 0 ;
+    std::vector< double > arg2 ;
+    std::vector< std::string > arg3 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    std::vector< double > *v2 ;
+    std::vector< std::string > *v3 ;
+    int argvi = 0;
+    datamunge::graphics::Plot *result = 0 ;
+    dXSARGS;
+    
+    if ((items < 3) || (items > 3)) {
+      SWIG_croak("Usage: Plot_y_ticks(self,positions,labels);");
+    }
+    res1 = SWIG_ConvertPtr(ST(0), &argp1,SWIGTYPE_p_datamunge__graphics__Plot, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "Plot_y_ticks" "', argument " "1"" of type '" "datamunge::graphics::Plot *""'"); 
+    }
+    arg1 = reinterpret_cast< datamunge::graphics::Plot * >(argp1);
+    {
+      if (SWIG_ConvertPtr(ST(1),(void **) &v2, 
+          SWIGTYPE_p_std__vectorT_double_t,1) != -1){
+        arg2 = *v2;
+      } else if (SvROK(ST(1))) {
+        AV *av = (AV *)SvRV(ST(1));
+        if (SvTYPE(av) != SVt_PVAV)
+        SWIG_croak("Type error in argument 2 of Plot_y_ticks. "
+          "Expected an array of ""double");
+        SV **tv;
+        SSize_t len = av_len(av) + 1;
+        for (int i=0; i<len; i++) {
+          tv = av_fetch(av, i, 0);
+          if (SvNIOK(*tv)) {
+            (&arg2)->push_back((double)SwigSvToNumber(*tv));
+          } else {
+            SWIG_croak("Type error in argument 2 of "
+              "Plot_y_ticks. "
+              "Expected an array of ""double");
+          }
+        }
+      } else {
+        SWIG_croak("Type error in argument 2 of Plot_y_ticks. "
+          "Expected an array of ""double");
+      }
+    }
+    {
+      if (SWIG_ConvertPtr(ST(2),(void **) &v3, 
+          SWIGTYPE_p_std__vectorT_std__string_t,1) != -1){
+        arg3 = *v3;
+      } else if (SvROK(ST(2))) {
+        AV *av = (AV *)SvRV(ST(2));
+        if (SvTYPE(av) != SVt_PVAV)
+        SWIG_croak("Type error in argument 3 of Plot_y_ticks. "
+          "Expected an array of ""std::string");
+        SV **tv;
+        SSize_t len = av_len(av) + 1;
+        for (int i=0; i<len; i++) {
+          tv = av_fetch(av, i, 0);
+          if (SvPOK(*tv)) {
+            (&arg3)->push_back((std::string)SwigSvToString(*tv));
+          } else {
+            SWIG_croak("Type error in argument 3 of "
+              "Plot_y_ticks. "
+              "Expected an array of ""std::string");
+          }
+        }
+      } else {
+        SWIG_croak("Type error in argument 3 of Plot_y_ticks. "
+          "Expected an array of ""std::string");
+      }
+    }
+    result = (datamunge::graphics::Plot *) &(arg1)->y_ticks(SWIG_STD_MOVE(*(&arg2)),SWIG_STD_MOVE(*(&arg3)));
+    ST(argvi) = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__graphics__Plot, 0 | SWIG_SHADOW); argvi++ ;
+    
+    XSRETURN(argvi);
+    fail:;
+    
+  }
+  SWIG_croak_null();
+}
+
+
+XS(_wrap_Plot_margins) {
+  {
+    datamunge::graphics::Plot *arg1 = 0 ;
+    double arg2 ;
+    double arg3 ;
+    double arg4 ;
+    double arg5 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    double val2 ;
+    int ecode2 = 0 ;
+    double val3 ;
+    int ecode3 = 0 ;
+    double val4 ;
+    int ecode4 = 0 ;
+    double val5 ;
+    int ecode5 = 0 ;
+    int argvi = 0;
+    datamunge::graphics::Plot *result = 0 ;
+    dXSARGS;
+    
+    if ((items < 5) || (items > 5)) {
+      SWIG_croak("Usage: Plot_margins(self,left,right,top,bottom);");
+    }
+    res1 = SWIG_ConvertPtr(ST(0), &argp1,SWIGTYPE_p_datamunge__graphics__Plot, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "Plot_margins" "', argument " "1"" of type '" "datamunge::graphics::Plot *""'"); 
+    }
+    arg1 = reinterpret_cast< datamunge::graphics::Plot * >(argp1);
+    ecode2 = SWIG_AsVal_double SWIG_PERL_CALL_ARGS_2(ST(1), &val2);
+    if (!SWIG_IsOK(ecode2)) {
+      SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "Plot_margins" "', argument " "2"" of type '" "double""'");
+    } 
+    arg2 = static_cast< double >(val2);
+    ecode3 = SWIG_AsVal_double SWIG_PERL_CALL_ARGS_2(ST(2), &val3);
+    if (!SWIG_IsOK(ecode3)) {
+      SWIG_exception_fail(SWIG_ArgError(ecode3), "in method '" "Plot_margins" "', argument " "3"" of type '" "double""'");
+    } 
+    arg3 = static_cast< double >(val3);
+    ecode4 = SWIG_AsVal_double SWIG_PERL_CALL_ARGS_2(ST(3), &val4);
+    if (!SWIG_IsOK(ecode4)) {
+      SWIG_exception_fail(SWIG_ArgError(ecode4), "in method '" "Plot_margins" "', argument " "4"" of type '" "double""'");
+    } 
+    arg4 = static_cast< double >(val4);
+    ecode5 = SWIG_AsVal_double SWIG_PERL_CALL_ARGS_2(ST(4), &val5);
+    if (!SWIG_IsOK(ecode5)) {
+      SWIG_exception_fail(SWIG_ArgError(ecode5), "in method '" "Plot_margins" "', argument " "5"" of type '" "double""'");
+    } 
+    arg5 = static_cast< double >(val5);
+    result = (datamunge::graphics::Plot *) &(arg1)->margins(arg2,arg3,arg4,arg5);
+    ST(argvi) = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__graphics__Plot, 0 | SWIG_SHADOW); argvi++ ;
+    
+    
+    
+    
+    
+    XSRETURN(argvi);
+    fail:;
+    
+    
+    
+    
+    
+  }
+  SWIG_croak_null();
+}
+
+
+XS(_wrap_Plot_tick_font_size) {
+  {
+    datamunge::graphics::Plot *arg1 = 0 ;
+    double arg2 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    double val2 ;
+    int ecode2 = 0 ;
+    int argvi = 0;
+    datamunge::graphics::Plot *result = 0 ;
+    dXSARGS;
+    
+    if ((items < 2) || (items > 2)) {
+      SWIG_croak("Usage: Plot_tick_font_size(self,pixels);");
+    }
+    res1 = SWIG_ConvertPtr(ST(0), &argp1,SWIGTYPE_p_datamunge__graphics__Plot, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "Plot_tick_font_size" "', argument " "1"" of type '" "datamunge::graphics::Plot *""'"); 
+    }
+    arg1 = reinterpret_cast< datamunge::graphics::Plot * >(argp1);
+    ecode2 = SWIG_AsVal_double SWIG_PERL_CALL_ARGS_2(ST(1), &val2);
+    if (!SWIG_IsOK(ecode2)) {
+      SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "Plot_tick_font_size" "', argument " "2"" of type '" "double""'");
+    } 
+    arg2 = static_cast< double >(val2);
+    result = (datamunge::graphics::Plot *) &(arg1)->tick_font_size(arg2);
+    ST(argvi) = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__graphics__Plot, 0 | SWIG_SHADOW); argvi++ ;
+    
+    
+    XSRETURN(argvi);
+    fail:;
+    
+    
+  }
+  SWIG_croak_null();
+}
+
+
+XS(_wrap_Plot_pretty_ticks__SWIG_0) {
+  {
+    datamunge::graphics::Plot *arg1 = 0 ;
+    bool arg2 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    bool val2 ;
+    int ecode2 = 0 ;
+    int argvi = 0;
+    datamunge::graphics::Plot *result = 0 ;
+    dXSARGS;
+    
+    if ((items < 2) || (items > 2)) {
+      SWIG_croak("Usage: Plot_pretty_ticks(self,enabled);");
+    }
+    res1 = SWIG_ConvertPtr(ST(0), &argp1,SWIGTYPE_p_datamunge__graphics__Plot, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "Plot_pretty_ticks" "', argument " "1"" of type '" "datamunge::graphics::Plot *""'"); 
+    }
+    arg1 = reinterpret_cast< datamunge::graphics::Plot * >(argp1);
+    ecode2 = SWIG_AsVal_bool SWIG_PERL_CALL_ARGS_2(ST(1), &val2);
+    if (!SWIG_IsOK(ecode2)) {
+      SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "Plot_pretty_ticks" "', argument " "2"" of type '" "bool""'");
+    } 
+    arg2 = static_cast< bool >(val2);
+    result = (datamunge::graphics::Plot *) &(arg1)->pretty_ticks(arg2);
+    ST(argvi) = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__graphics__Plot, 0 | SWIG_SHADOW); argvi++ ;
+    
+    
+    XSRETURN(argvi);
+    fail:;
+    
+    
+  }
+  SWIG_croak_null();
+}
+
+
+XS(_wrap_Plot_pretty_ticks__SWIG_1) {
+  {
+    datamunge::graphics::Plot *arg1 = 0 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    int argvi = 0;
+    datamunge::graphics::Plot *result = 0 ;
+    dXSARGS;
+    
+    if ((items < 1) || (items > 1)) {
+      SWIG_croak("Usage: Plot_pretty_ticks(self);");
+    }
+    res1 = SWIG_ConvertPtr(ST(0), &argp1,SWIGTYPE_p_datamunge__graphics__Plot, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "Plot_pretty_ticks" "', argument " "1"" of type '" "datamunge::graphics::Plot *""'"); 
+    }
+    arg1 = reinterpret_cast< datamunge::graphics::Plot * >(argp1);
+    result = (datamunge::graphics::Plot *) &(arg1)->pretty_ticks();
+    ST(argvi) = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__graphics__Plot, 0 | SWIG_SHADOW); argvi++ ;
+    
+    XSRETURN(argvi);
+    fail:;
+    
+  }
+  SWIG_croak_null();
+}
+
+
+XS(_wrap_Plot_pretty_ticks) {
+  dXSARGS;
+  
+  {
+    unsigned long _index = 0;
+    SWIG_TypeRank _rank = 0; 
+    if (items == 1) {
+      SWIG_TypeRank _ranki = 0;
+      SWIG_TypeRank _rankm = 0;
+      SWIG_TypeRank _pi = 1;
+      int _v = 0;
+      {
+        void *vptr = 0;
+        int res = SWIG_ConvertPtr(ST(0), &vptr, SWIGTYPE_p_datamunge__graphics__Plot, 0);
+        _v = SWIG_CheckState(res);
+      }
+      if (!_v) goto check_1;
+      _ranki += _v*_pi;
+      _rankm += _pi;
+      _pi *= SWIG_MAXCASTRANK;
+      if (!_index || (_ranki < _rank)) {
+        _rank = _ranki; _index = 1;
+        if (_rank == _rankm) goto dispatch;
+      }
+    }
+  check_1:
+    
+    if (items == 2) {
+      SWIG_TypeRank _ranki = 0;
+      SWIG_TypeRank _rankm = 0;
+      SWIG_TypeRank _pi = 1;
+      int _v = 0;
+      {
+        void *vptr = 0;
+        int res = SWIG_ConvertPtr(ST(0), &vptr, SWIGTYPE_p_datamunge__graphics__Plot, 0);
+        _v = SWIG_CheckState(res);
+      }
+      if (!_v) goto check_2;
+      _ranki += _v*_pi;
+      _rankm += _pi;
+      _pi *= SWIG_MAXCASTRANK;
+      {
+        {
+          int res = SWIG_AsVal_bool SWIG_PERL_CALL_ARGS_2(ST(1), NULL);
+          _v = SWIG_CheckState(res);
+        }
+      }
+      if (!_v) goto check_2;
+      _ranki += _v*_pi;
+      _rankm += _pi;
+      _pi *= SWIG_MAXCASTRANK;
+      if (!_index || (_ranki < _rank)) {
+        _rank = _ranki; _index = 2;
+        if (_rank == _rankm) goto dispatch;
+      }
+    }
+  check_2:
+    
+  dispatch:
+    switch(_index) {
+    case 1:
+      PUSHMARK(MARK); SWIG_CALLXS(_wrap_Plot_pretty_ticks__SWIG_1); return;
+    case 2:
+      PUSHMARK(MARK); SWIG_CALLXS(_wrap_Plot_pretty_ticks__SWIG_0); return;
+    }
+  }
+  
+  croak("No matching function for overloaded 'Plot_pretty_ticks'");
+  XSRETURN(0);
 }
 
 
@@ -105840,7 +110010,7 @@ XS(_wrap_Plot_width) {
     if ((items < 1) || (items > 1)) {
       SWIG_croak("Usage: Plot_width(self);");
     }
-    res1 = SWIG_ConvertPtr(ST(0), &argp1,SWIGTYPE_p_datamunge__plot__Plot, 0 |  0 );
+    res1 = SWIG_ConvertPtr(ST(0), &argp1,SWIGTYPE_p_datamunge__graphics__Plot, 0 |  0 );
     if (!SWIG_IsOK(res1)) {
       SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "Plot_width" "', argument " "1"" of type '" "datamunge::graphics::Plot const *""'"); 
     }
@@ -105868,7 +110038,7 @@ XS(_wrap_Plot_height) {
     if ((items < 1) || (items > 1)) {
       SWIG_croak("Usage: Plot_height(self);");
     }
-    res1 = SWIG_ConvertPtr(ST(0), &argp1,SWIGTYPE_p_datamunge__plot__Plot, 0 |  0 );
+    res1 = SWIG_ConvertPtr(ST(0), &argp1,SWIGTYPE_p_datamunge__graphics__Plot, 0 |  0 );
     if (!SWIG_IsOK(res1)) {
       SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "Plot_height" "', argument " "1"" of type '" "datamunge::graphics::Plot const *""'"); 
     }
@@ -105896,12 +110066,40 @@ XS(_wrap_Plot_title_text) {
     if ((items < 1) || (items > 1)) {
       SWIG_croak("Usage: Plot_title_text(self);");
     }
-    res1 = SWIG_ConvertPtr(ST(0), &argp1,SWIGTYPE_p_datamunge__plot__Plot, 0 |  0 );
+    res1 = SWIG_ConvertPtr(ST(0), &argp1,SWIGTYPE_p_datamunge__graphics__Plot, 0 |  0 );
     if (!SWIG_IsOK(res1)) {
       SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "Plot_title_text" "', argument " "1"" of type '" "datamunge::graphics::Plot const *""'"); 
     }
     arg1 = reinterpret_cast< datamunge::graphics::Plot * >(argp1);
     result = (std::string *) &((datamunge::graphics::Plot const *)arg1)->title_text();
+    ST(argvi) = SWIG_From_std_string  SWIG_PERL_CALL_ARGS_1(static_cast< std::string >(*result)); argvi++ ;
+    
+    XSRETURN(argvi);
+    fail:;
+    
+  }
+  SWIG_croak_null();
+}
+
+
+XS(_wrap_Plot_subtitle_text) {
+  {
+    datamunge::graphics::Plot *arg1 = 0 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    int argvi = 0;
+    std::string *result = 0 ;
+    dXSARGS;
+    
+    if ((items < 1) || (items > 1)) {
+      SWIG_croak("Usage: Plot_subtitle_text(self);");
+    }
+    res1 = SWIG_ConvertPtr(ST(0), &argp1,SWIGTYPE_p_datamunge__graphics__Plot, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "Plot_subtitle_text" "', argument " "1"" of type '" "datamunge::graphics::Plot const *""'"); 
+    }
+    arg1 = reinterpret_cast< datamunge::graphics::Plot * >(argp1);
+    result = (std::string *) &((datamunge::graphics::Plot const *)arg1)->subtitle_text();
     ST(argvi) = SWIG_From_std_string  SWIG_PERL_CALL_ARGS_1(static_cast< std::string >(*result)); argvi++ ;
     
     XSRETURN(argvi);
@@ -105924,7 +110122,7 @@ XS(_wrap_Plot_x_label_text) {
     if ((items < 1) || (items > 1)) {
       SWIG_croak("Usage: Plot_x_label_text(self);");
     }
-    res1 = SWIG_ConvertPtr(ST(0), &argp1,SWIGTYPE_p_datamunge__plot__Plot, 0 |  0 );
+    res1 = SWIG_ConvertPtr(ST(0), &argp1,SWIGTYPE_p_datamunge__graphics__Plot, 0 |  0 );
     if (!SWIG_IsOK(res1)) {
       SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "Plot_x_label_text" "', argument " "1"" of type '" "datamunge::graphics::Plot const *""'"); 
     }
@@ -105952,7 +110150,7 @@ XS(_wrap_Plot_y_label_text) {
     if ((items < 1) || (items > 1)) {
       SWIG_croak("Usage: Plot_y_label_text(self);");
     }
-    res1 = SWIG_ConvertPtr(ST(0), &argp1,SWIGTYPE_p_datamunge__plot__Plot, 0 |  0 );
+    res1 = SWIG_ConvertPtr(ST(0), &argp1,SWIGTYPE_p_datamunge__graphics__Plot, 0 |  0 );
     if (!SWIG_IsOK(res1)) {
       SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "Plot_y_label_text" "', argument " "1"" of type '" "datamunge::graphics::Plot const *""'"); 
     }
@@ -105980,13 +110178,13 @@ XS(_wrap_Plot_series) {
     if ((items < 1) || (items > 1)) {
       SWIG_croak("Usage: Plot_series(self);");
     }
-    res1 = SWIG_ConvertPtr(ST(0), &argp1,SWIGTYPE_p_datamunge__plot__Plot, 0 |  0 );
+    res1 = SWIG_ConvertPtr(ST(0), &argp1,SWIGTYPE_p_datamunge__graphics__Plot, 0 |  0 );
     if (!SWIG_IsOK(res1)) {
       SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "Plot_series" "', argument " "1"" of type '" "datamunge::graphics::Plot const *""'"); 
     }
     arg1 = reinterpret_cast< datamunge::graphics::Plot * >(argp1);
     result = (std::vector< datamunge::graphics::DataSeries > *) &((datamunge::graphics::Plot const *)arg1)->series();
-    ST(argvi) = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_std__vectorT_datamunge__plot__DataSeries_t, 0 | 0); argvi++ ;
+    ST(argvi) = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_std__vectorT_datamunge__graphics__DataSeries_t, 0 | 0); argvi++ ;
     
     XSRETURN(argvi);
     fail:;
@@ -106002,19 +110200,19 @@ XS(_wrap_Plot_background_color) {
     void *argp1 = 0 ;
     int res1 = 0 ;
     int argvi = 0;
-    SwigValueWrapper< datamunge::graphics::RGB > result;
+    datamunge::graphics::RGBA result;
     dXSARGS;
     
     if ((items < 1) || (items > 1)) {
       SWIG_croak("Usage: Plot_background_color(self);");
     }
-    res1 = SWIG_ConvertPtr(ST(0), &argp1,SWIGTYPE_p_datamunge__plot__Plot, 0 |  0 );
+    res1 = SWIG_ConvertPtr(ST(0), &argp1,SWIGTYPE_p_datamunge__graphics__Plot, 0 |  0 );
     if (!SWIG_IsOK(res1)) {
       SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "Plot_background_color" "', argument " "1"" of type '" "datamunge::graphics::Plot const *""'"); 
     }
     arg1 = reinterpret_cast< datamunge::graphics::Plot * >(argp1);
     result = ((datamunge::graphics::Plot const *)arg1)->background_color();
-    ST(argvi) = SWIG_NewPointerObj((new datamunge::graphics::RGB(result)), SWIGTYPE_p_datamunge__plot__RGB, SWIG_POINTER_OWN | SWIG_SHADOW); argvi++ ;
+    ST(argvi) = SWIG_NewPointerObj((new datamunge::graphics::RGBA(result)), SWIGTYPE_p_datamunge__graphics__RGB, SWIG_POINTER_OWN | SWIG_SHADOW); argvi++ ;
     
     XSRETURN(argvi);
     fail:;
@@ -106030,19 +110228,19 @@ XS(_wrap_Plot_axes_color) {
     void *argp1 = 0 ;
     int res1 = 0 ;
     int argvi = 0;
-    SwigValueWrapper< datamunge::graphics::RGB > result;
+    datamunge::graphics::RGBA result;
     dXSARGS;
     
     if ((items < 1) || (items > 1)) {
       SWIG_croak("Usage: Plot_axes_color(self);");
     }
-    res1 = SWIG_ConvertPtr(ST(0), &argp1,SWIGTYPE_p_datamunge__plot__Plot, 0 |  0 );
+    res1 = SWIG_ConvertPtr(ST(0), &argp1,SWIGTYPE_p_datamunge__graphics__Plot, 0 |  0 );
     if (!SWIG_IsOK(res1)) {
       SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "Plot_axes_color" "', argument " "1"" of type '" "datamunge::graphics::Plot const *""'"); 
     }
     arg1 = reinterpret_cast< datamunge::graphics::Plot * >(argp1);
     result = ((datamunge::graphics::Plot const *)arg1)->axes_color();
-    ST(argvi) = SWIG_NewPointerObj((new datamunge::graphics::RGB(result)), SWIGTYPE_p_datamunge__plot__RGB, SWIG_POINTER_OWN | SWIG_SHADOW); argvi++ ;
+    ST(argvi) = SWIG_NewPointerObj((new datamunge::graphics::RGBA(result)), SWIGTYPE_p_datamunge__graphics__RGB, SWIG_POINTER_OWN | SWIG_SHADOW); argvi++ ;
     
     XSRETURN(argvi);
     fail:;
@@ -106058,19 +110256,19 @@ XS(_wrap_Plot_major_grid_color) {
     void *argp1 = 0 ;
     int res1 = 0 ;
     int argvi = 0;
-    SwigValueWrapper< datamunge::graphics::RGB > result;
+    datamunge::graphics::RGBA result;
     dXSARGS;
     
     if ((items < 1) || (items > 1)) {
       SWIG_croak("Usage: Plot_major_grid_color(self);");
     }
-    res1 = SWIG_ConvertPtr(ST(0), &argp1,SWIGTYPE_p_datamunge__plot__Plot, 0 |  0 );
+    res1 = SWIG_ConvertPtr(ST(0), &argp1,SWIGTYPE_p_datamunge__graphics__Plot, 0 |  0 );
     if (!SWIG_IsOK(res1)) {
       SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "Plot_major_grid_color" "', argument " "1"" of type '" "datamunge::graphics::Plot const *""'"); 
     }
     arg1 = reinterpret_cast< datamunge::graphics::Plot * >(argp1);
     result = ((datamunge::graphics::Plot const *)arg1)->major_grid_color();
-    ST(argvi) = SWIG_NewPointerObj((new datamunge::graphics::RGB(result)), SWIGTYPE_p_datamunge__plot__RGB, SWIG_POINTER_OWN | SWIG_SHADOW); argvi++ ;
+    ST(argvi) = SWIG_NewPointerObj((new datamunge::graphics::RGBA(result)), SWIGTYPE_p_datamunge__graphics__RGB, SWIG_POINTER_OWN | SWIG_SHADOW); argvi++ ;
     
     XSRETURN(argvi);
     fail:;
@@ -106092,7 +110290,7 @@ XS(_wrap_Plot_grid_visible) {
     if ((items < 1) || (items > 1)) {
       SWIG_croak("Usage: Plot_grid_visible(self);");
     }
-    res1 = SWIG_ConvertPtr(ST(0), &argp1,SWIGTYPE_p_datamunge__plot__Plot, 0 |  0 );
+    res1 = SWIG_ConvertPtr(ST(0), &argp1,SWIGTYPE_p_datamunge__graphics__Plot, 0 |  0 );
     if (!SWIG_IsOK(res1)) {
       SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "Plot_grid_visible" "', argument " "1"" of type '" "datamunge::graphics::Plot const *""'"); 
     }
@@ -106120,7 +110318,7 @@ XS(_wrap_Plot_has_x_limits) {
     if ((items < 1) || (items > 1)) {
       SWIG_croak("Usage: Plot_has_x_limits(self);");
     }
-    res1 = SWIG_ConvertPtr(ST(0), &argp1,SWIGTYPE_p_datamunge__plot__Plot, 0 |  0 );
+    res1 = SWIG_ConvertPtr(ST(0), &argp1,SWIGTYPE_p_datamunge__graphics__Plot, 0 |  0 );
     if (!SWIG_IsOK(res1)) {
       SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "Plot_has_x_limits" "', argument " "1"" of type '" "datamunge::graphics::Plot const *""'"); 
     }
@@ -106148,7 +110346,7 @@ XS(_wrap_Plot_has_y_limits) {
     if ((items < 1) || (items > 1)) {
       SWIG_croak("Usage: Plot_has_y_limits(self);");
     }
-    res1 = SWIG_ConvertPtr(ST(0), &argp1,SWIGTYPE_p_datamunge__plot__Plot, 0 |  0 );
+    res1 = SWIG_ConvertPtr(ST(0), &argp1,SWIGTYPE_p_datamunge__graphics__Plot, 0 |  0 );
     if (!SWIG_IsOK(res1)) {
       SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "Plot_has_y_limits" "', argument " "1"" of type '" "datamunge::graphics::Plot const *""'"); 
     }
@@ -106176,7 +110374,7 @@ XS(_wrap_Plot_x_min) {
     if ((items < 1) || (items > 1)) {
       SWIG_croak("Usage: Plot_x_min(self);");
     }
-    res1 = SWIG_ConvertPtr(ST(0), &argp1,SWIGTYPE_p_datamunge__plot__Plot, 0 |  0 );
+    res1 = SWIG_ConvertPtr(ST(0), &argp1,SWIGTYPE_p_datamunge__graphics__Plot, 0 |  0 );
     if (!SWIG_IsOK(res1)) {
       SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "Plot_x_min" "', argument " "1"" of type '" "datamunge::graphics::Plot const *""'"); 
     }
@@ -106204,7 +110402,7 @@ XS(_wrap_Plot_x_max) {
     if ((items < 1) || (items > 1)) {
       SWIG_croak("Usage: Plot_x_max(self);");
     }
-    res1 = SWIG_ConvertPtr(ST(0), &argp1,SWIGTYPE_p_datamunge__plot__Plot, 0 |  0 );
+    res1 = SWIG_ConvertPtr(ST(0), &argp1,SWIGTYPE_p_datamunge__graphics__Plot, 0 |  0 );
     if (!SWIG_IsOK(res1)) {
       SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "Plot_x_max" "', argument " "1"" of type '" "datamunge::graphics::Plot const *""'"); 
     }
@@ -106232,7 +110430,7 @@ XS(_wrap_Plot_y_min) {
     if ((items < 1) || (items > 1)) {
       SWIG_croak("Usage: Plot_y_min(self);");
     }
-    res1 = SWIG_ConvertPtr(ST(0), &argp1,SWIGTYPE_p_datamunge__plot__Plot, 0 |  0 );
+    res1 = SWIG_ConvertPtr(ST(0), &argp1,SWIGTYPE_p_datamunge__graphics__Plot, 0 |  0 );
     if (!SWIG_IsOK(res1)) {
       SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "Plot_y_min" "', argument " "1"" of type '" "datamunge::graphics::Plot const *""'"); 
     }
@@ -106260,7 +110458,7 @@ XS(_wrap_Plot_y_max) {
     if ((items < 1) || (items > 1)) {
       SWIG_croak("Usage: Plot_y_max(self);");
     }
-    res1 = SWIG_ConvertPtr(ST(0), &argp1,SWIGTYPE_p_datamunge__plot__Plot, 0 |  0 );
+    res1 = SWIG_ConvertPtr(ST(0), &argp1,SWIGTYPE_p_datamunge__graphics__Plot, 0 |  0 );
     if (!SWIG_IsOK(res1)) {
       SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "Plot_y_max" "', argument " "1"" of type '" "datamunge::graphics::Plot const *""'"); 
     }
@@ -106288,7 +110486,7 @@ XS(_wrap_Plot_axes_hidden) {
     if ((items < 1) || (items > 1)) {
       SWIG_croak("Usage: Plot_axes_hidden(self);");
     }
-    res1 = SWIG_ConvertPtr(ST(0), &argp1,SWIGTYPE_p_datamunge__plot__Plot, 0 |  0 );
+    res1 = SWIG_ConvertPtr(ST(0), &argp1,SWIGTYPE_p_datamunge__graphics__Plot, 0 |  0 );
     if (!SWIG_IsOK(res1)) {
       SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "Plot_axes_hidden" "', argument " "1"" of type '" "datamunge::graphics::Plot const *""'"); 
     }
@@ -106316,13 +110514,97 @@ XS(_wrap_Plot_x_tick_label_list) {
     if ((items < 1) || (items > 1)) {
       SWIG_croak("Usage: Plot_x_tick_label_list(self);");
     }
-    res1 = SWIG_ConvertPtr(ST(0), &argp1,SWIGTYPE_p_datamunge__plot__Plot, 0 |  0 );
+    res1 = SWIG_ConvertPtr(ST(0), &argp1,SWIGTYPE_p_datamunge__graphics__Plot, 0 |  0 );
     if (!SWIG_IsOK(res1)) {
       SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "Plot_x_tick_label_list" "', argument " "1"" of type '" "datamunge::graphics::Plot const *""'"); 
     }
     arg1 = reinterpret_cast< datamunge::graphics::Plot * >(argp1);
     result = (std::vector< std::string > *) &((datamunge::graphics::Plot const *)arg1)->x_tick_label_list();
     ST(argvi) = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_std__vectorT_std__string_t, 0 | SWIG_SHADOW); argvi++ ;
+    
+    XSRETURN(argvi);
+    fail:;
+    
+  }
+  SWIG_croak_null();
+}
+
+
+XS(_wrap_Plot_x_tick_position_list) {
+  {
+    datamunge::graphics::Plot *arg1 = 0 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    int argvi = 0;
+    std::vector< double > *result = 0 ;
+    dXSARGS;
+    
+    if ((items < 1) || (items > 1)) {
+      SWIG_croak("Usage: Plot_x_tick_position_list(self);");
+    }
+    res1 = SWIG_ConvertPtr(ST(0), &argp1,SWIGTYPE_p_datamunge__graphics__Plot, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "Plot_x_tick_position_list" "', argument " "1"" of type '" "datamunge::graphics::Plot const *""'"); 
+    }
+    arg1 = reinterpret_cast< datamunge::graphics::Plot * >(argp1);
+    result = (std::vector< double > *) &((datamunge::graphics::Plot const *)arg1)->x_tick_position_list();
+    ST(argvi) = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_std__vectorT_double_t, 0 | SWIG_SHADOW); argvi++ ;
+    
+    XSRETURN(argvi);
+    fail:;
+    
+  }
+  SWIG_croak_null();
+}
+
+
+XS(_wrap_Plot_y_tick_label_list) {
+  {
+    datamunge::graphics::Plot *arg1 = 0 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    int argvi = 0;
+    std::vector< std::string > *result = 0 ;
+    dXSARGS;
+    
+    if ((items < 1) || (items > 1)) {
+      SWIG_croak("Usage: Plot_y_tick_label_list(self);");
+    }
+    res1 = SWIG_ConvertPtr(ST(0), &argp1,SWIGTYPE_p_datamunge__graphics__Plot, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "Plot_y_tick_label_list" "', argument " "1"" of type '" "datamunge::graphics::Plot const *""'"); 
+    }
+    arg1 = reinterpret_cast< datamunge::graphics::Plot * >(argp1);
+    result = (std::vector< std::string > *) &((datamunge::graphics::Plot const *)arg1)->y_tick_label_list();
+    ST(argvi) = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_std__vectorT_std__string_t, 0 | SWIG_SHADOW); argvi++ ;
+    
+    XSRETURN(argvi);
+    fail:;
+    
+  }
+  SWIG_croak_null();
+}
+
+
+XS(_wrap_Plot_y_tick_position_list) {
+  {
+    datamunge::graphics::Plot *arg1 = 0 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    int argvi = 0;
+    std::vector< double > *result = 0 ;
+    dXSARGS;
+    
+    if ((items < 1) || (items > 1)) {
+      SWIG_croak("Usage: Plot_y_tick_position_list(self);");
+    }
+    res1 = SWIG_ConvertPtr(ST(0), &argp1,SWIGTYPE_p_datamunge__graphics__Plot, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "Plot_y_tick_position_list" "', argument " "1"" of type '" "datamunge::graphics::Plot const *""'"); 
+    }
+    arg1 = reinterpret_cast< datamunge::graphics::Plot * >(argp1);
+    result = (std::vector< double > *) &((datamunge::graphics::Plot const *)arg1)->y_tick_position_list();
+    ST(argvi) = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_std__vectorT_double_t, 0 | SWIG_SHADOW); argvi++ ;
     
     XSRETURN(argvi);
     fail:;
@@ -106344,13 +110626,13 @@ XS(_wrap_Plot_reference_lines) {
     if ((items < 1) || (items > 1)) {
       SWIG_croak("Usage: Plot_reference_lines(self);");
     }
-    res1 = SWIG_ConvertPtr(ST(0), &argp1,SWIGTYPE_p_datamunge__plot__Plot, 0 |  0 );
+    res1 = SWIG_ConvertPtr(ST(0), &argp1,SWIGTYPE_p_datamunge__graphics__Plot, 0 |  0 );
     if (!SWIG_IsOK(res1)) {
       SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "Plot_reference_lines" "', argument " "1"" of type '" "datamunge::graphics::Plot const *""'"); 
     }
     arg1 = reinterpret_cast< datamunge::graphics::Plot * >(argp1);
     result = (std::vector< datamunge::graphics::ABLine > *) &((datamunge::graphics::Plot const *)arg1)->reference_lines();
-    ST(argvi) = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_std__vectorT_datamunge__plot__ABLine_t, 0 | 0); argvi++ ;
+    ST(argvi) = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_std__vectorT_datamunge__graphics__ABLine_t, 0 | 0); argvi++ ;
     
     XSRETURN(argvi);
     fail:;
@@ -106372,13 +110654,209 @@ XS(_wrap_Plot_legend_entries) {
     if ((items < 1) || (items > 1)) {
       SWIG_croak("Usage: Plot_legend_entries(self);");
     }
-    res1 = SWIG_ConvertPtr(ST(0), &argp1,SWIGTYPE_p_datamunge__plot__Plot, 0 |  0 );
+    res1 = SWIG_ConvertPtr(ST(0), &argp1,SWIGTYPE_p_datamunge__graphics__Plot, 0 |  0 );
     if (!SWIG_IsOK(res1)) {
       SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "Plot_legend_entries" "', argument " "1"" of type '" "datamunge::graphics::Plot const *""'"); 
     }
     arg1 = reinterpret_cast< datamunge::graphics::Plot * >(argp1);
     result = (std::vector< datamunge::graphics::LegendEntry > *) &((datamunge::graphics::Plot const *)arg1)->legend_entries();
-    ST(argvi) = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_std__vectorT_datamunge__plot__LegendEntry_t, 0 | 0); argvi++ ;
+    ST(argvi) = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_std__vectorT_datamunge__graphics__LegendEntry_t, 0 | 0); argvi++ ;
+    
+    XSRETURN(argvi);
+    fail:;
+    
+  }
+  SWIG_croak_null();
+}
+
+
+XS(_wrap_Plot_has_custom_margins) {
+  {
+    datamunge::graphics::Plot *arg1 = 0 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    int argvi = 0;
+    bool result;
+    dXSARGS;
+    
+    if ((items < 1) || (items > 1)) {
+      SWIG_croak("Usage: Plot_has_custom_margins(self);");
+    }
+    res1 = SWIG_ConvertPtr(ST(0), &argp1,SWIGTYPE_p_datamunge__graphics__Plot, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "Plot_has_custom_margins" "', argument " "1"" of type '" "datamunge::graphics::Plot const *""'"); 
+    }
+    arg1 = reinterpret_cast< datamunge::graphics::Plot * >(argp1);
+    result = (bool)((datamunge::graphics::Plot const *)arg1)->has_custom_margins();
+    ST(argvi) = SWIG_From_bool  SWIG_PERL_CALL_ARGS_1(static_cast< bool >(result)); argvi++ ;
+    
+    XSRETURN(argvi);
+    fail:;
+    
+  }
+  SWIG_croak_null();
+}
+
+
+XS(_wrap_Plot_margin_left) {
+  {
+    datamunge::graphics::Plot *arg1 = 0 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    int argvi = 0;
+    double result;
+    dXSARGS;
+    
+    if ((items < 1) || (items > 1)) {
+      SWIG_croak("Usage: Plot_margin_left(self);");
+    }
+    res1 = SWIG_ConvertPtr(ST(0), &argp1,SWIGTYPE_p_datamunge__graphics__Plot, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "Plot_margin_left" "', argument " "1"" of type '" "datamunge::graphics::Plot const *""'"); 
+    }
+    arg1 = reinterpret_cast< datamunge::graphics::Plot * >(argp1);
+    result = (double)((datamunge::graphics::Plot const *)arg1)->margin_left();
+    ST(argvi) = SWIG_From_double  SWIG_PERL_CALL_ARGS_1(static_cast< double >(result)); argvi++ ;
+    
+    XSRETURN(argvi);
+    fail:;
+    
+  }
+  SWIG_croak_null();
+}
+
+
+XS(_wrap_Plot_margin_right) {
+  {
+    datamunge::graphics::Plot *arg1 = 0 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    int argvi = 0;
+    double result;
+    dXSARGS;
+    
+    if ((items < 1) || (items > 1)) {
+      SWIG_croak("Usage: Plot_margin_right(self);");
+    }
+    res1 = SWIG_ConvertPtr(ST(0), &argp1,SWIGTYPE_p_datamunge__graphics__Plot, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "Plot_margin_right" "', argument " "1"" of type '" "datamunge::graphics::Plot const *""'"); 
+    }
+    arg1 = reinterpret_cast< datamunge::graphics::Plot * >(argp1);
+    result = (double)((datamunge::graphics::Plot const *)arg1)->margin_right();
+    ST(argvi) = SWIG_From_double  SWIG_PERL_CALL_ARGS_1(static_cast< double >(result)); argvi++ ;
+    
+    XSRETURN(argvi);
+    fail:;
+    
+  }
+  SWIG_croak_null();
+}
+
+
+XS(_wrap_Plot_margin_top) {
+  {
+    datamunge::graphics::Plot *arg1 = 0 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    int argvi = 0;
+    double result;
+    dXSARGS;
+    
+    if ((items < 1) || (items > 1)) {
+      SWIG_croak("Usage: Plot_margin_top(self);");
+    }
+    res1 = SWIG_ConvertPtr(ST(0), &argp1,SWIGTYPE_p_datamunge__graphics__Plot, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "Plot_margin_top" "', argument " "1"" of type '" "datamunge::graphics::Plot const *""'"); 
+    }
+    arg1 = reinterpret_cast< datamunge::graphics::Plot * >(argp1);
+    result = (double)((datamunge::graphics::Plot const *)arg1)->margin_top();
+    ST(argvi) = SWIG_From_double  SWIG_PERL_CALL_ARGS_1(static_cast< double >(result)); argvi++ ;
+    
+    XSRETURN(argvi);
+    fail:;
+    
+  }
+  SWIG_croak_null();
+}
+
+
+XS(_wrap_Plot_margin_bottom) {
+  {
+    datamunge::graphics::Plot *arg1 = 0 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    int argvi = 0;
+    double result;
+    dXSARGS;
+    
+    if ((items < 1) || (items > 1)) {
+      SWIG_croak("Usage: Plot_margin_bottom(self);");
+    }
+    res1 = SWIG_ConvertPtr(ST(0), &argp1,SWIGTYPE_p_datamunge__graphics__Plot, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "Plot_margin_bottom" "', argument " "1"" of type '" "datamunge::graphics::Plot const *""'"); 
+    }
+    arg1 = reinterpret_cast< datamunge::graphics::Plot * >(argp1);
+    result = (double)((datamunge::graphics::Plot const *)arg1)->margin_bottom();
+    ST(argvi) = SWIG_From_double  SWIG_PERL_CALL_ARGS_1(static_cast< double >(result)); argvi++ ;
+    
+    XSRETURN(argvi);
+    fail:;
+    
+  }
+  SWIG_croak_null();
+}
+
+
+XS(_wrap_Plot_tick_font_px) {
+  {
+    datamunge::graphics::Plot *arg1 = 0 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    int argvi = 0;
+    double result;
+    dXSARGS;
+    
+    if ((items < 1) || (items > 1)) {
+      SWIG_croak("Usage: Plot_tick_font_px(self);");
+    }
+    res1 = SWIG_ConvertPtr(ST(0), &argp1,SWIGTYPE_p_datamunge__graphics__Plot, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "Plot_tick_font_px" "', argument " "1"" of type '" "datamunge::graphics::Plot const *""'"); 
+    }
+    arg1 = reinterpret_cast< datamunge::graphics::Plot * >(argp1);
+    result = (double)((datamunge::graphics::Plot const *)arg1)->tick_font_px();
+    ST(argvi) = SWIG_From_double  SWIG_PERL_CALL_ARGS_1(static_cast< double >(result)); argvi++ ;
+    
+    XSRETURN(argvi);
+    fail:;
+    
+  }
+  SWIG_croak_null();
+}
+
+
+XS(_wrap_Plot_pretty_ticks_enabled) {
+  {
+    datamunge::graphics::Plot *arg1 = 0 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    int argvi = 0;
+    bool result;
+    dXSARGS;
+    
+    if ((items < 1) || (items > 1)) {
+      SWIG_croak("Usage: Plot_pretty_ticks_enabled(self);");
+    }
+    res1 = SWIG_ConvertPtr(ST(0), &argp1,SWIGTYPE_p_datamunge__graphics__Plot, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "Plot_pretty_ticks_enabled" "', argument " "1"" of type '" "datamunge::graphics::Plot const *""'"); 
+    }
+    arg1 = reinterpret_cast< datamunge::graphics::Plot * >(argp1);
+    result = (bool)((datamunge::graphics::Plot const *)arg1)->pretty_ticks_enabled();
+    ST(argvi) = SWIG_From_bool  SWIG_PERL_CALL_ARGS_1(static_cast< bool >(result)); argvi++ ;
     
     XSRETURN(argvi);
     fail:;
@@ -106400,7 +110878,7 @@ XS(_wrap_Plot_to_svg) {
     if ((items < 1) || (items > 1)) {
       SWIG_croak("Usage: Plot_to_svg(self);");
     }
-    res1 = SWIG_ConvertPtr(ST(0), &argp1,SWIGTYPE_p_datamunge__plot__Plot, 0 |  0 );
+    res1 = SWIG_ConvertPtr(ST(0), &argp1,SWIGTYPE_p_datamunge__graphics__Plot, 0 |  0 );
     if (!SWIG_IsOK(res1)) {
       SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "Plot_to_svg" "', argument " "1"" of type '" "datamunge::graphics::Plot const *""'"); 
     }
@@ -106429,7 +110907,7 @@ XS(_wrap_Plot_save) {
     if ((items < 2) || (items > 2)) {
       SWIG_croak("Usage: Plot_save(self,path);");
     }
-    res1 = SWIG_ConvertPtr(ST(0), &argp1,SWIGTYPE_p_datamunge__plot__Plot, 0 |  0 );
+    res1 = SWIG_ConvertPtr(ST(0), &argp1,SWIGTYPE_p_datamunge__graphics__Plot, 0 |  0 );
     if (!SWIG_IsOK(res1)) {
       SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "Plot_save" "', argument " "1"" of type '" "datamunge::graphics::Plot const *""'"); 
     }
@@ -106471,7 +110949,7 @@ XS(_wrap_Plot_save_svg) {
     if ((items < 2) || (items > 2)) {
       SWIG_croak("Usage: Plot_save_svg(self,path);");
     }
-    res1 = SWIG_ConvertPtr(ST(0), &argp1,SWIGTYPE_p_datamunge__plot__Plot, 0 |  0 );
+    res1 = SWIG_ConvertPtr(ST(0), &argp1,SWIGTYPE_p_datamunge__graphics__Plot, 0 |  0 );
     if (!SWIG_IsOK(res1)) {
       SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "Plot_save_svg" "', argument " "1"" of type '" "datamunge::graphics::Plot const *""'"); 
     }
@@ -106500,6 +110978,146 @@ XS(_wrap_Plot_save_svg) {
 }
 
 
+XS(_wrap_Plot_to_png) {
+  {
+    datamunge::graphics::Plot *arg1 = 0 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    int argvi = 0;
+    std::vector< std::uint8_t > result;
+    dXSARGS;
+    
+    if ((items < 1) || (items > 1)) {
+      SWIG_croak("Usage: Plot_to_png(self);");
+    }
+    res1 = SWIG_ConvertPtr(ST(0), &argp1,SWIGTYPE_p_datamunge__graphics__Plot, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "Plot_to_png" "', argument " "1"" of type '" "datamunge::graphics::Plot const *""'"); 
+    }
+    arg1 = reinterpret_cast< datamunge::graphics::Plot * >(argp1);
+    result = ((datamunge::graphics::Plot const *)arg1)->to_png();
+    ST(argvi) = SWIG_NewPointerObj((new std::vector< std::uint8_t >(result)), SWIGTYPE_p_std__vectorT_unsigned_char_t, SWIG_POINTER_OWN | 0); argvi++ ;
+    
+    XSRETURN(argvi);
+    fail:;
+    
+  }
+  SWIG_croak_null();
+}
+
+
+XS(_wrap_Plot_to_pdf) {
+  {
+    datamunge::graphics::Plot *arg1 = 0 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    int argvi = 0;
+    std::vector< std::uint8_t > result;
+    dXSARGS;
+    
+    if ((items < 1) || (items > 1)) {
+      SWIG_croak("Usage: Plot_to_pdf(self);");
+    }
+    res1 = SWIG_ConvertPtr(ST(0), &argp1,SWIGTYPE_p_datamunge__graphics__Plot, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "Plot_to_pdf" "', argument " "1"" of type '" "datamunge::graphics::Plot const *""'"); 
+    }
+    arg1 = reinterpret_cast< datamunge::graphics::Plot * >(argp1);
+    result = ((datamunge::graphics::Plot const *)arg1)->to_pdf();
+    ST(argvi) = SWIG_NewPointerObj((new std::vector< std::uint8_t >(result)), SWIGTYPE_p_std__vectorT_unsigned_char_t, SWIG_POINTER_OWN | 0); argvi++ ;
+    
+    XSRETURN(argvi);
+    fail:;
+    
+  }
+  SWIG_croak_null();
+}
+
+
+XS(_wrap_Plot_save_png) {
+  {
+    datamunge::graphics::Plot *arg1 = 0 ;
+    std::string *arg2 = 0 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    int res2 = SWIG_OLDOBJ ;
+    int argvi = 0;
+    dXSARGS;
+    
+    if ((items < 2) || (items > 2)) {
+      SWIG_croak("Usage: Plot_save_png(self,path);");
+    }
+    res1 = SWIG_ConvertPtr(ST(0), &argp1,SWIGTYPE_p_datamunge__graphics__Plot, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "Plot_save_png" "', argument " "1"" of type '" "datamunge::graphics::Plot const *""'"); 
+    }
+    arg1 = reinterpret_cast< datamunge::graphics::Plot * >(argp1);
+    {
+      std::string *ptr = (std::string *)0;
+      res2 = SWIG_AsPtr_std_string SWIG_PERL_CALL_ARGS_2(ST(1), &ptr);
+      if (!SWIG_IsOK(res2)) {
+        SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "Plot_save_png" "', argument " "2"" of type '" "std::string const &""'"); 
+      }
+      if (!ptr) {
+        SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "Plot_save_png" "', argument " "2"" of type '" "std::string const &""'"); 
+      }
+      arg2 = ptr;
+    }
+    ((datamunge::graphics::Plot const *)arg1)->save_png((std::string const &)*arg2);
+    ST(argvi) = &PL_sv_undef;
+    
+    if (SWIG_IsNewObj(res2)) delete arg2;
+    XSRETURN(argvi);
+    fail:;
+    
+    if (SWIG_IsNewObj(res2)) delete arg2;
+  }
+  SWIG_croak_null();
+}
+
+
+XS(_wrap_Plot_save_pdf) {
+  {
+    datamunge::graphics::Plot *arg1 = 0 ;
+    std::string *arg2 = 0 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    int res2 = SWIG_OLDOBJ ;
+    int argvi = 0;
+    dXSARGS;
+    
+    if ((items < 2) || (items > 2)) {
+      SWIG_croak("Usage: Plot_save_pdf(self,path);");
+    }
+    res1 = SWIG_ConvertPtr(ST(0), &argp1,SWIGTYPE_p_datamunge__graphics__Plot, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "Plot_save_pdf" "', argument " "1"" of type '" "datamunge::graphics::Plot const *""'"); 
+    }
+    arg1 = reinterpret_cast< datamunge::graphics::Plot * >(argp1);
+    {
+      std::string *ptr = (std::string *)0;
+      res2 = SWIG_AsPtr_std_string SWIG_PERL_CALL_ARGS_2(ST(1), &ptr);
+      if (!SWIG_IsOK(res2)) {
+        SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "Plot_save_pdf" "', argument " "2"" of type '" "std::string const &""'"); 
+      }
+      if (!ptr) {
+        SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "Plot_save_pdf" "', argument " "2"" of type '" "std::string const &""'"); 
+      }
+      arg2 = ptr;
+    }
+    ((datamunge::graphics::Plot const *)arg1)->save_pdf((std::string const &)*arg2);
+    ST(argvi) = &PL_sv_undef;
+    
+    if (SWIG_IsNewObj(res2)) delete arg2;
+    XSRETURN(argvi);
+    fail:;
+    
+    if (SWIG_IsNewObj(res2)) delete arg2;
+  }
+  SWIG_croak_null();
+}
+
+
 XS(_wrap_Plot_view__SWIG_0) {
   {
     datamunge::graphics::Plot *arg1 = 0 ;
@@ -106513,7 +111131,7 @@ XS(_wrap_Plot_view__SWIG_0) {
     if ((items < 2) || (items > 2)) {
       SWIG_croak("Usage: Plot_view(self,title_hint);");
     }
-    res1 = SWIG_ConvertPtr(ST(0), &argp1,SWIGTYPE_p_datamunge__plot__Plot, 0 |  0 );
+    res1 = SWIG_ConvertPtr(ST(0), &argp1,SWIGTYPE_p_datamunge__graphics__Plot, 0 |  0 );
     if (!SWIG_IsOK(res1)) {
       SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "Plot_view" "', argument " "1"" of type '" "datamunge::graphics::Plot const *""'"); 
     }
@@ -106553,7 +111171,7 @@ XS(_wrap_Plot_view__SWIG_1) {
     if ((items < 1) || (items > 1)) {
       SWIG_croak("Usage: Plot_view(self);");
     }
-    res1 = SWIG_ConvertPtr(ST(0), &argp1,SWIGTYPE_p_datamunge__plot__Plot, 0 |  0 );
+    res1 = SWIG_ConvertPtr(ST(0), &argp1,SWIGTYPE_p_datamunge__graphics__Plot, 0 |  0 );
     if (!SWIG_IsOK(res1)) {
       SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "Plot_view" "', argument " "1"" of type '" "datamunge::graphics::Plot const *""'"); 
     }
@@ -106582,7 +111200,7 @@ XS(_wrap_Plot_view) {
       int _v = 0;
       {
         void *vptr = 0;
-        int res = SWIG_ConvertPtr(ST(0), &vptr, SWIGTYPE_p_datamunge__plot__Plot, 0);
+        int res = SWIG_ConvertPtr(ST(0), &vptr, SWIGTYPE_p_datamunge__graphics__Plot, 0);
         _v = SWIG_CheckState(res);
       }
       if (!_v) goto check_1;
@@ -106603,7 +111221,7 @@ XS(_wrap_Plot_view) {
       int _v = 0;
       {
         void *vptr = 0;
-        int res = SWIG_ConvertPtr(ST(0), &vptr, SWIGTYPE_p_datamunge__plot__Plot, 0);
+        int res = SWIG_ConvertPtr(ST(0), &vptr, SWIGTYPE_p_datamunge__graphics__Plot, 0);
         _v = SWIG_CheckState(res);
       }
       if (!_v) goto check_2;
@@ -106652,7 +111270,7 @@ XS(_wrap_Plot_show__SWIG_0) {
     if ((items < 2) || (items > 2)) {
       SWIG_croak("Usage: Plot_show(self,title_hint);");
     }
-    res1 = SWIG_ConvertPtr(ST(0), &argp1,SWIGTYPE_p_datamunge__plot__Plot, 0 |  0 );
+    res1 = SWIG_ConvertPtr(ST(0), &argp1,SWIGTYPE_p_datamunge__graphics__Plot, 0 |  0 );
     if (!SWIG_IsOK(res1)) {
       SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "Plot_show" "', argument " "1"" of type '" "datamunge::graphics::Plot const *""'"); 
     }
@@ -106692,7 +111310,7 @@ XS(_wrap_Plot_show__SWIG_1) {
     if ((items < 1) || (items > 1)) {
       SWIG_croak("Usage: Plot_show(self);");
     }
-    res1 = SWIG_ConvertPtr(ST(0), &argp1,SWIGTYPE_p_datamunge__plot__Plot, 0 |  0 );
+    res1 = SWIG_ConvertPtr(ST(0), &argp1,SWIGTYPE_p_datamunge__graphics__Plot, 0 |  0 );
     if (!SWIG_IsOK(res1)) {
       SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "Plot_show" "', argument " "1"" of type '" "datamunge::graphics::Plot const *""'"); 
     }
@@ -106721,7 +111339,7 @@ XS(_wrap_Plot_show) {
       int _v = 0;
       {
         void *vptr = 0;
-        int res = SWIG_ConvertPtr(ST(0), &vptr, SWIGTYPE_p_datamunge__plot__Plot, 0);
+        int res = SWIG_ConvertPtr(ST(0), &vptr, SWIGTYPE_p_datamunge__graphics__Plot, 0);
         _v = SWIG_CheckState(res);
       }
       if (!_v) goto check_1;
@@ -106742,7 +111360,7 @@ XS(_wrap_Plot_show) {
       int _v = 0;
       {
         void *vptr = 0;
-        int res = SWIG_ConvertPtr(ST(0), &vptr, SWIGTYPE_p_datamunge__plot__Plot, 0);
+        int res = SWIG_ConvertPtr(ST(0), &vptr, SWIGTYPE_p_datamunge__graphics__Plot, 0);
         _v = SWIG_CheckState(res);
       }
       if (!_v) goto check_2;
@@ -106788,11 +111406,213 @@ XS(_wrap_new_Plot) {
       SWIG_croak("Usage: new_Plot();");
     }
     result = (datamunge::graphics::Plot *)new datamunge::graphics::Plot();
-    ST(argvi) = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__plot__Plot, SWIG_OWNER | SWIG_SHADOW); argvi++ ;
+    ST(argvi) = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__graphics__Plot, SWIG_OWNER | SWIG_SHADOW); argvi++ ;
     XSRETURN(argvi);
     fail:;
   }
   SWIG_croak_null();
+}
+
+
+XS(_wrap_new_RPlot__SWIG_0) {
+  {
+    int argvi = 0;
+    datamunge::graphics::RPlot *result = 0 ;
+    dXSARGS;
+    
+    if ((items < 0) || (items > 0)) {
+      SWIG_croak("Usage: new_RPlot();");
+    }
+    result = (datamunge::graphics::RPlot *)new datamunge::graphics::RPlot();
+    ST(argvi) = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__graphics__RPlot, SWIG_OWNER | SWIG_SHADOW); argvi++ ;
+    XSRETURN(argvi);
+    fail:;
+  }
+  SWIG_croak_null();
+}
+
+
+XS(_wrap_new_RPlot__SWIG_1) {
+  {
+    std::vector< double > arg1 ;
+    std::vector< double > arg2 ;
+    std::vector< double > *v1 ;
+    std::vector< double > *v2 ;
+    int argvi = 0;
+    datamunge::graphics::RPlot *result = 0 ;
+    dXSARGS;
+    
+    if ((items < 2) || (items > 2)) {
+      SWIG_croak("Usage: new_RPlot(x,y);");
+    }
+    {
+      if (SWIG_ConvertPtr(ST(0),(void **) &v1, 
+          SWIGTYPE_p_std__vectorT_double_t,1) != -1){
+        arg1 = *v1;
+      } else if (SvROK(ST(0))) {
+        AV *av = (AV *)SvRV(ST(0));
+        if (SvTYPE(av) != SVt_PVAV)
+        SWIG_croak("Type error in argument 1 of new_RPlot. "
+          "Expected an array of ""double");
+        SV **tv;
+        SSize_t len = av_len(av) + 1;
+        for (int i=0; i<len; i++) {
+          tv = av_fetch(av, i, 0);
+          if (SvNIOK(*tv)) {
+            (&arg1)->push_back((double)SwigSvToNumber(*tv));
+          } else {
+            SWIG_croak("Type error in argument 1 of "
+              "new_RPlot. "
+              "Expected an array of ""double");
+          }
+        }
+      } else {
+        SWIG_croak("Type error in argument 1 of new_RPlot. "
+          "Expected an array of ""double");
+      }
+    }
+    {
+      if (SWIG_ConvertPtr(ST(1),(void **) &v2, 
+          SWIGTYPE_p_std__vectorT_double_t,1) != -1){
+        arg2 = *v2;
+      } else if (SvROK(ST(1))) {
+        AV *av = (AV *)SvRV(ST(1));
+        if (SvTYPE(av) != SVt_PVAV)
+        SWIG_croak("Type error in argument 2 of new_RPlot. "
+          "Expected an array of ""double");
+        SV **tv;
+        SSize_t len = av_len(av) + 1;
+        for (int i=0; i<len; i++) {
+          tv = av_fetch(av, i, 0);
+          if (SvNIOK(*tv)) {
+            (&arg2)->push_back((double)SwigSvToNumber(*tv));
+          } else {
+            SWIG_croak("Type error in argument 2 of "
+              "new_RPlot. "
+              "Expected an array of ""double");
+          }
+        }
+      } else {
+        SWIG_croak("Type error in argument 2 of new_RPlot. "
+          "Expected an array of ""double");
+      }
+    }
+    result = (datamunge::graphics::RPlot *)new datamunge::graphics::RPlot(SWIG_STD_MOVE(*(&arg1)),SWIG_STD_MOVE(*(&arg2)));
+    ST(argvi) = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__graphics__RPlot, SWIG_OWNER | SWIG_SHADOW); argvi++ ;
+    XSRETURN(argvi);
+    fail:;
+  }
+  SWIG_croak_null();
+}
+
+
+XS(_wrap_new_RPlot) {
+  dXSARGS;
+  
+  {
+    unsigned long _index = 0;
+    SWIG_TypeRank _rank = 0; 
+    if (items == 0) {
+      SWIG_TypeRank _ranki = 0;
+      SWIG_TypeRank _rankm = 0;
+      if (!_index || (_ranki < _rank)) {
+        _rank = _ranki; _index = 1;
+        if (_rank == _rankm) goto dispatch;
+      }
+    }
+    if (items == 2) {
+      SWIG_TypeRank _ranki = 0;
+      SWIG_TypeRank _rankm = 0;
+      SWIG_TypeRank _pi = 1;
+      int _v = 0;
+      {
+        {
+          {
+            /* wrapped vector? */
+            std::vector< double >* v;
+            if (SWIG_ConvertPtr(ST(0),(void **) &v, 
+                SWIGTYPE_p_std__vectorT_double_t,0) != -1) {
+              _v = 1;
+            } else if (SvROK(ST(0))) {
+              /* native sequence? */
+              AV *av = (AV *)SvRV(ST(0));
+              if (SvTYPE(av) == SVt_PVAV) {
+                SSize_t len = av_len(av) + 1;
+                if (len == 0) {
+                  /* an empty sequence can be of any type */
+                  _v = 1;
+                } else {
+                  /* check the first element only */
+                  SV **tv = av_fetch(av, 0, 0);
+                  if (SvNIOK(*tv))
+                  _v = 1;
+                  else
+                  _v = 0;
+                }
+              }
+            } else {
+              _v = 0;
+            }
+          }
+        }
+      }
+      if (!_v) goto check_2;
+      _ranki += _v*_pi;
+      _rankm += _pi;
+      _pi *= SWIG_MAXCASTRANK;
+      {
+        {
+          {
+            /* wrapped vector? */
+            std::vector< double >* v;
+            if (SWIG_ConvertPtr(ST(1),(void **) &v, 
+                SWIGTYPE_p_std__vectorT_double_t,0) != -1) {
+              _v = 1;
+            } else if (SvROK(ST(1))) {
+              /* native sequence? */
+              AV *av = (AV *)SvRV(ST(1));
+              if (SvTYPE(av) == SVt_PVAV) {
+                SSize_t len = av_len(av) + 1;
+                if (len == 0) {
+                  /* an empty sequence can be of any type */
+                  _v = 1;
+                } else {
+                  /* check the first element only */
+                  SV **tv = av_fetch(av, 0, 0);
+                  if (SvNIOK(*tv))
+                  _v = 1;
+                  else
+                  _v = 0;
+                }
+              }
+            } else {
+              _v = 0;
+            }
+          }
+        }
+      }
+      if (!_v) goto check_2;
+      _ranki += _v*_pi;
+      _rankm += _pi;
+      _pi *= SWIG_MAXCASTRANK;
+      if (!_index || (_ranki < _rank)) {
+        _rank = _ranki; _index = 2;
+        if (_rank == _rankm) goto dispatch;
+      }
+    }
+  check_2:
+    
+  dispatch:
+    switch(_index) {
+    case 1:
+      PUSHMARK(MARK); SWIG_CALLXS(_wrap_new_RPlot__SWIG_0); return;
+    case 2:
+      PUSHMARK(MARK); SWIG_CALLXS(_wrap_new_RPlot__SWIG_1); return;
+    }
+  }
+  
+  croak("No matching function for overloaded 'new_RPlot'");
+  XSRETURN(0);
 }
 
 
@@ -106806,7 +111626,7 @@ XS(_wrap_RPlot_create) {
       SWIG_croak("Usage: RPlot_create();");
     }
     result = datamunge::graphics::RPlot::create();
-    ST(argvi) = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN | SWIG_SHADOW); argvi++ ;
+    ST(argvi) = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__graphics__RPlot, SWIG_POINTER_OWN | SWIG_SHADOW); argvi++ ;
     XSRETURN(argvi);
     fail:;
   }
@@ -106832,7 +111652,7 @@ XS(_wrap_RPlot_size) {
     if ((items < 3) || (items > 3)) {
       SWIG_croak("Usage: RPlot_size(self,width,height);");
     }
-    res1 = SWIG_ConvertPtr(ST(0), &argp1,SWIGTYPE_p_datamunge__plot__RPlot, 0 |  0 );
+    res1 = SWIG_ConvertPtr(ST(0), &argp1,SWIGTYPE_p_datamunge__graphics__RPlot, 0 |  0 );
     if (!SWIG_IsOK(res1)) {
       SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "RPlot_size" "', argument " "1"" of type '" "datamunge::graphics::RPlot *""'"); 
     }
@@ -106848,7 +111668,7 @@ XS(_wrap_RPlot_size) {
     } 
     arg3 = static_cast< std::size_t >(val3);
     result = (datamunge::graphics::RPlot *) &(arg1)->size(SWIG_STD_MOVE(*(&arg2)),SWIG_STD_MOVE(*(&arg3)));
-    ST(argvi) = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__plot__RPlot, 0 | SWIG_SHADOW); argvi++ ;
+    ST(argvi) = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__graphics__RPlot, 0 | SWIG_SHADOW); argvi++ ;
     
     
     
@@ -106875,7 +111695,7 @@ XS(_wrap_RPlot_title) {
     if ((items < 2) || (items > 2)) {
       SWIG_croak("Usage: RPlot_title(self,value);");
     }
-    res1 = SWIG_ConvertPtr(ST(0), &argp1,SWIGTYPE_p_datamunge__plot__RPlot, 0 |  0 );
+    res1 = SWIG_ConvertPtr(ST(0), &argp1,SWIGTYPE_p_datamunge__graphics__RPlot, 0 |  0 );
     if (!SWIG_IsOK(res1)) {
       SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "RPlot_title" "', argument " "1"" of type '" "datamunge::graphics::RPlot *""'"); 
     }
@@ -106890,7 +111710,47 @@ XS(_wrap_RPlot_title) {
       if (SWIG_IsNewObj(res)) delete ptr;
     }
     result = (datamunge::graphics::RPlot *) &(arg1)->title(SWIG_STD_MOVE(*(&arg2)));
-    ST(argvi) = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__plot__RPlot, 0 | SWIG_SHADOW); argvi++ ;
+    ST(argvi) = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__graphics__RPlot, 0 | SWIG_SHADOW); argvi++ ;
+    
+    
+    XSRETURN(argvi);
+    fail:;
+    
+    
+  }
+  SWIG_croak_null();
+}
+
+
+XS(_wrap_RPlot_subtitle) {
+  {
+    datamunge::graphics::RPlot *arg1 = 0 ;
+    std::string arg2 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    int argvi = 0;
+    datamunge::graphics::RPlot *result = 0 ;
+    dXSARGS;
+    
+    if ((items < 2) || (items > 2)) {
+      SWIG_croak("Usage: RPlot_subtitle(self,value);");
+    }
+    res1 = SWIG_ConvertPtr(ST(0), &argp1,SWIGTYPE_p_datamunge__graphics__RPlot, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "RPlot_subtitle" "', argument " "1"" of type '" "datamunge::graphics::RPlot *""'"); 
+    }
+    arg1 = reinterpret_cast< datamunge::graphics::RPlot * >(argp1);
+    {
+      std::string *ptr = (std::string *)0;
+      int res = SWIG_AsPtr_std_string SWIG_PERL_CALL_ARGS_2(ST(1), &ptr);
+      if (!SWIG_IsOK(res) || !ptr) {
+        SWIG_exception_fail(SWIG_ArgError((ptr ? res : SWIG_TypeError)), "in method '" "RPlot_subtitle" "', argument " "2"" of type '" "std::string""'"); 
+      }
+      arg2 = *ptr;
+      if (SWIG_IsNewObj(res)) delete ptr;
+    }
+    result = (datamunge::graphics::RPlot *) &(arg1)->subtitle(SWIG_STD_MOVE(*(&arg2)));
+    ST(argvi) = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__graphics__RPlot, 0 | SWIG_SHADOW); argvi++ ;
     
     
     XSRETURN(argvi);
@@ -106915,7 +111775,7 @@ XS(_wrap_RPlot_x_label) {
     if ((items < 2) || (items > 2)) {
       SWIG_croak("Usage: RPlot_x_label(self,value);");
     }
-    res1 = SWIG_ConvertPtr(ST(0), &argp1,SWIGTYPE_p_datamunge__plot__RPlot, 0 |  0 );
+    res1 = SWIG_ConvertPtr(ST(0), &argp1,SWIGTYPE_p_datamunge__graphics__RPlot, 0 |  0 );
     if (!SWIG_IsOK(res1)) {
       SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "RPlot_x_label" "', argument " "1"" of type '" "datamunge::graphics::RPlot *""'"); 
     }
@@ -106930,7 +111790,7 @@ XS(_wrap_RPlot_x_label) {
       if (SWIG_IsNewObj(res)) delete ptr;
     }
     result = (datamunge::graphics::RPlot *) &(arg1)->x_label(SWIG_STD_MOVE(*(&arg2)));
-    ST(argvi) = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__plot__RPlot, 0 | SWIG_SHADOW); argvi++ ;
+    ST(argvi) = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__graphics__RPlot, 0 | SWIG_SHADOW); argvi++ ;
     
     
     XSRETURN(argvi);
@@ -106955,7 +111815,7 @@ XS(_wrap_RPlot_y_label) {
     if ((items < 2) || (items > 2)) {
       SWIG_croak("Usage: RPlot_y_label(self,value);");
     }
-    res1 = SWIG_ConvertPtr(ST(0), &argp1,SWIGTYPE_p_datamunge__plot__RPlot, 0 |  0 );
+    res1 = SWIG_ConvertPtr(ST(0), &argp1,SWIGTYPE_p_datamunge__graphics__RPlot, 0 |  0 );
     if (!SWIG_IsOK(res1)) {
       SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "RPlot_y_label" "', argument " "1"" of type '" "datamunge::graphics::RPlot *""'"); 
     }
@@ -106970,7 +111830,7 @@ XS(_wrap_RPlot_y_label) {
       if (SWIG_IsNewObj(res)) delete ptr;
     }
     result = (datamunge::graphics::RPlot *) &(arg1)->y_label(SWIG_STD_MOVE(*(&arg2)));
-    ST(argvi) = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__plot__RPlot, 0 | SWIG_SHADOW); argvi++ ;
+    ST(argvi) = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__graphics__RPlot, 0 | SWIG_SHADOW); argvi++ ;
     
     
     XSRETURN(argvi);
@@ -106995,7 +111855,7 @@ XS(_wrap_RPlot_xlab) {
     if ((items < 2) || (items > 2)) {
       SWIG_croak("Usage: RPlot_xlab(self,value);");
     }
-    res1 = SWIG_ConvertPtr(ST(0), &argp1,SWIGTYPE_p_datamunge__plot__RPlot, 0 |  0 );
+    res1 = SWIG_ConvertPtr(ST(0), &argp1,SWIGTYPE_p_datamunge__graphics__RPlot, 0 |  0 );
     if (!SWIG_IsOK(res1)) {
       SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "RPlot_xlab" "', argument " "1"" of type '" "datamunge::graphics::RPlot *""'"); 
     }
@@ -107010,7 +111870,7 @@ XS(_wrap_RPlot_xlab) {
       if (SWIG_IsNewObj(res)) delete ptr;
     }
     result = (datamunge::graphics::RPlot *) &(arg1)->xlab(SWIG_STD_MOVE(*(&arg2)));
-    ST(argvi) = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__plot__RPlot, 0 | SWIG_SHADOW); argvi++ ;
+    ST(argvi) = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__graphics__RPlot, 0 | SWIG_SHADOW); argvi++ ;
     
     
     XSRETURN(argvi);
@@ -107035,7 +111895,7 @@ XS(_wrap_RPlot_ylab) {
     if ((items < 2) || (items > 2)) {
       SWIG_croak("Usage: RPlot_ylab(self,value);");
     }
-    res1 = SWIG_ConvertPtr(ST(0), &argp1,SWIGTYPE_p_datamunge__plot__RPlot, 0 |  0 );
+    res1 = SWIG_ConvertPtr(ST(0), &argp1,SWIGTYPE_p_datamunge__graphics__RPlot, 0 |  0 );
     if (!SWIG_IsOK(res1)) {
       SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "RPlot_ylab" "', argument " "1"" of type '" "datamunge::graphics::RPlot *""'"); 
     }
@@ -107050,7 +111910,7 @@ XS(_wrap_RPlot_ylab) {
       if (SWIG_IsNewObj(res)) delete ptr;
     }
     result = (datamunge::graphics::RPlot *) &(arg1)->ylab(SWIG_STD_MOVE(*(&arg2)));
-    ST(argvi) = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__plot__RPlot, 0 | SWIG_SHADOW); argvi++ ;
+    ST(argvi) = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__graphics__RPlot, 0 | SWIG_SHADOW); argvi++ ;
     
     
     XSRETURN(argvi);
@@ -107062,10 +111922,331 @@ XS(_wrap_RPlot_ylab) {
 }
 
 
+XS(_wrap_RPlot_set_title) {
+  {
+    datamunge::graphics::RPlot *arg1 = 0 ;
+    std::string arg2 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    int argvi = 0;
+    datamunge::graphics::RPlot *result = 0 ;
+    dXSARGS;
+    
+    if ((items < 2) || (items > 2)) {
+      SWIG_croak("Usage: RPlot_set_title(self,value);");
+    }
+    res1 = SWIG_ConvertPtr(ST(0), &argp1,SWIGTYPE_p_datamunge__graphics__RPlot, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "RPlot_set_title" "', argument " "1"" of type '" "datamunge::graphics::RPlot *""'"); 
+    }
+    arg1 = reinterpret_cast< datamunge::graphics::RPlot * >(argp1);
+    {
+      std::string *ptr = (std::string *)0;
+      int res = SWIG_AsPtr_std_string SWIG_PERL_CALL_ARGS_2(ST(1), &ptr);
+      if (!SWIG_IsOK(res) || !ptr) {
+        SWIG_exception_fail(SWIG_ArgError((ptr ? res : SWIG_TypeError)), "in method '" "RPlot_set_title" "', argument " "2"" of type '" "std::string""'"); 
+      }
+      arg2 = *ptr;
+      if (SWIG_IsNewObj(res)) delete ptr;
+    }
+    result = (datamunge::graphics::RPlot *) &(arg1)->set_title(SWIG_STD_MOVE(*(&arg2)));
+    ST(argvi) = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__graphics__RPlot, 0 | SWIG_SHADOW); argvi++ ;
+    
+    
+    XSRETURN(argvi);
+    fail:;
+    
+    
+  }
+  SWIG_croak_null();
+}
+
+
+XS(_wrap_RPlot_set_subtitle) {
+  {
+    datamunge::graphics::RPlot *arg1 = 0 ;
+    std::string arg2 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    int argvi = 0;
+    datamunge::graphics::RPlot *result = 0 ;
+    dXSARGS;
+    
+    if ((items < 2) || (items > 2)) {
+      SWIG_croak("Usage: RPlot_set_subtitle(self,value);");
+    }
+    res1 = SWIG_ConvertPtr(ST(0), &argp1,SWIGTYPE_p_datamunge__graphics__RPlot, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "RPlot_set_subtitle" "', argument " "1"" of type '" "datamunge::graphics::RPlot *""'"); 
+    }
+    arg1 = reinterpret_cast< datamunge::graphics::RPlot * >(argp1);
+    {
+      std::string *ptr = (std::string *)0;
+      int res = SWIG_AsPtr_std_string SWIG_PERL_CALL_ARGS_2(ST(1), &ptr);
+      if (!SWIG_IsOK(res) || !ptr) {
+        SWIG_exception_fail(SWIG_ArgError((ptr ? res : SWIG_TypeError)), "in method '" "RPlot_set_subtitle" "', argument " "2"" of type '" "std::string""'"); 
+      }
+      arg2 = *ptr;
+      if (SWIG_IsNewObj(res)) delete ptr;
+    }
+    result = (datamunge::graphics::RPlot *) &(arg1)->set_subtitle(SWIG_STD_MOVE(*(&arg2)));
+    ST(argvi) = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__graphics__RPlot, 0 | SWIG_SHADOW); argvi++ ;
+    
+    
+    XSRETURN(argvi);
+    fail:;
+    
+    
+  }
+  SWIG_croak_null();
+}
+
+
+XS(_wrap_RPlot_set_xlab) {
+  {
+    datamunge::graphics::RPlot *arg1 = 0 ;
+    std::string arg2 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    int argvi = 0;
+    datamunge::graphics::RPlot *result = 0 ;
+    dXSARGS;
+    
+    if ((items < 2) || (items > 2)) {
+      SWIG_croak("Usage: RPlot_set_xlab(self,value);");
+    }
+    res1 = SWIG_ConvertPtr(ST(0), &argp1,SWIGTYPE_p_datamunge__graphics__RPlot, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "RPlot_set_xlab" "', argument " "1"" of type '" "datamunge::graphics::RPlot *""'"); 
+    }
+    arg1 = reinterpret_cast< datamunge::graphics::RPlot * >(argp1);
+    {
+      std::string *ptr = (std::string *)0;
+      int res = SWIG_AsPtr_std_string SWIG_PERL_CALL_ARGS_2(ST(1), &ptr);
+      if (!SWIG_IsOK(res) || !ptr) {
+        SWIG_exception_fail(SWIG_ArgError((ptr ? res : SWIG_TypeError)), "in method '" "RPlot_set_xlab" "', argument " "2"" of type '" "std::string""'"); 
+      }
+      arg2 = *ptr;
+      if (SWIG_IsNewObj(res)) delete ptr;
+    }
+    result = (datamunge::graphics::RPlot *) &(arg1)->set_xlab(SWIG_STD_MOVE(*(&arg2)));
+    ST(argvi) = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__graphics__RPlot, 0 | SWIG_SHADOW); argvi++ ;
+    
+    
+    XSRETURN(argvi);
+    fail:;
+    
+    
+  }
+  SWIG_croak_null();
+}
+
+
+XS(_wrap_RPlot_set_ylab) {
+  {
+    datamunge::graphics::RPlot *arg1 = 0 ;
+    std::string arg2 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    int argvi = 0;
+    datamunge::graphics::RPlot *result = 0 ;
+    dXSARGS;
+    
+    if ((items < 2) || (items > 2)) {
+      SWIG_croak("Usage: RPlot_set_ylab(self,value);");
+    }
+    res1 = SWIG_ConvertPtr(ST(0), &argp1,SWIGTYPE_p_datamunge__graphics__RPlot, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "RPlot_set_ylab" "', argument " "1"" of type '" "datamunge::graphics::RPlot *""'"); 
+    }
+    arg1 = reinterpret_cast< datamunge::graphics::RPlot * >(argp1);
+    {
+      std::string *ptr = (std::string *)0;
+      int res = SWIG_AsPtr_std_string SWIG_PERL_CALL_ARGS_2(ST(1), &ptr);
+      if (!SWIG_IsOK(res) || !ptr) {
+        SWIG_exception_fail(SWIG_ArgError((ptr ? res : SWIG_TypeError)), "in method '" "RPlot_set_ylab" "', argument " "2"" of type '" "std::string""'"); 
+      }
+      arg2 = *ptr;
+      if (SWIG_IsNewObj(res)) delete ptr;
+    }
+    result = (datamunge::graphics::RPlot *) &(arg1)->set_ylab(SWIG_STD_MOVE(*(&arg2)));
+    ST(argvi) = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__graphics__RPlot, 0 | SWIG_SHADOW); argvi++ ;
+    
+    
+    XSRETURN(argvi);
+    fail:;
+    
+    
+  }
+  SWIG_croak_null();
+}
+
+
+XS(_wrap_RPlot_set_col__SWIG_0) {
+  {
+    datamunge::graphics::RPlot *arg1 = 0 ;
+    datamunge::graphics::RGBA arg2 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    void *argp2 = 0 ;
+    int res2 = 0 ;
+    int argvi = 0;
+    datamunge::graphics::RPlot *result = 0 ;
+    dXSARGS;
+    
+    if ((items < 2) || (items > 2)) {
+      SWIG_croak("Usage: RPlot_set_col(self,color);");
+    }
+    res1 = SWIG_ConvertPtr(ST(0), &argp1,SWIGTYPE_p_datamunge__graphics__RPlot, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "RPlot_set_col" "', argument " "1"" of type '" "datamunge::graphics::RPlot *""'"); 
+    }
+    arg1 = reinterpret_cast< datamunge::graphics::RPlot * >(argp1);
+    {
+      res2 = SWIG_ConvertPtr(ST(1), &argp2, SWIGTYPE_p_datamunge__graphics__RGB,  0 );
+      if (!SWIG_IsOK(res2)) {
+        SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "RPlot_set_col" "', argument " "2"" of type '" "datamunge::graphics::RGBA""'"); 
+      }  
+      if (!argp2) {
+        SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "RPlot_set_col" "', argument " "2"" of type '" "datamunge::graphics::RGBA""'");
+      } else {
+        arg2 = *(reinterpret_cast< datamunge::graphics::RGBA * >(argp2));
+      }
+    }
+    result = (datamunge::graphics::RPlot *) &(arg1)->set_col(SWIG_STD_MOVE(*(&arg2)));
+    ST(argvi) = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__graphics__RPlot, 0 | SWIG_SHADOW); argvi++ ;
+    
+    XSRETURN(argvi);
+    fail:;
+    
+  }
+  SWIG_croak_null();
+}
+
+
+XS(_wrap_RPlot_set_col__SWIG_1) {
+  {
+    datamunge::graphics::RPlot *arg1 = 0 ;
+    std::string arg2 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    int argvi = 0;
+    datamunge::graphics::RPlot *result = 0 ;
+    dXSARGS;
+    
+    if ((items < 2) || (items > 2)) {
+      SWIG_croak("Usage: RPlot_set_col(self,color);");
+    }
+    res1 = SWIG_ConvertPtr(ST(0), &argp1,SWIGTYPE_p_datamunge__graphics__RPlot, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "RPlot_set_col" "', argument " "1"" of type '" "datamunge::graphics::RPlot *""'"); 
+    }
+    arg1 = reinterpret_cast< datamunge::graphics::RPlot * >(argp1);
+    {
+      std::string *ptr = (std::string *)0;
+      int res = SWIG_AsPtr_std_string SWIG_PERL_CALL_ARGS_2(ST(1), &ptr);
+      if (!SWIG_IsOK(res) || !ptr) {
+        SWIG_exception_fail(SWIG_ArgError((ptr ? res : SWIG_TypeError)), "in method '" "RPlot_set_col" "', argument " "2"" of type '" "std::string""'"); 
+      }
+      arg2 = *ptr;
+      if (SWIG_IsNewObj(res)) delete ptr;
+    }
+    result = (datamunge::graphics::RPlot *) &(arg1)->set_col(SWIG_STD_MOVE(*(&arg2)));
+    ST(argvi) = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__graphics__RPlot, 0 | SWIG_SHADOW); argvi++ ;
+    
+    
+    XSRETURN(argvi);
+    fail:;
+    
+    
+  }
+  SWIG_croak_null();
+}
+
+
+XS(_wrap_RPlot_set_col) {
+  dXSARGS;
+  
+  {
+    unsigned long _index = 0;
+    SWIG_TypeRank _rank = 0; 
+    if (items == 2) {
+      SWIG_TypeRank _ranki = 0;
+      SWIG_TypeRank _rankm = 0;
+      SWIG_TypeRank _pi = 1;
+      int _v = 0;
+      {
+        void *vptr = 0;
+        int res = SWIG_ConvertPtr(ST(0), &vptr, SWIGTYPE_p_datamunge__graphics__RPlot, 0);
+        _v = SWIG_CheckState(res);
+      }
+      if (!_v) goto check_1;
+      _ranki += _v*_pi;
+      _rankm += _pi;
+      _pi *= SWIG_MAXCASTRANK;
+      {
+        void *vptr = 0;
+        int res = SWIG_ConvertPtr(ST(1), &vptr, SWIGTYPE_p_datamunge__graphics__RGB, SWIG_POINTER_NO_NULL);
+        _v = SWIG_CheckState(res);
+      }
+      if (!_v) goto check_1;
+      _ranki += _v*_pi;
+      _rankm += _pi;
+      _pi *= SWIG_MAXCASTRANK;
+      if (!_index || (_ranki < _rank)) {
+        _rank = _ranki; _index = 1;
+        if (_rank == _rankm) goto dispatch;
+      }
+    }
+  check_1:
+    
+    if (items == 2) {
+      SWIG_TypeRank _ranki = 0;
+      SWIG_TypeRank _rankm = 0;
+      SWIG_TypeRank _pi = 1;
+      int _v = 0;
+      {
+        void *vptr = 0;
+        int res = SWIG_ConvertPtr(ST(0), &vptr, SWIGTYPE_p_datamunge__graphics__RPlot, 0);
+        _v = SWIG_CheckState(res);
+      }
+      if (!_v) goto check_2;
+      _ranki += _v*_pi;
+      _rankm += _pi;
+      _pi *= SWIG_MAXCASTRANK;
+      {
+        int res = SWIG_AsPtr_std_string SWIG_PERL_CALL_ARGS_2(ST(1), (std::string**)(0));
+        _v = SWIG_CheckState(res);
+      }
+      if (!_v) goto check_2;
+      _ranki += _v*_pi;
+      _rankm += _pi;
+      _pi *= SWIG_MAXCASTRANK;
+      if (!_index || (_ranki < _rank)) {
+        _rank = _ranki; _index = 2;
+        if (_rank == _rankm) goto dispatch;
+      }
+    }
+  check_2:
+    
+  dispatch:
+    switch(_index) {
+    case 1:
+      PUSHMARK(MARK); SWIG_CALLXS(_wrap_RPlot_set_col__SWIG_0); return;
+    case 2:
+      PUSHMARK(MARK); SWIG_CALLXS(_wrap_RPlot_set_col__SWIG_1); return;
+    }
+  }
+  
+  croak("No matching function for overloaded 'RPlot_set_col'");
+  XSRETURN(0);
+}
+
+
 XS(_wrap_RPlot_background) {
   {
     datamunge::graphics::RPlot *arg1 = 0 ;
-    SwigValueWrapper< datamunge::graphics::RGB > arg2 ;
+    datamunge::graphics::RGBA arg2 ;
     void *argp1 = 0 ;
     int res1 = 0 ;
     void *argp2 = 0 ;
@@ -107077,24 +112258,24 @@ XS(_wrap_RPlot_background) {
     if ((items < 2) || (items > 2)) {
       SWIG_croak("Usage: RPlot_background(self,color);");
     }
-    res1 = SWIG_ConvertPtr(ST(0), &argp1,SWIGTYPE_p_datamunge__plot__RPlot, 0 |  0 );
+    res1 = SWIG_ConvertPtr(ST(0), &argp1,SWIGTYPE_p_datamunge__graphics__RPlot, 0 |  0 );
     if (!SWIG_IsOK(res1)) {
       SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "RPlot_background" "', argument " "1"" of type '" "datamunge::graphics::RPlot *""'"); 
     }
     arg1 = reinterpret_cast< datamunge::graphics::RPlot * >(argp1);
     {
-      res2 = SWIG_ConvertPtr(ST(1), &argp2, SWIGTYPE_p_datamunge__plot__RGB,  0 );
+      res2 = SWIG_ConvertPtr(ST(1), &argp2, SWIGTYPE_p_datamunge__graphics__RGB,  0 );
       if (!SWIG_IsOK(res2)) {
-        SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "RPlot_background" "', argument " "2"" of type '" "datamunge::graphics::RGB""'"); 
+        SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "RPlot_background" "', argument " "2"" of type '" "datamunge::graphics::RGBA""'"); 
       }  
       if (!argp2) {
-        SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "RPlot_background" "', argument " "2"" of type '" "datamunge::graphics::RGB""'");
+        SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "RPlot_background" "', argument " "2"" of type '" "datamunge::graphics::RGBA""'");
       } else {
-        arg2 = *(reinterpret_cast< datamunge::graphics::RGB * >(argp2));
+        arg2 = *(reinterpret_cast< datamunge::graphics::RGBA * >(argp2));
       }
     }
     result = (datamunge::graphics::RPlot *) &(arg1)->background(SWIG_STD_MOVE(*(&arg2)));
-    ST(argvi) = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__plot__RPlot, 0 | SWIG_SHADOW); argvi++ ;
+    ST(argvi) = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__graphics__RPlot, 0 | SWIG_SHADOW); argvi++ ;
     
     XSRETURN(argvi);
     fail:;
@@ -107107,7 +112288,7 @@ XS(_wrap_RPlot_background) {
 XS(_wrap_RPlot_axis_color) {
   {
     datamunge::graphics::RPlot *arg1 = 0 ;
-    SwigValueWrapper< datamunge::graphics::RGB > arg2 ;
+    datamunge::graphics::RGBA arg2 ;
     void *argp1 = 0 ;
     int res1 = 0 ;
     void *argp2 = 0 ;
@@ -107119,24 +112300,24 @@ XS(_wrap_RPlot_axis_color) {
     if ((items < 2) || (items > 2)) {
       SWIG_croak("Usage: RPlot_axis_color(self,color);");
     }
-    res1 = SWIG_ConvertPtr(ST(0), &argp1,SWIGTYPE_p_datamunge__plot__RPlot, 0 |  0 );
+    res1 = SWIG_ConvertPtr(ST(0), &argp1,SWIGTYPE_p_datamunge__graphics__RPlot, 0 |  0 );
     if (!SWIG_IsOK(res1)) {
       SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "RPlot_axis_color" "', argument " "1"" of type '" "datamunge::graphics::RPlot *""'"); 
     }
     arg1 = reinterpret_cast< datamunge::graphics::RPlot * >(argp1);
     {
-      res2 = SWIG_ConvertPtr(ST(1), &argp2, SWIGTYPE_p_datamunge__plot__RGB,  0 );
+      res2 = SWIG_ConvertPtr(ST(1), &argp2, SWIGTYPE_p_datamunge__graphics__RGB,  0 );
       if (!SWIG_IsOK(res2)) {
-        SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "RPlot_axis_color" "', argument " "2"" of type '" "datamunge::graphics::RGB""'"); 
+        SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "RPlot_axis_color" "', argument " "2"" of type '" "datamunge::graphics::RGBA""'"); 
       }  
       if (!argp2) {
-        SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "RPlot_axis_color" "', argument " "2"" of type '" "datamunge::graphics::RGB""'");
+        SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "RPlot_axis_color" "', argument " "2"" of type '" "datamunge::graphics::RGBA""'");
       } else {
-        arg2 = *(reinterpret_cast< datamunge::graphics::RGB * >(argp2));
+        arg2 = *(reinterpret_cast< datamunge::graphics::RGBA * >(argp2));
       }
     }
     result = (datamunge::graphics::RPlot *) &(arg1)->axis_color(SWIG_STD_MOVE(*(&arg2)));
-    ST(argvi) = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__plot__RPlot, 0 | SWIG_SHADOW); argvi++ ;
+    ST(argvi) = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__graphics__RPlot, 0 | SWIG_SHADOW); argvi++ ;
     
     XSRETURN(argvi);
     fail:;
@@ -107149,7 +112330,7 @@ XS(_wrap_RPlot_axis_color) {
 XS(_wrap_RPlot_grid_color) {
   {
     datamunge::graphics::RPlot *arg1 = 0 ;
-    SwigValueWrapper< datamunge::graphics::RGB > arg2 ;
+    datamunge::graphics::RGBA arg2 ;
     void *argp1 = 0 ;
     int res1 = 0 ;
     void *argp2 = 0 ;
@@ -107161,24 +112342,24 @@ XS(_wrap_RPlot_grid_color) {
     if ((items < 2) || (items > 2)) {
       SWIG_croak("Usage: RPlot_grid_color(self,color);");
     }
-    res1 = SWIG_ConvertPtr(ST(0), &argp1,SWIGTYPE_p_datamunge__plot__RPlot, 0 |  0 );
+    res1 = SWIG_ConvertPtr(ST(0), &argp1,SWIGTYPE_p_datamunge__graphics__RPlot, 0 |  0 );
     if (!SWIG_IsOK(res1)) {
       SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "RPlot_grid_color" "', argument " "1"" of type '" "datamunge::graphics::RPlot *""'"); 
     }
     arg1 = reinterpret_cast< datamunge::graphics::RPlot * >(argp1);
     {
-      res2 = SWIG_ConvertPtr(ST(1), &argp2, SWIGTYPE_p_datamunge__plot__RGB,  0 );
+      res2 = SWIG_ConvertPtr(ST(1), &argp2, SWIGTYPE_p_datamunge__graphics__RGB,  0 );
       if (!SWIG_IsOK(res2)) {
-        SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "RPlot_grid_color" "', argument " "2"" of type '" "datamunge::graphics::RGB""'"); 
+        SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "RPlot_grid_color" "', argument " "2"" of type '" "datamunge::graphics::RGBA""'"); 
       }  
       if (!argp2) {
-        SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "RPlot_grid_color" "', argument " "2"" of type '" "datamunge::graphics::RGB""'");
+        SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "RPlot_grid_color" "', argument " "2"" of type '" "datamunge::graphics::RGBA""'");
       } else {
-        arg2 = *(reinterpret_cast< datamunge::graphics::RGB * >(argp2));
+        arg2 = *(reinterpret_cast< datamunge::graphics::RGBA * >(argp2));
       }
     }
     result = (datamunge::graphics::RPlot *) &(arg1)->grid_color(SWIG_STD_MOVE(*(&arg2)));
-    ST(argvi) = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__plot__RPlot, 0 | SWIG_SHADOW); argvi++ ;
+    ST(argvi) = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__graphics__RPlot, 0 | SWIG_SHADOW); argvi++ ;
     
     XSRETURN(argvi);
     fail:;
@@ -107203,7 +112384,7 @@ XS(_wrap_RPlot_show_grid__SWIG_0) {
     if ((items < 2) || (items > 2)) {
       SWIG_croak("Usage: RPlot_show_grid(self,enabled);");
     }
-    res1 = SWIG_ConvertPtr(ST(0), &argp1,SWIGTYPE_p_datamunge__plot__RPlot, 0 |  0 );
+    res1 = SWIG_ConvertPtr(ST(0), &argp1,SWIGTYPE_p_datamunge__graphics__RPlot, 0 |  0 );
     if (!SWIG_IsOK(res1)) {
       SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "RPlot_show_grid" "', argument " "1"" of type '" "datamunge::graphics::RPlot *""'"); 
     }
@@ -107214,7 +112395,7 @@ XS(_wrap_RPlot_show_grid__SWIG_0) {
     } 
     arg2 = static_cast< bool >(val2);
     result = (datamunge::graphics::RPlot *) &(arg1)->show_grid(arg2);
-    ST(argvi) = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__plot__RPlot, 0 | SWIG_SHADOW); argvi++ ;
+    ST(argvi) = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__graphics__RPlot, 0 | SWIG_SHADOW); argvi++ ;
     
     
     XSRETURN(argvi);
@@ -107238,13 +112419,13 @@ XS(_wrap_RPlot_show_grid__SWIG_1) {
     if ((items < 1) || (items > 1)) {
       SWIG_croak("Usage: RPlot_show_grid(self);");
     }
-    res1 = SWIG_ConvertPtr(ST(0), &argp1,SWIGTYPE_p_datamunge__plot__RPlot, 0 |  0 );
+    res1 = SWIG_ConvertPtr(ST(0), &argp1,SWIGTYPE_p_datamunge__graphics__RPlot, 0 |  0 );
     if (!SWIG_IsOK(res1)) {
       SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "RPlot_show_grid" "', argument " "1"" of type '" "datamunge::graphics::RPlot *""'"); 
     }
     arg1 = reinterpret_cast< datamunge::graphics::RPlot * >(argp1);
     result = (datamunge::graphics::RPlot *) &(arg1)->show_grid();
-    ST(argvi) = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__plot__RPlot, 0 | SWIG_SHADOW); argvi++ ;
+    ST(argvi) = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__graphics__RPlot, 0 | SWIG_SHADOW); argvi++ ;
     
     XSRETURN(argvi);
     fail:;
@@ -107267,7 +112448,7 @@ XS(_wrap_RPlot_show_grid) {
       int _v = 0;
       {
         void *vptr = 0;
-        int res = SWIG_ConvertPtr(ST(0), &vptr, SWIGTYPE_p_datamunge__plot__RPlot, 0);
+        int res = SWIG_ConvertPtr(ST(0), &vptr, SWIGTYPE_p_datamunge__graphics__RPlot, 0);
         _v = SWIG_CheckState(res);
       }
       if (!_v) goto check_1;
@@ -107288,7 +112469,7 @@ XS(_wrap_RPlot_show_grid) {
       int _v = 0;
       {
         void *vptr = 0;
-        int res = SWIG_ConvertPtr(ST(0), &vptr, SWIGTYPE_p_datamunge__plot__RPlot, 0);
+        int res = SWIG_ConvertPtr(ST(0), &vptr, SWIGTYPE_p_datamunge__graphics__RPlot, 0);
         _v = SWIG_CheckState(res);
       }
       if (!_v) goto check_2;
@@ -107344,7 +112525,7 @@ XS(_wrap_RPlot_x_limits) {
     if ((items < 3) || (items > 3)) {
       SWIG_croak("Usage: RPlot_x_limits(self,min_x,max_x);");
     }
-    res1 = SWIG_ConvertPtr(ST(0), &argp1,SWIGTYPE_p_datamunge__plot__RPlot, 0 |  0 );
+    res1 = SWIG_ConvertPtr(ST(0), &argp1,SWIGTYPE_p_datamunge__graphics__RPlot, 0 |  0 );
     if (!SWIG_IsOK(res1)) {
       SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "RPlot_x_limits" "', argument " "1"" of type '" "datamunge::graphics::RPlot *""'"); 
     }
@@ -107360,7 +112541,7 @@ XS(_wrap_RPlot_x_limits) {
     } 
     arg3 = static_cast< double >(val3);
     result = (datamunge::graphics::RPlot *) &(arg1)->x_limits(arg2,arg3);
-    ST(argvi) = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__plot__RPlot, 0 | SWIG_SHADOW); argvi++ ;
+    ST(argvi) = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__graphics__RPlot, 0 | SWIG_SHADOW); argvi++ ;
     
     
     
@@ -107392,7 +112573,7 @@ XS(_wrap_RPlot_y_limits) {
     if ((items < 3) || (items > 3)) {
       SWIG_croak("Usage: RPlot_y_limits(self,min_y,max_y);");
     }
-    res1 = SWIG_ConvertPtr(ST(0), &argp1,SWIGTYPE_p_datamunge__plot__RPlot, 0 |  0 );
+    res1 = SWIG_ConvertPtr(ST(0), &argp1,SWIGTYPE_p_datamunge__graphics__RPlot, 0 |  0 );
     if (!SWIG_IsOK(res1)) {
       SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "RPlot_y_limits" "', argument " "1"" of type '" "datamunge::graphics::RPlot *""'"); 
     }
@@ -107408,7 +112589,103 @@ XS(_wrap_RPlot_y_limits) {
     } 
     arg3 = static_cast< double >(val3);
     result = (datamunge::graphics::RPlot *) &(arg1)->y_limits(arg2,arg3);
-    ST(argvi) = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__plot__RPlot, 0 | SWIG_SHADOW); argvi++ ;
+    ST(argvi) = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__graphics__RPlot, 0 | SWIG_SHADOW); argvi++ ;
+    
+    
+    
+    XSRETURN(argvi);
+    fail:;
+    
+    
+    
+  }
+  SWIG_croak_null();
+}
+
+
+XS(_wrap_RPlot_xlim) {
+  {
+    datamunge::graphics::RPlot *arg1 = 0 ;
+    double arg2 ;
+    double arg3 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    double val2 ;
+    int ecode2 = 0 ;
+    double val3 ;
+    int ecode3 = 0 ;
+    int argvi = 0;
+    datamunge::graphics::RPlot *result = 0 ;
+    dXSARGS;
+    
+    if ((items < 3) || (items > 3)) {
+      SWIG_croak("Usage: RPlot_xlim(self,min_x,max_x);");
+    }
+    res1 = SWIG_ConvertPtr(ST(0), &argp1,SWIGTYPE_p_datamunge__graphics__RPlot, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "RPlot_xlim" "', argument " "1"" of type '" "datamunge::graphics::RPlot *""'"); 
+    }
+    arg1 = reinterpret_cast< datamunge::graphics::RPlot * >(argp1);
+    ecode2 = SWIG_AsVal_double SWIG_PERL_CALL_ARGS_2(ST(1), &val2);
+    if (!SWIG_IsOK(ecode2)) {
+      SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "RPlot_xlim" "', argument " "2"" of type '" "double""'");
+    } 
+    arg2 = static_cast< double >(val2);
+    ecode3 = SWIG_AsVal_double SWIG_PERL_CALL_ARGS_2(ST(2), &val3);
+    if (!SWIG_IsOK(ecode3)) {
+      SWIG_exception_fail(SWIG_ArgError(ecode3), "in method '" "RPlot_xlim" "', argument " "3"" of type '" "double""'");
+    } 
+    arg3 = static_cast< double >(val3);
+    result = (datamunge::graphics::RPlot *) &(arg1)->xlim(arg2,arg3);
+    ST(argvi) = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__graphics__RPlot, 0 | SWIG_SHADOW); argvi++ ;
+    
+    
+    
+    XSRETURN(argvi);
+    fail:;
+    
+    
+    
+  }
+  SWIG_croak_null();
+}
+
+
+XS(_wrap_RPlot_ylim) {
+  {
+    datamunge::graphics::RPlot *arg1 = 0 ;
+    double arg2 ;
+    double arg3 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    double val2 ;
+    int ecode2 = 0 ;
+    double val3 ;
+    int ecode3 = 0 ;
+    int argvi = 0;
+    datamunge::graphics::RPlot *result = 0 ;
+    dXSARGS;
+    
+    if ((items < 3) || (items > 3)) {
+      SWIG_croak("Usage: RPlot_ylim(self,min_y,max_y);");
+    }
+    res1 = SWIG_ConvertPtr(ST(0), &argp1,SWIGTYPE_p_datamunge__graphics__RPlot, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "RPlot_ylim" "', argument " "1"" of type '" "datamunge::graphics::RPlot *""'"); 
+    }
+    arg1 = reinterpret_cast< datamunge::graphics::RPlot * >(argp1);
+    ecode2 = SWIG_AsVal_double SWIG_PERL_CALL_ARGS_2(ST(1), &val2);
+    if (!SWIG_IsOK(ecode2)) {
+      SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "RPlot_ylim" "', argument " "2"" of type '" "double""'");
+    } 
+    arg2 = static_cast< double >(val2);
+    ecode3 = SWIG_AsVal_double SWIG_PERL_CALL_ARGS_2(ST(2), &val3);
+    if (!SWIG_IsOK(ecode3)) {
+      SWIG_exception_fail(SWIG_ArgError(ecode3), "in method '" "RPlot_ylim" "', argument " "3"" of type '" "double""'");
+    } 
+    arg3 = static_cast< double >(val3);
+    result = (datamunge::graphics::RPlot *) &(arg1)->ylim(arg2,arg3);
+    ST(argvi) = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__graphics__RPlot, 0 | SWIG_SHADOW); argvi++ ;
     
     
     
@@ -107437,7 +112714,7 @@ XS(_wrap_RPlot_hide_axes__SWIG_0) {
     if ((items < 2) || (items > 2)) {
       SWIG_croak("Usage: RPlot_hide_axes(self,enabled);");
     }
-    res1 = SWIG_ConvertPtr(ST(0), &argp1,SWIGTYPE_p_datamunge__plot__RPlot, 0 |  0 );
+    res1 = SWIG_ConvertPtr(ST(0), &argp1,SWIGTYPE_p_datamunge__graphics__RPlot, 0 |  0 );
     if (!SWIG_IsOK(res1)) {
       SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "RPlot_hide_axes" "', argument " "1"" of type '" "datamunge::graphics::RPlot *""'"); 
     }
@@ -107448,7 +112725,7 @@ XS(_wrap_RPlot_hide_axes__SWIG_0) {
     } 
     arg2 = static_cast< bool >(val2);
     result = (datamunge::graphics::RPlot *) &(arg1)->hide_axes(arg2);
-    ST(argvi) = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__plot__RPlot, 0 | SWIG_SHADOW); argvi++ ;
+    ST(argvi) = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__graphics__RPlot, 0 | SWIG_SHADOW); argvi++ ;
     
     
     XSRETURN(argvi);
@@ -107472,13 +112749,13 @@ XS(_wrap_RPlot_hide_axes__SWIG_1) {
     if ((items < 1) || (items > 1)) {
       SWIG_croak("Usage: RPlot_hide_axes(self);");
     }
-    res1 = SWIG_ConvertPtr(ST(0), &argp1,SWIGTYPE_p_datamunge__plot__RPlot, 0 |  0 );
+    res1 = SWIG_ConvertPtr(ST(0), &argp1,SWIGTYPE_p_datamunge__graphics__RPlot, 0 |  0 );
     if (!SWIG_IsOK(res1)) {
       SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "RPlot_hide_axes" "', argument " "1"" of type '" "datamunge::graphics::RPlot *""'"); 
     }
     arg1 = reinterpret_cast< datamunge::graphics::RPlot * >(argp1);
     result = (datamunge::graphics::RPlot *) &(arg1)->hide_axes();
-    ST(argvi) = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__plot__RPlot, 0 | SWIG_SHADOW); argvi++ ;
+    ST(argvi) = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__graphics__RPlot, 0 | SWIG_SHADOW); argvi++ ;
     
     XSRETURN(argvi);
     fail:;
@@ -107501,7 +112778,7 @@ XS(_wrap_RPlot_hide_axes) {
       int _v = 0;
       {
         void *vptr = 0;
-        int res = SWIG_ConvertPtr(ST(0), &vptr, SWIGTYPE_p_datamunge__plot__RPlot, 0);
+        int res = SWIG_ConvertPtr(ST(0), &vptr, SWIGTYPE_p_datamunge__graphics__RPlot, 0);
         _v = SWIG_CheckState(res);
       }
       if (!_v) goto check_1;
@@ -107522,7 +112799,7 @@ XS(_wrap_RPlot_hide_axes) {
       int _v = 0;
       {
         void *vptr = 0;
-        int res = SWIG_ConvertPtr(ST(0), &vptr, SWIGTYPE_p_datamunge__plot__RPlot, 0);
+        int res = SWIG_ConvertPtr(ST(0), &vptr, SWIGTYPE_p_datamunge__graphics__RPlot, 0);
         _v = SWIG_CheckState(res);
       }
       if (!_v) goto check_2;
@@ -107574,7 +112851,7 @@ XS(_wrap_RPlot_x_tick_labels) {
     if ((items < 2) || (items > 2)) {
       SWIG_croak("Usage: RPlot_x_tick_labels(self,labels);");
     }
-    res1 = SWIG_ConvertPtr(ST(0), &argp1,SWIGTYPE_p_datamunge__plot__RPlot, 0 |  0 );
+    res1 = SWIG_ConvertPtr(ST(0), &argp1,SWIGTYPE_p_datamunge__graphics__RPlot, 0 |  0 );
     if (!SWIG_IsOK(res1)) {
       SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "RPlot_x_tick_labels" "', argument " "1"" of type '" "datamunge::graphics::RPlot *""'"); 
     }
@@ -107606,7 +112883,7 @@ XS(_wrap_RPlot_x_tick_labels) {
       }
     }
     result = (datamunge::graphics::RPlot *) &(arg1)->x_tick_labels(SWIG_STD_MOVE(*(&arg2)));
-    ST(argvi) = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__plot__RPlot, 0 | SWIG_SHADOW); argvi++ ;
+    ST(argvi) = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__graphics__RPlot, 0 | SWIG_SHADOW); argvi++ ;
     
     XSRETURN(argvi);
     fail:;
@@ -107616,13 +112893,481 @@ XS(_wrap_RPlot_x_tick_labels) {
 }
 
 
+XS(_wrap_RPlot_x_ticks) {
+  {
+    datamunge::graphics::RPlot *arg1 = 0 ;
+    std::vector< double > arg2 ;
+    std::vector< std::string > arg3 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    std::vector< double > *v2 ;
+    std::vector< std::string > *v3 ;
+    int argvi = 0;
+    datamunge::graphics::RPlot *result = 0 ;
+    dXSARGS;
+    
+    if ((items < 3) || (items > 3)) {
+      SWIG_croak("Usage: RPlot_x_ticks(self,positions,labels);");
+    }
+    res1 = SWIG_ConvertPtr(ST(0), &argp1,SWIGTYPE_p_datamunge__graphics__RPlot, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "RPlot_x_ticks" "', argument " "1"" of type '" "datamunge::graphics::RPlot *""'"); 
+    }
+    arg1 = reinterpret_cast< datamunge::graphics::RPlot * >(argp1);
+    {
+      if (SWIG_ConvertPtr(ST(1),(void **) &v2, 
+          SWIGTYPE_p_std__vectorT_double_t,1) != -1){
+        arg2 = *v2;
+      } else if (SvROK(ST(1))) {
+        AV *av = (AV *)SvRV(ST(1));
+        if (SvTYPE(av) != SVt_PVAV)
+        SWIG_croak("Type error in argument 2 of RPlot_x_ticks. "
+          "Expected an array of ""double");
+        SV **tv;
+        SSize_t len = av_len(av) + 1;
+        for (int i=0; i<len; i++) {
+          tv = av_fetch(av, i, 0);
+          if (SvNIOK(*tv)) {
+            (&arg2)->push_back((double)SwigSvToNumber(*tv));
+          } else {
+            SWIG_croak("Type error in argument 2 of "
+              "RPlot_x_ticks. "
+              "Expected an array of ""double");
+          }
+        }
+      } else {
+        SWIG_croak("Type error in argument 2 of RPlot_x_ticks. "
+          "Expected an array of ""double");
+      }
+    }
+    {
+      if (SWIG_ConvertPtr(ST(2),(void **) &v3, 
+          SWIGTYPE_p_std__vectorT_std__string_t,1) != -1){
+        arg3 = *v3;
+      } else if (SvROK(ST(2))) {
+        AV *av = (AV *)SvRV(ST(2));
+        if (SvTYPE(av) != SVt_PVAV)
+        SWIG_croak("Type error in argument 3 of RPlot_x_ticks. "
+          "Expected an array of ""std::string");
+        SV **tv;
+        SSize_t len = av_len(av) + 1;
+        for (int i=0; i<len; i++) {
+          tv = av_fetch(av, i, 0);
+          if (SvPOK(*tv)) {
+            (&arg3)->push_back((std::string)SwigSvToString(*tv));
+          } else {
+            SWIG_croak("Type error in argument 3 of "
+              "RPlot_x_ticks. "
+              "Expected an array of ""std::string");
+          }
+        }
+      } else {
+        SWIG_croak("Type error in argument 3 of RPlot_x_ticks. "
+          "Expected an array of ""std::string");
+      }
+    }
+    result = (datamunge::graphics::RPlot *) &(arg1)->x_ticks(SWIG_STD_MOVE(*(&arg2)),SWIG_STD_MOVE(*(&arg3)));
+    ST(argvi) = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__graphics__RPlot, 0 | SWIG_SHADOW); argvi++ ;
+    
+    XSRETURN(argvi);
+    fail:;
+    
+  }
+  SWIG_croak_null();
+}
+
+
+XS(_wrap_RPlot_y_tick_labels) {
+  {
+    datamunge::graphics::RPlot *arg1 = 0 ;
+    std::vector< std::string > arg2 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    std::vector< std::string > *v2 ;
+    int argvi = 0;
+    datamunge::graphics::RPlot *result = 0 ;
+    dXSARGS;
+    
+    if ((items < 2) || (items > 2)) {
+      SWIG_croak("Usage: RPlot_y_tick_labels(self,labels);");
+    }
+    res1 = SWIG_ConvertPtr(ST(0), &argp1,SWIGTYPE_p_datamunge__graphics__RPlot, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "RPlot_y_tick_labels" "', argument " "1"" of type '" "datamunge::graphics::RPlot *""'"); 
+    }
+    arg1 = reinterpret_cast< datamunge::graphics::RPlot * >(argp1);
+    {
+      if (SWIG_ConvertPtr(ST(1),(void **) &v2, 
+          SWIGTYPE_p_std__vectorT_std__string_t,1) != -1){
+        arg2 = *v2;
+      } else if (SvROK(ST(1))) {
+        AV *av = (AV *)SvRV(ST(1));
+        if (SvTYPE(av) != SVt_PVAV)
+        SWIG_croak("Type error in argument 2 of RPlot_y_tick_labels. "
+          "Expected an array of ""std::string");
+        SV **tv;
+        SSize_t len = av_len(av) + 1;
+        for (int i=0; i<len; i++) {
+          tv = av_fetch(av, i, 0);
+          if (SvPOK(*tv)) {
+            (&arg2)->push_back((std::string)SwigSvToString(*tv));
+          } else {
+            SWIG_croak("Type error in argument 2 of "
+              "RPlot_y_tick_labels. "
+              "Expected an array of ""std::string");
+          }
+        }
+      } else {
+        SWIG_croak("Type error in argument 2 of RPlot_y_tick_labels. "
+          "Expected an array of ""std::string");
+      }
+    }
+    result = (datamunge::graphics::RPlot *) &(arg1)->y_tick_labels(SWIG_STD_MOVE(*(&arg2)));
+    ST(argvi) = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__graphics__RPlot, 0 | SWIG_SHADOW); argvi++ ;
+    
+    XSRETURN(argvi);
+    fail:;
+    
+  }
+  SWIG_croak_null();
+}
+
+
+XS(_wrap_RPlot_y_ticks) {
+  {
+    datamunge::graphics::RPlot *arg1 = 0 ;
+    std::vector< double > arg2 ;
+    std::vector< std::string > arg3 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    std::vector< double > *v2 ;
+    std::vector< std::string > *v3 ;
+    int argvi = 0;
+    datamunge::graphics::RPlot *result = 0 ;
+    dXSARGS;
+    
+    if ((items < 3) || (items > 3)) {
+      SWIG_croak("Usage: RPlot_y_ticks(self,positions,labels);");
+    }
+    res1 = SWIG_ConvertPtr(ST(0), &argp1,SWIGTYPE_p_datamunge__graphics__RPlot, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "RPlot_y_ticks" "', argument " "1"" of type '" "datamunge::graphics::RPlot *""'"); 
+    }
+    arg1 = reinterpret_cast< datamunge::graphics::RPlot * >(argp1);
+    {
+      if (SWIG_ConvertPtr(ST(1),(void **) &v2, 
+          SWIGTYPE_p_std__vectorT_double_t,1) != -1){
+        arg2 = *v2;
+      } else if (SvROK(ST(1))) {
+        AV *av = (AV *)SvRV(ST(1));
+        if (SvTYPE(av) != SVt_PVAV)
+        SWIG_croak("Type error in argument 2 of RPlot_y_ticks. "
+          "Expected an array of ""double");
+        SV **tv;
+        SSize_t len = av_len(av) + 1;
+        for (int i=0; i<len; i++) {
+          tv = av_fetch(av, i, 0);
+          if (SvNIOK(*tv)) {
+            (&arg2)->push_back((double)SwigSvToNumber(*tv));
+          } else {
+            SWIG_croak("Type error in argument 2 of "
+              "RPlot_y_ticks. "
+              "Expected an array of ""double");
+          }
+        }
+      } else {
+        SWIG_croak("Type error in argument 2 of RPlot_y_ticks. "
+          "Expected an array of ""double");
+      }
+    }
+    {
+      if (SWIG_ConvertPtr(ST(2),(void **) &v3, 
+          SWIGTYPE_p_std__vectorT_std__string_t,1) != -1){
+        arg3 = *v3;
+      } else if (SvROK(ST(2))) {
+        AV *av = (AV *)SvRV(ST(2));
+        if (SvTYPE(av) != SVt_PVAV)
+        SWIG_croak("Type error in argument 3 of RPlot_y_ticks. "
+          "Expected an array of ""std::string");
+        SV **tv;
+        SSize_t len = av_len(av) + 1;
+        for (int i=0; i<len; i++) {
+          tv = av_fetch(av, i, 0);
+          if (SvPOK(*tv)) {
+            (&arg3)->push_back((std::string)SwigSvToString(*tv));
+          } else {
+            SWIG_croak("Type error in argument 3 of "
+              "RPlot_y_ticks. "
+              "Expected an array of ""std::string");
+          }
+        }
+      } else {
+        SWIG_croak("Type error in argument 3 of RPlot_y_ticks. "
+          "Expected an array of ""std::string");
+      }
+    }
+    result = (datamunge::graphics::RPlot *) &(arg1)->y_ticks(SWIG_STD_MOVE(*(&arg2)),SWIG_STD_MOVE(*(&arg3)));
+    ST(argvi) = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__graphics__RPlot, 0 | SWIG_SHADOW); argvi++ ;
+    
+    XSRETURN(argvi);
+    fail:;
+    
+  }
+  SWIG_croak_null();
+}
+
+
+XS(_wrap_RPlot_margins) {
+  {
+    datamunge::graphics::RPlot *arg1 = 0 ;
+    double arg2 ;
+    double arg3 ;
+    double arg4 ;
+    double arg5 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    double val2 ;
+    int ecode2 = 0 ;
+    double val3 ;
+    int ecode3 = 0 ;
+    double val4 ;
+    int ecode4 = 0 ;
+    double val5 ;
+    int ecode5 = 0 ;
+    int argvi = 0;
+    datamunge::graphics::RPlot *result = 0 ;
+    dXSARGS;
+    
+    if ((items < 5) || (items > 5)) {
+      SWIG_croak("Usage: RPlot_margins(self,left,right,top,bottom);");
+    }
+    res1 = SWIG_ConvertPtr(ST(0), &argp1,SWIGTYPE_p_datamunge__graphics__RPlot, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "RPlot_margins" "', argument " "1"" of type '" "datamunge::graphics::RPlot *""'"); 
+    }
+    arg1 = reinterpret_cast< datamunge::graphics::RPlot * >(argp1);
+    ecode2 = SWIG_AsVal_double SWIG_PERL_CALL_ARGS_2(ST(1), &val2);
+    if (!SWIG_IsOK(ecode2)) {
+      SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "RPlot_margins" "', argument " "2"" of type '" "double""'");
+    } 
+    arg2 = static_cast< double >(val2);
+    ecode3 = SWIG_AsVal_double SWIG_PERL_CALL_ARGS_2(ST(2), &val3);
+    if (!SWIG_IsOK(ecode3)) {
+      SWIG_exception_fail(SWIG_ArgError(ecode3), "in method '" "RPlot_margins" "', argument " "3"" of type '" "double""'");
+    } 
+    arg3 = static_cast< double >(val3);
+    ecode4 = SWIG_AsVal_double SWIG_PERL_CALL_ARGS_2(ST(3), &val4);
+    if (!SWIG_IsOK(ecode4)) {
+      SWIG_exception_fail(SWIG_ArgError(ecode4), "in method '" "RPlot_margins" "', argument " "4"" of type '" "double""'");
+    } 
+    arg4 = static_cast< double >(val4);
+    ecode5 = SWIG_AsVal_double SWIG_PERL_CALL_ARGS_2(ST(4), &val5);
+    if (!SWIG_IsOK(ecode5)) {
+      SWIG_exception_fail(SWIG_ArgError(ecode5), "in method '" "RPlot_margins" "', argument " "5"" of type '" "double""'");
+    } 
+    arg5 = static_cast< double >(val5);
+    result = (datamunge::graphics::RPlot *) &(arg1)->margins(arg2,arg3,arg4,arg5);
+    ST(argvi) = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__graphics__RPlot, 0 | SWIG_SHADOW); argvi++ ;
+    
+    
+    
+    
+    
+    XSRETURN(argvi);
+    fail:;
+    
+    
+    
+    
+    
+  }
+  SWIG_croak_null();
+}
+
+
+XS(_wrap_RPlot_tick_font_size) {
+  {
+    datamunge::graphics::RPlot *arg1 = 0 ;
+    double arg2 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    double val2 ;
+    int ecode2 = 0 ;
+    int argvi = 0;
+    datamunge::graphics::RPlot *result = 0 ;
+    dXSARGS;
+    
+    if ((items < 2) || (items > 2)) {
+      SWIG_croak("Usage: RPlot_tick_font_size(self,pixels);");
+    }
+    res1 = SWIG_ConvertPtr(ST(0), &argp1,SWIGTYPE_p_datamunge__graphics__RPlot, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "RPlot_tick_font_size" "', argument " "1"" of type '" "datamunge::graphics::RPlot *""'"); 
+    }
+    arg1 = reinterpret_cast< datamunge::graphics::RPlot * >(argp1);
+    ecode2 = SWIG_AsVal_double SWIG_PERL_CALL_ARGS_2(ST(1), &val2);
+    if (!SWIG_IsOK(ecode2)) {
+      SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "RPlot_tick_font_size" "', argument " "2"" of type '" "double""'");
+    } 
+    arg2 = static_cast< double >(val2);
+    result = (datamunge::graphics::RPlot *) &(arg1)->tick_font_size(arg2);
+    ST(argvi) = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__graphics__RPlot, 0 | SWIG_SHADOW); argvi++ ;
+    
+    
+    XSRETURN(argvi);
+    fail:;
+    
+    
+  }
+  SWIG_croak_null();
+}
+
+
+XS(_wrap_RPlot_pretty_ticks__SWIG_0) {
+  {
+    datamunge::graphics::RPlot *arg1 = 0 ;
+    bool arg2 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    bool val2 ;
+    int ecode2 = 0 ;
+    int argvi = 0;
+    datamunge::graphics::RPlot *result = 0 ;
+    dXSARGS;
+    
+    if ((items < 2) || (items > 2)) {
+      SWIG_croak("Usage: RPlot_pretty_ticks(self,enabled);");
+    }
+    res1 = SWIG_ConvertPtr(ST(0), &argp1,SWIGTYPE_p_datamunge__graphics__RPlot, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "RPlot_pretty_ticks" "', argument " "1"" of type '" "datamunge::graphics::RPlot *""'"); 
+    }
+    arg1 = reinterpret_cast< datamunge::graphics::RPlot * >(argp1);
+    ecode2 = SWIG_AsVal_bool SWIG_PERL_CALL_ARGS_2(ST(1), &val2);
+    if (!SWIG_IsOK(ecode2)) {
+      SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "RPlot_pretty_ticks" "', argument " "2"" of type '" "bool""'");
+    } 
+    arg2 = static_cast< bool >(val2);
+    result = (datamunge::graphics::RPlot *) &(arg1)->pretty_ticks(arg2);
+    ST(argvi) = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__graphics__RPlot, 0 | SWIG_SHADOW); argvi++ ;
+    
+    
+    XSRETURN(argvi);
+    fail:;
+    
+    
+  }
+  SWIG_croak_null();
+}
+
+
+XS(_wrap_RPlot_pretty_ticks__SWIG_1) {
+  {
+    datamunge::graphics::RPlot *arg1 = 0 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    int argvi = 0;
+    datamunge::graphics::RPlot *result = 0 ;
+    dXSARGS;
+    
+    if ((items < 1) || (items > 1)) {
+      SWIG_croak("Usage: RPlot_pretty_ticks(self);");
+    }
+    res1 = SWIG_ConvertPtr(ST(0), &argp1,SWIGTYPE_p_datamunge__graphics__RPlot, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "RPlot_pretty_ticks" "', argument " "1"" of type '" "datamunge::graphics::RPlot *""'"); 
+    }
+    arg1 = reinterpret_cast< datamunge::graphics::RPlot * >(argp1);
+    result = (datamunge::graphics::RPlot *) &(arg1)->pretty_ticks();
+    ST(argvi) = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__graphics__RPlot, 0 | SWIG_SHADOW); argvi++ ;
+    
+    XSRETURN(argvi);
+    fail:;
+    
+  }
+  SWIG_croak_null();
+}
+
+
+XS(_wrap_RPlot_pretty_ticks) {
+  dXSARGS;
+  
+  {
+    unsigned long _index = 0;
+    SWIG_TypeRank _rank = 0; 
+    if (items == 1) {
+      SWIG_TypeRank _ranki = 0;
+      SWIG_TypeRank _rankm = 0;
+      SWIG_TypeRank _pi = 1;
+      int _v = 0;
+      {
+        void *vptr = 0;
+        int res = SWIG_ConvertPtr(ST(0), &vptr, SWIGTYPE_p_datamunge__graphics__RPlot, 0);
+        _v = SWIG_CheckState(res);
+      }
+      if (!_v) goto check_1;
+      _ranki += _v*_pi;
+      _rankm += _pi;
+      _pi *= SWIG_MAXCASTRANK;
+      if (!_index || (_ranki < _rank)) {
+        _rank = _ranki; _index = 1;
+        if (_rank == _rankm) goto dispatch;
+      }
+    }
+  check_1:
+    
+    if (items == 2) {
+      SWIG_TypeRank _ranki = 0;
+      SWIG_TypeRank _rankm = 0;
+      SWIG_TypeRank _pi = 1;
+      int _v = 0;
+      {
+        void *vptr = 0;
+        int res = SWIG_ConvertPtr(ST(0), &vptr, SWIGTYPE_p_datamunge__graphics__RPlot, 0);
+        _v = SWIG_CheckState(res);
+      }
+      if (!_v) goto check_2;
+      _ranki += _v*_pi;
+      _rankm += _pi;
+      _pi *= SWIG_MAXCASTRANK;
+      {
+        {
+          int res = SWIG_AsVal_bool SWIG_PERL_CALL_ARGS_2(ST(1), NULL);
+          _v = SWIG_CheckState(res);
+        }
+      }
+      if (!_v) goto check_2;
+      _ranki += _v*_pi;
+      _rankm += _pi;
+      _pi *= SWIG_MAXCASTRANK;
+      if (!_index || (_ranki < _rank)) {
+        _rank = _ranki; _index = 2;
+        if (_rank == _rankm) goto dispatch;
+      }
+    }
+  check_2:
+    
+  dispatch:
+    switch(_index) {
+    case 1:
+      PUSHMARK(MARK); SWIG_CALLXS(_wrap_RPlot_pretty_ticks__SWIG_1); return;
+    case 2:
+      PUSHMARK(MARK); SWIG_CALLXS(_wrap_RPlot_pretty_ticks__SWIG_0); return;
+    }
+  }
+  
+  croak("No matching function for overloaded 'RPlot_pretty_ticks'");
+  XSRETURN(0);
+}
+
+
 XS(_wrap_RPlot_plot__SWIG_0) {
   {
     std::vector< double > arg1 ;
     std::vector< double > arg2 ;
     std::string arg3 ;
     std::string arg4 ;
-    SwigValueWrapper< datamunge::graphics::RGB > arg5 ;
+    datamunge::graphics::RGBA arg5 ;
     std::vector< double > *v1 ;
     std::vector< double > *v2 ;
     void *argp5 = 0 ;
@@ -107705,18 +113450,18 @@ XS(_wrap_RPlot_plot__SWIG_0) {
       if (SWIG_IsNewObj(res)) delete ptr;
     }
     {
-      res5 = SWIG_ConvertPtr(ST(4), &argp5, SWIGTYPE_p_datamunge__plot__RGB,  0 );
+      res5 = SWIG_ConvertPtr(ST(4), &argp5, SWIGTYPE_p_datamunge__graphics__RGB,  0 );
       if (!SWIG_IsOK(res5)) {
-        SWIG_exception_fail(SWIG_ArgError(res5), "in method '" "RPlot_plot" "', argument " "5"" of type '" "datamunge::graphics::RGB""'"); 
+        SWIG_exception_fail(SWIG_ArgError(res5), "in method '" "RPlot_plot" "', argument " "5"" of type '" "datamunge::graphics::RGBA""'"); 
       }  
       if (!argp5) {
-        SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "RPlot_plot" "', argument " "5"" of type '" "datamunge::graphics::RGB""'");
+        SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "RPlot_plot" "', argument " "5"" of type '" "datamunge::graphics::RGBA""'");
       } else {
-        arg5 = *(reinterpret_cast< datamunge::graphics::RGB * >(argp5));
+        arg5 = *(reinterpret_cast< datamunge::graphics::RGBA * >(argp5));
       }
     }
     result = datamunge::graphics::RPlot::plot(SWIG_STD_MOVE(*(&arg1)),SWIG_STD_MOVE(*(&arg2)),SWIG_STD_MOVE(*(&arg3)),SWIG_STD_MOVE(*(&arg4)),SWIG_STD_MOVE(*(&arg5)));
-    ST(argvi) = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN | SWIG_SHADOW); argvi++ ;
+    ST(argvi) = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__graphics__RPlot, SWIG_POINTER_OWN | SWIG_SHADOW); argvi++ ;
     
     
     XSRETURN(argvi);
@@ -107814,7 +113559,7 @@ XS(_wrap_RPlot_plot__SWIG_1) {
       if (SWIG_IsNewObj(res)) delete ptr;
     }
     result = datamunge::graphics::RPlot::plot(SWIG_STD_MOVE(*(&arg1)),SWIG_STD_MOVE(*(&arg2)),SWIG_STD_MOVE(*(&arg3)),SWIG_STD_MOVE(*(&arg4)));
-    ST(argvi) = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN | SWIG_SHADOW); argvi++ ;
+    ST(argvi) = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__graphics__RPlot, SWIG_POINTER_OWN | SWIG_SHADOW); argvi++ ;
     
     
     XSRETURN(argvi);
@@ -107902,7 +113647,7 @@ XS(_wrap_RPlot_plot__SWIG_2) {
       if (SWIG_IsNewObj(res)) delete ptr;
     }
     result = datamunge::graphics::RPlot::plot(SWIG_STD_MOVE(*(&arg1)),SWIG_STD_MOVE(*(&arg2)),SWIG_STD_MOVE(*(&arg3)));
-    ST(argvi) = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN | SWIG_SHADOW); argvi++ ;
+    ST(argvi) = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__graphics__RPlot, SWIG_POINTER_OWN | SWIG_SHADOW); argvi++ ;
     
     XSRETURN(argvi);
     fail:;
@@ -107978,7 +113723,7 @@ XS(_wrap_RPlot_plot__SWIG_3) {
       }
     }
     result = datamunge::graphics::RPlot::plot(SWIG_STD_MOVE(*(&arg1)),SWIG_STD_MOVE(*(&arg2)));
-    ST(argvi) = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN | SWIG_SHADOW); argvi++ ;
+    ST(argvi) = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__graphics__RPlot, SWIG_POINTER_OWN | SWIG_SHADOW); argvi++ ;
     XSRETURN(argvi);
     fail:;
   }
@@ -108355,7 +114100,7 @@ XS(_wrap_RPlot_plot) {
       _pi *= SWIG_MAXCASTRANK;
       {
         void *vptr = 0;
-        int res = SWIG_ConvertPtr(ST(4), &vptr, SWIGTYPE_p_datamunge__plot__RGB, SWIG_POINTER_NO_NULL);
+        int res = SWIG_ConvertPtr(ST(4), &vptr, SWIGTYPE_p_datamunge__graphics__RGB, SWIG_POINTER_NO_NULL);
         _v = SWIG_CheckState(res);
       }
       if (!_v) goto check_4;
@@ -108392,7 +114137,7 @@ XS(_wrap_RPlot_hist__SWIG_0) {
     std::vector< double > arg1 ;
     std::size_t arg2 ;
     std::string arg3 ;
-    SwigValueWrapper< datamunge::graphics::RGB > arg4 ;
+    datamunge::graphics::RGBA arg4 ;
     std::vector< double > *v1 ;
     size_t val2 ;
     int ecode2 = 0 ;
@@ -108446,18 +114191,18 @@ XS(_wrap_RPlot_hist__SWIG_0) {
       if (SWIG_IsNewObj(res)) delete ptr;
     }
     {
-      res4 = SWIG_ConvertPtr(ST(3), &argp4, SWIGTYPE_p_datamunge__plot__RGB,  0 );
+      res4 = SWIG_ConvertPtr(ST(3), &argp4, SWIGTYPE_p_datamunge__graphics__RGB,  0 );
       if (!SWIG_IsOK(res4)) {
-        SWIG_exception_fail(SWIG_ArgError(res4), "in method '" "RPlot_hist" "', argument " "4"" of type '" "datamunge::graphics::RGB""'"); 
+        SWIG_exception_fail(SWIG_ArgError(res4), "in method '" "RPlot_hist" "', argument " "4"" of type '" "datamunge::graphics::RGBA""'"); 
       }  
       if (!argp4) {
-        SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "RPlot_hist" "', argument " "4"" of type '" "datamunge::graphics::RGB""'");
+        SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "RPlot_hist" "', argument " "4"" of type '" "datamunge::graphics::RGBA""'");
       } else {
-        arg4 = *(reinterpret_cast< datamunge::graphics::RGB * >(argp4));
+        arg4 = *(reinterpret_cast< datamunge::graphics::RGBA * >(argp4));
       }
     }
     result = datamunge::graphics::RPlot::hist(SWIG_STD_MOVE(*(&arg1)),SWIG_STD_MOVE(*(&arg2)),SWIG_STD_MOVE(*(&arg3)),SWIG_STD_MOVE(*(&arg4)));
-    ST(argvi) = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN | SWIG_SHADOW); argvi++ ;
+    ST(argvi) = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__graphics__RPlot, SWIG_POINTER_OWN | SWIG_SHADOW); argvi++ ;
     
     
     XSRETURN(argvi);
@@ -108525,7 +114270,7 @@ XS(_wrap_RPlot_hist__SWIG_1) {
       if (SWIG_IsNewObj(res)) delete ptr;
     }
     result = datamunge::graphics::RPlot::hist(SWIG_STD_MOVE(*(&arg1)),SWIG_STD_MOVE(*(&arg2)),SWIG_STD_MOVE(*(&arg3)));
-    ST(argvi) = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN | SWIG_SHADOW); argvi++ ;
+    ST(argvi) = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__graphics__RPlot, SWIG_POINTER_OWN | SWIG_SHADOW); argvi++ ;
     
     
     XSRETURN(argvi);
@@ -108583,7 +114328,7 @@ XS(_wrap_RPlot_hist__SWIG_2) {
     } 
     arg2 = static_cast< std::size_t >(val2);
     result = datamunge::graphics::RPlot::hist(SWIG_STD_MOVE(*(&arg1)),SWIG_STD_MOVE(*(&arg2)));
-    ST(argvi) = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN | SWIG_SHADOW); argvi++ ;
+    ST(argvi) = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__graphics__RPlot, SWIG_POINTER_OWN | SWIG_SHADOW); argvi++ ;
     
     XSRETURN(argvi);
     fail:;
@@ -108631,7 +114376,7 @@ XS(_wrap_RPlot_hist__SWIG_3) {
       }
     }
     result = datamunge::graphics::RPlot::hist(SWIG_STD_MOVE(*(&arg1)));
-    ST(argvi) = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN | SWIG_SHADOW); argvi++ ;
+    ST(argvi) = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__graphics__RPlot, SWIG_POINTER_OWN | SWIG_SHADOW); argvi++ ;
     XSRETURN(argvi);
     fail:;
   }
@@ -108874,7 +114619,7 @@ XS(_wrap_RPlot_hist) {
       _pi *= SWIG_MAXCASTRANK;
       {
         void *vptr = 0;
-        int res = SWIG_ConvertPtr(ST(3), &vptr, SWIGTYPE_p_datamunge__plot__RGB, SWIG_POINTER_NO_NULL);
+        int res = SWIG_ConvertPtr(ST(3), &vptr, SWIGTYPE_p_datamunge__graphics__RGB, SWIG_POINTER_NO_NULL);
         _v = SWIG_CheckState(res);
       }
       if (!_v) goto check_4;
@@ -108911,7 +114656,7 @@ XS(_wrap_RPlot_barplot__SWIG_0) {
     std::vector< double > arg1 ;
     std::vector< std::string > arg2 ;
     std::string arg3 ;
-    SwigValueWrapper< datamunge::graphics::RGB > arg4 ;
+    datamunge::graphics::RGBA arg4 ;
     std::vector< double > *v1 ;
     std::vector< std::string > *v2 ;
     void *argp4 = 0 ;
@@ -108985,18 +114730,18 @@ XS(_wrap_RPlot_barplot__SWIG_0) {
       if (SWIG_IsNewObj(res)) delete ptr;
     }
     {
-      res4 = SWIG_ConvertPtr(ST(3), &argp4, SWIGTYPE_p_datamunge__plot__RGB,  0 );
+      res4 = SWIG_ConvertPtr(ST(3), &argp4, SWIGTYPE_p_datamunge__graphics__RGB,  0 );
       if (!SWIG_IsOK(res4)) {
-        SWIG_exception_fail(SWIG_ArgError(res4), "in method '" "RPlot_barplot" "', argument " "4"" of type '" "datamunge::graphics::RGB""'"); 
+        SWIG_exception_fail(SWIG_ArgError(res4), "in method '" "RPlot_barplot" "', argument " "4"" of type '" "datamunge::graphics::RGBA""'"); 
       }  
       if (!argp4) {
-        SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "RPlot_barplot" "', argument " "4"" of type '" "datamunge::graphics::RGB""'");
+        SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "RPlot_barplot" "', argument " "4"" of type '" "datamunge::graphics::RGBA""'");
       } else {
-        arg4 = *(reinterpret_cast< datamunge::graphics::RGB * >(argp4));
+        arg4 = *(reinterpret_cast< datamunge::graphics::RGBA * >(argp4));
       }
     }
     result = datamunge::graphics::RPlot::barplot(SWIG_STD_MOVE(*(&arg1)),SWIG_STD_MOVE(*(&arg2)),SWIG_STD_MOVE(*(&arg3)),SWIG_STD_MOVE(*(&arg4)));
-    ST(argvi) = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN | SWIG_SHADOW); argvi++ ;
+    ST(argvi) = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__graphics__RPlot, SWIG_POINTER_OWN | SWIG_SHADOW); argvi++ ;
     
     XSRETURN(argvi);
     fail:;
@@ -109082,7 +114827,7 @@ XS(_wrap_RPlot_barplot__SWIG_1) {
       if (SWIG_IsNewObj(res)) delete ptr;
     }
     result = datamunge::graphics::RPlot::barplot(SWIG_STD_MOVE(*(&arg1)),SWIG_STD_MOVE(*(&arg2)),SWIG_STD_MOVE(*(&arg3)));
-    ST(argvi) = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN | SWIG_SHADOW); argvi++ ;
+    ST(argvi) = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__graphics__RPlot, SWIG_POINTER_OWN | SWIG_SHADOW); argvi++ ;
     
     XSRETURN(argvi);
     fail:;
@@ -109158,7 +114903,7 @@ XS(_wrap_RPlot_barplot__SWIG_2) {
       }
     }
     result = datamunge::graphics::RPlot::barplot(SWIG_STD_MOVE(*(&arg1)),SWIG_STD_MOVE(*(&arg2)));
-    ST(argvi) = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN | SWIG_SHADOW); argvi++ ;
+    ST(argvi) = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__graphics__RPlot, SWIG_POINTER_OWN | SWIG_SHADOW); argvi++ ;
     XSRETURN(argvi);
     fail:;
   }
@@ -109204,7 +114949,7 @@ XS(_wrap_RPlot_barplot__SWIG_3) {
       }
     }
     result = datamunge::graphics::RPlot::barplot(SWIG_STD_MOVE(*(&arg1)));
-    ST(argvi) = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN | SWIG_SHADOW); argvi++ ;
+    ST(argvi) = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__graphics__RPlot, SWIG_POINTER_OWN | SWIG_SHADOW); argvi++ ;
     XSRETURN(argvi);
     fail:;
   }
@@ -109522,7 +115267,7 @@ XS(_wrap_RPlot_barplot) {
       _pi *= SWIG_MAXCASTRANK;
       {
         void *vptr = 0;
-        int res = SWIG_ConvertPtr(ST(3), &vptr, SWIGTYPE_p_datamunge__plot__RGB, SWIG_POINTER_NO_NULL);
+        int res = SWIG_ConvertPtr(ST(3), &vptr, SWIGTYPE_p_datamunge__graphics__RGB, SWIG_POINTER_NO_NULL);
         _v = SWIG_CheckState(res);
       }
       if (!_v) goto check_4;
@@ -109558,7 +115303,7 @@ XS(_wrap_RPlot_boxplot__SWIG_0) {
   {
     std::vector< std::vector< double > > arg1 ;
     std::vector< std::string > arg2 ;
-    SwigValueWrapper< datamunge::graphics::RGB > arg3 ;
+    datamunge::graphics::RGBA arg3 ;
     std::vector< std::vector< double > > *v1 ;
     std::vector< std::string > *v2 ;
     void *argp3 = 0 ;
@@ -109625,18 +115370,18 @@ XS(_wrap_RPlot_boxplot__SWIG_0) {
       }
     }
     {
-      res3 = SWIG_ConvertPtr(ST(2), &argp3, SWIGTYPE_p_datamunge__plot__RGB,  0 );
+      res3 = SWIG_ConvertPtr(ST(2), &argp3, SWIGTYPE_p_datamunge__graphics__RGB,  0 );
       if (!SWIG_IsOK(res3)) {
-        SWIG_exception_fail(SWIG_ArgError(res3), "in method '" "RPlot_boxplot" "', argument " "3"" of type '" "datamunge::graphics::RGB""'"); 
+        SWIG_exception_fail(SWIG_ArgError(res3), "in method '" "RPlot_boxplot" "', argument " "3"" of type '" "datamunge::graphics::RGBA""'"); 
       }  
       if (!argp3) {
-        SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "RPlot_boxplot" "', argument " "3"" of type '" "datamunge::graphics::RGB""'");
+        SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "RPlot_boxplot" "', argument " "3"" of type '" "datamunge::graphics::RGBA""'");
       } else {
-        arg3 = *(reinterpret_cast< datamunge::graphics::RGB * >(argp3));
+        arg3 = *(reinterpret_cast< datamunge::graphics::RGBA * >(argp3));
       }
     }
     result = datamunge::graphics::RPlot::boxplot(SWIG_STD_MOVE(*(&arg1)),SWIG_STD_MOVE(*(&arg2)),SWIG_STD_MOVE(*(&arg3)));
-    ST(argvi) = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN | SWIG_SHADOW); argvi++ ;
+    ST(argvi) = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__graphics__RPlot, SWIG_POINTER_OWN | SWIG_SHADOW); argvi++ ;
     XSRETURN(argvi);
     fail:;
   }
@@ -109712,7 +115457,7 @@ XS(_wrap_RPlot_boxplot__SWIG_1) {
       }
     }
     result = datamunge::graphics::RPlot::boxplot(SWIG_STD_MOVE(*(&arg1)),SWIG_STD_MOVE(*(&arg2)));
-    ST(argvi) = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN | SWIG_SHADOW); argvi++ ;
+    ST(argvi) = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__graphics__RPlot, SWIG_POINTER_OWN | SWIG_SHADOW); argvi++ ;
     XSRETURN(argvi);
     fail:;
   }
@@ -109760,7 +115505,97 @@ XS(_wrap_RPlot_boxplot__SWIG_2) {
       }
     }
     result = datamunge::graphics::RPlot::boxplot(SWIG_STD_MOVE(*(&arg1)));
-    ST(argvi) = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN | SWIG_SHADOW); argvi++ ;
+    ST(argvi) = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__graphics__RPlot, SWIG_POINTER_OWN | SWIG_SHADOW); argvi++ ;
+    XSRETURN(argvi);
+    fail:;
+  }
+  SWIG_croak_null();
+}
+
+
+XS(_wrap_RPlot_boxplot__SWIG_3) {
+  {
+    std::vector< std::vector< double > > arg1 ;
+    std::vector< std::string > arg2 ;
+    SwigValueWrapper< std::vector< datamunge::graphics::RGB > > arg3 ;
+    std::vector< std::vector< double > > *v1 ;
+    std::vector< std::string > *v2 ;
+    void *argp3 = 0 ;
+    int res3 = 0 ;
+    int argvi = 0;
+    datamunge::graphics::RPlot result;
+    dXSARGS;
+    
+    if ((items < 3) || (items > 3)) {
+      SWIG_croak("Usage: RPlot_boxplot(groups,names,colors);");
+    }
+    {
+      if (SWIG_ConvertPtr(ST(0),(void **) &v1, 
+          SWIGTYPE_p_std__vectorT_std__vectorT_double_t_t,1) != -1) {
+        arg1 = *v1;
+      } else if (SvROK(ST(0))) {
+        AV *av = (AV *)SvRV(ST(0));
+        if (SvTYPE(av) != SVt_PVAV)
+        SWIG_croak("Type error in argument 1 of RPlot_boxplot. "
+          "Expected an array of " "std::vector< double >");
+        SV **tv;
+        SSize_t len = av_len(av) + 1;
+        std::vector< double >* obj;
+        for (int i=0; i<len; i++) {
+          tv = av_fetch(av, i, 0);
+          if (SWIG_ConvertPtr(*tv, (void **)&obj, 
+              SWIGTYPE_p_std__vectorT_double_t,0) != -1) {
+            (&arg1)->push_back(*obj);
+          } else {
+            SWIG_croak("Type error in argument 1 of "
+              "RPlot_boxplot. "
+              "Expected an array of " "std::vector< double >");
+          }
+        }
+      } else {
+        SWIG_croak("Type error in argument 1 of RPlot_boxplot. "
+          "Expected an array of " "std::vector< double >");
+      }
+    }
+    {
+      if (SWIG_ConvertPtr(ST(1),(void **) &v2, 
+          SWIGTYPE_p_std__vectorT_std__string_t,1) != -1){
+        arg2 = *v2;
+      } else if (SvROK(ST(1))) {
+        AV *av = (AV *)SvRV(ST(1));
+        if (SvTYPE(av) != SVt_PVAV)
+        SWIG_croak("Type error in argument 2 of RPlot_boxplot. "
+          "Expected an array of ""std::string");
+        SV **tv;
+        SSize_t len = av_len(av) + 1;
+        for (int i=0; i<len; i++) {
+          tv = av_fetch(av, i, 0);
+          if (SvPOK(*tv)) {
+            (&arg2)->push_back((std::string)SwigSvToString(*tv));
+          } else {
+            SWIG_croak("Type error in argument 2 of "
+              "RPlot_boxplot. "
+              "Expected an array of ""std::string");
+          }
+        }
+      } else {
+        SWIG_croak("Type error in argument 2 of RPlot_boxplot. "
+          "Expected an array of ""std::string");
+      }
+    }
+    {
+      res3 = SWIG_ConvertPtr(ST(2), &argp3, SWIGTYPE_p_std__vectorT_datamunge__graphics__RGB_t,  0 );
+      if (!SWIG_IsOK(res3)) {
+        SWIG_exception_fail(SWIG_ArgError(res3), "in method '" "RPlot_boxplot" "', argument " "3"" of type '" "std::vector< datamunge::graphics::RGBA >""'"); 
+      }  
+      if (!argp3) {
+        SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "RPlot_boxplot" "', argument " "3"" of type '" "std::vector< datamunge::graphics::RGBA >""'");
+      } else {
+        arg3 = *(reinterpret_cast< std::vector< datamunge::graphics::RGBA > * >(argp3));
+      }
+    }
+    result = datamunge::graphics::RPlot::boxplot(SWIG_STD_MOVE(*(&arg1)),SWIG_STD_MOVE(*(&arg2)),SWIG_STD_MOVE(*(&arg3)));
+    ST(argvi) = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__graphics__RPlot, SWIG_POINTER_OWN | SWIG_SHADOW); argvi++ ;
     XSRETURN(argvi);
     fail:;
   }
@@ -109986,7 +115821,7 @@ XS(_wrap_RPlot_boxplot) {
       _pi *= SWIG_MAXCASTRANK;
       {
         void *vptr = 0;
-        int res = SWIG_ConvertPtr(ST(2), &vptr, SWIGTYPE_p_datamunge__plot__RGB, SWIG_POINTER_NO_NULL);
+        int res = SWIG_ConvertPtr(ST(2), &vptr, SWIGTYPE_p_datamunge__graphics__RGB, SWIG_POINTER_NO_NULL);
         _v = SWIG_CheckState(res);
       }
       if (!_v) goto check_3;
@@ -110000,6 +115835,99 @@ XS(_wrap_RPlot_boxplot) {
     }
   check_3:
     
+    if (items == 3) {
+      SWIG_TypeRank _ranki = 0;
+      SWIG_TypeRank _rankm = 0;
+      SWIG_TypeRank _pi = 1;
+      int _v = 0;
+      {
+        {
+          {
+            /* wrapped vector? */
+            std::vector< std::vector< double > >* v;
+            if (SWIG_ConvertPtr(ST(0),(void **) &v, 
+                SWIGTYPE_p_std__vectorT_std__vectorT_double_t_t,0) != -1) {
+              _v = 1;
+            } else if (SvROK(ST(0))) {
+              /* native sequence? */
+              AV *av = (AV *)SvRV(ST(0));
+              if (SvTYPE(av) == SVt_PVAV) {
+                SSize_t len = av_len(av) + 1;
+                if (len == 0) {
+                  /* an empty sequence can be of any type */
+                  _v = 1;
+                } else {
+                  /* check the first element only */
+                  std::vector< double >* obj;
+                  SV **tv = av_fetch(av, 0, 0);
+                  if (SWIG_ConvertPtr(*tv, (void **)&obj, 
+                      SWIGTYPE_p_std__vectorT_double_t,0) != -1)
+                  _v = 1;
+                  else
+                  _v = 0;
+                }
+              }
+            } else {
+              _v = 0;
+            }
+          }
+        }
+      }
+      if (!_v) goto check_4;
+      _ranki += _v*_pi;
+      _rankm += _pi;
+      _pi *= SWIG_MAXCASTRANK;
+      {
+        {
+          {
+            /* wrapped vector? */
+            std::vector< std::string >* v;
+            if (SWIG_ConvertPtr(ST(1),(void **) &v, 
+                SWIGTYPE_p_std__vectorT_std__string_t,0) != -1) {
+              _v = 1;
+            } else if (SvROK(ST(1))) {
+              /* native sequence? */
+              AV *av = (AV *)SvRV(ST(1));
+              if (SvTYPE(av) == SVt_PVAV) {
+                SSize_t len = av_len(av) + 1;
+                if (len == 0) {
+                  /* an empty sequence can be of any type */
+                  _v = 1;
+                } else {
+                  /* check the first element only */
+                  SV **tv = av_fetch(av, 0, 0);
+                  if (SvPOK(*tv))
+                  _v = 1;
+                  else
+                  _v = 0;
+                }
+              }
+            } else {
+              _v = 0;
+            }
+          }
+        }
+      }
+      if (!_v) goto check_4;
+      _ranki += _v*_pi;
+      _rankm += _pi;
+      _pi *= SWIG_MAXCASTRANK;
+      {
+        void *vptr = 0;
+        int res = SWIG_ConvertPtr(ST(2), &vptr, SWIGTYPE_p_std__vectorT_datamunge__graphics__RGB_t, SWIG_POINTER_NO_NULL);
+        _v = SWIG_CheckState(res);
+      }
+      if (!_v) goto check_4;
+      _ranki += _v*_pi;
+      _rankm += _pi;
+      _pi *= SWIG_MAXCASTRANK;
+      if (!_index || (_ranki < _rank)) {
+        _rank = _ranki; _index = 4;
+        if (_rank == _rankm) goto dispatch;
+      }
+    }
+  check_4:
+    
   dispatch:
     switch(_index) {
     case 1:
@@ -110008,6 +115936,8 @@ XS(_wrap_RPlot_boxplot) {
       PUSHMARK(MARK); SWIG_CALLXS(_wrap_RPlot_boxplot__SWIG_1); return;
     case 3:
       PUSHMARK(MARK); SWIG_CALLXS(_wrap_RPlot_boxplot__SWIG_0); return;
+    case 4:
+      PUSHMARK(MARK); SWIG_CALLXS(_wrap_RPlot_boxplot__SWIG_3); return;
     }
   }
   
@@ -110085,18 +116015,18 @@ XS(_wrap_RPlot_pie__SWIG_0) {
       }
     }
     {
-      res3 = SWIG_ConvertPtr(ST(2), &argp3, SWIGTYPE_p_std__vectorT_datamunge__plot__RGB_t,  0 );
+      res3 = SWIG_ConvertPtr(ST(2), &argp3, SWIGTYPE_p_std__vectorT_datamunge__graphics__RGB_t,  0 );
       if (!SWIG_IsOK(res3)) {
-        SWIG_exception_fail(SWIG_ArgError(res3), "in method '" "RPlot_pie" "', argument " "3"" of type '" "std::vector< datamunge::graphics::RGB >""'"); 
+        SWIG_exception_fail(SWIG_ArgError(res3), "in method '" "RPlot_pie" "', argument " "3"" of type '" "std::vector< datamunge::graphics::RGBA >""'"); 
       }  
       if (!argp3) {
-        SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "RPlot_pie" "', argument " "3"" of type '" "std::vector< datamunge::graphics::RGB >""'");
+        SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "RPlot_pie" "', argument " "3"" of type '" "std::vector< datamunge::graphics::RGBA >""'");
       } else {
-        arg3 = *(reinterpret_cast< std::vector< datamunge::graphics::RGB > * >(argp3));
+        arg3 = *(reinterpret_cast< std::vector< datamunge::graphics::RGBA > * >(argp3));
       }
     }
     result = datamunge::graphics::RPlot::pie(SWIG_STD_MOVE(*(&arg1)),SWIG_STD_MOVE(*(&arg2)),SWIG_STD_MOVE(*(&arg3)));
-    ST(argvi) = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN | SWIG_SHADOW); argvi++ ;
+    ST(argvi) = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__graphics__RPlot, SWIG_POINTER_OWN | SWIG_SHADOW); argvi++ ;
     XSRETURN(argvi);
     fail:;
   }
@@ -110170,7 +116100,7 @@ XS(_wrap_RPlot_pie__SWIG_1) {
       }
     }
     result = datamunge::graphics::RPlot::pie(SWIG_STD_MOVE(*(&arg1)),SWIG_STD_MOVE(*(&arg2)));
-    ST(argvi) = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN | SWIG_SHADOW); argvi++ ;
+    ST(argvi) = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__graphics__RPlot, SWIG_POINTER_OWN | SWIG_SHADOW); argvi++ ;
     XSRETURN(argvi);
     fail:;
   }
@@ -110216,7 +116146,7 @@ XS(_wrap_RPlot_pie__SWIG_2) {
       }
     }
     result = datamunge::graphics::RPlot::pie(SWIG_STD_MOVE(*(&arg1)));
-    ST(argvi) = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN | SWIG_SHADOW); argvi++ ;
+    ST(argvi) = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__graphics__RPlot, SWIG_POINTER_OWN | SWIG_SHADOW); argvi++ ;
     XSRETURN(argvi);
     fail:;
   }
@@ -110436,7 +116366,7 @@ XS(_wrap_RPlot_pie) {
       _pi *= SWIG_MAXCASTRANK;
       {
         void *vptr = 0;
-        int res = SWIG_ConvertPtr(ST(2), &vptr, SWIGTYPE_p_std__vectorT_datamunge__plot__RGB_t, SWIG_POINTER_NO_NULL);
+        int res = SWIG_ConvertPtr(ST(2), &vptr, SWIGTYPE_p_std__vectorT_datamunge__graphics__RGB_t, SWIG_POINTER_NO_NULL);
         _v = SWIG_CheckState(res);
       }
       if (!_v) goto check_3;
@@ -110473,7 +116403,7 @@ XS(_wrap_RPlot_curve__SWIG_0) {
     double arg3 ;
     std::size_t arg4 ;
     std::string arg5 ;
-    SwigValueWrapper< datamunge::graphics::RGB > arg6 ;
+    datamunge::graphics::RGBA arg6 ;
     void *argp1 = 0 ;
     int res1 = 0 ;
     double val2 ;
@@ -110524,18 +116454,18 @@ XS(_wrap_RPlot_curve__SWIG_0) {
       if (SWIG_IsNewObj(res)) delete ptr;
     }
     {
-      res6 = SWIG_ConvertPtr(ST(5), &argp6, SWIGTYPE_p_datamunge__plot__RGB,  0 );
+      res6 = SWIG_ConvertPtr(ST(5), &argp6, SWIGTYPE_p_datamunge__graphics__RGB,  0 );
       if (!SWIG_IsOK(res6)) {
-        SWIG_exception_fail(SWIG_ArgError(res6), "in method '" "RPlot_curve" "', argument " "6"" of type '" "datamunge::graphics::RGB""'"); 
+        SWIG_exception_fail(SWIG_ArgError(res6), "in method '" "RPlot_curve" "', argument " "6"" of type '" "datamunge::graphics::RGBA""'"); 
       }  
       if (!argp6) {
-        SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "RPlot_curve" "', argument " "6"" of type '" "datamunge::graphics::RGB""'");
+        SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "RPlot_curve" "', argument " "6"" of type '" "datamunge::graphics::RGBA""'");
       } else {
-        arg6 = *(reinterpret_cast< datamunge::graphics::RGB * >(argp6));
+        arg6 = *(reinterpret_cast< datamunge::graphics::RGBA * >(argp6));
       }
     }
     result = datamunge::graphics::RPlot::curve(*arg1,arg2,arg3,SWIG_STD_MOVE(*(&arg4)),SWIG_STD_MOVE(*(&arg5)),SWIG_STD_MOVE(*(&arg6)));
-    ST(argvi) = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN | SWIG_SHADOW); argvi++ ;
+    ST(argvi) = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__graphics__RPlot, SWIG_POINTER_OWN | SWIG_SHADOW); argvi++ ;
     
     
     
@@ -110608,7 +116538,7 @@ XS(_wrap_RPlot_curve__SWIG_1) {
       if (SWIG_IsNewObj(res)) delete ptr;
     }
     result = datamunge::graphics::RPlot::curve(*arg1,arg2,arg3,SWIG_STD_MOVE(*(&arg4)),SWIG_STD_MOVE(*(&arg5)));
-    ST(argvi) = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN | SWIG_SHADOW); argvi++ ;
+    ST(argvi) = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__graphics__RPlot, SWIG_POINTER_OWN | SWIG_SHADOW); argvi++ ;
     
     
     
@@ -110671,7 +116601,7 @@ XS(_wrap_RPlot_curve__SWIG_2) {
     } 
     arg4 = static_cast< std::size_t >(val4);
     result = datamunge::graphics::RPlot::curve(*arg1,arg2,arg3,SWIG_STD_MOVE(*(&arg4)));
-    ST(argvi) = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN | SWIG_SHADOW); argvi++ ;
+    ST(argvi) = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__graphics__RPlot, SWIG_POINTER_OWN | SWIG_SHADOW); argvi++ ;
     
     
     
@@ -110724,7 +116654,7 @@ XS(_wrap_RPlot_curve__SWIG_3) {
     } 
     arg3 = static_cast< double >(val3);
     result = datamunge::graphics::RPlot::curve(*arg1,arg2,arg3);
-    ST(argvi) = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN | SWIG_SHADOW); argvi++ ;
+    ST(argvi) = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__graphics__RPlot, SWIG_POINTER_OWN | SWIG_SHADOW); argvi++ ;
     
     
     
@@ -110949,7 +116879,7 @@ XS(_wrap_RPlot_curve) {
       _pi *= SWIG_MAXCASTRANK;
       {
         void *vptr = 0;
-        int res = SWIG_ConvertPtr(ST(5), &vptr, SWIGTYPE_p_datamunge__plot__RGB, SWIG_POINTER_NO_NULL);
+        int res = SWIG_ConvertPtr(ST(5), &vptr, SWIGTYPE_p_datamunge__graphics__RGB, SWIG_POINTER_NO_NULL);
         _v = SWIG_CheckState(res);
       }
       if (!_v) goto check_4;
@@ -110985,7 +116915,7 @@ XS(_wrap_RPlot_qqnorm__SWIG_0) {
   {
     std::vector< double > arg1 ;
     std::string arg2 ;
-    SwigValueWrapper< datamunge::graphics::RGB > arg3 ;
+    datamunge::graphics::RGBA arg3 ;
     std::vector< double > *v1 ;
     void *argp3 = 0 ;
     int res3 = 0 ;
@@ -111032,18 +116962,18 @@ XS(_wrap_RPlot_qqnorm__SWIG_0) {
       if (SWIG_IsNewObj(res)) delete ptr;
     }
     {
-      res3 = SWIG_ConvertPtr(ST(2), &argp3, SWIGTYPE_p_datamunge__plot__RGB,  0 );
+      res3 = SWIG_ConvertPtr(ST(2), &argp3, SWIGTYPE_p_datamunge__graphics__RGB,  0 );
       if (!SWIG_IsOK(res3)) {
-        SWIG_exception_fail(SWIG_ArgError(res3), "in method '" "RPlot_qqnorm" "', argument " "3"" of type '" "datamunge::graphics::RGB""'"); 
+        SWIG_exception_fail(SWIG_ArgError(res3), "in method '" "RPlot_qqnorm" "', argument " "3"" of type '" "datamunge::graphics::RGBA""'"); 
       }  
       if (!argp3) {
-        SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "RPlot_qqnorm" "', argument " "3"" of type '" "datamunge::graphics::RGB""'");
+        SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "RPlot_qqnorm" "', argument " "3"" of type '" "datamunge::graphics::RGBA""'");
       } else {
-        arg3 = *(reinterpret_cast< datamunge::graphics::RGB * >(argp3));
+        arg3 = *(reinterpret_cast< datamunge::graphics::RGBA * >(argp3));
       }
     }
     result = datamunge::graphics::RPlot::qqnorm(SWIG_STD_MOVE(*(&arg1)),SWIG_STD_MOVE(*(&arg2)),SWIG_STD_MOVE(*(&arg3)));
-    ST(argvi) = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN | SWIG_SHADOW); argvi++ ;
+    ST(argvi) = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__graphics__RPlot, SWIG_POINTER_OWN | SWIG_SHADOW); argvi++ ;
     
     XSRETURN(argvi);
     fail:;
@@ -111101,7 +117031,7 @@ XS(_wrap_RPlot_qqnorm__SWIG_1) {
       if (SWIG_IsNewObj(res)) delete ptr;
     }
     result = datamunge::graphics::RPlot::qqnorm(SWIG_STD_MOVE(*(&arg1)),SWIG_STD_MOVE(*(&arg2)));
-    ST(argvi) = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN | SWIG_SHADOW); argvi++ ;
+    ST(argvi) = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__graphics__RPlot, SWIG_POINTER_OWN | SWIG_SHADOW); argvi++ ;
     
     XSRETURN(argvi);
     fail:;
@@ -111149,7 +117079,7 @@ XS(_wrap_RPlot_qqnorm__SWIG_2) {
       }
     }
     result = datamunge::graphics::RPlot::qqnorm(SWIG_STD_MOVE(*(&arg1)));
-    ST(argvi) = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN | SWIG_SHADOW); argvi++ ;
+    ST(argvi) = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__graphics__RPlot, SWIG_POINTER_OWN | SWIG_SHADOW); argvi++ ;
     XSRETURN(argvi);
     fail:;
   }
@@ -111315,7 +117245,7 @@ XS(_wrap_RPlot_qqnorm) {
       _pi *= SWIG_MAXCASTRANK;
       {
         void *vptr = 0;
-        int res = SWIG_ConvertPtr(ST(2), &vptr, SWIGTYPE_p_datamunge__plot__RGB, SWIG_POINTER_NO_NULL);
+        int res = SWIG_ConvertPtr(ST(2), &vptr, SWIGTYPE_p_datamunge__graphics__RGB, SWIG_POINTER_NO_NULL);
         _v = SWIG_CheckState(res);
       }
       if (!_v) goto check_3;
@@ -111351,7 +117281,7 @@ XS(_wrap_RPlot_points__SWIG_0) {
     std::vector< double > arg2 ;
     std::vector< double > arg3 ;
     std::string arg4 ;
-    SwigValueWrapper< datamunge::graphics::RGB > arg5 ;
+    datamunge::graphics::RGBA arg5 ;
     double arg6 ;
     void *argp1 = 0 ;
     int res1 = 0 ;
@@ -111368,7 +117298,7 @@ XS(_wrap_RPlot_points__SWIG_0) {
     if ((items < 6) || (items > 6)) {
       SWIG_croak("Usage: RPlot_points(self,x,y,label,color,marker_size);");
     }
-    res1 = SWIG_ConvertPtr(ST(0), &argp1,SWIGTYPE_p_datamunge__plot__RPlot, 0 |  0 );
+    res1 = SWIG_ConvertPtr(ST(0), &argp1,SWIGTYPE_p_datamunge__graphics__RPlot, 0 |  0 );
     if (!SWIG_IsOK(res1)) {
       SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "RPlot_points" "', argument " "1"" of type '" "datamunge::graphics::RPlot *""'"); 
     }
@@ -111435,14 +117365,14 @@ XS(_wrap_RPlot_points__SWIG_0) {
       if (SWIG_IsNewObj(res)) delete ptr;
     }
     {
-      res5 = SWIG_ConvertPtr(ST(4), &argp5, SWIGTYPE_p_datamunge__plot__RGB,  0 );
+      res5 = SWIG_ConvertPtr(ST(4), &argp5, SWIGTYPE_p_datamunge__graphics__RGB,  0 );
       if (!SWIG_IsOK(res5)) {
-        SWIG_exception_fail(SWIG_ArgError(res5), "in method '" "RPlot_points" "', argument " "5"" of type '" "datamunge::graphics::RGB""'"); 
+        SWIG_exception_fail(SWIG_ArgError(res5), "in method '" "RPlot_points" "', argument " "5"" of type '" "datamunge::graphics::RGBA""'"); 
       }  
       if (!argp5) {
-        SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "RPlot_points" "', argument " "5"" of type '" "datamunge::graphics::RGB""'");
+        SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "RPlot_points" "', argument " "5"" of type '" "datamunge::graphics::RGBA""'");
       } else {
-        arg5 = *(reinterpret_cast< datamunge::graphics::RGB * >(argp5));
+        arg5 = *(reinterpret_cast< datamunge::graphics::RGBA * >(argp5));
       }
     }
     ecode6 = SWIG_AsVal_double SWIG_PERL_CALL_ARGS_2(ST(5), &val6);
@@ -111451,7 +117381,7 @@ XS(_wrap_RPlot_points__SWIG_0) {
     } 
     arg6 = static_cast< double >(val6);
     result = (datamunge::graphics::RPlot *) &(arg1)->points(SWIG_STD_MOVE(*(&arg2)),SWIG_STD_MOVE(*(&arg3)),SWIG_STD_MOVE(*(&arg4)),SWIG_STD_MOVE(*(&arg5)),arg6);
-    ST(argvi) = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__plot__RPlot, 0 | SWIG_SHADOW); argvi++ ;
+    ST(argvi) = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__graphics__RPlot, 0 | SWIG_SHADOW); argvi++ ;
     
     
     
@@ -111471,7 +117401,7 @@ XS(_wrap_RPlot_points__SWIG_1) {
     std::vector< double > arg2 ;
     std::vector< double > arg3 ;
     std::string arg4 ;
-    SwigValueWrapper< datamunge::graphics::RGB > arg5 ;
+    datamunge::graphics::RGBA arg5 ;
     void *argp1 = 0 ;
     int res1 = 0 ;
     std::vector< double > *v2 ;
@@ -111485,7 +117415,7 @@ XS(_wrap_RPlot_points__SWIG_1) {
     if ((items < 5) || (items > 5)) {
       SWIG_croak("Usage: RPlot_points(self,x,y,label,color);");
     }
-    res1 = SWIG_ConvertPtr(ST(0), &argp1,SWIGTYPE_p_datamunge__plot__RPlot, 0 |  0 );
+    res1 = SWIG_ConvertPtr(ST(0), &argp1,SWIGTYPE_p_datamunge__graphics__RPlot, 0 |  0 );
     if (!SWIG_IsOK(res1)) {
       SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "RPlot_points" "', argument " "1"" of type '" "datamunge::graphics::RPlot *""'"); 
     }
@@ -111552,18 +117482,18 @@ XS(_wrap_RPlot_points__SWIG_1) {
       if (SWIG_IsNewObj(res)) delete ptr;
     }
     {
-      res5 = SWIG_ConvertPtr(ST(4), &argp5, SWIGTYPE_p_datamunge__plot__RGB,  0 );
+      res5 = SWIG_ConvertPtr(ST(4), &argp5, SWIGTYPE_p_datamunge__graphics__RGB,  0 );
       if (!SWIG_IsOK(res5)) {
-        SWIG_exception_fail(SWIG_ArgError(res5), "in method '" "RPlot_points" "', argument " "5"" of type '" "datamunge::graphics::RGB""'"); 
+        SWIG_exception_fail(SWIG_ArgError(res5), "in method '" "RPlot_points" "', argument " "5"" of type '" "datamunge::graphics::RGBA""'"); 
       }  
       if (!argp5) {
-        SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "RPlot_points" "', argument " "5"" of type '" "datamunge::graphics::RGB""'");
+        SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "RPlot_points" "', argument " "5"" of type '" "datamunge::graphics::RGBA""'");
       } else {
-        arg5 = *(reinterpret_cast< datamunge::graphics::RGB * >(argp5));
+        arg5 = *(reinterpret_cast< datamunge::graphics::RGBA * >(argp5));
       }
     }
     result = (datamunge::graphics::RPlot *) &(arg1)->points(SWIG_STD_MOVE(*(&arg2)),SWIG_STD_MOVE(*(&arg3)),SWIG_STD_MOVE(*(&arg4)),SWIG_STD_MOVE(*(&arg5)));
-    ST(argvi) = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__plot__RPlot, 0 | SWIG_SHADOW); argvi++ ;
+    ST(argvi) = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__graphics__RPlot, 0 | SWIG_SHADOW); argvi++ ;
     
     
     XSRETURN(argvi);
@@ -111592,7 +117522,7 @@ XS(_wrap_RPlot_points__SWIG_2) {
     if ((items < 4) || (items > 4)) {
       SWIG_croak("Usage: RPlot_points(self,x,y,label);");
     }
-    res1 = SWIG_ConvertPtr(ST(0), &argp1,SWIGTYPE_p_datamunge__plot__RPlot, 0 |  0 );
+    res1 = SWIG_ConvertPtr(ST(0), &argp1,SWIGTYPE_p_datamunge__graphics__RPlot, 0 |  0 );
     if (!SWIG_IsOK(res1)) {
       SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "RPlot_points" "', argument " "1"" of type '" "datamunge::graphics::RPlot *""'"); 
     }
@@ -111659,7 +117589,7 @@ XS(_wrap_RPlot_points__SWIG_2) {
       if (SWIG_IsNewObj(res)) delete ptr;
     }
     result = (datamunge::graphics::RPlot *) &(arg1)->points(SWIG_STD_MOVE(*(&arg2)),SWIG_STD_MOVE(*(&arg3)),SWIG_STD_MOVE(*(&arg4)));
-    ST(argvi) = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__plot__RPlot, 0 | SWIG_SHADOW); argvi++ ;
+    ST(argvi) = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__graphics__RPlot, 0 | SWIG_SHADOW); argvi++ ;
     
     
     XSRETURN(argvi);
@@ -111687,7 +117617,7 @@ XS(_wrap_RPlot_points__SWIG_3) {
     if ((items < 3) || (items > 3)) {
       SWIG_croak("Usage: RPlot_points(self,x,y);");
     }
-    res1 = SWIG_ConvertPtr(ST(0), &argp1,SWIGTYPE_p_datamunge__plot__RPlot, 0 |  0 );
+    res1 = SWIG_ConvertPtr(ST(0), &argp1,SWIGTYPE_p_datamunge__graphics__RPlot, 0 |  0 );
     if (!SWIG_IsOK(res1)) {
       SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "RPlot_points" "', argument " "1"" of type '" "datamunge::graphics::RPlot *""'"); 
     }
@@ -111745,7 +117675,7 @@ XS(_wrap_RPlot_points__SWIG_3) {
       }
     }
     result = (datamunge::graphics::RPlot *) &(arg1)->points(SWIG_STD_MOVE(*(&arg2)),SWIG_STD_MOVE(*(&arg3)));
-    ST(argvi) = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__plot__RPlot, 0 | SWIG_SHADOW); argvi++ ;
+    ST(argvi) = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__graphics__RPlot, 0 | SWIG_SHADOW); argvi++ ;
     
     XSRETURN(argvi);
     fail:;
@@ -111755,13 +117685,449 @@ XS(_wrap_RPlot_points__SWIG_3) {
 }
 
 
+XS(_wrap_RPlot_points_colored__SWIG_0) {
+  {
+    datamunge::graphics::RPlot *arg1 = 0 ;
+    std::vector< double > arg2 ;
+    std::vector< double > arg3 ;
+    SwigValueWrapper< std::vector< datamunge::graphics::RGB > > arg4 ;
+    double arg5 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    std::vector< double > *v2 ;
+    std::vector< double > *v3 ;
+    void *argp4 = 0 ;
+    int res4 = 0 ;
+    double val5 ;
+    int ecode5 = 0 ;
+    int argvi = 0;
+    datamunge::graphics::RPlot *result = 0 ;
+    dXSARGS;
+    
+    if ((items < 5) || (items > 5)) {
+      SWIG_croak("Usage: RPlot_points_colored(self,x,y,colors,marker_size);");
+    }
+    res1 = SWIG_ConvertPtr(ST(0), &argp1,SWIGTYPE_p_datamunge__graphics__RPlot, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "RPlot_points_colored" "', argument " "1"" of type '" "datamunge::graphics::RPlot *""'"); 
+    }
+    arg1 = reinterpret_cast< datamunge::graphics::RPlot * >(argp1);
+    {
+      if (SWIG_ConvertPtr(ST(1),(void **) &v2, 
+          SWIGTYPE_p_std__vectorT_double_t,1) != -1){
+        arg2 = *v2;
+      } else if (SvROK(ST(1))) {
+        AV *av = (AV *)SvRV(ST(1));
+        if (SvTYPE(av) != SVt_PVAV)
+        SWIG_croak("Type error in argument 2 of RPlot_points_colored. "
+          "Expected an array of ""double");
+        SV **tv;
+        SSize_t len = av_len(av) + 1;
+        for (int i=0; i<len; i++) {
+          tv = av_fetch(av, i, 0);
+          if (SvNIOK(*tv)) {
+            (&arg2)->push_back((double)SwigSvToNumber(*tv));
+          } else {
+            SWIG_croak("Type error in argument 2 of "
+              "RPlot_points_colored. "
+              "Expected an array of ""double");
+          }
+        }
+      } else {
+        SWIG_croak("Type error in argument 2 of RPlot_points_colored. "
+          "Expected an array of ""double");
+      }
+    }
+    {
+      if (SWIG_ConvertPtr(ST(2),(void **) &v3, 
+          SWIGTYPE_p_std__vectorT_double_t,1) != -1){
+        arg3 = *v3;
+      } else if (SvROK(ST(2))) {
+        AV *av = (AV *)SvRV(ST(2));
+        if (SvTYPE(av) != SVt_PVAV)
+        SWIG_croak("Type error in argument 3 of RPlot_points_colored. "
+          "Expected an array of ""double");
+        SV **tv;
+        SSize_t len = av_len(av) + 1;
+        for (int i=0; i<len; i++) {
+          tv = av_fetch(av, i, 0);
+          if (SvNIOK(*tv)) {
+            (&arg3)->push_back((double)SwigSvToNumber(*tv));
+          } else {
+            SWIG_croak("Type error in argument 3 of "
+              "RPlot_points_colored. "
+              "Expected an array of ""double");
+          }
+        }
+      } else {
+        SWIG_croak("Type error in argument 3 of RPlot_points_colored. "
+          "Expected an array of ""double");
+      }
+    }
+    {
+      res4 = SWIG_ConvertPtr(ST(3), &argp4, SWIGTYPE_p_std__vectorT_datamunge__graphics__RGB_t,  0 );
+      if (!SWIG_IsOK(res4)) {
+        SWIG_exception_fail(SWIG_ArgError(res4), "in method '" "RPlot_points_colored" "', argument " "4"" of type '" "std::vector< datamunge::graphics::RGBA >""'"); 
+      }  
+      if (!argp4) {
+        SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "RPlot_points_colored" "', argument " "4"" of type '" "std::vector< datamunge::graphics::RGBA >""'");
+      } else {
+        arg4 = *(reinterpret_cast< std::vector< datamunge::graphics::RGBA > * >(argp4));
+      }
+    }
+    ecode5 = SWIG_AsVal_double SWIG_PERL_CALL_ARGS_2(ST(4), &val5);
+    if (!SWIG_IsOK(ecode5)) {
+      SWIG_exception_fail(SWIG_ArgError(ecode5), "in method '" "RPlot_points_colored" "', argument " "5"" of type '" "double""'");
+    } 
+    arg5 = static_cast< double >(val5);
+    result = (datamunge::graphics::RPlot *) &(arg1)->points_colored(SWIG_STD_MOVE(*(&arg2)),SWIG_STD_MOVE(*(&arg3)),SWIG_STD_MOVE(*(&arg4)),arg5);
+    ST(argvi) = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__graphics__RPlot, 0 | SWIG_SHADOW); argvi++ ;
+    
+    
+    XSRETURN(argvi);
+    fail:;
+    
+    
+  }
+  SWIG_croak_null();
+}
+
+
+XS(_wrap_RPlot_points_colored__SWIG_1) {
+  {
+    datamunge::graphics::RPlot *arg1 = 0 ;
+    std::vector< double > arg2 ;
+    std::vector< double > arg3 ;
+    SwigValueWrapper< std::vector< datamunge::graphics::RGB > > arg4 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    std::vector< double > *v2 ;
+    std::vector< double > *v3 ;
+    void *argp4 = 0 ;
+    int res4 = 0 ;
+    int argvi = 0;
+    datamunge::graphics::RPlot *result = 0 ;
+    dXSARGS;
+    
+    if ((items < 4) || (items > 4)) {
+      SWIG_croak("Usage: RPlot_points_colored(self,x,y,colors);");
+    }
+    res1 = SWIG_ConvertPtr(ST(0), &argp1,SWIGTYPE_p_datamunge__graphics__RPlot, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "RPlot_points_colored" "', argument " "1"" of type '" "datamunge::graphics::RPlot *""'"); 
+    }
+    arg1 = reinterpret_cast< datamunge::graphics::RPlot * >(argp1);
+    {
+      if (SWIG_ConvertPtr(ST(1),(void **) &v2, 
+          SWIGTYPE_p_std__vectorT_double_t,1) != -1){
+        arg2 = *v2;
+      } else if (SvROK(ST(1))) {
+        AV *av = (AV *)SvRV(ST(1));
+        if (SvTYPE(av) != SVt_PVAV)
+        SWIG_croak("Type error in argument 2 of RPlot_points_colored. "
+          "Expected an array of ""double");
+        SV **tv;
+        SSize_t len = av_len(av) + 1;
+        for (int i=0; i<len; i++) {
+          tv = av_fetch(av, i, 0);
+          if (SvNIOK(*tv)) {
+            (&arg2)->push_back((double)SwigSvToNumber(*tv));
+          } else {
+            SWIG_croak("Type error in argument 2 of "
+              "RPlot_points_colored. "
+              "Expected an array of ""double");
+          }
+        }
+      } else {
+        SWIG_croak("Type error in argument 2 of RPlot_points_colored. "
+          "Expected an array of ""double");
+      }
+    }
+    {
+      if (SWIG_ConvertPtr(ST(2),(void **) &v3, 
+          SWIGTYPE_p_std__vectorT_double_t,1) != -1){
+        arg3 = *v3;
+      } else if (SvROK(ST(2))) {
+        AV *av = (AV *)SvRV(ST(2));
+        if (SvTYPE(av) != SVt_PVAV)
+        SWIG_croak("Type error in argument 3 of RPlot_points_colored. "
+          "Expected an array of ""double");
+        SV **tv;
+        SSize_t len = av_len(av) + 1;
+        for (int i=0; i<len; i++) {
+          tv = av_fetch(av, i, 0);
+          if (SvNIOK(*tv)) {
+            (&arg3)->push_back((double)SwigSvToNumber(*tv));
+          } else {
+            SWIG_croak("Type error in argument 3 of "
+              "RPlot_points_colored. "
+              "Expected an array of ""double");
+          }
+        }
+      } else {
+        SWIG_croak("Type error in argument 3 of RPlot_points_colored. "
+          "Expected an array of ""double");
+      }
+    }
+    {
+      res4 = SWIG_ConvertPtr(ST(3), &argp4, SWIGTYPE_p_std__vectorT_datamunge__graphics__RGB_t,  0 );
+      if (!SWIG_IsOK(res4)) {
+        SWIG_exception_fail(SWIG_ArgError(res4), "in method '" "RPlot_points_colored" "', argument " "4"" of type '" "std::vector< datamunge::graphics::RGBA >""'"); 
+      }  
+      if (!argp4) {
+        SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "RPlot_points_colored" "', argument " "4"" of type '" "std::vector< datamunge::graphics::RGBA >""'");
+      } else {
+        arg4 = *(reinterpret_cast< std::vector< datamunge::graphics::RGBA > * >(argp4));
+      }
+    }
+    result = (datamunge::graphics::RPlot *) &(arg1)->points_colored(SWIG_STD_MOVE(*(&arg2)),SWIG_STD_MOVE(*(&arg3)),SWIG_STD_MOVE(*(&arg4)));
+    ST(argvi) = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__graphics__RPlot, 0 | SWIG_SHADOW); argvi++ ;
+    
+    XSRETURN(argvi);
+    fail:;
+    
+  }
+  SWIG_croak_null();
+}
+
+
+XS(_wrap_RPlot_points_colored) {
+  dXSARGS;
+  
+  {
+    unsigned long _index = 0;
+    SWIG_TypeRank _rank = 0; 
+    if (items == 4) {
+      SWIG_TypeRank _ranki = 0;
+      SWIG_TypeRank _rankm = 0;
+      SWIG_TypeRank _pi = 1;
+      int _v = 0;
+      {
+        void *vptr = 0;
+        int res = SWIG_ConvertPtr(ST(0), &vptr, SWIGTYPE_p_datamunge__graphics__RPlot, 0);
+        _v = SWIG_CheckState(res);
+      }
+      if (!_v) goto check_1;
+      _ranki += _v*_pi;
+      _rankm += _pi;
+      _pi *= SWIG_MAXCASTRANK;
+      {
+        {
+          {
+            /* wrapped vector? */
+            std::vector< double >* v;
+            if (SWIG_ConvertPtr(ST(1),(void **) &v, 
+                SWIGTYPE_p_std__vectorT_double_t,0) != -1) {
+              _v = 1;
+            } else if (SvROK(ST(1))) {
+              /* native sequence? */
+              AV *av = (AV *)SvRV(ST(1));
+              if (SvTYPE(av) == SVt_PVAV) {
+                SSize_t len = av_len(av) + 1;
+                if (len == 0) {
+                  /* an empty sequence can be of any type */
+                  _v = 1;
+                } else {
+                  /* check the first element only */
+                  SV **tv = av_fetch(av, 0, 0);
+                  if (SvNIOK(*tv))
+                  _v = 1;
+                  else
+                  _v = 0;
+                }
+              }
+            } else {
+              _v = 0;
+            }
+          }
+        }
+      }
+      if (!_v) goto check_1;
+      _ranki += _v*_pi;
+      _rankm += _pi;
+      _pi *= SWIG_MAXCASTRANK;
+      {
+        {
+          {
+            /* wrapped vector? */
+            std::vector< double >* v;
+            if (SWIG_ConvertPtr(ST(2),(void **) &v, 
+                SWIGTYPE_p_std__vectorT_double_t,0) != -1) {
+              _v = 1;
+            } else if (SvROK(ST(2))) {
+              /* native sequence? */
+              AV *av = (AV *)SvRV(ST(2));
+              if (SvTYPE(av) == SVt_PVAV) {
+                SSize_t len = av_len(av) + 1;
+                if (len == 0) {
+                  /* an empty sequence can be of any type */
+                  _v = 1;
+                } else {
+                  /* check the first element only */
+                  SV **tv = av_fetch(av, 0, 0);
+                  if (SvNIOK(*tv))
+                  _v = 1;
+                  else
+                  _v = 0;
+                }
+              }
+            } else {
+              _v = 0;
+            }
+          }
+        }
+      }
+      if (!_v) goto check_1;
+      _ranki += _v*_pi;
+      _rankm += _pi;
+      _pi *= SWIG_MAXCASTRANK;
+      {
+        void *vptr = 0;
+        int res = SWIG_ConvertPtr(ST(3), &vptr, SWIGTYPE_p_std__vectorT_datamunge__graphics__RGB_t, SWIG_POINTER_NO_NULL);
+        _v = SWIG_CheckState(res);
+      }
+      if (!_v) goto check_1;
+      _ranki += _v*_pi;
+      _rankm += _pi;
+      _pi *= SWIG_MAXCASTRANK;
+      if (!_index || (_ranki < _rank)) {
+        _rank = _ranki; _index = 1;
+        if (_rank == _rankm) goto dispatch;
+      }
+    }
+  check_1:
+    
+    if (items == 5) {
+      SWIG_TypeRank _ranki = 0;
+      SWIG_TypeRank _rankm = 0;
+      SWIG_TypeRank _pi = 1;
+      int _v = 0;
+      {
+        void *vptr = 0;
+        int res = SWIG_ConvertPtr(ST(0), &vptr, SWIGTYPE_p_datamunge__graphics__RPlot, 0);
+        _v = SWIG_CheckState(res);
+      }
+      if (!_v) goto check_2;
+      _ranki += _v*_pi;
+      _rankm += _pi;
+      _pi *= SWIG_MAXCASTRANK;
+      {
+        {
+          {
+            /* wrapped vector? */
+            std::vector< double >* v;
+            if (SWIG_ConvertPtr(ST(1),(void **) &v, 
+                SWIGTYPE_p_std__vectorT_double_t,0) != -1) {
+              _v = 1;
+            } else if (SvROK(ST(1))) {
+              /* native sequence? */
+              AV *av = (AV *)SvRV(ST(1));
+              if (SvTYPE(av) == SVt_PVAV) {
+                SSize_t len = av_len(av) + 1;
+                if (len == 0) {
+                  /* an empty sequence can be of any type */
+                  _v = 1;
+                } else {
+                  /* check the first element only */
+                  SV **tv = av_fetch(av, 0, 0);
+                  if (SvNIOK(*tv))
+                  _v = 1;
+                  else
+                  _v = 0;
+                }
+              }
+            } else {
+              _v = 0;
+            }
+          }
+        }
+      }
+      if (!_v) goto check_2;
+      _ranki += _v*_pi;
+      _rankm += _pi;
+      _pi *= SWIG_MAXCASTRANK;
+      {
+        {
+          {
+            /* wrapped vector? */
+            std::vector< double >* v;
+            if (SWIG_ConvertPtr(ST(2),(void **) &v, 
+                SWIGTYPE_p_std__vectorT_double_t,0) != -1) {
+              _v = 1;
+            } else if (SvROK(ST(2))) {
+              /* native sequence? */
+              AV *av = (AV *)SvRV(ST(2));
+              if (SvTYPE(av) == SVt_PVAV) {
+                SSize_t len = av_len(av) + 1;
+                if (len == 0) {
+                  /* an empty sequence can be of any type */
+                  _v = 1;
+                } else {
+                  /* check the first element only */
+                  SV **tv = av_fetch(av, 0, 0);
+                  if (SvNIOK(*tv))
+                  _v = 1;
+                  else
+                  _v = 0;
+                }
+              }
+            } else {
+              _v = 0;
+            }
+          }
+        }
+      }
+      if (!_v) goto check_2;
+      _ranki += _v*_pi;
+      _rankm += _pi;
+      _pi *= SWIG_MAXCASTRANK;
+      {
+        void *vptr = 0;
+        int res = SWIG_ConvertPtr(ST(3), &vptr, SWIGTYPE_p_std__vectorT_datamunge__graphics__RGB_t, SWIG_POINTER_NO_NULL);
+        _v = SWIG_CheckState(res);
+      }
+      if (!_v) goto check_2;
+      _ranki += _v*_pi;
+      _rankm += _pi;
+      _pi *= SWIG_MAXCASTRANK;
+      {
+        {
+          int res = SWIG_AsVal_double SWIG_PERL_CALL_ARGS_2(ST(4), NULL);
+          _v = SWIG_CheckState(res);
+        }
+      }
+      if (!_v) goto check_2;
+      _ranki += _v*_pi;
+      _rankm += _pi;
+      _pi *= SWIG_MAXCASTRANK;
+      if (!_index || (_ranki < _rank)) {
+        _rank = _ranki; _index = 2;
+        if (_rank == _rankm) goto dispatch;
+      }
+    }
+  check_2:
+    
+  dispatch:
+    switch(_index) {
+    case 1:
+      PUSHMARK(MARK); SWIG_CALLXS(_wrap_RPlot_points_colored__SWIG_1); return;
+    case 2:
+      PUSHMARK(MARK); SWIG_CALLXS(_wrap_RPlot_points_colored__SWIG_0); return;
+    }
+  }
+  
+  croak("No matching function for overloaded 'RPlot_points_colored'");
+  XSRETURN(0);
+}
+
+
 XS(_wrap_RPlot_line__SWIG_0) {
   {
     datamunge::graphics::RPlot *arg1 = 0 ;
     std::vector< double > arg2 ;
     std::vector< double > arg3 ;
     std::string arg4 ;
-    SwigValueWrapper< datamunge::graphics::RGB > arg5 ;
+    datamunge::graphics::RGBA arg5 ;
     double arg6 ;
     void *argp1 = 0 ;
     int res1 = 0 ;
@@ -111778,7 +118144,7 @@ XS(_wrap_RPlot_line__SWIG_0) {
     if ((items < 6) || (items > 6)) {
       SWIG_croak("Usage: RPlot_line(self,x,y,label,color,stroke_width);");
     }
-    res1 = SWIG_ConvertPtr(ST(0), &argp1,SWIGTYPE_p_datamunge__plot__RPlot, 0 |  0 );
+    res1 = SWIG_ConvertPtr(ST(0), &argp1,SWIGTYPE_p_datamunge__graphics__RPlot, 0 |  0 );
     if (!SWIG_IsOK(res1)) {
       SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "RPlot_line" "', argument " "1"" of type '" "datamunge::graphics::RPlot *""'"); 
     }
@@ -111845,14 +118211,14 @@ XS(_wrap_RPlot_line__SWIG_0) {
       if (SWIG_IsNewObj(res)) delete ptr;
     }
     {
-      res5 = SWIG_ConvertPtr(ST(4), &argp5, SWIGTYPE_p_datamunge__plot__RGB,  0 );
+      res5 = SWIG_ConvertPtr(ST(4), &argp5, SWIGTYPE_p_datamunge__graphics__RGB,  0 );
       if (!SWIG_IsOK(res5)) {
-        SWIG_exception_fail(SWIG_ArgError(res5), "in method '" "RPlot_line" "', argument " "5"" of type '" "datamunge::graphics::RGB""'"); 
+        SWIG_exception_fail(SWIG_ArgError(res5), "in method '" "RPlot_line" "', argument " "5"" of type '" "datamunge::graphics::RGBA""'"); 
       }  
       if (!argp5) {
-        SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "RPlot_line" "', argument " "5"" of type '" "datamunge::graphics::RGB""'");
+        SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "RPlot_line" "', argument " "5"" of type '" "datamunge::graphics::RGBA""'");
       } else {
-        arg5 = *(reinterpret_cast< datamunge::graphics::RGB * >(argp5));
+        arg5 = *(reinterpret_cast< datamunge::graphics::RGBA * >(argp5));
       }
     }
     ecode6 = SWIG_AsVal_double SWIG_PERL_CALL_ARGS_2(ST(5), &val6);
@@ -111861,7 +118227,7 @@ XS(_wrap_RPlot_line__SWIG_0) {
     } 
     arg6 = static_cast< double >(val6);
     result = (datamunge::graphics::RPlot *) &(arg1)->line(SWIG_STD_MOVE(*(&arg2)),SWIG_STD_MOVE(*(&arg3)),SWIG_STD_MOVE(*(&arg4)),SWIG_STD_MOVE(*(&arg5)),arg6);
-    ST(argvi) = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__plot__RPlot, 0 | SWIG_SHADOW); argvi++ ;
+    ST(argvi) = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__graphics__RPlot, 0 | SWIG_SHADOW); argvi++ ;
     
     
     
@@ -111881,7 +118247,7 @@ XS(_wrap_RPlot_line__SWIG_1) {
     std::vector< double > arg2 ;
     std::vector< double > arg3 ;
     std::string arg4 ;
-    SwigValueWrapper< datamunge::graphics::RGB > arg5 ;
+    datamunge::graphics::RGBA arg5 ;
     void *argp1 = 0 ;
     int res1 = 0 ;
     std::vector< double > *v2 ;
@@ -111895,7 +118261,7 @@ XS(_wrap_RPlot_line__SWIG_1) {
     if ((items < 5) || (items > 5)) {
       SWIG_croak("Usage: RPlot_line(self,x,y,label,color);");
     }
-    res1 = SWIG_ConvertPtr(ST(0), &argp1,SWIGTYPE_p_datamunge__plot__RPlot, 0 |  0 );
+    res1 = SWIG_ConvertPtr(ST(0), &argp1,SWIGTYPE_p_datamunge__graphics__RPlot, 0 |  0 );
     if (!SWIG_IsOK(res1)) {
       SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "RPlot_line" "', argument " "1"" of type '" "datamunge::graphics::RPlot *""'"); 
     }
@@ -111962,18 +118328,18 @@ XS(_wrap_RPlot_line__SWIG_1) {
       if (SWIG_IsNewObj(res)) delete ptr;
     }
     {
-      res5 = SWIG_ConvertPtr(ST(4), &argp5, SWIGTYPE_p_datamunge__plot__RGB,  0 );
+      res5 = SWIG_ConvertPtr(ST(4), &argp5, SWIGTYPE_p_datamunge__graphics__RGB,  0 );
       if (!SWIG_IsOK(res5)) {
-        SWIG_exception_fail(SWIG_ArgError(res5), "in method '" "RPlot_line" "', argument " "5"" of type '" "datamunge::graphics::RGB""'"); 
+        SWIG_exception_fail(SWIG_ArgError(res5), "in method '" "RPlot_line" "', argument " "5"" of type '" "datamunge::graphics::RGBA""'"); 
       }  
       if (!argp5) {
-        SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "RPlot_line" "', argument " "5"" of type '" "datamunge::graphics::RGB""'");
+        SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "RPlot_line" "', argument " "5"" of type '" "datamunge::graphics::RGBA""'");
       } else {
-        arg5 = *(reinterpret_cast< datamunge::graphics::RGB * >(argp5));
+        arg5 = *(reinterpret_cast< datamunge::graphics::RGBA * >(argp5));
       }
     }
     result = (datamunge::graphics::RPlot *) &(arg1)->line(SWIG_STD_MOVE(*(&arg2)),SWIG_STD_MOVE(*(&arg3)),SWIG_STD_MOVE(*(&arg4)),SWIG_STD_MOVE(*(&arg5)));
-    ST(argvi) = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__plot__RPlot, 0 | SWIG_SHADOW); argvi++ ;
+    ST(argvi) = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__graphics__RPlot, 0 | SWIG_SHADOW); argvi++ ;
     
     
     XSRETURN(argvi);
@@ -112002,7 +118368,7 @@ XS(_wrap_RPlot_line__SWIG_2) {
     if ((items < 4) || (items > 4)) {
       SWIG_croak("Usage: RPlot_line(self,x,y,label);");
     }
-    res1 = SWIG_ConvertPtr(ST(0), &argp1,SWIGTYPE_p_datamunge__plot__RPlot, 0 |  0 );
+    res1 = SWIG_ConvertPtr(ST(0), &argp1,SWIGTYPE_p_datamunge__graphics__RPlot, 0 |  0 );
     if (!SWIG_IsOK(res1)) {
       SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "RPlot_line" "', argument " "1"" of type '" "datamunge::graphics::RPlot *""'"); 
     }
@@ -112069,7 +118435,7 @@ XS(_wrap_RPlot_line__SWIG_2) {
       if (SWIG_IsNewObj(res)) delete ptr;
     }
     result = (datamunge::graphics::RPlot *) &(arg1)->line(SWIG_STD_MOVE(*(&arg2)),SWIG_STD_MOVE(*(&arg3)),SWIG_STD_MOVE(*(&arg4)));
-    ST(argvi) = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__plot__RPlot, 0 | SWIG_SHADOW); argvi++ ;
+    ST(argvi) = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__graphics__RPlot, 0 | SWIG_SHADOW); argvi++ ;
     
     
     XSRETURN(argvi);
@@ -112097,7 +118463,7 @@ XS(_wrap_RPlot_line__SWIG_3) {
     if ((items < 3) || (items > 3)) {
       SWIG_croak("Usage: RPlot_line(self,x,y);");
     }
-    res1 = SWIG_ConvertPtr(ST(0), &argp1,SWIGTYPE_p_datamunge__plot__RPlot, 0 |  0 );
+    res1 = SWIG_ConvertPtr(ST(0), &argp1,SWIGTYPE_p_datamunge__graphics__RPlot, 0 |  0 );
     if (!SWIG_IsOK(res1)) {
       SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "RPlot_line" "', argument " "1"" of type '" "datamunge::graphics::RPlot *""'"); 
     }
@@ -112155,7 +118521,7 @@ XS(_wrap_RPlot_line__SWIG_3) {
       }
     }
     result = (datamunge::graphics::RPlot *) &(arg1)->line(SWIG_STD_MOVE(*(&arg2)),SWIG_STD_MOVE(*(&arg3)));
-    ST(argvi) = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__plot__RPlot, 0 | SWIG_SHADOW); argvi++ ;
+    ST(argvi) = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__graphics__RPlot, 0 | SWIG_SHADOW); argvi++ ;
     
     XSRETURN(argvi);
     fail:;
@@ -112178,7 +118544,7 @@ XS(_wrap_RPlot_line) {
       int _v = 0;
       {
         void *vptr = 0;
-        int res = SWIG_ConvertPtr(ST(0), &vptr, SWIGTYPE_p_datamunge__plot__RPlot, 0);
+        int res = SWIG_ConvertPtr(ST(0), &vptr, SWIGTYPE_p_datamunge__graphics__RPlot, 0);
         _v = SWIG_CheckState(res);
       }
       if (!_v) goto check_1;
@@ -112269,7 +118635,7 @@ XS(_wrap_RPlot_line) {
       int _v = 0;
       {
         void *vptr = 0;
-        int res = SWIG_ConvertPtr(ST(0), &vptr, SWIGTYPE_p_datamunge__plot__RPlot, 0);
+        int res = SWIG_ConvertPtr(ST(0), &vptr, SWIGTYPE_p_datamunge__graphics__RPlot, 0);
         _v = SWIG_CheckState(res);
       }
       if (!_v) goto check_2;
@@ -112368,7 +118734,7 @@ XS(_wrap_RPlot_line) {
       int _v = 0;
       {
         void *vptr = 0;
-        int res = SWIG_ConvertPtr(ST(0), &vptr, SWIGTYPE_p_datamunge__plot__RPlot, 0);
+        int res = SWIG_ConvertPtr(ST(0), &vptr, SWIGTYPE_p_datamunge__graphics__RPlot, 0);
         _v = SWIG_CheckState(res);
       }
       if (!_v) goto check_3;
@@ -112455,7 +118821,7 @@ XS(_wrap_RPlot_line) {
       _pi *= SWIG_MAXCASTRANK;
       {
         void *vptr = 0;
-        int res = SWIG_ConvertPtr(ST(4), &vptr, SWIGTYPE_p_datamunge__plot__RGB, SWIG_POINTER_NO_NULL);
+        int res = SWIG_ConvertPtr(ST(4), &vptr, SWIGTYPE_p_datamunge__graphics__RGB, SWIG_POINTER_NO_NULL);
         _v = SWIG_CheckState(res);
       }
       if (!_v) goto check_3;
@@ -112476,7 +118842,7 @@ XS(_wrap_RPlot_line) {
       int _v = 0;
       {
         void *vptr = 0;
-        int res = SWIG_ConvertPtr(ST(0), &vptr, SWIGTYPE_p_datamunge__plot__RPlot, 0);
+        int res = SWIG_ConvertPtr(ST(0), &vptr, SWIGTYPE_p_datamunge__graphics__RPlot, 0);
         _v = SWIG_CheckState(res);
       }
       if (!_v) goto check_4;
@@ -112563,7 +118929,7 @@ XS(_wrap_RPlot_line) {
       _pi *= SWIG_MAXCASTRANK;
       {
         void *vptr = 0;
-        int res = SWIG_ConvertPtr(ST(4), &vptr, SWIGTYPE_p_datamunge__plot__RGB, SWIG_POINTER_NO_NULL);
+        int res = SWIG_ConvertPtr(ST(4), &vptr, SWIGTYPE_p_datamunge__graphics__RGB, SWIG_POINTER_NO_NULL);
         _v = SWIG_CheckState(res);
       }
       if (!_v) goto check_4;
@@ -112611,7 +118977,7 @@ XS(_wrap_RPlot_lines__SWIG_0) {
     std::vector< double > arg2 ;
     std::vector< double > arg3 ;
     std::string arg4 ;
-    SwigValueWrapper< datamunge::graphics::RGB > arg5 ;
+    datamunge::graphics::RGBA arg5 ;
     double arg6 ;
     void *argp1 = 0 ;
     int res1 = 0 ;
@@ -112628,7 +118994,7 @@ XS(_wrap_RPlot_lines__SWIG_0) {
     if ((items < 6) || (items > 6)) {
       SWIG_croak("Usage: RPlot_lines(self,x,y,label,color,stroke_width);");
     }
-    res1 = SWIG_ConvertPtr(ST(0), &argp1,SWIGTYPE_p_datamunge__plot__RPlot, 0 |  0 );
+    res1 = SWIG_ConvertPtr(ST(0), &argp1,SWIGTYPE_p_datamunge__graphics__RPlot, 0 |  0 );
     if (!SWIG_IsOK(res1)) {
       SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "RPlot_lines" "', argument " "1"" of type '" "datamunge::graphics::RPlot *""'"); 
     }
@@ -112695,14 +119061,14 @@ XS(_wrap_RPlot_lines__SWIG_0) {
       if (SWIG_IsNewObj(res)) delete ptr;
     }
     {
-      res5 = SWIG_ConvertPtr(ST(4), &argp5, SWIGTYPE_p_datamunge__plot__RGB,  0 );
+      res5 = SWIG_ConvertPtr(ST(4), &argp5, SWIGTYPE_p_datamunge__graphics__RGB,  0 );
       if (!SWIG_IsOK(res5)) {
-        SWIG_exception_fail(SWIG_ArgError(res5), "in method '" "RPlot_lines" "', argument " "5"" of type '" "datamunge::graphics::RGB""'"); 
+        SWIG_exception_fail(SWIG_ArgError(res5), "in method '" "RPlot_lines" "', argument " "5"" of type '" "datamunge::graphics::RGBA""'"); 
       }  
       if (!argp5) {
-        SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "RPlot_lines" "', argument " "5"" of type '" "datamunge::graphics::RGB""'");
+        SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "RPlot_lines" "', argument " "5"" of type '" "datamunge::graphics::RGBA""'");
       } else {
-        arg5 = *(reinterpret_cast< datamunge::graphics::RGB * >(argp5));
+        arg5 = *(reinterpret_cast< datamunge::graphics::RGBA * >(argp5));
       }
     }
     ecode6 = SWIG_AsVal_double SWIG_PERL_CALL_ARGS_2(ST(5), &val6);
@@ -112711,7 +119077,7 @@ XS(_wrap_RPlot_lines__SWIG_0) {
     } 
     arg6 = static_cast< double >(val6);
     result = (datamunge::graphics::RPlot *) &(arg1)->lines(SWIG_STD_MOVE(*(&arg2)),SWIG_STD_MOVE(*(&arg3)),SWIG_STD_MOVE(*(&arg4)),SWIG_STD_MOVE(*(&arg5)),arg6);
-    ST(argvi) = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__plot__RPlot, 0 | SWIG_SHADOW); argvi++ ;
+    ST(argvi) = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__graphics__RPlot, 0 | SWIG_SHADOW); argvi++ ;
     
     
     
@@ -112731,7 +119097,7 @@ XS(_wrap_RPlot_lines__SWIG_1) {
     std::vector< double > arg2 ;
     std::vector< double > arg3 ;
     std::string arg4 ;
-    SwigValueWrapper< datamunge::graphics::RGB > arg5 ;
+    datamunge::graphics::RGBA arg5 ;
     void *argp1 = 0 ;
     int res1 = 0 ;
     std::vector< double > *v2 ;
@@ -112745,7 +119111,7 @@ XS(_wrap_RPlot_lines__SWIG_1) {
     if ((items < 5) || (items > 5)) {
       SWIG_croak("Usage: RPlot_lines(self,x,y,label,color);");
     }
-    res1 = SWIG_ConvertPtr(ST(0), &argp1,SWIGTYPE_p_datamunge__plot__RPlot, 0 |  0 );
+    res1 = SWIG_ConvertPtr(ST(0), &argp1,SWIGTYPE_p_datamunge__graphics__RPlot, 0 |  0 );
     if (!SWIG_IsOK(res1)) {
       SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "RPlot_lines" "', argument " "1"" of type '" "datamunge::graphics::RPlot *""'"); 
     }
@@ -112812,18 +119178,18 @@ XS(_wrap_RPlot_lines__SWIG_1) {
       if (SWIG_IsNewObj(res)) delete ptr;
     }
     {
-      res5 = SWIG_ConvertPtr(ST(4), &argp5, SWIGTYPE_p_datamunge__plot__RGB,  0 );
+      res5 = SWIG_ConvertPtr(ST(4), &argp5, SWIGTYPE_p_datamunge__graphics__RGB,  0 );
       if (!SWIG_IsOK(res5)) {
-        SWIG_exception_fail(SWIG_ArgError(res5), "in method '" "RPlot_lines" "', argument " "5"" of type '" "datamunge::graphics::RGB""'"); 
+        SWIG_exception_fail(SWIG_ArgError(res5), "in method '" "RPlot_lines" "', argument " "5"" of type '" "datamunge::graphics::RGBA""'"); 
       }  
       if (!argp5) {
-        SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "RPlot_lines" "', argument " "5"" of type '" "datamunge::graphics::RGB""'");
+        SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "RPlot_lines" "', argument " "5"" of type '" "datamunge::graphics::RGBA""'");
       } else {
-        arg5 = *(reinterpret_cast< datamunge::graphics::RGB * >(argp5));
+        arg5 = *(reinterpret_cast< datamunge::graphics::RGBA * >(argp5));
       }
     }
     result = (datamunge::graphics::RPlot *) &(arg1)->lines(SWIG_STD_MOVE(*(&arg2)),SWIG_STD_MOVE(*(&arg3)),SWIG_STD_MOVE(*(&arg4)),SWIG_STD_MOVE(*(&arg5)));
-    ST(argvi) = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__plot__RPlot, 0 | SWIG_SHADOW); argvi++ ;
+    ST(argvi) = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__graphics__RPlot, 0 | SWIG_SHADOW); argvi++ ;
     
     
     XSRETURN(argvi);
@@ -112852,7 +119218,7 @@ XS(_wrap_RPlot_lines__SWIG_2) {
     if ((items < 4) || (items > 4)) {
       SWIG_croak("Usage: RPlot_lines(self,x,y,label);");
     }
-    res1 = SWIG_ConvertPtr(ST(0), &argp1,SWIGTYPE_p_datamunge__plot__RPlot, 0 |  0 );
+    res1 = SWIG_ConvertPtr(ST(0), &argp1,SWIGTYPE_p_datamunge__graphics__RPlot, 0 |  0 );
     if (!SWIG_IsOK(res1)) {
       SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "RPlot_lines" "', argument " "1"" of type '" "datamunge::graphics::RPlot *""'"); 
     }
@@ -112919,7 +119285,7 @@ XS(_wrap_RPlot_lines__SWIG_2) {
       if (SWIG_IsNewObj(res)) delete ptr;
     }
     result = (datamunge::graphics::RPlot *) &(arg1)->lines(SWIG_STD_MOVE(*(&arg2)),SWIG_STD_MOVE(*(&arg3)),SWIG_STD_MOVE(*(&arg4)));
-    ST(argvi) = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__plot__RPlot, 0 | SWIG_SHADOW); argvi++ ;
+    ST(argvi) = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__graphics__RPlot, 0 | SWIG_SHADOW); argvi++ ;
     
     
     XSRETURN(argvi);
@@ -112947,7 +119313,7 @@ XS(_wrap_RPlot_lines__SWIG_3) {
     if ((items < 3) || (items > 3)) {
       SWIG_croak("Usage: RPlot_lines(self,x,y);");
     }
-    res1 = SWIG_ConvertPtr(ST(0), &argp1,SWIGTYPE_p_datamunge__plot__RPlot, 0 |  0 );
+    res1 = SWIG_ConvertPtr(ST(0), &argp1,SWIGTYPE_p_datamunge__graphics__RPlot, 0 |  0 );
     if (!SWIG_IsOK(res1)) {
       SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "RPlot_lines" "', argument " "1"" of type '" "datamunge::graphics::RPlot *""'"); 
     }
@@ -113005,7 +119371,7 @@ XS(_wrap_RPlot_lines__SWIG_3) {
       }
     }
     result = (datamunge::graphics::RPlot *) &(arg1)->lines(SWIG_STD_MOVE(*(&arg2)),SWIG_STD_MOVE(*(&arg3)));
-    ST(argvi) = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__plot__RPlot, 0 | SWIG_SHADOW); argvi++ ;
+    ST(argvi) = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__graphics__RPlot, 0 | SWIG_SHADOW); argvi++ ;
     
     XSRETURN(argvi);
     fail:;
@@ -113020,7 +119386,7 @@ XS(_wrap_RPlot_points__SWIG_4) {
     datamunge::graphics::RPlot *arg1 = 0 ;
     std::vector< double > arg2 ;
     std::vector< double > arg3 ;
-    SwigValueWrapper< datamunge::graphics::RGB > arg4 ;
+    datamunge::graphics::RGBA arg4 ;
     double arg5 ;
     void *argp1 = 0 ;
     int res1 = 0 ;
@@ -113037,7 +119403,7 @@ XS(_wrap_RPlot_points__SWIG_4) {
     if ((items < 5) || (items > 5)) {
       SWIG_croak("Usage: RPlot_points(self,x,y,color,marker_size);");
     }
-    res1 = SWIG_ConvertPtr(ST(0), &argp1,SWIGTYPE_p_datamunge__plot__RPlot, 0 |  0 );
+    res1 = SWIG_ConvertPtr(ST(0), &argp1,SWIGTYPE_p_datamunge__graphics__RPlot, 0 |  0 );
     if (!SWIG_IsOK(res1)) {
       SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "RPlot_points" "', argument " "1"" of type '" "datamunge::graphics::RPlot *""'"); 
     }
@@ -113095,14 +119461,14 @@ XS(_wrap_RPlot_points__SWIG_4) {
       }
     }
     {
-      res4 = SWIG_ConvertPtr(ST(3), &argp4, SWIGTYPE_p_datamunge__plot__RGB,  0 );
+      res4 = SWIG_ConvertPtr(ST(3), &argp4, SWIGTYPE_p_datamunge__graphics__RGB,  0 );
       if (!SWIG_IsOK(res4)) {
-        SWIG_exception_fail(SWIG_ArgError(res4), "in method '" "RPlot_points" "', argument " "4"" of type '" "datamunge::graphics::RGB""'"); 
+        SWIG_exception_fail(SWIG_ArgError(res4), "in method '" "RPlot_points" "', argument " "4"" of type '" "datamunge::graphics::RGBA""'"); 
       }  
       if (!argp4) {
-        SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "RPlot_points" "', argument " "4"" of type '" "datamunge::graphics::RGB""'");
+        SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "RPlot_points" "', argument " "4"" of type '" "datamunge::graphics::RGBA""'");
       } else {
-        arg4 = *(reinterpret_cast< datamunge::graphics::RGB * >(argp4));
+        arg4 = *(reinterpret_cast< datamunge::graphics::RGBA * >(argp4));
       }
     }
     ecode5 = SWIG_AsVal_double SWIG_PERL_CALL_ARGS_2(ST(4), &val5);
@@ -113111,7 +119477,7 @@ XS(_wrap_RPlot_points__SWIG_4) {
     } 
     arg5 = static_cast< double >(val5);
     result = (datamunge::graphics::RPlot *) &(arg1)->points(SWIG_STD_MOVE(*(&arg2)),SWIG_STD_MOVE(*(&arg3)),SWIG_STD_MOVE(*(&arg4)),arg5);
-    ST(argvi) = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__plot__RPlot, 0 | SWIG_SHADOW); argvi++ ;
+    ST(argvi) = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__graphics__RPlot, 0 | SWIG_SHADOW); argvi++ ;
     
     
     XSRETURN(argvi);
@@ -113128,7 +119494,7 @@ XS(_wrap_RPlot_points__SWIG_5) {
     datamunge::graphics::RPlot *arg1 = 0 ;
     std::vector< double > arg2 ;
     std::vector< double > arg3 ;
-    SwigValueWrapper< datamunge::graphics::RGB > arg4 ;
+    datamunge::graphics::RGBA arg4 ;
     void *argp1 = 0 ;
     int res1 = 0 ;
     std::vector< double > *v2 ;
@@ -113142,7 +119508,7 @@ XS(_wrap_RPlot_points__SWIG_5) {
     if ((items < 4) || (items > 4)) {
       SWIG_croak("Usage: RPlot_points(self,x,y,color);");
     }
-    res1 = SWIG_ConvertPtr(ST(0), &argp1,SWIGTYPE_p_datamunge__plot__RPlot, 0 |  0 );
+    res1 = SWIG_ConvertPtr(ST(0), &argp1,SWIGTYPE_p_datamunge__graphics__RPlot, 0 |  0 );
     if (!SWIG_IsOK(res1)) {
       SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "RPlot_points" "', argument " "1"" of type '" "datamunge::graphics::RPlot *""'"); 
     }
@@ -113200,18 +119566,18 @@ XS(_wrap_RPlot_points__SWIG_5) {
       }
     }
     {
-      res4 = SWIG_ConvertPtr(ST(3), &argp4, SWIGTYPE_p_datamunge__plot__RGB,  0 );
+      res4 = SWIG_ConvertPtr(ST(3), &argp4, SWIGTYPE_p_datamunge__graphics__RGB,  0 );
       if (!SWIG_IsOK(res4)) {
-        SWIG_exception_fail(SWIG_ArgError(res4), "in method '" "RPlot_points" "', argument " "4"" of type '" "datamunge::graphics::RGB""'"); 
+        SWIG_exception_fail(SWIG_ArgError(res4), "in method '" "RPlot_points" "', argument " "4"" of type '" "datamunge::graphics::RGBA""'"); 
       }  
       if (!argp4) {
-        SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "RPlot_points" "', argument " "4"" of type '" "datamunge::graphics::RGB""'");
+        SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "RPlot_points" "', argument " "4"" of type '" "datamunge::graphics::RGBA""'");
       } else {
-        arg4 = *(reinterpret_cast< datamunge::graphics::RGB * >(argp4));
+        arg4 = *(reinterpret_cast< datamunge::graphics::RGBA * >(argp4));
       }
     }
     result = (datamunge::graphics::RPlot *) &(arg1)->points(SWIG_STD_MOVE(*(&arg2)),SWIG_STD_MOVE(*(&arg3)),SWIG_STD_MOVE(*(&arg4)));
-    ST(argvi) = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__plot__RPlot, 0 | SWIG_SHADOW); argvi++ ;
+    ST(argvi) = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__graphics__RPlot, 0 | SWIG_SHADOW); argvi++ ;
     
     XSRETURN(argvi);
     fail:;
@@ -113234,7 +119600,7 @@ XS(_wrap_RPlot_points) {
       int _v = 0;
       {
         void *vptr = 0;
-        int res = SWIG_ConvertPtr(ST(0), &vptr, SWIGTYPE_p_datamunge__plot__RPlot, 0);
+        int res = SWIG_ConvertPtr(ST(0), &vptr, SWIGTYPE_p_datamunge__graphics__RPlot, 0);
         _v = SWIG_CheckState(res);
       }
       if (!_v) goto check_1;
@@ -113325,7 +119691,7 @@ XS(_wrap_RPlot_points) {
       int _v = 0;
       {
         void *vptr = 0;
-        int res = SWIG_ConvertPtr(ST(0), &vptr, SWIGTYPE_p_datamunge__plot__RPlot, 0);
+        int res = SWIG_ConvertPtr(ST(0), &vptr, SWIGTYPE_p_datamunge__graphics__RPlot, 0);
         _v = SWIG_CheckState(res);
       }
       if (!_v) goto check_2;
@@ -113404,7 +119770,7 @@ XS(_wrap_RPlot_points) {
       _pi *= SWIG_MAXCASTRANK;
       {
         void *vptr = 0;
-        int res = SWIG_ConvertPtr(ST(3), &vptr, SWIGTYPE_p_datamunge__plot__RGB, SWIG_POINTER_NO_NULL);
+        int res = SWIG_ConvertPtr(ST(3), &vptr, SWIGTYPE_p_datamunge__graphics__RGB, SWIG_POINTER_NO_NULL);
         _v = SWIG_CheckState(res);
       }
       if (!_v) goto check_2;
@@ -113425,7 +119791,7 @@ XS(_wrap_RPlot_points) {
       int _v = 0;
       {
         void *vptr = 0;
-        int res = SWIG_ConvertPtr(ST(0), &vptr, SWIGTYPE_p_datamunge__plot__RPlot, 0);
+        int res = SWIG_ConvertPtr(ST(0), &vptr, SWIGTYPE_p_datamunge__graphics__RPlot, 0);
         _v = SWIG_CheckState(res);
       }
       if (!_v) goto check_3;
@@ -113524,7 +119890,7 @@ XS(_wrap_RPlot_points) {
       int _v = 0;
       {
         void *vptr = 0;
-        int res = SWIG_ConvertPtr(ST(0), &vptr, SWIGTYPE_p_datamunge__plot__RPlot, 0);
+        int res = SWIG_ConvertPtr(ST(0), &vptr, SWIGTYPE_p_datamunge__graphics__RPlot, 0);
         _v = SWIG_CheckState(res);
       }
       if (!_v) goto check_4;
@@ -113603,7 +119969,7 @@ XS(_wrap_RPlot_points) {
       _pi *= SWIG_MAXCASTRANK;
       {
         void *vptr = 0;
-        int res = SWIG_ConvertPtr(ST(3), &vptr, SWIGTYPE_p_datamunge__plot__RGB, SWIG_POINTER_NO_NULL);
+        int res = SWIG_ConvertPtr(ST(3), &vptr, SWIGTYPE_p_datamunge__graphics__RGB, SWIG_POINTER_NO_NULL);
         _v = SWIG_CheckState(res);
       }
       if (!_v) goto check_4;
@@ -113634,7 +120000,7 @@ XS(_wrap_RPlot_points) {
       int _v = 0;
       {
         void *vptr = 0;
-        int res = SWIG_ConvertPtr(ST(0), &vptr, SWIGTYPE_p_datamunge__plot__RPlot, 0);
+        int res = SWIG_ConvertPtr(ST(0), &vptr, SWIGTYPE_p_datamunge__graphics__RPlot, 0);
         _v = SWIG_CheckState(res);
       }
       if (!_v) goto check_5;
@@ -113721,7 +120087,7 @@ XS(_wrap_RPlot_points) {
       _pi *= SWIG_MAXCASTRANK;
       {
         void *vptr = 0;
-        int res = SWIG_ConvertPtr(ST(4), &vptr, SWIGTYPE_p_datamunge__plot__RGB, SWIG_POINTER_NO_NULL);
+        int res = SWIG_ConvertPtr(ST(4), &vptr, SWIGTYPE_p_datamunge__graphics__RGB, SWIG_POINTER_NO_NULL);
         _v = SWIG_CheckState(res);
       }
       if (!_v) goto check_5;
@@ -113742,7 +120108,7 @@ XS(_wrap_RPlot_points) {
       int _v = 0;
       {
         void *vptr = 0;
-        int res = SWIG_ConvertPtr(ST(0), &vptr, SWIGTYPE_p_datamunge__plot__RPlot, 0);
+        int res = SWIG_ConvertPtr(ST(0), &vptr, SWIGTYPE_p_datamunge__graphics__RPlot, 0);
         _v = SWIG_CheckState(res);
       }
       if (!_v) goto check_6;
@@ -113829,7 +120195,7 @@ XS(_wrap_RPlot_points) {
       _pi *= SWIG_MAXCASTRANK;
       {
         void *vptr = 0;
-        int res = SWIG_ConvertPtr(ST(4), &vptr, SWIGTYPE_p_datamunge__plot__RGB, SWIG_POINTER_NO_NULL);
+        int res = SWIG_ConvertPtr(ST(4), &vptr, SWIGTYPE_p_datamunge__graphics__RGB, SWIG_POINTER_NO_NULL);
         _v = SWIG_CheckState(res);
       }
       if (!_v) goto check_6;
@@ -113880,7 +120246,7 @@ XS(_wrap_RPlot_lines__SWIG_4) {
     datamunge::graphics::RPlot *arg1 = 0 ;
     std::vector< double > arg2 ;
     std::vector< double > arg3 ;
-    SwigValueWrapper< datamunge::graphics::RGB > arg4 ;
+    datamunge::graphics::RGBA arg4 ;
     double arg5 ;
     void *argp1 = 0 ;
     int res1 = 0 ;
@@ -113897,7 +120263,7 @@ XS(_wrap_RPlot_lines__SWIG_4) {
     if ((items < 5) || (items > 5)) {
       SWIG_croak("Usage: RPlot_lines(self,x,y,color,stroke_width);");
     }
-    res1 = SWIG_ConvertPtr(ST(0), &argp1,SWIGTYPE_p_datamunge__plot__RPlot, 0 |  0 );
+    res1 = SWIG_ConvertPtr(ST(0), &argp1,SWIGTYPE_p_datamunge__graphics__RPlot, 0 |  0 );
     if (!SWIG_IsOK(res1)) {
       SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "RPlot_lines" "', argument " "1"" of type '" "datamunge::graphics::RPlot *""'"); 
     }
@@ -113955,14 +120321,14 @@ XS(_wrap_RPlot_lines__SWIG_4) {
       }
     }
     {
-      res4 = SWIG_ConvertPtr(ST(3), &argp4, SWIGTYPE_p_datamunge__plot__RGB,  0 );
+      res4 = SWIG_ConvertPtr(ST(3), &argp4, SWIGTYPE_p_datamunge__graphics__RGB,  0 );
       if (!SWIG_IsOK(res4)) {
-        SWIG_exception_fail(SWIG_ArgError(res4), "in method '" "RPlot_lines" "', argument " "4"" of type '" "datamunge::graphics::RGB""'"); 
+        SWIG_exception_fail(SWIG_ArgError(res4), "in method '" "RPlot_lines" "', argument " "4"" of type '" "datamunge::graphics::RGBA""'"); 
       }  
       if (!argp4) {
-        SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "RPlot_lines" "', argument " "4"" of type '" "datamunge::graphics::RGB""'");
+        SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "RPlot_lines" "', argument " "4"" of type '" "datamunge::graphics::RGBA""'");
       } else {
-        arg4 = *(reinterpret_cast< datamunge::graphics::RGB * >(argp4));
+        arg4 = *(reinterpret_cast< datamunge::graphics::RGBA * >(argp4));
       }
     }
     ecode5 = SWIG_AsVal_double SWIG_PERL_CALL_ARGS_2(ST(4), &val5);
@@ -113971,7 +120337,7 @@ XS(_wrap_RPlot_lines__SWIG_4) {
     } 
     arg5 = static_cast< double >(val5);
     result = (datamunge::graphics::RPlot *) &(arg1)->lines(SWIG_STD_MOVE(*(&arg2)),SWIG_STD_MOVE(*(&arg3)),SWIG_STD_MOVE(*(&arg4)),arg5);
-    ST(argvi) = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__plot__RPlot, 0 | SWIG_SHADOW); argvi++ ;
+    ST(argvi) = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__graphics__RPlot, 0 | SWIG_SHADOW); argvi++ ;
     
     
     XSRETURN(argvi);
@@ -113988,7 +120354,7 @@ XS(_wrap_RPlot_lines__SWIG_5) {
     datamunge::graphics::RPlot *arg1 = 0 ;
     std::vector< double > arg2 ;
     std::vector< double > arg3 ;
-    SwigValueWrapper< datamunge::graphics::RGB > arg4 ;
+    datamunge::graphics::RGBA arg4 ;
     void *argp1 = 0 ;
     int res1 = 0 ;
     std::vector< double > *v2 ;
@@ -114002,7 +120368,7 @@ XS(_wrap_RPlot_lines__SWIG_5) {
     if ((items < 4) || (items > 4)) {
       SWIG_croak("Usage: RPlot_lines(self,x,y,color);");
     }
-    res1 = SWIG_ConvertPtr(ST(0), &argp1,SWIGTYPE_p_datamunge__plot__RPlot, 0 |  0 );
+    res1 = SWIG_ConvertPtr(ST(0), &argp1,SWIGTYPE_p_datamunge__graphics__RPlot, 0 |  0 );
     if (!SWIG_IsOK(res1)) {
       SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "RPlot_lines" "', argument " "1"" of type '" "datamunge::graphics::RPlot *""'"); 
     }
@@ -114060,18 +120426,18 @@ XS(_wrap_RPlot_lines__SWIG_5) {
       }
     }
     {
-      res4 = SWIG_ConvertPtr(ST(3), &argp4, SWIGTYPE_p_datamunge__plot__RGB,  0 );
+      res4 = SWIG_ConvertPtr(ST(3), &argp4, SWIGTYPE_p_datamunge__graphics__RGB,  0 );
       if (!SWIG_IsOK(res4)) {
-        SWIG_exception_fail(SWIG_ArgError(res4), "in method '" "RPlot_lines" "', argument " "4"" of type '" "datamunge::graphics::RGB""'"); 
+        SWIG_exception_fail(SWIG_ArgError(res4), "in method '" "RPlot_lines" "', argument " "4"" of type '" "datamunge::graphics::RGBA""'"); 
       }  
       if (!argp4) {
-        SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "RPlot_lines" "', argument " "4"" of type '" "datamunge::graphics::RGB""'");
+        SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "RPlot_lines" "', argument " "4"" of type '" "datamunge::graphics::RGBA""'");
       } else {
-        arg4 = *(reinterpret_cast< datamunge::graphics::RGB * >(argp4));
+        arg4 = *(reinterpret_cast< datamunge::graphics::RGBA * >(argp4));
       }
     }
     result = (datamunge::graphics::RPlot *) &(arg1)->lines(SWIG_STD_MOVE(*(&arg2)),SWIG_STD_MOVE(*(&arg3)),SWIG_STD_MOVE(*(&arg4)));
-    ST(argvi) = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__plot__RPlot, 0 | SWIG_SHADOW); argvi++ ;
+    ST(argvi) = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__graphics__RPlot, 0 | SWIG_SHADOW); argvi++ ;
     
     XSRETURN(argvi);
     fail:;
@@ -114094,7 +120460,7 @@ XS(_wrap_RPlot_lines) {
       int _v = 0;
       {
         void *vptr = 0;
-        int res = SWIG_ConvertPtr(ST(0), &vptr, SWIGTYPE_p_datamunge__plot__RPlot, 0);
+        int res = SWIG_ConvertPtr(ST(0), &vptr, SWIGTYPE_p_datamunge__graphics__RPlot, 0);
         _v = SWIG_CheckState(res);
       }
       if (!_v) goto check_1;
@@ -114185,7 +120551,7 @@ XS(_wrap_RPlot_lines) {
       int _v = 0;
       {
         void *vptr = 0;
-        int res = SWIG_ConvertPtr(ST(0), &vptr, SWIGTYPE_p_datamunge__plot__RPlot, 0);
+        int res = SWIG_ConvertPtr(ST(0), &vptr, SWIGTYPE_p_datamunge__graphics__RPlot, 0);
         _v = SWIG_CheckState(res);
       }
       if (!_v) goto check_2;
@@ -114264,7 +120630,7 @@ XS(_wrap_RPlot_lines) {
       _pi *= SWIG_MAXCASTRANK;
       {
         void *vptr = 0;
-        int res = SWIG_ConvertPtr(ST(3), &vptr, SWIGTYPE_p_datamunge__plot__RGB, SWIG_POINTER_NO_NULL);
+        int res = SWIG_ConvertPtr(ST(3), &vptr, SWIGTYPE_p_datamunge__graphics__RGB, SWIG_POINTER_NO_NULL);
         _v = SWIG_CheckState(res);
       }
       if (!_v) goto check_2;
@@ -114285,7 +120651,7 @@ XS(_wrap_RPlot_lines) {
       int _v = 0;
       {
         void *vptr = 0;
-        int res = SWIG_ConvertPtr(ST(0), &vptr, SWIGTYPE_p_datamunge__plot__RPlot, 0);
+        int res = SWIG_ConvertPtr(ST(0), &vptr, SWIGTYPE_p_datamunge__graphics__RPlot, 0);
         _v = SWIG_CheckState(res);
       }
       if (!_v) goto check_3;
@@ -114384,7 +120750,7 @@ XS(_wrap_RPlot_lines) {
       int _v = 0;
       {
         void *vptr = 0;
-        int res = SWIG_ConvertPtr(ST(0), &vptr, SWIGTYPE_p_datamunge__plot__RPlot, 0);
+        int res = SWIG_ConvertPtr(ST(0), &vptr, SWIGTYPE_p_datamunge__graphics__RPlot, 0);
         _v = SWIG_CheckState(res);
       }
       if (!_v) goto check_4;
@@ -114463,7 +120829,7 @@ XS(_wrap_RPlot_lines) {
       _pi *= SWIG_MAXCASTRANK;
       {
         void *vptr = 0;
-        int res = SWIG_ConvertPtr(ST(3), &vptr, SWIGTYPE_p_datamunge__plot__RGB, SWIG_POINTER_NO_NULL);
+        int res = SWIG_ConvertPtr(ST(3), &vptr, SWIGTYPE_p_datamunge__graphics__RGB, SWIG_POINTER_NO_NULL);
         _v = SWIG_CheckState(res);
       }
       if (!_v) goto check_4;
@@ -114494,7 +120860,7 @@ XS(_wrap_RPlot_lines) {
       int _v = 0;
       {
         void *vptr = 0;
-        int res = SWIG_ConvertPtr(ST(0), &vptr, SWIGTYPE_p_datamunge__plot__RPlot, 0);
+        int res = SWIG_ConvertPtr(ST(0), &vptr, SWIGTYPE_p_datamunge__graphics__RPlot, 0);
         _v = SWIG_CheckState(res);
       }
       if (!_v) goto check_5;
@@ -114581,7 +120947,7 @@ XS(_wrap_RPlot_lines) {
       _pi *= SWIG_MAXCASTRANK;
       {
         void *vptr = 0;
-        int res = SWIG_ConvertPtr(ST(4), &vptr, SWIGTYPE_p_datamunge__plot__RGB, SWIG_POINTER_NO_NULL);
+        int res = SWIG_ConvertPtr(ST(4), &vptr, SWIGTYPE_p_datamunge__graphics__RGB, SWIG_POINTER_NO_NULL);
         _v = SWIG_CheckState(res);
       }
       if (!_v) goto check_5;
@@ -114602,7 +120968,7 @@ XS(_wrap_RPlot_lines) {
       int _v = 0;
       {
         void *vptr = 0;
-        int res = SWIG_ConvertPtr(ST(0), &vptr, SWIGTYPE_p_datamunge__plot__RPlot, 0);
+        int res = SWIG_ConvertPtr(ST(0), &vptr, SWIGTYPE_p_datamunge__graphics__RPlot, 0);
         _v = SWIG_CheckState(res);
       }
       if (!_v) goto check_6;
@@ -114689,7 +121055,7 @@ XS(_wrap_RPlot_lines) {
       _pi *= SWIG_MAXCASTRANK;
       {
         void *vptr = 0;
-        int res = SWIG_ConvertPtr(ST(4), &vptr, SWIGTYPE_p_datamunge__plot__RGB, SWIG_POINTER_NO_NULL);
+        int res = SWIG_ConvertPtr(ST(4), &vptr, SWIGTYPE_p_datamunge__graphics__RGB, SWIG_POINTER_NO_NULL);
         _v = SWIG_CheckState(res);
       }
       if (!_v) goto check_6;
@@ -114741,7 +121107,7 @@ XS(_wrap_RPlot_bars__SWIG_0) {
     std::vector< double > arg2 ;
     std::vector< double > arg3 ;
     std::string arg4 ;
-    SwigValueWrapper< datamunge::graphics::RGB > arg5 ;
+    datamunge::graphics::RGBA arg5 ;
     double arg6 ;
     void *argp1 = 0 ;
     int res1 = 0 ;
@@ -114758,7 +121124,7 @@ XS(_wrap_RPlot_bars__SWIG_0) {
     if ((items < 6) || (items > 6)) {
       SWIG_croak("Usage: RPlot_bars(self,x,y,label,color,bar_width);");
     }
-    res1 = SWIG_ConvertPtr(ST(0), &argp1,SWIGTYPE_p_datamunge__plot__RPlot, 0 |  0 );
+    res1 = SWIG_ConvertPtr(ST(0), &argp1,SWIGTYPE_p_datamunge__graphics__RPlot, 0 |  0 );
     if (!SWIG_IsOK(res1)) {
       SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "RPlot_bars" "', argument " "1"" of type '" "datamunge::graphics::RPlot *""'"); 
     }
@@ -114825,14 +121191,14 @@ XS(_wrap_RPlot_bars__SWIG_0) {
       if (SWIG_IsNewObj(res)) delete ptr;
     }
     {
-      res5 = SWIG_ConvertPtr(ST(4), &argp5, SWIGTYPE_p_datamunge__plot__RGB,  0 );
+      res5 = SWIG_ConvertPtr(ST(4), &argp5, SWIGTYPE_p_datamunge__graphics__RGB,  0 );
       if (!SWIG_IsOK(res5)) {
-        SWIG_exception_fail(SWIG_ArgError(res5), "in method '" "RPlot_bars" "', argument " "5"" of type '" "datamunge::graphics::RGB""'"); 
+        SWIG_exception_fail(SWIG_ArgError(res5), "in method '" "RPlot_bars" "', argument " "5"" of type '" "datamunge::graphics::RGBA""'"); 
       }  
       if (!argp5) {
-        SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "RPlot_bars" "', argument " "5"" of type '" "datamunge::graphics::RGB""'");
+        SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "RPlot_bars" "', argument " "5"" of type '" "datamunge::graphics::RGBA""'");
       } else {
-        arg5 = *(reinterpret_cast< datamunge::graphics::RGB * >(argp5));
+        arg5 = *(reinterpret_cast< datamunge::graphics::RGBA * >(argp5));
       }
     }
     ecode6 = SWIG_AsVal_double SWIG_PERL_CALL_ARGS_2(ST(5), &val6);
@@ -114841,7 +121207,7 @@ XS(_wrap_RPlot_bars__SWIG_0) {
     } 
     arg6 = static_cast< double >(val6);
     result = (datamunge::graphics::RPlot *) &(arg1)->bars(SWIG_STD_MOVE(*(&arg2)),SWIG_STD_MOVE(*(&arg3)),SWIG_STD_MOVE(*(&arg4)),SWIG_STD_MOVE(*(&arg5)),arg6);
-    ST(argvi) = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__plot__RPlot, 0 | SWIG_SHADOW); argvi++ ;
+    ST(argvi) = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__graphics__RPlot, 0 | SWIG_SHADOW); argvi++ ;
     
     
     
@@ -114861,7 +121227,7 @@ XS(_wrap_RPlot_bars__SWIG_1) {
     std::vector< double > arg2 ;
     std::vector< double > arg3 ;
     std::string arg4 ;
-    SwigValueWrapper< datamunge::graphics::RGB > arg5 ;
+    datamunge::graphics::RGBA arg5 ;
     void *argp1 = 0 ;
     int res1 = 0 ;
     std::vector< double > *v2 ;
@@ -114875,7 +121241,7 @@ XS(_wrap_RPlot_bars__SWIG_1) {
     if ((items < 5) || (items > 5)) {
       SWIG_croak("Usage: RPlot_bars(self,x,y,label,color);");
     }
-    res1 = SWIG_ConvertPtr(ST(0), &argp1,SWIGTYPE_p_datamunge__plot__RPlot, 0 |  0 );
+    res1 = SWIG_ConvertPtr(ST(0), &argp1,SWIGTYPE_p_datamunge__graphics__RPlot, 0 |  0 );
     if (!SWIG_IsOK(res1)) {
       SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "RPlot_bars" "', argument " "1"" of type '" "datamunge::graphics::RPlot *""'"); 
     }
@@ -114942,18 +121308,18 @@ XS(_wrap_RPlot_bars__SWIG_1) {
       if (SWIG_IsNewObj(res)) delete ptr;
     }
     {
-      res5 = SWIG_ConvertPtr(ST(4), &argp5, SWIGTYPE_p_datamunge__plot__RGB,  0 );
+      res5 = SWIG_ConvertPtr(ST(4), &argp5, SWIGTYPE_p_datamunge__graphics__RGB,  0 );
       if (!SWIG_IsOK(res5)) {
-        SWIG_exception_fail(SWIG_ArgError(res5), "in method '" "RPlot_bars" "', argument " "5"" of type '" "datamunge::graphics::RGB""'"); 
+        SWIG_exception_fail(SWIG_ArgError(res5), "in method '" "RPlot_bars" "', argument " "5"" of type '" "datamunge::graphics::RGBA""'"); 
       }  
       if (!argp5) {
-        SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "RPlot_bars" "', argument " "5"" of type '" "datamunge::graphics::RGB""'");
+        SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "RPlot_bars" "', argument " "5"" of type '" "datamunge::graphics::RGBA""'");
       } else {
-        arg5 = *(reinterpret_cast< datamunge::graphics::RGB * >(argp5));
+        arg5 = *(reinterpret_cast< datamunge::graphics::RGBA * >(argp5));
       }
     }
     result = (datamunge::graphics::RPlot *) &(arg1)->bars(SWIG_STD_MOVE(*(&arg2)),SWIG_STD_MOVE(*(&arg3)),SWIG_STD_MOVE(*(&arg4)),SWIG_STD_MOVE(*(&arg5)));
-    ST(argvi) = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__plot__RPlot, 0 | SWIG_SHADOW); argvi++ ;
+    ST(argvi) = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__graphics__RPlot, 0 | SWIG_SHADOW); argvi++ ;
     
     
     XSRETURN(argvi);
@@ -114982,7 +121348,7 @@ XS(_wrap_RPlot_bars__SWIG_2) {
     if ((items < 4) || (items > 4)) {
       SWIG_croak("Usage: RPlot_bars(self,x,y,label);");
     }
-    res1 = SWIG_ConvertPtr(ST(0), &argp1,SWIGTYPE_p_datamunge__plot__RPlot, 0 |  0 );
+    res1 = SWIG_ConvertPtr(ST(0), &argp1,SWIGTYPE_p_datamunge__graphics__RPlot, 0 |  0 );
     if (!SWIG_IsOK(res1)) {
       SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "RPlot_bars" "', argument " "1"" of type '" "datamunge::graphics::RPlot *""'"); 
     }
@@ -115049,7 +121415,7 @@ XS(_wrap_RPlot_bars__SWIG_2) {
       if (SWIG_IsNewObj(res)) delete ptr;
     }
     result = (datamunge::graphics::RPlot *) &(arg1)->bars(SWIG_STD_MOVE(*(&arg2)),SWIG_STD_MOVE(*(&arg3)),SWIG_STD_MOVE(*(&arg4)));
-    ST(argvi) = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__plot__RPlot, 0 | SWIG_SHADOW); argvi++ ;
+    ST(argvi) = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__graphics__RPlot, 0 | SWIG_SHADOW); argvi++ ;
     
     
     XSRETURN(argvi);
@@ -115077,7 +121443,7 @@ XS(_wrap_RPlot_bars__SWIG_3) {
     if ((items < 3) || (items > 3)) {
       SWIG_croak("Usage: RPlot_bars(self,x,y);");
     }
-    res1 = SWIG_ConvertPtr(ST(0), &argp1,SWIGTYPE_p_datamunge__plot__RPlot, 0 |  0 );
+    res1 = SWIG_ConvertPtr(ST(0), &argp1,SWIGTYPE_p_datamunge__graphics__RPlot, 0 |  0 );
     if (!SWIG_IsOK(res1)) {
       SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "RPlot_bars" "', argument " "1"" of type '" "datamunge::graphics::RPlot *""'"); 
     }
@@ -115135,7 +121501,7 @@ XS(_wrap_RPlot_bars__SWIG_3) {
       }
     }
     result = (datamunge::graphics::RPlot *) &(arg1)->bars(SWIG_STD_MOVE(*(&arg2)),SWIG_STD_MOVE(*(&arg3)));
-    ST(argvi) = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__plot__RPlot, 0 | SWIG_SHADOW); argvi++ ;
+    ST(argvi) = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__graphics__RPlot, 0 | SWIG_SHADOW); argvi++ ;
     
     XSRETURN(argvi);
     fail:;
@@ -115158,7 +121524,7 @@ XS(_wrap_RPlot_bars) {
       int _v = 0;
       {
         void *vptr = 0;
-        int res = SWIG_ConvertPtr(ST(0), &vptr, SWIGTYPE_p_datamunge__plot__RPlot, 0);
+        int res = SWIG_ConvertPtr(ST(0), &vptr, SWIGTYPE_p_datamunge__graphics__RPlot, 0);
         _v = SWIG_CheckState(res);
       }
       if (!_v) goto check_1;
@@ -115249,7 +121615,7 @@ XS(_wrap_RPlot_bars) {
       int _v = 0;
       {
         void *vptr = 0;
-        int res = SWIG_ConvertPtr(ST(0), &vptr, SWIGTYPE_p_datamunge__plot__RPlot, 0);
+        int res = SWIG_ConvertPtr(ST(0), &vptr, SWIGTYPE_p_datamunge__graphics__RPlot, 0);
         _v = SWIG_CheckState(res);
       }
       if (!_v) goto check_2;
@@ -115348,7 +121714,7 @@ XS(_wrap_RPlot_bars) {
       int _v = 0;
       {
         void *vptr = 0;
-        int res = SWIG_ConvertPtr(ST(0), &vptr, SWIGTYPE_p_datamunge__plot__RPlot, 0);
+        int res = SWIG_ConvertPtr(ST(0), &vptr, SWIGTYPE_p_datamunge__graphics__RPlot, 0);
         _v = SWIG_CheckState(res);
       }
       if (!_v) goto check_3;
@@ -115435,7 +121801,7 @@ XS(_wrap_RPlot_bars) {
       _pi *= SWIG_MAXCASTRANK;
       {
         void *vptr = 0;
-        int res = SWIG_ConvertPtr(ST(4), &vptr, SWIGTYPE_p_datamunge__plot__RGB, SWIG_POINTER_NO_NULL);
+        int res = SWIG_ConvertPtr(ST(4), &vptr, SWIGTYPE_p_datamunge__graphics__RGB, SWIG_POINTER_NO_NULL);
         _v = SWIG_CheckState(res);
       }
       if (!_v) goto check_3;
@@ -115456,7 +121822,7 @@ XS(_wrap_RPlot_bars) {
       int _v = 0;
       {
         void *vptr = 0;
-        int res = SWIG_ConvertPtr(ST(0), &vptr, SWIGTYPE_p_datamunge__plot__RPlot, 0);
+        int res = SWIG_ConvertPtr(ST(0), &vptr, SWIGTYPE_p_datamunge__graphics__RPlot, 0);
         _v = SWIG_CheckState(res);
       }
       if (!_v) goto check_4;
@@ -115543,7 +121909,7 @@ XS(_wrap_RPlot_bars) {
       _pi *= SWIG_MAXCASTRANK;
       {
         void *vptr = 0;
-        int res = SWIG_ConvertPtr(ST(4), &vptr, SWIGTYPE_p_datamunge__plot__RGB, SWIG_POINTER_NO_NULL);
+        int res = SWIG_ConvertPtr(ST(4), &vptr, SWIGTYPE_p_datamunge__graphics__RGB, SWIG_POINTER_NO_NULL);
         _v = SWIG_CheckState(res);
       }
       if (!_v) goto check_4;
@@ -115595,7 +121961,7 @@ XS(_wrap_RPlot_box__SWIG_0) {
     double arg6 ;
     double arg7 ;
     std::vector< double > arg8 ;
-    SwigValueWrapper< datamunge::graphics::RGB > arg9 ;
+    datamunge::graphics::RGBA arg9 ;
     double arg10 ;
     void *argp1 = 0 ;
     int res1 = 0 ;
@@ -115623,7 +121989,7 @@ XS(_wrap_RPlot_box__SWIG_0) {
     if ((items < 10) || (items > 10)) {
       SWIG_croak("Usage: RPlot_box(self,position,whisker_lo,q1,median,q3,whisker_hi,outliers,color,width);");
     }
-    res1 = SWIG_ConvertPtr(ST(0), &argp1,SWIGTYPE_p_datamunge__plot__RPlot, 0 |  0 );
+    res1 = SWIG_ConvertPtr(ST(0), &argp1,SWIGTYPE_p_datamunge__graphics__RPlot, 0 |  0 );
     if (!SWIG_IsOK(res1)) {
       SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "RPlot_box" "', argument " "1"" of type '" "datamunge::graphics::RPlot *""'"); 
     }
@@ -115685,14 +122051,14 @@ XS(_wrap_RPlot_box__SWIG_0) {
       }
     }
     {
-      res9 = SWIG_ConvertPtr(ST(8), &argp9, SWIGTYPE_p_datamunge__plot__RGB,  0 );
+      res9 = SWIG_ConvertPtr(ST(8), &argp9, SWIGTYPE_p_datamunge__graphics__RGB,  0 );
       if (!SWIG_IsOK(res9)) {
-        SWIG_exception_fail(SWIG_ArgError(res9), "in method '" "RPlot_box" "', argument " "9"" of type '" "datamunge::graphics::RGB""'"); 
+        SWIG_exception_fail(SWIG_ArgError(res9), "in method '" "RPlot_box" "', argument " "9"" of type '" "datamunge::graphics::RGBA""'"); 
       }  
       if (!argp9) {
-        SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "RPlot_box" "', argument " "9"" of type '" "datamunge::graphics::RGB""'");
+        SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "RPlot_box" "', argument " "9"" of type '" "datamunge::graphics::RGBA""'");
       } else {
-        arg9 = *(reinterpret_cast< datamunge::graphics::RGB * >(argp9));
+        arg9 = *(reinterpret_cast< datamunge::graphics::RGBA * >(argp9));
       }
     }
     ecode10 = SWIG_AsVal_double SWIG_PERL_CALL_ARGS_2(ST(9), &val10);
@@ -115701,7 +122067,7 @@ XS(_wrap_RPlot_box__SWIG_0) {
     } 
     arg10 = static_cast< double >(val10);
     result = (datamunge::graphics::RPlot *) &(arg1)->box(arg2,arg3,arg4,arg5,arg6,arg7,SWIG_STD_MOVE(*(&arg8)),SWIG_STD_MOVE(*(&arg9)),arg10);
-    ST(argvi) = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__plot__RPlot, 0 | SWIG_SHADOW); argvi++ ;
+    ST(argvi) = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__graphics__RPlot, 0 | SWIG_SHADOW); argvi++ ;
     
     
     
@@ -115735,7 +122101,7 @@ XS(_wrap_RPlot_box__SWIG_1) {
     double arg6 ;
     double arg7 ;
     std::vector< double > arg8 ;
-    SwigValueWrapper< datamunge::graphics::RGB > arg9 ;
+    datamunge::graphics::RGBA arg9 ;
     void *argp1 = 0 ;
     int res1 = 0 ;
     double val2 ;
@@ -115760,7 +122126,7 @@ XS(_wrap_RPlot_box__SWIG_1) {
     if ((items < 9) || (items > 9)) {
       SWIG_croak("Usage: RPlot_box(self,position,whisker_lo,q1,median,q3,whisker_hi,outliers,color);");
     }
-    res1 = SWIG_ConvertPtr(ST(0), &argp1,SWIGTYPE_p_datamunge__plot__RPlot, 0 |  0 );
+    res1 = SWIG_ConvertPtr(ST(0), &argp1,SWIGTYPE_p_datamunge__graphics__RPlot, 0 |  0 );
     if (!SWIG_IsOK(res1)) {
       SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "RPlot_box" "', argument " "1"" of type '" "datamunge::graphics::RPlot *""'"); 
     }
@@ -115822,18 +122188,18 @@ XS(_wrap_RPlot_box__SWIG_1) {
       }
     }
     {
-      res9 = SWIG_ConvertPtr(ST(8), &argp9, SWIGTYPE_p_datamunge__plot__RGB,  0 );
+      res9 = SWIG_ConvertPtr(ST(8), &argp9, SWIGTYPE_p_datamunge__graphics__RGB,  0 );
       if (!SWIG_IsOK(res9)) {
-        SWIG_exception_fail(SWIG_ArgError(res9), "in method '" "RPlot_box" "', argument " "9"" of type '" "datamunge::graphics::RGB""'"); 
+        SWIG_exception_fail(SWIG_ArgError(res9), "in method '" "RPlot_box" "', argument " "9"" of type '" "datamunge::graphics::RGBA""'"); 
       }  
       if (!argp9) {
-        SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "RPlot_box" "', argument " "9"" of type '" "datamunge::graphics::RGB""'");
+        SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "RPlot_box" "', argument " "9"" of type '" "datamunge::graphics::RGBA""'");
       } else {
-        arg9 = *(reinterpret_cast< datamunge::graphics::RGB * >(argp9));
+        arg9 = *(reinterpret_cast< datamunge::graphics::RGBA * >(argp9));
       }
     }
     result = (datamunge::graphics::RPlot *) &(arg1)->box(arg2,arg3,arg4,arg5,arg6,arg7,SWIG_STD_MOVE(*(&arg8)),SWIG_STD_MOVE(*(&arg9)));
-    ST(argvi) = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__plot__RPlot, 0 | SWIG_SHADOW); argvi++ ;
+    ST(argvi) = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__graphics__RPlot, 0 | SWIG_SHADOW); argvi++ ;
     
     
     
@@ -115887,7 +122253,7 @@ XS(_wrap_RPlot_box__SWIG_2) {
     if ((items < 8) || (items > 8)) {
       SWIG_croak("Usage: RPlot_box(self,position,whisker_lo,q1,median,q3,whisker_hi,outliers);");
     }
-    res1 = SWIG_ConvertPtr(ST(0), &argp1,SWIGTYPE_p_datamunge__plot__RPlot, 0 |  0 );
+    res1 = SWIG_ConvertPtr(ST(0), &argp1,SWIGTYPE_p_datamunge__graphics__RPlot, 0 |  0 );
     if (!SWIG_IsOK(res1)) {
       SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "RPlot_box" "', argument " "1"" of type '" "datamunge::graphics::RPlot *""'"); 
     }
@@ -115949,7 +122315,7 @@ XS(_wrap_RPlot_box__SWIG_2) {
       }
     }
     result = (datamunge::graphics::RPlot *) &(arg1)->box(arg2,arg3,arg4,arg5,arg6,arg7,SWIG_STD_MOVE(*(&arg8)));
-    ST(argvi) = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__plot__RPlot, 0 | SWIG_SHADOW); argvi++ ;
+    ST(argvi) = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__graphics__RPlot, 0 | SWIG_SHADOW); argvi++ ;
     
     
     
@@ -116001,7 +122367,7 @@ XS(_wrap_RPlot_box__SWIG_3) {
     if ((items < 7) || (items > 7)) {
       SWIG_croak("Usage: RPlot_box(self,position,whisker_lo,q1,median,q3,whisker_hi);");
     }
-    res1 = SWIG_ConvertPtr(ST(0), &argp1,SWIGTYPE_p_datamunge__plot__RPlot, 0 |  0 );
+    res1 = SWIG_ConvertPtr(ST(0), &argp1,SWIGTYPE_p_datamunge__graphics__RPlot, 0 |  0 );
     if (!SWIG_IsOK(res1)) {
       SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "RPlot_box" "', argument " "1"" of type '" "datamunge::graphics::RPlot *""'"); 
     }
@@ -116037,7 +122403,7 @@ XS(_wrap_RPlot_box__SWIG_3) {
     } 
     arg7 = static_cast< double >(val7);
     result = (datamunge::graphics::RPlot *) &(arg1)->box(arg2,arg3,arg4,arg5,arg6,arg7);
-    ST(argvi) = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__plot__RPlot, 0 | SWIG_SHADOW); argvi++ ;
+    ST(argvi) = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__graphics__RPlot, 0 | SWIG_SHADOW); argvi++ ;
     
     
     
@@ -116072,7 +122438,7 @@ XS(_wrap_RPlot_box) {
       int _v = 0;
       {
         void *vptr = 0;
-        int res = SWIG_ConvertPtr(ST(0), &vptr, SWIGTYPE_p_datamunge__plot__RPlot, 0);
+        int res = SWIG_ConvertPtr(ST(0), &vptr, SWIGTYPE_p_datamunge__graphics__RPlot, 0);
         _v = SWIG_CheckState(res);
       }
       if (!_v) goto check_1;
@@ -116153,7 +122519,7 @@ XS(_wrap_RPlot_box) {
       int _v = 0;
       {
         void *vptr = 0;
-        int res = SWIG_ConvertPtr(ST(0), &vptr, SWIGTYPE_p_datamunge__plot__RPlot, 0);
+        int res = SWIG_ConvertPtr(ST(0), &vptr, SWIGTYPE_p_datamunge__graphics__RPlot, 0);
         _v = SWIG_CheckState(res);
       }
       if (!_v) goto check_2;
@@ -116269,7 +122635,7 @@ XS(_wrap_RPlot_box) {
       int _v = 0;
       {
         void *vptr = 0;
-        int res = SWIG_ConvertPtr(ST(0), &vptr, SWIGTYPE_p_datamunge__plot__RPlot, 0);
+        int res = SWIG_ConvertPtr(ST(0), &vptr, SWIGTYPE_p_datamunge__graphics__RPlot, 0);
         _v = SWIG_CheckState(res);
       }
       if (!_v) goto check_3;
@@ -116373,7 +122739,7 @@ XS(_wrap_RPlot_box) {
       _pi *= SWIG_MAXCASTRANK;
       {
         void *vptr = 0;
-        int res = SWIG_ConvertPtr(ST(8), &vptr, SWIGTYPE_p_datamunge__plot__RGB, SWIG_POINTER_NO_NULL);
+        int res = SWIG_ConvertPtr(ST(8), &vptr, SWIGTYPE_p_datamunge__graphics__RGB, SWIG_POINTER_NO_NULL);
         _v = SWIG_CheckState(res);
       }
       if (!_v) goto check_3;
@@ -116394,7 +122760,7 @@ XS(_wrap_RPlot_box) {
       int _v = 0;
       {
         void *vptr = 0;
-        int res = SWIG_ConvertPtr(ST(0), &vptr, SWIGTYPE_p_datamunge__plot__RPlot, 0);
+        int res = SWIG_ConvertPtr(ST(0), &vptr, SWIGTYPE_p_datamunge__graphics__RPlot, 0);
         _v = SWIG_CheckState(res);
       }
       if (!_v) goto check_4;
@@ -116498,7 +122864,7 @@ XS(_wrap_RPlot_box) {
       _pi *= SWIG_MAXCASTRANK;
       {
         void *vptr = 0;
-        int res = SWIG_ConvertPtr(ST(8), &vptr, SWIGTYPE_p_datamunge__plot__RGB, SWIG_POINTER_NO_NULL);
+        int res = SWIG_ConvertPtr(ST(8), &vptr, SWIGTYPE_p_datamunge__graphics__RGB, SWIG_POINTER_NO_NULL);
         _v = SWIG_CheckState(res);
       }
       if (!_v) goto check_4;
@@ -116545,7 +122911,7 @@ XS(_wrap_RPlot_abline__SWIG_0) {
     datamunge::graphics::RPlot *arg1 = 0 ;
     double arg2 ;
     double arg3 ;
-    SwigValueWrapper< datamunge::graphics::RGB > arg4 ;
+    datamunge::graphics::RGBA arg4 ;
     double arg5 ;
     void *argp1 = 0 ;
     int res1 = 0 ;
@@ -116564,7 +122930,7 @@ XS(_wrap_RPlot_abline__SWIG_0) {
     if ((items < 5) || (items > 5)) {
       SWIG_croak("Usage: RPlot_abline(self,intercept,slope,color,stroke_width);");
     }
-    res1 = SWIG_ConvertPtr(ST(0), &argp1,SWIGTYPE_p_datamunge__plot__RPlot, 0 |  0 );
+    res1 = SWIG_ConvertPtr(ST(0), &argp1,SWIGTYPE_p_datamunge__graphics__RPlot, 0 |  0 );
     if (!SWIG_IsOK(res1)) {
       SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "RPlot_abline" "', argument " "1"" of type '" "datamunge::graphics::RPlot *""'"); 
     }
@@ -116580,14 +122946,14 @@ XS(_wrap_RPlot_abline__SWIG_0) {
     } 
     arg3 = static_cast< double >(val3);
     {
-      res4 = SWIG_ConvertPtr(ST(3), &argp4, SWIGTYPE_p_datamunge__plot__RGB,  0 );
+      res4 = SWIG_ConvertPtr(ST(3), &argp4, SWIGTYPE_p_datamunge__graphics__RGB,  0 );
       if (!SWIG_IsOK(res4)) {
-        SWIG_exception_fail(SWIG_ArgError(res4), "in method '" "RPlot_abline" "', argument " "4"" of type '" "datamunge::graphics::RGB""'"); 
+        SWIG_exception_fail(SWIG_ArgError(res4), "in method '" "RPlot_abline" "', argument " "4"" of type '" "datamunge::graphics::RGBA""'"); 
       }  
       if (!argp4) {
-        SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "RPlot_abline" "', argument " "4"" of type '" "datamunge::graphics::RGB""'");
+        SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "RPlot_abline" "', argument " "4"" of type '" "datamunge::graphics::RGBA""'");
       } else {
-        arg4 = *(reinterpret_cast< datamunge::graphics::RGB * >(argp4));
+        arg4 = *(reinterpret_cast< datamunge::graphics::RGBA * >(argp4));
       }
     }
     ecode5 = SWIG_AsVal_double SWIG_PERL_CALL_ARGS_2(ST(4), &val5);
@@ -116596,7 +122962,7 @@ XS(_wrap_RPlot_abline__SWIG_0) {
     } 
     arg5 = static_cast< double >(val5);
     result = (datamunge::graphics::RPlot *) &(arg1)->abline(arg2,arg3,SWIG_STD_MOVE(*(&arg4)),arg5);
-    ST(argvi) = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__plot__RPlot, 0 | SWIG_SHADOW); argvi++ ;
+    ST(argvi) = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__graphics__RPlot, 0 | SWIG_SHADOW); argvi++ ;
     
     
     
@@ -116617,7 +122983,7 @@ XS(_wrap_RPlot_abline__SWIG_1) {
     datamunge::graphics::RPlot *arg1 = 0 ;
     double arg2 ;
     double arg3 ;
-    SwigValueWrapper< datamunge::graphics::RGB > arg4 ;
+    datamunge::graphics::RGBA arg4 ;
     void *argp1 = 0 ;
     int res1 = 0 ;
     double val2 ;
@@ -116633,7 +122999,7 @@ XS(_wrap_RPlot_abline__SWIG_1) {
     if ((items < 4) || (items > 4)) {
       SWIG_croak("Usage: RPlot_abline(self,intercept,slope,color);");
     }
-    res1 = SWIG_ConvertPtr(ST(0), &argp1,SWIGTYPE_p_datamunge__plot__RPlot, 0 |  0 );
+    res1 = SWIG_ConvertPtr(ST(0), &argp1,SWIGTYPE_p_datamunge__graphics__RPlot, 0 |  0 );
     if (!SWIG_IsOK(res1)) {
       SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "RPlot_abline" "', argument " "1"" of type '" "datamunge::graphics::RPlot *""'"); 
     }
@@ -116649,18 +123015,18 @@ XS(_wrap_RPlot_abline__SWIG_1) {
     } 
     arg3 = static_cast< double >(val3);
     {
-      res4 = SWIG_ConvertPtr(ST(3), &argp4, SWIGTYPE_p_datamunge__plot__RGB,  0 );
+      res4 = SWIG_ConvertPtr(ST(3), &argp4, SWIGTYPE_p_datamunge__graphics__RGB,  0 );
       if (!SWIG_IsOK(res4)) {
-        SWIG_exception_fail(SWIG_ArgError(res4), "in method '" "RPlot_abline" "', argument " "4"" of type '" "datamunge::graphics::RGB""'"); 
+        SWIG_exception_fail(SWIG_ArgError(res4), "in method '" "RPlot_abline" "', argument " "4"" of type '" "datamunge::graphics::RGBA""'"); 
       }  
       if (!argp4) {
-        SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "RPlot_abline" "', argument " "4"" of type '" "datamunge::graphics::RGB""'");
+        SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "RPlot_abline" "', argument " "4"" of type '" "datamunge::graphics::RGBA""'");
       } else {
-        arg4 = *(reinterpret_cast< datamunge::graphics::RGB * >(argp4));
+        arg4 = *(reinterpret_cast< datamunge::graphics::RGBA * >(argp4));
       }
     }
     result = (datamunge::graphics::RPlot *) &(arg1)->abline(arg2,arg3,SWIG_STD_MOVE(*(&arg4)));
-    ST(argvi) = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__plot__RPlot, 0 | SWIG_SHADOW); argvi++ ;
+    ST(argvi) = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__graphics__RPlot, 0 | SWIG_SHADOW); argvi++ ;
     
     
     
@@ -116692,7 +123058,7 @@ XS(_wrap_RPlot_abline__SWIG_2) {
     if ((items < 3) || (items > 3)) {
       SWIG_croak("Usage: RPlot_abline(self,intercept,slope);");
     }
-    res1 = SWIG_ConvertPtr(ST(0), &argp1,SWIGTYPE_p_datamunge__plot__RPlot, 0 |  0 );
+    res1 = SWIG_ConvertPtr(ST(0), &argp1,SWIGTYPE_p_datamunge__graphics__RPlot, 0 |  0 );
     if (!SWIG_IsOK(res1)) {
       SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "RPlot_abline" "', argument " "1"" of type '" "datamunge::graphics::RPlot *""'"); 
     }
@@ -116708,7 +123074,7 @@ XS(_wrap_RPlot_abline__SWIG_2) {
     } 
     arg3 = static_cast< double >(val3);
     result = (datamunge::graphics::RPlot *) &(arg1)->abline(arg2,arg3);
-    ST(argvi) = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__plot__RPlot, 0 | SWIG_SHADOW); argvi++ ;
+    ST(argvi) = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__graphics__RPlot, 0 | SWIG_SHADOW); argvi++ ;
     
     
     
@@ -116735,7 +123101,7 @@ XS(_wrap_RPlot_abline) {
       int _v = 0;
       {
         void *vptr = 0;
-        int res = SWIG_ConvertPtr(ST(0), &vptr, SWIGTYPE_p_datamunge__plot__RPlot, 0);
+        int res = SWIG_ConvertPtr(ST(0), &vptr, SWIGTYPE_p_datamunge__graphics__RPlot, 0);
         _v = SWIG_CheckState(res);
       }
       if (!_v) goto check_1;
@@ -116776,7 +123142,7 @@ XS(_wrap_RPlot_abline) {
       int _v = 0;
       {
         void *vptr = 0;
-        int res = SWIG_ConvertPtr(ST(0), &vptr, SWIGTYPE_p_datamunge__plot__RPlot, 0);
+        int res = SWIG_ConvertPtr(ST(0), &vptr, SWIGTYPE_p_datamunge__graphics__RPlot, 0);
         _v = SWIG_CheckState(res);
       }
       if (!_v) goto check_2;
@@ -116805,7 +123171,7 @@ XS(_wrap_RPlot_abline) {
       _pi *= SWIG_MAXCASTRANK;
       {
         void *vptr = 0;
-        int res = SWIG_ConvertPtr(ST(3), &vptr, SWIGTYPE_p_datamunge__plot__RGB, SWIG_POINTER_NO_NULL);
+        int res = SWIG_ConvertPtr(ST(3), &vptr, SWIGTYPE_p_datamunge__graphics__RGB, SWIG_POINTER_NO_NULL);
         _v = SWIG_CheckState(res);
       }
       if (!_v) goto check_2;
@@ -116826,7 +123192,7 @@ XS(_wrap_RPlot_abline) {
       int _v = 0;
       {
         void *vptr = 0;
-        int res = SWIG_ConvertPtr(ST(0), &vptr, SWIGTYPE_p_datamunge__plot__RPlot, 0);
+        int res = SWIG_ConvertPtr(ST(0), &vptr, SWIGTYPE_p_datamunge__graphics__RPlot, 0);
         _v = SWIG_CheckState(res);
       }
       if (!_v) goto check_3;
@@ -116855,7 +123221,7 @@ XS(_wrap_RPlot_abline) {
       _pi *= SWIG_MAXCASTRANK;
       {
         void *vptr = 0;
-        int res = SWIG_ConvertPtr(ST(3), &vptr, SWIGTYPE_p_datamunge__plot__RGB, SWIG_POINTER_NO_NULL);
+        int res = SWIG_ConvertPtr(ST(3), &vptr, SWIGTYPE_p_datamunge__graphics__RGB, SWIG_POINTER_NO_NULL);
         _v = SWIG_CheckState(res);
       }
       if (!_v) goto check_3;
@@ -116899,7 +123265,7 @@ XS(_wrap_RPlot_abline_h__SWIG_0) {
   {
     datamunge::graphics::RPlot *arg1 = 0 ;
     double arg2 ;
-    SwigValueWrapper< datamunge::graphics::RGB > arg3 ;
+    datamunge::graphics::RGBA arg3 ;
     double arg4 ;
     void *argp1 = 0 ;
     int res1 = 0 ;
@@ -116916,7 +123282,7 @@ XS(_wrap_RPlot_abline_h__SWIG_0) {
     if ((items < 4) || (items > 4)) {
       SWIG_croak("Usage: RPlot_abline_h(self,y_value,color,stroke_width);");
     }
-    res1 = SWIG_ConvertPtr(ST(0), &argp1,SWIGTYPE_p_datamunge__plot__RPlot, 0 |  0 );
+    res1 = SWIG_ConvertPtr(ST(0), &argp1,SWIGTYPE_p_datamunge__graphics__RPlot, 0 |  0 );
     if (!SWIG_IsOK(res1)) {
       SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "RPlot_abline_h" "', argument " "1"" of type '" "datamunge::graphics::RPlot *""'"); 
     }
@@ -116927,14 +123293,14 @@ XS(_wrap_RPlot_abline_h__SWIG_0) {
     } 
     arg2 = static_cast< double >(val2);
     {
-      res3 = SWIG_ConvertPtr(ST(2), &argp3, SWIGTYPE_p_datamunge__plot__RGB,  0 );
+      res3 = SWIG_ConvertPtr(ST(2), &argp3, SWIGTYPE_p_datamunge__graphics__RGB,  0 );
       if (!SWIG_IsOK(res3)) {
-        SWIG_exception_fail(SWIG_ArgError(res3), "in method '" "RPlot_abline_h" "', argument " "3"" of type '" "datamunge::graphics::RGB""'"); 
+        SWIG_exception_fail(SWIG_ArgError(res3), "in method '" "RPlot_abline_h" "', argument " "3"" of type '" "datamunge::graphics::RGBA""'"); 
       }  
       if (!argp3) {
-        SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "RPlot_abline_h" "', argument " "3"" of type '" "datamunge::graphics::RGB""'");
+        SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "RPlot_abline_h" "', argument " "3"" of type '" "datamunge::graphics::RGBA""'");
       } else {
-        arg3 = *(reinterpret_cast< datamunge::graphics::RGB * >(argp3));
+        arg3 = *(reinterpret_cast< datamunge::graphics::RGBA * >(argp3));
       }
     }
     ecode4 = SWIG_AsVal_double SWIG_PERL_CALL_ARGS_2(ST(3), &val4);
@@ -116943,7 +123309,7 @@ XS(_wrap_RPlot_abline_h__SWIG_0) {
     } 
     arg4 = static_cast< double >(val4);
     result = (datamunge::graphics::RPlot *) &(arg1)->abline_h(arg2,SWIG_STD_MOVE(*(&arg3)),arg4);
-    ST(argvi) = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__plot__RPlot, 0 | SWIG_SHADOW); argvi++ ;
+    ST(argvi) = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__graphics__RPlot, 0 | SWIG_SHADOW); argvi++ ;
     
     
     
@@ -116961,7 +123327,7 @@ XS(_wrap_RPlot_abline_h__SWIG_1) {
   {
     datamunge::graphics::RPlot *arg1 = 0 ;
     double arg2 ;
-    SwigValueWrapper< datamunge::graphics::RGB > arg3 ;
+    datamunge::graphics::RGBA arg3 ;
     void *argp1 = 0 ;
     int res1 = 0 ;
     double val2 ;
@@ -116975,7 +123341,7 @@ XS(_wrap_RPlot_abline_h__SWIG_1) {
     if ((items < 3) || (items > 3)) {
       SWIG_croak("Usage: RPlot_abline_h(self,y_value,color);");
     }
-    res1 = SWIG_ConvertPtr(ST(0), &argp1,SWIGTYPE_p_datamunge__plot__RPlot, 0 |  0 );
+    res1 = SWIG_ConvertPtr(ST(0), &argp1,SWIGTYPE_p_datamunge__graphics__RPlot, 0 |  0 );
     if (!SWIG_IsOK(res1)) {
       SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "RPlot_abline_h" "', argument " "1"" of type '" "datamunge::graphics::RPlot *""'"); 
     }
@@ -116986,18 +123352,18 @@ XS(_wrap_RPlot_abline_h__SWIG_1) {
     } 
     arg2 = static_cast< double >(val2);
     {
-      res3 = SWIG_ConvertPtr(ST(2), &argp3, SWIGTYPE_p_datamunge__plot__RGB,  0 );
+      res3 = SWIG_ConvertPtr(ST(2), &argp3, SWIGTYPE_p_datamunge__graphics__RGB,  0 );
       if (!SWIG_IsOK(res3)) {
-        SWIG_exception_fail(SWIG_ArgError(res3), "in method '" "RPlot_abline_h" "', argument " "3"" of type '" "datamunge::graphics::RGB""'"); 
+        SWIG_exception_fail(SWIG_ArgError(res3), "in method '" "RPlot_abline_h" "', argument " "3"" of type '" "datamunge::graphics::RGBA""'"); 
       }  
       if (!argp3) {
-        SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "RPlot_abline_h" "', argument " "3"" of type '" "datamunge::graphics::RGB""'");
+        SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "RPlot_abline_h" "', argument " "3"" of type '" "datamunge::graphics::RGBA""'");
       } else {
-        arg3 = *(reinterpret_cast< datamunge::graphics::RGB * >(argp3));
+        arg3 = *(reinterpret_cast< datamunge::graphics::RGBA * >(argp3));
       }
     }
     result = (datamunge::graphics::RPlot *) &(arg1)->abline_h(arg2,SWIG_STD_MOVE(*(&arg3)));
-    ST(argvi) = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__plot__RPlot, 0 | SWIG_SHADOW); argvi++ ;
+    ST(argvi) = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__graphics__RPlot, 0 | SWIG_SHADOW); argvi++ ;
     
     
     XSRETURN(argvi);
@@ -117024,7 +123390,7 @@ XS(_wrap_RPlot_abline_h__SWIG_2) {
     if ((items < 2) || (items > 2)) {
       SWIG_croak("Usage: RPlot_abline_h(self,y_value);");
     }
-    res1 = SWIG_ConvertPtr(ST(0), &argp1,SWIGTYPE_p_datamunge__plot__RPlot, 0 |  0 );
+    res1 = SWIG_ConvertPtr(ST(0), &argp1,SWIGTYPE_p_datamunge__graphics__RPlot, 0 |  0 );
     if (!SWIG_IsOK(res1)) {
       SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "RPlot_abline_h" "', argument " "1"" of type '" "datamunge::graphics::RPlot *""'"); 
     }
@@ -117035,7 +123401,7 @@ XS(_wrap_RPlot_abline_h__SWIG_2) {
     } 
     arg2 = static_cast< double >(val2);
     result = (datamunge::graphics::RPlot *) &(arg1)->abline_h(arg2);
-    ST(argvi) = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__plot__RPlot, 0 | SWIG_SHADOW); argvi++ ;
+    ST(argvi) = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__graphics__RPlot, 0 | SWIG_SHADOW); argvi++ ;
     
     
     XSRETURN(argvi);
@@ -117060,7 +123426,7 @@ XS(_wrap_RPlot_abline_h) {
       int _v = 0;
       {
         void *vptr = 0;
-        int res = SWIG_ConvertPtr(ST(0), &vptr, SWIGTYPE_p_datamunge__plot__RPlot, 0);
+        int res = SWIG_ConvertPtr(ST(0), &vptr, SWIGTYPE_p_datamunge__graphics__RPlot, 0);
         _v = SWIG_CheckState(res);
       }
       if (!_v) goto check_1;
@@ -117091,7 +123457,7 @@ XS(_wrap_RPlot_abline_h) {
       int _v = 0;
       {
         void *vptr = 0;
-        int res = SWIG_ConvertPtr(ST(0), &vptr, SWIGTYPE_p_datamunge__plot__RPlot, 0);
+        int res = SWIG_ConvertPtr(ST(0), &vptr, SWIGTYPE_p_datamunge__graphics__RPlot, 0);
         _v = SWIG_CheckState(res);
       }
       if (!_v) goto check_2;
@@ -117110,7 +123476,7 @@ XS(_wrap_RPlot_abline_h) {
       _pi *= SWIG_MAXCASTRANK;
       {
         void *vptr = 0;
-        int res = SWIG_ConvertPtr(ST(2), &vptr, SWIGTYPE_p_datamunge__plot__RGB, SWIG_POINTER_NO_NULL);
+        int res = SWIG_ConvertPtr(ST(2), &vptr, SWIGTYPE_p_datamunge__graphics__RGB, SWIG_POINTER_NO_NULL);
         _v = SWIG_CheckState(res);
       }
       if (!_v) goto check_2;
@@ -117131,7 +123497,7 @@ XS(_wrap_RPlot_abline_h) {
       int _v = 0;
       {
         void *vptr = 0;
-        int res = SWIG_ConvertPtr(ST(0), &vptr, SWIGTYPE_p_datamunge__plot__RPlot, 0);
+        int res = SWIG_ConvertPtr(ST(0), &vptr, SWIGTYPE_p_datamunge__graphics__RPlot, 0);
         _v = SWIG_CheckState(res);
       }
       if (!_v) goto check_3;
@@ -117150,7 +123516,7 @@ XS(_wrap_RPlot_abline_h) {
       _pi *= SWIG_MAXCASTRANK;
       {
         void *vptr = 0;
-        int res = SWIG_ConvertPtr(ST(2), &vptr, SWIGTYPE_p_datamunge__plot__RGB, SWIG_POINTER_NO_NULL);
+        int res = SWIG_ConvertPtr(ST(2), &vptr, SWIGTYPE_p_datamunge__graphics__RGB, SWIG_POINTER_NO_NULL);
         _v = SWIG_CheckState(res);
       }
       if (!_v) goto check_3;
@@ -117194,7 +123560,7 @@ XS(_wrap_RPlot_abline_v__SWIG_0) {
   {
     datamunge::graphics::RPlot *arg1 = 0 ;
     double arg2 ;
-    SwigValueWrapper< datamunge::graphics::RGB > arg3 ;
+    datamunge::graphics::RGBA arg3 ;
     double arg4 ;
     void *argp1 = 0 ;
     int res1 = 0 ;
@@ -117211,7 +123577,7 @@ XS(_wrap_RPlot_abline_v__SWIG_0) {
     if ((items < 4) || (items > 4)) {
       SWIG_croak("Usage: RPlot_abline_v(self,x_value,color,stroke_width);");
     }
-    res1 = SWIG_ConvertPtr(ST(0), &argp1,SWIGTYPE_p_datamunge__plot__RPlot, 0 |  0 );
+    res1 = SWIG_ConvertPtr(ST(0), &argp1,SWIGTYPE_p_datamunge__graphics__RPlot, 0 |  0 );
     if (!SWIG_IsOK(res1)) {
       SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "RPlot_abline_v" "', argument " "1"" of type '" "datamunge::graphics::RPlot *""'"); 
     }
@@ -117222,14 +123588,14 @@ XS(_wrap_RPlot_abline_v__SWIG_0) {
     } 
     arg2 = static_cast< double >(val2);
     {
-      res3 = SWIG_ConvertPtr(ST(2), &argp3, SWIGTYPE_p_datamunge__plot__RGB,  0 );
+      res3 = SWIG_ConvertPtr(ST(2), &argp3, SWIGTYPE_p_datamunge__graphics__RGB,  0 );
       if (!SWIG_IsOK(res3)) {
-        SWIG_exception_fail(SWIG_ArgError(res3), "in method '" "RPlot_abline_v" "', argument " "3"" of type '" "datamunge::graphics::RGB""'"); 
+        SWIG_exception_fail(SWIG_ArgError(res3), "in method '" "RPlot_abline_v" "', argument " "3"" of type '" "datamunge::graphics::RGBA""'"); 
       }  
       if (!argp3) {
-        SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "RPlot_abline_v" "', argument " "3"" of type '" "datamunge::graphics::RGB""'");
+        SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "RPlot_abline_v" "', argument " "3"" of type '" "datamunge::graphics::RGBA""'");
       } else {
-        arg3 = *(reinterpret_cast< datamunge::graphics::RGB * >(argp3));
+        arg3 = *(reinterpret_cast< datamunge::graphics::RGBA * >(argp3));
       }
     }
     ecode4 = SWIG_AsVal_double SWIG_PERL_CALL_ARGS_2(ST(3), &val4);
@@ -117238,7 +123604,7 @@ XS(_wrap_RPlot_abline_v__SWIG_0) {
     } 
     arg4 = static_cast< double >(val4);
     result = (datamunge::graphics::RPlot *) &(arg1)->abline_v(arg2,SWIG_STD_MOVE(*(&arg3)),arg4);
-    ST(argvi) = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__plot__RPlot, 0 | SWIG_SHADOW); argvi++ ;
+    ST(argvi) = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__graphics__RPlot, 0 | SWIG_SHADOW); argvi++ ;
     
     
     
@@ -117256,7 +123622,7 @@ XS(_wrap_RPlot_abline_v__SWIG_1) {
   {
     datamunge::graphics::RPlot *arg1 = 0 ;
     double arg2 ;
-    SwigValueWrapper< datamunge::graphics::RGB > arg3 ;
+    datamunge::graphics::RGBA arg3 ;
     void *argp1 = 0 ;
     int res1 = 0 ;
     double val2 ;
@@ -117270,7 +123636,7 @@ XS(_wrap_RPlot_abline_v__SWIG_1) {
     if ((items < 3) || (items > 3)) {
       SWIG_croak("Usage: RPlot_abline_v(self,x_value,color);");
     }
-    res1 = SWIG_ConvertPtr(ST(0), &argp1,SWIGTYPE_p_datamunge__plot__RPlot, 0 |  0 );
+    res1 = SWIG_ConvertPtr(ST(0), &argp1,SWIGTYPE_p_datamunge__graphics__RPlot, 0 |  0 );
     if (!SWIG_IsOK(res1)) {
       SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "RPlot_abline_v" "', argument " "1"" of type '" "datamunge::graphics::RPlot *""'"); 
     }
@@ -117281,18 +123647,18 @@ XS(_wrap_RPlot_abline_v__SWIG_1) {
     } 
     arg2 = static_cast< double >(val2);
     {
-      res3 = SWIG_ConvertPtr(ST(2), &argp3, SWIGTYPE_p_datamunge__plot__RGB,  0 );
+      res3 = SWIG_ConvertPtr(ST(2), &argp3, SWIGTYPE_p_datamunge__graphics__RGB,  0 );
       if (!SWIG_IsOK(res3)) {
-        SWIG_exception_fail(SWIG_ArgError(res3), "in method '" "RPlot_abline_v" "', argument " "3"" of type '" "datamunge::graphics::RGB""'"); 
+        SWIG_exception_fail(SWIG_ArgError(res3), "in method '" "RPlot_abline_v" "', argument " "3"" of type '" "datamunge::graphics::RGBA""'"); 
       }  
       if (!argp3) {
-        SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "RPlot_abline_v" "', argument " "3"" of type '" "datamunge::graphics::RGB""'");
+        SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "RPlot_abline_v" "', argument " "3"" of type '" "datamunge::graphics::RGBA""'");
       } else {
-        arg3 = *(reinterpret_cast< datamunge::graphics::RGB * >(argp3));
+        arg3 = *(reinterpret_cast< datamunge::graphics::RGBA * >(argp3));
       }
     }
     result = (datamunge::graphics::RPlot *) &(arg1)->abline_v(arg2,SWIG_STD_MOVE(*(&arg3)));
-    ST(argvi) = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__plot__RPlot, 0 | SWIG_SHADOW); argvi++ ;
+    ST(argvi) = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__graphics__RPlot, 0 | SWIG_SHADOW); argvi++ ;
     
     
     XSRETURN(argvi);
@@ -117319,7 +123685,7 @@ XS(_wrap_RPlot_abline_v__SWIG_2) {
     if ((items < 2) || (items > 2)) {
       SWIG_croak("Usage: RPlot_abline_v(self,x_value);");
     }
-    res1 = SWIG_ConvertPtr(ST(0), &argp1,SWIGTYPE_p_datamunge__plot__RPlot, 0 |  0 );
+    res1 = SWIG_ConvertPtr(ST(0), &argp1,SWIGTYPE_p_datamunge__graphics__RPlot, 0 |  0 );
     if (!SWIG_IsOK(res1)) {
       SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "RPlot_abline_v" "', argument " "1"" of type '" "datamunge::graphics::RPlot *""'"); 
     }
@@ -117330,7 +123696,7 @@ XS(_wrap_RPlot_abline_v__SWIG_2) {
     } 
     arg2 = static_cast< double >(val2);
     result = (datamunge::graphics::RPlot *) &(arg1)->abline_v(arg2);
-    ST(argvi) = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__plot__RPlot, 0 | SWIG_SHADOW); argvi++ ;
+    ST(argvi) = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__graphics__RPlot, 0 | SWIG_SHADOW); argvi++ ;
     
     
     XSRETURN(argvi);
@@ -117355,7 +123721,7 @@ XS(_wrap_RPlot_abline_v) {
       int _v = 0;
       {
         void *vptr = 0;
-        int res = SWIG_ConvertPtr(ST(0), &vptr, SWIGTYPE_p_datamunge__plot__RPlot, 0);
+        int res = SWIG_ConvertPtr(ST(0), &vptr, SWIGTYPE_p_datamunge__graphics__RPlot, 0);
         _v = SWIG_CheckState(res);
       }
       if (!_v) goto check_1;
@@ -117386,7 +123752,7 @@ XS(_wrap_RPlot_abline_v) {
       int _v = 0;
       {
         void *vptr = 0;
-        int res = SWIG_ConvertPtr(ST(0), &vptr, SWIGTYPE_p_datamunge__plot__RPlot, 0);
+        int res = SWIG_ConvertPtr(ST(0), &vptr, SWIGTYPE_p_datamunge__graphics__RPlot, 0);
         _v = SWIG_CheckState(res);
       }
       if (!_v) goto check_2;
@@ -117405,7 +123771,7 @@ XS(_wrap_RPlot_abline_v) {
       _pi *= SWIG_MAXCASTRANK;
       {
         void *vptr = 0;
-        int res = SWIG_ConvertPtr(ST(2), &vptr, SWIGTYPE_p_datamunge__plot__RGB, SWIG_POINTER_NO_NULL);
+        int res = SWIG_ConvertPtr(ST(2), &vptr, SWIGTYPE_p_datamunge__graphics__RGB, SWIG_POINTER_NO_NULL);
         _v = SWIG_CheckState(res);
       }
       if (!_v) goto check_2;
@@ -117426,7 +123792,7 @@ XS(_wrap_RPlot_abline_v) {
       int _v = 0;
       {
         void *vptr = 0;
-        int res = SWIG_ConvertPtr(ST(0), &vptr, SWIGTYPE_p_datamunge__plot__RPlot, 0);
+        int res = SWIG_ConvertPtr(ST(0), &vptr, SWIGTYPE_p_datamunge__graphics__RPlot, 0);
         _v = SWIG_CheckState(res);
       }
       if (!_v) goto check_3;
@@ -117445,7 +123811,7 @@ XS(_wrap_RPlot_abline_v) {
       _pi *= SWIG_MAXCASTRANK;
       {
         void *vptr = 0;
-        int res = SWIG_ConvertPtr(ST(2), &vptr, SWIGTYPE_p_datamunge__plot__RGB, SWIG_POINTER_NO_NULL);
+        int res = SWIG_ConvertPtr(ST(2), &vptr, SWIGTYPE_p_datamunge__graphics__RGB, SWIG_POINTER_NO_NULL);
         _v = SWIG_CheckState(res);
       }
       if (!_v) goto check_3;
@@ -117489,7 +123855,7 @@ XS(_wrap_RPlot_qqline__SWIG_0) {
   {
     datamunge::graphics::RPlot *arg1 = 0 ;
     std::vector< double > arg2 ;
-    SwigValueWrapper< datamunge::graphics::RGB > arg3 ;
+    datamunge::graphics::RGBA arg3 ;
     double arg4 ;
     void *argp1 = 0 ;
     int res1 = 0 ;
@@ -117505,7 +123871,7 @@ XS(_wrap_RPlot_qqline__SWIG_0) {
     if ((items < 4) || (items > 4)) {
       SWIG_croak("Usage: RPlot_qqline(self,data,color,stroke_width);");
     }
-    res1 = SWIG_ConvertPtr(ST(0), &argp1,SWIGTYPE_p_datamunge__plot__RPlot, 0 |  0 );
+    res1 = SWIG_ConvertPtr(ST(0), &argp1,SWIGTYPE_p_datamunge__graphics__RPlot, 0 |  0 );
     if (!SWIG_IsOK(res1)) {
       SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "RPlot_qqline" "', argument " "1"" of type '" "datamunge::graphics::RPlot *""'"); 
     }
@@ -117537,14 +123903,14 @@ XS(_wrap_RPlot_qqline__SWIG_0) {
       }
     }
     {
-      res3 = SWIG_ConvertPtr(ST(2), &argp3, SWIGTYPE_p_datamunge__plot__RGB,  0 );
+      res3 = SWIG_ConvertPtr(ST(2), &argp3, SWIGTYPE_p_datamunge__graphics__RGB,  0 );
       if (!SWIG_IsOK(res3)) {
-        SWIG_exception_fail(SWIG_ArgError(res3), "in method '" "RPlot_qqline" "', argument " "3"" of type '" "datamunge::graphics::RGB""'"); 
+        SWIG_exception_fail(SWIG_ArgError(res3), "in method '" "RPlot_qqline" "', argument " "3"" of type '" "datamunge::graphics::RGBA""'"); 
       }  
       if (!argp3) {
-        SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "RPlot_qqline" "', argument " "3"" of type '" "datamunge::graphics::RGB""'");
+        SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "RPlot_qqline" "', argument " "3"" of type '" "datamunge::graphics::RGBA""'");
       } else {
-        arg3 = *(reinterpret_cast< datamunge::graphics::RGB * >(argp3));
+        arg3 = *(reinterpret_cast< datamunge::graphics::RGBA * >(argp3));
       }
     }
     ecode4 = SWIG_AsVal_double SWIG_PERL_CALL_ARGS_2(ST(3), &val4);
@@ -117553,7 +123919,7 @@ XS(_wrap_RPlot_qqline__SWIG_0) {
     } 
     arg4 = static_cast< double >(val4);
     result = (datamunge::graphics::RPlot *) &(arg1)->qqline(SWIG_STD_MOVE(*(&arg2)),SWIG_STD_MOVE(*(&arg3)),arg4);
-    ST(argvi) = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__plot__RPlot, 0 | SWIG_SHADOW); argvi++ ;
+    ST(argvi) = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__graphics__RPlot, 0 | SWIG_SHADOW); argvi++ ;
     
     
     XSRETURN(argvi);
@@ -117569,7 +123935,7 @@ XS(_wrap_RPlot_qqline__SWIG_1) {
   {
     datamunge::graphics::RPlot *arg1 = 0 ;
     std::vector< double > arg2 ;
-    SwigValueWrapper< datamunge::graphics::RGB > arg3 ;
+    datamunge::graphics::RGBA arg3 ;
     void *argp1 = 0 ;
     int res1 = 0 ;
     std::vector< double > *v2 ;
@@ -117582,7 +123948,7 @@ XS(_wrap_RPlot_qqline__SWIG_1) {
     if ((items < 3) || (items > 3)) {
       SWIG_croak("Usage: RPlot_qqline(self,data,color);");
     }
-    res1 = SWIG_ConvertPtr(ST(0), &argp1,SWIGTYPE_p_datamunge__plot__RPlot, 0 |  0 );
+    res1 = SWIG_ConvertPtr(ST(0), &argp1,SWIGTYPE_p_datamunge__graphics__RPlot, 0 |  0 );
     if (!SWIG_IsOK(res1)) {
       SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "RPlot_qqline" "', argument " "1"" of type '" "datamunge::graphics::RPlot *""'"); 
     }
@@ -117614,18 +123980,18 @@ XS(_wrap_RPlot_qqline__SWIG_1) {
       }
     }
     {
-      res3 = SWIG_ConvertPtr(ST(2), &argp3, SWIGTYPE_p_datamunge__plot__RGB,  0 );
+      res3 = SWIG_ConvertPtr(ST(2), &argp3, SWIGTYPE_p_datamunge__graphics__RGB,  0 );
       if (!SWIG_IsOK(res3)) {
-        SWIG_exception_fail(SWIG_ArgError(res3), "in method '" "RPlot_qqline" "', argument " "3"" of type '" "datamunge::graphics::RGB""'"); 
+        SWIG_exception_fail(SWIG_ArgError(res3), "in method '" "RPlot_qqline" "', argument " "3"" of type '" "datamunge::graphics::RGBA""'"); 
       }  
       if (!argp3) {
-        SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "RPlot_qqline" "', argument " "3"" of type '" "datamunge::graphics::RGB""'");
+        SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "RPlot_qqline" "', argument " "3"" of type '" "datamunge::graphics::RGBA""'");
       } else {
-        arg3 = *(reinterpret_cast< datamunge::graphics::RGB * >(argp3));
+        arg3 = *(reinterpret_cast< datamunge::graphics::RGBA * >(argp3));
       }
     }
     result = (datamunge::graphics::RPlot *) &(arg1)->qqline(SWIG_STD_MOVE(*(&arg2)),SWIG_STD_MOVE(*(&arg3)));
-    ST(argvi) = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__plot__RPlot, 0 | SWIG_SHADOW); argvi++ ;
+    ST(argvi) = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__graphics__RPlot, 0 | SWIG_SHADOW); argvi++ ;
     
     XSRETURN(argvi);
     fail:;
@@ -117649,7 +124015,7 @@ XS(_wrap_RPlot_qqline__SWIG_2) {
     if ((items < 2) || (items > 2)) {
       SWIG_croak("Usage: RPlot_qqline(self,data);");
     }
-    res1 = SWIG_ConvertPtr(ST(0), &argp1,SWIGTYPE_p_datamunge__plot__RPlot, 0 |  0 );
+    res1 = SWIG_ConvertPtr(ST(0), &argp1,SWIGTYPE_p_datamunge__graphics__RPlot, 0 |  0 );
     if (!SWIG_IsOK(res1)) {
       SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "RPlot_qqline" "', argument " "1"" of type '" "datamunge::graphics::RPlot *""'"); 
     }
@@ -117681,7 +124047,7 @@ XS(_wrap_RPlot_qqline__SWIG_2) {
       }
     }
     result = (datamunge::graphics::RPlot *) &(arg1)->qqline(SWIG_STD_MOVE(*(&arg2)));
-    ST(argvi) = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__plot__RPlot, 0 | SWIG_SHADOW); argvi++ ;
+    ST(argvi) = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__graphics__RPlot, 0 | SWIG_SHADOW); argvi++ ;
     
     XSRETURN(argvi);
     fail:;
@@ -117704,7 +124070,7 @@ XS(_wrap_RPlot_qqline) {
       int _v = 0;
       {
         void *vptr = 0;
-        int res = SWIG_ConvertPtr(ST(0), &vptr, SWIGTYPE_p_datamunge__plot__RPlot, 0);
+        int res = SWIG_ConvertPtr(ST(0), &vptr, SWIGTYPE_p_datamunge__graphics__RPlot, 0);
         _v = SWIG_CheckState(res);
       }
       if (!_v) goto check_1;
@@ -117760,7 +124126,7 @@ XS(_wrap_RPlot_qqline) {
       int _v = 0;
       {
         void *vptr = 0;
-        int res = SWIG_ConvertPtr(ST(0), &vptr, SWIGTYPE_p_datamunge__plot__RPlot, 0);
+        int res = SWIG_ConvertPtr(ST(0), &vptr, SWIGTYPE_p_datamunge__graphics__RPlot, 0);
         _v = SWIG_CheckState(res);
       }
       if (!_v) goto check_2;
@@ -117804,7 +124170,7 @@ XS(_wrap_RPlot_qqline) {
       _pi *= SWIG_MAXCASTRANK;
       {
         void *vptr = 0;
-        int res = SWIG_ConvertPtr(ST(2), &vptr, SWIGTYPE_p_datamunge__plot__RGB, SWIG_POINTER_NO_NULL);
+        int res = SWIG_ConvertPtr(ST(2), &vptr, SWIGTYPE_p_datamunge__graphics__RGB, SWIG_POINTER_NO_NULL);
         _v = SWIG_CheckState(res);
       }
       if (!_v) goto check_2;
@@ -117825,7 +124191,7 @@ XS(_wrap_RPlot_qqline) {
       int _v = 0;
       {
         void *vptr = 0;
-        int res = SWIG_ConvertPtr(ST(0), &vptr, SWIGTYPE_p_datamunge__plot__RPlot, 0);
+        int res = SWIG_ConvertPtr(ST(0), &vptr, SWIGTYPE_p_datamunge__graphics__RPlot, 0);
         _v = SWIG_CheckState(res);
       }
       if (!_v) goto check_3;
@@ -117869,7 +124235,7 @@ XS(_wrap_RPlot_qqline) {
       _pi *= SWIG_MAXCASTRANK;
       {
         void *vptr = 0;
-        int res = SWIG_ConvertPtr(ST(2), &vptr, SWIGTYPE_p_datamunge__plot__RGB, SWIG_POINTER_NO_NULL);
+        int res = SWIG_ConvertPtr(ST(2), &vptr, SWIGTYPE_p_datamunge__graphics__RGB, SWIG_POINTER_NO_NULL);
         _v = SWIG_CheckState(res);
       }
       if (!_v) goto check_3;
@@ -117926,7 +124292,7 @@ XS(_wrap_RPlot_legend) {
     if ((items < 3) || (items > 3)) {
       SWIG_croak("Usage: RPlot_legend(self,labels,colors);");
     }
-    res1 = SWIG_ConvertPtr(ST(0), &argp1,SWIGTYPE_p_datamunge__plot__RPlot, 0 |  0 );
+    res1 = SWIG_ConvertPtr(ST(0), &argp1,SWIGTYPE_p_datamunge__graphics__RPlot, 0 |  0 );
     if (!SWIG_IsOK(res1)) {
       SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "RPlot_legend" "', argument " "1"" of type '" "datamunge::graphics::RPlot *""'"); 
     }
@@ -117958,18 +124324,18 @@ XS(_wrap_RPlot_legend) {
       }
     }
     {
-      res3 = SWIG_ConvertPtr(ST(2), &argp3, SWIGTYPE_p_std__vectorT_datamunge__plot__RGB_t,  0 );
+      res3 = SWIG_ConvertPtr(ST(2), &argp3, SWIGTYPE_p_std__vectorT_datamunge__graphics__RGB_t,  0 );
       if (!SWIG_IsOK(res3)) {
-        SWIG_exception_fail(SWIG_ArgError(res3), "in method '" "RPlot_legend" "', argument " "3"" of type '" "std::vector< datamunge::graphics::RGB >""'"); 
+        SWIG_exception_fail(SWIG_ArgError(res3), "in method '" "RPlot_legend" "', argument " "3"" of type '" "std::vector< datamunge::graphics::RGBA >""'"); 
       }  
       if (!argp3) {
-        SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "RPlot_legend" "', argument " "3"" of type '" "std::vector< datamunge::graphics::RGB >""'");
+        SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "RPlot_legend" "', argument " "3"" of type '" "std::vector< datamunge::graphics::RGBA >""'");
       } else {
-        arg3 = *(reinterpret_cast< std::vector< datamunge::graphics::RGB > * >(argp3));
+        arg3 = *(reinterpret_cast< std::vector< datamunge::graphics::RGBA > * >(argp3));
       }
     }
     result = (datamunge::graphics::RPlot *) &(arg1)->legend(SWIG_STD_MOVE(*(&arg2)),SWIG_STD_MOVE(*(&arg3)));
-    ST(argvi) = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__plot__RPlot, 0 | SWIG_SHADOW); argvi++ ;
+    ST(argvi) = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__graphics__RPlot, 0 | SWIG_SHADOW); argvi++ ;
     
     XSRETURN(argvi);
     fail:;
@@ -117985,7 +124351,7 @@ XS(_wrap_RPlot_text__SWIG_0) {
     double arg2 ;
     double arg3 ;
     std::string arg4 ;
-    SwigValueWrapper< datamunge::graphics::RGB > arg5 ;
+    datamunge::graphics::RGBA arg5 ;
     double arg6 ;
     void *argp1 = 0 ;
     int res1 = 0 ;
@@ -118004,7 +124370,7 @@ XS(_wrap_RPlot_text__SWIG_0) {
     if ((items < 6) || (items > 6)) {
       SWIG_croak("Usage: RPlot_text(self,x,y,label,color,font_size);");
     }
-    res1 = SWIG_ConvertPtr(ST(0), &argp1,SWIGTYPE_p_datamunge__plot__RPlot, 0 |  0 );
+    res1 = SWIG_ConvertPtr(ST(0), &argp1,SWIGTYPE_p_datamunge__graphics__RPlot, 0 |  0 );
     if (!SWIG_IsOK(res1)) {
       SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "RPlot_text" "', argument " "1"" of type '" "datamunge::graphics::RPlot *""'"); 
     }
@@ -118029,14 +124395,14 @@ XS(_wrap_RPlot_text__SWIG_0) {
       if (SWIG_IsNewObj(res)) delete ptr;
     }
     {
-      res5 = SWIG_ConvertPtr(ST(4), &argp5, SWIGTYPE_p_datamunge__plot__RGB,  0 );
+      res5 = SWIG_ConvertPtr(ST(4), &argp5, SWIGTYPE_p_datamunge__graphics__RGB,  0 );
       if (!SWIG_IsOK(res5)) {
-        SWIG_exception_fail(SWIG_ArgError(res5), "in method '" "RPlot_text" "', argument " "5"" of type '" "datamunge::graphics::RGB""'"); 
+        SWIG_exception_fail(SWIG_ArgError(res5), "in method '" "RPlot_text" "', argument " "5"" of type '" "datamunge::graphics::RGBA""'"); 
       }  
       if (!argp5) {
-        SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "RPlot_text" "', argument " "5"" of type '" "datamunge::graphics::RGB""'");
+        SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "RPlot_text" "', argument " "5"" of type '" "datamunge::graphics::RGBA""'");
       } else {
-        arg5 = *(reinterpret_cast< datamunge::graphics::RGB * >(argp5));
+        arg5 = *(reinterpret_cast< datamunge::graphics::RGBA * >(argp5));
       }
     }
     ecode6 = SWIG_AsVal_double SWIG_PERL_CALL_ARGS_2(ST(5), &val6);
@@ -118045,7 +124411,7 @@ XS(_wrap_RPlot_text__SWIG_0) {
     } 
     arg6 = static_cast< double >(val6);
     result = (datamunge::graphics::RPlot *) &(arg1)->text(arg2,arg3,SWIG_STD_MOVE(*(&arg4)),SWIG_STD_MOVE(*(&arg5)),arg6);
-    ST(argvi) = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__plot__RPlot, 0 | SWIG_SHADOW); argvi++ ;
+    ST(argvi) = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__graphics__RPlot, 0 | SWIG_SHADOW); argvi++ ;
     
     
     
@@ -118069,7 +124435,7 @@ XS(_wrap_RPlot_text__SWIG_1) {
     double arg2 ;
     double arg3 ;
     std::string arg4 ;
-    SwigValueWrapper< datamunge::graphics::RGB > arg5 ;
+    datamunge::graphics::RGBA arg5 ;
     void *argp1 = 0 ;
     int res1 = 0 ;
     double val2 ;
@@ -118085,7 +124451,7 @@ XS(_wrap_RPlot_text__SWIG_1) {
     if ((items < 5) || (items > 5)) {
       SWIG_croak("Usage: RPlot_text(self,x,y,label,color);");
     }
-    res1 = SWIG_ConvertPtr(ST(0), &argp1,SWIGTYPE_p_datamunge__plot__RPlot, 0 |  0 );
+    res1 = SWIG_ConvertPtr(ST(0), &argp1,SWIGTYPE_p_datamunge__graphics__RPlot, 0 |  0 );
     if (!SWIG_IsOK(res1)) {
       SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "RPlot_text" "', argument " "1"" of type '" "datamunge::graphics::RPlot *""'"); 
     }
@@ -118110,18 +124476,18 @@ XS(_wrap_RPlot_text__SWIG_1) {
       if (SWIG_IsNewObj(res)) delete ptr;
     }
     {
-      res5 = SWIG_ConvertPtr(ST(4), &argp5, SWIGTYPE_p_datamunge__plot__RGB,  0 );
+      res5 = SWIG_ConvertPtr(ST(4), &argp5, SWIGTYPE_p_datamunge__graphics__RGB,  0 );
       if (!SWIG_IsOK(res5)) {
-        SWIG_exception_fail(SWIG_ArgError(res5), "in method '" "RPlot_text" "', argument " "5"" of type '" "datamunge::graphics::RGB""'"); 
+        SWIG_exception_fail(SWIG_ArgError(res5), "in method '" "RPlot_text" "', argument " "5"" of type '" "datamunge::graphics::RGBA""'"); 
       }  
       if (!argp5) {
-        SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "RPlot_text" "', argument " "5"" of type '" "datamunge::graphics::RGB""'");
+        SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "RPlot_text" "', argument " "5"" of type '" "datamunge::graphics::RGBA""'");
       } else {
-        arg5 = *(reinterpret_cast< datamunge::graphics::RGB * >(argp5));
+        arg5 = *(reinterpret_cast< datamunge::graphics::RGBA * >(argp5));
       }
     }
     result = (datamunge::graphics::RPlot *) &(arg1)->text(arg2,arg3,SWIG_STD_MOVE(*(&arg4)),SWIG_STD_MOVE(*(&arg5)));
-    ST(argvi) = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__plot__RPlot, 0 | SWIG_SHADOW); argvi++ ;
+    ST(argvi) = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__graphics__RPlot, 0 | SWIG_SHADOW); argvi++ ;
     
     
     
@@ -118156,7 +124522,7 @@ XS(_wrap_RPlot_text__SWIG_2) {
     if ((items < 4) || (items > 4)) {
       SWIG_croak("Usage: RPlot_text(self,x,y,label);");
     }
-    res1 = SWIG_ConvertPtr(ST(0), &argp1,SWIGTYPE_p_datamunge__plot__RPlot, 0 |  0 );
+    res1 = SWIG_ConvertPtr(ST(0), &argp1,SWIGTYPE_p_datamunge__graphics__RPlot, 0 |  0 );
     if (!SWIG_IsOK(res1)) {
       SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "RPlot_text" "', argument " "1"" of type '" "datamunge::graphics::RPlot *""'"); 
     }
@@ -118181,7 +124547,7 @@ XS(_wrap_RPlot_text__SWIG_2) {
       if (SWIG_IsNewObj(res)) delete ptr;
     }
     result = (datamunge::graphics::RPlot *) &(arg1)->text(arg2,arg3,SWIG_STD_MOVE(*(&arg4)));
-    ST(argvi) = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__plot__RPlot, 0 | SWIG_SHADOW); argvi++ ;
+    ST(argvi) = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__graphics__RPlot, 0 | SWIG_SHADOW); argvi++ ;
     
     
     
@@ -118210,7 +124576,7 @@ XS(_wrap_RPlot_text) {
       int _v = 0;
       {
         void *vptr = 0;
-        int res = SWIG_ConvertPtr(ST(0), &vptr, SWIGTYPE_p_datamunge__plot__RPlot, 0);
+        int res = SWIG_ConvertPtr(ST(0), &vptr, SWIGTYPE_p_datamunge__graphics__RPlot, 0);
         _v = SWIG_CheckState(res);
       }
       if (!_v) goto check_1;
@@ -118259,7 +124625,7 @@ XS(_wrap_RPlot_text) {
       int _v = 0;
       {
         void *vptr = 0;
-        int res = SWIG_ConvertPtr(ST(0), &vptr, SWIGTYPE_p_datamunge__plot__RPlot, 0);
+        int res = SWIG_ConvertPtr(ST(0), &vptr, SWIGTYPE_p_datamunge__graphics__RPlot, 0);
         _v = SWIG_CheckState(res);
       }
       if (!_v) goto check_2;
@@ -118296,7 +124662,7 @@ XS(_wrap_RPlot_text) {
       _pi *= SWIG_MAXCASTRANK;
       {
         void *vptr = 0;
-        int res = SWIG_ConvertPtr(ST(4), &vptr, SWIGTYPE_p_datamunge__plot__RGB, SWIG_POINTER_NO_NULL);
+        int res = SWIG_ConvertPtr(ST(4), &vptr, SWIGTYPE_p_datamunge__graphics__RGB, SWIG_POINTER_NO_NULL);
         _v = SWIG_CheckState(res);
       }
       if (!_v) goto check_2;
@@ -118317,7 +124683,7 @@ XS(_wrap_RPlot_text) {
       int _v = 0;
       {
         void *vptr = 0;
-        int res = SWIG_ConvertPtr(ST(0), &vptr, SWIGTYPE_p_datamunge__plot__RPlot, 0);
+        int res = SWIG_ConvertPtr(ST(0), &vptr, SWIGTYPE_p_datamunge__graphics__RPlot, 0);
         _v = SWIG_CheckState(res);
       }
       if (!_v) goto check_3;
@@ -118354,7 +124720,7 @@ XS(_wrap_RPlot_text) {
       _pi *= SWIG_MAXCASTRANK;
       {
         void *vptr = 0;
-        int res = SWIG_ConvertPtr(ST(4), &vptr, SWIGTYPE_p_datamunge__plot__RGB, SWIG_POINTER_NO_NULL);
+        int res = SWIG_ConvertPtr(ST(4), &vptr, SWIGTYPE_p_datamunge__graphics__RGB, SWIG_POINTER_NO_NULL);
         _v = SWIG_CheckState(res);
       }
       if (!_v) goto check_3;
@@ -118399,7 +124765,7 @@ XS(_wrap_RPlot_polygon__SWIG_0) {
     datamunge::graphics::RPlot *arg1 = 0 ;
     std::vector< double > arg2 ;
     std::vector< double > arg3 ;
-    SwigValueWrapper< datamunge::graphics::RGB > arg4 ;
+    datamunge::graphics::RGBA arg4 ;
     bool arg5 ;
     void *argp1 = 0 ;
     int res1 = 0 ;
@@ -118416,7 +124782,7 @@ XS(_wrap_RPlot_polygon__SWIG_0) {
     if ((items < 5) || (items > 5)) {
       SWIG_croak("Usage: RPlot_polygon(self,x,y,color,filled);");
     }
-    res1 = SWIG_ConvertPtr(ST(0), &argp1,SWIGTYPE_p_datamunge__plot__RPlot, 0 |  0 );
+    res1 = SWIG_ConvertPtr(ST(0), &argp1,SWIGTYPE_p_datamunge__graphics__RPlot, 0 |  0 );
     if (!SWIG_IsOK(res1)) {
       SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "RPlot_polygon" "', argument " "1"" of type '" "datamunge::graphics::RPlot *""'"); 
     }
@@ -118474,14 +124840,14 @@ XS(_wrap_RPlot_polygon__SWIG_0) {
       }
     }
     {
-      res4 = SWIG_ConvertPtr(ST(3), &argp4, SWIGTYPE_p_datamunge__plot__RGB,  0 );
+      res4 = SWIG_ConvertPtr(ST(3), &argp4, SWIGTYPE_p_datamunge__graphics__RGB,  0 );
       if (!SWIG_IsOK(res4)) {
-        SWIG_exception_fail(SWIG_ArgError(res4), "in method '" "RPlot_polygon" "', argument " "4"" of type '" "datamunge::graphics::RGB""'"); 
+        SWIG_exception_fail(SWIG_ArgError(res4), "in method '" "RPlot_polygon" "', argument " "4"" of type '" "datamunge::graphics::RGBA""'"); 
       }  
       if (!argp4) {
-        SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "RPlot_polygon" "', argument " "4"" of type '" "datamunge::graphics::RGB""'");
+        SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "RPlot_polygon" "', argument " "4"" of type '" "datamunge::graphics::RGBA""'");
       } else {
-        arg4 = *(reinterpret_cast< datamunge::graphics::RGB * >(argp4));
+        arg4 = *(reinterpret_cast< datamunge::graphics::RGBA * >(argp4));
       }
     }
     ecode5 = SWIG_AsVal_bool SWIG_PERL_CALL_ARGS_2(ST(4), &val5);
@@ -118490,7 +124856,7 @@ XS(_wrap_RPlot_polygon__SWIG_0) {
     } 
     arg5 = static_cast< bool >(val5);
     result = (datamunge::graphics::RPlot *) &(arg1)->polygon(SWIG_STD_MOVE(*(&arg2)),SWIG_STD_MOVE(*(&arg3)),SWIG_STD_MOVE(*(&arg4)),arg5);
-    ST(argvi) = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__plot__RPlot, 0 | SWIG_SHADOW); argvi++ ;
+    ST(argvi) = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__graphics__RPlot, 0 | SWIG_SHADOW); argvi++ ;
     
     
     XSRETURN(argvi);
@@ -118507,7 +124873,7 @@ XS(_wrap_RPlot_polygon__SWIG_1) {
     datamunge::graphics::RPlot *arg1 = 0 ;
     std::vector< double > arg2 ;
     std::vector< double > arg3 ;
-    SwigValueWrapper< datamunge::graphics::RGB > arg4 ;
+    datamunge::graphics::RGBA arg4 ;
     void *argp1 = 0 ;
     int res1 = 0 ;
     std::vector< double > *v2 ;
@@ -118521,7 +124887,7 @@ XS(_wrap_RPlot_polygon__SWIG_1) {
     if ((items < 4) || (items > 4)) {
       SWIG_croak("Usage: RPlot_polygon(self,x,y,color);");
     }
-    res1 = SWIG_ConvertPtr(ST(0), &argp1,SWIGTYPE_p_datamunge__plot__RPlot, 0 |  0 );
+    res1 = SWIG_ConvertPtr(ST(0), &argp1,SWIGTYPE_p_datamunge__graphics__RPlot, 0 |  0 );
     if (!SWIG_IsOK(res1)) {
       SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "RPlot_polygon" "', argument " "1"" of type '" "datamunge::graphics::RPlot *""'"); 
     }
@@ -118579,18 +124945,18 @@ XS(_wrap_RPlot_polygon__SWIG_1) {
       }
     }
     {
-      res4 = SWIG_ConvertPtr(ST(3), &argp4, SWIGTYPE_p_datamunge__plot__RGB,  0 );
+      res4 = SWIG_ConvertPtr(ST(3), &argp4, SWIGTYPE_p_datamunge__graphics__RGB,  0 );
       if (!SWIG_IsOK(res4)) {
-        SWIG_exception_fail(SWIG_ArgError(res4), "in method '" "RPlot_polygon" "', argument " "4"" of type '" "datamunge::graphics::RGB""'"); 
+        SWIG_exception_fail(SWIG_ArgError(res4), "in method '" "RPlot_polygon" "', argument " "4"" of type '" "datamunge::graphics::RGBA""'"); 
       }  
       if (!argp4) {
-        SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "RPlot_polygon" "', argument " "4"" of type '" "datamunge::graphics::RGB""'");
+        SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "RPlot_polygon" "', argument " "4"" of type '" "datamunge::graphics::RGBA""'");
       } else {
-        arg4 = *(reinterpret_cast< datamunge::graphics::RGB * >(argp4));
+        arg4 = *(reinterpret_cast< datamunge::graphics::RGBA * >(argp4));
       }
     }
     result = (datamunge::graphics::RPlot *) &(arg1)->polygon(SWIG_STD_MOVE(*(&arg2)),SWIG_STD_MOVE(*(&arg3)),SWIG_STD_MOVE(*(&arg4)));
-    ST(argvi) = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__plot__RPlot, 0 | SWIG_SHADOW); argvi++ ;
+    ST(argvi) = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__graphics__RPlot, 0 | SWIG_SHADOW); argvi++ ;
     
     XSRETURN(argvi);
     fail:;
@@ -118616,7 +124982,7 @@ XS(_wrap_RPlot_polygon__SWIG_2) {
     if ((items < 3) || (items > 3)) {
       SWIG_croak("Usage: RPlot_polygon(self,x,y);");
     }
-    res1 = SWIG_ConvertPtr(ST(0), &argp1,SWIGTYPE_p_datamunge__plot__RPlot, 0 |  0 );
+    res1 = SWIG_ConvertPtr(ST(0), &argp1,SWIGTYPE_p_datamunge__graphics__RPlot, 0 |  0 );
     if (!SWIG_IsOK(res1)) {
       SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "RPlot_polygon" "', argument " "1"" of type '" "datamunge::graphics::RPlot *""'"); 
     }
@@ -118674,7 +125040,7 @@ XS(_wrap_RPlot_polygon__SWIG_2) {
       }
     }
     result = (datamunge::graphics::RPlot *) &(arg1)->polygon(SWIG_STD_MOVE(*(&arg2)),SWIG_STD_MOVE(*(&arg3)));
-    ST(argvi) = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__plot__RPlot, 0 | SWIG_SHADOW); argvi++ ;
+    ST(argvi) = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__graphics__RPlot, 0 | SWIG_SHADOW); argvi++ ;
     
     XSRETURN(argvi);
     fail:;
@@ -118697,7 +125063,7 @@ XS(_wrap_RPlot_polygon) {
       int _v = 0;
       {
         void *vptr = 0;
-        int res = SWIG_ConvertPtr(ST(0), &vptr, SWIGTYPE_p_datamunge__plot__RPlot, 0);
+        int res = SWIG_ConvertPtr(ST(0), &vptr, SWIGTYPE_p_datamunge__graphics__RPlot, 0);
         _v = SWIG_CheckState(res);
       }
       if (!_v) goto check_1;
@@ -118788,7 +125154,7 @@ XS(_wrap_RPlot_polygon) {
       int _v = 0;
       {
         void *vptr = 0;
-        int res = SWIG_ConvertPtr(ST(0), &vptr, SWIGTYPE_p_datamunge__plot__RPlot, 0);
+        int res = SWIG_ConvertPtr(ST(0), &vptr, SWIGTYPE_p_datamunge__graphics__RPlot, 0);
         _v = SWIG_CheckState(res);
       }
       if (!_v) goto check_2;
@@ -118867,7 +125233,7 @@ XS(_wrap_RPlot_polygon) {
       _pi *= SWIG_MAXCASTRANK;
       {
         void *vptr = 0;
-        int res = SWIG_ConvertPtr(ST(3), &vptr, SWIGTYPE_p_datamunge__plot__RGB, SWIG_POINTER_NO_NULL);
+        int res = SWIG_ConvertPtr(ST(3), &vptr, SWIGTYPE_p_datamunge__graphics__RGB, SWIG_POINTER_NO_NULL);
         _v = SWIG_CheckState(res);
       }
       if (!_v) goto check_2;
@@ -118888,7 +125254,7 @@ XS(_wrap_RPlot_polygon) {
       int _v = 0;
       {
         void *vptr = 0;
-        int res = SWIG_ConvertPtr(ST(0), &vptr, SWIGTYPE_p_datamunge__plot__RPlot, 0);
+        int res = SWIG_ConvertPtr(ST(0), &vptr, SWIGTYPE_p_datamunge__graphics__RPlot, 0);
         _v = SWIG_CheckState(res);
       }
       if (!_v) goto check_3;
@@ -118967,7 +125333,7 @@ XS(_wrap_RPlot_polygon) {
       _pi *= SWIG_MAXCASTRANK;
       {
         void *vptr = 0;
-        int res = SWIG_ConvertPtr(ST(3), &vptr, SWIGTYPE_p_datamunge__plot__RGB, SWIG_POINTER_NO_NULL);
+        int res = SWIG_ConvertPtr(ST(3), &vptr, SWIGTYPE_p_datamunge__graphics__RGB, SWIG_POINTER_NO_NULL);
         _v = SWIG_CheckState(res);
       }
       if (!_v) goto check_3;
@@ -119007,6 +125373,1175 @@ XS(_wrap_RPlot_polygon) {
 }
 
 
+XS(_wrap_RPlot_image__SWIG_0) {
+  {
+    datamunge::graphics::RPlot *arg1 = 0 ;
+    std::vector< double > *arg2 = 0 ;
+    std::vector< double > *arg3 = 0 ;
+    std::vector< std::vector< double > > *arg4 = 0 ;
+    SwigValueWrapper< std::vector< datamunge::graphics::RGB > > arg5 ;
+    double arg6 ;
+    double arg7 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    std::vector< double > temp2 ;
+    std::vector< double > *v2 ;
+    std::vector< double > temp3 ;
+    std::vector< double > *v3 ;
+    std::vector< std::vector< double > > temp4 ;
+    std::vector< std::vector< double > > *v4 ;
+    void *argp5 = 0 ;
+    int res5 = 0 ;
+    double val6 ;
+    int ecode6 = 0 ;
+    double val7 ;
+    int ecode7 = 0 ;
+    int argvi = 0;
+    datamunge::graphics::RPlot *result = 0 ;
+    dXSARGS;
+    
+    if ((items < 7) || (items > 7)) {
+      SWIG_croak("Usage: RPlot_image(self,x,y,z,palette,z_min,z_max);");
+    }
+    res1 = SWIG_ConvertPtr(ST(0), &argp1,SWIGTYPE_p_datamunge__graphics__RPlot, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "RPlot_image" "', argument " "1"" of type '" "datamunge::graphics::RPlot *""'"); 
+    }
+    arg1 = reinterpret_cast< datamunge::graphics::RPlot * >(argp1);
+    {
+      if (SWIG_ConvertPtr(ST(1),(void **) &v2, 
+          SWIGTYPE_p_std__vectorT_double_t,1) != -1) {
+        arg2 = v2;
+      } else if (SvROK(ST(1))) {
+        AV *av = (AV *)SvRV(ST(1));
+        if (SvTYPE(av) != SVt_PVAV)
+        SWIG_croak("Type error in argument 2 of RPlot_image. "
+          "Expected an array of ""double");
+        SV **tv;
+        SSize_t len = av_len(av) + 1;
+        for (int i=0; i<len; i++) {
+          tv = av_fetch(av, i, 0);
+          if (SvNIOK(*tv)) {
+            temp2.push_back((double)SwigSvToNumber(*tv));
+          } else {
+            SWIG_croak("Type error in argument 2 of "
+              "RPlot_image. "
+              "Expected an array of ""double");
+          }
+        }
+        arg2 = &temp2;
+      } else {
+        SWIG_croak("Type error in argument 2 of RPlot_image. "
+          "Expected an array of ""double");
+      }
+    }
+    {
+      if (SWIG_ConvertPtr(ST(2),(void **) &v3, 
+          SWIGTYPE_p_std__vectorT_double_t,1) != -1) {
+        arg3 = v3;
+      } else if (SvROK(ST(2))) {
+        AV *av = (AV *)SvRV(ST(2));
+        if (SvTYPE(av) != SVt_PVAV)
+        SWIG_croak("Type error in argument 3 of RPlot_image. "
+          "Expected an array of ""double");
+        SV **tv;
+        SSize_t len = av_len(av) + 1;
+        for (int i=0; i<len; i++) {
+          tv = av_fetch(av, i, 0);
+          if (SvNIOK(*tv)) {
+            temp3.push_back((double)SwigSvToNumber(*tv));
+          } else {
+            SWIG_croak("Type error in argument 3 of "
+              "RPlot_image. "
+              "Expected an array of ""double");
+          }
+        }
+        arg3 = &temp3;
+      } else {
+        SWIG_croak("Type error in argument 3 of RPlot_image. "
+          "Expected an array of ""double");
+      }
+    }
+    {
+      if (SWIG_ConvertPtr(ST(3),(void **) &v4, 
+          SWIGTYPE_p_std__vectorT_std__vectorT_double_t_t,1) != -1) {
+        arg4 = v4;
+      } else if (SvROK(ST(3))) {
+        AV *av = (AV *)SvRV(ST(3));
+        if (SvTYPE(av) != SVt_PVAV)
+        SWIG_croak("Type error in argument 4 of RPlot_image. "
+          "Expected an array of " "std::vector< double >");
+        SV **tv;
+        SSize_t len = av_len(av) + 1;
+        std::vector< double >* obj;
+        for (int i=0; i<len; i++) {
+          tv = av_fetch(av, i, 0);
+          if (SWIG_ConvertPtr(*tv, (void **)&obj, 
+              SWIGTYPE_p_std__vectorT_double_t,0) != -1) {
+            temp4.push_back(*obj);
+          } else {
+            SWIG_croak("Type error in argument 4 of "
+              "RPlot_image. "
+              "Expected an array of " "std::vector< double >");
+          }
+        }
+        arg4 = &temp4;
+      } else {
+        SWIG_croak("Type error in argument 4 of RPlot_image. "
+          "Expected an array of " "std::vector< double >");
+      }
+    }
+    {
+      res5 = SWIG_ConvertPtr(ST(4), &argp5, SWIGTYPE_p_std__vectorT_datamunge__graphics__RGB_t,  0 );
+      if (!SWIG_IsOK(res5)) {
+        SWIG_exception_fail(SWIG_ArgError(res5), "in method '" "RPlot_image" "', argument " "5"" of type '" "std::vector< datamunge::graphics::RGBA >""'"); 
+      }  
+      if (!argp5) {
+        SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "RPlot_image" "', argument " "5"" of type '" "std::vector< datamunge::graphics::RGBA >""'");
+      } else {
+        arg5 = *(reinterpret_cast< std::vector< datamunge::graphics::RGBA > * >(argp5));
+      }
+    }
+    ecode6 = SWIG_AsVal_double SWIG_PERL_CALL_ARGS_2(ST(5), &val6);
+    if (!SWIG_IsOK(ecode6)) {
+      SWIG_exception_fail(SWIG_ArgError(ecode6), "in method '" "RPlot_image" "', argument " "6"" of type '" "double""'");
+    } 
+    arg6 = static_cast< double >(val6);
+    ecode7 = SWIG_AsVal_double SWIG_PERL_CALL_ARGS_2(ST(6), &val7);
+    if (!SWIG_IsOK(ecode7)) {
+      SWIG_exception_fail(SWIG_ArgError(ecode7), "in method '" "RPlot_image" "', argument " "7"" of type '" "double""'");
+    } 
+    arg7 = static_cast< double >(val7);
+    result = (datamunge::graphics::RPlot *) &(arg1)->image((std::vector< double > const &)*arg2,(std::vector< double > const &)*arg3,(std::vector< std::vector< double > > const &)*arg4,SWIG_STD_MOVE(*(&arg5)),arg6,arg7);
+    ST(argvi) = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__graphics__RPlot, 0 | SWIG_SHADOW); argvi++ ;
+    
+    
+    
+    
+    
+    
+    XSRETURN(argvi);
+    fail:;
+    
+    
+    
+    
+    
+    
+  }
+  SWIG_croak_null();
+}
+
+
+XS(_wrap_RPlot_image__SWIG_1) {
+  {
+    datamunge::graphics::RPlot *arg1 = 0 ;
+    std::vector< double > *arg2 = 0 ;
+    std::vector< double > *arg3 = 0 ;
+    std::vector< std::vector< double > > *arg4 = 0 ;
+    SwigValueWrapper< std::vector< datamunge::graphics::RGB > > arg5 ;
+    double arg6 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    std::vector< double > temp2 ;
+    std::vector< double > *v2 ;
+    std::vector< double > temp3 ;
+    std::vector< double > *v3 ;
+    std::vector< std::vector< double > > temp4 ;
+    std::vector< std::vector< double > > *v4 ;
+    void *argp5 = 0 ;
+    int res5 = 0 ;
+    double val6 ;
+    int ecode6 = 0 ;
+    int argvi = 0;
+    datamunge::graphics::RPlot *result = 0 ;
+    dXSARGS;
+    
+    if ((items < 6) || (items > 6)) {
+      SWIG_croak("Usage: RPlot_image(self,x,y,z,palette,z_min);");
+    }
+    res1 = SWIG_ConvertPtr(ST(0), &argp1,SWIGTYPE_p_datamunge__graphics__RPlot, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "RPlot_image" "', argument " "1"" of type '" "datamunge::graphics::RPlot *""'"); 
+    }
+    arg1 = reinterpret_cast< datamunge::graphics::RPlot * >(argp1);
+    {
+      if (SWIG_ConvertPtr(ST(1),(void **) &v2, 
+          SWIGTYPE_p_std__vectorT_double_t,1) != -1) {
+        arg2 = v2;
+      } else if (SvROK(ST(1))) {
+        AV *av = (AV *)SvRV(ST(1));
+        if (SvTYPE(av) != SVt_PVAV)
+        SWIG_croak("Type error in argument 2 of RPlot_image. "
+          "Expected an array of ""double");
+        SV **tv;
+        SSize_t len = av_len(av) + 1;
+        for (int i=0; i<len; i++) {
+          tv = av_fetch(av, i, 0);
+          if (SvNIOK(*tv)) {
+            temp2.push_back((double)SwigSvToNumber(*tv));
+          } else {
+            SWIG_croak("Type error in argument 2 of "
+              "RPlot_image. "
+              "Expected an array of ""double");
+          }
+        }
+        arg2 = &temp2;
+      } else {
+        SWIG_croak("Type error in argument 2 of RPlot_image. "
+          "Expected an array of ""double");
+      }
+    }
+    {
+      if (SWIG_ConvertPtr(ST(2),(void **) &v3, 
+          SWIGTYPE_p_std__vectorT_double_t,1) != -1) {
+        arg3 = v3;
+      } else if (SvROK(ST(2))) {
+        AV *av = (AV *)SvRV(ST(2));
+        if (SvTYPE(av) != SVt_PVAV)
+        SWIG_croak("Type error in argument 3 of RPlot_image. "
+          "Expected an array of ""double");
+        SV **tv;
+        SSize_t len = av_len(av) + 1;
+        for (int i=0; i<len; i++) {
+          tv = av_fetch(av, i, 0);
+          if (SvNIOK(*tv)) {
+            temp3.push_back((double)SwigSvToNumber(*tv));
+          } else {
+            SWIG_croak("Type error in argument 3 of "
+              "RPlot_image. "
+              "Expected an array of ""double");
+          }
+        }
+        arg3 = &temp3;
+      } else {
+        SWIG_croak("Type error in argument 3 of RPlot_image. "
+          "Expected an array of ""double");
+      }
+    }
+    {
+      if (SWIG_ConvertPtr(ST(3),(void **) &v4, 
+          SWIGTYPE_p_std__vectorT_std__vectorT_double_t_t,1) != -1) {
+        arg4 = v4;
+      } else if (SvROK(ST(3))) {
+        AV *av = (AV *)SvRV(ST(3));
+        if (SvTYPE(av) != SVt_PVAV)
+        SWIG_croak("Type error in argument 4 of RPlot_image. "
+          "Expected an array of " "std::vector< double >");
+        SV **tv;
+        SSize_t len = av_len(av) + 1;
+        std::vector< double >* obj;
+        for (int i=0; i<len; i++) {
+          tv = av_fetch(av, i, 0);
+          if (SWIG_ConvertPtr(*tv, (void **)&obj, 
+              SWIGTYPE_p_std__vectorT_double_t,0) != -1) {
+            temp4.push_back(*obj);
+          } else {
+            SWIG_croak("Type error in argument 4 of "
+              "RPlot_image. "
+              "Expected an array of " "std::vector< double >");
+          }
+        }
+        arg4 = &temp4;
+      } else {
+        SWIG_croak("Type error in argument 4 of RPlot_image. "
+          "Expected an array of " "std::vector< double >");
+      }
+    }
+    {
+      res5 = SWIG_ConvertPtr(ST(4), &argp5, SWIGTYPE_p_std__vectorT_datamunge__graphics__RGB_t,  0 );
+      if (!SWIG_IsOK(res5)) {
+        SWIG_exception_fail(SWIG_ArgError(res5), "in method '" "RPlot_image" "', argument " "5"" of type '" "std::vector< datamunge::graphics::RGBA >""'"); 
+      }  
+      if (!argp5) {
+        SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "RPlot_image" "', argument " "5"" of type '" "std::vector< datamunge::graphics::RGBA >""'");
+      } else {
+        arg5 = *(reinterpret_cast< std::vector< datamunge::graphics::RGBA > * >(argp5));
+      }
+    }
+    ecode6 = SWIG_AsVal_double SWIG_PERL_CALL_ARGS_2(ST(5), &val6);
+    if (!SWIG_IsOK(ecode6)) {
+      SWIG_exception_fail(SWIG_ArgError(ecode6), "in method '" "RPlot_image" "', argument " "6"" of type '" "double""'");
+    } 
+    arg6 = static_cast< double >(val6);
+    result = (datamunge::graphics::RPlot *) &(arg1)->image((std::vector< double > const &)*arg2,(std::vector< double > const &)*arg3,(std::vector< std::vector< double > > const &)*arg4,SWIG_STD_MOVE(*(&arg5)),arg6);
+    ST(argvi) = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__graphics__RPlot, 0 | SWIG_SHADOW); argvi++ ;
+    
+    
+    
+    
+    
+    XSRETURN(argvi);
+    fail:;
+    
+    
+    
+    
+    
+  }
+  SWIG_croak_null();
+}
+
+
+XS(_wrap_RPlot_image__SWIG_2) {
+  {
+    datamunge::graphics::RPlot *arg1 = 0 ;
+    std::vector< double > *arg2 = 0 ;
+    std::vector< double > *arg3 = 0 ;
+    std::vector< std::vector< double > > *arg4 = 0 ;
+    SwigValueWrapper< std::vector< datamunge::graphics::RGB > > arg5 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    std::vector< double > temp2 ;
+    std::vector< double > *v2 ;
+    std::vector< double > temp3 ;
+    std::vector< double > *v3 ;
+    std::vector< std::vector< double > > temp4 ;
+    std::vector< std::vector< double > > *v4 ;
+    void *argp5 = 0 ;
+    int res5 = 0 ;
+    int argvi = 0;
+    datamunge::graphics::RPlot *result = 0 ;
+    dXSARGS;
+    
+    if ((items < 5) || (items > 5)) {
+      SWIG_croak("Usage: RPlot_image(self,x,y,z,palette);");
+    }
+    res1 = SWIG_ConvertPtr(ST(0), &argp1,SWIGTYPE_p_datamunge__graphics__RPlot, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "RPlot_image" "', argument " "1"" of type '" "datamunge::graphics::RPlot *""'"); 
+    }
+    arg1 = reinterpret_cast< datamunge::graphics::RPlot * >(argp1);
+    {
+      if (SWIG_ConvertPtr(ST(1),(void **) &v2, 
+          SWIGTYPE_p_std__vectorT_double_t,1) != -1) {
+        arg2 = v2;
+      } else if (SvROK(ST(1))) {
+        AV *av = (AV *)SvRV(ST(1));
+        if (SvTYPE(av) != SVt_PVAV)
+        SWIG_croak("Type error in argument 2 of RPlot_image. "
+          "Expected an array of ""double");
+        SV **tv;
+        SSize_t len = av_len(av) + 1;
+        for (int i=0; i<len; i++) {
+          tv = av_fetch(av, i, 0);
+          if (SvNIOK(*tv)) {
+            temp2.push_back((double)SwigSvToNumber(*tv));
+          } else {
+            SWIG_croak("Type error in argument 2 of "
+              "RPlot_image. "
+              "Expected an array of ""double");
+          }
+        }
+        arg2 = &temp2;
+      } else {
+        SWIG_croak("Type error in argument 2 of RPlot_image. "
+          "Expected an array of ""double");
+      }
+    }
+    {
+      if (SWIG_ConvertPtr(ST(2),(void **) &v3, 
+          SWIGTYPE_p_std__vectorT_double_t,1) != -1) {
+        arg3 = v3;
+      } else if (SvROK(ST(2))) {
+        AV *av = (AV *)SvRV(ST(2));
+        if (SvTYPE(av) != SVt_PVAV)
+        SWIG_croak("Type error in argument 3 of RPlot_image. "
+          "Expected an array of ""double");
+        SV **tv;
+        SSize_t len = av_len(av) + 1;
+        for (int i=0; i<len; i++) {
+          tv = av_fetch(av, i, 0);
+          if (SvNIOK(*tv)) {
+            temp3.push_back((double)SwigSvToNumber(*tv));
+          } else {
+            SWIG_croak("Type error in argument 3 of "
+              "RPlot_image. "
+              "Expected an array of ""double");
+          }
+        }
+        arg3 = &temp3;
+      } else {
+        SWIG_croak("Type error in argument 3 of RPlot_image. "
+          "Expected an array of ""double");
+      }
+    }
+    {
+      if (SWIG_ConvertPtr(ST(3),(void **) &v4, 
+          SWIGTYPE_p_std__vectorT_std__vectorT_double_t_t,1) != -1) {
+        arg4 = v4;
+      } else if (SvROK(ST(3))) {
+        AV *av = (AV *)SvRV(ST(3));
+        if (SvTYPE(av) != SVt_PVAV)
+        SWIG_croak("Type error in argument 4 of RPlot_image. "
+          "Expected an array of " "std::vector< double >");
+        SV **tv;
+        SSize_t len = av_len(av) + 1;
+        std::vector< double >* obj;
+        for (int i=0; i<len; i++) {
+          tv = av_fetch(av, i, 0);
+          if (SWIG_ConvertPtr(*tv, (void **)&obj, 
+              SWIGTYPE_p_std__vectorT_double_t,0) != -1) {
+            temp4.push_back(*obj);
+          } else {
+            SWIG_croak("Type error in argument 4 of "
+              "RPlot_image. "
+              "Expected an array of " "std::vector< double >");
+          }
+        }
+        arg4 = &temp4;
+      } else {
+        SWIG_croak("Type error in argument 4 of RPlot_image. "
+          "Expected an array of " "std::vector< double >");
+      }
+    }
+    {
+      res5 = SWIG_ConvertPtr(ST(4), &argp5, SWIGTYPE_p_std__vectorT_datamunge__graphics__RGB_t,  0 );
+      if (!SWIG_IsOK(res5)) {
+        SWIG_exception_fail(SWIG_ArgError(res5), "in method '" "RPlot_image" "', argument " "5"" of type '" "std::vector< datamunge::graphics::RGBA >""'"); 
+      }  
+      if (!argp5) {
+        SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "RPlot_image" "', argument " "5"" of type '" "std::vector< datamunge::graphics::RGBA >""'");
+      } else {
+        arg5 = *(reinterpret_cast< std::vector< datamunge::graphics::RGBA > * >(argp5));
+      }
+    }
+    result = (datamunge::graphics::RPlot *) &(arg1)->image((std::vector< double > const &)*arg2,(std::vector< double > const &)*arg3,(std::vector< std::vector< double > > const &)*arg4,SWIG_STD_MOVE(*(&arg5)));
+    ST(argvi) = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__graphics__RPlot, 0 | SWIG_SHADOW); argvi++ ;
+    
+    
+    
+    
+    XSRETURN(argvi);
+    fail:;
+    
+    
+    
+    
+  }
+  SWIG_croak_null();
+}
+
+
+XS(_wrap_RPlot_image__SWIG_3) {
+  {
+    datamunge::graphics::RPlot *arg1 = 0 ;
+    std::vector< double > *arg2 = 0 ;
+    std::vector< double > *arg3 = 0 ;
+    std::vector< std::vector< double > > *arg4 = 0 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    std::vector< double > temp2 ;
+    std::vector< double > *v2 ;
+    std::vector< double > temp3 ;
+    std::vector< double > *v3 ;
+    std::vector< std::vector< double > > temp4 ;
+    std::vector< std::vector< double > > *v4 ;
+    int argvi = 0;
+    datamunge::graphics::RPlot *result = 0 ;
+    dXSARGS;
+    
+    if ((items < 4) || (items > 4)) {
+      SWIG_croak("Usage: RPlot_image(self,x,y,z);");
+    }
+    res1 = SWIG_ConvertPtr(ST(0), &argp1,SWIGTYPE_p_datamunge__graphics__RPlot, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "RPlot_image" "', argument " "1"" of type '" "datamunge::graphics::RPlot *""'"); 
+    }
+    arg1 = reinterpret_cast< datamunge::graphics::RPlot * >(argp1);
+    {
+      if (SWIG_ConvertPtr(ST(1),(void **) &v2, 
+          SWIGTYPE_p_std__vectorT_double_t,1) != -1) {
+        arg2 = v2;
+      } else if (SvROK(ST(1))) {
+        AV *av = (AV *)SvRV(ST(1));
+        if (SvTYPE(av) != SVt_PVAV)
+        SWIG_croak("Type error in argument 2 of RPlot_image. "
+          "Expected an array of ""double");
+        SV **tv;
+        SSize_t len = av_len(av) + 1;
+        for (int i=0; i<len; i++) {
+          tv = av_fetch(av, i, 0);
+          if (SvNIOK(*tv)) {
+            temp2.push_back((double)SwigSvToNumber(*tv));
+          } else {
+            SWIG_croak("Type error in argument 2 of "
+              "RPlot_image. "
+              "Expected an array of ""double");
+          }
+        }
+        arg2 = &temp2;
+      } else {
+        SWIG_croak("Type error in argument 2 of RPlot_image. "
+          "Expected an array of ""double");
+      }
+    }
+    {
+      if (SWIG_ConvertPtr(ST(2),(void **) &v3, 
+          SWIGTYPE_p_std__vectorT_double_t,1) != -1) {
+        arg3 = v3;
+      } else if (SvROK(ST(2))) {
+        AV *av = (AV *)SvRV(ST(2));
+        if (SvTYPE(av) != SVt_PVAV)
+        SWIG_croak("Type error in argument 3 of RPlot_image. "
+          "Expected an array of ""double");
+        SV **tv;
+        SSize_t len = av_len(av) + 1;
+        for (int i=0; i<len; i++) {
+          tv = av_fetch(av, i, 0);
+          if (SvNIOK(*tv)) {
+            temp3.push_back((double)SwigSvToNumber(*tv));
+          } else {
+            SWIG_croak("Type error in argument 3 of "
+              "RPlot_image. "
+              "Expected an array of ""double");
+          }
+        }
+        arg3 = &temp3;
+      } else {
+        SWIG_croak("Type error in argument 3 of RPlot_image. "
+          "Expected an array of ""double");
+      }
+    }
+    {
+      if (SWIG_ConvertPtr(ST(3),(void **) &v4, 
+          SWIGTYPE_p_std__vectorT_std__vectorT_double_t_t,1) != -1) {
+        arg4 = v4;
+      } else if (SvROK(ST(3))) {
+        AV *av = (AV *)SvRV(ST(3));
+        if (SvTYPE(av) != SVt_PVAV)
+        SWIG_croak("Type error in argument 4 of RPlot_image. "
+          "Expected an array of " "std::vector< double >");
+        SV **tv;
+        SSize_t len = av_len(av) + 1;
+        std::vector< double >* obj;
+        for (int i=0; i<len; i++) {
+          tv = av_fetch(av, i, 0);
+          if (SWIG_ConvertPtr(*tv, (void **)&obj, 
+              SWIGTYPE_p_std__vectorT_double_t,0) != -1) {
+            temp4.push_back(*obj);
+          } else {
+            SWIG_croak("Type error in argument 4 of "
+              "RPlot_image. "
+              "Expected an array of " "std::vector< double >");
+          }
+        }
+        arg4 = &temp4;
+      } else {
+        SWIG_croak("Type error in argument 4 of RPlot_image. "
+          "Expected an array of " "std::vector< double >");
+      }
+    }
+    result = (datamunge::graphics::RPlot *) &(arg1)->image((std::vector< double > const &)*arg2,(std::vector< double > const &)*arg3,(std::vector< std::vector< double > > const &)*arg4);
+    ST(argvi) = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__graphics__RPlot, 0 | SWIG_SHADOW); argvi++ ;
+    
+    
+    
+    
+    XSRETURN(argvi);
+    fail:;
+    
+    
+    
+    
+  }
+  SWIG_croak_null();
+}
+
+
+XS(_wrap_RPlot_image) {
+  dXSARGS;
+  
+  {
+    unsigned long _index = 0;
+    SWIG_TypeRank _rank = 0; 
+    if (items == 4) {
+      SWIG_TypeRank _ranki = 0;
+      SWIG_TypeRank _rankm = 0;
+      SWIG_TypeRank _pi = 1;
+      int _v = 0;
+      {
+        void *vptr = 0;
+        int res = SWIG_ConvertPtr(ST(0), &vptr, SWIGTYPE_p_datamunge__graphics__RPlot, 0);
+        _v = SWIG_CheckState(res);
+      }
+      if (!_v) goto check_1;
+      _ranki += _v*_pi;
+      _rankm += _pi;
+      _pi *= SWIG_MAXCASTRANK;
+      {
+        {
+          {
+            /* wrapped vector? */
+            std::vector< double >* v;
+            if (SWIG_ConvertPtr(ST(1),(void **) &v, 
+                SWIGTYPE_p_std__vectorT_double_t,0) != -1) {
+              _v = 1;
+            } else if (SvROK(ST(1))) {
+              /* native sequence? */
+              AV *av = (AV *)SvRV(ST(1));
+              if (SvTYPE(av) == SVt_PVAV) {
+                SSize_t len = av_len(av) + 1;
+                if (len == 0) {
+                  /* an empty sequence can be of any type */
+                  _v = 1;
+                } else {
+                  /* check the first element only */
+                  SV **tv = av_fetch(av, 0, 0);
+                  if (SvNIOK(*tv))
+                  _v = 1;
+                  else
+                  _v = 0;
+                }
+              }
+            } else {
+              _v = 0;
+            }
+          }
+        }
+      }
+      if (!_v) goto check_1;
+      _ranki += _v*_pi;
+      _rankm += _pi;
+      _pi *= SWIG_MAXCASTRANK;
+      {
+        {
+          {
+            /* wrapped vector? */
+            std::vector< double >* v;
+            if (SWIG_ConvertPtr(ST(2),(void **) &v, 
+                SWIGTYPE_p_std__vectorT_double_t,0) != -1) {
+              _v = 1;
+            } else if (SvROK(ST(2))) {
+              /* native sequence? */
+              AV *av = (AV *)SvRV(ST(2));
+              if (SvTYPE(av) == SVt_PVAV) {
+                SSize_t len = av_len(av) + 1;
+                if (len == 0) {
+                  /* an empty sequence can be of any type */
+                  _v = 1;
+                } else {
+                  /* check the first element only */
+                  SV **tv = av_fetch(av, 0, 0);
+                  if (SvNIOK(*tv))
+                  _v = 1;
+                  else
+                  _v = 0;
+                }
+              }
+            } else {
+              _v = 0;
+            }
+          }
+        }
+      }
+      if (!_v) goto check_1;
+      _ranki += _v*_pi;
+      _rankm += _pi;
+      _pi *= SWIG_MAXCASTRANK;
+      {
+        {
+          {
+            /* wrapped vector? */
+            std::vector< std::vector< double > >* v;
+            if (SWIG_ConvertPtr(ST(3),(void **) &v, 
+                SWIGTYPE_p_std__vectorT_std__vectorT_double_t_t,0) != -1) {
+              _v = 1;
+            } else if (SvROK(ST(3))) {
+              /* native sequence? */
+              AV *av = (AV *)SvRV(ST(3));
+              if (SvTYPE(av) == SVt_PVAV) {
+                SSize_t len = av_len(av) + 1;
+                if (len == 0) {
+                  /* an empty sequence can be of any type */
+                  _v = 1;
+                } else {
+                  /* check the first element only */
+                  std::vector< double >* obj;
+                  SV **tv = av_fetch(av, 0, 0);
+                  if (SWIG_ConvertPtr(*tv, (void **)&obj, 
+                      SWIGTYPE_p_std__vectorT_double_t,0) != -1)
+                  _v = 1;
+                  else
+                  _v = 0;
+                }
+              }
+            } else {
+              _v = 0;
+            }
+          }
+        }
+      }
+      if (!_v) goto check_1;
+      _ranki += _v*_pi;
+      _rankm += _pi;
+      _pi *= SWIG_MAXCASTRANK;
+      if (!_index || (_ranki < _rank)) {
+        _rank = _ranki; _index = 1;
+        if (_rank == _rankm) goto dispatch;
+      }
+    }
+  check_1:
+    
+    if (items == 5) {
+      SWIG_TypeRank _ranki = 0;
+      SWIG_TypeRank _rankm = 0;
+      SWIG_TypeRank _pi = 1;
+      int _v = 0;
+      {
+        void *vptr = 0;
+        int res = SWIG_ConvertPtr(ST(0), &vptr, SWIGTYPE_p_datamunge__graphics__RPlot, 0);
+        _v = SWIG_CheckState(res);
+      }
+      if (!_v) goto check_2;
+      _ranki += _v*_pi;
+      _rankm += _pi;
+      _pi *= SWIG_MAXCASTRANK;
+      {
+        {
+          {
+            /* wrapped vector? */
+            std::vector< double >* v;
+            if (SWIG_ConvertPtr(ST(1),(void **) &v, 
+                SWIGTYPE_p_std__vectorT_double_t,0) != -1) {
+              _v = 1;
+            } else if (SvROK(ST(1))) {
+              /* native sequence? */
+              AV *av = (AV *)SvRV(ST(1));
+              if (SvTYPE(av) == SVt_PVAV) {
+                SSize_t len = av_len(av) + 1;
+                if (len == 0) {
+                  /* an empty sequence can be of any type */
+                  _v = 1;
+                } else {
+                  /* check the first element only */
+                  SV **tv = av_fetch(av, 0, 0);
+                  if (SvNIOK(*tv))
+                  _v = 1;
+                  else
+                  _v = 0;
+                }
+              }
+            } else {
+              _v = 0;
+            }
+          }
+        }
+      }
+      if (!_v) goto check_2;
+      _ranki += _v*_pi;
+      _rankm += _pi;
+      _pi *= SWIG_MAXCASTRANK;
+      {
+        {
+          {
+            /* wrapped vector? */
+            std::vector< double >* v;
+            if (SWIG_ConvertPtr(ST(2),(void **) &v, 
+                SWIGTYPE_p_std__vectorT_double_t,0) != -1) {
+              _v = 1;
+            } else if (SvROK(ST(2))) {
+              /* native sequence? */
+              AV *av = (AV *)SvRV(ST(2));
+              if (SvTYPE(av) == SVt_PVAV) {
+                SSize_t len = av_len(av) + 1;
+                if (len == 0) {
+                  /* an empty sequence can be of any type */
+                  _v = 1;
+                } else {
+                  /* check the first element only */
+                  SV **tv = av_fetch(av, 0, 0);
+                  if (SvNIOK(*tv))
+                  _v = 1;
+                  else
+                  _v = 0;
+                }
+              }
+            } else {
+              _v = 0;
+            }
+          }
+        }
+      }
+      if (!_v) goto check_2;
+      _ranki += _v*_pi;
+      _rankm += _pi;
+      _pi *= SWIG_MAXCASTRANK;
+      {
+        {
+          {
+            /* wrapped vector? */
+            std::vector< std::vector< double > >* v;
+            if (SWIG_ConvertPtr(ST(3),(void **) &v, 
+                SWIGTYPE_p_std__vectorT_std__vectorT_double_t_t,0) != -1) {
+              _v = 1;
+            } else if (SvROK(ST(3))) {
+              /* native sequence? */
+              AV *av = (AV *)SvRV(ST(3));
+              if (SvTYPE(av) == SVt_PVAV) {
+                SSize_t len = av_len(av) + 1;
+                if (len == 0) {
+                  /* an empty sequence can be of any type */
+                  _v = 1;
+                } else {
+                  /* check the first element only */
+                  std::vector< double >* obj;
+                  SV **tv = av_fetch(av, 0, 0);
+                  if (SWIG_ConvertPtr(*tv, (void **)&obj, 
+                      SWIGTYPE_p_std__vectorT_double_t,0) != -1)
+                  _v = 1;
+                  else
+                  _v = 0;
+                }
+              }
+            } else {
+              _v = 0;
+            }
+          }
+        }
+      }
+      if (!_v) goto check_2;
+      _ranki += _v*_pi;
+      _rankm += _pi;
+      _pi *= SWIG_MAXCASTRANK;
+      {
+        void *vptr = 0;
+        int res = SWIG_ConvertPtr(ST(4), &vptr, SWIGTYPE_p_std__vectorT_datamunge__graphics__RGB_t, SWIG_POINTER_NO_NULL);
+        _v = SWIG_CheckState(res);
+      }
+      if (!_v) goto check_2;
+      _ranki += _v*_pi;
+      _rankm += _pi;
+      _pi *= SWIG_MAXCASTRANK;
+      if (!_index || (_ranki < _rank)) {
+        _rank = _ranki; _index = 2;
+        if (_rank == _rankm) goto dispatch;
+      }
+    }
+  check_2:
+    
+    if (items == 6) {
+      SWIG_TypeRank _ranki = 0;
+      SWIG_TypeRank _rankm = 0;
+      SWIG_TypeRank _pi = 1;
+      int _v = 0;
+      {
+        void *vptr = 0;
+        int res = SWIG_ConvertPtr(ST(0), &vptr, SWIGTYPE_p_datamunge__graphics__RPlot, 0);
+        _v = SWIG_CheckState(res);
+      }
+      if (!_v) goto check_3;
+      _ranki += _v*_pi;
+      _rankm += _pi;
+      _pi *= SWIG_MAXCASTRANK;
+      {
+        {
+          {
+            /* wrapped vector? */
+            std::vector< double >* v;
+            if (SWIG_ConvertPtr(ST(1),(void **) &v, 
+                SWIGTYPE_p_std__vectorT_double_t,0) != -1) {
+              _v = 1;
+            } else if (SvROK(ST(1))) {
+              /* native sequence? */
+              AV *av = (AV *)SvRV(ST(1));
+              if (SvTYPE(av) == SVt_PVAV) {
+                SSize_t len = av_len(av) + 1;
+                if (len == 0) {
+                  /* an empty sequence can be of any type */
+                  _v = 1;
+                } else {
+                  /* check the first element only */
+                  SV **tv = av_fetch(av, 0, 0);
+                  if (SvNIOK(*tv))
+                  _v = 1;
+                  else
+                  _v = 0;
+                }
+              }
+            } else {
+              _v = 0;
+            }
+          }
+        }
+      }
+      if (!_v) goto check_3;
+      _ranki += _v*_pi;
+      _rankm += _pi;
+      _pi *= SWIG_MAXCASTRANK;
+      {
+        {
+          {
+            /* wrapped vector? */
+            std::vector< double >* v;
+            if (SWIG_ConvertPtr(ST(2),(void **) &v, 
+                SWIGTYPE_p_std__vectorT_double_t,0) != -1) {
+              _v = 1;
+            } else if (SvROK(ST(2))) {
+              /* native sequence? */
+              AV *av = (AV *)SvRV(ST(2));
+              if (SvTYPE(av) == SVt_PVAV) {
+                SSize_t len = av_len(av) + 1;
+                if (len == 0) {
+                  /* an empty sequence can be of any type */
+                  _v = 1;
+                } else {
+                  /* check the first element only */
+                  SV **tv = av_fetch(av, 0, 0);
+                  if (SvNIOK(*tv))
+                  _v = 1;
+                  else
+                  _v = 0;
+                }
+              }
+            } else {
+              _v = 0;
+            }
+          }
+        }
+      }
+      if (!_v) goto check_3;
+      _ranki += _v*_pi;
+      _rankm += _pi;
+      _pi *= SWIG_MAXCASTRANK;
+      {
+        {
+          {
+            /* wrapped vector? */
+            std::vector< std::vector< double > >* v;
+            if (SWIG_ConvertPtr(ST(3),(void **) &v, 
+                SWIGTYPE_p_std__vectorT_std__vectorT_double_t_t,0) != -1) {
+              _v = 1;
+            } else if (SvROK(ST(3))) {
+              /* native sequence? */
+              AV *av = (AV *)SvRV(ST(3));
+              if (SvTYPE(av) == SVt_PVAV) {
+                SSize_t len = av_len(av) + 1;
+                if (len == 0) {
+                  /* an empty sequence can be of any type */
+                  _v = 1;
+                } else {
+                  /* check the first element only */
+                  std::vector< double >* obj;
+                  SV **tv = av_fetch(av, 0, 0);
+                  if (SWIG_ConvertPtr(*tv, (void **)&obj, 
+                      SWIGTYPE_p_std__vectorT_double_t,0) != -1)
+                  _v = 1;
+                  else
+                  _v = 0;
+                }
+              }
+            } else {
+              _v = 0;
+            }
+          }
+        }
+      }
+      if (!_v) goto check_3;
+      _ranki += _v*_pi;
+      _rankm += _pi;
+      _pi *= SWIG_MAXCASTRANK;
+      {
+        void *vptr = 0;
+        int res = SWIG_ConvertPtr(ST(4), &vptr, SWIGTYPE_p_std__vectorT_datamunge__graphics__RGB_t, SWIG_POINTER_NO_NULL);
+        _v = SWIG_CheckState(res);
+      }
+      if (!_v) goto check_3;
+      _ranki += _v*_pi;
+      _rankm += _pi;
+      _pi *= SWIG_MAXCASTRANK;
+      {
+        {
+          int res = SWIG_AsVal_double SWIG_PERL_CALL_ARGS_2(ST(5), NULL);
+          _v = SWIG_CheckState(res);
+        }
+      }
+      if (!_v) goto check_3;
+      _ranki += _v*_pi;
+      _rankm += _pi;
+      _pi *= SWIG_MAXCASTRANK;
+      if (!_index || (_ranki < _rank)) {
+        _rank = _ranki; _index = 3;
+        if (_rank == _rankm) goto dispatch;
+      }
+    }
+  check_3:
+    
+    if (items == 7) {
+      SWIG_TypeRank _ranki = 0;
+      SWIG_TypeRank _rankm = 0;
+      SWIG_TypeRank _pi = 1;
+      int _v = 0;
+      {
+        void *vptr = 0;
+        int res = SWIG_ConvertPtr(ST(0), &vptr, SWIGTYPE_p_datamunge__graphics__RPlot, 0);
+        _v = SWIG_CheckState(res);
+      }
+      if (!_v) goto check_4;
+      _ranki += _v*_pi;
+      _rankm += _pi;
+      _pi *= SWIG_MAXCASTRANK;
+      {
+        {
+          {
+            /* wrapped vector? */
+            std::vector< double >* v;
+            if (SWIG_ConvertPtr(ST(1),(void **) &v, 
+                SWIGTYPE_p_std__vectorT_double_t,0) != -1) {
+              _v = 1;
+            } else if (SvROK(ST(1))) {
+              /* native sequence? */
+              AV *av = (AV *)SvRV(ST(1));
+              if (SvTYPE(av) == SVt_PVAV) {
+                SSize_t len = av_len(av) + 1;
+                if (len == 0) {
+                  /* an empty sequence can be of any type */
+                  _v = 1;
+                } else {
+                  /* check the first element only */
+                  SV **tv = av_fetch(av, 0, 0);
+                  if (SvNIOK(*tv))
+                  _v = 1;
+                  else
+                  _v = 0;
+                }
+              }
+            } else {
+              _v = 0;
+            }
+          }
+        }
+      }
+      if (!_v) goto check_4;
+      _ranki += _v*_pi;
+      _rankm += _pi;
+      _pi *= SWIG_MAXCASTRANK;
+      {
+        {
+          {
+            /* wrapped vector? */
+            std::vector< double >* v;
+            if (SWIG_ConvertPtr(ST(2),(void **) &v, 
+                SWIGTYPE_p_std__vectorT_double_t,0) != -1) {
+              _v = 1;
+            } else if (SvROK(ST(2))) {
+              /* native sequence? */
+              AV *av = (AV *)SvRV(ST(2));
+              if (SvTYPE(av) == SVt_PVAV) {
+                SSize_t len = av_len(av) + 1;
+                if (len == 0) {
+                  /* an empty sequence can be of any type */
+                  _v = 1;
+                } else {
+                  /* check the first element only */
+                  SV **tv = av_fetch(av, 0, 0);
+                  if (SvNIOK(*tv))
+                  _v = 1;
+                  else
+                  _v = 0;
+                }
+              }
+            } else {
+              _v = 0;
+            }
+          }
+        }
+      }
+      if (!_v) goto check_4;
+      _ranki += _v*_pi;
+      _rankm += _pi;
+      _pi *= SWIG_MAXCASTRANK;
+      {
+        {
+          {
+            /* wrapped vector? */
+            std::vector< std::vector< double > >* v;
+            if (SWIG_ConvertPtr(ST(3),(void **) &v, 
+                SWIGTYPE_p_std__vectorT_std__vectorT_double_t_t,0) != -1) {
+              _v = 1;
+            } else if (SvROK(ST(3))) {
+              /* native sequence? */
+              AV *av = (AV *)SvRV(ST(3));
+              if (SvTYPE(av) == SVt_PVAV) {
+                SSize_t len = av_len(av) + 1;
+                if (len == 0) {
+                  /* an empty sequence can be of any type */
+                  _v = 1;
+                } else {
+                  /* check the first element only */
+                  std::vector< double >* obj;
+                  SV **tv = av_fetch(av, 0, 0);
+                  if (SWIG_ConvertPtr(*tv, (void **)&obj, 
+                      SWIGTYPE_p_std__vectorT_double_t,0) != -1)
+                  _v = 1;
+                  else
+                  _v = 0;
+                }
+              }
+            } else {
+              _v = 0;
+            }
+          }
+        }
+      }
+      if (!_v) goto check_4;
+      _ranki += _v*_pi;
+      _rankm += _pi;
+      _pi *= SWIG_MAXCASTRANK;
+      {
+        void *vptr = 0;
+        int res = SWIG_ConvertPtr(ST(4), &vptr, SWIGTYPE_p_std__vectorT_datamunge__graphics__RGB_t, SWIG_POINTER_NO_NULL);
+        _v = SWIG_CheckState(res);
+      }
+      if (!_v) goto check_4;
+      _ranki += _v*_pi;
+      _rankm += _pi;
+      _pi *= SWIG_MAXCASTRANK;
+      {
+        {
+          int res = SWIG_AsVal_double SWIG_PERL_CALL_ARGS_2(ST(5), NULL);
+          _v = SWIG_CheckState(res);
+        }
+      }
+      if (!_v) goto check_4;
+      _ranki += _v*_pi;
+      _rankm += _pi;
+      _pi *= SWIG_MAXCASTRANK;
+      {
+        {
+          int res = SWIG_AsVal_double SWIG_PERL_CALL_ARGS_2(ST(6), NULL);
+          _v = SWIG_CheckState(res);
+        }
+      }
+      if (!_v) goto check_4;
+      _ranki += _v*_pi;
+      _rankm += _pi;
+      _pi *= SWIG_MAXCASTRANK;
+      if (!_index || (_ranki < _rank)) {
+        _rank = _ranki; _index = 4;
+        if (_rank == _rankm) goto dispatch;
+      }
+    }
+  check_4:
+    
+  dispatch:
+    switch(_index) {
+    case 1:
+      PUSHMARK(MARK); SWIG_CALLXS(_wrap_RPlot_image__SWIG_3); return;
+    case 2:
+      PUSHMARK(MARK); SWIG_CALLXS(_wrap_RPlot_image__SWIG_2); return;
+    case 3:
+      PUSHMARK(MARK); SWIG_CALLXS(_wrap_RPlot_image__SWIG_1); return;
+    case 4:
+      PUSHMARK(MARK); SWIG_CALLXS(_wrap_RPlot_image__SWIG_0); return;
+    }
+  }
+  
+  croak("No matching function for overloaded 'RPlot_image'");
+  XSRETURN(0);
+}
+
+
 XS(_wrap_RPlot_segments__SWIG_0) {
   {
     datamunge::graphics::RPlot *arg1 = 0 ;
@@ -119014,7 +126549,7 @@ XS(_wrap_RPlot_segments__SWIG_0) {
     std::vector< double > arg3 ;
     std::vector< double > arg4 ;
     std::vector< double > arg5 ;
-    SwigValueWrapper< datamunge::graphics::RGB > arg6 ;
+    datamunge::graphics::RGBA arg6 ;
     double arg7 ;
     void *argp1 = 0 ;
     int res1 = 0 ;
@@ -119033,7 +126568,7 @@ XS(_wrap_RPlot_segments__SWIG_0) {
     if ((items < 7) || (items > 7)) {
       SWIG_croak("Usage: RPlot_segments(self,x0,y0,x1,y1,color,stroke_width);");
     }
-    res1 = SWIG_ConvertPtr(ST(0), &argp1,SWIGTYPE_p_datamunge__plot__RPlot, 0 |  0 );
+    res1 = SWIG_ConvertPtr(ST(0), &argp1,SWIGTYPE_p_datamunge__graphics__RPlot, 0 |  0 );
     if (!SWIG_IsOK(res1)) {
       SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "RPlot_segments" "', argument " "1"" of type '" "datamunge::graphics::RPlot *""'"); 
     }
@@ -119143,14 +126678,14 @@ XS(_wrap_RPlot_segments__SWIG_0) {
       }
     }
     {
-      res6 = SWIG_ConvertPtr(ST(5), &argp6, SWIGTYPE_p_datamunge__plot__RGB,  0 );
+      res6 = SWIG_ConvertPtr(ST(5), &argp6, SWIGTYPE_p_datamunge__graphics__RGB,  0 );
       if (!SWIG_IsOK(res6)) {
-        SWIG_exception_fail(SWIG_ArgError(res6), "in method '" "RPlot_segments" "', argument " "6"" of type '" "datamunge::graphics::RGB""'"); 
+        SWIG_exception_fail(SWIG_ArgError(res6), "in method '" "RPlot_segments" "', argument " "6"" of type '" "datamunge::graphics::RGBA""'"); 
       }  
       if (!argp6) {
-        SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "RPlot_segments" "', argument " "6"" of type '" "datamunge::graphics::RGB""'");
+        SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "RPlot_segments" "', argument " "6"" of type '" "datamunge::graphics::RGBA""'");
       } else {
-        arg6 = *(reinterpret_cast< datamunge::graphics::RGB * >(argp6));
+        arg6 = *(reinterpret_cast< datamunge::graphics::RGBA * >(argp6));
       }
     }
     ecode7 = SWIG_AsVal_double SWIG_PERL_CALL_ARGS_2(ST(6), &val7);
@@ -119159,7 +126694,7 @@ XS(_wrap_RPlot_segments__SWIG_0) {
     } 
     arg7 = static_cast< double >(val7);
     result = (datamunge::graphics::RPlot *) &(arg1)->segments(SWIG_STD_MOVE(*(&arg2)),SWIG_STD_MOVE(*(&arg3)),SWIG_STD_MOVE(*(&arg4)),SWIG_STD_MOVE(*(&arg5)),SWIG_STD_MOVE(*(&arg6)),arg7);
-    ST(argvi) = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__plot__RPlot, 0 | SWIG_SHADOW); argvi++ ;
+    ST(argvi) = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__graphics__RPlot, 0 | SWIG_SHADOW); argvi++ ;
     
     
     XSRETURN(argvi);
@@ -119178,7 +126713,7 @@ XS(_wrap_RPlot_segments__SWIG_1) {
     std::vector< double > arg3 ;
     std::vector< double > arg4 ;
     std::vector< double > arg5 ;
-    SwigValueWrapper< datamunge::graphics::RGB > arg6 ;
+    datamunge::graphics::RGBA arg6 ;
     void *argp1 = 0 ;
     int res1 = 0 ;
     std::vector< double > *v2 ;
@@ -119194,7 +126729,7 @@ XS(_wrap_RPlot_segments__SWIG_1) {
     if ((items < 6) || (items > 6)) {
       SWIG_croak("Usage: RPlot_segments(self,x0,y0,x1,y1,color);");
     }
-    res1 = SWIG_ConvertPtr(ST(0), &argp1,SWIGTYPE_p_datamunge__plot__RPlot, 0 |  0 );
+    res1 = SWIG_ConvertPtr(ST(0), &argp1,SWIGTYPE_p_datamunge__graphics__RPlot, 0 |  0 );
     if (!SWIG_IsOK(res1)) {
       SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "RPlot_segments" "', argument " "1"" of type '" "datamunge::graphics::RPlot *""'"); 
     }
@@ -119304,18 +126839,18 @@ XS(_wrap_RPlot_segments__SWIG_1) {
       }
     }
     {
-      res6 = SWIG_ConvertPtr(ST(5), &argp6, SWIGTYPE_p_datamunge__plot__RGB,  0 );
+      res6 = SWIG_ConvertPtr(ST(5), &argp6, SWIGTYPE_p_datamunge__graphics__RGB,  0 );
       if (!SWIG_IsOK(res6)) {
-        SWIG_exception_fail(SWIG_ArgError(res6), "in method '" "RPlot_segments" "', argument " "6"" of type '" "datamunge::graphics::RGB""'"); 
+        SWIG_exception_fail(SWIG_ArgError(res6), "in method '" "RPlot_segments" "', argument " "6"" of type '" "datamunge::graphics::RGBA""'"); 
       }  
       if (!argp6) {
-        SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "RPlot_segments" "', argument " "6"" of type '" "datamunge::graphics::RGB""'");
+        SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "RPlot_segments" "', argument " "6"" of type '" "datamunge::graphics::RGBA""'");
       } else {
-        arg6 = *(reinterpret_cast< datamunge::graphics::RGB * >(argp6));
+        arg6 = *(reinterpret_cast< datamunge::graphics::RGBA * >(argp6));
       }
     }
     result = (datamunge::graphics::RPlot *) &(arg1)->segments(SWIG_STD_MOVE(*(&arg2)),SWIG_STD_MOVE(*(&arg3)),SWIG_STD_MOVE(*(&arg4)),SWIG_STD_MOVE(*(&arg5)),SWIG_STD_MOVE(*(&arg6)));
-    ST(argvi) = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__plot__RPlot, 0 | SWIG_SHADOW); argvi++ ;
+    ST(argvi) = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__graphics__RPlot, 0 | SWIG_SHADOW); argvi++ ;
     
     XSRETURN(argvi);
     fail:;
@@ -119345,7 +126880,7 @@ XS(_wrap_RPlot_segments__SWIG_2) {
     if ((items < 5) || (items > 5)) {
       SWIG_croak("Usage: RPlot_segments(self,x0,y0,x1,y1);");
     }
-    res1 = SWIG_ConvertPtr(ST(0), &argp1,SWIGTYPE_p_datamunge__plot__RPlot, 0 |  0 );
+    res1 = SWIG_ConvertPtr(ST(0), &argp1,SWIGTYPE_p_datamunge__graphics__RPlot, 0 |  0 );
     if (!SWIG_IsOK(res1)) {
       SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "RPlot_segments" "', argument " "1"" of type '" "datamunge::graphics::RPlot *""'"); 
     }
@@ -119455,7 +126990,7 @@ XS(_wrap_RPlot_segments__SWIG_2) {
       }
     }
     result = (datamunge::graphics::RPlot *) &(arg1)->segments(SWIG_STD_MOVE(*(&arg2)),SWIG_STD_MOVE(*(&arg3)),SWIG_STD_MOVE(*(&arg4)),SWIG_STD_MOVE(*(&arg5)));
-    ST(argvi) = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__plot__RPlot, 0 | SWIG_SHADOW); argvi++ ;
+    ST(argvi) = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__graphics__RPlot, 0 | SWIG_SHADOW); argvi++ ;
     
     XSRETURN(argvi);
     fail:;
@@ -119478,7 +127013,7 @@ XS(_wrap_RPlot_segments) {
       int _v = 0;
       {
         void *vptr = 0;
-        int res = SWIG_ConvertPtr(ST(0), &vptr, SWIGTYPE_p_datamunge__plot__RPlot, 0);
+        int res = SWIG_ConvertPtr(ST(0), &vptr, SWIGTYPE_p_datamunge__graphics__RPlot, 0);
         _v = SWIG_CheckState(res);
       }
       if (!_v) goto check_1;
@@ -119639,7 +127174,7 @@ XS(_wrap_RPlot_segments) {
       int _v = 0;
       {
         void *vptr = 0;
-        int res = SWIG_ConvertPtr(ST(0), &vptr, SWIGTYPE_p_datamunge__plot__RPlot, 0);
+        int res = SWIG_ConvertPtr(ST(0), &vptr, SWIGTYPE_p_datamunge__graphics__RPlot, 0);
         _v = SWIG_CheckState(res);
       }
       if (!_v) goto check_2;
@@ -119788,7 +127323,7 @@ XS(_wrap_RPlot_segments) {
       _pi *= SWIG_MAXCASTRANK;
       {
         void *vptr = 0;
-        int res = SWIG_ConvertPtr(ST(5), &vptr, SWIGTYPE_p_datamunge__plot__RGB, SWIG_POINTER_NO_NULL);
+        int res = SWIG_ConvertPtr(ST(5), &vptr, SWIGTYPE_p_datamunge__graphics__RGB, SWIG_POINTER_NO_NULL);
         _v = SWIG_CheckState(res);
       }
       if (!_v) goto check_2;
@@ -119809,7 +127344,7 @@ XS(_wrap_RPlot_segments) {
       int _v = 0;
       {
         void *vptr = 0;
-        int res = SWIG_ConvertPtr(ST(0), &vptr, SWIGTYPE_p_datamunge__plot__RPlot, 0);
+        int res = SWIG_ConvertPtr(ST(0), &vptr, SWIGTYPE_p_datamunge__graphics__RPlot, 0);
         _v = SWIG_CheckState(res);
       }
       if (!_v) goto check_3;
@@ -119958,7 +127493,7 @@ XS(_wrap_RPlot_segments) {
       _pi *= SWIG_MAXCASTRANK;
       {
         void *vptr = 0;
-        int res = SWIG_ConvertPtr(ST(5), &vptr, SWIGTYPE_p_datamunge__plot__RGB, SWIG_POINTER_NO_NULL);
+        int res = SWIG_ConvertPtr(ST(5), &vptr, SWIGTYPE_p_datamunge__graphics__RGB, SWIG_POINTER_NO_NULL);
         _v = SWIG_CheckState(res);
       }
       if (!_v) goto check_3;
@@ -119998,24 +127533,6 @@ XS(_wrap_RPlot_segments) {
 }
 
 
-XS(_wrap_new_RPlot) {
-  {
-    int argvi = 0;
-    datamunge::graphics::RPlot *result = 0 ;
-    dXSARGS;
-    
-    if ((items < 0) || (items > 0)) {
-      SWIG_croak("Usage: new_RPlot();");
-    }
-    result = (datamunge::graphics::RPlot *)new datamunge::graphics::RPlot();
-    ST(argvi) = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_OWNER | SWIG_SHADOW); argvi++ ;
-    XSRETURN(argvi);
-    fail:;
-  }
-  SWIG_croak_null();
-}
-
-
 XS(_wrap_delete_RPlot) {
   {
     datamunge::graphics::RPlot *arg1 = 0 ;
@@ -120027,7 +127544,7 @@ XS(_wrap_delete_RPlot) {
     if ((items < 1) || (items > 1)) {
       SWIG_croak("Usage: delete_RPlot(self);");
     }
-    res1 = SWIG_ConvertPtr(ST(0), &argp1,SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_DISOWN |  0 );
+    res1 = SWIG_ConvertPtr(ST(0), &argp1,SWIGTYPE_p_datamunge__graphics__RPlot, SWIG_POINTER_DISOWN |  0 );
     if (!SWIG_IsOK(res1)) {
       SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "delete_RPlot" "', argument " "1"" of type '" "datamunge::graphics::RPlot *""'"); 
     }
@@ -120069,7 +127586,7 @@ XS(_wrap_RLayout_create) {
     } 
     arg2 = static_cast< std::size_t >(val2);
     result = datamunge::graphics::RLayout::create(SWIG_STD_MOVE(*(&arg1)),SWIG_STD_MOVE(*(&arg2)));
-    ST(argvi) = SWIG_NewPointerObj((new datamunge::graphics::RLayout(result)), SWIGTYPE_p_datamunge__plot__RLayout, SWIG_POINTER_OWN | SWIG_SHADOW); argvi++ ;
+    ST(argvi) = SWIG_NewPointerObj((new datamunge::graphics::RLayout(result)), SWIGTYPE_p_datamunge__graphics__RLayout, SWIG_POINTER_OWN | SWIG_SHADOW); argvi++ ;
     
     
     XSRETURN(argvi);
@@ -120096,12 +127613,12 @@ XS(_wrap_RLayout_add) {
     if ((items < 2) || (items > 2)) {
       SWIG_croak("Usage: RLayout_add(self,panel);");
     }
-    res1 = SWIG_ConvertPtr(ST(0), &argp1,SWIGTYPE_p_datamunge__plot__RLayout, 0 |  0 );
+    res1 = SWIG_ConvertPtr(ST(0), &argp1,SWIGTYPE_p_datamunge__graphics__RLayout, 0 |  0 );
     if (!SWIG_IsOK(res1)) {
       SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "RLayout_add" "', argument " "1"" of type '" "datamunge::graphics::RLayout *""'"); 
     }
     arg1 = reinterpret_cast< datamunge::graphics::RLayout * >(argp1);
-    res2 = SWIG_ConvertPtr(ST(1), &argp2, SWIGTYPE_p_datamunge__plot__Plot,  0 );
+    res2 = SWIG_ConvertPtr(ST(1), &argp2, SWIGTYPE_p_datamunge__graphics__Plot,  0 );
     if (!SWIG_IsOK(res2)) {
       SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "RLayout_add" "', argument " "2"" of type '" "datamunge::graphics::Plot const &""'"); 
     }
@@ -120110,7 +127627,7 @@ XS(_wrap_RLayout_add) {
     }
     arg2 = reinterpret_cast< datamunge::graphics::Plot * >(argp2);
     result = (datamunge::graphics::RLayout *) &(arg1)->add((datamunge::graphics::Plot const &)*arg2);
-    ST(argvi) = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__plot__RLayout, 0 | SWIG_SHADOW); argvi++ ;
+    ST(argvi) = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__graphics__RLayout, 0 | SWIG_SHADOW); argvi++ ;
     
     
     XSRETURN(argvi);
@@ -120140,7 +127657,7 @@ XS(_wrap_RLayout_size) {
     if ((items < 3) || (items > 3)) {
       SWIG_croak("Usage: RLayout_size(self,width,height);");
     }
-    res1 = SWIG_ConvertPtr(ST(0), &argp1,SWIGTYPE_p_datamunge__plot__RLayout, 0 |  0 );
+    res1 = SWIG_ConvertPtr(ST(0), &argp1,SWIGTYPE_p_datamunge__graphics__RLayout, 0 |  0 );
     if (!SWIG_IsOK(res1)) {
       SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "RLayout_size" "', argument " "1"" of type '" "datamunge::graphics::RLayout *""'"); 
     }
@@ -120156,13 +127673,259 @@ XS(_wrap_RLayout_size) {
     } 
     arg3 = static_cast< std::size_t >(val3);
     result = (datamunge::graphics::RLayout *) &(arg1)->size(SWIG_STD_MOVE(*(&arg2)),SWIG_STD_MOVE(*(&arg3)));
-    ST(argvi) = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__plot__RLayout, 0 | SWIG_SHADOW); argvi++ ;
+    ST(argvi) = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__graphics__RLayout, 0 | SWIG_SHADOW); argvi++ ;
     
     
     
     XSRETURN(argvi);
     fail:;
     
+    
+    
+  }
+  SWIG_croak_null();
+}
+
+
+XS(_wrap_RLayout_title) {
+  {
+    datamunge::graphics::RLayout *arg1 = 0 ;
+    std::string arg2 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    int argvi = 0;
+    datamunge::graphics::RLayout *result = 0 ;
+    dXSARGS;
+    
+    if ((items < 2) || (items > 2)) {
+      SWIG_croak("Usage: RLayout_title(self,value);");
+    }
+    res1 = SWIG_ConvertPtr(ST(0), &argp1,SWIGTYPE_p_datamunge__graphics__RLayout, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "RLayout_title" "', argument " "1"" of type '" "datamunge::graphics::RLayout *""'"); 
+    }
+    arg1 = reinterpret_cast< datamunge::graphics::RLayout * >(argp1);
+    {
+      std::string *ptr = (std::string *)0;
+      int res = SWIG_AsPtr_std_string SWIG_PERL_CALL_ARGS_2(ST(1), &ptr);
+      if (!SWIG_IsOK(res) || !ptr) {
+        SWIG_exception_fail(SWIG_ArgError((ptr ? res : SWIG_TypeError)), "in method '" "RLayout_title" "', argument " "2"" of type '" "std::string""'"); 
+      }
+      arg2 = *ptr;
+      if (SWIG_IsNewObj(res)) delete ptr;
+    }
+    result = (datamunge::graphics::RLayout *) &(arg1)->title(SWIG_STD_MOVE(*(&arg2)));
+    ST(argvi) = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__graphics__RLayout, 0 | SWIG_SHADOW); argvi++ ;
+    
+    
+    XSRETURN(argvi);
+    fail:;
+    
+    
+  }
+  SWIG_croak_null();
+}
+
+
+XS(_wrap_RLayout_rows) {
+  {
+    datamunge::graphics::RLayout *arg1 = 0 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    int argvi = 0;
+    std::size_t result;
+    dXSARGS;
+    
+    if ((items < 1) || (items > 1)) {
+      SWIG_croak("Usage: RLayout_rows(self);");
+    }
+    res1 = SWIG_ConvertPtr(ST(0), &argp1,SWIGTYPE_p_datamunge__graphics__RLayout, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "RLayout_rows" "', argument " "1"" of type '" "datamunge::graphics::RLayout const *""'"); 
+    }
+    arg1 = reinterpret_cast< datamunge::graphics::RLayout * >(argp1);
+    result = ((datamunge::graphics::RLayout const *)arg1)->rows();
+    ST(argvi) = SWIG_From_size_t  SWIG_PERL_CALL_ARGS_1(static_cast< size_t >(result)); argvi++ ;
+    
+    XSRETURN(argvi);
+    fail:;
+    
+  }
+  SWIG_croak_null();
+}
+
+
+XS(_wrap_RLayout_cols) {
+  {
+    datamunge::graphics::RLayout *arg1 = 0 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    int argvi = 0;
+    std::size_t result;
+    dXSARGS;
+    
+    if ((items < 1) || (items > 1)) {
+      SWIG_croak("Usage: RLayout_cols(self);");
+    }
+    res1 = SWIG_ConvertPtr(ST(0), &argp1,SWIGTYPE_p_datamunge__graphics__RLayout, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "RLayout_cols" "', argument " "1"" of type '" "datamunge::graphics::RLayout const *""'"); 
+    }
+    arg1 = reinterpret_cast< datamunge::graphics::RLayout * >(argp1);
+    result = ((datamunge::graphics::RLayout const *)arg1)->cols();
+    ST(argvi) = SWIG_From_size_t  SWIG_PERL_CALL_ARGS_1(static_cast< size_t >(result)); argvi++ ;
+    
+    XSRETURN(argvi);
+    fail:;
+    
+  }
+  SWIG_croak_null();
+}
+
+
+XS(_wrap_RLayout_width) {
+  {
+    datamunge::graphics::RLayout *arg1 = 0 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    int argvi = 0;
+    std::size_t result;
+    dXSARGS;
+    
+    if ((items < 1) || (items > 1)) {
+      SWIG_croak("Usage: RLayout_width(self);");
+    }
+    res1 = SWIG_ConvertPtr(ST(0), &argp1,SWIGTYPE_p_datamunge__graphics__RLayout, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "RLayout_width" "', argument " "1"" of type '" "datamunge::graphics::RLayout const *""'"); 
+    }
+    arg1 = reinterpret_cast< datamunge::graphics::RLayout * >(argp1);
+    result = ((datamunge::graphics::RLayout const *)arg1)->width();
+    ST(argvi) = SWIG_From_size_t  SWIG_PERL_CALL_ARGS_1(static_cast< size_t >(result)); argvi++ ;
+    
+    XSRETURN(argvi);
+    fail:;
+    
+  }
+  SWIG_croak_null();
+}
+
+
+XS(_wrap_RLayout_height) {
+  {
+    datamunge::graphics::RLayout *arg1 = 0 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    int argvi = 0;
+    std::size_t result;
+    dXSARGS;
+    
+    if ((items < 1) || (items > 1)) {
+      SWIG_croak("Usage: RLayout_height(self);");
+    }
+    res1 = SWIG_ConvertPtr(ST(0), &argp1,SWIGTYPE_p_datamunge__graphics__RLayout, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "RLayout_height" "', argument " "1"" of type '" "datamunge::graphics::RLayout const *""'"); 
+    }
+    arg1 = reinterpret_cast< datamunge::graphics::RLayout * >(argp1);
+    result = ((datamunge::graphics::RLayout const *)arg1)->height();
+    ST(argvi) = SWIG_From_size_t  SWIG_PERL_CALL_ARGS_1(static_cast< size_t >(result)); argvi++ ;
+    
+    XSRETURN(argvi);
+    fail:;
+    
+  }
+  SWIG_croak_null();
+}
+
+
+XS(_wrap_RLayout_panel_count) {
+  {
+    datamunge::graphics::RLayout *arg1 = 0 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    int argvi = 0;
+    std::size_t result;
+    dXSARGS;
+    
+    if ((items < 1) || (items > 1)) {
+      SWIG_croak("Usage: RLayout_panel_count(self);");
+    }
+    res1 = SWIG_ConvertPtr(ST(0), &argp1,SWIGTYPE_p_datamunge__graphics__RLayout, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "RLayout_panel_count" "', argument " "1"" of type '" "datamunge::graphics::RLayout const *""'"); 
+    }
+    arg1 = reinterpret_cast< datamunge::graphics::RLayout * >(argp1);
+    result = ((datamunge::graphics::RLayout const *)arg1)->panel_count();
+    ST(argvi) = SWIG_From_size_t  SWIG_PERL_CALL_ARGS_1(static_cast< size_t >(result)); argvi++ ;
+    
+    XSRETURN(argvi);
+    fail:;
+    
+  }
+  SWIG_croak_null();
+}
+
+
+XS(_wrap_RLayout_title_text) {
+  {
+    datamunge::graphics::RLayout *arg1 = 0 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    int argvi = 0;
+    std::string *result = 0 ;
+    dXSARGS;
+    
+    if ((items < 1) || (items > 1)) {
+      SWIG_croak("Usage: RLayout_title_text(self);");
+    }
+    res1 = SWIG_ConvertPtr(ST(0), &argp1,SWIGTYPE_p_datamunge__graphics__RLayout, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "RLayout_title_text" "', argument " "1"" of type '" "datamunge::graphics::RLayout const *""'"); 
+    }
+    arg1 = reinterpret_cast< datamunge::graphics::RLayout * >(argp1);
+    result = (std::string *) &((datamunge::graphics::RLayout const *)arg1)->title_text();
+    ST(argvi) = SWIG_From_std_string  SWIG_PERL_CALL_ARGS_1(static_cast< std::string >(*result)); argvi++ ;
+    
+    XSRETURN(argvi);
+    fail:;
+    
+  }
+  SWIG_croak_null();
+}
+
+
+XS(_wrap_RLayout_panel) {
+  {
+    datamunge::graphics::RLayout *arg1 = 0 ;
+    std::size_t arg2 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    size_t val2 ;
+    int ecode2 = 0 ;
+    int argvi = 0;
+    datamunge::graphics::Plot *result = 0 ;
+    dXSARGS;
+    
+    if ((items < 2) || (items > 2)) {
+      SWIG_croak("Usage: RLayout_panel(self,index);");
+    }
+    res1 = SWIG_ConvertPtr(ST(0), &argp1,SWIGTYPE_p_datamunge__graphics__RLayout, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "RLayout_panel" "', argument " "1"" of type '" "datamunge::graphics::RLayout const *""'"); 
+    }
+    arg1 = reinterpret_cast< datamunge::graphics::RLayout * >(argp1);
+    ecode2 = SWIG_AsVal_size_t SWIG_PERL_CALL_ARGS_2(ST(1), &val2);
+    if (!SWIG_IsOK(ecode2)) {
+      SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "RLayout_panel" "', argument " "2"" of type '" "std::size_t""'");
+    } 
+    arg2 = static_cast< std::size_t >(val2);
+    result = (datamunge::graphics::Plot *) &((datamunge::graphics::RLayout const *)arg1)->panel(SWIG_STD_MOVE(*(&arg2)));
+    ST(argvi) = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__graphics__Plot, 0 | SWIG_SHADOW); argvi++ ;
+    
+    
+    XSRETURN(argvi);
+    fail:;
     
     
   }
@@ -120182,7 +127945,7 @@ XS(_wrap_RLayout_to_svg) {
     if ((items < 1) || (items > 1)) {
       SWIG_croak("Usage: RLayout_to_svg(self);");
     }
-    res1 = SWIG_ConvertPtr(ST(0), &argp1,SWIGTYPE_p_datamunge__plot__RLayout, 0 |  0 );
+    res1 = SWIG_ConvertPtr(ST(0), &argp1,SWIGTYPE_p_datamunge__graphics__RLayout, 0 |  0 );
     if (!SWIG_IsOK(res1)) {
       SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "RLayout_to_svg" "', argument " "1"" of type '" "datamunge::graphics::RLayout const *""'"); 
     }
@@ -120211,7 +127974,7 @@ XS(_wrap_RLayout_save) {
     if ((items < 2) || (items > 2)) {
       SWIG_croak("Usage: RLayout_save(self,path);");
     }
-    res1 = SWIG_ConvertPtr(ST(0), &argp1,SWIGTYPE_p_datamunge__plot__RLayout, 0 |  0 );
+    res1 = SWIG_ConvertPtr(ST(0), &argp1,SWIGTYPE_p_datamunge__graphics__RLayout, 0 |  0 );
     if (!SWIG_IsOK(res1)) {
       SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "RLayout_save" "', argument " "1"" of type '" "datamunge::graphics::RLayout const *""'"); 
     }
@@ -120253,7 +128016,7 @@ XS(_wrap_RLayout_save_svg) {
     if ((items < 2) || (items > 2)) {
       SWIG_croak("Usage: RLayout_save_svg(self,path);");
     }
-    res1 = SWIG_ConvertPtr(ST(0), &argp1,SWIGTYPE_p_datamunge__plot__RLayout, 0 |  0 );
+    res1 = SWIG_ConvertPtr(ST(0), &argp1,SWIGTYPE_p_datamunge__graphics__RLayout, 0 |  0 );
     if (!SWIG_IsOK(res1)) {
       SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "RLayout_save_svg" "', argument " "1"" of type '" "datamunge::graphics::RLayout const *""'"); 
     }
@@ -120282,6 +128045,452 @@ XS(_wrap_RLayout_save_svg) {
 }
 
 
+XS(_wrap_RLayout_to_png) {
+  {
+    datamunge::graphics::RLayout *arg1 = 0 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    int argvi = 0;
+    std::vector< std::uint8_t > result;
+    dXSARGS;
+    
+    if ((items < 1) || (items > 1)) {
+      SWIG_croak("Usage: RLayout_to_png(self);");
+    }
+    res1 = SWIG_ConvertPtr(ST(0), &argp1,SWIGTYPE_p_datamunge__graphics__RLayout, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "RLayout_to_png" "', argument " "1"" of type '" "datamunge::graphics::RLayout const *""'"); 
+    }
+    arg1 = reinterpret_cast< datamunge::graphics::RLayout * >(argp1);
+    result = ((datamunge::graphics::RLayout const *)arg1)->to_png();
+    ST(argvi) = SWIG_NewPointerObj((new std::vector< std::uint8_t >(result)), SWIGTYPE_p_std__vectorT_unsigned_char_t, SWIG_POINTER_OWN | 0); argvi++ ;
+    
+    XSRETURN(argvi);
+    fail:;
+    
+  }
+  SWIG_croak_null();
+}
+
+
+XS(_wrap_RLayout_to_pdf) {
+  {
+    datamunge::graphics::RLayout *arg1 = 0 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    int argvi = 0;
+    std::vector< std::uint8_t > result;
+    dXSARGS;
+    
+    if ((items < 1) || (items > 1)) {
+      SWIG_croak("Usage: RLayout_to_pdf(self);");
+    }
+    res1 = SWIG_ConvertPtr(ST(0), &argp1,SWIGTYPE_p_datamunge__graphics__RLayout, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "RLayout_to_pdf" "', argument " "1"" of type '" "datamunge::graphics::RLayout const *""'"); 
+    }
+    arg1 = reinterpret_cast< datamunge::graphics::RLayout * >(argp1);
+    result = ((datamunge::graphics::RLayout const *)arg1)->to_pdf();
+    ST(argvi) = SWIG_NewPointerObj((new std::vector< std::uint8_t >(result)), SWIGTYPE_p_std__vectorT_unsigned_char_t, SWIG_POINTER_OWN | 0); argvi++ ;
+    
+    XSRETURN(argvi);
+    fail:;
+    
+  }
+  SWIG_croak_null();
+}
+
+
+XS(_wrap_RLayout_save_png) {
+  {
+    datamunge::graphics::RLayout *arg1 = 0 ;
+    std::string *arg2 = 0 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    int res2 = SWIG_OLDOBJ ;
+    int argvi = 0;
+    dXSARGS;
+    
+    if ((items < 2) || (items > 2)) {
+      SWIG_croak("Usage: RLayout_save_png(self,path);");
+    }
+    res1 = SWIG_ConvertPtr(ST(0), &argp1,SWIGTYPE_p_datamunge__graphics__RLayout, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "RLayout_save_png" "', argument " "1"" of type '" "datamunge::graphics::RLayout const *""'"); 
+    }
+    arg1 = reinterpret_cast< datamunge::graphics::RLayout * >(argp1);
+    {
+      std::string *ptr = (std::string *)0;
+      res2 = SWIG_AsPtr_std_string SWIG_PERL_CALL_ARGS_2(ST(1), &ptr);
+      if (!SWIG_IsOK(res2)) {
+        SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "RLayout_save_png" "', argument " "2"" of type '" "std::string const &""'"); 
+      }
+      if (!ptr) {
+        SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "RLayout_save_png" "', argument " "2"" of type '" "std::string const &""'"); 
+      }
+      arg2 = ptr;
+    }
+    ((datamunge::graphics::RLayout const *)arg1)->save_png((std::string const &)*arg2);
+    ST(argvi) = &PL_sv_undef;
+    
+    if (SWIG_IsNewObj(res2)) delete arg2;
+    XSRETURN(argvi);
+    fail:;
+    
+    if (SWIG_IsNewObj(res2)) delete arg2;
+  }
+  SWIG_croak_null();
+}
+
+
+XS(_wrap_RLayout_save_pdf) {
+  {
+    datamunge::graphics::RLayout *arg1 = 0 ;
+    std::string *arg2 = 0 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    int res2 = SWIG_OLDOBJ ;
+    int argvi = 0;
+    dXSARGS;
+    
+    if ((items < 2) || (items > 2)) {
+      SWIG_croak("Usage: RLayout_save_pdf(self,path);");
+    }
+    res1 = SWIG_ConvertPtr(ST(0), &argp1,SWIGTYPE_p_datamunge__graphics__RLayout, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "RLayout_save_pdf" "', argument " "1"" of type '" "datamunge::graphics::RLayout const *""'"); 
+    }
+    arg1 = reinterpret_cast< datamunge::graphics::RLayout * >(argp1);
+    {
+      std::string *ptr = (std::string *)0;
+      res2 = SWIG_AsPtr_std_string SWIG_PERL_CALL_ARGS_2(ST(1), &ptr);
+      if (!SWIG_IsOK(res2)) {
+        SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "RLayout_save_pdf" "', argument " "2"" of type '" "std::string const &""'"); 
+      }
+      if (!ptr) {
+        SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "RLayout_save_pdf" "', argument " "2"" of type '" "std::string const &""'"); 
+      }
+      arg2 = ptr;
+    }
+    ((datamunge::graphics::RLayout const *)arg1)->save_pdf((std::string const &)*arg2);
+    ST(argvi) = &PL_sv_undef;
+    
+    if (SWIG_IsNewObj(res2)) delete arg2;
+    XSRETURN(argvi);
+    fail:;
+    
+    if (SWIG_IsNewObj(res2)) delete arg2;
+  }
+  SWIG_croak_null();
+}
+
+
+XS(_wrap_RLayout_fit_panels) {
+  {
+    datamunge::graphics::RLayout *arg1 = 0 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    int argvi = 0;
+    datamunge::graphics::RLayout *result = 0 ;
+    dXSARGS;
+    
+    if ((items < 1) || (items > 1)) {
+      SWIG_croak("Usage: RLayout_fit_panels(self);");
+    }
+    res1 = SWIG_ConvertPtr(ST(0), &argp1,SWIGTYPE_p_datamunge__graphics__RLayout, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "RLayout_fit_panels" "', argument " "1"" of type '" "datamunge::graphics::RLayout *""'"); 
+    }
+    arg1 = reinterpret_cast< datamunge::graphics::RLayout * >(argp1);
+    result = (datamunge::graphics::RLayout *) &(arg1)->fit_panels();
+    ST(argvi) = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__graphics__RLayout, 0 | SWIG_SHADOW); argvi++ ;
+    
+    XSRETURN(argvi);
+    fail:;
+    
+  }
+  SWIG_croak_null();
+}
+
+
+XS(_wrap_RLayout_show__SWIG_0) {
+  {
+    datamunge::graphics::RLayout *arg1 = 0 ;
+    std::string *arg2 = 0 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    int res2 = SWIG_OLDOBJ ;
+    int argvi = 0;
+    dXSARGS;
+    
+    if ((items < 2) || (items > 2)) {
+      SWIG_croak("Usage: RLayout_show(self,title_hint);");
+    }
+    res1 = SWIG_ConvertPtr(ST(0), &argp1,SWIGTYPE_p_datamunge__graphics__RLayout, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "RLayout_show" "', argument " "1"" of type '" "datamunge::graphics::RLayout const *""'"); 
+    }
+    arg1 = reinterpret_cast< datamunge::graphics::RLayout * >(argp1);
+    {
+      std::string *ptr = (std::string *)0;
+      res2 = SWIG_AsPtr_std_string SWIG_PERL_CALL_ARGS_2(ST(1), &ptr);
+      if (!SWIG_IsOK(res2)) {
+        SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "RLayout_show" "', argument " "2"" of type '" "std::string const &""'"); 
+      }
+      if (!ptr) {
+        SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "RLayout_show" "', argument " "2"" of type '" "std::string const &""'"); 
+      }
+      arg2 = ptr;
+    }
+    ((datamunge::graphics::RLayout const *)arg1)->show((std::string const &)*arg2);
+    ST(argvi) = &PL_sv_undef;
+    
+    if (SWIG_IsNewObj(res2)) delete arg2;
+    XSRETURN(argvi);
+    fail:;
+    
+    if (SWIG_IsNewObj(res2)) delete arg2;
+  }
+  SWIG_croak_null();
+}
+
+
+XS(_wrap_RLayout_show__SWIG_1) {
+  {
+    datamunge::graphics::RLayout *arg1 = 0 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    int argvi = 0;
+    dXSARGS;
+    
+    if ((items < 1) || (items > 1)) {
+      SWIG_croak("Usage: RLayout_show(self);");
+    }
+    res1 = SWIG_ConvertPtr(ST(0), &argp1,SWIGTYPE_p_datamunge__graphics__RLayout, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "RLayout_show" "', argument " "1"" of type '" "datamunge::graphics::RLayout const *""'"); 
+    }
+    arg1 = reinterpret_cast< datamunge::graphics::RLayout * >(argp1);
+    ((datamunge::graphics::RLayout const *)arg1)->show();
+    ST(argvi) = &PL_sv_undef;
+    
+    XSRETURN(argvi);
+    fail:;
+    
+  }
+  SWIG_croak_null();
+}
+
+
+XS(_wrap_RLayout_show) {
+  dXSARGS;
+  
+  {
+    unsigned long _index = 0;
+    SWIG_TypeRank _rank = 0; 
+    if (items == 1) {
+      SWIG_TypeRank _ranki = 0;
+      SWIG_TypeRank _rankm = 0;
+      SWIG_TypeRank _pi = 1;
+      int _v = 0;
+      {
+        void *vptr = 0;
+        int res = SWIG_ConvertPtr(ST(0), &vptr, SWIGTYPE_p_datamunge__graphics__RLayout, 0);
+        _v = SWIG_CheckState(res);
+      }
+      if (!_v) goto check_1;
+      _ranki += _v*_pi;
+      _rankm += _pi;
+      _pi *= SWIG_MAXCASTRANK;
+      if (!_index || (_ranki < _rank)) {
+        _rank = _ranki; _index = 1;
+        if (_rank == _rankm) goto dispatch;
+      }
+    }
+  check_1:
+    
+    if (items == 2) {
+      SWIG_TypeRank _ranki = 0;
+      SWIG_TypeRank _rankm = 0;
+      SWIG_TypeRank _pi = 1;
+      int _v = 0;
+      {
+        void *vptr = 0;
+        int res = SWIG_ConvertPtr(ST(0), &vptr, SWIGTYPE_p_datamunge__graphics__RLayout, 0);
+        _v = SWIG_CheckState(res);
+      }
+      if (!_v) goto check_2;
+      _ranki += _v*_pi;
+      _rankm += _pi;
+      _pi *= SWIG_MAXCASTRANK;
+      {
+        int res = SWIG_AsPtr_std_string SWIG_PERL_CALL_ARGS_2(ST(1), (std::string**)(0));
+        _v = SWIG_CheckState(res);
+      }
+      if (!_v) goto check_2;
+      _ranki += _v*_pi;
+      _rankm += _pi;
+      _pi *= SWIG_MAXCASTRANK;
+      if (!_index || (_ranki < _rank)) {
+        _rank = _ranki; _index = 2;
+        if (_rank == _rankm) goto dispatch;
+      }
+    }
+  check_2:
+    
+  dispatch:
+    switch(_index) {
+    case 1:
+      PUSHMARK(MARK); SWIG_CALLXS(_wrap_RLayout_show__SWIG_1); return;
+    case 2:
+      PUSHMARK(MARK); SWIG_CALLXS(_wrap_RLayout_show__SWIG_0); return;
+    }
+  }
+  
+  croak("No matching function for overloaded 'RLayout_show'");
+  XSRETURN(0);
+}
+
+
+XS(_wrap_RLayout_view__SWIG_0) {
+  {
+    datamunge::graphics::RLayout *arg1 = 0 ;
+    std::string *arg2 = 0 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    int res2 = SWIG_OLDOBJ ;
+    int argvi = 0;
+    dXSARGS;
+    
+    if ((items < 2) || (items > 2)) {
+      SWIG_croak("Usage: RLayout_view(self,title_hint);");
+    }
+    res1 = SWIG_ConvertPtr(ST(0), &argp1,SWIGTYPE_p_datamunge__graphics__RLayout, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "RLayout_view" "', argument " "1"" of type '" "datamunge::graphics::RLayout const *""'"); 
+    }
+    arg1 = reinterpret_cast< datamunge::graphics::RLayout * >(argp1);
+    {
+      std::string *ptr = (std::string *)0;
+      res2 = SWIG_AsPtr_std_string SWIG_PERL_CALL_ARGS_2(ST(1), &ptr);
+      if (!SWIG_IsOK(res2)) {
+        SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "RLayout_view" "', argument " "2"" of type '" "std::string const &""'"); 
+      }
+      if (!ptr) {
+        SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "RLayout_view" "', argument " "2"" of type '" "std::string const &""'"); 
+      }
+      arg2 = ptr;
+    }
+    ((datamunge::graphics::RLayout const *)arg1)->view((std::string const &)*arg2);
+    ST(argvi) = &PL_sv_undef;
+    
+    if (SWIG_IsNewObj(res2)) delete arg2;
+    XSRETURN(argvi);
+    fail:;
+    
+    if (SWIG_IsNewObj(res2)) delete arg2;
+  }
+  SWIG_croak_null();
+}
+
+
+XS(_wrap_RLayout_view__SWIG_1) {
+  {
+    datamunge::graphics::RLayout *arg1 = 0 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    int argvi = 0;
+    dXSARGS;
+    
+    if ((items < 1) || (items > 1)) {
+      SWIG_croak("Usage: RLayout_view(self);");
+    }
+    res1 = SWIG_ConvertPtr(ST(0), &argp1,SWIGTYPE_p_datamunge__graphics__RLayout, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "RLayout_view" "', argument " "1"" of type '" "datamunge::graphics::RLayout const *""'"); 
+    }
+    arg1 = reinterpret_cast< datamunge::graphics::RLayout * >(argp1);
+    ((datamunge::graphics::RLayout const *)arg1)->view();
+    ST(argvi) = &PL_sv_undef;
+    
+    XSRETURN(argvi);
+    fail:;
+    
+  }
+  SWIG_croak_null();
+}
+
+
+XS(_wrap_RLayout_view) {
+  dXSARGS;
+  
+  {
+    unsigned long _index = 0;
+    SWIG_TypeRank _rank = 0; 
+    if (items == 1) {
+      SWIG_TypeRank _ranki = 0;
+      SWIG_TypeRank _rankm = 0;
+      SWIG_TypeRank _pi = 1;
+      int _v = 0;
+      {
+        void *vptr = 0;
+        int res = SWIG_ConvertPtr(ST(0), &vptr, SWIGTYPE_p_datamunge__graphics__RLayout, 0);
+        _v = SWIG_CheckState(res);
+      }
+      if (!_v) goto check_1;
+      _ranki += _v*_pi;
+      _rankm += _pi;
+      _pi *= SWIG_MAXCASTRANK;
+      if (!_index || (_ranki < _rank)) {
+        _rank = _ranki; _index = 1;
+        if (_rank == _rankm) goto dispatch;
+      }
+    }
+  check_1:
+    
+    if (items == 2) {
+      SWIG_TypeRank _ranki = 0;
+      SWIG_TypeRank _rankm = 0;
+      SWIG_TypeRank _pi = 1;
+      int _v = 0;
+      {
+        void *vptr = 0;
+        int res = SWIG_ConvertPtr(ST(0), &vptr, SWIGTYPE_p_datamunge__graphics__RLayout, 0);
+        _v = SWIG_CheckState(res);
+      }
+      if (!_v) goto check_2;
+      _ranki += _v*_pi;
+      _rankm += _pi;
+      _pi *= SWIG_MAXCASTRANK;
+      {
+        int res = SWIG_AsPtr_std_string SWIG_PERL_CALL_ARGS_2(ST(1), (std::string**)(0));
+        _v = SWIG_CheckState(res);
+      }
+      if (!_v) goto check_2;
+      _ranki += _v*_pi;
+      _rankm += _pi;
+      _pi *= SWIG_MAXCASTRANK;
+      if (!_index || (_ranki < _rank)) {
+        _rank = _ranki; _index = 2;
+        if (_rank == _rankm) goto dispatch;
+      }
+    }
+  check_2:
+    
+  dispatch:
+    switch(_index) {
+    case 1:
+      PUSHMARK(MARK); SWIG_CALLXS(_wrap_RLayout_view__SWIG_1); return;
+    case 2:
+      PUSHMARK(MARK); SWIG_CALLXS(_wrap_RLayout_view__SWIG_0); return;
+    }
+  }
+  
+  croak("No matching function for overloaded 'RLayout_view'");
+  XSRETURN(0);
+}
+
+
 XS(_wrap_new_RLayout) {
   {
     int argvi = 0;
@@ -120292,7 +128501,7 @@ XS(_wrap_new_RLayout) {
       SWIG_croak("Usage: new_RLayout();");
     }
     result = (datamunge::graphics::RLayout *)new datamunge::graphics::RLayout();
-    ST(argvi) = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__plot__RLayout, SWIG_OWNER | SWIG_SHADOW); argvi++ ;
+    ST(argvi) = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__graphics__RLayout, SWIG_OWNER | SWIG_SHADOW); argvi++ ;
     XSRETURN(argvi);
     fail:;
   }
@@ -120311,7 +128520,7 @@ XS(_wrap_delete_RLayout) {
     if ((items < 1) || (items > 1)) {
       SWIG_croak("Usage: delete_RLayout(self);");
     }
-    res1 = SWIG_ConvertPtr(ST(0), &argp1,SWIGTYPE_p_datamunge__plot__RLayout, SWIG_POINTER_DISOWN |  0 );
+    res1 = SWIG_ConvertPtr(ST(0), &argp1,SWIGTYPE_p_datamunge__graphics__RLayout, SWIG_POINTER_DISOWN |  0 );
     if (!SWIG_IsOK(res1)) {
       SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "delete_RLayout" "', argument " "1"" of type '" "datamunge::graphics::RLayout *""'"); 
     }
@@ -120324,6 +128533,631 @@ XS(_wrap_delete_RLayout) {
     
   }
   SWIG_croak_null();
+}
+
+
+XS(_wrap_terrain_colors) {
+  {
+    std::size_t arg1 ;
+    size_t val1 ;
+    int ecode1 = 0 ;
+    int argvi = 0;
+    SwigValueWrapper< std::vector< datamunge::graphics::RGB > > result;
+    dXSARGS;
+    
+    if ((items < 1) || (items > 1)) {
+      SWIG_croak("Usage: terrain_colors(n);");
+    }
+    ecode1 = SWIG_AsVal_size_t SWIG_PERL_CALL_ARGS_2(ST(0), &val1);
+    if (!SWIG_IsOK(ecode1)) {
+      SWIG_exception_fail(SWIG_ArgError(ecode1), "in method '" "terrain_colors" "', argument " "1"" of type '" "std::size_t""'");
+    } 
+    arg1 = static_cast< std::size_t >(val1);
+    result = datamunge::graphics::terrain_colors(SWIG_STD_MOVE(*(&arg1)));
+    ST(argvi) = SWIG_NewPointerObj((new std::vector< datamunge::graphics::RGBA >(result)), SWIGTYPE_p_std__vectorT_datamunge__graphics__RGB_t, SWIG_POINTER_OWN | 0); argvi++ ;
+    
+    XSRETURN(argvi);
+    fail:;
+    
+  }
+  SWIG_croak_null();
+}
+
+
+XS(_wrap_diverging_colors) {
+  {
+    std::size_t arg1 ;
+    size_t val1 ;
+    int ecode1 = 0 ;
+    int argvi = 0;
+    SwigValueWrapper< std::vector< datamunge::graphics::RGB > > result;
+    dXSARGS;
+    
+    if ((items < 1) || (items > 1)) {
+      SWIG_croak("Usage: diverging_colors(n);");
+    }
+    ecode1 = SWIG_AsVal_size_t SWIG_PERL_CALL_ARGS_2(ST(0), &val1);
+    if (!SWIG_IsOK(ecode1)) {
+      SWIG_exception_fail(SWIG_ArgError(ecode1), "in method '" "diverging_colors" "', argument " "1"" of type '" "std::size_t""'");
+    } 
+    arg1 = static_cast< std::size_t >(val1);
+    result = datamunge::graphics::diverging_colors(SWIG_STD_MOVE(*(&arg1)));
+    ST(argvi) = SWIG_NewPointerObj((new std::vector< datamunge::graphics::RGBA >(result)), SWIGTYPE_p_std__vectorT_datamunge__graphics__RGB_t, SWIG_POINTER_OWN | 0); argvi++ ;
+    
+    XSRETURN(argvi);
+    fail:;
+    
+  }
+  SWIG_croak_null();
+}
+
+
+XS(_wrap_viridis_colors) {
+  {
+    std::size_t arg1 ;
+    size_t val1 ;
+    int ecode1 = 0 ;
+    int argvi = 0;
+    SwigValueWrapper< std::vector< datamunge::graphics::RGB > > result;
+    dXSARGS;
+    
+    if ((items < 1) || (items > 1)) {
+      SWIG_croak("Usage: viridis_colors(n);");
+    }
+    ecode1 = SWIG_AsVal_size_t SWIG_PERL_CALL_ARGS_2(ST(0), &val1);
+    if (!SWIG_IsOK(ecode1)) {
+      SWIG_exception_fail(SWIG_ArgError(ecode1), "in method '" "viridis_colors" "', argument " "1"" of type '" "std::size_t""'");
+    } 
+    arg1 = static_cast< std::size_t >(val1);
+    result = datamunge::graphics::viridis_colors(SWIG_STD_MOVE(*(&arg1)));
+    ST(argvi) = SWIG_NewPointerObj((new std::vector< datamunge::graphics::RGBA >(result)), SWIGTYPE_p_std__vectorT_datamunge__graphics__RGB_t, SWIG_POINTER_OWN | 0); argvi++ ;
+    
+    XSRETURN(argvi);
+    fail:;
+    
+  }
+  SWIG_croak_null();
+}
+
+
+XS(_wrap_value_colors__SWIG_0) {
+  {
+    std::vector< double > *arg1 = 0 ;
+    SwigValueWrapper< std::vector< datamunge::graphics::RGB > > arg2 ;
+    double arg3 ;
+    double arg4 ;
+    std::vector< double > temp1 ;
+    std::vector< double > *v1 ;
+    void *argp2 = 0 ;
+    int res2 = 0 ;
+    double val3 ;
+    int ecode3 = 0 ;
+    double val4 ;
+    int ecode4 = 0 ;
+    int argvi = 0;
+    SwigValueWrapper< std::vector< datamunge::graphics::RGB > > result;
+    dXSARGS;
+    
+    if ((items < 4) || (items > 4)) {
+      SWIG_croak("Usage: value_colors(values,palette,z_min,z_max);");
+    }
+    {
+      if (SWIG_ConvertPtr(ST(0),(void **) &v1, 
+          SWIGTYPE_p_std__vectorT_double_t,1) != -1) {
+        arg1 = v1;
+      } else if (SvROK(ST(0))) {
+        AV *av = (AV *)SvRV(ST(0));
+        if (SvTYPE(av) != SVt_PVAV)
+        SWIG_croak("Type error in argument 1 of value_colors. "
+          "Expected an array of ""double");
+        SV **tv;
+        SSize_t len = av_len(av) + 1;
+        for (int i=0; i<len; i++) {
+          tv = av_fetch(av, i, 0);
+          if (SvNIOK(*tv)) {
+            temp1.push_back((double)SwigSvToNumber(*tv));
+          } else {
+            SWIG_croak("Type error in argument 1 of "
+              "value_colors. "
+              "Expected an array of ""double");
+          }
+        }
+        arg1 = &temp1;
+      } else {
+        SWIG_croak("Type error in argument 1 of value_colors. "
+          "Expected an array of ""double");
+      }
+    }
+    {
+      res2 = SWIG_ConvertPtr(ST(1), &argp2, SWIGTYPE_p_std__vectorT_datamunge__graphics__RGB_t,  0 );
+      if (!SWIG_IsOK(res2)) {
+        SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "value_colors" "', argument " "2"" of type '" "std::vector< datamunge::graphics::RGBA >""'"); 
+      }  
+      if (!argp2) {
+        SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "value_colors" "', argument " "2"" of type '" "std::vector< datamunge::graphics::RGBA >""'");
+      } else {
+        arg2 = *(reinterpret_cast< std::vector< datamunge::graphics::RGBA > * >(argp2));
+      }
+    }
+    ecode3 = SWIG_AsVal_double SWIG_PERL_CALL_ARGS_2(ST(2), &val3);
+    if (!SWIG_IsOK(ecode3)) {
+      SWIG_exception_fail(SWIG_ArgError(ecode3), "in method '" "value_colors" "', argument " "3"" of type '" "double""'");
+    } 
+    arg3 = static_cast< double >(val3);
+    ecode4 = SWIG_AsVal_double SWIG_PERL_CALL_ARGS_2(ST(3), &val4);
+    if (!SWIG_IsOK(ecode4)) {
+      SWIG_exception_fail(SWIG_ArgError(ecode4), "in method '" "value_colors" "', argument " "4"" of type '" "double""'");
+    } 
+    arg4 = static_cast< double >(val4);
+    result = datamunge::graphics::value_colors((std::vector< double > const &)*arg1,SWIG_STD_MOVE(*(&arg2)),arg3,arg4);
+    ST(argvi) = SWIG_NewPointerObj((new std::vector< datamunge::graphics::RGBA >(result)), SWIGTYPE_p_std__vectorT_datamunge__graphics__RGB_t, SWIG_POINTER_OWN | 0); argvi++ ;
+    
+    
+    
+    XSRETURN(argvi);
+    fail:;
+    
+    
+    
+  }
+  SWIG_croak_null();
+}
+
+
+XS(_wrap_value_colors__SWIG_1) {
+  {
+    std::vector< double > *arg1 = 0 ;
+    SwigValueWrapper< std::vector< datamunge::graphics::RGB > > arg2 ;
+    double arg3 ;
+    std::vector< double > temp1 ;
+    std::vector< double > *v1 ;
+    void *argp2 = 0 ;
+    int res2 = 0 ;
+    double val3 ;
+    int ecode3 = 0 ;
+    int argvi = 0;
+    SwigValueWrapper< std::vector< datamunge::graphics::RGB > > result;
+    dXSARGS;
+    
+    if ((items < 3) || (items > 3)) {
+      SWIG_croak("Usage: value_colors(values,palette,z_min);");
+    }
+    {
+      if (SWIG_ConvertPtr(ST(0),(void **) &v1, 
+          SWIGTYPE_p_std__vectorT_double_t,1) != -1) {
+        arg1 = v1;
+      } else if (SvROK(ST(0))) {
+        AV *av = (AV *)SvRV(ST(0));
+        if (SvTYPE(av) != SVt_PVAV)
+        SWIG_croak("Type error in argument 1 of value_colors. "
+          "Expected an array of ""double");
+        SV **tv;
+        SSize_t len = av_len(av) + 1;
+        for (int i=0; i<len; i++) {
+          tv = av_fetch(av, i, 0);
+          if (SvNIOK(*tv)) {
+            temp1.push_back((double)SwigSvToNumber(*tv));
+          } else {
+            SWIG_croak("Type error in argument 1 of "
+              "value_colors. "
+              "Expected an array of ""double");
+          }
+        }
+        arg1 = &temp1;
+      } else {
+        SWIG_croak("Type error in argument 1 of value_colors. "
+          "Expected an array of ""double");
+      }
+    }
+    {
+      res2 = SWIG_ConvertPtr(ST(1), &argp2, SWIGTYPE_p_std__vectorT_datamunge__graphics__RGB_t,  0 );
+      if (!SWIG_IsOK(res2)) {
+        SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "value_colors" "', argument " "2"" of type '" "std::vector< datamunge::graphics::RGBA >""'"); 
+      }  
+      if (!argp2) {
+        SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "value_colors" "', argument " "2"" of type '" "std::vector< datamunge::graphics::RGBA >""'");
+      } else {
+        arg2 = *(reinterpret_cast< std::vector< datamunge::graphics::RGBA > * >(argp2));
+      }
+    }
+    ecode3 = SWIG_AsVal_double SWIG_PERL_CALL_ARGS_2(ST(2), &val3);
+    if (!SWIG_IsOK(ecode3)) {
+      SWIG_exception_fail(SWIG_ArgError(ecode3), "in method '" "value_colors" "', argument " "3"" of type '" "double""'");
+    } 
+    arg3 = static_cast< double >(val3);
+    result = datamunge::graphics::value_colors((std::vector< double > const &)*arg1,SWIG_STD_MOVE(*(&arg2)),arg3);
+    ST(argvi) = SWIG_NewPointerObj((new std::vector< datamunge::graphics::RGBA >(result)), SWIGTYPE_p_std__vectorT_datamunge__graphics__RGB_t, SWIG_POINTER_OWN | 0); argvi++ ;
+    
+    
+    XSRETURN(argvi);
+    fail:;
+    
+    
+  }
+  SWIG_croak_null();
+}
+
+
+XS(_wrap_value_colors__SWIG_2) {
+  {
+    std::vector< double > *arg1 = 0 ;
+    SwigValueWrapper< std::vector< datamunge::graphics::RGB > > arg2 ;
+    std::vector< double > temp1 ;
+    std::vector< double > *v1 ;
+    void *argp2 = 0 ;
+    int res2 = 0 ;
+    int argvi = 0;
+    SwigValueWrapper< std::vector< datamunge::graphics::RGB > > result;
+    dXSARGS;
+    
+    if ((items < 2) || (items > 2)) {
+      SWIG_croak("Usage: value_colors(values,palette);");
+    }
+    {
+      if (SWIG_ConvertPtr(ST(0),(void **) &v1, 
+          SWIGTYPE_p_std__vectorT_double_t,1) != -1) {
+        arg1 = v1;
+      } else if (SvROK(ST(0))) {
+        AV *av = (AV *)SvRV(ST(0));
+        if (SvTYPE(av) != SVt_PVAV)
+        SWIG_croak("Type error in argument 1 of value_colors. "
+          "Expected an array of ""double");
+        SV **tv;
+        SSize_t len = av_len(av) + 1;
+        for (int i=0; i<len; i++) {
+          tv = av_fetch(av, i, 0);
+          if (SvNIOK(*tv)) {
+            temp1.push_back((double)SwigSvToNumber(*tv));
+          } else {
+            SWIG_croak("Type error in argument 1 of "
+              "value_colors. "
+              "Expected an array of ""double");
+          }
+        }
+        arg1 = &temp1;
+      } else {
+        SWIG_croak("Type error in argument 1 of value_colors. "
+          "Expected an array of ""double");
+      }
+    }
+    {
+      res2 = SWIG_ConvertPtr(ST(1), &argp2, SWIGTYPE_p_std__vectorT_datamunge__graphics__RGB_t,  0 );
+      if (!SWIG_IsOK(res2)) {
+        SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "value_colors" "', argument " "2"" of type '" "std::vector< datamunge::graphics::RGBA >""'"); 
+      }  
+      if (!argp2) {
+        SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "value_colors" "', argument " "2"" of type '" "std::vector< datamunge::graphics::RGBA >""'");
+      } else {
+        arg2 = *(reinterpret_cast< std::vector< datamunge::graphics::RGBA > * >(argp2));
+      }
+    }
+    result = datamunge::graphics::value_colors((std::vector< double > const &)*arg1,SWIG_STD_MOVE(*(&arg2)));
+    ST(argvi) = SWIG_NewPointerObj((new std::vector< datamunge::graphics::RGBA >(result)), SWIGTYPE_p_std__vectorT_datamunge__graphics__RGB_t, SWIG_POINTER_OWN | 0); argvi++ ;
+    
+    XSRETURN(argvi);
+    fail:;
+    
+  }
+  SWIG_croak_null();
+}
+
+
+XS(_wrap_value_colors__SWIG_3) {
+  {
+    std::vector< double > *arg1 = 0 ;
+    std::vector< double > temp1 ;
+    std::vector< double > *v1 ;
+    int argvi = 0;
+    SwigValueWrapper< std::vector< datamunge::graphics::RGB > > result;
+    dXSARGS;
+    
+    if ((items < 1) || (items > 1)) {
+      SWIG_croak("Usage: value_colors(values);");
+    }
+    {
+      if (SWIG_ConvertPtr(ST(0),(void **) &v1, 
+          SWIGTYPE_p_std__vectorT_double_t,1) != -1) {
+        arg1 = v1;
+      } else if (SvROK(ST(0))) {
+        AV *av = (AV *)SvRV(ST(0));
+        if (SvTYPE(av) != SVt_PVAV)
+        SWIG_croak("Type error in argument 1 of value_colors. "
+          "Expected an array of ""double");
+        SV **tv;
+        SSize_t len = av_len(av) + 1;
+        for (int i=0; i<len; i++) {
+          tv = av_fetch(av, i, 0);
+          if (SvNIOK(*tv)) {
+            temp1.push_back((double)SwigSvToNumber(*tv));
+          } else {
+            SWIG_croak("Type error in argument 1 of "
+              "value_colors. "
+              "Expected an array of ""double");
+          }
+        }
+        arg1 = &temp1;
+      } else {
+        SWIG_croak("Type error in argument 1 of value_colors. "
+          "Expected an array of ""double");
+      }
+    }
+    result = datamunge::graphics::value_colors((std::vector< double > const &)*arg1);
+    ST(argvi) = SWIG_NewPointerObj((new std::vector< datamunge::graphics::RGBA >(result)), SWIGTYPE_p_std__vectorT_datamunge__graphics__RGB_t, SWIG_POINTER_OWN | 0); argvi++ ;
+    
+    XSRETURN(argvi);
+    fail:;
+    
+  }
+  SWIG_croak_null();
+}
+
+
+XS(_wrap_value_colors) {
+  dXSARGS;
+  
+  {
+    unsigned long _index = 0;
+    SWIG_TypeRank _rank = 0; 
+    if (items == 1) {
+      SWIG_TypeRank _ranki = 0;
+      SWIG_TypeRank _rankm = 0;
+      SWIG_TypeRank _pi = 1;
+      int _v = 0;
+      {
+        {
+          {
+            /* wrapped vector? */
+            std::vector< double >* v;
+            if (SWIG_ConvertPtr(ST(0),(void **) &v, 
+                SWIGTYPE_p_std__vectorT_double_t,0) != -1) {
+              _v = 1;
+            } else if (SvROK(ST(0))) {
+              /* native sequence? */
+              AV *av = (AV *)SvRV(ST(0));
+              if (SvTYPE(av) == SVt_PVAV) {
+                SSize_t len = av_len(av) + 1;
+                if (len == 0) {
+                  /* an empty sequence can be of any type */
+                  _v = 1;
+                } else {
+                  /* check the first element only */
+                  SV **tv = av_fetch(av, 0, 0);
+                  if (SvNIOK(*tv))
+                  _v = 1;
+                  else
+                  _v = 0;
+                }
+              }
+            } else {
+              _v = 0;
+            }
+          }
+        }
+      }
+      if (!_v) goto check_1;
+      _ranki += _v*_pi;
+      _rankm += _pi;
+      _pi *= SWIG_MAXCASTRANK;
+      if (!_index || (_ranki < _rank)) {
+        _rank = _ranki; _index = 1;
+        if (_rank == _rankm) goto dispatch;
+      }
+    }
+  check_1:
+    
+    if (items == 2) {
+      SWIG_TypeRank _ranki = 0;
+      SWIG_TypeRank _rankm = 0;
+      SWIG_TypeRank _pi = 1;
+      int _v = 0;
+      {
+        {
+          {
+            /* wrapped vector? */
+            std::vector< double >* v;
+            if (SWIG_ConvertPtr(ST(0),(void **) &v, 
+                SWIGTYPE_p_std__vectorT_double_t,0) != -1) {
+              _v = 1;
+            } else if (SvROK(ST(0))) {
+              /* native sequence? */
+              AV *av = (AV *)SvRV(ST(0));
+              if (SvTYPE(av) == SVt_PVAV) {
+                SSize_t len = av_len(av) + 1;
+                if (len == 0) {
+                  /* an empty sequence can be of any type */
+                  _v = 1;
+                } else {
+                  /* check the first element only */
+                  SV **tv = av_fetch(av, 0, 0);
+                  if (SvNIOK(*tv))
+                  _v = 1;
+                  else
+                  _v = 0;
+                }
+              }
+            } else {
+              _v = 0;
+            }
+          }
+        }
+      }
+      if (!_v) goto check_2;
+      _ranki += _v*_pi;
+      _rankm += _pi;
+      _pi *= SWIG_MAXCASTRANK;
+      {
+        void *vptr = 0;
+        int res = SWIG_ConvertPtr(ST(1), &vptr, SWIGTYPE_p_std__vectorT_datamunge__graphics__RGB_t, SWIG_POINTER_NO_NULL);
+        _v = SWIG_CheckState(res);
+      }
+      if (!_v) goto check_2;
+      _ranki += _v*_pi;
+      _rankm += _pi;
+      _pi *= SWIG_MAXCASTRANK;
+      if (!_index || (_ranki < _rank)) {
+        _rank = _ranki; _index = 2;
+        if (_rank == _rankm) goto dispatch;
+      }
+    }
+  check_2:
+    
+    if (items == 3) {
+      SWIG_TypeRank _ranki = 0;
+      SWIG_TypeRank _rankm = 0;
+      SWIG_TypeRank _pi = 1;
+      int _v = 0;
+      {
+        {
+          {
+            /* wrapped vector? */
+            std::vector< double >* v;
+            if (SWIG_ConvertPtr(ST(0),(void **) &v, 
+                SWIGTYPE_p_std__vectorT_double_t,0) != -1) {
+              _v = 1;
+            } else if (SvROK(ST(0))) {
+              /* native sequence? */
+              AV *av = (AV *)SvRV(ST(0));
+              if (SvTYPE(av) == SVt_PVAV) {
+                SSize_t len = av_len(av) + 1;
+                if (len == 0) {
+                  /* an empty sequence can be of any type */
+                  _v = 1;
+                } else {
+                  /* check the first element only */
+                  SV **tv = av_fetch(av, 0, 0);
+                  if (SvNIOK(*tv))
+                  _v = 1;
+                  else
+                  _v = 0;
+                }
+              }
+            } else {
+              _v = 0;
+            }
+          }
+        }
+      }
+      if (!_v) goto check_3;
+      _ranki += _v*_pi;
+      _rankm += _pi;
+      _pi *= SWIG_MAXCASTRANK;
+      {
+        void *vptr = 0;
+        int res = SWIG_ConvertPtr(ST(1), &vptr, SWIGTYPE_p_std__vectorT_datamunge__graphics__RGB_t, SWIG_POINTER_NO_NULL);
+        _v = SWIG_CheckState(res);
+      }
+      if (!_v) goto check_3;
+      _ranki += _v*_pi;
+      _rankm += _pi;
+      _pi *= SWIG_MAXCASTRANK;
+      {
+        {
+          int res = SWIG_AsVal_double SWIG_PERL_CALL_ARGS_2(ST(2), NULL);
+          _v = SWIG_CheckState(res);
+        }
+      }
+      if (!_v) goto check_3;
+      _ranki += _v*_pi;
+      _rankm += _pi;
+      _pi *= SWIG_MAXCASTRANK;
+      if (!_index || (_ranki < _rank)) {
+        _rank = _ranki; _index = 3;
+        if (_rank == _rankm) goto dispatch;
+      }
+    }
+  check_3:
+    
+    if (items == 4) {
+      SWIG_TypeRank _ranki = 0;
+      SWIG_TypeRank _rankm = 0;
+      SWIG_TypeRank _pi = 1;
+      int _v = 0;
+      {
+        {
+          {
+            /* wrapped vector? */
+            std::vector< double >* v;
+            if (SWIG_ConvertPtr(ST(0),(void **) &v, 
+                SWIGTYPE_p_std__vectorT_double_t,0) != -1) {
+              _v = 1;
+            } else if (SvROK(ST(0))) {
+              /* native sequence? */
+              AV *av = (AV *)SvRV(ST(0));
+              if (SvTYPE(av) == SVt_PVAV) {
+                SSize_t len = av_len(av) + 1;
+                if (len == 0) {
+                  /* an empty sequence can be of any type */
+                  _v = 1;
+                } else {
+                  /* check the first element only */
+                  SV **tv = av_fetch(av, 0, 0);
+                  if (SvNIOK(*tv))
+                  _v = 1;
+                  else
+                  _v = 0;
+                }
+              }
+            } else {
+              _v = 0;
+            }
+          }
+        }
+      }
+      if (!_v) goto check_4;
+      _ranki += _v*_pi;
+      _rankm += _pi;
+      _pi *= SWIG_MAXCASTRANK;
+      {
+        void *vptr = 0;
+        int res = SWIG_ConvertPtr(ST(1), &vptr, SWIGTYPE_p_std__vectorT_datamunge__graphics__RGB_t, SWIG_POINTER_NO_NULL);
+        _v = SWIG_CheckState(res);
+      }
+      if (!_v) goto check_4;
+      _ranki += _v*_pi;
+      _rankm += _pi;
+      _pi *= SWIG_MAXCASTRANK;
+      {
+        {
+          int res = SWIG_AsVal_double SWIG_PERL_CALL_ARGS_2(ST(2), NULL);
+          _v = SWIG_CheckState(res);
+        }
+      }
+      if (!_v) goto check_4;
+      _ranki += _v*_pi;
+      _rankm += _pi;
+      _pi *= SWIG_MAXCASTRANK;
+      {
+        {
+          int res = SWIG_AsVal_double SWIG_PERL_CALL_ARGS_2(ST(3), NULL);
+          _v = SWIG_CheckState(res);
+        }
+      }
+      if (!_v) goto check_4;
+      _ranki += _v*_pi;
+      _rankm += _pi;
+      _pi *= SWIG_MAXCASTRANK;
+      if (!_index || (_ranki < _rank)) {
+        _rank = _ranki; _index = 4;
+        if (_rank == _rankm) goto dispatch;
+      }
+    }
+  check_4:
+    
+  dispatch:
+    switch(_index) {
+    case 1:
+      PUSHMARK(MARK); SWIG_CALLXS(_wrap_value_colors__SWIG_3); return;
+    case 2:
+      PUSHMARK(MARK); SWIG_CALLXS(_wrap_value_colors__SWIG_2); return;
+    case 3:
+      PUSHMARK(MARK); SWIG_CALLXS(_wrap_value_colors__SWIG_1); return;
+    case 4:
+      PUSHMARK(MARK); SWIG_CALLXS(_wrap_value_colors__SWIG_0); return;
+    }
+  }
+  
+  croak("No matching function for overloaded 'value_colors'");
+  XSRETURN(0);
 }
 
 
@@ -120388,6 +129222,66 @@ XS(_wrap_unif) {
     } 
     arg3 = static_cast< std::size_t >(val3);
     result = datamunge::unif(arg1,arg2,SWIG_STD_MOVE(*(&arg3)));
+    {
+      size_t len = (&result)->size();
+      SV **svs = new SV*[len];
+      for (size_t i=0; i<len; i++) {
+        svs[i] = sv_newmortal();
+        sv_setnv(svs[i], result[i]);
+      }
+      AV *myav = av_make(len, svs);
+      delete[] svs;
+      ST(argvi) = newRV_noinc((SV*) myav);
+      sv_2mortal(ST(argvi));
+      argvi++;
+    }
+    
+    
+    
+    XSRETURN(argvi);
+    fail:;
+    
+    
+    
+  }
+  SWIG_croak_null();
+}
+
+
+XS(_wrap_runif) {
+  {
+    double arg1 ;
+    double arg2 ;
+    std::size_t arg3 ;
+    double val1 ;
+    int ecode1 = 0 ;
+    double val2 ;
+    int ecode2 = 0 ;
+    size_t val3 ;
+    int ecode3 = 0 ;
+    int argvi = 0;
+    std::vector< double > result;
+    dXSARGS;
+    
+    if ((items < 3) || (items > 3)) {
+      SWIG_croak("Usage: runif(lower,upper,n);");
+    }
+    ecode1 = SWIG_AsVal_double SWIG_PERL_CALL_ARGS_2(ST(0), &val1);
+    if (!SWIG_IsOK(ecode1)) {
+      SWIG_exception_fail(SWIG_ArgError(ecode1), "in method '" "runif" "', argument " "1"" of type '" "double""'");
+    } 
+    arg1 = static_cast< double >(val1);
+    ecode2 = SWIG_AsVal_double SWIG_PERL_CALL_ARGS_2(ST(1), &val2);
+    if (!SWIG_IsOK(ecode2)) {
+      SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "runif" "', argument " "2"" of type '" "double""'");
+    } 
+    arg2 = static_cast< double >(val2);
+    ecode3 = SWIG_AsVal_size_t SWIG_PERL_CALL_ARGS_2(ST(2), &val3);
+    if (!SWIG_IsOK(ecode3)) {
+      SWIG_exception_fail(SWIG_ArgError(ecode3), "in method '" "runif" "', argument " "3"" of type '" "std::size_t""'");
+    } 
+    arg3 = static_cast< std::size_t >(val3);
+    result = datamunge::runif(arg1,arg2,SWIG_STD_MOVE(*(&arg3)));
     {
       size_t len = (&result)->size();
       SV **svs = new SV*[len];
@@ -125638,6 +134532,112 @@ XS(_wrap_ARIMA_forecast) {
     } 
     arg2 = static_cast< std::size_t >(val2);
     result = ((datamunge::stats::ARIMA const *)arg1)->forecast(SWIG_STD_MOVE(*(&arg2)));
+    {
+      size_t len = (&result)->size();
+      SV **svs = new SV*[len];
+      for (size_t i=0; i<len; i++) {
+        svs[i] = sv_newmortal();
+        sv_setnv(svs[i], result[i]);
+      }
+      AV *myav = av_make(len, svs);
+      delete[] svs;
+      ST(argvi) = newRV_noinc((SV*) myav);
+      sv_2mortal(ST(argvi));
+      argvi++;
+    }
+    
+    
+    XSRETURN(argvi);
+    fail:;
+    
+    
+  }
+  SWIG_croak_null();
+}
+
+
+XS(_wrap_ARIMA_expanded_ar_coefficients) {
+  {
+    datamunge::stats::ARIMA *arg1 = 0 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    int argvi = 0;
+    std::vector< double > *result = 0 ;
+    dXSARGS;
+    
+    if ((items < 1) || (items > 1)) {
+      SWIG_croak("Usage: ARIMA_expanded_ar_coefficients(self);");
+    }
+    res1 = SWIG_ConvertPtr(ST(0), &argp1,SWIGTYPE_p_datamunge__stats__ARIMA, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "ARIMA_expanded_ar_coefficients" "', argument " "1"" of type '" "datamunge::stats::ARIMA const *""'"); 
+    }
+    arg1 = reinterpret_cast< datamunge::stats::ARIMA * >(argp1);
+    result = (std::vector< double > *) &((datamunge::stats::ARIMA const *)arg1)->expanded_ar_coefficients();
+    ST(argvi) = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_std__vectorT_double_t, 0 | SWIG_SHADOW); argvi++ ;
+    
+    XSRETURN(argvi);
+    fail:;
+    
+  }
+  SWIG_croak_null();
+}
+
+
+XS(_wrap_ARIMA_expanded_ma_coefficients) {
+  {
+    datamunge::stats::ARIMA *arg1 = 0 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    int argvi = 0;
+    std::vector< double > *result = 0 ;
+    dXSARGS;
+    
+    if ((items < 1) || (items > 1)) {
+      SWIG_croak("Usage: ARIMA_expanded_ma_coefficients(self);");
+    }
+    res1 = SWIG_ConvertPtr(ST(0), &argp1,SWIGTYPE_p_datamunge__stats__ARIMA, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "ARIMA_expanded_ma_coefficients" "', argument " "1"" of type '" "datamunge::stats::ARIMA const *""'"); 
+    }
+    arg1 = reinterpret_cast< datamunge::stats::ARIMA * >(argp1);
+    result = (std::vector< double > *) &((datamunge::stats::ARIMA const *)arg1)->expanded_ma_coefficients();
+    ST(argvi) = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_std__vectorT_double_t, 0 | SWIG_SHADOW); argvi++ ;
+    
+    XSRETURN(argvi);
+    fail:;
+    
+  }
+  SWIG_croak_null();
+}
+
+
+XS(_wrap_ARIMA_psi_weights) {
+  {
+    datamunge::stats::ARIMA *arg1 = 0 ;
+    std::size_t arg2 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    size_t val2 ;
+    int ecode2 = 0 ;
+    int argvi = 0;
+    std::vector< double > result;
+    dXSARGS;
+    
+    if ((items < 2) || (items > 2)) {
+      SWIG_croak("Usage: ARIMA_psi_weights(self,count);");
+    }
+    res1 = SWIG_ConvertPtr(ST(0), &argp1,SWIGTYPE_p_datamunge__stats__ARIMA, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "ARIMA_psi_weights" "', argument " "1"" of type '" "datamunge::stats::ARIMA const *""'"); 
+    }
+    arg1 = reinterpret_cast< datamunge::stats::ARIMA * >(argp1);
+    ecode2 = SWIG_AsVal_size_t SWIG_PERL_CALL_ARGS_2(ST(1), &val2);
+    if (!SWIG_IsOK(ecode2)) {
+      SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "ARIMA_psi_weights" "', argument " "2"" of type '" "std::size_t""'");
+    } 
+    arg2 = static_cast< std::size_t >(val2);
+    result = ((datamunge::stats::ARIMA const *)arg1)->psi_weights(SWIG_STD_MOVE(*(&arg2)));
     {
       size_t len = (&result)->size();
       SV **svs = new SV*[len];
@@ -131044,6 +140044,538 @@ XS(_wrap_ks_test_one_sample_normal) {
 }
 
 
+XS(_wrap_ks_test_one_sample_uniform__SWIG_0) {
+  {
+    std::vector< double > *arg1 = 0 ;
+    double arg2 ;
+    double arg3 ;
+    datamunge::stats::Alternative arg4 ;
+    std::vector< double > temp1 ;
+    std::vector< double > *v1 ;
+    double val2 ;
+    int ecode2 = 0 ;
+    double val3 ;
+    int ecode3 = 0 ;
+    int val4 ;
+    int ecode4 = 0 ;
+    int argvi = 0;
+    datamunge::stats::HypothesisTestResult result;
+    dXSARGS;
+    
+    if ((items < 4) || (items > 4)) {
+      SWIG_croak("Usage: ks_test_one_sample_uniform(x,lower,upper,alternative);");
+    }
+    {
+      if (SWIG_ConvertPtr(ST(0),(void **) &v1, 
+          SWIGTYPE_p_std__vectorT_double_t,1) != -1) {
+        arg1 = v1;
+      } else if (SvROK(ST(0))) {
+        AV *av = (AV *)SvRV(ST(0));
+        if (SvTYPE(av) != SVt_PVAV)
+        SWIG_croak("Type error in argument 1 of ks_test_one_sample_uniform. "
+          "Expected an array of ""double");
+        SV **tv;
+        SSize_t len = av_len(av) + 1;
+        for (int i=0; i<len; i++) {
+          tv = av_fetch(av, i, 0);
+          if (SvNIOK(*tv)) {
+            temp1.push_back((double)SwigSvToNumber(*tv));
+          } else {
+            SWIG_croak("Type error in argument 1 of "
+              "ks_test_one_sample_uniform. "
+              "Expected an array of ""double");
+          }
+        }
+        arg1 = &temp1;
+      } else {
+        SWIG_croak("Type error in argument 1 of ks_test_one_sample_uniform. "
+          "Expected an array of ""double");
+      }
+    }
+    ecode2 = SWIG_AsVal_double SWIG_PERL_CALL_ARGS_2(ST(1), &val2);
+    if (!SWIG_IsOK(ecode2)) {
+      SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "ks_test_one_sample_uniform" "', argument " "2"" of type '" "double""'");
+    } 
+    arg2 = static_cast< double >(val2);
+    ecode3 = SWIG_AsVal_double SWIG_PERL_CALL_ARGS_2(ST(2), &val3);
+    if (!SWIG_IsOK(ecode3)) {
+      SWIG_exception_fail(SWIG_ArgError(ecode3), "in method '" "ks_test_one_sample_uniform" "', argument " "3"" of type '" "double""'");
+    } 
+    arg3 = static_cast< double >(val3);
+    ecode4 = SWIG_AsVal_int SWIG_PERL_CALL_ARGS_2(ST(3), &val4);
+    if (!SWIG_IsOK(ecode4)) {
+      SWIG_exception_fail(SWIG_ArgError(ecode4), "in method '" "ks_test_one_sample_uniform" "', argument " "4"" of type '" "datamunge::stats::Alternative""'");
+    } 
+    arg4 = static_cast< datamunge::stats::Alternative >(val4);
+    result = datamunge::stats::ks_test_one_sample_uniform((std::vector< double > const &)*arg1,arg2,arg3,arg4);
+    ST(argvi) = SWIG_NewPointerObj((new datamunge::stats::HypothesisTestResult(result)), SWIGTYPE_p_datamunge__stats__HypothesisTestResult, SWIG_POINTER_OWN | SWIG_SHADOW); argvi++ ;
+    
+    
+    
+    
+    XSRETURN(argvi);
+    fail:;
+    
+    
+    
+    
+  }
+  SWIG_croak_null();
+}
+
+
+XS(_wrap_ks_test_one_sample_uniform__SWIG_1) {
+  {
+    std::vector< double > *arg1 = 0 ;
+    double arg2 ;
+    double arg3 ;
+    std::vector< double > temp1 ;
+    std::vector< double > *v1 ;
+    double val2 ;
+    int ecode2 = 0 ;
+    double val3 ;
+    int ecode3 = 0 ;
+    int argvi = 0;
+    datamunge::stats::HypothesisTestResult result;
+    dXSARGS;
+    
+    if ((items < 3) || (items > 3)) {
+      SWIG_croak("Usage: ks_test_one_sample_uniform(x,lower,upper);");
+    }
+    {
+      if (SWIG_ConvertPtr(ST(0),(void **) &v1, 
+          SWIGTYPE_p_std__vectorT_double_t,1) != -1) {
+        arg1 = v1;
+      } else if (SvROK(ST(0))) {
+        AV *av = (AV *)SvRV(ST(0));
+        if (SvTYPE(av) != SVt_PVAV)
+        SWIG_croak("Type error in argument 1 of ks_test_one_sample_uniform. "
+          "Expected an array of ""double");
+        SV **tv;
+        SSize_t len = av_len(av) + 1;
+        for (int i=0; i<len; i++) {
+          tv = av_fetch(av, i, 0);
+          if (SvNIOK(*tv)) {
+            temp1.push_back((double)SwigSvToNumber(*tv));
+          } else {
+            SWIG_croak("Type error in argument 1 of "
+              "ks_test_one_sample_uniform. "
+              "Expected an array of ""double");
+          }
+        }
+        arg1 = &temp1;
+      } else {
+        SWIG_croak("Type error in argument 1 of ks_test_one_sample_uniform. "
+          "Expected an array of ""double");
+      }
+    }
+    ecode2 = SWIG_AsVal_double SWIG_PERL_CALL_ARGS_2(ST(1), &val2);
+    if (!SWIG_IsOK(ecode2)) {
+      SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "ks_test_one_sample_uniform" "', argument " "2"" of type '" "double""'");
+    } 
+    arg2 = static_cast< double >(val2);
+    ecode3 = SWIG_AsVal_double SWIG_PERL_CALL_ARGS_2(ST(2), &val3);
+    if (!SWIG_IsOK(ecode3)) {
+      SWIG_exception_fail(SWIG_ArgError(ecode3), "in method '" "ks_test_one_sample_uniform" "', argument " "3"" of type '" "double""'");
+    } 
+    arg3 = static_cast< double >(val3);
+    result = datamunge::stats::ks_test_one_sample_uniform((std::vector< double > const &)*arg1,arg2,arg3);
+    ST(argvi) = SWIG_NewPointerObj((new datamunge::stats::HypothesisTestResult(result)), SWIGTYPE_p_datamunge__stats__HypothesisTestResult, SWIG_POINTER_OWN | SWIG_SHADOW); argvi++ ;
+    
+    
+    
+    XSRETURN(argvi);
+    fail:;
+    
+    
+    
+  }
+  SWIG_croak_null();
+}
+
+
+XS(_wrap_ks_test_one_sample_uniform__SWIG_2) {
+  {
+    std::vector< double > *arg1 = 0 ;
+    double arg2 ;
+    std::vector< double > temp1 ;
+    std::vector< double > *v1 ;
+    double val2 ;
+    int ecode2 = 0 ;
+    int argvi = 0;
+    datamunge::stats::HypothesisTestResult result;
+    dXSARGS;
+    
+    if ((items < 2) || (items > 2)) {
+      SWIG_croak("Usage: ks_test_one_sample_uniform(x,lower);");
+    }
+    {
+      if (SWIG_ConvertPtr(ST(0),(void **) &v1, 
+          SWIGTYPE_p_std__vectorT_double_t,1) != -1) {
+        arg1 = v1;
+      } else if (SvROK(ST(0))) {
+        AV *av = (AV *)SvRV(ST(0));
+        if (SvTYPE(av) != SVt_PVAV)
+        SWIG_croak("Type error in argument 1 of ks_test_one_sample_uniform. "
+          "Expected an array of ""double");
+        SV **tv;
+        SSize_t len = av_len(av) + 1;
+        for (int i=0; i<len; i++) {
+          tv = av_fetch(av, i, 0);
+          if (SvNIOK(*tv)) {
+            temp1.push_back((double)SwigSvToNumber(*tv));
+          } else {
+            SWIG_croak("Type error in argument 1 of "
+              "ks_test_one_sample_uniform. "
+              "Expected an array of ""double");
+          }
+        }
+        arg1 = &temp1;
+      } else {
+        SWIG_croak("Type error in argument 1 of ks_test_one_sample_uniform. "
+          "Expected an array of ""double");
+      }
+    }
+    ecode2 = SWIG_AsVal_double SWIG_PERL_CALL_ARGS_2(ST(1), &val2);
+    if (!SWIG_IsOK(ecode2)) {
+      SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "ks_test_one_sample_uniform" "', argument " "2"" of type '" "double""'");
+    } 
+    arg2 = static_cast< double >(val2);
+    result = datamunge::stats::ks_test_one_sample_uniform((std::vector< double > const &)*arg1,arg2);
+    ST(argvi) = SWIG_NewPointerObj((new datamunge::stats::HypothesisTestResult(result)), SWIGTYPE_p_datamunge__stats__HypothesisTestResult, SWIG_POINTER_OWN | SWIG_SHADOW); argvi++ ;
+    
+    
+    XSRETURN(argvi);
+    fail:;
+    
+    
+  }
+  SWIG_croak_null();
+}
+
+
+XS(_wrap_ks_test_one_sample_uniform__SWIG_3) {
+  {
+    std::vector< double > *arg1 = 0 ;
+    std::vector< double > temp1 ;
+    std::vector< double > *v1 ;
+    int argvi = 0;
+    datamunge::stats::HypothesisTestResult result;
+    dXSARGS;
+    
+    if ((items < 1) || (items > 1)) {
+      SWIG_croak("Usage: ks_test_one_sample_uniform(x);");
+    }
+    {
+      if (SWIG_ConvertPtr(ST(0),(void **) &v1, 
+          SWIGTYPE_p_std__vectorT_double_t,1) != -1) {
+        arg1 = v1;
+      } else if (SvROK(ST(0))) {
+        AV *av = (AV *)SvRV(ST(0));
+        if (SvTYPE(av) != SVt_PVAV)
+        SWIG_croak("Type error in argument 1 of ks_test_one_sample_uniform. "
+          "Expected an array of ""double");
+        SV **tv;
+        SSize_t len = av_len(av) + 1;
+        for (int i=0; i<len; i++) {
+          tv = av_fetch(av, i, 0);
+          if (SvNIOK(*tv)) {
+            temp1.push_back((double)SwigSvToNumber(*tv));
+          } else {
+            SWIG_croak("Type error in argument 1 of "
+              "ks_test_one_sample_uniform. "
+              "Expected an array of ""double");
+          }
+        }
+        arg1 = &temp1;
+      } else {
+        SWIG_croak("Type error in argument 1 of ks_test_one_sample_uniform. "
+          "Expected an array of ""double");
+      }
+    }
+    result = datamunge::stats::ks_test_one_sample_uniform((std::vector< double > const &)*arg1);
+    ST(argvi) = SWIG_NewPointerObj((new datamunge::stats::HypothesisTestResult(result)), SWIGTYPE_p_datamunge__stats__HypothesisTestResult, SWIG_POINTER_OWN | SWIG_SHADOW); argvi++ ;
+    
+    XSRETURN(argvi);
+    fail:;
+    
+  }
+  SWIG_croak_null();
+}
+
+
+XS(_wrap_ks_test_one_sample_uniform) {
+  dXSARGS;
+  
+  {
+    unsigned long _index = 0;
+    SWIG_TypeRank _rank = 0; 
+    if (items == 1) {
+      SWIG_TypeRank _ranki = 0;
+      SWIG_TypeRank _rankm = 0;
+      SWIG_TypeRank _pi = 1;
+      int _v = 0;
+      {
+        {
+          {
+            /* wrapped vector? */
+            std::vector< double >* v;
+            if (SWIG_ConvertPtr(ST(0),(void **) &v, 
+                SWIGTYPE_p_std__vectorT_double_t,0) != -1) {
+              _v = 1;
+            } else if (SvROK(ST(0))) {
+              /* native sequence? */
+              AV *av = (AV *)SvRV(ST(0));
+              if (SvTYPE(av) == SVt_PVAV) {
+                SSize_t len = av_len(av) + 1;
+                if (len == 0) {
+                  /* an empty sequence can be of any type */
+                  _v = 1;
+                } else {
+                  /* check the first element only */
+                  SV **tv = av_fetch(av, 0, 0);
+                  if (SvNIOK(*tv))
+                  _v = 1;
+                  else
+                  _v = 0;
+                }
+              }
+            } else {
+              _v = 0;
+            }
+          }
+        }
+      }
+      if (!_v) goto check_1;
+      _ranki += _v*_pi;
+      _rankm += _pi;
+      _pi *= SWIG_MAXCASTRANK;
+      if (!_index || (_ranki < _rank)) {
+        _rank = _ranki; _index = 1;
+        if (_rank == _rankm) goto dispatch;
+      }
+    }
+  check_1:
+    
+    if (items == 2) {
+      SWIG_TypeRank _ranki = 0;
+      SWIG_TypeRank _rankm = 0;
+      SWIG_TypeRank _pi = 1;
+      int _v = 0;
+      {
+        {
+          {
+            /* wrapped vector? */
+            std::vector< double >* v;
+            if (SWIG_ConvertPtr(ST(0),(void **) &v, 
+                SWIGTYPE_p_std__vectorT_double_t,0) != -1) {
+              _v = 1;
+            } else if (SvROK(ST(0))) {
+              /* native sequence? */
+              AV *av = (AV *)SvRV(ST(0));
+              if (SvTYPE(av) == SVt_PVAV) {
+                SSize_t len = av_len(av) + 1;
+                if (len == 0) {
+                  /* an empty sequence can be of any type */
+                  _v = 1;
+                } else {
+                  /* check the first element only */
+                  SV **tv = av_fetch(av, 0, 0);
+                  if (SvNIOK(*tv))
+                  _v = 1;
+                  else
+                  _v = 0;
+                }
+              }
+            } else {
+              _v = 0;
+            }
+          }
+        }
+      }
+      if (!_v) goto check_2;
+      _ranki += _v*_pi;
+      _rankm += _pi;
+      _pi *= SWIG_MAXCASTRANK;
+      {
+        {
+          int res = SWIG_AsVal_double SWIG_PERL_CALL_ARGS_2(ST(1), NULL);
+          _v = SWIG_CheckState(res);
+        }
+      }
+      if (!_v) goto check_2;
+      _ranki += _v*_pi;
+      _rankm += _pi;
+      _pi *= SWIG_MAXCASTRANK;
+      if (!_index || (_ranki < _rank)) {
+        _rank = _ranki; _index = 2;
+        if (_rank == _rankm) goto dispatch;
+      }
+    }
+  check_2:
+    
+    if (items == 3) {
+      SWIG_TypeRank _ranki = 0;
+      SWIG_TypeRank _rankm = 0;
+      SWIG_TypeRank _pi = 1;
+      int _v = 0;
+      {
+        {
+          {
+            /* wrapped vector? */
+            std::vector< double >* v;
+            if (SWIG_ConvertPtr(ST(0),(void **) &v, 
+                SWIGTYPE_p_std__vectorT_double_t,0) != -1) {
+              _v = 1;
+            } else if (SvROK(ST(0))) {
+              /* native sequence? */
+              AV *av = (AV *)SvRV(ST(0));
+              if (SvTYPE(av) == SVt_PVAV) {
+                SSize_t len = av_len(av) + 1;
+                if (len == 0) {
+                  /* an empty sequence can be of any type */
+                  _v = 1;
+                } else {
+                  /* check the first element only */
+                  SV **tv = av_fetch(av, 0, 0);
+                  if (SvNIOK(*tv))
+                  _v = 1;
+                  else
+                  _v = 0;
+                }
+              }
+            } else {
+              _v = 0;
+            }
+          }
+        }
+      }
+      if (!_v) goto check_3;
+      _ranki += _v*_pi;
+      _rankm += _pi;
+      _pi *= SWIG_MAXCASTRANK;
+      {
+        {
+          int res = SWIG_AsVal_double SWIG_PERL_CALL_ARGS_2(ST(1), NULL);
+          _v = SWIG_CheckState(res);
+        }
+      }
+      if (!_v) goto check_3;
+      _ranki += _v*_pi;
+      _rankm += _pi;
+      _pi *= SWIG_MAXCASTRANK;
+      {
+        {
+          int res = SWIG_AsVal_double SWIG_PERL_CALL_ARGS_2(ST(2), NULL);
+          _v = SWIG_CheckState(res);
+        }
+      }
+      if (!_v) goto check_3;
+      _ranki += _v*_pi;
+      _rankm += _pi;
+      _pi *= SWIG_MAXCASTRANK;
+      if (!_index || (_ranki < _rank)) {
+        _rank = _ranki; _index = 3;
+        if (_rank == _rankm) goto dispatch;
+      }
+    }
+  check_3:
+    
+    if (items == 4) {
+      SWIG_TypeRank _ranki = 0;
+      SWIG_TypeRank _rankm = 0;
+      SWIG_TypeRank _pi = 1;
+      int _v = 0;
+      {
+        {
+          {
+            /* wrapped vector? */
+            std::vector< double >* v;
+            if (SWIG_ConvertPtr(ST(0),(void **) &v, 
+                SWIGTYPE_p_std__vectorT_double_t,0) != -1) {
+              _v = 1;
+            } else if (SvROK(ST(0))) {
+              /* native sequence? */
+              AV *av = (AV *)SvRV(ST(0));
+              if (SvTYPE(av) == SVt_PVAV) {
+                SSize_t len = av_len(av) + 1;
+                if (len == 0) {
+                  /* an empty sequence can be of any type */
+                  _v = 1;
+                } else {
+                  /* check the first element only */
+                  SV **tv = av_fetch(av, 0, 0);
+                  if (SvNIOK(*tv))
+                  _v = 1;
+                  else
+                  _v = 0;
+                }
+              }
+            } else {
+              _v = 0;
+            }
+          }
+        }
+      }
+      if (!_v) goto check_4;
+      _ranki += _v*_pi;
+      _rankm += _pi;
+      _pi *= SWIG_MAXCASTRANK;
+      {
+        {
+          int res = SWIG_AsVal_double SWIG_PERL_CALL_ARGS_2(ST(1), NULL);
+          _v = SWIG_CheckState(res);
+        }
+      }
+      if (!_v) goto check_4;
+      _ranki += _v*_pi;
+      _rankm += _pi;
+      _pi *= SWIG_MAXCASTRANK;
+      {
+        {
+          int res = SWIG_AsVal_double SWIG_PERL_CALL_ARGS_2(ST(2), NULL);
+          _v = SWIG_CheckState(res);
+        }
+      }
+      if (!_v) goto check_4;
+      _ranki += _v*_pi;
+      _rankm += _pi;
+      _pi *= SWIG_MAXCASTRANK;
+      {
+        {
+          int res = SWIG_AsVal_int SWIG_PERL_CALL_ARGS_2(ST(3), NULL);
+          _v = SWIG_CheckState(res);
+        }
+      }
+      if (!_v) goto check_4;
+      _ranki += _v*_pi;
+      _rankm += _pi;
+      _pi *= SWIG_MAXCASTRANK;
+      if (!_index || (_ranki < _rank)) {
+        _rank = _ranki; _index = 4;
+        if (_rank == _rankm) goto dispatch;
+      }
+    }
+  check_4:
+    
+  dispatch:
+    switch(_index) {
+    case 1:
+      PUSHMARK(MARK); SWIG_CALLXS(_wrap_ks_test_one_sample_uniform__SWIG_3); return;
+    case 2:
+      PUSHMARK(MARK); SWIG_CALLXS(_wrap_ks_test_one_sample_uniform__SWIG_2); return;
+    case 3:
+      PUSHMARK(MARK); SWIG_CALLXS(_wrap_ks_test_one_sample_uniform__SWIG_1); return;
+    case 4:
+      PUSHMARK(MARK); SWIG_CALLXS(_wrap_ks_test_one_sample_uniform__SWIG_0); return;
+    }
+  }
+  
+  croak("No matching function for overloaded 'ks_test_one_sample_uniform'");
+  XSRETURN(0);
+}
+
+
 XS(_wrap_ks_test_two_sample__SWIG_0) {
   {
     std::vector< double > *arg1 = 0 ;
@@ -133098,6 +142630,588 @@ XS(_wrap_spearman_correlation_test) {
   
   croak("No matching function for overloaded 'spearman_correlation_test'");
   XSRETURN(0);
+}
+
+
+XS(_wrap_KendallTau_concordant_set) {
+  {
+    datamunge::stats::KendallTau *arg1 = 0 ;
+    long long arg2 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    long long val2 ;
+    int ecode2 = 0 ;
+    int argvi = 0;
+    dXSARGS;
+    
+    if ((items < 2) || (items > 2)) {
+      SWIG_croak("Usage: KendallTau_concordant_set(self,concordant);");
+    }
+    res1 = SWIG_ConvertPtr(ST(0), &argp1,SWIGTYPE_p_datamunge__stats__KendallTau, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "KendallTau_concordant_set" "', argument " "1"" of type '" "datamunge::stats::KendallTau *""'"); 
+    }
+    arg1 = reinterpret_cast< datamunge::stats::KendallTau * >(argp1);
+    ecode2 = SWIG_AsVal_long_SS_long SWIG_PERL_CALL_ARGS_2(ST(1), &val2);
+    if (!SWIG_IsOK(ecode2)) {
+      SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "KendallTau_concordant_set" "', argument " "2"" of type '" "long long""'");
+    } 
+    arg2 = static_cast< long long >(val2);
+    if (arg1) (arg1)->concordant = arg2;
+    ST(argvi) = &PL_sv_undef;
+    
+    
+    XSRETURN(argvi);
+    fail:;
+    
+    
+  }
+  SWIG_croak_null();
+}
+
+
+XS(_wrap_KendallTau_concordant_get) {
+  {
+    datamunge::stats::KendallTau *arg1 = 0 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    int argvi = 0;
+    long long result;
+    dXSARGS;
+    
+    if ((items < 1) || (items > 1)) {
+      SWIG_croak("Usage: KendallTau_concordant_get(self);");
+    }
+    res1 = SWIG_ConvertPtr(ST(0), &argp1,SWIGTYPE_p_datamunge__stats__KendallTau, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "KendallTau_concordant_get" "', argument " "1"" of type '" "datamunge::stats::KendallTau *""'"); 
+    }
+    arg1 = reinterpret_cast< datamunge::stats::KendallTau * >(argp1);
+    result = (long long) ((arg1)->concordant);
+    ST(argvi) = SWIG_From_long_SS_long  SWIG_PERL_CALL_ARGS_1(static_cast< long long >(result)); argvi++ ;
+    
+    XSRETURN(argvi);
+    fail:;
+    
+  }
+  SWIG_croak_null();
+}
+
+
+XS(_wrap_KendallTau_discordant_set) {
+  {
+    datamunge::stats::KendallTau *arg1 = 0 ;
+    long long arg2 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    long long val2 ;
+    int ecode2 = 0 ;
+    int argvi = 0;
+    dXSARGS;
+    
+    if ((items < 2) || (items > 2)) {
+      SWIG_croak("Usage: KendallTau_discordant_set(self,discordant);");
+    }
+    res1 = SWIG_ConvertPtr(ST(0), &argp1,SWIGTYPE_p_datamunge__stats__KendallTau, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "KendallTau_discordant_set" "', argument " "1"" of type '" "datamunge::stats::KendallTau *""'"); 
+    }
+    arg1 = reinterpret_cast< datamunge::stats::KendallTau * >(argp1);
+    ecode2 = SWIG_AsVal_long_SS_long SWIG_PERL_CALL_ARGS_2(ST(1), &val2);
+    if (!SWIG_IsOK(ecode2)) {
+      SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "KendallTau_discordant_set" "', argument " "2"" of type '" "long long""'");
+    } 
+    arg2 = static_cast< long long >(val2);
+    if (arg1) (arg1)->discordant = arg2;
+    ST(argvi) = &PL_sv_undef;
+    
+    
+    XSRETURN(argvi);
+    fail:;
+    
+    
+  }
+  SWIG_croak_null();
+}
+
+
+XS(_wrap_KendallTau_discordant_get) {
+  {
+    datamunge::stats::KendallTau *arg1 = 0 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    int argvi = 0;
+    long long result;
+    dXSARGS;
+    
+    if ((items < 1) || (items > 1)) {
+      SWIG_croak("Usage: KendallTau_discordant_get(self);");
+    }
+    res1 = SWIG_ConvertPtr(ST(0), &argp1,SWIGTYPE_p_datamunge__stats__KendallTau, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "KendallTau_discordant_get" "', argument " "1"" of type '" "datamunge::stats::KendallTau *""'"); 
+    }
+    arg1 = reinterpret_cast< datamunge::stats::KendallTau * >(argp1);
+    result = (long long) ((arg1)->discordant);
+    ST(argvi) = SWIG_From_long_SS_long  SWIG_PERL_CALL_ARGS_1(static_cast< long long >(result)); argvi++ ;
+    
+    XSRETURN(argvi);
+    fail:;
+    
+  }
+  SWIG_croak_null();
+}
+
+
+XS(_wrap_KendallTau_ties_x_set) {
+  {
+    datamunge::stats::KendallTau *arg1 = 0 ;
+    long long arg2 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    long long val2 ;
+    int ecode2 = 0 ;
+    int argvi = 0;
+    dXSARGS;
+    
+    if ((items < 2) || (items > 2)) {
+      SWIG_croak("Usage: KendallTau_ties_x_set(self,ties_x);");
+    }
+    res1 = SWIG_ConvertPtr(ST(0), &argp1,SWIGTYPE_p_datamunge__stats__KendallTau, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "KendallTau_ties_x_set" "', argument " "1"" of type '" "datamunge::stats::KendallTau *""'"); 
+    }
+    arg1 = reinterpret_cast< datamunge::stats::KendallTau * >(argp1);
+    ecode2 = SWIG_AsVal_long_SS_long SWIG_PERL_CALL_ARGS_2(ST(1), &val2);
+    if (!SWIG_IsOK(ecode2)) {
+      SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "KendallTau_ties_x_set" "', argument " "2"" of type '" "long long""'");
+    } 
+    arg2 = static_cast< long long >(val2);
+    if (arg1) (arg1)->ties_x = arg2;
+    ST(argvi) = &PL_sv_undef;
+    
+    
+    XSRETURN(argvi);
+    fail:;
+    
+    
+  }
+  SWIG_croak_null();
+}
+
+
+XS(_wrap_KendallTau_ties_x_get) {
+  {
+    datamunge::stats::KendallTau *arg1 = 0 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    int argvi = 0;
+    long long result;
+    dXSARGS;
+    
+    if ((items < 1) || (items > 1)) {
+      SWIG_croak("Usage: KendallTau_ties_x_get(self);");
+    }
+    res1 = SWIG_ConvertPtr(ST(0), &argp1,SWIGTYPE_p_datamunge__stats__KendallTau, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "KendallTau_ties_x_get" "', argument " "1"" of type '" "datamunge::stats::KendallTau *""'"); 
+    }
+    arg1 = reinterpret_cast< datamunge::stats::KendallTau * >(argp1);
+    result = (long long) ((arg1)->ties_x);
+    ST(argvi) = SWIG_From_long_SS_long  SWIG_PERL_CALL_ARGS_1(static_cast< long long >(result)); argvi++ ;
+    
+    XSRETURN(argvi);
+    fail:;
+    
+  }
+  SWIG_croak_null();
+}
+
+
+XS(_wrap_KendallTau_ties_y_set) {
+  {
+    datamunge::stats::KendallTau *arg1 = 0 ;
+    long long arg2 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    long long val2 ;
+    int ecode2 = 0 ;
+    int argvi = 0;
+    dXSARGS;
+    
+    if ((items < 2) || (items > 2)) {
+      SWIG_croak("Usage: KendallTau_ties_y_set(self,ties_y);");
+    }
+    res1 = SWIG_ConvertPtr(ST(0), &argp1,SWIGTYPE_p_datamunge__stats__KendallTau, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "KendallTau_ties_y_set" "', argument " "1"" of type '" "datamunge::stats::KendallTau *""'"); 
+    }
+    arg1 = reinterpret_cast< datamunge::stats::KendallTau * >(argp1);
+    ecode2 = SWIG_AsVal_long_SS_long SWIG_PERL_CALL_ARGS_2(ST(1), &val2);
+    if (!SWIG_IsOK(ecode2)) {
+      SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "KendallTau_ties_y_set" "', argument " "2"" of type '" "long long""'");
+    } 
+    arg2 = static_cast< long long >(val2);
+    if (arg1) (arg1)->ties_y = arg2;
+    ST(argvi) = &PL_sv_undef;
+    
+    
+    XSRETURN(argvi);
+    fail:;
+    
+    
+  }
+  SWIG_croak_null();
+}
+
+
+XS(_wrap_KendallTau_ties_y_get) {
+  {
+    datamunge::stats::KendallTau *arg1 = 0 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    int argvi = 0;
+    long long result;
+    dXSARGS;
+    
+    if ((items < 1) || (items > 1)) {
+      SWIG_croak("Usage: KendallTau_ties_y_get(self);");
+    }
+    res1 = SWIG_ConvertPtr(ST(0), &argp1,SWIGTYPE_p_datamunge__stats__KendallTau, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "KendallTau_ties_y_get" "', argument " "1"" of type '" "datamunge::stats::KendallTau *""'"); 
+    }
+    arg1 = reinterpret_cast< datamunge::stats::KendallTau * >(argp1);
+    result = (long long) ((arg1)->ties_y);
+    ST(argvi) = SWIG_From_long_SS_long  SWIG_PERL_CALL_ARGS_1(static_cast< long long >(result)); argvi++ ;
+    
+    XSRETURN(argvi);
+    fail:;
+    
+  }
+  SWIG_croak_null();
+}
+
+
+XS(_wrap_KendallTau_ties_xy_set) {
+  {
+    datamunge::stats::KendallTau *arg1 = 0 ;
+    long long arg2 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    long long val2 ;
+    int ecode2 = 0 ;
+    int argvi = 0;
+    dXSARGS;
+    
+    if ((items < 2) || (items > 2)) {
+      SWIG_croak("Usage: KendallTau_ties_xy_set(self,ties_xy);");
+    }
+    res1 = SWIG_ConvertPtr(ST(0), &argp1,SWIGTYPE_p_datamunge__stats__KendallTau, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "KendallTau_ties_xy_set" "', argument " "1"" of type '" "datamunge::stats::KendallTau *""'"); 
+    }
+    arg1 = reinterpret_cast< datamunge::stats::KendallTau * >(argp1);
+    ecode2 = SWIG_AsVal_long_SS_long SWIG_PERL_CALL_ARGS_2(ST(1), &val2);
+    if (!SWIG_IsOK(ecode2)) {
+      SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "KendallTau_ties_xy_set" "', argument " "2"" of type '" "long long""'");
+    } 
+    arg2 = static_cast< long long >(val2);
+    if (arg1) (arg1)->ties_xy = arg2;
+    ST(argvi) = &PL_sv_undef;
+    
+    
+    XSRETURN(argvi);
+    fail:;
+    
+    
+  }
+  SWIG_croak_null();
+}
+
+
+XS(_wrap_KendallTau_ties_xy_get) {
+  {
+    datamunge::stats::KendallTau *arg1 = 0 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    int argvi = 0;
+    long long result;
+    dXSARGS;
+    
+    if ((items < 1) || (items > 1)) {
+      SWIG_croak("Usage: KendallTau_ties_xy_get(self);");
+    }
+    res1 = SWIG_ConvertPtr(ST(0), &argp1,SWIGTYPE_p_datamunge__stats__KendallTau, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "KendallTau_ties_xy_get" "', argument " "1"" of type '" "datamunge::stats::KendallTau *""'"); 
+    }
+    arg1 = reinterpret_cast< datamunge::stats::KendallTau * >(argp1);
+    result = (long long) ((arg1)->ties_xy);
+    ST(argvi) = SWIG_From_long_SS_long  SWIG_PERL_CALL_ARGS_1(static_cast< long long >(result)); argvi++ ;
+    
+    XSRETURN(argvi);
+    fail:;
+    
+  }
+  SWIG_croak_null();
+}
+
+
+XS(_wrap_KendallTau_tau_a_set) {
+  {
+    datamunge::stats::KendallTau *arg1 = 0 ;
+    double arg2 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    double val2 ;
+    int ecode2 = 0 ;
+    int argvi = 0;
+    dXSARGS;
+    
+    if ((items < 2) || (items > 2)) {
+      SWIG_croak("Usage: KendallTau_tau_a_set(self,tau_a);");
+    }
+    res1 = SWIG_ConvertPtr(ST(0), &argp1,SWIGTYPE_p_datamunge__stats__KendallTau, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "KendallTau_tau_a_set" "', argument " "1"" of type '" "datamunge::stats::KendallTau *""'"); 
+    }
+    arg1 = reinterpret_cast< datamunge::stats::KendallTau * >(argp1);
+    ecode2 = SWIG_AsVal_double SWIG_PERL_CALL_ARGS_2(ST(1), &val2);
+    if (!SWIG_IsOK(ecode2)) {
+      SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "KendallTau_tau_a_set" "', argument " "2"" of type '" "double""'");
+    } 
+    arg2 = static_cast< double >(val2);
+    if (arg1) (arg1)->tau_a = arg2;
+    ST(argvi) = &PL_sv_undef;
+    
+    
+    XSRETURN(argvi);
+    fail:;
+    
+    
+  }
+  SWIG_croak_null();
+}
+
+
+XS(_wrap_KendallTau_tau_a_get) {
+  {
+    datamunge::stats::KendallTau *arg1 = 0 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    int argvi = 0;
+    double result;
+    dXSARGS;
+    
+    if ((items < 1) || (items > 1)) {
+      SWIG_croak("Usage: KendallTau_tau_a_get(self);");
+    }
+    res1 = SWIG_ConvertPtr(ST(0), &argp1,SWIGTYPE_p_datamunge__stats__KendallTau, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "KendallTau_tau_a_get" "', argument " "1"" of type '" "datamunge::stats::KendallTau *""'"); 
+    }
+    arg1 = reinterpret_cast< datamunge::stats::KendallTau * >(argp1);
+    result = (double) ((arg1)->tau_a);
+    ST(argvi) = SWIG_From_double  SWIG_PERL_CALL_ARGS_1(static_cast< double >(result)); argvi++ ;
+    
+    XSRETURN(argvi);
+    fail:;
+    
+  }
+  SWIG_croak_null();
+}
+
+
+XS(_wrap_KendallTau_tau_b_set) {
+  {
+    datamunge::stats::KendallTau *arg1 = 0 ;
+    double arg2 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    double val2 ;
+    int ecode2 = 0 ;
+    int argvi = 0;
+    dXSARGS;
+    
+    if ((items < 2) || (items > 2)) {
+      SWIG_croak("Usage: KendallTau_tau_b_set(self,tau_b);");
+    }
+    res1 = SWIG_ConvertPtr(ST(0), &argp1,SWIGTYPE_p_datamunge__stats__KendallTau, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "KendallTau_tau_b_set" "', argument " "1"" of type '" "datamunge::stats::KendallTau *""'"); 
+    }
+    arg1 = reinterpret_cast< datamunge::stats::KendallTau * >(argp1);
+    ecode2 = SWIG_AsVal_double SWIG_PERL_CALL_ARGS_2(ST(1), &val2);
+    if (!SWIG_IsOK(ecode2)) {
+      SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "KendallTau_tau_b_set" "', argument " "2"" of type '" "double""'");
+    } 
+    arg2 = static_cast< double >(val2);
+    if (arg1) (arg1)->tau_b = arg2;
+    ST(argvi) = &PL_sv_undef;
+    
+    
+    XSRETURN(argvi);
+    fail:;
+    
+    
+  }
+  SWIG_croak_null();
+}
+
+
+XS(_wrap_KendallTau_tau_b_get) {
+  {
+    datamunge::stats::KendallTau *arg1 = 0 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    int argvi = 0;
+    double result;
+    dXSARGS;
+    
+    if ((items < 1) || (items > 1)) {
+      SWIG_croak("Usage: KendallTau_tau_b_get(self);");
+    }
+    res1 = SWIG_ConvertPtr(ST(0), &argp1,SWIGTYPE_p_datamunge__stats__KendallTau, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "KendallTau_tau_b_get" "', argument " "1"" of type '" "datamunge::stats::KendallTau *""'"); 
+    }
+    arg1 = reinterpret_cast< datamunge::stats::KendallTau * >(argp1);
+    result = (double) ((arg1)->tau_b);
+    ST(argvi) = SWIG_From_double  SWIG_PERL_CALL_ARGS_1(static_cast< double >(result)); argvi++ ;
+    
+    XSRETURN(argvi);
+    fail:;
+    
+  }
+  SWIG_croak_null();
+}
+
+
+XS(_wrap_new_KendallTau) {
+  {
+    int argvi = 0;
+    datamunge::stats::KendallTau *result = 0 ;
+    dXSARGS;
+    
+    if ((items < 0) || (items > 0)) {
+      SWIG_croak("Usage: new_KendallTau();");
+    }
+    result = (datamunge::stats::KendallTau *)new datamunge::stats::KendallTau();
+    ST(argvi) = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__stats__KendallTau, SWIG_OWNER | SWIG_SHADOW); argvi++ ;
+    XSRETURN(argvi);
+    fail:;
+  }
+  SWIG_croak_null();
+}
+
+
+XS(_wrap_delete_KendallTau) {
+  {
+    datamunge::stats::KendallTau *arg1 = 0 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    int argvi = 0;
+    dXSARGS;
+    
+    if ((items < 1) || (items > 1)) {
+      SWIG_croak("Usage: delete_KendallTau(self);");
+    }
+    res1 = SWIG_ConvertPtr(ST(0), &argp1,SWIGTYPE_p_datamunge__stats__KendallTau, SWIG_POINTER_DISOWN |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "delete_KendallTau" "', argument " "1"" of type '" "datamunge::stats::KendallTau *""'"); 
+    }
+    arg1 = reinterpret_cast< datamunge::stats::KendallTau * >(argp1);
+    delete arg1;
+    ST(argvi) = &PL_sv_undef;
+    
+    XSRETURN(argvi);
+    fail:;
+    
+  }
+  SWIG_croak_null();
+}
+
+
+XS(_wrap_kendall_tau) {
+  {
+    std::vector< double > *arg1 = 0 ;
+    std::vector< double > *arg2 = 0 ;
+    std::vector< double > temp1 ;
+    std::vector< double > *v1 ;
+    std::vector< double > temp2 ;
+    std::vector< double > *v2 ;
+    int argvi = 0;
+    datamunge::stats::KendallTau result;
+    dXSARGS;
+    
+    if ((items < 2) || (items > 2)) {
+      SWIG_croak("Usage: kendall_tau(x,y);");
+    }
+    {
+      if (SWIG_ConvertPtr(ST(0),(void **) &v1, 
+          SWIGTYPE_p_std__vectorT_double_t,1) != -1) {
+        arg1 = v1;
+      } else if (SvROK(ST(0))) {
+        AV *av = (AV *)SvRV(ST(0));
+        if (SvTYPE(av) != SVt_PVAV)
+        SWIG_croak("Type error in argument 1 of kendall_tau. "
+          "Expected an array of ""double");
+        SV **tv;
+        SSize_t len = av_len(av) + 1;
+        for (int i=0; i<len; i++) {
+          tv = av_fetch(av, i, 0);
+          if (SvNIOK(*tv)) {
+            temp1.push_back((double)SwigSvToNumber(*tv));
+          } else {
+            SWIG_croak("Type error in argument 1 of "
+              "kendall_tau. "
+              "Expected an array of ""double");
+          }
+        }
+        arg1 = &temp1;
+      } else {
+        SWIG_croak("Type error in argument 1 of kendall_tau. "
+          "Expected an array of ""double");
+      }
+    }
+    {
+      if (SWIG_ConvertPtr(ST(1),(void **) &v2, 
+          SWIGTYPE_p_std__vectorT_double_t,1) != -1) {
+        arg2 = v2;
+      } else if (SvROK(ST(1))) {
+        AV *av = (AV *)SvRV(ST(1));
+        if (SvTYPE(av) != SVt_PVAV)
+        SWIG_croak("Type error in argument 2 of kendall_tau. "
+          "Expected an array of ""double");
+        SV **tv;
+        SSize_t len = av_len(av) + 1;
+        for (int i=0; i<len; i++) {
+          tv = av_fetch(av, i, 0);
+          if (SvNIOK(*tv)) {
+            temp2.push_back((double)SwigSvToNumber(*tv));
+          } else {
+            SWIG_croak("Type error in argument 2 of "
+              "kendall_tau. "
+              "Expected an array of ""double");
+          }
+        }
+        arg2 = &temp2;
+      } else {
+        SWIG_croak("Type error in argument 2 of kendall_tau. "
+          "Expected an array of ""double");
+      }
+    }
+    result = datamunge::stats::kendall_tau((std::vector< double > const &)*arg1,(std::vector< double > const &)*arg2);
+    ST(argvi) = SWIG_NewPointerObj((new datamunge::stats::KendallTau(result)), SWIGTYPE_p_datamunge__stats__KendallTau, SWIG_POINTER_OWN | SWIG_SHADOW); argvi++ ;
+    
+    
+    XSRETURN(argvi);
+    fail:;
+    
+    
+  }
+  SWIG_croak_null();
 }
 
 
@@ -138978,6 +149092,34 @@ XS(_wrap_GradientDescent_optimize) {
 }
 
 
+XS(_wrap_GradientDescent_options) {
+  {
+    datamunge::optim::GradientDescent *arg1 = 0 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    int argvi = 0;
+    datamunge::optim::GradientDescentOptions *result = 0 ;
+    dXSARGS;
+    
+    if ((items < 1) || (items > 1)) {
+      SWIG_croak("Usage: GradientDescent_options(self);");
+    }
+    res1 = SWIG_ConvertPtr(ST(0), &argp1,SWIGTYPE_p_datamunge__optim__GradientDescent, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "GradientDescent_options" "', argument " "1"" of type '" "datamunge::optim::GradientDescent const *""'"); 
+    }
+    arg1 = reinterpret_cast< datamunge::optim::GradientDescent * >(argp1);
+    result = (datamunge::optim::GradientDescentOptions *) &((datamunge::optim::GradientDescent const *)arg1)->options();
+    ST(argvi) = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__optim__GradientDescentOptions, 0 | SWIG_SHADOW); argvi++ ;
+    
+    XSRETURN(argvi);
+    fail:;
+    
+  }
+  SWIG_croak_null();
+}
+
+
 XS(_wrap_delete_GradientDescent) {
   {
     datamunge::optim::GradientDescent *arg1 = 0 ;
@@ -139593,6 +149735,34 @@ XS(_wrap_Adam_optimize) {
 }
 
 
+XS(_wrap_Adam_options) {
+  {
+    datamunge::optim::Adam *arg1 = 0 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    int argvi = 0;
+    datamunge::optim::AdamOptions *result = 0 ;
+    dXSARGS;
+    
+    if ((items < 1) || (items > 1)) {
+      SWIG_croak("Usage: Adam_options(self);");
+    }
+    res1 = SWIG_ConvertPtr(ST(0), &argp1,SWIGTYPE_p_datamunge__optim__Adam, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "Adam_options" "', argument " "1"" of type '" "datamunge::optim::Adam const *""'"); 
+    }
+    arg1 = reinterpret_cast< datamunge::optim::Adam * >(argp1);
+    result = (datamunge::optim::AdamOptions *) &((datamunge::optim::Adam const *)arg1)->options();
+    ST(argvi) = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__optim__AdamOptions, 0 | SWIG_SHADOW); argvi++ ;
+    
+    XSRETURN(argvi);
+    fail:;
+    
+  }
+  SWIG_croak_null();
+}
+
+
 XS(_wrap_delete_Adam) {
   {
     datamunge::optim::Adam *arg1 = 0 ;
@@ -140078,6 +150248,34 @@ XS(_wrap_AdaGrad_optimize) {
 }
 
 
+XS(_wrap_AdaGrad_options) {
+  {
+    datamunge::optim::AdaGrad *arg1 = 0 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    int argvi = 0;
+    datamunge::optim::AdaGradOptions *result = 0 ;
+    dXSARGS;
+    
+    if ((items < 1) || (items > 1)) {
+      SWIG_croak("Usage: AdaGrad_options(self);");
+    }
+    res1 = SWIG_ConvertPtr(ST(0), &argp1,SWIGTYPE_p_datamunge__optim__AdaGrad, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "AdaGrad_options" "', argument " "1"" of type '" "datamunge::optim::AdaGrad const *""'"); 
+    }
+    arg1 = reinterpret_cast< datamunge::optim::AdaGrad * >(argp1);
+    result = (datamunge::optim::AdaGradOptions *) &((datamunge::optim::AdaGrad const *)arg1)->options();
+    ST(argvi) = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__optim__AdaGradOptions, 0 | SWIG_SHADOW); argvi++ ;
+    
+    XSRETURN(argvi);
+    fail:;
+    
+  }
+  SWIG_croak_null();
+}
+
+
 XS(_wrap_delete_AdaGrad) {
   {
     datamunge::optim::AdaGrad *arg1 = 0 ;
@@ -140557,6 +150755,34 @@ XS(_wrap_AdaDelta_optimize) {
     fail:;
     
     
+    
+  }
+  SWIG_croak_null();
+}
+
+
+XS(_wrap_AdaDelta_options) {
+  {
+    datamunge::optim::AdaDelta *arg1 = 0 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    int argvi = 0;
+    datamunge::optim::AdaDeltaOptions *result = 0 ;
+    dXSARGS;
+    
+    if ((items < 1) || (items > 1)) {
+      SWIG_croak("Usage: AdaDelta_options(self);");
+    }
+    res1 = SWIG_ConvertPtr(ST(0), &argp1,SWIGTYPE_p_datamunge__optim__AdaDelta, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "AdaDelta_options" "', argument " "1"" of type '" "datamunge::optim::AdaDelta const *""'"); 
+    }
+    arg1 = reinterpret_cast< datamunge::optim::AdaDelta * >(argp1);
+    result = (datamunge::optim::AdaDeltaOptions *) &((datamunge::optim::AdaDelta const *)arg1)->options();
+    ST(argvi) = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__optim__AdaDeltaOptions, 0 | SWIG_SHADOW); argvi++ ;
+    
+    XSRETURN(argvi);
+    fail:;
     
   }
   SWIG_croak_null();
@@ -141178,6 +151404,34 @@ XS(_wrap_AMSGrad_optimize) {
 }
 
 
+XS(_wrap_AMSGrad_options) {
+  {
+    datamunge::optim::AMSGrad *arg1 = 0 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    int argvi = 0;
+    datamunge::optim::AMSGradOptions *result = 0 ;
+    dXSARGS;
+    
+    if ((items < 1) || (items > 1)) {
+      SWIG_croak("Usage: AMSGrad_options(self);");
+    }
+    res1 = SWIG_ConvertPtr(ST(0), &argp1,SWIGTYPE_p_datamunge__optim__AMSGrad, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "AMSGrad_options" "', argument " "1"" of type '" "datamunge::optim::AMSGrad const *""'"); 
+    }
+    arg1 = reinterpret_cast< datamunge::optim::AMSGrad * >(argp1);
+    result = (datamunge::optim::AMSGradOptions *) &((datamunge::optim::AMSGrad const *)arg1)->options();
+    ST(argvi) = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__optim__AMSGradOptions, 0 | SWIG_SHADOW); argvi++ ;
+    
+    XSRETURN(argvi);
+    fail:;
+    
+  }
+  SWIG_croak_null();
+}
+
+
 XS(_wrap_delete_AMSGrad) {
   {
     datamunge::optim::AMSGrad *arg1 = 0 ;
@@ -141793,6 +152047,34 @@ XS(_wrap_Nadam_optimize) {
 }
 
 
+XS(_wrap_Nadam_options) {
+  {
+    datamunge::optim::Nadam *arg1 = 0 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    int argvi = 0;
+    datamunge::optim::NadamOptions *result = 0 ;
+    dXSARGS;
+    
+    if ((items < 1) || (items > 1)) {
+      SWIG_croak("Usage: Nadam_options(self);");
+    }
+    res1 = SWIG_ConvertPtr(ST(0), &argp1,SWIGTYPE_p_datamunge__optim__Nadam, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "Nadam_options" "', argument " "1"" of type '" "datamunge::optim::Nadam const *""'"); 
+    }
+    arg1 = reinterpret_cast< datamunge::optim::Nadam * >(argp1);
+    result = (datamunge::optim::NadamOptions *) &((datamunge::optim::Nadam const *)arg1)->options();
+    ST(argvi) = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__optim__NadamOptions, 0 | SWIG_SHADOW); argvi++ ;
+    
+    XSRETURN(argvi);
+    fail:;
+    
+  }
+  SWIG_croak_null();
+}
+
+
 XS(_wrap_delete_Nadam) {
   {
     datamunge::optim::Nadam *arg1 = 0 ;
@@ -142337,6 +152619,34 @@ XS(_wrap_RMSProp_optimize) {
     fail:;
     
     
+    
+  }
+  SWIG_croak_null();
+}
+
+
+XS(_wrap_RMSProp_options) {
+  {
+    datamunge::optim::RMSProp *arg1 = 0 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    int argvi = 0;
+    datamunge::optim::RMSPropOptions *result = 0 ;
+    dXSARGS;
+    
+    if ((items < 1) || (items > 1)) {
+      SWIG_croak("Usage: RMSProp_options(self);");
+    }
+    res1 = SWIG_ConvertPtr(ST(0), &argp1,SWIGTYPE_p_datamunge__optim__RMSProp, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "RMSProp_options" "', argument " "1"" of type '" "datamunge::optim::RMSProp const *""'"); 
+    }
+    arg1 = reinterpret_cast< datamunge::optim::RMSProp * >(argp1);
+    result = (datamunge::optim::RMSPropOptions *) &((datamunge::optim::RMSProp const *)arg1)->options();
+    ST(argvi) = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__optim__RMSPropOptions, 0 | SWIG_SHADOW); argvi++ ;
+    
+    XSRETURN(argvi);
+    fail:;
     
   }
   SWIG_croak_null();
@@ -142952,6 +153262,34 @@ XS(_wrap_LBFGS_optimize) {
     fail:;
     
     
+    
+  }
+  SWIG_croak_null();
+}
+
+
+XS(_wrap_LBFGS_options) {
+  {
+    datamunge::optim::LBFGS *arg1 = 0 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    int argvi = 0;
+    datamunge::optim::LBFGSOptions *result = 0 ;
+    dXSARGS;
+    
+    if ((items < 1) || (items > 1)) {
+      SWIG_croak("Usage: LBFGS_options(self);");
+    }
+    res1 = SWIG_ConvertPtr(ST(0), &argp1,SWIGTYPE_p_datamunge__optim__LBFGS, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "LBFGS_options" "', argument " "1"" of type '" "datamunge::optim::LBFGS const *""'"); 
+    }
+    arg1 = reinterpret_cast< datamunge::optim::LBFGS * >(argp1);
+    result = (datamunge::optim::LBFGSOptions *) &((datamunge::optim::LBFGS const *)arg1)->options();
+    ST(argvi) = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__optim__LBFGSOptions, 0 | SWIG_SHADOW); argvi++ ;
+    
+    XSRETURN(argvi);
+    fail:;
     
   }
   SWIG_croak_null();
@@ -143638,6 +153976,34 @@ XS(_wrap_NelderMead_optimize) {
 }
 
 
+XS(_wrap_NelderMead_options) {
+  {
+    datamunge::optim::NelderMead *arg1 = 0 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    int argvi = 0;
+    datamunge::optim::NelderMeadOptions *result = 0 ;
+    dXSARGS;
+    
+    if ((items < 1) || (items > 1)) {
+      SWIG_croak("Usage: NelderMead_options(self);");
+    }
+    res1 = SWIG_ConvertPtr(ST(0), &argp1,SWIGTYPE_p_datamunge__optim__NelderMead, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "NelderMead_options" "', argument " "1"" of type '" "datamunge::optim::NelderMead const *""'"); 
+    }
+    arg1 = reinterpret_cast< datamunge::optim::NelderMead * >(argp1);
+    result = (datamunge::optim::NelderMeadOptions *) &((datamunge::optim::NelderMead const *)arg1)->options();
+    ST(argvi) = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__optim__NelderMeadOptions, 0 | SWIG_SHADOW); argvi++ ;
+    
+    XSRETURN(argvi);
+    fail:;
+    
+  }
+  SWIG_croak_null();
+}
+
+
 XS(_wrap_delete_NelderMead) {
   {
     datamunge::optim::NelderMead *arg1 = 0 ;
@@ -144253,6 +154619,34 @@ XS(_wrap_SGD_optimize) {
 }
 
 
+XS(_wrap_SGD_options) {
+  {
+    datamunge::optim::SGD *arg1 = 0 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    int argvi = 0;
+    datamunge::optim::SGDOptions *result = 0 ;
+    dXSARGS;
+    
+    if ((items < 1) || (items > 1)) {
+      SWIG_croak("Usage: SGD_options(self);");
+    }
+    res1 = SWIG_ConvertPtr(ST(0), &argp1,SWIGTYPE_p_datamunge__optim__SGD, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "SGD_options" "', argument " "1"" of type '" "datamunge::optim::SGD const *""'"); 
+    }
+    arg1 = reinterpret_cast< datamunge::optim::SGD * >(argp1);
+    result = (datamunge::optim::SGDOptions *) &((datamunge::optim::SGD const *)arg1)->options();
+    ST(argvi) = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__optim__SGDOptions, 0 | SWIG_SHADOW); argvi++ ;
+    
+    XSRETURN(argvi);
+    fail:;
+    
+  }
+  SWIG_croak_null();
+}
+
+
 XS(_wrap_delete_SGD) {
   {
     datamunge::optim::SGD *arg1 = 0 ;
@@ -144803,6 +155197,34 @@ XS(_wrap_SVRG_optimize) {
 }
 
 
+XS(_wrap_SVRG_options) {
+  {
+    datamunge::optim::SVRG *arg1 = 0 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    int argvi = 0;
+    datamunge::optim::SVRGOptions *result = 0 ;
+    dXSARGS;
+    
+    if ((items < 1) || (items > 1)) {
+      SWIG_croak("Usage: SVRG_options(self);");
+    }
+    res1 = SWIG_ConvertPtr(ST(0), &argp1,SWIGTYPE_p_datamunge__optim__SVRG, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "SVRG_options" "', argument " "1"" of type '" "datamunge::optim::SVRG const *""'"); 
+    }
+    arg1 = reinterpret_cast< datamunge::optim::SVRG * >(argp1);
+    result = (datamunge::optim::SVRGOptions *) &((datamunge::optim::SVRG const *)arg1)->options();
+    ST(argvi) = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__optim__SVRGOptions, 0 | SWIG_SHADOW); argvi++ ;
+    
+    XSRETURN(argvi);
+    fail:;
+    
+  }
+  SWIG_croak_null();
+}
+
+
 XS(_wrap_delete_SVRG) {
   {
     datamunge::optim::SVRG *arg1 = 0 ;
@@ -145282,6 +155704,34 @@ XS(_wrap_SAGA_optimize) {
     fail:;
     
     
+    
+  }
+  SWIG_croak_null();
+}
+
+
+XS(_wrap_SAGA_options) {
+  {
+    datamunge::optim::SAGA *arg1 = 0 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    int argvi = 0;
+    datamunge::optim::SAGAOptions *result = 0 ;
+    dXSARGS;
+    
+    if ((items < 1) || (items > 1)) {
+      SWIG_croak("Usage: SAGA_options(self);");
+    }
+    res1 = SWIG_ConvertPtr(ST(0), &argp1,SWIGTYPE_p_datamunge__optim__SAGA, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "SAGA_options" "', argument " "1"" of type '" "datamunge::optim::SAGA const *""'"); 
+    }
+    arg1 = reinterpret_cast< datamunge::optim::SAGA * >(argp1);
+    result = (datamunge::optim::SAGAOptions *) &((datamunge::optim::SAGA const *)arg1)->options();
+    ST(argvi) = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__optim__SAGAOptions, 0 | SWIG_SHADOW); argvi++ ;
+    
+    XSRETURN(argvi);
+    fail:;
     
   }
   SWIG_croak_null();
@@ -145897,6 +156347,34 @@ XS(_wrap_CoordinateDescent_optimize) {
     fail:;
     
     
+    
+  }
+  SWIG_croak_null();
+}
+
+
+XS(_wrap_CoordinateDescent_options) {
+  {
+    datamunge::optim::CoordinateDescent *arg1 = 0 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    int argvi = 0;
+    datamunge::optim::CoordinateDescentOptions *result = 0 ;
+    dXSARGS;
+    
+    if ((items < 1) || (items > 1)) {
+      SWIG_croak("Usage: CoordinateDescent_options(self);");
+    }
+    res1 = SWIG_ConvertPtr(ST(0), &argp1,SWIGTYPE_p_datamunge__optim__CoordinateDescent, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "CoordinateDescent_options" "', argument " "1"" of type '" "datamunge::optim::CoordinateDescent const *""'"); 
+    }
+    arg1 = reinterpret_cast< datamunge::optim::CoordinateDescent * >(argp1);
+    result = (datamunge::optim::CoordinateDescentOptions *) &((datamunge::optim::CoordinateDescent const *)arg1)->options();
+    ST(argvi) = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__optim__CoordinateDescentOptions, 0 | SWIG_SHADOW); argvi++ ;
+    
+    XSRETURN(argvi);
+    fail:;
     
   }
   SWIG_croak_null();
@@ -146648,6 +157126,34 @@ XS(_wrap_RandomizedBlockCoordinateDescent_optimize) {
 }
 
 
+XS(_wrap_RandomizedBlockCoordinateDescent_options) {
+  {
+    datamunge::optim::RandomizedBlockCoordinateDescent *arg1 = 0 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    int argvi = 0;
+    datamunge::optim::RandomizedBlockCoordinateDescentOptions *result = 0 ;
+    dXSARGS;
+    
+    if ((items < 1) || (items > 1)) {
+      SWIG_croak("Usage: RandomizedBlockCoordinateDescent_options(self);");
+    }
+    res1 = SWIG_ConvertPtr(ST(0), &argp1,SWIGTYPE_p_datamunge__optim__RandomizedBlockCoordinateDescent, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "RandomizedBlockCoordinateDescent_options" "', argument " "1"" of type '" "datamunge::optim::RandomizedBlockCoordinateDescent const *""'"); 
+    }
+    arg1 = reinterpret_cast< datamunge::optim::RandomizedBlockCoordinateDescent * >(argp1);
+    result = (datamunge::optim::RandomizedBlockCoordinateDescentOptions *) &((datamunge::optim::RandomizedBlockCoordinateDescent const *)arg1)->options();
+    ST(argvi) = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__optim__RandomizedBlockCoordinateDescentOptions, 0 | SWIG_SHADOW); argvi++ ;
+    
+    XSRETURN(argvi);
+    fail:;
+    
+  }
+  SWIG_croak_null();
+}
+
+
 XS(_wrap_delete_RandomizedBlockCoordinateDescent) {
   {
     datamunge::optim::RandomizedBlockCoordinateDescent *arg1 = 0 ;
@@ -147127,6 +157633,34 @@ XS(_wrap_NesterovAcceleratedGradient_optimize) {
     fail:;
     
     
+    
+  }
+  SWIG_croak_null();
+}
+
+
+XS(_wrap_NesterovAcceleratedGradient_options) {
+  {
+    datamunge::optim::NesterovAcceleratedGradient *arg1 = 0 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    int argvi = 0;
+    datamunge::optim::NesterovAcceleratedGradientOptions *result = 0 ;
+    dXSARGS;
+    
+    if ((items < 1) || (items > 1)) {
+      SWIG_croak("Usage: NesterovAcceleratedGradient_options(self);");
+    }
+    res1 = SWIG_ConvertPtr(ST(0), &argp1,SWIGTYPE_p_datamunge__optim__NesterovAcceleratedGradient, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "NesterovAcceleratedGradient_options" "', argument " "1"" of type '" "datamunge::optim::NesterovAcceleratedGradient const *""'"); 
+    }
+    arg1 = reinterpret_cast< datamunge::optim::NesterovAcceleratedGradient * >(argp1);
+    result = (datamunge::optim::NesterovAcceleratedGradientOptions *) &((datamunge::optim::NesterovAcceleratedGradient const *)arg1)->options();
+    ST(argvi) = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__optim__NesterovAcceleratedGradientOptions, 0 | SWIG_SHADOW); argvi++ ;
+    
+    XSRETURN(argvi);
+    fail:;
     
   }
   SWIG_croak_null();
@@ -147683,6 +158217,34 @@ XS(_wrap_ConjugateGradient_optimize) {
 }
 
 
+XS(_wrap_ConjugateGradient_options) {
+  {
+    datamunge::optim::ConjugateGradient *arg1 = 0 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    int argvi = 0;
+    datamunge::optim::ConjugateGradientOptions *result = 0 ;
+    dXSARGS;
+    
+    if ((items < 1) || (items > 1)) {
+      SWIG_croak("Usage: ConjugateGradient_options(self);");
+    }
+    res1 = SWIG_ConvertPtr(ST(0), &argp1,SWIGTYPE_p_datamunge__optim__ConjugateGradient, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "ConjugateGradient_options" "', argument " "1"" of type '" "datamunge::optim::ConjugateGradient const *""'"); 
+    }
+    arg1 = reinterpret_cast< datamunge::optim::ConjugateGradient * >(argp1);
+    result = (datamunge::optim::ConjugateGradientOptions *) &((datamunge::optim::ConjugateGradient const *)arg1)->options();
+    ST(argvi) = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__optim__ConjugateGradientOptions, 0 | SWIG_SHADOW); argvi++ ;
+    
+    XSRETURN(argvi);
+    fail:;
+    
+  }
+  SWIG_croak_null();
+}
+
+
 XS(_wrap_delete_ConjugateGradient) {
   {
     datamunge::optim::ConjugateGradient *arg1 = 0 ;
@@ -148233,6 +158795,34 @@ XS(_wrap_CMAES_optimize) {
 }
 
 
+XS(_wrap_CMAES_options) {
+  {
+    datamunge::optim::CMAES *arg1 = 0 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    int argvi = 0;
+    datamunge::optim::CMAESOptions *result = 0 ;
+    dXSARGS;
+    
+    if ((items < 1) || (items > 1)) {
+      SWIG_croak("Usage: CMAES_options(self);");
+    }
+    res1 = SWIG_ConvertPtr(ST(0), &argp1,SWIGTYPE_p_datamunge__optim__CMAES, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "CMAES_options" "', argument " "1"" of type '" "datamunge::optim::CMAES const *""'"); 
+    }
+    arg1 = reinterpret_cast< datamunge::optim::CMAES * >(argp1);
+    result = (datamunge::optim::CMAESOptions *) &((datamunge::optim::CMAES const *)arg1)->options();
+    ST(argvi) = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__optim__CMAESOptions, 0 | SWIG_SHADOW); argvi++ ;
+    
+    XSRETURN(argvi);
+    fail:;
+    
+  }
+  SWIG_croak_null();
+}
+
+
 XS(_wrap_delete_CMAES) {
   {
     datamunge::optim::CMAES *arg1 = 0 ;
@@ -148777,6 +159367,34 @@ XS(_wrap_SimulatedAnnealing_optimize) {
     fail:;
     
     
+    
+  }
+  SWIG_croak_null();
+}
+
+
+XS(_wrap_SimulatedAnnealing_options) {
+  {
+    datamunge::optim::SimulatedAnnealing *arg1 = 0 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    int argvi = 0;
+    datamunge::optim::SimulatedAnnealingOptions *result = 0 ;
+    dXSARGS;
+    
+    if ((items < 1) || (items > 1)) {
+      SWIG_croak("Usage: SimulatedAnnealing_options(self);");
+    }
+    res1 = SWIG_ConvertPtr(ST(0), &argp1,SWIGTYPE_p_datamunge__optim__SimulatedAnnealing, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "SimulatedAnnealing_options" "', argument " "1"" of type '" "datamunge::optim::SimulatedAnnealing const *""'"); 
+    }
+    arg1 = reinterpret_cast< datamunge::optim::SimulatedAnnealing * >(argp1);
+    result = (datamunge::optim::SimulatedAnnealingOptions *) &((datamunge::optim::SimulatedAnnealing const *)arg1)->options();
+    ST(argvi) = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__optim__SimulatedAnnealingOptions, 0 | SWIG_SHADOW); argvi++ ;
+    
+    XSRETURN(argvi);
+    fail:;
     
   }
   SWIG_croak_null();
@@ -149797,6 +160415,34 @@ XS(_wrap_PSO_optimize) {
 }
 
 
+XS(_wrap_PSO_options) {
+  {
+    datamunge::optim::PSO *arg1 = 0 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    int argvi = 0;
+    datamunge::optim::PSOOptions *result = 0 ;
+    dXSARGS;
+    
+    if ((items < 1) || (items > 1)) {
+      SWIG_croak("Usage: PSO_options(self);");
+    }
+    res1 = SWIG_ConvertPtr(ST(0), &argp1,SWIGTYPE_p_datamunge__optim__PSO, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "PSO_options" "', argument " "1"" of type '" "datamunge::optim::PSO const *""'"); 
+    }
+    arg1 = reinterpret_cast< datamunge::optim::PSO * >(argp1);
+    result = (datamunge::optim::PSOOptions *) &((datamunge::optim::PSO const *)arg1)->options();
+    ST(argvi) = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__optim__PSOOptions, 0 | SWIG_SHADOW); argvi++ ;
+    
+    XSRETURN(argvi);
+    fail:;
+    
+  }
+  SWIG_croak_null();
+}
+
+
 XS(_wrap_delete_PSO) {
   {
     datamunge::optim::PSO *arg1 = 0 ;
@@ -150610,6 +161256,34 @@ XS(_wrap_DifferentialEvolution_optimize) {
     
     
     
+    
+  }
+  SWIG_croak_null();
+}
+
+
+XS(_wrap_DifferentialEvolution_options) {
+  {
+    datamunge::optim::DifferentialEvolution *arg1 = 0 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    int argvi = 0;
+    datamunge::optim::DEOptions *result = 0 ;
+    dXSARGS;
+    
+    if ((items < 1) || (items > 1)) {
+      SWIG_croak("Usage: DifferentialEvolution_options(self);");
+    }
+    res1 = SWIG_ConvertPtr(ST(0), &argp1,SWIGTYPE_p_datamunge__optim__DifferentialEvolution, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "DifferentialEvolution_options" "', argument " "1"" of type '" "datamunge::optim::DifferentialEvolution const *""'"); 
+    }
+    arg1 = reinterpret_cast< datamunge::optim::DifferentialEvolution * >(argp1);
+    result = (datamunge::optim::DEOptions *) &((datamunge::optim::DifferentialEvolution const *)arg1)->options();
+    ST(argvi) = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__optim__DEOptions, 0 | SWIG_SHADOW); argvi++ ;
+    
+    XSRETURN(argvi);
+    fail:;
     
   }
   SWIG_croak_null();
@@ -151760,6 +162434,34 @@ XS(_wrap_GeneticAlgorithm_optimize) {
 }
 
 
+XS(_wrap_GeneticAlgorithm_options) {
+  {
+    datamunge::optim::GeneticAlgorithm *arg1 = 0 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    int argvi = 0;
+    datamunge::optim::GAOptions *result = 0 ;
+    dXSARGS;
+    
+    if ((items < 1) || (items > 1)) {
+      SWIG_croak("Usage: GeneticAlgorithm_options(self);");
+    }
+    res1 = SWIG_ConvertPtr(ST(0), &argp1,SWIGTYPE_p_datamunge__optim__GeneticAlgorithm, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "GeneticAlgorithm_options" "', argument " "1"" of type '" "datamunge::optim::GeneticAlgorithm const *""'"); 
+    }
+    arg1 = reinterpret_cast< datamunge::optim::GeneticAlgorithm * >(argp1);
+    result = (datamunge::optim::GAOptions *) &((datamunge::optim::GeneticAlgorithm const *)arg1)->options();
+    ST(argvi) = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__optim__GAOptions, 0 | SWIG_SHADOW); argvi++ ;
+    
+    XSRETURN(argvi);
+    fail:;
+    
+  }
+  SWIG_croak_null();
+}
+
+
 XS(_wrap_delete_GeneticAlgorithm) {
   {
     datamunge::optim::GeneticAlgorithm *arg1 = 0 ;
@@ -152504,6 +163206,34 @@ XS(_wrap_ACOR_optimize) {
 }
 
 
+XS(_wrap_ACOR_options) {
+  {
+    datamunge::optim::ACOR *arg1 = 0 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    int argvi = 0;
+    datamunge::optim::ACOROptions *result = 0 ;
+    dXSARGS;
+    
+    if ((items < 1) || (items > 1)) {
+      SWIG_croak("Usage: ACOR_options(self);");
+    }
+    res1 = SWIG_ConvertPtr(ST(0), &argp1,SWIGTYPE_p_datamunge__optim__ACOR, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "ACOR_options" "', argument " "1"" of type '" "datamunge::optim::ACOR const *""'"); 
+    }
+    arg1 = reinterpret_cast< datamunge::optim::ACOR * >(argp1);
+    result = (datamunge::optim::ACOROptions *) &((datamunge::optim::ACOR const *)arg1)->options();
+    ST(argvi) = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__optim__ACOROptions, 0 | SWIG_SHADOW); argvi++ ;
+    
+    XSRETURN(argvi);
+    fail:;
+    
+  }
+  SWIG_croak_null();
+}
+
+
 XS(_wrap_delete_ACOR) {
   {
     datamunge::optim::ACOR *arg1 = 0 ;
@@ -153112,6 +163842,34 @@ XS(_wrap_ArtificialBeeColony_optimize) {
     
     
     
+    
+  }
+  SWIG_croak_null();
+}
+
+
+XS(_wrap_ArtificialBeeColony_options) {
+  {
+    datamunge::optim::ArtificialBeeColony *arg1 = 0 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    int argvi = 0;
+    datamunge::optim::ArtificialBeeColonyOptions *result = 0 ;
+    dXSARGS;
+    
+    if ((items < 1) || (items > 1)) {
+      SWIG_croak("Usage: ArtificialBeeColony_options(self);");
+    }
+    res1 = SWIG_ConvertPtr(ST(0), &argp1,SWIGTYPE_p_datamunge__optim__ArtificialBeeColony, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "ArtificialBeeColony_options" "', argument " "1"" of type '" "datamunge::optim::ArtificialBeeColony const *""'"); 
+    }
+    arg1 = reinterpret_cast< datamunge::optim::ArtificialBeeColony * >(argp1);
+    result = (datamunge::optim::ArtificialBeeColonyOptions *) &((datamunge::optim::ArtificialBeeColony const *)arg1)->options();
+    ST(argvi) = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__optim__ArtificialBeeColonyOptions, 0 | SWIG_SHADOW); argvi++ ;
+    
+    XSRETURN(argvi);
+    fail:;
     
   }
   SWIG_croak_null();
@@ -153862,6 +164620,34 @@ XS(_wrap_CrossEntropyMethod_optimize) {
 }
 
 
+XS(_wrap_CrossEntropyMethod_options) {
+  {
+    datamunge::optim::CrossEntropyMethod *arg1 = 0 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    int argvi = 0;
+    datamunge::optim::CrossEntropyMethodOptions *result = 0 ;
+    dXSARGS;
+    
+    if ((items < 1) || (items > 1)) {
+      SWIG_croak("Usage: CrossEntropyMethod_options(self);");
+    }
+    res1 = SWIG_ConvertPtr(ST(0), &argp1,SWIGTYPE_p_datamunge__optim__CrossEntropyMethod, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "CrossEntropyMethod_options" "', argument " "1"" of type '" "datamunge::optim::CrossEntropyMethod const *""'"); 
+    }
+    arg1 = reinterpret_cast< datamunge::optim::CrossEntropyMethod * >(argp1);
+    result = (datamunge::optim::CrossEntropyMethodOptions *) &((datamunge::optim::CrossEntropyMethod const *)arg1)->options();
+    ST(argvi) = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__optim__CrossEntropyMethodOptions, 0 | SWIG_SHADOW); argvi++ ;
+    
+    XSRETURN(argvi);
+    fail:;
+    
+  }
+  SWIG_croak_null();
+}
+
+
 XS(_wrap_delete_CrossEntropyMethod) {
   {
     datamunge::optim::CrossEntropyMethod *arg1 = 0 ;
@@ -154600,6 +165386,34 @@ XS(_wrap_CuckooSearch_optimize) {
     
     
     
+    
+  }
+  SWIG_croak_null();
+}
+
+
+XS(_wrap_CuckooSearch_options) {
+  {
+    datamunge::optim::CuckooSearch *arg1 = 0 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    int argvi = 0;
+    datamunge::optim::CuckooSearchOptions *result = 0 ;
+    dXSARGS;
+    
+    if ((items < 1) || (items > 1)) {
+      SWIG_croak("Usage: CuckooSearch_options(self);");
+    }
+    res1 = SWIG_ConvertPtr(ST(0), &argp1,SWIGTYPE_p_datamunge__optim__CuckooSearch, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "CuckooSearch_options" "', argument " "1"" of type '" "datamunge::optim::CuckooSearch const *""'"); 
+    }
+    arg1 = reinterpret_cast< datamunge::optim::CuckooSearch * >(argp1);
+    result = (datamunge::optim::CuckooSearchOptions *) &((datamunge::optim::CuckooSearch const *)arg1)->options();
+    ST(argvi) = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__optim__CuckooSearchOptions, 0 | SWIG_SHADOW); argvi++ ;
+    
+    XSRETURN(argvi);
+    fail:;
     
   }
   SWIG_croak_null();
@@ -155350,6 +166164,34 @@ XS(_wrap_EstimationOfDistribution_optimize) {
 }
 
 
+XS(_wrap_EstimationOfDistribution_options) {
+  {
+    datamunge::optim::EstimationOfDistribution *arg1 = 0 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    int argvi = 0;
+    datamunge::optim::EstimationOfDistributionOptions *result = 0 ;
+    dXSARGS;
+    
+    if ((items < 1) || (items > 1)) {
+      SWIG_croak("Usage: EstimationOfDistribution_options(self);");
+    }
+    res1 = SWIG_ConvertPtr(ST(0), &argp1,SWIGTYPE_p_datamunge__optim__EstimationOfDistribution, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "EstimationOfDistribution_options" "', argument " "1"" of type '" "datamunge::optim::EstimationOfDistribution const *""'"); 
+    }
+    arg1 = reinterpret_cast< datamunge::optim::EstimationOfDistribution * >(argp1);
+    result = (datamunge::optim::EstimationOfDistributionOptions *) &((datamunge::optim::EstimationOfDistribution const *)arg1)->options();
+    ST(argvi) = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__optim__EstimationOfDistributionOptions, 0 | SWIG_SHADOW); argvi++ ;
+    
+    XSRETURN(argvi);
+    fail:;
+    
+  }
+  SWIG_croak_null();
+}
+
+
 XS(_wrap_delete_EstimationOfDistribution) {
   {
     datamunge::optim::EstimationOfDistribution *arg1 = 0 ;
@@ -156093,6 +166935,34 @@ XS(_wrap_EvolutionStrategy_optimize) {
     
     
     
+    
+  }
+  SWIG_croak_null();
+}
+
+
+XS(_wrap_EvolutionStrategy_options) {
+  {
+    datamunge::optim::EvolutionStrategy *arg1 = 0 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    int argvi = 0;
+    datamunge::optim::EvolutionStrategyOptions *result = 0 ;
+    dXSARGS;
+    
+    if ((items < 1) || (items > 1)) {
+      SWIG_croak("Usage: EvolutionStrategy_options(self);");
+    }
+    res1 = SWIG_ConvertPtr(ST(0), &argp1,SWIGTYPE_p_datamunge__optim__EvolutionStrategy, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "EvolutionStrategy_options" "', argument " "1"" of type '" "datamunge::optim::EvolutionStrategy const *""'"); 
+    }
+    arg1 = reinterpret_cast< datamunge::optim::EvolutionStrategy * >(argp1);
+    result = (datamunge::optim::EvolutionStrategyOptions *) &((datamunge::optim::EvolutionStrategy const *)arg1)->options();
+    ST(argvi) = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__optim__EvolutionStrategyOptions, 0 | SWIG_SHADOW); argvi++ ;
+    
+    XSRETURN(argvi);
+    fail:;
     
   }
   SWIG_croak_null();
@@ -156908,6 +167778,34 @@ XS(_wrap_FireflyAlgorithm_optimize) {
 }
 
 
+XS(_wrap_FireflyAlgorithm_options) {
+  {
+    datamunge::optim::FireflyAlgorithm *arg1 = 0 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    int argvi = 0;
+    datamunge::optim::FireflyAlgorithmOptions *result = 0 ;
+    dXSARGS;
+    
+    if ((items < 1) || (items > 1)) {
+      SWIG_croak("Usage: FireflyAlgorithm_options(self);");
+    }
+    res1 = SWIG_ConvertPtr(ST(0), &argp1,SWIGTYPE_p_datamunge__optim__FireflyAlgorithm, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "FireflyAlgorithm_options" "', argument " "1"" of type '" "datamunge::optim::FireflyAlgorithm const *""'"); 
+    }
+    arg1 = reinterpret_cast< datamunge::optim::FireflyAlgorithm * >(argp1);
+    result = (datamunge::optim::FireflyAlgorithmOptions *) &((datamunge::optim::FireflyAlgorithm const *)arg1)->options();
+    ST(argvi) = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__optim__FireflyAlgorithmOptions, 0 | SWIG_SHADOW); argvi++ ;
+    
+    XSRETURN(argvi);
+    fail:;
+    
+  }
+  SWIG_croak_null();
+}
+
+
 XS(_wrap_delete_FireflyAlgorithm) {
   {
     datamunge::optim::FireflyAlgorithm *arg1 = 0 ;
@@ -157451,6 +168349,34 @@ XS(_wrap_GreyWolfOptimizer_optimize) {
     
     
     
+    
+  }
+  SWIG_croak_null();
+}
+
+
+XS(_wrap_GreyWolfOptimizer_options) {
+  {
+    datamunge::optim::GreyWolfOptimizer *arg1 = 0 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    int argvi = 0;
+    datamunge::optim::GreyWolfOptimizerOptions *result = 0 ;
+    dXSARGS;
+    
+    if ((items < 1) || (items > 1)) {
+      SWIG_croak("Usage: GreyWolfOptimizer_options(self);");
+    }
+    res1 = SWIG_ConvertPtr(ST(0), &argp1,SWIGTYPE_p_datamunge__optim__GreyWolfOptimizer, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "GreyWolfOptimizer_options" "', argument " "1"" of type '" "datamunge::optim::GreyWolfOptimizer const *""'"); 
+    }
+    arg1 = reinterpret_cast< datamunge::optim::GreyWolfOptimizer * >(argp1);
+    result = (datamunge::optim::GreyWolfOptimizerOptions *) &((datamunge::optim::GreyWolfOptimizer const *)arg1)->options();
+    ST(argvi) = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__optim__GreyWolfOptimizerOptions, 0 | SWIG_SHADOW); argvi++ ;
+    
+    XSRETURN(argvi);
+    fail:;
     
   }
   SWIG_croak_null();
@@ -158201,6 +169127,34 @@ XS(_wrap_HarmonySearch_optimize) {
 }
 
 
+XS(_wrap_HarmonySearch_options) {
+  {
+    datamunge::optim::HarmonySearch *arg1 = 0 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    int argvi = 0;
+    datamunge::optim::HarmonySearchOptions *result = 0 ;
+    dXSARGS;
+    
+    if ((items < 1) || (items > 1)) {
+      SWIG_croak("Usage: HarmonySearch_options(self);");
+    }
+    res1 = SWIG_ConvertPtr(ST(0), &argp1,SWIGTYPE_p_datamunge__optim__HarmonySearch, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "HarmonySearch_options" "', argument " "1"" of type '" "datamunge::optim::HarmonySearch const *""'"); 
+    }
+    arg1 = reinterpret_cast< datamunge::optim::HarmonySearch * >(argp1);
+    result = (datamunge::optim::HarmonySearchOptions *) &((datamunge::optim::HarmonySearch const *)arg1)->options();
+    ST(argvi) = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__optim__HarmonySearchOptions, 0 | SWIG_SHADOW); argvi++ ;
+    
+    XSRETURN(argvi);
+    fail:;
+    
+  }
+  SWIG_croak_null();
+}
+
+
 XS(_wrap_delete_HarmonySearch) {
   {
     datamunge::optim::HarmonySearch *arg1 = 0 ;
@@ -158881,6 +169835,34 @@ XS(_wrap_ParallelTempering_optimize) {
 }
 
 
+XS(_wrap_ParallelTempering_options) {
+  {
+    datamunge::optim::ParallelTempering *arg1 = 0 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    int argvi = 0;
+    datamunge::optim::ParallelTemperingOptions *result = 0 ;
+    dXSARGS;
+    
+    if ((items < 1) || (items > 1)) {
+      SWIG_croak("Usage: ParallelTempering_options(self);");
+    }
+    res1 = SWIG_ConvertPtr(ST(0), &argp1,SWIGTYPE_p_datamunge__optim__ParallelTempering, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "ParallelTempering_options" "', argument " "1"" of type '" "datamunge::optim::ParallelTempering const *""'"); 
+    }
+    arg1 = reinterpret_cast< datamunge::optim::ParallelTempering * >(argp1);
+    result = (datamunge::optim::ParallelTemperingOptions *) &((datamunge::optim::ParallelTempering const *)arg1)->options();
+    ST(argvi) = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__optim__ParallelTemperingOptions, 0 | SWIG_SHADOW); argvi++ ;
+    
+    XSRETURN(argvi);
+    fail:;
+    
+  }
+  SWIG_croak_null();
+}
+
+
 XS(_wrap_delete_ParallelTempering) {
   {
     datamunge::optim::ParallelTempering *arg1 = 0 ;
@@ -159495,6 +170477,34 @@ XS(_wrap_WhaleOptimization_optimize) {
 }
 
 
+XS(_wrap_WhaleOptimization_options) {
+  {
+    datamunge::optim::WhaleOptimization *arg1 = 0 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    int argvi = 0;
+    datamunge::optim::WhaleOptimizationOptions *result = 0 ;
+    dXSARGS;
+    
+    if ((items < 1) || (items > 1)) {
+      SWIG_croak("Usage: WhaleOptimization_options(self);");
+    }
+    res1 = SWIG_ConvertPtr(ST(0), &argp1,SWIGTYPE_p_datamunge__optim__WhaleOptimization, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "WhaleOptimization_options" "', argument " "1"" of type '" "datamunge::optim::WhaleOptimization const *""'"); 
+    }
+    arg1 = reinterpret_cast< datamunge::optim::WhaleOptimization * >(argp1);
+    result = (datamunge::optim::WhaleOptimizationOptions *) &((datamunge::optim::WhaleOptimization const *)arg1)->options();
+    ST(argvi) = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__optim__WhaleOptimizationOptions, 0 | SWIG_SHADOW); argvi++ ;
+    
+    XSRETURN(argvi);
+    fail:;
+    
+  }
+  SWIG_croak_null();
+}
+
+
 XS(_wrap_delete_WhaleOptimization) {
   {
     datamunge::optim::WhaleOptimization *arg1 = 0 ;
@@ -159909,6 +170919,34 @@ XS(_wrap_FISTA_optimize) {
     fail:;
     
     
+    
+  }
+  SWIG_croak_null();
+}
+
+
+XS(_wrap_FISTA_options) {
+  {
+    datamunge::optim::FISTA *arg1 = 0 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    int argvi = 0;
+    datamunge::optim::FISTAOptions *result = 0 ;
+    dXSARGS;
+    
+    if ((items < 1) || (items > 1)) {
+      SWIG_croak("Usage: FISTA_options(self);");
+    }
+    res1 = SWIG_ConvertPtr(ST(0), &argp1,SWIGTYPE_p_datamunge__optim__FISTA, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "FISTA_options" "', argument " "1"" of type '" "datamunge::optim::FISTA const *""'"); 
+    }
+    arg1 = reinterpret_cast< datamunge::optim::FISTA * >(argp1);
+    result = (datamunge::optim::FISTAOptions *) &((datamunge::optim::FISTA const *)arg1)->options();
+    ST(argvi) = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__optim__FISTAOptions, 0 | SWIG_SHADOW); argvi++ ;
+    
+    XSRETURN(argvi);
+    fail:;
     
   }
   SWIG_croak_null();
@@ -160335,6 +171373,34 @@ XS(_wrap_ProximalGradient_optimize) {
 }
 
 
+XS(_wrap_ProximalGradient_options) {
+  {
+    datamunge::optim::ProximalGradient *arg1 = 0 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    int argvi = 0;
+    datamunge::optim::ProximalGradientOptions *result = 0 ;
+    dXSARGS;
+    
+    if ((items < 1) || (items > 1)) {
+      SWIG_croak("Usage: ProximalGradient_options(self);");
+    }
+    res1 = SWIG_ConvertPtr(ST(0), &argp1,SWIGTYPE_p_datamunge__optim__ProximalGradient, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "ProximalGradient_options" "', argument " "1"" of type '" "datamunge::optim::ProximalGradient const *""'"); 
+    }
+    arg1 = reinterpret_cast< datamunge::optim::ProximalGradient * >(argp1);
+    result = (datamunge::optim::ProximalGradientOptions *) &((datamunge::optim::ProximalGradient const *)arg1)->options();
+    ST(argvi) = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__optim__ProximalGradientOptions, 0 | SWIG_SHADOW); argvi++ ;
+    
+    XSRETURN(argvi);
+    fail:;
+    
+  }
+  SWIG_croak_null();
+}
+
+
 XS(_wrap_delete_ProximalGradient) {
   {
     datamunge::optim::ProximalGradient *arg1 = 0 ;
@@ -160755,6 +171821,34 @@ XS(_wrap_LevenbergMarquardt_optimize) {
 }
 
 
+XS(_wrap_LevenbergMarquardt_options) {
+  {
+    datamunge::optim::LevenbergMarquardt *arg1 = 0 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    int argvi = 0;
+    datamunge::optim::LevenbergMarquardtOptions *result = 0 ;
+    dXSARGS;
+    
+    if ((items < 1) || (items > 1)) {
+      SWIG_croak("Usage: LevenbergMarquardt_options(self);");
+    }
+    res1 = SWIG_ConvertPtr(ST(0), &argp1,SWIGTYPE_p_datamunge__optim__LevenbergMarquardt, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "LevenbergMarquardt_options" "', argument " "1"" of type '" "datamunge::optim::LevenbergMarquardt const *""'"); 
+    }
+    arg1 = reinterpret_cast< datamunge::optim::LevenbergMarquardt * >(argp1);
+    result = (datamunge::optim::LevenbergMarquardtOptions *) &((datamunge::optim::LevenbergMarquardt const *)arg1)->options();
+    ST(argvi) = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__optim__LevenbergMarquardtOptions, 0 | SWIG_SHADOW); argvi++ ;
+    
+    XSRETURN(argvi);
+    fail:;
+    
+  }
+  SWIG_croak_null();
+}
+
+
 XS(_wrap_delete_LevenbergMarquardt) {
   {
     datamunge::optim::LevenbergMarquardt *arg1 = 0 ;
@@ -161169,6 +172263,34 @@ XS(_wrap_Newton_optimize) {
     fail:;
     
     
+    
+  }
+  SWIG_croak_null();
+}
+
+
+XS(_wrap_Newton_options) {
+  {
+    datamunge::optim::Newton *arg1 = 0 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    int argvi = 0;
+    datamunge::optim::NewtonOptions *result = 0 ;
+    dXSARGS;
+    
+    if ((items < 1) || (items > 1)) {
+      SWIG_croak("Usage: Newton_options(self);");
+    }
+    res1 = SWIG_ConvertPtr(ST(0), &argp1,SWIGTYPE_p_datamunge__optim__Newton, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "Newton_options" "', argument " "1"" of type '" "datamunge::optim::Newton const *""'"); 
+    }
+    arg1 = reinterpret_cast< datamunge::optim::Newton * >(argp1);
+    result = (datamunge::optim::NewtonOptions *) &((datamunge::optim::Newton const *)arg1)->options();
+    ST(argvi) = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__optim__NewtonOptions, 0 | SWIG_SHADOW); argvi++ ;
+    
+    XSRETURN(argvi);
+    fail:;
     
   }
   SWIG_croak_null();
@@ -161654,6 +172776,34 @@ XS(_wrap_TrustRegionNewton_optimize) {
     fail:;
     
     
+    
+  }
+  SWIG_croak_null();
+}
+
+
+XS(_wrap_TrustRegionNewton_options) {
+  {
+    datamunge::optim::TrustRegionNewton *arg1 = 0 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    int argvi = 0;
+    datamunge::optim::TrustRegionNewtonOptions *result = 0 ;
+    dXSARGS;
+    
+    if ((items < 1) || (items > 1)) {
+      SWIG_croak("Usage: TrustRegionNewton_options(self);");
+    }
+    res1 = SWIG_ConvertPtr(ST(0), &argp1,SWIGTYPE_p_datamunge__optim__TrustRegionNewton, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "TrustRegionNewton_options" "', argument " "1"" of type '" "datamunge::optim::TrustRegionNewton const *""'"); 
+    }
+    arg1 = reinterpret_cast< datamunge::optim::TrustRegionNewton * >(argp1);
+    result = (datamunge::optim::TrustRegionNewtonOptions *) &((datamunge::optim::TrustRegionNewton const *)arg1)->options();
+    ST(argvi) = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__optim__TrustRegionNewtonOptions, 0 | SWIG_SHADOW); argvi++ ;
+    
+    XSRETURN(argvi);
+    fail:;
     
   }
   SWIG_croak_null();
@@ -162210,6 +173360,34 @@ XS(_wrap_AugmentedLagrangian_optimize) {
 }
 
 
+XS(_wrap_AugmentedLagrangian_options) {
+  {
+    datamunge::optim::AugmentedLagrangian *arg1 = 0 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    int argvi = 0;
+    datamunge::optim::AugmentedLagrangianOptions *result = 0 ;
+    dXSARGS;
+    
+    if ((items < 1) || (items > 1)) {
+      SWIG_croak("Usage: AugmentedLagrangian_options(self);");
+    }
+    res1 = SWIG_ConvertPtr(ST(0), &argp1,SWIGTYPE_p_datamunge__optim__AugmentedLagrangian, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "AugmentedLagrangian_options" "', argument " "1"" of type '" "datamunge::optim::AugmentedLagrangian const *""'"); 
+    }
+    arg1 = reinterpret_cast< datamunge::optim::AugmentedLagrangian * >(argp1);
+    result = (datamunge::optim::AugmentedLagrangianOptions *) &((datamunge::optim::AugmentedLagrangian const *)arg1)->options();
+    ST(argvi) = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__optim__AugmentedLagrangianOptions, 0 | SWIG_SHADOW); argvi++ ;
+    
+    XSRETURN(argvi);
+    fail:;
+    
+  }
+  SWIG_croak_null();
+}
+
+
 XS(_wrap_delete_AugmentedLagrangian) {
   {
     datamunge::optim::AugmentedLagrangian *arg1 = 0 ;
@@ -162689,6 +173867,34 @@ XS(_wrap_SQP_optimize) {
     fail:;
     
     
+    
+  }
+  SWIG_croak_null();
+}
+
+
+XS(_wrap_SQP_options) {
+  {
+    datamunge::optim::SQP *arg1 = 0 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    int argvi = 0;
+    datamunge::optim::SQPOptions *result = 0 ;
+    dXSARGS;
+    
+    if ((items < 1) || (items > 1)) {
+      SWIG_croak("Usage: SQP_options(self);");
+    }
+    res1 = SWIG_ConvertPtr(ST(0), &argp1,SWIGTYPE_p_datamunge__optim__SQP, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "SQP_options" "', argument " "1"" of type '" "datamunge::optim::SQP const *""'"); 
+    }
+    arg1 = reinterpret_cast< datamunge::optim::SQP * >(argp1);
+    result = (datamunge::optim::SQPOptions *) &((datamunge::optim::SQP const *)arg1)->options();
+    ST(argvi) = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__optim__SQPOptions, 0 | SWIG_SHADOW); argvi++ ;
+    
+    XSRETURN(argvi);
+    fail:;
     
   }
   SWIG_croak_null();
@@ -163245,6 +174451,34 @@ XS(_wrap_InteriorPoint_optimize) {
 }
 
 
+XS(_wrap_InteriorPoint_options) {
+  {
+    datamunge::optim::InteriorPoint *arg1 = 0 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    int argvi = 0;
+    datamunge::optim::InteriorPointOptions *result = 0 ;
+    dXSARGS;
+    
+    if ((items < 1) || (items > 1)) {
+      SWIG_croak("Usage: InteriorPoint_options(self);");
+    }
+    res1 = SWIG_ConvertPtr(ST(0), &argp1,SWIGTYPE_p_datamunge__optim__InteriorPoint, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "InteriorPoint_options" "', argument " "1"" of type '" "datamunge::optim::InteriorPoint const *""'"); 
+    }
+    arg1 = reinterpret_cast< datamunge::optim::InteriorPoint * >(argp1);
+    result = (datamunge::optim::InteriorPointOptions *) &((datamunge::optim::InteriorPoint const *)arg1)->options();
+    ST(argvi) = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__optim__InteriorPointOptions, 0 | SWIG_SHADOW); argvi++ ;
+    
+    XSRETURN(argvi);
+    fail:;
+    
+  }
+  SWIG_croak_null();
+}
+
+
 XS(_wrap_delete_InteriorPoint) {
   {
     datamunge::optim::InteriorPoint *arg1 = 0 ;
@@ -163775,6 +175009,136 @@ XS(_wrap_BayesianOptimizationOptions_seed_get) {
 }
 
 
+XS(_wrap_BayesianOptimizationOptions_candidates_set) {
+  {
+    datamunge::optim::BayesianOptimizationOptions *arg1 = 0 ;
+    std::size_t arg2 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    size_t val2 ;
+    int ecode2 = 0 ;
+    int argvi = 0;
+    dXSARGS;
+    
+    if ((items < 2) || (items > 2)) {
+      SWIG_croak("Usage: BayesianOptimizationOptions_candidates_set(self,candidates);");
+    }
+    res1 = SWIG_ConvertPtr(ST(0), &argp1,SWIGTYPE_p_datamunge__optim__BayesianOptimizationOptions, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "BayesianOptimizationOptions_candidates_set" "', argument " "1"" of type '" "datamunge::optim::BayesianOptimizationOptions *""'"); 
+    }
+    arg1 = reinterpret_cast< datamunge::optim::BayesianOptimizationOptions * >(argp1);
+    ecode2 = SWIG_AsVal_size_t SWIG_PERL_CALL_ARGS_2(ST(1), &val2);
+    if (!SWIG_IsOK(ecode2)) {
+      SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "BayesianOptimizationOptions_candidates_set" "', argument " "2"" of type '" "std::size_t""'");
+    } 
+    arg2 = static_cast< std::size_t >(val2);
+    if (arg1) (arg1)->candidates = arg2;
+    ST(argvi) = &PL_sv_undef;
+    
+    
+    XSRETURN(argvi);
+    fail:;
+    
+    
+  }
+  SWIG_croak_null();
+}
+
+
+XS(_wrap_BayesianOptimizationOptions_candidates_get) {
+  {
+    datamunge::optim::BayesianOptimizationOptions *arg1 = 0 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    int argvi = 0;
+    std::size_t result;
+    dXSARGS;
+    
+    if ((items < 1) || (items > 1)) {
+      SWIG_croak("Usage: BayesianOptimizationOptions_candidates_get(self);");
+    }
+    res1 = SWIG_ConvertPtr(ST(0), &argp1,SWIGTYPE_p_datamunge__optim__BayesianOptimizationOptions, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "BayesianOptimizationOptions_candidates_get" "', argument " "1"" of type '" "datamunge::optim::BayesianOptimizationOptions *""'"); 
+    }
+    arg1 = reinterpret_cast< datamunge::optim::BayesianOptimizationOptions * >(argp1);
+    result =  ((arg1)->candidates);
+    ST(argvi) = SWIG_From_size_t  SWIG_PERL_CALL_ARGS_1(static_cast< size_t >(result)); argvi++ ;
+    
+    XSRETURN(argvi);
+    fail:;
+    
+  }
+  SWIG_croak_null();
+}
+
+
+XS(_wrap_BayesianOptimizationOptions_refine_iterations_set) {
+  {
+    datamunge::optim::BayesianOptimizationOptions *arg1 = 0 ;
+    std::size_t arg2 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    size_t val2 ;
+    int ecode2 = 0 ;
+    int argvi = 0;
+    dXSARGS;
+    
+    if ((items < 2) || (items > 2)) {
+      SWIG_croak("Usage: BayesianOptimizationOptions_refine_iterations_set(self,refine_iterations);");
+    }
+    res1 = SWIG_ConvertPtr(ST(0), &argp1,SWIGTYPE_p_datamunge__optim__BayesianOptimizationOptions, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "BayesianOptimizationOptions_refine_iterations_set" "', argument " "1"" of type '" "datamunge::optim::BayesianOptimizationOptions *""'"); 
+    }
+    arg1 = reinterpret_cast< datamunge::optim::BayesianOptimizationOptions * >(argp1);
+    ecode2 = SWIG_AsVal_size_t SWIG_PERL_CALL_ARGS_2(ST(1), &val2);
+    if (!SWIG_IsOK(ecode2)) {
+      SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "BayesianOptimizationOptions_refine_iterations_set" "', argument " "2"" of type '" "std::size_t""'");
+    } 
+    arg2 = static_cast< std::size_t >(val2);
+    if (arg1) (arg1)->refine_iterations = arg2;
+    ST(argvi) = &PL_sv_undef;
+    
+    
+    XSRETURN(argvi);
+    fail:;
+    
+    
+  }
+  SWIG_croak_null();
+}
+
+
+XS(_wrap_BayesianOptimizationOptions_refine_iterations_get) {
+  {
+    datamunge::optim::BayesianOptimizationOptions *arg1 = 0 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    int argvi = 0;
+    std::size_t result;
+    dXSARGS;
+    
+    if ((items < 1) || (items > 1)) {
+      SWIG_croak("Usage: BayesianOptimizationOptions_refine_iterations_get(self);");
+    }
+    res1 = SWIG_ConvertPtr(ST(0), &argp1,SWIGTYPE_p_datamunge__optim__BayesianOptimizationOptions, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "BayesianOptimizationOptions_refine_iterations_get" "', argument " "1"" of type '" "datamunge::optim::BayesianOptimizationOptions *""'"); 
+    }
+    arg1 = reinterpret_cast< datamunge::optim::BayesianOptimizationOptions * >(argp1);
+    result =  ((arg1)->refine_iterations);
+    ST(argvi) = SWIG_From_size_t  SWIG_PERL_CALL_ARGS_1(static_cast< size_t >(result)); argvi++ ;
+    
+    XSRETURN(argvi);
+    fail:;
+    
+  }
+  SWIG_croak_null();
+}
+
+
 XS(_wrap_new_BayesianOptimizationOptions) {
   {
     int argvi = 0;
@@ -163809,6 +175173,441 @@ XS(_wrap_delete_BayesianOptimizationOptions) {
       SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "delete_BayesianOptimizationOptions" "', argument " "1"" of type '" "datamunge::optim::BayesianOptimizationOptions *""'"); 
     }
     arg1 = reinterpret_cast< datamunge::optim::BayesianOptimizationOptions * >(argp1);
+    delete arg1;
+    ST(argvi) = &PL_sv_undef;
+    
+    XSRETURN(argvi);
+    fail:;
+    
+  }
+  SWIG_croak_null();
+}
+
+
+XS(_wrap_BayesianOptimizationResult_best_point_set) {
+  {
+    datamunge::optim::BayesianOptimizationResult *arg1 = 0 ;
+    std::vector< double > *arg2 = 0 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    void *argp2 = 0 ;
+    int res2 = 0 ;
+    int argvi = 0;
+    dXSARGS;
+    
+    if ((items < 2) || (items > 2)) {
+      SWIG_croak("Usage: BayesianOptimizationResult_best_point_set(self,best_point);");
+    }
+    res1 = SWIG_ConvertPtr(ST(0), &argp1,SWIGTYPE_p_datamunge__optim__BayesianOptimizationResult, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "BayesianOptimizationResult_best_point_set" "', argument " "1"" of type '" "datamunge::optim::BayesianOptimizationResult *""'"); 
+    }
+    arg1 = reinterpret_cast< datamunge::optim::BayesianOptimizationResult * >(argp1);
+    res2 = SWIG_ConvertPtr(ST(1), &argp2,SWIGTYPE_p_std__vectorT_double_t, 0 |  0 );
+    if (!SWIG_IsOK(res2)) {
+      SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "BayesianOptimizationResult_best_point_set" "', argument " "2"" of type '" "std::vector< double > *""'"); 
+    }
+    arg2 = reinterpret_cast< std::vector< double > * >(argp2);
+    if (arg1) (arg1)->best_point = *arg2;
+    ST(argvi) = &PL_sv_undef;
+    
+    
+    XSRETURN(argvi);
+    fail:;
+    
+    
+  }
+  SWIG_croak_null();
+}
+
+
+XS(_wrap_BayesianOptimizationResult_best_point_get) {
+  {
+    datamunge::optim::BayesianOptimizationResult *arg1 = 0 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    int argvi = 0;
+    std::vector< double > *result = 0 ;
+    dXSARGS;
+    
+    if ((items < 1) || (items > 1)) {
+      SWIG_croak("Usage: BayesianOptimizationResult_best_point_get(self);");
+    }
+    res1 = SWIG_ConvertPtr(ST(0), &argp1,SWIGTYPE_p_datamunge__optim__BayesianOptimizationResult, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "BayesianOptimizationResult_best_point_get" "', argument " "1"" of type '" "datamunge::optim::BayesianOptimizationResult *""'"); 
+    }
+    arg1 = reinterpret_cast< datamunge::optim::BayesianOptimizationResult * >(argp1);
+    result = (std::vector< double > *)& ((arg1)->best_point);
+    ST(argvi) = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_std__vectorT_double_t, 0 | SWIG_SHADOW); argvi++ ;
+    
+    XSRETURN(argvi);
+    fail:;
+    
+  }
+  SWIG_croak_null();
+}
+
+
+XS(_wrap_BayesianOptimizationResult_best_value_set) {
+  {
+    datamunge::optim::BayesianOptimizationResult *arg1 = 0 ;
+    double arg2 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    double val2 ;
+    int ecode2 = 0 ;
+    int argvi = 0;
+    dXSARGS;
+    
+    if ((items < 2) || (items > 2)) {
+      SWIG_croak("Usage: BayesianOptimizationResult_best_value_set(self,best_value);");
+    }
+    res1 = SWIG_ConvertPtr(ST(0), &argp1,SWIGTYPE_p_datamunge__optim__BayesianOptimizationResult, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "BayesianOptimizationResult_best_value_set" "', argument " "1"" of type '" "datamunge::optim::BayesianOptimizationResult *""'"); 
+    }
+    arg1 = reinterpret_cast< datamunge::optim::BayesianOptimizationResult * >(argp1);
+    ecode2 = SWIG_AsVal_double SWIG_PERL_CALL_ARGS_2(ST(1), &val2);
+    if (!SWIG_IsOK(ecode2)) {
+      SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "BayesianOptimizationResult_best_value_set" "', argument " "2"" of type '" "double""'");
+    } 
+    arg2 = static_cast< double >(val2);
+    if (arg1) (arg1)->best_value = arg2;
+    ST(argvi) = &PL_sv_undef;
+    
+    
+    XSRETURN(argvi);
+    fail:;
+    
+    
+  }
+  SWIG_croak_null();
+}
+
+
+XS(_wrap_BayesianOptimizationResult_best_value_get) {
+  {
+    datamunge::optim::BayesianOptimizationResult *arg1 = 0 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    int argvi = 0;
+    double result;
+    dXSARGS;
+    
+    if ((items < 1) || (items > 1)) {
+      SWIG_croak("Usage: BayesianOptimizationResult_best_value_get(self);");
+    }
+    res1 = SWIG_ConvertPtr(ST(0), &argp1,SWIGTYPE_p_datamunge__optim__BayesianOptimizationResult, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "BayesianOptimizationResult_best_value_get" "', argument " "1"" of type '" "datamunge::optim::BayesianOptimizationResult *""'"); 
+    }
+    arg1 = reinterpret_cast< datamunge::optim::BayesianOptimizationResult * >(argp1);
+    result = (double) ((arg1)->best_value);
+    ST(argvi) = SWIG_From_double  SWIG_PERL_CALL_ARGS_1(static_cast< double >(result)); argvi++ ;
+    
+    XSRETURN(argvi);
+    fail:;
+    
+  }
+  SWIG_croak_null();
+}
+
+
+XS(_wrap_BayesianOptimizationResult_points_set) {
+  {
+    datamunge::optim::BayesianOptimizationResult *arg1 = 0 ;
+    std::vector< std::vector< double > > *arg2 = 0 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    void *argp2 = 0 ;
+    int res2 = 0 ;
+    int argvi = 0;
+    dXSARGS;
+    
+    if ((items < 2) || (items > 2)) {
+      SWIG_croak("Usage: BayesianOptimizationResult_points_set(self,points);");
+    }
+    res1 = SWIG_ConvertPtr(ST(0), &argp1,SWIGTYPE_p_datamunge__optim__BayesianOptimizationResult, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "BayesianOptimizationResult_points_set" "', argument " "1"" of type '" "datamunge::optim::BayesianOptimizationResult *""'"); 
+    }
+    arg1 = reinterpret_cast< datamunge::optim::BayesianOptimizationResult * >(argp1);
+    res2 = SWIG_ConvertPtr(ST(1), &argp2,SWIGTYPE_p_std__vectorT_std__vectorT_double_t_t, 0 |  0 );
+    if (!SWIG_IsOK(res2)) {
+      SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "BayesianOptimizationResult_points_set" "', argument " "2"" of type '" "std::vector< std::vector< double > > *""'"); 
+    }
+    arg2 = reinterpret_cast< std::vector< std::vector< double > > * >(argp2);
+    if (arg1) (arg1)->points = *arg2;
+    ST(argvi) = &PL_sv_undef;
+    
+    
+    XSRETURN(argvi);
+    fail:;
+    
+    
+  }
+  SWIG_croak_null();
+}
+
+
+XS(_wrap_BayesianOptimizationResult_points_get) {
+  {
+    datamunge::optim::BayesianOptimizationResult *arg1 = 0 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    int argvi = 0;
+    std::vector< std::vector< double > > *result = 0 ;
+    dXSARGS;
+    
+    if ((items < 1) || (items > 1)) {
+      SWIG_croak("Usage: BayesianOptimizationResult_points_get(self);");
+    }
+    res1 = SWIG_ConvertPtr(ST(0), &argp1,SWIGTYPE_p_datamunge__optim__BayesianOptimizationResult, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "BayesianOptimizationResult_points_get" "', argument " "1"" of type '" "datamunge::optim::BayesianOptimizationResult *""'"); 
+    }
+    arg1 = reinterpret_cast< datamunge::optim::BayesianOptimizationResult * >(argp1);
+    result = (std::vector< std::vector< double > > *)& ((arg1)->points);
+    ST(argvi) = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_std__vectorT_std__vectorT_double_t_t, 0 | SWIG_SHADOW); argvi++ ;
+    
+    XSRETURN(argvi);
+    fail:;
+    
+  }
+  SWIG_croak_null();
+}
+
+
+XS(_wrap_BayesianOptimizationResult_values_set) {
+  {
+    datamunge::optim::BayesianOptimizationResult *arg1 = 0 ;
+    std::vector< double > *arg2 = 0 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    void *argp2 = 0 ;
+    int res2 = 0 ;
+    int argvi = 0;
+    dXSARGS;
+    
+    if ((items < 2) || (items > 2)) {
+      SWIG_croak("Usage: BayesianOptimizationResult_values_set(self,values);");
+    }
+    res1 = SWIG_ConvertPtr(ST(0), &argp1,SWIGTYPE_p_datamunge__optim__BayesianOptimizationResult, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "BayesianOptimizationResult_values_set" "', argument " "1"" of type '" "datamunge::optim::BayesianOptimizationResult *""'"); 
+    }
+    arg1 = reinterpret_cast< datamunge::optim::BayesianOptimizationResult * >(argp1);
+    res2 = SWIG_ConvertPtr(ST(1), &argp2,SWIGTYPE_p_std__vectorT_double_t, 0 |  0 );
+    if (!SWIG_IsOK(res2)) {
+      SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "BayesianOptimizationResult_values_set" "', argument " "2"" of type '" "std::vector< double > *""'"); 
+    }
+    arg2 = reinterpret_cast< std::vector< double > * >(argp2);
+    if (arg1) (arg1)->values = *arg2;
+    ST(argvi) = &PL_sv_undef;
+    
+    
+    XSRETURN(argvi);
+    fail:;
+    
+    
+  }
+  SWIG_croak_null();
+}
+
+
+XS(_wrap_BayesianOptimizationResult_values_get) {
+  {
+    datamunge::optim::BayesianOptimizationResult *arg1 = 0 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    int argvi = 0;
+    std::vector< double > *result = 0 ;
+    dXSARGS;
+    
+    if ((items < 1) || (items > 1)) {
+      SWIG_croak("Usage: BayesianOptimizationResult_values_get(self);");
+    }
+    res1 = SWIG_ConvertPtr(ST(0), &argp1,SWIGTYPE_p_datamunge__optim__BayesianOptimizationResult, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "BayesianOptimizationResult_values_get" "', argument " "1"" of type '" "datamunge::optim::BayesianOptimizationResult *""'"); 
+    }
+    arg1 = reinterpret_cast< datamunge::optim::BayesianOptimizationResult * >(argp1);
+    result = (std::vector< double > *)& ((arg1)->values);
+    ST(argvi) = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_std__vectorT_double_t, 0 | SWIG_SHADOW); argvi++ ;
+    
+    XSRETURN(argvi);
+    fail:;
+    
+  }
+  SWIG_croak_null();
+}
+
+
+XS(_wrap_BayesianOptimizationResult_best_values_set) {
+  {
+    datamunge::optim::BayesianOptimizationResult *arg1 = 0 ;
+    std::vector< double > *arg2 = 0 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    void *argp2 = 0 ;
+    int res2 = 0 ;
+    int argvi = 0;
+    dXSARGS;
+    
+    if ((items < 2) || (items > 2)) {
+      SWIG_croak("Usage: BayesianOptimizationResult_best_values_set(self,best_values);");
+    }
+    res1 = SWIG_ConvertPtr(ST(0), &argp1,SWIGTYPE_p_datamunge__optim__BayesianOptimizationResult, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "BayesianOptimizationResult_best_values_set" "', argument " "1"" of type '" "datamunge::optim::BayesianOptimizationResult *""'"); 
+    }
+    arg1 = reinterpret_cast< datamunge::optim::BayesianOptimizationResult * >(argp1);
+    res2 = SWIG_ConvertPtr(ST(1), &argp2,SWIGTYPE_p_std__vectorT_double_t, 0 |  0 );
+    if (!SWIG_IsOK(res2)) {
+      SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "BayesianOptimizationResult_best_values_set" "', argument " "2"" of type '" "std::vector< double > *""'"); 
+    }
+    arg2 = reinterpret_cast< std::vector< double > * >(argp2);
+    if (arg1) (arg1)->best_values = *arg2;
+    ST(argvi) = &PL_sv_undef;
+    
+    
+    XSRETURN(argvi);
+    fail:;
+    
+    
+  }
+  SWIG_croak_null();
+}
+
+
+XS(_wrap_BayesianOptimizationResult_best_values_get) {
+  {
+    datamunge::optim::BayesianOptimizationResult *arg1 = 0 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    int argvi = 0;
+    std::vector< double > *result = 0 ;
+    dXSARGS;
+    
+    if ((items < 1) || (items > 1)) {
+      SWIG_croak("Usage: BayesianOptimizationResult_best_values_get(self);");
+    }
+    res1 = SWIG_ConvertPtr(ST(0), &argp1,SWIGTYPE_p_datamunge__optim__BayesianOptimizationResult, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "BayesianOptimizationResult_best_values_get" "', argument " "1"" of type '" "datamunge::optim::BayesianOptimizationResult *""'"); 
+    }
+    arg1 = reinterpret_cast< datamunge::optim::BayesianOptimizationResult * >(argp1);
+    result = (std::vector< double > *)& ((arg1)->best_values);
+    ST(argvi) = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_std__vectorT_double_t, 0 | SWIG_SHADOW); argvi++ ;
+    
+    XSRETURN(argvi);
+    fail:;
+    
+  }
+  SWIG_croak_null();
+}
+
+
+XS(_wrap_BayesianOptimizationResult_acquisition_values_set) {
+  {
+    datamunge::optim::BayesianOptimizationResult *arg1 = 0 ;
+    std::vector< double > *arg2 = 0 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    void *argp2 = 0 ;
+    int res2 = 0 ;
+    int argvi = 0;
+    dXSARGS;
+    
+    if ((items < 2) || (items > 2)) {
+      SWIG_croak("Usage: BayesianOptimizationResult_acquisition_values_set(self,acquisition_values);");
+    }
+    res1 = SWIG_ConvertPtr(ST(0), &argp1,SWIGTYPE_p_datamunge__optim__BayesianOptimizationResult, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "BayesianOptimizationResult_acquisition_values_set" "', argument " "1"" of type '" "datamunge::optim::BayesianOptimizationResult *""'"); 
+    }
+    arg1 = reinterpret_cast< datamunge::optim::BayesianOptimizationResult * >(argp1);
+    res2 = SWIG_ConvertPtr(ST(1), &argp2,SWIGTYPE_p_std__vectorT_double_t, 0 |  0 );
+    if (!SWIG_IsOK(res2)) {
+      SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "BayesianOptimizationResult_acquisition_values_set" "', argument " "2"" of type '" "std::vector< double > *""'"); 
+    }
+    arg2 = reinterpret_cast< std::vector< double > * >(argp2);
+    if (arg1) (arg1)->acquisition_values = *arg2;
+    ST(argvi) = &PL_sv_undef;
+    
+    
+    XSRETURN(argvi);
+    fail:;
+    
+    
+  }
+  SWIG_croak_null();
+}
+
+
+XS(_wrap_BayesianOptimizationResult_acquisition_values_get) {
+  {
+    datamunge::optim::BayesianOptimizationResult *arg1 = 0 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    int argvi = 0;
+    std::vector< double > *result = 0 ;
+    dXSARGS;
+    
+    if ((items < 1) || (items > 1)) {
+      SWIG_croak("Usage: BayesianOptimizationResult_acquisition_values_get(self);");
+    }
+    res1 = SWIG_ConvertPtr(ST(0), &argp1,SWIGTYPE_p_datamunge__optim__BayesianOptimizationResult, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "BayesianOptimizationResult_acquisition_values_get" "', argument " "1"" of type '" "datamunge::optim::BayesianOptimizationResult *""'"); 
+    }
+    arg1 = reinterpret_cast< datamunge::optim::BayesianOptimizationResult * >(argp1);
+    result = (std::vector< double > *)& ((arg1)->acquisition_values);
+    ST(argvi) = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_std__vectorT_double_t, 0 | SWIG_SHADOW); argvi++ ;
+    
+    XSRETURN(argvi);
+    fail:;
+    
+  }
+  SWIG_croak_null();
+}
+
+
+XS(_wrap_new_BayesianOptimizationResult) {
+  {
+    int argvi = 0;
+    datamunge::optim::BayesianOptimizationResult *result = 0 ;
+    dXSARGS;
+    
+    if ((items < 0) || (items > 0)) {
+      SWIG_croak("Usage: new_BayesianOptimizationResult();");
+    }
+    result = (datamunge::optim::BayesianOptimizationResult *)new datamunge::optim::BayesianOptimizationResult();
+    ST(argvi) = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__optim__BayesianOptimizationResult, SWIG_OWNER | SWIG_SHADOW); argvi++ ;
+    XSRETURN(argvi);
+    fail:;
+  }
+  SWIG_croak_null();
+}
+
+
+XS(_wrap_delete_BayesianOptimizationResult) {
+  {
+    datamunge::optim::BayesianOptimizationResult *arg1 = 0 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    int argvi = 0;
+    dXSARGS;
+    
+    if ((items < 1) || (items > 1)) {
+      SWIG_croak("Usage: delete_BayesianOptimizationResult(self);");
+    }
+    res1 = SWIG_ConvertPtr(ST(0), &argp1,SWIGTYPE_p_datamunge__optim__BayesianOptimizationResult, SWIG_POINTER_DISOWN |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "delete_BayesianOptimizationResult" "', argument " "1"" of type '" "datamunge::optim::BayesianOptimizationResult *""'"); 
+    }
+    arg1 = reinterpret_cast< datamunge::optim::BayesianOptimizationResult * >(argp1);
     delete arg1;
     ST(argvi) = &PL_sv_undef;
     
@@ -163916,6 +175715,124 @@ XS(_wrap_new_BayesianOptimization) {
   
   croak("No matching function for overloaded 'new_BayesianOptimization'");
   XSRETURN(0);
+}
+
+
+XS(_wrap_BayesianOptimization_run) {
+  {
+    datamunge::optim::BayesianOptimization *arg1 = 0 ;
+    datamunge::optim::ArbitraryFunction *arg2 = 0 ;
+    std::vector< double > *arg3 = 0 ;
+    std::vector< double > *arg4 = 0 ;
+    datamunge::optim::BayesianSurrogate *arg5 = 0 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    void *argp2 = 0 ;
+    int res2 = 0 ;
+    std::vector< double > temp3 ;
+    std::vector< double > *v3 ;
+    std::vector< double > temp4 ;
+    std::vector< double > *v4 ;
+    void *argp5 = 0 ;
+    int res5 = 0 ;
+    int argvi = 0;
+    datamunge::optim::BayesianOptimizationResult result;
+    dXSARGS;
+    
+    if ((items < 5) || (items > 5)) {
+      SWIG_croak("Usage: BayesianOptimization_run(self,function,lower,upper,surrogate);");
+    }
+    res1 = SWIG_ConvertPtr(ST(0), &argp1,SWIGTYPE_p_datamunge__optim__BayesianOptimization, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "BayesianOptimization_run" "', argument " "1"" of type '" "datamunge::optim::BayesianOptimization const *""'"); 
+    }
+    arg1 = reinterpret_cast< datamunge::optim::BayesianOptimization * >(argp1);
+    res2 = SWIG_ConvertPtr(ST(1), &argp2, SWIGTYPE_p_datamunge__optim__ArbitraryFunction,  0 );
+    if (!SWIG_IsOK(res2)) {
+      SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "BayesianOptimization_run" "', argument " "2"" of type '" "datamunge::optim::ArbitraryFunction &""'"); 
+    }
+    if (!argp2) {
+      SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "BayesianOptimization_run" "', argument " "2"" of type '" "datamunge::optim::ArbitraryFunction &""'"); 
+    }
+    arg2 = reinterpret_cast< datamunge::optim::ArbitraryFunction * >(argp2);
+    {
+      if (SWIG_ConvertPtr(ST(2),(void **) &v3, 
+          SWIGTYPE_p_std__vectorT_double_t,1) != -1) {
+        arg3 = v3;
+      } else if (SvROK(ST(2))) {
+        AV *av = (AV *)SvRV(ST(2));
+        if (SvTYPE(av) != SVt_PVAV)
+        SWIG_croak("Type error in argument 3 of BayesianOptimization_run. "
+          "Expected an array of ""double");
+        SV **tv;
+        SSize_t len = av_len(av) + 1;
+        for (int i=0; i<len; i++) {
+          tv = av_fetch(av, i, 0);
+          if (SvNIOK(*tv)) {
+            temp3.push_back((double)SwigSvToNumber(*tv));
+          } else {
+            SWIG_croak("Type error in argument 3 of "
+              "BayesianOptimization_run. "
+              "Expected an array of ""double");
+          }
+        }
+        arg3 = &temp3;
+      } else {
+        SWIG_croak("Type error in argument 3 of BayesianOptimization_run. "
+          "Expected an array of ""double");
+      }
+    }
+    {
+      if (SWIG_ConvertPtr(ST(3),(void **) &v4, 
+          SWIGTYPE_p_std__vectorT_double_t,1) != -1) {
+        arg4 = v4;
+      } else if (SvROK(ST(3))) {
+        AV *av = (AV *)SvRV(ST(3));
+        if (SvTYPE(av) != SVt_PVAV)
+        SWIG_croak("Type error in argument 4 of BayesianOptimization_run. "
+          "Expected an array of ""double");
+        SV **tv;
+        SSize_t len = av_len(av) + 1;
+        for (int i=0; i<len; i++) {
+          tv = av_fetch(av, i, 0);
+          if (SvNIOK(*tv)) {
+            temp4.push_back((double)SwigSvToNumber(*tv));
+          } else {
+            SWIG_croak("Type error in argument 4 of "
+              "BayesianOptimization_run. "
+              "Expected an array of ""double");
+          }
+        }
+        arg4 = &temp4;
+      } else {
+        SWIG_croak("Type error in argument 4 of BayesianOptimization_run. "
+          "Expected an array of ""double");
+      }
+    }
+    res5 = SWIG_ConvertPtr(ST(4), &argp5, SWIGTYPE_p_datamunge__optim__BayesianSurrogate,  0 );
+    if (!SWIG_IsOK(res5)) {
+      SWIG_exception_fail(SWIG_ArgError(res5), "in method '" "BayesianOptimization_run" "', argument " "5"" of type '" "datamunge::optim::BayesianSurrogate &""'"); 
+    }
+    if (!argp5) {
+      SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "BayesianOptimization_run" "', argument " "5"" of type '" "datamunge::optim::BayesianSurrogate &""'"); 
+    }
+    arg5 = reinterpret_cast< datamunge::optim::BayesianSurrogate * >(argp5);
+    result = ((datamunge::optim::BayesianOptimization const *)arg1)->run(*arg2,(std::vector< double > const &)*arg3,(std::vector< double > const &)*arg4,*arg5);
+    ST(argvi) = SWIG_NewPointerObj((new datamunge::optim::BayesianOptimizationResult(result)), SWIGTYPE_p_datamunge__optim__BayesianOptimizationResult, SWIG_POINTER_OWN | SWIG_SHADOW); argvi++ ;
+    
+    
+    
+    
+    
+    XSRETURN(argvi);
+    fail:;
+    
+    
+    
+    
+    
+  }
+  SWIG_croak_null();
 }
 
 
@@ -164050,6 +175967,34 @@ XS(_wrap_BayesianOptimization_optimize) {
 }
 
 
+XS(_wrap_BayesianOptimization_options) {
+  {
+    datamunge::optim::BayesianOptimization *arg1 = 0 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    int argvi = 0;
+    datamunge::optim::BayesianOptimizationOptions *result = 0 ;
+    dXSARGS;
+    
+    if ((items < 1) || (items > 1)) {
+      SWIG_croak("Usage: BayesianOptimization_options(self);");
+    }
+    res1 = SWIG_ConvertPtr(ST(0), &argp1,SWIGTYPE_p_datamunge__optim__BayesianOptimization, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "BayesianOptimization_options" "', argument " "1"" of type '" "datamunge::optim::BayesianOptimization const *""'"); 
+    }
+    arg1 = reinterpret_cast< datamunge::optim::BayesianOptimization * >(argp1);
+    result = (datamunge::optim::BayesianOptimizationOptions *) &((datamunge::optim::BayesianOptimization const *)arg1)->options();
+    ST(argvi) = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__optim__BayesianOptimizationOptions, 0 | SWIG_SHADOW); argvi++ ;
+    
+    XSRETURN(argvi);
+    fail:;
+    
+  }
+  SWIG_croak_null();
+}
+
+
 XS(_wrap_delete_BayesianOptimization) {
   {
     datamunge::optim::BayesianOptimization *arg1 = 0 ;
@@ -164066,6 +176011,621 @@ XS(_wrap_delete_BayesianOptimization) {
       SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "delete_BayesianOptimization" "', argument " "1"" of type '" "datamunge::optim::BayesianOptimization *""'"); 
     }
     arg1 = reinterpret_cast< datamunge::optim::BayesianOptimization * >(argp1);
+    delete arg1;
+    ST(argvi) = &PL_sv_undef;
+    
+    XSRETURN(argvi);
+    fail:;
+    
+  }
+  SWIG_croak_null();
+}
+
+
+XS(_wrap_expected_improvement__SWIG_0) {
+  {
+    double arg1 ;
+    double arg2 ;
+    double arg3 ;
+    double arg4 ;
+    double val1 ;
+    int ecode1 = 0 ;
+    double val2 ;
+    int ecode2 = 0 ;
+    double val3 ;
+    int ecode3 = 0 ;
+    double val4 ;
+    int ecode4 = 0 ;
+    int argvi = 0;
+    double result;
+    dXSARGS;
+    
+    if ((items < 4) || (items > 4)) {
+      SWIG_croak("Usage: expected_improvement(mean,sd,incumbent,exploration);");
+    }
+    ecode1 = SWIG_AsVal_double SWIG_PERL_CALL_ARGS_2(ST(0), &val1);
+    if (!SWIG_IsOK(ecode1)) {
+      SWIG_exception_fail(SWIG_ArgError(ecode1), "in method '" "expected_improvement" "', argument " "1"" of type '" "double""'");
+    } 
+    arg1 = static_cast< double >(val1);
+    ecode2 = SWIG_AsVal_double SWIG_PERL_CALL_ARGS_2(ST(1), &val2);
+    if (!SWIG_IsOK(ecode2)) {
+      SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "expected_improvement" "', argument " "2"" of type '" "double""'");
+    } 
+    arg2 = static_cast< double >(val2);
+    ecode3 = SWIG_AsVal_double SWIG_PERL_CALL_ARGS_2(ST(2), &val3);
+    if (!SWIG_IsOK(ecode3)) {
+      SWIG_exception_fail(SWIG_ArgError(ecode3), "in method '" "expected_improvement" "', argument " "3"" of type '" "double""'");
+    } 
+    arg3 = static_cast< double >(val3);
+    ecode4 = SWIG_AsVal_double SWIG_PERL_CALL_ARGS_2(ST(3), &val4);
+    if (!SWIG_IsOK(ecode4)) {
+      SWIG_exception_fail(SWIG_ArgError(ecode4), "in method '" "expected_improvement" "', argument " "4"" of type '" "double""'");
+    } 
+    arg4 = static_cast< double >(val4);
+    result = (double)datamunge::optim::expected_improvement(arg1,arg2,arg3,arg4);
+    ST(argvi) = SWIG_From_double  SWIG_PERL_CALL_ARGS_1(static_cast< double >(result)); argvi++ ;
+    
+    
+    
+    
+    XSRETURN(argvi);
+    fail:;
+    
+    
+    
+    
+  }
+  SWIG_croak_null();
+}
+
+
+XS(_wrap_expected_improvement__SWIG_1) {
+  {
+    double arg1 ;
+    double arg2 ;
+    double arg3 ;
+    double val1 ;
+    int ecode1 = 0 ;
+    double val2 ;
+    int ecode2 = 0 ;
+    double val3 ;
+    int ecode3 = 0 ;
+    int argvi = 0;
+    double result;
+    dXSARGS;
+    
+    if ((items < 3) || (items > 3)) {
+      SWIG_croak("Usage: expected_improvement(mean,sd,incumbent);");
+    }
+    ecode1 = SWIG_AsVal_double SWIG_PERL_CALL_ARGS_2(ST(0), &val1);
+    if (!SWIG_IsOK(ecode1)) {
+      SWIG_exception_fail(SWIG_ArgError(ecode1), "in method '" "expected_improvement" "', argument " "1"" of type '" "double""'");
+    } 
+    arg1 = static_cast< double >(val1);
+    ecode2 = SWIG_AsVal_double SWIG_PERL_CALL_ARGS_2(ST(1), &val2);
+    if (!SWIG_IsOK(ecode2)) {
+      SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "expected_improvement" "', argument " "2"" of type '" "double""'");
+    } 
+    arg2 = static_cast< double >(val2);
+    ecode3 = SWIG_AsVal_double SWIG_PERL_CALL_ARGS_2(ST(2), &val3);
+    if (!SWIG_IsOK(ecode3)) {
+      SWIG_exception_fail(SWIG_ArgError(ecode3), "in method '" "expected_improvement" "', argument " "3"" of type '" "double""'");
+    } 
+    arg3 = static_cast< double >(val3);
+    result = (double)datamunge::optim::expected_improvement(arg1,arg2,arg3);
+    ST(argvi) = SWIG_From_double  SWIG_PERL_CALL_ARGS_1(static_cast< double >(result)); argvi++ ;
+    
+    
+    
+    XSRETURN(argvi);
+    fail:;
+    
+    
+    
+  }
+  SWIG_croak_null();
+}
+
+
+XS(_wrap_expected_improvement) {
+  dXSARGS;
+  
+  {
+    unsigned long _index = 0;
+    SWIG_TypeRank _rank = 0; 
+    if (items == 3) {
+      SWIG_TypeRank _ranki = 0;
+      SWIG_TypeRank _rankm = 0;
+      SWIG_TypeRank _pi = 1;
+      int _v = 0;
+      {
+        {
+          int res = SWIG_AsVal_double SWIG_PERL_CALL_ARGS_2(ST(0), NULL);
+          _v = SWIG_CheckState(res);
+        }
+      }
+      if (!_v) goto check_1;
+      _ranki += _v*_pi;
+      _rankm += _pi;
+      _pi *= SWIG_MAXCASTRANK;
+      {
+        {
+          int res = SWIG_AsVal_double SWIG_PERL_CALL_ARGS_2(ST(1), NULL);
+          _v = SWIG_CheckState(res);
+        }
+      }
+      if (!_v) goto check_1;
+      _ranki += _v*_pi;
+      _rankm += _pi;
+      _pi *= SWIG_MAXCASTRANK;
+      {
+        {
+          int res = SWIG_AsVal_double SWIG_PERL_CALL_ARGS_2(ST(2), NULL);
+          _v = SWIG_CheckState(res);
+        }
+      }
+      if (!_v) goto check_1;
+      _ranki += _v*_pi;
+      _rankm += _pi;
+      _pi *= SWIG_MAXCASTRANK;
+      if (!_index || (_ranki < _rank)) {
+        _rank = _ranki; _index = 1;
+        if (_rank == _rankm) goto dispatch;
+      }
+    }
+  check_1:
+    
+    if (items == 4) {
+      SWIG_TypeRank _ranki = 0;
+      SWIG_TypeRank _rankm = 0;
+      SWIG_TypeRank _pi = 1;
+      int _v = 0;
+      {
+        {
+          int res = SWIG_AsVal_double SWIG_PERL_CALL_ARGS_2(ST(0), NULL);
+          _v = SWIG_CheckState(res);
+        }
+      }
+      if (!_v) goto check_2;
+      _ranki += _v*_pi;
+      _rankm += _pi;
+      _pi *= SWIG_MAXCASTRANK;
+      {
+        {
+          int res = SWIG_AsVal_double SWIG_PERL_CALL_ARGS_2(ST(1), NULL);
+          _v = SWIG_CheckState(res);
+        }
+      }
+      if (!_v) goto check_2;
+      _ranki += _v*_pi;
+      _rankm += _pi;
+      _pi *= SWIG_MAXCASTRANK;
+      {
+        {
+          int res = SWIG_AsVal_double SWIG_PERL_CALL_ARGS_2(ST(2), NULL);
+          _v = SWIG_CheckState(res);
+        }
+      }
+      if (!_v) goto check_2;
+      _ranki += _v*_pi;
+      _rankm += _pi;
+      _pi *= SWIG_MAXCASTRANK;
+      {
+        {
+          int res = SWIG_AsVal_double SWIG_PERL_CALL_ARGS_2(ST(3), NULL);
+          _v = SWIG_CheckState(res);
+        }
+      }
+      if (!_v) goto check_2;
+      _ranki += _v*_pi;
+      _rankm += _pi;
+      _pi *= SWIG_MAXCASTRANK;
+      if (!_index || (_ranki < _rank)) {
+        _rank = _ranki; _index = 2;
+        if (_rank == _rankm) goto dispatch;
+      }
+    }
+  check_2:
+    
+  dispatch:
+    switch(_index) {
+    case 1:
+      PUSHMARK(MARK); SWIG_CALLXS(_wrap_expected_improvement__SWIG_1); return;
+    case 2:
+      PUSHMARK(MARK); SWIG_CALLXS(_wrap_expected_improvement__SWIG_0); return;
+    }
+  }
+  
+  croak("No matching function for overloaded 'expected_improvement'");
+  XSRETURN(0);
+}
+
+
+XS(_wrap_probability_of_improvement__SWIG_0) {
+  {
+    double arg1 ;
+    double arg2 ;
+    double arg3 ;
+    double arg4 ;
+    double val1 ;
+    int ecode1 = 0 ;
+    double val2 ;
+    int ecode2 = 0 ;
+    double val3 ;
+    int ecode3 = 0 ;
+    double val4 ;
+    int ecode4 = 0 ;
+    int argvi = 0;
+    double result;
+    dXSARGS;
+    
+    if ((items < 4) || (items > 4)) {
+      SWIG_croak("Usage: probability_of_improvement(mean,sd,incumbent,exploration);");
+    }
+    ecode1 = SWIG_AsVal_double SWIG_PERL_CALL_ARGS_2(ST(0), &val1);
+    if (!SWIG_IsOK(ecode1)) {
+      SWIG_exception_fail(SWIG_ArgError(ecode1), "in method '" "probability_of_improvement" "', argument " "1"" of type '" "double""'");
+    } 
+    arg1 = static_cast< double >(val1);
+    ecode2 = SWIG_AsVal_double SWIG_PERL_CALL_ARGS_2(ST(1), &val2);
+    if (!SWIG_IsOK(ecode2)) {
+      SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "probability_of_improvement" "', argument " "2"" of type '" "double""'");
+    } 
+    arg2 = static_cast< double >(val2);
+    ecode3 = SWIG_AsVal_double SWIG_PERL_CALL_ARGS_2(ST(2), &val3);
+    if (!SWIG_IsOK(ecode3)) {
+      SWIG_exception_fail(SWIG_ArgError(ecode3), "in method '" "probability_of_improvement" "', argument " "3"" of type '" "double""'");
+    } 
+    arg3 = static_cast< double >(val3);
+    ecode4 = SWIG_AsVal_double SWIG_PERL_CALL_ARGS_2(ST(3), &val4);
+    if (!SWIG_IsOK(ecode4)) {
+      SWIG_exception_fail(SWIG_ArgError(ecode4), "in method '" "probability_of_improvement" "', argument " "4"" of type '" "double""'");
+    } 
+    arg4 = static_cast< double >(val4);
+    result = (double)datamunge::optim::probability_of_improvement(arg1,arg2,arg3,arg4);
+    ST(argvi) = SWIG_From_double  SWIG_PERL_CALL_ARGS_1(static_cast< double >(result)); argvi++ ;
+    
+    
+    
+    
+    XSRETURN(argvi);
+    fail:;
+    
+    
+    
+    
+  }
+  SWIG_croak_null();
+}
+
+
+XS(_wrap_probability_of_improvement__SWIG_1) {
+  {
+    double arg1 ;
+    double arg2 ;
+    double arg3 ;
+    double val1 ;
+    int ecode1 = 0 ;
+    double val2 ;
+    int ecode2 = 0 ;
+    double val3 ;
+    int ecode3 = 0 ;
+    int argvi = 0;
+    double result;
+    dXSARGS;
+    
+    if ((items < 3) || (items > 3)) {
+      SWIG_croak("Usage: probability_of_improvement(mean,sd,incumbent);");
+    }
+    ecode1 = SWIG_AsVal_double SWIG_PERL_CALL_ARGS_2(ST(0), &val1);
+    if (!SWIG_IsOK(ecode1)) {
+      SWIG_exception_fail(SWIG_ArgError(ecode1), "in method '" "probability_of_improvement" "', argument " "1"" of type '" "double""'");
+    } 
+    arg1 = static_cast< double >(val1);
+    ecode2 = SWIG_AsVal_double SWIG_PERL_CALL_ARGS_2(ST(1), &val2);
+    if (!SWIG_IsOK(ecode2)) {
+      SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "probability_of_improvement" "', argument " "2"" of type '" "double""'");
+    } 
+    arg2 = static_cast< double >(val2);
+    ecode3 = SWIG_AsVal_double SWIG_PERL_CALL_ARGS_2(ST(2), &val3);
+    if (!SWIG_IsOK(ecode3)) {
+      SWIG_exception_fail(SWIG_ArgError(ecode3), "in method '" "probability_of_improvement" "', argument " "3"" of type '" "double""'");
+    } 
+    arg3 = static_cast< double >(val3);
+    result = (double)datamunge::optim::probability_of_improvement(arg1,arg2,arg3);
+    ST(argvi) = SWIG_From_double  SWIG_PERL_CALL_ARGS_1(static_cast< double >(result)); argvi++ ;
+    
+    
+    
+    XSRETURN(argvi);
+    fail:;
+    
+    
+    
+  }
+  SWIG_croak_null();
+}
+
+
+XS(_wrap_probability_of_improvement) {
+  dXSARGS;
+  
+  {
+    unsigned long _index = 0;
+    SWIG_TypeRank _rank = 0; 
+    if (items == 3) {
+      SWIG_TypeRank _ranki = 0;
+      SWIG_TypeRank _rankm = 0;
+      SWIG_TypeRank _pi = 1;
+      int _v = 0;
+      {
+        {
+          int res = SWIG_AsVal_double SWIG_PERL_CALL_ARGS_2(ST(0), NULL);
+          _v = SWIG_CheckState(res);
+        }
+      }
+      if (!_v) goto check_1;
+      _ranki += _v*_pi;
+      _rankm += _pi;
+      _pi *= SWIG_MAXCASTRANK;
+      {
+        {
+          int res = SWIG_AsVal_double SWIG_PERL_CALL_ARGS_2(ST(1), NULL);
+          _v = SWIG_CheckState(res);
+        }
+      }
+      if (!_v) goto check_1;
+      _ranki += _v*_pi;
+      _rankm += _pi;
+      _pi *= SWIG_MAXCASTRANK;
+      {
+        {
+          int res = SWIG_AsVal_double SWIG_PERL_CALL_ARGS_2(ST(2), NULL);
+          _v = SWIG_CheckState(res);
+        }
+      }
+      if (!_v) goto check_1;
+      _ranki += _v*_pi;
+      _rankm += _pi;
+      _pi *= SWIG_MAXCASTRANK;
+      if (!_index || (_ranki < _rank)) {
+        _rank = _ranki; _index = 1;
+        if (_rank == _rankm) goto dispatch;
+      }
+    }
+  check_1:
+    
+    if (items == 4) {
+      SWIG_TypeRank _ranki = 0;
+      SWIG_TypeRank _rankm = 0;
+      SWIG_TypeRank _pi = 1;
+      int _v = 0;
+      {
+        {
+          int res = SWIG_AsVal_double SWIG_PERL_CALL_ARGS_2(ST(0), NULL);
+          _v = SWIG_CheckState(res);
+        }
+      }
+      if (!_v) goto check_2;
+      _ranki += _v*_pi;
+      _rankm += _pi;
+      _pi *= SWIG_MAXCASTRANK;
+      {
+        {
+          int res = SWIG_AsVal_double SWIG_PERL_CALL_ARGS_2(ST(1), NULL);
+          _v = SWIG_CheckState(res);
+        }
+      }
+      if (!_v) goto check_2;
+      _ranki += _v*_pi;
+      _rankm += _pi;
+      _pi *= SWIG_MAXCASTRANK;
+      {
+        {
+          int res = SWIG_AsVal_double SWIG_PERL_CALL_ARGS_2(ST(2), NULL);
+          _v = SWIG_CheckState(res);
+        }
+      }
+      if (!_v) goto check_2;
+      _ranki += _v*_pi;
+      _rankm += _pi;
+      _pi *= SWIG_MAXCASTRANK;
+      {
+        {
+          int res = SWIG_AsVal_double SWIG_PERL_CALL_ARGS_2(ST(3), NULL);
+          _v = SWIG_CheckState(res);
+        }
+      }
+      if (!_v) goto check_2;
+      _ranki += _v*_pi;
+      _rankm += _pi;
+      _pi *= SWIG_MAXCASTRANK;
+      if (!_index || (_ranki < _rank)) {
+        _rank = _ranki; _index = 2;
+        if (_rank == _rankm) goto dispatch;
+      }
+    }
+  check_2:
+    
+  dispatch:
+    switch(_index) {
+    case 1:
+      PUSHMARK(MARK); SWIG_CALLXS(_wrap_probability_of_improvement__SWIG_1); return;
+    case 2:
+      PUSHMARK(MARK); SWIG_CALLXS(_wrap_probability_of_improvement__SWIG_0); return;
+    }
+  }
+  
+  croak("No matching function for overloaded 'probability_of_improvement'");
+  XSRETURN(0);
+}
+
+
+XS(_wrap_SurrogatePrediction_mean_set) {
+  {
+    datamunge::optim::SurrogatePrediction *arg1 = 0 ;
+    double arg2 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    double val2 ;
+    int ecode2 = 0 ;
+    int argvi = 0;
+    dXSARGS;
+    
+    if ((items < 2) || (items > 2)) {
+      SWIG_croak("Usage: SurrogatePrediction_mean_set(self,mean);");
+    }
+    res1 = SWIG_ConvertPtr(ST(0), &argp1,SWIGTYPE_p_datamunge__optim__SurrogatePrediction, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "SurrogatePrediction_mean_set" "', argument " "1"" of type '" "datamunge::optim::SurrogatePrediction *""'"); 
+    }
+    arg1 = reinterpret_cast< datamunge::optim::SurrogatePrediction * >(argp1);
+    ecode2 = SWIG_AsVal_double SWIG_PERL_CALL_ARGS_2(ST(1), &val2);
+    if (!SWIG_IsOK(ecode2)) {
+      SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "SurrogatePrediction_mean_set" "', argument " "2"" of type '" "double""'");
+    } 
+    arg2 = static_cast< double >(val2);
+    if (arg1) (arg1)->mean = arg2;
+    ST(argvi) = &PL_sv_undef;
+    
+    
+    XSRETURN(argvi);
+    fail:;
+    
+    
+  }
+  SWIG_croak_null();
+}
+
+
+XS(_wrap_SurrogatePrediction_mean_get) {
+  {
+    datamunge::optim::SurrogatePrediction *arg1 = 0 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    int argvi = 0;
+    double result;
+    dXSARGS;
+    
+    if ((items < 1) || (items > 1)) {
+      SWIG_croak("Usage: SurrogatePrediction_mean_get(self);");
+    }
+    res1 = SWIG_ConvertPtr(ST(0), &argp1,SWIGTYPE_p_datamunge__optim__SurrogatePrediction, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "SurrogatePrediction_mean_get" "', argument " "1"" of type '" "datamunge::optim::SurrogatePrediction *""'"); 
+    }
+    arg1 = reinterpret_cast< datamunge::optim::SurrogatePrediction * >(argp1);
+    result = (double) ((arg1)->mean);
+    ST(argvi) = SWIG_From_double  SWIG_PERL_CALL_ARGS_1(static_cast< double >(result)); argvi++ ;
+    
+    XSRETURN(argvi);
+    fail:;
+    
+  }
+  SWIG_croak_null();
+}
+
+
+XS(_wrap_SurrogatePrediction_sd_set) {
+  {
+    datamunge::optim::SurrogatePrediction *arg1 = 0 ;
+    double arg2 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    double val2 ;
+    int ecode2 = 0 ;
+    int argvi = 0;
+    dXSARGS;
+    
+    if ((items < 2) || (items > 2)) {
+      SWIG_croak("Usage: SurrogatePrediction_sd_set(self,sd);");
+    }
+    res1 = SWIG_ConvertPtr(ST(0), &argp1,SWIGTYPE_p_datamunge__optim__SurrogatePrediction, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "SurrogatePrediction_sd_set" "', argument " "1"" of type '" "datamunge::optim::SurrogatePrediction *""'"); 
+    }
+    arg1 = reinterpret_cast< datamunge::optim::SurrogatePrediction * >(argp1);
+    ecode2 = SWIG_AsVal_double SWIG_PERL_CALL_ARGS_2(ST(1), &val2);
+    if (!SWIG_IsOK(ecode2)) {
+      SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "SurrogatePrediction_sd_set" "', argument " "2"" of type '" "double""'");
+    } 
+    arg2 = static_cast< double >(val2);
+    if (arg1) (arg1)->sd = arg2;
+    ST(argvi) = &PL_sv_undef;
+    
+    
+    XSRETURN(argvi);
+    fail:;
+    
+    
+  }
+  SWIG_croak_null();
+}
+
+
+XS(_wrap_SurrogatePrediction_sd_get) {
+  {
+    datamunge::optim::SurrogatePrediction *arg1 = 0 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    int argvi = 0;
+    double result;
+    dXSARGS;
+    
+    if ((items < 1) || (items > 1)) {
+      SWIG_croak("Usage: SurrogatePrediction_sd_get(self);");
+    }
+    res1 = SWIG_ConvertPtr(ST(0), &argp1,SWIGTYPE_p_datamunge__optim__SurrogatePrediction, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "SurrogatePrediction_sd_get" "', argument " "1"" of type '" "datamunge::optim::SurrogatePrediction *""'"); 
+    }
+    arg1 = reinterpret_cast< datamunge::optim::SurrogatePrediction * >(argp1);
+    result = (double) ((arg1)->sd);
+    ST(argvi) = SWIG_From_double  SWIG_PERL_CALL_ARGS_1(static_cast< double >(result)); argvi++ ;
+    
+    XSRETURN(argvi);
+    fail:;
+    
+  }
+  SWIG_croak_null();
+}
+
+
+XS(_wrap_new_SurrogatePrediction) {
+  {
+    int argvi = 0;
+    datamunge::optim::SurrogatePrediction *result = 0 ;
+    dXSARGS;
+    
+    if ((items < 0) || (items > 0)) {
+      SWIG_croak("Usage: new_SurrogatePrediction();");
+    }
+    result = (datamunge::optim::SurrogatePrediction *)new datamunge::optim::SurrogatePrediction();
+    ST(argvi) = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__optim__SurrogatePrediction, SWIG_OWNER | SWIG_SHADOW); argvi++ ;
+    XSRETURN(argvi);
+    fail:;
+  }
+  SWIG_croak_null();
+}
+
+
+XS(_wrap_delete_SurrogatePrediction) {
+  {
+    datamunge::optim::SurrogatePrediction *arg1 = 0 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    int argvi = 0;
+    dXSARGS;
+    
+    if ((items < 1) || (items > 1)) {
+      SWIG_croak("Usage: delete_SurrogatePrediction(self);");
+    }
+    res1 = SWIG_ConvertPtr(ST(0), &argp1,SWIGTYPE_p_datamunge__optim__SurrogatePrediction, SWIG_POINTER_DISOWN |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "delete_SurrogatePrediction" "', argument " "1"" of type '" "datamunge::optim::SurrogatePrediction *""'"); 
+    }
+    arg1 = reinterpret_cast< datamunge::optim::SurrogatePrediction * >(argp1);
     delete arg1;
     ST(argvi) = &PL_sv_undef;
     
@@ -164402,6 +176962,290 @@ XS(_wrap_RBFGaussianProcessSurrogate_acquisition) {
     fail:;
     
     
+    
+  }
+  SWIG_croak_null();
+}
+
+
+XS(_wrap_RBFGaussianProcessSurrogate_predict) {
+  {
+    datamunge::optim::RBFGaussianProcessSurrogate *arg1 = 0 ;
+    std::vector< double > *arg2 = 0 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    std::vector< double > temp2 ;
+    std::vector< double > *v2 ;
+    int argvi = 0;
+    datamunge::optim::SurrogatePrediction result;
+    dXSARGS;
+    
+    if ((items < 2) || (items > 2)) {
+      SWIG_croak("Usage: RBFGaussianProcessSurrogate_predict(self,point);");
+    }
+    res1 = SWIG_ConvertPtr(ST(0), &argp1,SWIGTYPE_p_datamunge__optim__RBFGaussianProcessSurrogate, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "RBFGaussianProcessSurrogate_predict" "', argument " "1"" of type '" "datamunge::optim::RBFGaussianProcessSurrogate const *""'"); 
+    }
+    arg1 = reinterpret_cast< datamunge::optim::RBFGaussianProcessSurrogate * >(argp1);
+    {
+      if (SWIG_ConvertPtr(ST(1),(void **) &v2, 
+          SWIGTYPE_p_std__vectorT_double_t,1) != -1) {
+        arg2 = v2;
+      } else if (SvROK(ST(1))) {
+        AV *av = (AV *)SvRV(ST(1));
+        if (SvTYPE(av) != SVt_PVAV)
+        SWIG_croak("Type error in argument 2 of RBFGaussianProcessSurrogate_predict. "
+          "Expected an array of ""double");
+        SV **tv;
+        SSize_t len = av_len(av) + 1;
+        for (int i=0; i<len; i++) {
+          tv = av_fetch(av, i, 0);
+          if (SvNIOK(*tv)) {
+            temp2.push_back((double)SwigSvToNumber(*tv));
+          } else {
+            SWIG_croak("Type error in argument 2 of "
+              "RBFGaussianProcessSurrogate_predict. "
+              "Expected an array of ""double");
+          }
+        }
+        arg2 = &temp2;
+      } else {
+        SWIG_croak("Type error in argument 2 of RBFGaussianProcessSurrogate_predict. "
+          "Expected an array of ""double");
+      }
+    }
+    result = ((datamunge::optim::RBFGaussianProcessSurrogate const *)arg1)->predict((std::vector< double > const &)*arg2);
+    ST(argvi) = SWIG_NewPointerObj((new datamunge::optim::SurrogatePrediction(result)), SWIGTYPE_p_datamunge__optim__SurrogatePrediction, SWIG_POINTER_OWN | SWIG_SHADOW); argvi++ ;
+    
+    
+    XSRETURN(argvi);
+    fail:;
+    
+    
+  }
+  SWIG_croak_null();
+}
+
+
+XS(_wrap_RBFGaussianProcessSurrogate_log_marginal_likelihood) {
+  {
+    datamunge::optim::RBFGaussianProcessSurrogate *arg1 = 0 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    int argvi = 0;
+    double result;
+    dXSARGS;
+    
+    if ((items < 1) || (items > 1)) {
+      SWIG_croak("Usage: RBFGaussianProcessSurrogate_log_marginal_likelihood(self);");
+    }
+    res1 = SWIG_ConvertPtr(ST(0), &argp1,SWIGTYPE_p_datamunge__optim__RBFGaussianProcessSurrogate, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "RBFGaussianProcessSurrogate_log_marginal_likelihood" "', argument " "1"" of type '" "datamunge::optim::RBFGaussianProcessSurrogate const *""'"); 
+    }
+    arg1 = reinterpret_cast< datamunge::optim::RBFGaussianProcessSurrogate * >(argp1);
+    result = (double)((datamunge::optim::RBFGaussianProcessSurrogate const *)arg1)->log_marginal_likelihood();
+    ST(argvi) = SWIG_From_double  SWIG_PERL_CALL_ARGS_1(static_cast< double >(result)); argvi++ ;
+    
+    XSRETURN(argvi);
+    fail:;
+    
+  }
+  SWIG_croak_null();
+}
+
+
+XS(_wrap_RBFGaussianProcessSurrogate_length_scale) {
+  {
+    datamunge::optim::RBFGaussianProcessSurrogate *arg1 = 0 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    int argvi = 0;
+    double result;
+    dXSARGS;
+    
+    if ((items < 1) || (items > 1)) {
+      SWIG_croak("Usage: RBFGaussianProcessSurrogate_length_scale(self);");
+    }
+    res1 = SWIG_ConvertPtr(ST(0), &argp1,SWIGTYPE_p_datamunge__optim__RBFGaussianProcessSurrogate, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "RBFGaussianProcessSurrogate_length_scale" "', argument " "1"" of type '" "datamunge::optim::RBFGaussianProcessSurrogate const *""'"); 
+    }
+    arg1 = reinterpret_cast< datamunge::optim::RBFGaussianProcessSurrogate * >(argp1);
+    result = (double)((datamunge::optim::RBFGaussianProcessSurrogate const *)arg1)->length_scale();
+    ST(argvi) = SWIG_From_double  SWIG_PERL_CALL_ARGS_1(static_cast< double >(result)); argvi++ ;
+    
+    XSRETURN(argvi);
+    fail:;
+    
+  }
+  SWIG_croak_null();
+}
+
+
+XS(_wrap_RBFGaussianProcessSurrogate_noise) {
+  {
+    datamunge::optim::RBFGaussianProcessSurrogate *arg1 = 0 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    int argvi = 0;
+    double result;
+    dXSARGS;
+    
+    if ((items < 1) || (items > 1)) {
+      SWIG_croak("Usage: RBFGaussianProcessSurrogate_noise(self);");
+    }
+    res1 = SWIG_ConvertPtr(ST(0), &argp1,SWIGTYPE_p_datamunge__optim__RBFGaussianProcessSurrogate, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "RBFGaussianProcessSurrogate_noise" "', argument " "1"" of type '" "datamunge::optim::RBFGaussianProcessSurrogate const *""'"); 
+    }
+    arg1 = reinterpret_cast< datamunge::optim::RBFGaussianProcessSurrogate * >(argp1);
+    result = (double)((datamunge::optim::RBFGaussianProcessSurrogate const *)arg1)->noise();
+    ST(argvi) = SWIG_From_double  SWIG_PERL_CALL_ARGS_1(static_cast< double >(result)); argvi++ ;
+    
+    XSRETURN(argvi);
+    fail:;
+    
+  }
+  SWIG_croak_null();
+}
+
+
+XS(_wrap_RBFGaussianProcessSurrogate_signal_variance) {
+  {
+    datamunge::optim::RBFGaussianProcessSurrogate *arg1 = 0 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    int argvi = 0;
+    double result;
+    dXSARGS;
+    
+    if ((items < 1) || (items > 1)) {
+      SWIG_croak("Usage: RBFGaussianProcessSurrogate_signal_variance(self);");
+    }
+    res1 = SWIG_ConvertPtr(ST(0), &argp1,SWIGTYPE_p_datamunge__optim__RBFGaussianProcessSurrogate, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "RBFGaussianProcessSurrogate_signal_variance" "', argument " "1"" of type '" "datamunge::optim::RBFGaussianProcessSurrogate const *""'"); 
+    }
+    arg1 = reinterpret_cast< datamunge::optim::RBFGaussianProcessSurrogate * >(argp1);
+    result = (double)((datamunge::optim::RBFGaussianProcessSurrogate const *)arg1)->signal_variance();
+    ST(argvi) = SWIG_From_double  SWIG_PERL_CALL_ARGS_1(static_cast< double >(result)); argvi++ ;
+    
+    XSRETURN(argvi);
+    fail:;
+    
+  }
+  SWIG_croak_null();
+}
+
+
+XS(_wrap_RBFGaussianProcessSurrogate_prior_mean) {
+  {
+    datamunge::optim::RBFGaussianProcessSurrogate *arg1 = 0 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    int argvi = 0;
+    double result;
+    dXSARGS;
+    
+    if ((items < 1) || (items > 1)) {
+      SWIG_croak("Usage: RBFGaussianProcessSurrogate_prior_mean(self);");
+    }
+    res1 = SWIG_ConvertPtr(ST(0), &argp1,SWIGTYPE_p_datamunge__optim__RBFGaussianProcessSurrogate, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "RBFGaussianProcessSurrogate_prior_mean" "', argument " "1"" of type '" "datamunge::optim::RBFGaussianProcessSurrogate const *""'"); 
+    }
+    arg1 = reinterpret_cast< datamunge::optim::RBFGaussianProcessSurrogate * >(argp1);
+    result = (double)((datamunge::optim::RBFGaussianProcessSurrogate const *)arg1)->prior_mean();
+    ST(argvi) = SWIG_From_double  SWIG_PERL_CALL_ARGS_1(static_cast< double >(result)); argvi++ ;
+    
+    XSRETURN(argvi);
+    fail:;
+    
+  }
+  SWIG_croak_null();
+}
+
+
+XS(_wrap_RBFGaussianProcessSurrogate_value_scale) {
+  {
+    datamunge::optim::RBFGaussianProcessSurrogate *arg1 = 0 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    int argvi = 0;
+    double result;
+    dXSARGS;
+    
+    if ((items < 1) || (items > 1)) {
+      SWIG_croak("Usage: RBFGaussianProcessSurrogate_value_scale(self);");
+    }
+    res1 = SWIG_ConvertPtr(ST(0), &argp1,SWIGTYPE_p_datamunge__optim__RBFGaussianProcessSurrogate, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "RBFGaussianProcessSurrogate_value_scale" "', argument " "1"" of type '" "datamunge::optim::RBFGaussianProcessSurrogate const *""'"); 
+    }
+    arg1 = reinterpret_cast< datamunge::optim::RBFGaussianProcessSurrogate * >(argp1);
+    result = (double)((datamunge::optim::RBFGaussianProcessSurrogate const *)arg1)->value_scale();
+    ST(argvi) = SWIG_From_double  SWIG_PERL_CALL_ARGS_1(static_cast< double >(result)); argvi++ ;
+    
+    XSRETURN(argvi);
+    fail:;
+    
+  }
+  SWIG_croak_null();
+}
+
+
+XS(_wrap_RBFGaussianProcessSurrogate_points) {
+  {
+    datamunge::optim::RBFGaussianProcessSurrogate *arg1 = 0 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    int argvi = 0;
+    std::vector< std::vector< double > > *result = 0 ;
+    dXSARGS;
+    
+    if ((items < 1) || (items > 1)) {
+      SWIG_croak("Usage: RBFGaussianProcessSurrogate_points(self);");
+    }
+    res1 = SWIG_ConvertPtr(ST(0), &argp1,SWIGTYPE_p_datamunge__optim__RBFGaussianProcessSurrogate, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "RBFGaussianProcessSurrogate_points" "', argument " "1"" of type '" "datamunge::optim::RBFGaussianProcessSurrogate const *""'"); 
+    }
+    arg1 = reinterpret_cast< datamunge::optim::RBFGaussianProcessSurrogate * >(argp1);
+    result = (std::vector< std::vector< double > > *) &((datamunge::optim::RBFGaussianProcessSurrogate const *)arg1)->points();
+    ST(argvi) = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_std__vectorT_std__vectorT_double_t_t, 0 | SWIG_SHADOW); argvi++ ;
+    
+    XSRETURN(argvi);
+    fail:;
+    
+  }
+  SWIG_croak_null();
+}
+
+
+XS(_wrap_RBFGaussianProcessSurrogate_values) {
+  {
+    datamunge::optim::RBFGaussianProcessSurrogate *arg1 = 0 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    int argvi = 0;
+    std::vector< double > *result = 0 ;
+    dXSARGS;
+    
+    if ((items < 1) || (items > 1)) {
+      SWIG_croak("Usage: RBFGaussianProcessSurrogate_values(self);");
+    }
+    res1 = SWIG_ConvertPtr(ST(0), &argp1,SWIGTYPE_p_datamunge__optim__RBFGaussianProcessSurrogate, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "RBFGaussianProcessSurrogate_values" "', argument " "1"" of type '" "datamunge::optim::RBFGaussianProcessSurrogate const *""'"); 
+    }
+    arg1 = reinterpret_cast< datamunge::optim::RBFGaussianProcessSurrogate * >(argp1);
+    result = (std::vector< double > *) &((datamunge::optim::RBFGaussianProcessSurrogate const *)arg1)->values();
+    ST(argvi) = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_std__vectorT_double_t, 0 | SWIG_SHADOW); argvi++ ;
+    
+    XSRETURN(argvi);
+    fail:;
     
   }
   SWIG_croak_null();
@@ -164822,6 +177666,34 @@ XS(_wrap_MAP_optimize) {
     fail:;
     
     
+    
+  }
+  SWIG_croak_null();
+}
+
+
+XS(_wrap_MAP_options) {
+  {
+    datamunge::bayes::MAP *arg1 = 0 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    int argvi = 0;
+    datamunge::bayes::MAPOptions *result = 0 ;
+    dXSARGS;
+    
+    if ((items < 1) || (items > 1)) {
+      SWIG_croak("Usage: MAP_options(self);");
+    }
+    res1 = SWIG_ConvertPtr(ST(0), &argp1,SWIGTYPE_p_datamunge__bayes__MAP, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "MAP_options" "', argument " "1"" of type '" "datamunge::bayes::MAP const *""'"); 
+    }
+    arg1 = reinterpret_cast< datamunge::bayes::MAP * >(argp1);
+    result = (datamunge::bayes::MAPOptions *) &((datamunge::bayes::MAP const *)arg1)->options();
+    ST(argvi) = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__bayes__MAPOptions, 0 | SWIG_SHADOW); argvi++ ;
+    
+    XSRETURN(argvi);
+    fail:;
     
   }
   SWIG_croak_null();
@@ -165702,6 +178574,34 @@ XS(_wrap_HMC_sample) {
 }
 
 
+XS(_wrap_HMC_options) {
+  {
+    datamunge::bayes::HMC *arg1 = 0 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    int argvi = 0;
+    datamunge::bayes::HMCOptions *result = 0 ;
+    dXSARGS;
+    
+    if ((items < 1) || (items > 1)) {
+      SWIG_croak("Usage: HMC_options(self);");
+    }
+    res1 = SWIG_ConvertPtr(ST(0), &argp1,SWIGTYPE_p_datamunge__bayes__HMC, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "HMC_options" "', argument " "1"" of type '" "datamunge::bayes::HMC const *""'"); 
+    }
+    arg1 = reinterpret_cast< datamunge::bayes::HMC * >(argp1);
+    result = (datamunge::bayes::HMCOptions *) &((datamunge::bayes::HMC const *)arg1)->options();
+    ST(argvi) = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__bayes__HMCOptions, 0 | SWIG_SHADOW); argvi++ ;
+    
+    XSRETURN(argvi);
+    fail:;
+    
+  }
+  SWIG_croak_null();
+}
+
+
 XS(_wrap_delete_HMC) {
   {
     datamunge::bayes::HMC *arg1 = 0 ;
@@ -165726,6 +178626,226 @@ XS(_wrap_delete_HMC) {
     
   }
   SWIG_croak_null();
+}
+
+
+XS(_wrap_leapfrog_gaussian_acceptance__SWIG_0) {
+  {
+    double arg1 ;
+    std::size_t arg2 ;
+    double arg3 ;
+    std::size_t arg4 ;
+    double val1 ;
+    int ecode1 = 0 ;
+    size_t val2 ;
+    int ecode2 = 0 ;
+    double val3 ;
+    int ecode3 = 0 ;
+    size_t val4 ;
+    int ecode4 = 0 ;
+    int argvi = 0;
+    double result;
+    dXSARGS;
+    
+    if ((items < 4) || (items > 4)) {
+      SWIG_croak("Usage: leapfrog_gaussian_acceptance(step_size,num_steps,sd,angles);");
+    }
+    ecode1 = SWIG_AsVal_double SWIG_PERL_CALL_ARGS_2(ST(0), &val1);
+    if (!SWIG_IsOK(ecode1)) {
+      SWIG_exception_fail(SWIG_ArgError(ecode1), "in method '" "leapfrog_gaussian_acceptance" "', argument " "1"" of type '" "double""'");
+    } 
+    arg1 = static_cast< double >(val1);
+    ecode2 = SWIG_AsVal_size_t SWIG_PERL_CALL_ARGS_2(ST(1), &val2);
+    if (!SWIG_IsOK(ecode2)) {
+      SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "leapfrog_gaussian_acceptance" "', argument " "2"" of type '" "std::size_t""'");
+    } 
+    arg2 = static_cast< std::size_t >(val2);
+    ecode3 = SWIG_AsVal_double SWIG_PERL_CALL_ARGS_2(ST(2), &val3);
+    if (!SWIG_IsOK(ecode3)) {
+      SWIG_exception_fail(SWIG_ArgError(ecode3), "in method '" "leapfrog_gaussian_acceptance" "', argument " "3"" of type '" "double""'");
+    } 
+    arg3 = static_cast< double >(val3);
+    ecode4 = SWIG_AsVal_size_t SWIG_PERL_CALL_ARGS_2(ST(3), &val4);
+    if (!SWIG_IsOK(ecode4)) {
+      SWIG_exception_fail(SWIG_ArgError(ecode4), "in method '" "leapfrog_gaussian_acceptance" "', argument " "4"" of type '" "std::size_t""'");
+    } 
+    arg4 = static_cast< std::size_t >(val4);
+    result = (double)datamunge::bayes::leapfrog_gaussian_acceptance(arg1,SWIG_STD_MOVE(*(&arg2)),arg3,SWIG_STD_MOVE(*(&arg4)));
+    ST(argvi) = SWIG_From_double  SWIG_PERL_CALL_ARGS_1(static_cast< double >(result)); argvi++ ;
+    
+    
+    
+    
+    XSRETURN(argvi);
+    fail:;
+    
+    
+    
+    
+  }
+  SWIG_croak_null();
+}
+
+
+XS(_wrap_leapfrog_gaussian_acceptance__SWIG_1) {
+  {
+    double arg1 ;
+    std::size_t arg2 ;
+    double arg3 ;
+    double val1 ;
+    int ecode1 = 0 ;
+    size_t val2 ;
+    int ecode2 = 0 ;
+    double val3 ;
+    int ecode3 = 0 ;
+    int argvi = 0;
+    double result;
+    dXSARGS;
+    
+    if ((items < 3) || (items > 3)) {
+      SWIG_croak("Usage: leapfrog_gaussian_acceptance(step_size,num_steps,sd);");
+    }
+    ecode1 = SWIG_AsVal_double SWIG_PERL_CALL_ARGS_2(ST(0), &val1);
+    if (!SWIG_IsOK(ecode1)) {
+      SWIG_exception_fail(SWIG_ArgError(ecode1), "in method '" "leapfrog_gaussian_acceptance" "', argument " "1"" of type '" "double""'");
+    } 
+    arg1 = static_cast< double >(val1);
+    ecode2 = SWIG_AsVal_size_t SWIG_PERL_CALL_ARGS_2(ST(1), &val2);
+    if (!SWIG_IsOK(ecode2)) {
+      SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "leapfrog_gaussian_acceptance" "', argument " "2"" of type '" "std::size_t""'");
+    } 
+    arg2 = static_cast< std::size_t >(val2);
+    ecode3 = SWIG_AsVal_double SWIG_PERL_CALL_ARGS_2(ST(2), &val3);
+    if (!SWIG_IsOK(ecode3)) {
+      SWIG_exception_fail(SWIG_ArgError(ecode3), "in method '" "leapfrog_gaussian_acceptance" "', argument " "3"" of type '" "double""'");
+    } 
+    arg3 = static_cast< double >(val3);
+    result = (double)datamunge::bayes::leapfrog_gaussian_acceptance(arg1,SWIG_STD_MOVE(*(&arg2)),arg3);
+    ST(argvi) = SWIG_From_double  SWIG_PERL_CALL_ARGS_1(static_cast< double >(result)); argvi++ ;
+    
+    
+    
+    XSRETURN(argvi);
+    fail:;
+    
+    
+    
+  }
+  SWIG_croak_null();
+}
+
+
+XS(_wrap_leapfrog_gaussian_acceptance) {
+  dXSARGS;
+  
+  {
+    unsigned long _index = 0;
+    SWIG_TypeRank _rank = 0; 
+    if (items == 3) {
+      SWIG_TypeRank _ranki = 0;
+      SWIG_TypeRank _rankm = 0;
+      SWIG_TypeRank _pi = 1;
+      int _v = 0;
+      {
+        {
+          int res = SWIG_AsVal_double SWIG_PERL_CALL_ARGS_2(ST(0), NULL);
+          _v = SWIG_CheckState(res);
+        }
+      }
+      if (!_v) goto check_1;
+      _ranki += _v*_pi;
+      _rankm += _pi;
+      _pi *= SWIG_MAXCASTRANK;
+      {
+        {
+          int res = SWIG_AsVal_size_t SWIG_PERL_CALL_ARGS_2(ST(1), NULL);
+          _v = SWIG_CheckState(res);
+        }
+      }
+      if (!_v) goto check_1;
+      _ranki += _v*_pi;
+      _rankm += _pi;
+      _pi *= SWIG_MAXCASTRANK;
+      {
+        {
+          int res = SWIG_AsVal_double SWIG_PERL_CALL_ARGS_2(ST(2), NULL);
+          _v = SWIG_CheckState(res);
+        }
+      }
+      if (!_v) goto check_1;
+      _ranki += _v*_pi;
+      _rankm += _pi;
+      _pi *= SWIG_MAXCASTRANK;
+      if (!_index || (_ranki < _rank)) {
+        _rank = _ranki; _index = 1;
+        if (_rank == _rankm) goto dispatch;
+      }
+    }
+  check_1:
+    
+    if (items == 4) {
+      SWIG_TypeRank _ranki = 0;
+      SWIG_TypeRank _rankm = 0;
+      SWIG_TypeRank _pi = 1;
+      int _v = 0;
+      {
+        {
+          int res = SWIG_AsVal_double SWIG_PERL_CALL_ARGS_2(ST(0), NULL);
+          _v = SWIG_CheckState(res);
+        }
+      }
+      if (!_v) goto check_2;
+      _ranki += _v*_pi;
+      _rankm += _pi;
+      _pi *= SWIG_MAXCASTRANK;
+      {
+        {
+          int res = SWIG_AsVal_size_t SWIG_PERL_CALL_ARGS_2(ST(1), NULL);
+          _v = SWIG_CheckState(res);
+        }
+      }
+      if (!_v) goto check_2;
+      _ranki += _v*_pi;
+      _rankm += _pi;
+      _pi *= SWIG_MAXCASTRANK;
+      {
+        {
+          int res = SWIG_AsVal_double SWIG_PERL_CALL_ARGS_2(ST(2), NULL);
+          _v = SWIG_CheckState(res);
+        }
+      }
+      if (!_v) goto check_2;
+      _ranki += _v*_pi;
+      _rankm += _pi;
+      _pi *= SWIG_MAXCASTRANK;
+      {
+        {
+          int res = SWIG_AsVal_size_t SWIG_PERL_CALL_ARGS_2(ST(3), NULL);
+          _v = SWIG_CheckState(res);
+        }
+      }
+      if (!_v) goto check_2;
+      _ranki += _v*_pi;
+      _rankm += _pi;
+      _pi *= SWIG_MAXCASTRANK;
+      if (!_index || (_ranki < _rank)) {
+        _rank = _ranki; _index = 2;
+        if (_rank == _rankm) goto dispatch;
+      }
+    }
+  check_2:
+    
+  dispatch:
+    switch(_index) {
+    case 1:
+      PUSHMARK(MARK); SWIG_CALLXS(_wrap_leapfrog_gaussian_acceptance__SWIG_1); return;
+    case 2:
+      PUSHMARK(MARK); SWIG_CALLXS(_wrap_leapfrog_gaussian_acceptance__SWIG_0); return;
+    }
+  }
+  
+  croak("No matching function for overloaded 'leapfrog_gaussian_acceptance'");
+  XSRETURN(0);
 }
 
 
@@ -166489,6 +179609,266 @@ XS(_wrap_NUTSResult_num_divergences_get) {
 }
 
 
+XS(_wrap_NUTSResult_divergent_set) {
+  {
+    datamunge::bayes::NUTSResult *arg1 = 0 ;
+    std::vector< int > *arg2 = 0 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    void *argp2 = 0 ;
+    int res2 = 0 ;
+    int argvi = 0;
+    dXSARGS;
+    
+    if ((items < 2) || (items > 2)) {
+      SWIG_croak("Usage: NUTSResult_divergent_set(self,divergent);");
+    }
+    res1 = SWIG_ConvertPtr(ST(0), &argp1,SWIGTYPE_p_datamunge__bayes__NUTSResult, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "NUTSResult_divergent_set" "', argument " "1"" of type '" "datamunge::bayes::NUTSResult *""'"); 
+    }
+    arg1 = reinterpret_cast< datamunge::bayes::NUTSResult * >(argp1);
+    res2 = SWIG_ConvertPtr(ST(1), &argp2,SWIGTYPE_p_std__vectorT_int_t, 0 |  0 );
+    if (!SWIG_IsOK(res2)) {
+      SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "NUTSResult_divergent_set" "', argument " "2"" of type '" "std::vector< int > *""'"); 
+    }
+    arg2 = reinterpret_cast< std::vector< int > * >(argp2);
+    if (arg1) (arg1)->divergent = *arg2;
+    ST(argvi) = &PL_sv_undef;
+    
+    
+    XSRETURN(argvi);
+    fail:;
+    
+    
+  }
+  SWIG_croak_null();
+}
+
+
+XS(_wrap_NUTSResult_divergent_get) {
+  {
+    datamunge::bayes::NUTSResult *arg1 = 0 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    int argvi = 0;
+    std::vector< int > *result = 0 ;
+    dXSARGS;
+    
+    if ((items < 1) || (items > 1)) {
+      SWIG_croak("Usage: NUTSResult_divergent_get(self);");
+    }
+    res1 = SWIG_ConvertPtr(ST(0), &argp1,SWIGTYPE_p_datamunge__bayes__NUTSResult, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "NUTSResult_divergent_get" "', argument " "1"" of type '" "datamunge::bayes::NUTSResult *""'"); 
+    }
+    arg1 = reinterpret_cast< datamunge::bayes::NUTSResult * >(argp1);
+    result = (std::vector< int > *)& ((arg1)->divergent);
+    ST(argvi) = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_std__vectorT_int_t, 0 | SWIG_SHADOW); argvi++ ;
+    
+    XSRETURN(argvi);
+    fail:;
+    
+  }
+  SWIG_croak_null();
+}
+
+
+XS(_wrap_NUTSResult_tree_depth_set) {
+  {
+    datamunge::bayes::NUTSResult *arg1 = 0 ;
+    std::vector< int > *arg2 = 0 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    void *argp2 = 0 ;
+    int res2 = 0 ;
+    int argvi = 0;
+    dXSARGS;
+    
+    if ((items < 2) || (items > 2)) {
+      SWIG_croak("Usage: NUTSResult_tree_depth_set(self,tree_depth);");
+    }
+    res1 = SWIG_ConvertPtr(ST(0), &argp1,SWIGTYPE_p_datamunge__bayes__NUTSResult, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "NUTSResult_tree_depth_set" "', argument " "1"" of type '" "datamunge::bayes::NUTSResult *""'"); 
+    }
+    arg1 = reinterpret_cast< datamunge::bayes::NUTSResult * >(argp1);
+    res2 = SWIG_ConvertPtr(ST(1), &argp2,SWIGTYPE_p_std__vectorT_int_t, 0 |  0 );
+    if (!SWIG_IsOK(res2)) {
+      SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "NUTSResult_tree_depth_set" "', argument " "2"" of type '" "std::vector< int > *""'"); 
+    }
+    arg2 = reinterpret_cast< std::vector< int > * >(argp2);
+    if (arg1) (arg1)->tree_depth = *arg2;
+    ST(argvi) = &PL_sv_undef;
+    
+    
+    XSRETURN(argvi);
+    fail:;
+    
+    
+  }
+  SWIG_croak_null();
+}
+
+
+XS(_wrap_NUTSResult_tree_depth_get) {
+  {
+    datamunge::bayes::NUTSResult *arg1 = 0 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    int argvi = 0;
+    std::vector< int > *result = 0 ;
+    dXSARGS;
+    
+    if ((items < 1) || (items > 1)) {
+      SWIG_croak("Usage: NUTSResult_tree_depth_get(self);");
+    }
+    res1 = SWIG_ConvertPtr(ST(0), &argp1,SWIGTYPE_p_datamunge__bayes__NUTSResult, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "NUTSResult_tree_depth_get" "', argument " "1"" of type '" "datamunge::bayes::NUTSResult *""'"); 
+    }
+    arg1 = reinterpret_cast< datamunge::bayes::NUTSResult * >(argp1);
+    result = (std::vector< int > *)& ((arg1)->tree_depth);
+    ST(argvi) = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_std__vectorT_int_t, 0 | SWIG_SHADOW); argvi++ ;
+    
+    XSRETURN(argvi);
+    fail:;
+    
+  }
+  SWIG_croak_null();
+}
+
+
+XS(_wrap_NUTSResult_n_leapfrog_set) {
+  {
+    datamunge::bayes::NUTSResult *arg1 = 0 ;
+    std::vector< int > *arg2 = 0 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    void *argp2 = 0 ;
+    int res2 = 0 ;
+    int argvi = 0;
+    dXSARGS;
+    
+    if ((items < 2) || (items > 2)) {
+      SWIG_croak("Usage: NUTSResult_n_leapfrog_set(self,n_leapfrog);");
+    }
+    res1 = SWIG_ConvertPtr(ST(0), &argp1,SWIGTYPE_p_datamunge__bayes__NUTSResult, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "NUTSResult_n_leapfrog_set" "', argument " "1"" of type '" "datamunge::bayes::NUTSResult *""'"); 
+    }
+    arg1 = reinterpret_cast< datamunge::bayes::NUTSResult * >(argp1);
+    res2 = SWIG_ConvertPtr(ST(1), &argp2,SWIGTYPE_p_std__vectorT_int_t, 0 |  0 );
+    if (!SWIG_IsOK(res2)) {
+      SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "NUTSResult_n_leapfrog_set" "', argument " "2"" of type '" "std::vector< int > *""'"); 
+    }
+    arg2 = reinterpret_cast< std::vector< int > * >(argp2);
+    if (arg1) (arg1)->n_leapfrog = *arg2;
+    ST(argvi) = &PL_sv_undef;
+    
+    
+    XSRETURN(argvi);
+    fail:;
+    
+    
+  }
+  SWIG_croak_null();
+}
+
+
+XS(_wrap_NUTSResult_n_leapfrog_get) {
+  {
+    datamunge::bayes::NUTSResult *arg1 = 0 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    int argvi = 0;
+    std::vector< int > *result = 0 ;
+    dXSARGS;
+    
+    if ((items < 1) || (items > 1)) {
+      SWIG_croak("Usage: NUTSResult_n_leapfrog_get(self);");
+    }
+    res1 = SWIG_ConvertPtr(ST(0), &argp1,SWIGTYPE_p_datamunge__bayes__NUTSResult, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "NUTSResult_n_leapfrog_get" "', argument " "1"" of type '" "datamunge::bayes::NUTSResult *""'"); 
+    }
+    arg1 = reinterpret_cast< datamunge::bayes::NUTSResult * >(argp1);
+    result = (std::vector< int > *)& ((arg1)->n_leapfrog);
+    ST(argvi) = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_std__vectorT_int_t, 0 | SWIG_SHADOW); argvi++ ;
+    
+    XSRETURN(argvi);
+    fail:;
+    
+  }
+  SWIG_croak_null();
+}
+
+
+XS(_wrap_NUTSResult_energy_set) {
+  {
+    datamunge::bayes::NUTSResult *arg1 = 0 ;
+    std::vector< double > *arg2 = 0 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    void *argp2 = 0 ;
+    int res2 = 0 ;
+    int argvi = 0;
+    dXSARGS;
+    
+    if ((items < 2) || (items > 2)) {
+      SWIG_croak("Usage: NUTSResult_energy_set(self,energy);");
+    }
+    res1 = SWIG_ConvertPtr(ST(0), &argp1,SWIGTYPE_p_datamunge__bayes__NUTSResult, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "NUTSResult_energy_set" "', argument " "1"" of type '" "datamunge::bayes::NUTSResult *""'"); 
+    }
+    arg1 = reinterpret_cast< datamunge::bayes::NUTSResult * >(argp1);
+    res2 = SWIG_ConvertPtr(ST(1), &argp2,SWIGTYPE_p_std__vectorT_double_t, 0 |  0 );
+    if (!SWIG_IsOK(res2)) {
+      SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "NUTSResult_energy_set" "', argument " "2"" of type '" "std::vector< double > *""'"); 
+    }
+    arg2 = reinterpret_cast< std::vector< double > * >(argp2);
+    if (arg1) (arg1)->energy = *arg2;
+    ST(argvi) = &PL_sv_undef;
+    
+    
+    XSRETURN(argvi);
+    fail:;
+    
+    
+  }
+  SWIG_croak_null();
+}
+
+
+XS(_wrap_NUTSResult_energy_get) {
+  {
+    datamunge::bayes::NUTSResult *arg1 = 0 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    int argvi = 0;
+    std::vector< double > *result = 0 ;
+    dXSARGS;
+    
+    if ((items < 1) || (items > 1)) {
+      SWIG_croak("Usage: NUTSResult_energy_get(self);");
+    }
+    res1 = SWIG_ConvertPtr(ST(0), &argp1,SWIGTYPE_p_datamunge__bayes__NUTSResult, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "NUTSResult_energy_get" "', argument " "1"" of type '" "datamunge::bayes::NUTSResult *""'"); 
+    }
+    arg1 = reinterpret_cast< datamunge::bayes::NUTSResult * >(argp1);
+    result = (std::vector< double > *)& ((arg1)->energy);
+    ST(argvi) = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_std__vectorT_double_t, 0 | SWIG_SHADOW); argvi++ ;
+    
+    XSRETURN(argvi);
+    fail:;
+    
+  }
+  SWIG_croak_null();
+}
+
+
 XS(_wrap_new_NUTSResult) {
   {
     int argvi = 0;
@@ -166700,6 +180080,34 @@ XS(_wrap_NUTS_sample) {
     fail:;
     
     
+    
+  }
+  SWIG_croak_null();
+}
+
+
+XS(_wrap_NUTS_options) {
+  {
+    datamunge::bayes::NUTS *arg1 = 0 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    int argvi = 0;
+    datamunge::bayes::NUTSOptions *result = 0 ;
+    dXSARGS;
+    
+    if ((items < 1) || (items > 1)) {
+      SWIG_croak("Usage: NUTS_options(self);");
+    }
+    res1 = SWIG_ConvertPtr(ST(0), &argp1,SWIGTYPE_p_datamunge__bayes__NUTS, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "NUTS_options" "', argument " "1"" of type '" "datamunge::bayes::NUTS const *""'"); 
+    }
+    arg1 = reinterpret_cast< datamunge::bayes::NUTS * >(argp1);
+    result = (datamunge::bayes::NUTSOptions *) &((datamunge::bayes::NUTS const *)arg1)->options();
+    ST(argvi) = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__bayes__NUTSOptions, 0 | SWIG_SHADOW); argvi++ ;
+    
+    XSRETURN(argvi);
+    fail:;
     
   }
   SWIG_croak_null();
@@ -167058,6 +180466,71 @@ XS(_wrap_RWMOptions_seed_get) {
 }
 
 
+XS(_wrap_RWMOptions_adapt_covariance_set) {
+  {
+    datamunge::bayes::RWMOptions *arg1 = 0 ;
+    bool arg2 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    bool val2 ;
+    int ecode2 = 0 ;
+    int argvi = 0;
+    dXSARGS;
+    
+    if ((items < 2) || (items > 2)) {
+      SWIG_croak("Usage: RWMOptions_adapt_covariance_set(self,adapt_covariance);");
+    }
+    res1 = SWIG_ConvertPtr(ST(0), &argp1,SWIGTYPE_p_datamunge__bayes__RWMOptions, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "RWMOptions_adapt_covariance_set" "', argument " "1"" of type '" "datamunge::bayes::RWMOptions *""'"); 
+    }
+    arg1 = reinterpret_cast< datamunge::bayes::RWMOptions * >(argp1);
+    ecode2 = SWIG_AsVal_bool SWIG_PERL_CALL_ARGS_2(ST(1), &val2);
+    if (!SWIG_IsOK(ecode2)) {
+      SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "RWMOptions_adapt_covariance_set" "', argument " "2"" of type '" "bool""'");
+    } 
+    arg2 = static_cast< bool >(val2);
+    if (arg1) (arg1)->adapt_covariance = arg2;
+    ST(argvi) = &PL_sv_undef;
+    
+    
+    XSRETURN(argvi);
+    fail:;
+    
+    
+  }
+  SWIG_croak_null();
+}
+
+
+XS(_wrap_RWMOptions_adapt_covariance_get) {
+  {
+    datamunge::bayes::RWMOptions *arg1 = 0 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    int argvi = 0;
+    bool result;
+    dXSARGS;
+    
+    if ((items < 1) || (items > 1)) {
+      SWIG_croak("Usage: RWMOptions_adapt_covariance_get(self);");
+    }
+    res1 = SWIG_ConvertPtr(ST(0), &argp1,SWIGTYPE_p_datamunge__bayes__RWMOptions, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "RWMOptions_adapt_covariance_get" "', argument " "1"" of type '" "datamunge::bayes::RWMOptions *""'"); 
+    }
+    arg1 = reinterpret_cast< datamunge::bayes::RWMOptions * >(argp1);
+    result = (bool) ((arg1)->adapt_covariance);
+    ST(argvi) = SWIG_From_bool  SWIG_PERL_CALL_ARGS_1(static_cast< bool >(result)); argvi++ ;
+    
+    XSRETURN(argvi);
+    fail:;
+    
+  }
+  SWIG_croak_null();
+}
+
+
 XS(_wrap_new_RWMOptions) {
   {
     int argvi = 0;
@@ -167298,6 +180771,71 @@ XS(_wrap_RWMResult_final_step_size_get) {
 }
 
 
+XS(_wrap_RWMResult_proposal_covariance_set) {
+  {
+    datamunge::bayes::RWMResult *arg1 = 0 ;
+    std::vector< std::vector< double > > *arg2 = 0 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    void *argp2 = 0 ;
+    int res2 = 0 ;
+    int argvi = 0;
+    dXSARGS;
+    
+    if ((items < 2) || (items > 2)) {
+      SWIG_croak("Usage: RWMResult_proposal_covariance_set(self,proposal_covariance);");
+    }
+    res1 = SWIG_ConvertPtr(ST(0), &argp1,SWIGTYPE_p_datamunge__bayes__RWMResult, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "RWMResult_proposal_covariance_set" "', argument " "1"" of type '" "datamunge::bayes::RWMResult *""'"); 
+    }
+    arg1 = reinterpret_cast< datamunge::bayes::RWMResult * >(argp1);
+    res2 = SWIG_ConvertPtr(ST(1), &argp2,SWIGTYPE_p_std__vectorT_std__vectorT_double_t_t, 0 |  0 );
+    if (!SWIG_IsOK(res2)) {
+      SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "RWMResult_proposal_covariance_set" "', argument " "2"" of type '" "std::vector< std::vector< double > > *""'"); 
+    }
+    arg2 = reinterpret_cast< std::vector< std::vector< double > > * >(argp2);
+    if (arg1) (arg1)->proposal_covariance = *arg2;
+    ST(argvi) = &PL_sv_undef;
+    
+    
+    XSRETURN(argvi);
+    fail:;
+    
+    
+  }
+  SWIG_croak_null();
+}
+
+
+XS(_wrap_RWMResult_proposal_covariance_get) {
+  {
+    datamunge::bayes::RWMResult *arg1 = 0 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    int argvi = 0;
+    std::vector< std::vector< double > > *result = 0 ;
+    dXSARGS;
+    
+    if ((items < 1) || (items > 1)) {
+      SWIG_croak("Usage: RWMResult_proposal_covariance_get(self);");
+    }
+    res1 = SWIG_ConvertPtr(ST(0), &argp1,SWIGTYPE_p_datamunge__bayes__RWMResult, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "RWMResult_proposal_covariance_get" "', argument " "1"" of type '" "datamunge::bayes::RWMResult *""'"); 
+    }
+    arg1 = reinterpret_cast< datamunge::bayes::RWMResult * >(argp1);
+    result = (std::vector< std::vector< double > > *)& ((arg1)->proposal_covariance);
+    ST(argvi) = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_std__vectorT_std__vectorT_double_t_t, 0 | SWIG_SHADOW); argvi++ ;
+    
+    XSRETURN(argvi);
+    fail:;
+    
+  }
+  SWIG_croak_null();
+}
+
+
 XS(_wrap_new_RWMResult) {
   {
     int argvi = 0;
@@ -167509,6 +181047,34 @@ XS(_wrap_RandomWalkMetropolis_sample) {
     fail:;
     
     
+    
+  }
+  SWIG_croak_null();
+}
+
+
+XS(_wrap_RandomWalkMetropolis_options) {
+  {
+    datamunge::bayes::RandomWalkMetropolis *arg1 = 0 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    int argvi = 0;
+    datamunge::bayes::RWMOptions *result = 0 ;
+    dXSARGS;
+    
+    if ((items < 1) || (items > 1)) {
+      SWIG_croak("Usage: RandomWalkMetropolis_options(self);");
+    }
+    res1 = SWIG_ConvertPtr(ST(0), &argp1,SWIGTYPE_p_datamunge__bayes__RandomWalkMetropolis, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "RandomWalkMetropolis_options" "', argument " "1"" of type '" "datamunge::bayes::RandomWalkMetropolis const *""'"); 
+    }
+    arg1 = reinterpret_cast< datamunge::bayes::RandomWalkMetropolis * >(argp1);
+    result = (datamunge::bayes::RWMOptions *) &((datamunge::bayes::RandomWalkMetropolis const *)arg1)->options();
+    ST(argvi) = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__bayes__RWMOptions, 0 | SWIG_SHADOW); argvi++ ;
+    
+    XSRETURN(argvi);
+    fail:;
     
   }
   SWIG_croak_null();
@@ -168324,6 +181890,34 @@ XS(_wrap_GibbsSampler_sample) {
 }
 
 
+XS(_wrap_GibbsSampler_options) {
+  {
+    datamunge::bayes::GibbsSampler *arg1 = 0 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    int argvi = 0;
+    datamunge::bayes::GibbsOptions *result = 0 ;
+    dXSARGS;
+    
+    if ((items < 1) || (items > 1)) {
+      SWIG_croak("Usage: GibbsSampler_options(self);");
+    }
+    res1 = SWIG_ConvertPtr(ST(0), &argp1,SWIGTYPE_p_datamunge__bayes__GibbsSampler, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "GibbsSampler_options" "', argument " "1"" of type '" "datamunge::bayes::GibbsSampler const *""'"); 
+    }
+    arg1 = reinterpret_cast< datamunge::bayes::GibbsSampler * >(argp1);
+    result = (datamunge::bayes::GibbsOptions *) &((datamunge::bayes::GibbsSampler const *)arg1)->options();
+    ST(argvi) = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__bayes__GibbsOptions, 0 | SWIG_SHADOW); argvi++ ;
+    
+    XSRETURN(argvi);
+    fail:;
+    
+  }
+  SWIG_croak_null();
+}
+
+
 XS(_wrap_delete_GibbsSampler) {
   {
     datamunge::bayes::GibbsSampler *arg1 = 0 ;
@@ -169037,6 +182631,34 @@ XS(_wrap_ImportanceSampling_sample) {
 }
 
 
+XS(_wrap_ImportanceSampling_options) {
+  {
+    datamunge::bayes::ImportanceSampling *arg1 = 0 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    int argvi = 0;
+    datamunge::bayes::ImportanceSamplingOptions *result = 0 ;
+    dXSARGS;
+    
+    if ((items < 1) || (items > 1)) {
+      SWIG_croak("Usage: ImportanceSampling_options(self);");
+    }
+    res1 = SWIG_ConvertPtr(ST(0), &argp1,SWIGTYPE_p_datamunge__bayes__ImportanceSampling, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "ImportanceSampling_options" "', argument " "1"" of type '" "datamunge::bayes::ImportanceSampling const *""'"); 
+    }
+    arg1 = reinterpret_cast< datamunge::bayes::ImportanceSampling * >(argp1);
+    result = (datamunge::bayes::ImportanceSamplingOptions *) &((datamunge::bayes::ImportanceSampling const *)arg1)->options();
+    ST(argvi) = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__bayes__ImportanceSamplingOptions, 0 | SWIG_SHADOW); argvi++ ;
+    
+    XSRETURN(argvi);
+    fail:;
+    
+  }
+  SWIG_croak_null();
+}
+
+
 XS(_wrap_delete_ImportanceSampling) {
   {
     datamunge::bayes::ImportanceSampling *arg1 = 0 ;
@@ -169058,6 +182680,44 @@ XS(_wrap_delete_ImportanceSampling) {
     
     XSRETURN(argvi);
     fail:;
+    
+  }
+  SWIG_croak_null();
+}
+
+
+XS(_wrap_gaussian_importance_efficiency) {
+  {
+    double arg1 ;
+    int arg2 ;
+    double val1 ;
+    int ecode1 = 0 ;
+    int val2 ;
+    int ecode2 = 0 ;
+    int argvi = 0;
+    double result;
+    dXSARGS;
+    
+    if ((items < 2) || (items > 2)) {
+      SWIG_croak("Usage: gaussian_importance_efficiency(scale,dimension);");
+    }
+    ecode1 = SWIG_AsVal_double SWIG_PERL_CALL_ARGS_2(ST(0), &val1);
+    if (!SWIG_IsOK(ecode1)) {
+      SWIG_exception_fail(SWIG_ArgError(ecode1), "in method '" "gaussian_importance_efficiency" "', argument " "1"" of type '" "double""'");
+    } 
+    arg1 = static_cast< double >(val1);
+    ecode2 = SWIG_AsVal_int SWIG_PERL_CALL_ARGS_2(ST(1), &val2);
+    if (!SWIG_IsOK(ecode2)) {
+      SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "gaussian_importance_efficiency" "', argument " "2"" of type '" "int""'");
+    } 
+    arg2 = static_cast< int >(val2);
+    result = (double)datamunge::bayes::gaussian_importance_efficiency(arg1,arg2);
+    ST(argvi) = SWIG_From_double  SWIG_PERL_CALL_ARGS_1(static_cast< double >(result)); argvi++ ;
+    
+    
+    XSRETURN(argvi);
+    fail:;
+    
     
   }
   SWIG_croak_null();
@@ -170206,6 +183866,34 @@ XS(_wrap_ODESolver_solve_builtin) {
 }
 
 
+XS(_wrap_ODESolver_options) {
+  {
+    datamunge::ode::ODESolver *arg1 = 0 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    int argvi = 0;
+    datamunge::ode::ODEOptions *result = 0 ;
+    dXSARGS;
+    
+    if ((items < 1) || (items > 1)) {
+      SWIG_croak("Usage: ODESolver_options(self);");
+    }
+    res1 = SWIG_ConvertPtr(ST(0), &argp1,SWIGTYPE_p_datamunge__ode__ODESolver, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "ODESolver_options" "', argument " "1"" of type '" "datamunge::ode::ODESolver const *""'"); 
+    }
+    arg1 = reinterpret_cast< datamunge::ode::ODESolver * >(argp1);
+    result = (datamunge::ode::ODEOptions *) &((datamunge::ode::ODESolver const *)arg1)->options();
+    ST(argvi) = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__ode__ODEOptions, 0 | SWIG_SHADOW); argvi++ ;
+    
+    XSRETURN(argvi);
+    fail:;
+    
+  }
+  SWIG_croak_null();
+}
+
+
 XS(_wrap_delete_ODESolver) {
   {
     datamunge::ode::ODESolver *arg1 = 0 ;
@@ -170236,6 +183924,9 @@ XS(_wrap_delete_ODESolver) {
 
 /* -------- TYPE CONVERSION AND EQUIVALENCE RULES (BEGIN) -------- */
 
+static void *_p_datamunge__graphics__RPlotTo_p_datamunge__graphics__Plot(void *x, int *SWIGUNUSEDPARM(newmemory)) {
+    return (void *)((datamunge::graphics::Plot *)  ((datamunge::graphics::RPlot *) x));
+}
 static void *_p_datamunge__optim__DifferentiableFunctionTo_p_datamunge__optim__ArbitraryFunction(void *x, int *SWIGUNUSEDPARM(newmemory)) {
     return (void *)((datamunge::optim::ArbitraryFunction *)  ((datamunge::optim::DifferentiableFunction *) x));
 }
@@ -170275,13 +183966,11 @@ static void *_p_datamunge__optim__InequalityConstrainedFunctionTo_p_datamunge__o
 static void *_p_datamunge__optim__ProximalFunctionTo_p_datamunge__optim__DifferentiableFunction(void *x, int *SWIGUNUSEDPARM(newmemory)) {
     return (void *)((datamunge::optim::DifferentiableFunction *)  ((datamunge::optim::ProximalFunction *) x));
 }
-static void *_p_datamunge__plot__RPlotTo_p_datamunge__plot__Plot(void *x, int *SWIGUNUSEDPARM(newmemory)) {
-    return (void *)((datamunge::graphics::Plot *)  ((datamunge::graphics::RPlot *) x));
-}
 static swig_type_info _swigt__p_char = {"_p_char", "char *", 0, 0, (void*)0, 0};
 static swig_type_info _swigt__p_datamunge__AgglomerativeClustering = {"_p_datamunge__AgglomerativeClustering", "datamunge::AgglomerativeClustering *", 0, 0, (void*)"Datamunge::AgglomerativeClustering", 0};
 static swig_type_info _swigt__p_datamunge__BSplineRegression = {"_p_datamunge__BSplineRegression", "datamunge::BSplineRegression *", 0, 0, (void*)"Datamunge::BSplineRegression", 0};
 static swig_type_info _swigt__p_datamunge__Callback = {"_p_datamunge__Callback", "datamunge::Callback *", 0, 0, (void*)"Datamunge::Callback", 0};
+static swig_type_info _swigt__p_datamunge__CsvReader = {"_p_datamunge__CsvReader", "datamunge::CsvReader *", 0, 0, (void*)"Datamunge::CsvReader", 0};
 static swig_type_info _swigt__p_datamunge__DBSCAN = {"_p_datamunge__DBSCAN", "datamunge::DBSCAN *", 0, 0, (void*)"Datamunge::DBSCAN", 0};
 static swig_type_info _swigt__p_datamunge__DataFrame = {"_p_datamunge__DataFrame", "datamunge::DataFrame *", 0, 0, (void*)"Datamunge::DataFrame", 0};
 static swig_type_info _swigt__p_datamunge__DecisionTreeClassifier = {"_p_datamunge__DecisionTreeClassifier", "datamunge::DecisionTreeClassifier *", 0, 0, (void*)"Datamunge::DecisionTreeClassifier", 0};
@@ -170319,6 +184008,7 @@ static swig_type_info _swigt__p_datamunge__Ridge = {"_p_datamunge__Ridge", "data
 static swig_type_info _swigt__p_datamunge__SVM = {"_p_datamunge__SVM", "datamunge::SVM *", 0, 0, (void*)"Datamunge::SVM", 0};
 static swig_type_info _swigt__p_datamunge__SammonMapping = {"_p_datamunge__SammonMapping", "datamunge::SammonMapping *", 0, 0, (void*)"Datamunge::SammonMapping", 0};
 static swig_type_info _swigt__p_datamunge__ShapeLayer = {"_p_datamunge__ShapeLayer", "datamunge::ShapeLayer *", 0, 0, (void*)"Datamunge::ShapeLayer", 0};
+static swig_type_info _swigt__p_datamunge__Splom = {"_p_datamunge__Splom", "datamunge::Splom *", 0, 0, (void*)"Datamunge::Splom", 0};
 static swig_type_info _swigt__p_datamunge__TSNE = {"_p_datamunge__TSNE", "datamunge::TSNE *", 0, 0, (void*)"Datamunge::TSNE", 0};
 static swig_type_info _swigt__p_datamunge__Tape = {"_p_datamunge__Tape", "datamunge::Tape *", 0, 0, (void*)"Datamunge::Tape", 0};
 static swig_type_info _swigt__p_datamunge__Tensor = {"_p_datamunge__Tensor", "datamunge::Tensor *", 0, 0, (void*)"Datamunge::Tensor", 0};
@@ -170343,6 +184033,14 @@ static swig_type_info _swigt__p_datamunge__bayes__NUTSResult = {"_p_datamunge__b
 static swig_type_info _swigt__p_datamunge__bayes__RWMOptions = {"_p_datamunge__bayes__RWMOptions", "datamunge::bayes::RWMOptions *", 0, 0, (void*)"Datamunge::RWMOptions", 0};
 static swig_type_info _swigt__p_datamunge__bayes__RWMResult = {"_p_datamunge__bayes__RWMResult", "datamunge::bayes::RWMResult *", 0, 0, (void*)"Datamunge::RWMResult", 0};
 static swig_type_info _swigt__p_datamunge__bayes__RandomWalkMetropolis = {"_p_datamunge__bayes__RandomWalkMetropolis", "datamunge::bayes::RandomWalkMetropolis *", 0, 0, (void*)"Datamunge::RandomWalkMetropolis", 0};
+static swig_type_info _swigt__p_datamunge__datasets__ImageBatch = {"_p_datamunge__datasets__ImageBatch", "datamunge::datasets::ImageBatch *", 0, 0, (void*)0, 0};
+static swig_type_info _swigt__p_datamunge__graphics__ABLine = {"_p_datamunge__graphics__ABLine", "datamunge::graphics::ABLine *", 0, 0, (void*)"Datamunge::ABLine", 0};
+static swig_type_info _swigt__p_datamunge__graphics__DataSeries = {"_p_datamunge__graphics__DataSeries", "datamunge::graphics::DataSeries *", 0, 0, (void*)"Datamunge::DataSeries", 0};
+static swig_type_info _swigt__p_datamunge__graphics__LegendEntry = {"_p_datamunge__graphics__LegendEntry", "datamunge::graphics::LegendEntry *", 0, 0, (void*)"Datamunge::LegendEntry", 0};
+static swig_type_info _swigt__p_datamunge__graphics__Plot = {"_p_datamunge__graphics__Plot", "datamunge::graphics::Plot *", 0, 0, (void*)"Datamunge::Plot", 0};
+static swig_type_info _swigt__p_datamunge__graphics__RGB = {"_p_datamunge__graphics__RGB", "datamunge::graphics::RGBA *|datamunge::graphics::RGB *", 0, 0, (void*)"Datamunge::RGB", 0};
+static swig_type_info _swigt__p_datamunge__graphics__RLayout = {"_p_datamunge__graphics__RLayout", "datamunge::graphics::RLayout *", 0, 0, (void*)"Datamunge::RLayout", 0};
+static swig_type_info _swigt__p_datamunge__graphics__RPlot = {"_p_datamunge__graphics__RPlot", "datamunge::graphics::RPlot *", 0, 0, (void*)"Datamunge::RPlot", 0};
 static swig_type_info _swigt__p_datamunge__image__Image = {"_p_datamunge__image__Image", "datamunge::image::Image *", 0, 0, (void*)0, 0};
 static swig_type_info _swigt__p_datamunge__ode__ODEOptions = {"_p_datamunge__ode__ODEOptions", "datamunge::ode::ODEOptions *", 0, 0, (void*)"Datamunge::ODEOptions", 0};
 static swig_type_info _swigt__p_datamunge__ode__ODESolution = {"_p_datamunge__ode__ODESolution", "datamunge::ode::ODESolution *", 0, 0, (void*)"Datamunge::ODESolution", 0};
@@ -170365,6 +184063,7 @@ static swig_type_info _swigt__p_datamunge__optim__AugmentedLagrangian = {"_p_dat
 static swig_type_info _swigt__p_datamunge__optim__AugmentedLagrangianOptions = {"_p_datamunge__optim__AugmentedLagrangianOptions", "datamunge::optim::AugmentedLagrangianOptions *", 0, 0, (void*)"Datamunge::AugmentedLagrangianOptions", 0};
 static swig_type_info _swigt__p_datamunge__optim__BayesianOptimization = {"_p_datamunge__optim__BayesianOptimization", "datamunge::optim::BayesianOptimization *", 0, 0, (void*)"Datamunge::BayesianOptimization", 0};
 static swig_type_info _swigt__p_datamunge__optim__BayesianOptimizationOptions = {"_p_datamunge__optim__BayesianOptimizationOptions", "datamunge::optim::BayesianOptimizationOptions *", 0, 0, (void*)"Datamunge::BayesianOptimizationOptions", 0};
+static swig_type_info _swigt__p_datamunge__optim__BayesianOptimizationResult = {"_p_datamunge__optim__BayesianOptimizationResult", "datamunge::optim::BayesianOptimizationResult *", 0, 0, (void*)"Datamunge::BayesianOptimizationResult", 0};
 static swig_type_info _swigt__p_datamunge__optim__BayesianSurrogate = {"_p_datamunge__optim__BayesianSurrogate", "datamunge::optim::BayesianSurrogate *", 0, 0, (void*)"Datamunge::BayesianSurrogate", 0};
 static swig_type_info _swigt__p_datamunge__optim__CMAES = {"_p_datamunge__optim__CMAES", "datamunge::optim::CMAES *", 0, 0, (void*)"Datamunge::CMAES", 0};
 static swig_type_info _swigt__p_datamunge__optim__CMAESOptions = {"_p_datamunge__optim__CMAESOptions", "datamunge::optim::CMAESOptions *", 0, 0, (void*)"Datamunge::CMAESOptions", 0};
@@ -170437,22 +184136,17 @@ static swig_type_info _swigt__p_datamunge__optim__SVRGOptions = {"_p_datamunge__
 static swig_type_info _swigt__p_datamunge__optim__SeparableFunction = {"_p_datamunge__optim__SeparableFunction", "datamunge::optim::SeparableFunction *", 0, 0, (void*)"Datamunge::SeparableFunction", 0};
 static swig_type_info _swigt__p_datamunge__optim__SimulatedAnnealing = {"_p_datamunge__optim__SimulatedAnnealing", "datamunge::optim::SimulatedAnnealing *", 0, 0, (void*)"Datamunge::SimulatedAnnealing", 0};
 static swig_type_info _swigt__p_datamunge__optim__SimulatedAnnealingOptions = {"_p_datamunge__optim__SimulatedAnnealingOptions", "datamunge::optim::SimulatedAnnealingOptions *", 0, 0, (void*)"Datamunge::SimulatedAnnealingOptions", 0};
+static swig_type_info _swigt__p_datamunge__optim__SurrogatePrediction = {"_p_datamunge__optim__SurrogatePrediction", "datamunge::optim::SurrogatePrediction *", 0, 0, (void*)"Datamunge::SurrogatePrediction", 0};
 static swig_type_info _swigt__p_datamunge__optim__TrustRegionNewton = {"_p_datamunge__optim__TrustRegionNewton", "datamunge::optim::TrustRegionNewton *", 0, 0, (void*)"Datamunge::TrustRegionNewton", 0};
 static swig_type_info _swigt__p_datamunge__optim__TrustRegionNewtonOptions = {"_p_datamunge__optim__TrustRegionNewtonOptions", "datamunge::optim::TrustRegionNewtonOptions *", 0, 0, (void*)"Datamunge::TrustRegionNewtonOptions", 0};
 static swig_type_info _swigt__p_datamunge__optim__WhaleOptimization = {"_p_datamunge__optim__WhaleOptimization", "datamunge::optim::WhaleOptimization *", 0, 0, (void*)"Datamunge::WhaleOptimization", 0};
 static swig_type_info _swigt__p_datamunge__optim__WhaleOptimizationOptions = {"_p_datamunge__optim__WhaleOptimizationOptions", "datamunge::optim::WhaleOptimizationOptions *", 0, 0, (void*)"Datamunge::WhaleOptimizationOptions", 0};
-static swig_type_info _swigt__p_datamunge__plot__ABLine = {"_p_datamunge__plot__ABLine", "datamunge::graphics::ABLine *", 0, 0, (void*)"Datamunge::ABLine", 0};
-static swig_type_info _swigt__p_datamunge__plot__DataSeries = {"_p_datamunge__plot__DataSeries", "datamunge::graphics::DataSeries *", 0, 0, (void*)"Datamunge::DataSeries", 0};
-static swig_type_info _swigt__p_datamunge__plot__LegendEntry = {"_p_datamunge__plot__LegendEntry", "datamunge::graphics::LegendEntry *", 0, 0, (void*)"Datamunge::LegendEntry", 0};
-static swig_type_info _swigt__p_datamunge__plot__Plot = {"_p_datamunge__plot__Plot", "datamunge::graphics::Plot *", 0, 0, (void*)"Datamunge::Plot", 0};
-static swig_type_info _swigt__p_datamunge__plot__RGB = {"_p_datamunge__plot__RGB", "datamunge::graphics::RGBA *|datamunge::graphics::RGB *", 0, 0, (void*)"Datamunge::RGB", 0};
-static swig_type_info _swigt__p_datamunge__plot__RLayout = {"_p_datamunge__plot__RLayout", "datamunge::graphics::RLayout *", 0, 0, (void*)"Datamunge::RLayout", 0};
-static swig_type_info _swigt__p_datamunge__plot__RPlot = {"_p_datamunge__plot__RPlot", "datamunge::graphics::RPlot *", 0, 0, (void*)"Datamunge::RPlot", 0};
 static swig_type_info _swigt__p_datamunge__stats__ARIMA = {"_p_datamunge__stats__ARIMA", "datamunge::stats::ARIMA *", 0, 0, (void*)"Datamunge::ARIMA", 0};
 static swig_type_info _swigt__p_datamunge__stats__ARIMAOptions = {"_p_datamunge__stats__ARIMAOptions", "datamunge::stats::ARIMAOptions *", 0, 0, (void*)"Datamunge::ARIMAOptions", 0};
 static swig_type_info _swigt__p_datamunge__stats__ExponentialSmoothing = {"_p_datamunge__stats__ExponentialSmoothing", "datamunge::stats::ExponentialSmoothing *", 0, 0, (void*)"Datamunge::ExponentialSmoothing", 0};
 static swig_type_info _swigt__p_datamunge__stats__ExponentialSmoothingOptions = {"_p_datamunge__stats__ExponentialSmoothingOptions", "datamunge::stats::ExponentialSmoothingOptions *", 0, 0, (void*)"Datamunge::ExponentialSmoothingOptions", 0};
 static swig_type_info _swigt__p_datamunge__stats__HypothesisTestResult = {"_p_datamunge__stats__HypothesisTestResult", "datamunge::stats::HypothesisTestResult *", 0, 0, (void*)"Datamunge::HypothesisTestResult", 0};
+static swig_type_info _swigt__p_datamunge__stats__KendallTau = {"_p_datamunge__stats__KendallTau", "datamunge::stats::KendallTau *", 0, 0, (void*)"Datamunge::KendallTau", 0};
 static swig_type_info _swigt__p_difference_type = {"_p_difference_type", "difference_type *", 0, 0, (void*)0, 0};
 static swig_type_info _swigt__p_first_type = {"_p_first_type", "first_type *", 0, 0, (void*)0, 0};
 static swig_type_info _swigt__p_int = {"_p_int", "int32_t *|int_fast16_t *|int_fast32_t *|int_least32_t *|intptr_t *|int *", 0, 0, (void*)0, 0};
@@ -170467,16 +184161,17 @@ static swig_type_info _swigt__p_std__pairT_double_double_t = {"_p_std__pairT_dou
 static swig_type_info _swigt__p_std__pairT_int_int_t = {"_p_std__pairT_int_int_t", "std::pair< int,int > *", 0, 0, (void*)"Datamunge::IPair", 0};
 static swig_type_info _swigt__p_std__pairT_std__string_std__string_t = {"_p_std__pairT_std__string_std__string_t", "std::pair< std::string,std::string > *", 0, 0, (void*)"Datamunge::SPair", 0};
 static swig_type_info _swigt__p_std__pairT_std__vectorT_double_t_std__vectorT_double_t_t = {"_p_std__pairT_std__vectorT_double_t_std__vectorT_double_t_t", "std::pair< std::vector< double >,std::vector< double > > *", 0, 0, (void*)"Datamunge::DVectorPair", 0};
-static swig_type_info _swigt__p_std__vectorT_datamunge__plot__ABLine_t = {"_p_std__vectorT_datamunge__plot__ABLine_t", "std::vector< datamunge::graphics::ABLine > *", 0, 0, (void*)0, 0};
-static swig_type_info _swigt__p_std__vectorT_datamunge__plot__DataSeries_t = {"_p_std__vectorT_datamunge__plot__DataSeries_t", "std::vector< datamunge::graphics::DataSeries > *", 0, 0, (void*)0, 0};
-static swig_type_info _swigt__p_std__vectorT_datamunge__plot__LegendEntry_t = {"_p_std__vectorT_datamunge__plot__LegendEntry_t", "std::vector< datamunge::graphics::LegendEntry > *", 0, 0, (void*)0, 0};
-static swig_type_info _swigt__p_std__vectorT_datamunge__plot__RGB_t = {"_p_std__vectorT_datamunge__plot__RGB_t", "std::vector< datamunge::graphics::RGB > *", 0, 0, (void*)0, 0};
+static swig_type_info _swigt__p_std__vectorT_datamunge__graphics__ABLine_t = {"_p_std__vectorT_datamunge__graphics__ABLine_t", "std::vector< datamunge::graphics::ABLine > *", 0, 0, (void*)0, 0};
+static swig_type_info _swigt__p_std__vectorT_datamunge__graphics__DataSeries_t = {"_p_std__vectorT_datamunge__graphics__DataSeries_t", "std::vector< datamunge::graphics::DataSeries > *", 0, 0, (void*)0, 0};
+static swig_type_info _swigt__p_std__vectorT_datamunge__graphics__LegendEntry_t = {"_p_std__vectorT_datamunge__graphics__LegendEntry_t", "std::vector< datamunge::graphics::LegendEntry > *", 0, 0, (void*)0, 0};
+static swig_type_info _swigt__p_std__vectorT_datamunge__graphics__RGB_t = {"_p_std__vectorT_datamunge__graphics__RGB_t", "std::vector< datamunge::graphics::RGBA > *|std::vector< datamunge::graphics::RGB > *", 0, 0, (void*)0, 0};
 static swig_type_info _swigt__p_std__vectorT_double_t = {"_p_std__vectorT_double_t", "std::vector< double > *", 0, 0, (void*)"Datamunge::DVector", 0};
 static swig_type_info _swigt__p_std__vectorT_int_t = {"_p_std__vectorT_int_t", "std::vector< int > *", 0, 0, (void*)"Datamunge::IVector", 0};
 static swig_type_info _swigt__p_std__vectorT_size_t_t = {"_p_std__vectorT_size_t_t", "std::vector< size_t > *", 0, 0, (void*)"Datamunge::SizeVector", 0};
 static swig_type_info _swigt__p_std__vectorT_std__size_t_t = {"_p_std__vectorT_std__size_t_t", "std::vector< std::size_t > *", 0, 0, (void*)0, 0};
 static swig_type_info _swigt__p_std__vectorT_std__string_t = {"_p_std__vectorT_std__string_t", "std::vector< std::string > *", 0, 0, (void*)"Datamunge::SVector", 0};
 static swig_type_info _swigt__p_std__vectorT_std__vectorT_double_t_t = {"_p_std__vectorT_std__vectorT_double_t_t", "std::vector< std::vector< double > > *", 0, 0, (void*)"Datamunge::DVectorVector", 0};
+static swig_type_info _swigt__p_std__vectorT_unsigned_char_t = {"_p_std__vectorT_unsigned_char_t", "std::vector< std::uint8_t > *|std::vector< unsigned char > *", 0, 0, (void*)0, 0};
 static swig_type_info _swigt__p_unsigned_char = {"_p_unsigned_char", "uint8_t *|uint_fast8_t *|uint_least8_t *|unsigned char *", 0, 0, (void*)0, 0};
 static swig_type_info _swigt__p_unsigned_int = {"_p_unsigned_int", "uint32_t *|uint_fast16_t *|uint_fast32_t *|uint_least32_t *|uintptr_t *|unsigned int *", 0, 0, (void*)0, 0};
 static swig_type_info _swigt__p_unsigned_long_long = {"_p_unsigned_long_long", "uint64_t *|uint_fast64_t *|uint_least64_t *|uintmax_t *|unsigned long long *", 0, 0, (void*)0, 0};
@@ -170488,6 +184183,7 @@ static swig_type_info *swig_type_initial[] = {
   &_swigt__p_datamunge__AgglomerativeClustering,
   &_swigt__p_datamunge__BSplineRegression,
   &_swigt__p_datamunge__Callback,
+  &_swigt__p_datamunge__CsvReader,
   &_swigt__p_datamunge__DBSCAN,
   &_swigt__p_datamunge__DataFrame,
   &_swigt__p_datamunge__DecisionTreeClassifier,
@@ -170525,6 +184221,7 @@ static swig_type_info *swig_type_initial[] = {
   &_swigt__p_datamunge__SVM,
   &_swigt__p_datamunge__SammonMapping,
   &_swigt__p_datamunge__ShapeLayer,
+  &_swigt__p_datamunge__Splom,
   &_swigt__p_datamunge__TSNE,
   &_swigt__p_datamunge__Tape,
   &_swigt__p_datamunge__Tensor,
@@ -170549,6 +184246,14 @@ static swig_type_info *swig_type_initial[] = {
   &_swigt__p_datamunge__bayes__RWMOptions,
   &_swigt__p_datamunge__bayes__RWMResult,
   &_swigt__p_datamunge__bayes__RandomWalkMetropolis,
+  &_swigt__p_datamunge__datasets__ImageBatch,
+  &_swigt__p_datamunge__graphics__ABLine,
+  &_swigt__p_datamunge__graphics__DataSeries,
+  &_swigt__p_datamunge__graphics__LegendEntry,
+  &_swigt__p_datamunge__graphics__Plot,
+  &_swigt__p_datamunge__graphics__RGB,
+  &_swigt__p_datamunge__graphics__RLayout,
+  &_swigt__p_datamunge__graphics__RPlot,
   &_swigt__p_datamunge__image__Image,
   &_swigt__p_datamunge__ode__ODEOptions,
   &_swigt__p_datamunge__ode__ODESolution,
@@ -170571,6 +184276,7 @@ static swig_type_info *swig_type_initial[] = {
   &_swigt__p_datamunge__optim__AugmentedLagrangianOptions,
   &_swigt__p_datamunge__optim__BayesianOptimization,
   &_swigt__p_datamunge__optim__BayesianOptimizationOptions,
+  &_swigt__p_datamunge__optim__BayesianOptimizationResult,
   &_swigt__p_datamunge__optim__BayesianSurrogate,
   &_swigt__p_datamunge__optim__CMAES,
   &_swigt__p_datamunge__optim__CMAESOptions,
@@ -170643,22 +184349,17 @@ static swig_type_info *swig_type_initial[] = {
   &_swigt__p_datamunge__optim__SeparableFunction,
   &_swigt__p_datamunge__optim__SimulatedAnnealing,
   &_swigt__p_datamunge__optim__SimulatedAnnealingOptions,
+  &_swigt__p_datamunge__optim__SurrogatePrediction,
   &_swigt__p_datamunge__optim__TrustRegionNewton,
   &_swigt__p_datamunge__optim__TrustRegionNewtonOptions,
   &_swigt__p_datamunge__optim__WhaleOptimization,
   &_swigt__p_datamunge__optim__WhaleOptimizationOptions,
-  &_swigt__p_datamunge__plot__ABLine,
-  &_swigt__p_datamunge__plot__DataSeries,
-  &_swigt__p_datamunge__plot__LegendEntry,
-  &_swigt__p_datamunge__plot__Plot,
-  &_swigt__p_datamunge__plot__RGB,
-  &_swigt__p_datamunge__plot__RLayout,
-  &_swigt__p_datamunge__plot__RPlot,
   &_swigt__p_datamunge__stats__ARIMA,
   &_swigt__p_datamunge__stats__ARIMAOptions,
   &_swigt__p_datamunge__stats__ExponentialSmoothing,
   &_swigt__p_datamunge__stats__ExponentialSmoothingOptions,
   &_swigt__p_datamunge__stats__HypothesisTestResult,
+  &_swigt__p_datamunge__stats__KendallTau,
   &_swigt__p_difference_type,
   &_swigt__p_first_type,
   &_swigt__p_int,
@@ -170673,16 +184374,17 @@ static swig_type_info *swig_type_initial[] = {
   &_swigt__p_std__pairT_int_int_t,
   &_swigt__p_std__pairT_std__string_std__string_t,
   &_swigt__p_std__pairT_std__vectorT_double_t_std__vectorT_double_t_t,
-  &_swigt__p_std__vectorT_datamunge__plot__ABLine_t,
-  &_swigt__p_std__vectorT_datamunge__plot__DataSeries_t,
-  &_swigt__p_std__vectorT_datamunge__plot__LegendEntry_t,
-  &_swigt__p_std__vectorT_datamunge__plot__RGB_t,
+  &_swigt__p_std__vectorT_datamunge__graphics__ABLine_t,
+  &_swigt__p_std__vectorT_datamunge__graphics__DataSeries_t,
+  &_swigt__p_std__vectorT_datamunge__graphics__LegendEntry_t,
+  &_swigt__p_std__vectorT_datamunge__graphics__RGB_t,
   &_swigt__p_std__vectorT_double_t,
   &_swigt__p_std__vectorT_int_t,
   &_swigt__p_std__vectorT_size_t_t,
   &_swigt__p_std__vectorT_std__size_t_t,
   &_swigt__p_std__vectorT_std__string_t,
   &_swigt__p_std__vectorT_std__vectorT_double_t_t,
+  &_swigt__p_std__vectorT_unsigned_char_t,
   &_swigt__p_unsigned_char,
   &_swigt__p_unsigned_int,
   &_swigt__p_unsigned_long_long,
@@ -170694,6 +184396,7 @@ static swig_cast_info _swigc__p_char[] = {  {&_swigt__p_char, 0, 0, 0},{0, 0, 0,
 static swig_cast_info _swigc__p_datamunge__AgglomerativeClustering[] = {  {&_swigt__p_datamunge__AgglomerativeClustering, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_datamunge__BSplineRegression[] = {  {&_swigt__p_datamunge__BSplineRegression, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_datamunge__Callback[] = {  {&_swigt__p_datamunge__Callback, 0, 0, 0},{0, 0, 0, 0}};
+static swig_cast_info _swigc__p_datamunge__CsvReader[] = {  {&_swigt__p_datamunge__CsvReader, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_datamunge__DBSCAN[] = {  {&_swigt__p_datamunge__DBSCAN, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_datamunge__DataFrame[] = {  {&_swigt__p_datamunge__DataFrame, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_datamunge__DecisionTreeClassifier[] = {  {&_swigt__p_datamunge__DecisionTreeClassifier, 0, 0, 0},{0, 0, 0, 0}};
@@ -170731,6 +184434,7 @@ static swig_cast_info _swigc__p_datamunge__Ridge[] = {  {&_swigt__p_datamunge__R
 static swig_cast_info _swigc__p_datamunge__SVM[] = {  {&_swigt__p_datamunge__SVM, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_datamunge__SammonMapping[] = {  {&_swigt__p_datamunge__SammonMapping, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_datamunge__ShapeLayer[] = {  {&_swigt__p_datamunge__ShapeLayer, 0, 0, 0},{0, 0, 0, 0}};
+static swig_cast_info _swigc__p_datamunge__Splom[] = {  {&_swigt__p_datamunge__Splom, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_datamunge__TSNE[] = {  {&_swigt__p_datamunge__TSNE, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_datamunge__Tape[] = {  {&_swigt__p_datamunge__Tape, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_datamunge__Tensor[] = {  {&_swigt__p_datamunge__Tensor, 0, 0, 0},{0, 0, 0, 0}};
@@ -170755,6 +184459,14 @@ static swig_cast_info _swigc__p_datamunge__bayes__NUTSResult[] = {  {&_swigt__p_
 static swig_cast_info _swigc__p_datamunge__bayes__RWMOptions[] = {  {&_swigt__p_datamunge__bayes__RWMOptions, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_datamunge__bayes__RWMResult[] = {  {&_swigt__p_datamunge__bayes__RWMResult, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_datamunge__bayes__RandomWalkMetropolis[] = {  {&_swigt__p_datamunge__bayes__RandomWalkMetropolis, 0, 0, 0},{0, 0, 0, 0}};
+static swig_cast_info _swigc__p_datamunge__datasets__ImageBatch[] = {  {&_swigt__p_datamunge__datasets__ImageBatch, 0, 0, 0},{0, 0, 0, 0}};
+static swig_cast_info _swigc__p_datamunge__graphics__ABLine[] = {  {&_swigt__p_datamunge__graphics__ABLine, 0, 0, 0},{0, 0, 0, 0}};
+static swig_cast_info _swigc__p_datamunge__graphics__DataSeries[] = {  {&_swigt__p_datamunge__graphics__DataSeries, 0, 0, 0},{0, 0, 0, 0}};
+static swig_cast_info _swigc__p_datamunge__graphics__LegendEntry[] = {  {&_swigt__p_datamunge__graphics__LegendEntry, 0, 0, 0},{0, 0, 0, 0}};
+static swig_cast_info _swigc__p_datamunge__graphics__Plot[] = {  {&_swigt__p_datamunge__graphics__Plot, 0, 0, 0},  {&_swigt__p_datamunge__graphics__RPlot, _p_datamunge__graphics__RPlotTo_p_datamunge__graphics__Plot, 0, 0},{0, 0, 0, 0}};
+static swig_cast_info _swigc__p_datamunge__graphics__RGB[] = {  {&_swigt__p_datamunge__graphics__RGB, 0, 0, 0},{0, 0, 0, 0}};
+static swig_cast_info _swigc__p_datamunge__graphics__RLayout[] = {  {&_swigt__p_datamunge__graphics__RLayout, 0, 0, 0},{0, 0, 0, 0}};
+static swig_cast_info _swigc__p_datamunge__graphics__RPlot[] = {  {&_swigt__p_datamunge__graphics__RPlot, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_datamunge__image__Image[] = {  {&_swigt__p_datamunge__image__Image, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_datamunge__ode__ODEOptions[] = {  {&_swigt__p_datamunge__ode__ODEOptions, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_datamunge__ode__ODESolution[] = {  {&_swigt__p_datamunge__ode__ODESolution, 0, 0, 0},{0, 0, 0, 0}};
@@ -170777,6 +184489,7 @@ static swig_cast_info _swigc__p_datamunge__optim__AugmentedLagrangian[] = {  {&_
 static swig_cast_info _swigc__p_datamunge__optim__AugmentedLagrangianOptions[] = {  {&_swigt__p_datamunge__optim__AugmentedLagrangianOptions, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_datamunge__optim__BayesianOptimization[] = {  {&_swigt__p_datamunge__optim__BayesianOptimization, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_datamunge__optim__BayesianOptimizationOptions[] = {  {&_swigt__p_datamunge__optim__BayesianOptimizationOptions, 0, 0, 0},{0, 0, 0, 0}};
+static swig_cast_info _swigc__p_datamunge__optim__BayesianOptimizationResult[] = {  {&_swigt__p_datamunge__optim__BayesianOptimizationResult, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_datamunge__optim__BayesianSurrogate[] = {  {&_swigt__p_datamunge__optim__BayesianSurrogate, 0, 0, 0},  {&_swigt__p_datamunge__optim__RBFGaussianProcessSurrogate, _p_datamunge__optim__RBFGaussianProcessSurrogateTo_p_datamunge__optim__BayesianSurrogate, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_datamunge__optim__CMAES[] = {  {&_swigt__p_datamunge__optim__CMAES, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_datamunge__optim__CMAESOptions[] = {  {&_swigt__p_datamunge__optim__CMAESOptions, 0, 0, 0},{0, 0, 0, 0}};
@@ -170849,22 +184562,17 @@ static swig_cast_info _swigc__p_datamunge__optim__SVRGOptions[] = {  {&_swigt__p
 static swig_cast_info _swigc__p_datamunge__optim__SeparableFunction[] = {  {&_swigt__p_datamunge__optim__SeparableFunction, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_datamunge__optim__SimulatedAnnealing[] = {  {&_swigt__p_datamunge__optim__SimulatedAnnealing, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_datamunge__optim__SimulatedAnnealingOptions[] = {  {&_swigt__p_datamunge__optim__SimulatedAnnealingOptions, 0, 0, 0},{0, 0, 0, 0}};
+static swig_cast_info _swigc__p_datamunge__optim__SurrogatePrediction[] = {  {&_swigt__p_datamunge__optim__SurrogatePrediction, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_datamunge__optim__TrustRegionNewton[] = {  {&_swigt__p_datamunge__optim__TrustRegionNewton, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_datamunge__optim__TrustRegionNewtonOptions[] = {  {&_swigt__p_datamunge__optim__TrustRegionNewtonOptions, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_datamunge__optim__WhaleOptimization[] = {  {&_swigt__p_datamunge__optim__WhaleOptimization, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_datamunge__optim__WhaleOptimizationOptions[] = {  {&_swigt__p_datamunge__optim__WhaleOptimizationOptions, 0, 0, 0},{0, 0, 0, 0}};
-static swig_cast_info _swigc__p_datamunge__plot__ABLine[] = {  {&_swigt__p_datamunge__plot__ABLine, 0, 0, 0},{0, 0, 0, 0}};
-static swig_cast_info _swigc__p_datamunge__plot__DataSeries[] = {  {&_swigt__p_datamunge__plot__DataSeries, 0, 0, 0},{0, 0, 0, 0}};
-static swig_cast_info _swigc__p_datamunge__plot__LegendEntry[] = {  {&_swigt__p_datamunge__plot__LegendEntry, 0, 0, 0},{0, 0, 0, 0}};
-static swig_cast_info _swigc__p_datamunge__plot__Plot[] = {  {&_swigt__p_datamunge__plot__Plot, 0, 0, 0},  {&_swigt__p_datamunge__plot__RPlot, _p_datamunge__plot__RPlotTo_p_datamunge__plot__Plot, 0, 0},{0, 0, 0, 0}};
-static swig_cast_info _swigc__p_datamunge__plot__RGB[] = {  {&_swigt__p_datamunge__plot__RGB, 0, 0, 0},{0, 0, 0, 0}};
-static swig_cast_info _swigc__p_datamunge__plot__RLayout[] = {  {&_swigt__p_datamunge__plot__RLayout, 0, 0, 0},{0, 0, 0, 0}};
-static swig_cast_info _swigc__p_datamunge__plot__RPlot[] = {  {&_swigt__p_datamunge__plot__RPlot, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_datamunge__stats__ARIMA[] = {  {&_swigt__p_datamunge__stats__ARIMA, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_datamunge__stats__ARIMAOptions[] = {  {&_swigt__p_datamunge__stats__ARIMAOptions, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_datamunge__stats__ExponentialSmoothing[] = {  {&_swigt__p_datamunge__stats__ExponentialSmoothing, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_datamunge__stats__ExponentialSmoothingOptions[] = {  {&_swigt__p_datamunge__stats__ExponentialSmoothingOptions, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_datamunge__stats__HypothesisTestResult[] = {  {&_swigt__p_datamunge__stats__HypothesisTestResult, 0, 0, 0},{0, 0, 0, 0}};
+static swig_cast_info _swigc__p_datamunge__stats__KendallTau[] = {  {&_swigt__p_datamunge__stats__KendallTau, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_difference_type[] = {  {&_swigt__p_difference_type, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_first_type[] = {  {&_swigt__p_first_type, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_int[] = {  {&_swigt__p_int, 0, 0, 0},{0, 0, 0, 0}};
@@ -170879,16 +184587,17 @@ static swig_cast_info _swigc__p_std__pairT_double_double_t[] = {  {&_swigt__p_st
 static swig_cast_info _swigc__p_std__pairT_int_int_t[] = {  {&_swigt__p_std__pairT_int_int_t, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_std__pairT_std__string_std__string_t[] = {  {&_swigt__p_std__pairT_std__string_std__string_t, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_std__pairT_std__vectorT_double_t_std__vectorT_double_t_t[] = {  {&_swigt__p_std__pairT_std__vectorT_double_t_std__vectorT_double_t_t, 0, 0, 0},{0, 0, 0, 0}};
-static swig_cast_info _swigc__p_std__vectorT_datamunge__plot__ABLine_t[] = {  {&_swigt__p_std__vectorT_datamunge__plot__ABLine_t, 0, 0, 0},{0, 0, 0, 0}};
-static swig_cast_info _swigc__p_std__vectorT_datamunge__plot__DataSeries_t[] = {  {&_swigt__p_std__vectorT_datamunge__plot__DataSeries_t, 0, 0, 0},{0, 0, 0, 0}};
-static swig_cast_info _swigc__p_std__vectorT_datamunge__plot__LegendEntry_t[] = {  {&_swigt__p_std__vectorT_datamunge__plot__LegendEntry_t, 0, 0, 0},{0, 0, 0, 0}};
-static swig_cast_info _swigc__p_std__vectorT_datamunge__plot__RGB_t[] = {  {&_swigt__p_std__vectorT_datamunge__plot__RGB_t, 0, 0, 0},{0, 0, 0, 0}};
+static swig_cast_info _swigc__p_std__vectorT_datamunge__graphics__ABLine_t[] = {  {&_swigt__p_std__vectorT_datamunge__graphics__ABLine_t, 0, 0, 0},{0, 0, 0, 0}};
+static swig_cast_info _swigc__p_std__vectorT_datamunge__graphics__DataSeries_t[] = {  {&_swigt__p_std__vectorT_datamunge__graphics__DataSeries_t, 0, 0, 0},{0, 0, 0, 0}};
+static swig_cast_info _swigc__p_std__vectorT_datamunge__graphics__LegendEntry_t[] = {  {&_swigt__p_std__vectorT_datamunge__graphics__LegendEntry_t, 0, 0, 0},{0, 0, 0, 0}};
+static swig_cast_info _swigc__p_std__vectorT_datamunge__graphics__RGB_t[] = {  {&_swigt__p_std__vectorT_datamunge__graphics__RGB_t, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_std__vectorT_double_t[] = {  {&_swigt__p_std__vectorT_double_t, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_std__vectorT_int_t[] = {  {&_swigt__p_std__vectorT_int_t, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_std__vectorT_size_t_t[] = {  {&_swigt__p_std__vectorT_size_t_t, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_std__vectorT_std__size_t_t[] = {  {&_swigt__p_std__vectorT_std__size_t_t, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_std__vectorT_std__string_t[] = {  {&_swigt__p_std__vectorT_std__string_t, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_std__vectorT_std__vectorT_double_t_t[] = {  {&_swigt__p_std__vectorT_std__vectorT_double_t_t, 0, 0, 0},{0, 0, 0, 0}};
+static swig_cast_info _swigc__p_std__vectorT_unsigned_char_t[] = {  {&_swigt__p_std__vectorT_unsigned_char_t, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_unsigned_char[] = {  {&_swigt__p_unsigned_char, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_unsigned_int[] = {  {&_swigt__p_unsigned_int, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_unsigned_long_long[] = {  {&_swigt__p_unsigned_long_long, 0, 0, 0},{0, 0, 0, 0}};
@@ -170900,6 +184609,7 @@ static swig_cast_info *swig_cast_initial[] = {
   _swigc__p_datamunge__AgglomerativeClustering,
   _swigc__p_datamunge__BSplineRegression,
   _swigc__p_datamunge__Callback,
+  _swigc__p_datamunge__CsvReader,
   _swigc__p_datamunge__DBSCAN,
   _swigc__p_datamunge__DataFrame,
   _swigc__p_datamunge__DecisionTreeClassifier,
@@ -170937,6 +184647,7 @@ static swig_cast_info *swig_cast_initial[] = {
   _swigc__p_datamunge__SVM,
   _swigc__p_datamunge__SammonMapping,
   _swigc__p_datamunge__ShapeLayer,
+  _swigc__p_datamunge__Splom,
   _swigc__p_datamunge__TSNE,
   _swigc__p_datamunge__Tape,
   _swigc__p_datamunge__Tensor,
@@ -170961,6 +184672,14 @@ static swig_cast_info *swig_cast_initial[] = {
   _swigc__p_datamunge__bayes__RWMOptions,
   _swigc__p_datamunge__bayes__RWMResult,
   _swigc__p_datamunge__bayes__RandomWalkMetropolis,
+  _swigc__p_datamunge__datasets__ImageBatch,
+  _swigc__p_datamunge__graphics__ABLine,
+  _swigc__p_datamunge__graphics__DataSeries,
+  _swigc__p_datamunge__graphics__LegendEntry,
+  _swigc__p_datamunge__graphics__Plot,
+  _swigc__p_datamunge__graphics__RGB,
+  _swigc__p_datamunge__graphics__RLayout,
+  _swigc__p_datamunge__graphics__RPlot,
   _swigc__p_datamunge__image__Image,
   _swigc__p_datamunge__ode__ODEOptions,
   _swigc__p_datamunge__ode__ODESolution,
@@ -170983,6 +184702,7 @@ static swig_cast_info *swig_cast_initial[] = {
   _swigc__p_datamunge__optim__AugmentedLagrangianOptions,
   _swigc__p_datamunge__optim__BayesianOptimization,
   _swigc__p_datamunge__optim__BayesianOptimizationOptions,
+  _swigc__p_datamunge__optim__BayesianOptimizationResult,
   _swigc__p_datamunge__optim__BayesianSurrogate,
   _swigc__p_datamunge__optim__CMAES,
   _swigc__p_datamunge__optim__CMAESOptions,
@@ -171055,22 +184775,17 @@ static swig_cast_info *swig_cast_initial[] = {
   _swigc__p_datamunge__optim__SeparableFunction,
   _swigc__p_datamunge__optim__SimulatedAnnealing,
   _swigc__p_datamunge__optim__SimulatedAnnealingOptions,
+  _swigc__p_datamunge__optim__SurrogatePrediction,
   _swigc__p_datamunge__optim__TrustRegionNewton,
   _swigc__p_datamunge__optim__TrustRegionNewtonOptions,
   _swigc__p_datamunge__optim__WhaleOptimization,
   _swigc__p_datamunge__optim__WhaleOptimizationOptions,
-  _swigc__p_datamunge__plot__ABLine,
-  _swigc__p_datamunge__plot__DataSeries,
-  _swigc__p_datamunge__plot__LegendEntry,
-  _swigc__p_datamunge__plot__Plot,
-  _swigc__p_datamunge__plot__RGB,
-  _swigc__p_datamunge__plot__RLayout,
-  _swigc__p_datamunge__plot__RPlot,
   _swigc__p_datamunge__stats__ARIMA,
   _swigc__p_datamunge__stats__ARIMAOptions,
   _swigc__p_datamunge__stats__ExponentialSmoothing,
   _swigc__p_datamunge__stats__ExponentialSmoothingOptions,
   _swigc__p_datamunge__stats__HypothesisTestResult,
+  _swigc__p_datamunge__stats__KendallTau,
   _swigc__p_difference_type,
   _swigc__p_first_type,
   _swigc__p_int,
@@ -171085,16 +184800,17 @@ static swig_cast_info *swig_cast_initial[] = {
   _swigc__p_std__pairT_int_int_t,
   _swigc__p_std__pairT_std__string_std__string_t,
   _swigc__p_std__pairT_std__vectorT_double_t_std__vectorT_double_t_t,
-  _swigc__p_std__vectorT_datamunge__plot__ABLine_t,
-  _swigc__p_std__vectorT_datamunge__plot__DataSeries_t,
-  _swigc__p_std__vectorT_datamunge__plot__LegendEntry_t,
-  _swigc__p_std__vectorT_datamunge__plot__RGB_t,
+  _swigc__p_std__vectorT_datamunge__graphics__ABLine_t,
+  _swigc__p_std__vectorT_datamunge__graphics__DataSeries_t,
+  _swigc__p_std__vectorT_datamunge__graphics__LegendEntry_t,
+  _swigc__p_std__vectorT_datamunge__graphics__RGB_t,
   _swigc__p_std__vectorT_double_t,
   _swigc__p_std__vectorT_int_t,
   _swigc__p_std__vectorT_size_t_t,
   _swigc__p_std__vectorT_std__size_t_t,
   _swigc__p_std__vectorT_std__string_t,
   _swigc__p_std__vectorT_std__vectorT_double_t_t,
+  _swigc__p_std__vectorT_unsigned_char_t,
   _swigc__p_unsigned_char,
   _swigc__p_unsigned_int,
   _swigc__p_unsigned_long_long,
@@ -171247,13 +184963,42 @@ static swig_command_info swig_commands[] = {
 {"Datamungec::DataFrame_numeric_min", _wrap_DataFrame_numeric_min},
 {"Datamungec::DataFrame_numeric_max", _wrap_DataFrame_numeric_max},
 {"Datamungec::DataFrame_to_string", _wrap_DataFrame_to_string},
+{"Datamungec::DataFrame_to_md", _wrap_DataFrame_to_md},
 {"Datamungec::DataFrame_is_numeric_column", _wrap_DataFrame_is_numeric_column},
 {"Datamungec::DataFrame_is_null", _wrap_DataFrame_is_null},
 {"Datamungec::DataFrame_numeric_at", _wrap_DataFrame_numeric_at},
 {"Datamungec::DataFrame_string_at", _wrap_DataFrame_string_at},
-{"Datamungec::DataFrame_iris", _wrap_DataFrame_iris},
-{"Datamungec::DataFrame_penguins", _wrap_DataFrame_penguins},
+{"Datamungec::DataFrame_read_csv", _wrap_DataFrame_read_csv},
+{"Datamungec::DataFrame_parse_csv", _wrap_DataFrame_parse_csv},
+{"Datamungec::DataFrame_from_image_batch", _wrap_DataFrame_from_image_batch},
 {"Datamungec::delete_DataFrame", _wrap_delete_DataFrame},
+{"Datamungec::data_iris", _wrap_data_iris},
+{"Datamungec::data_penguins", _wrap_data_penguins},
+{"Datamungec::data_tooth_growth", _wrap_data_tooth_growth},
+{"Datamungec::data_wine", _wrap_data_wine},
+{"Datamungec::data_titanic", _wrap_data_titanic},
+{"Datamungec::data_eight_schools", _wrap_data_eight_schools},
+{"Datamungec::data_air_passengers", _wrap_data_air_passengers},
+{"Datamungec::data_volcano", _wrap_data_volcano},
+{"Datamungec::data_faithful", _wrap_data_faithful},
+{"Datamungec::data_mtcars", _wrap_data_mtcars},
+{"Datamungec::data_airquality", _wrap_data_airquality},
+{"Datamungec::data_breast_cancer", _wrap_data_breast_cancer},
+{"Datamungec::data_diabetes", _wrap_data_diabetes},
+{"Datamungec::data_digits", _wrap_data_digits},
+{"Datamungec::data_diamonds", _wrap_data_diamonds},
+{"Datamungec::data_california_housing", _wrap_data_california_housing},
+{"Datamungec::data_load", _wrap_data_load},
+{"Datamungec::data_catalog", _wrap_data_catalog},
+{"Datamungec::new_CsvReader", _wrap_new_CsvReader},
+{"Datamungec::CsvReader_has_next", _wrap_CsvReader_has_next},
+{"Datamungec::CsvReader_next", _wrap_CsvReader_next},
+{"Datamungec::CsvReader_reset", _wrap_CsvReader_reset},
+{"Datamungec::CsvReader_batch_size", _wrap_CsvReader_batch_size},
+{"Datamungec::CsvReader_set_batch_size", _wrap_CsvReader_set_batch_size},
+{"Datamungec::CsvReader_column_names", _wrap_CsvReader_column_names},
+{"Datamungec::CsvReader_rows_read", _wrap_CsvReader_rows_read},
+{"Datamungec::delete_CsvReader", _wrap_delete_CsvReader},
 {"Datamungec::ShapeLayer_read", _wrap_ShapeLayer_read},
 {"Datamungec::ShapeLayer_size", _wrap_ShapeLayer_size},
 {"Datamungec::ShapeLayer_shape_type", _wrap_ShapeLayer_shape_type},
@@ -171288,7 +185033,44 @@ static swig_command_info swig_commands[] = {
 {"Datamungec::GGPlot_save", _wrap_GGPlot_save},
 {"Datamungec::GGPlot_save_svg", _wrap_GGPlot_save_svg},
 {"Datamungec::GGPlot_show", _wrap_GGPlot_show},
+{"Datamungec::GGPlot_rows", _wrap_GGPlot_rows},
+{"Datamungec::GGPlot_x_column", _wrap_GGPlot_x_column},
+{"Datamungec::GGPlot_y_column", _wrap_GGPlot_y_column},
+{"Datamungec::GGPlot_color_column", _wrap_GGPlot_color_column},
+{"Datamungec::GGPlot_layer_count", _wrap_GGPlot_layer_count},
+{"Datamungec::GGPlot_layer_kinds", _wrap_GGPlot_layer_kinds},
+{"Datamungec::GGPlot_theme_name", _wrap_GGPlot_theme_name},
+{"Datamungec::GGPlot_facet_column", _wrap_GGPlot_facet_column},
+{"Datamungec::GGPlot_title_text", _wrap_GGPlot_title_text},
+{"Datamungec::GGPlot_x_label", _wrap_GGPlot_x_label},
+{"Datamungec::GGPlot_y_label", _wrap_GGPlot_y_label},
 {"Datamungec::delete_GGPlot", _wrap_delete_GGPlot},
+{"Datamungec::new_Splom", _wrap_new_Splom},
+{"Datamungec::Splom_title", _wrap_Splom_title},
+{"Datamungec::Splom_size", _wrap_Splom_size},
+{"Datamungec::Splom_color", _wrap_Splom_color},
+{"Datamungec::Splom_group_by", _wrap_Splom_group_by},
+{"Datamungec::Splom_point_colors", _wrap_Splom_point_colors},
+{"Datamungec::Splom_level_palette", _wrap_Splom_level_palette},
+{"Datamungec::Splom_marker_size", _wrap_Splom_marker_size},
+{"Datamungec::Splom_diagonal_names", _wrap_Splom_diagonal_names},
+{"Datamungec::Splom_diagonal_density", _wrap_Splom_diagonal_density},
+{"Datamungec::Splom_diagonal_histogram", _wrap_Splom_diagonal_histogram},
+{"Datamungec::Splom_span", _wrap_Splom_span},
+{"Datamungec::Splom_prediction_level", _wrap_Splom_prediction_level},
+{"Datamungec::Splom_bins", _wrap_Splom_bins},
+{"Datamungec::Splom_show_grid", _wrap_Splom_show_grid},
+{"Datamungec::Splom_variables", _wrap_Splom_variables},
+{"Datamungec::Splom_groups", _wrap_Splom_groups},
+{"Datamungec::Splom_title_text", _wrap_Splom_title_text},
+{"Datamungec::Splom_width", _wrap_Splom_width},
+{"Datamungec::Splom_height", _wrap_Splom_height},
+{"Datamungec::Splom_panel", _wrap_Splom_panel},
+{"Datamungec::Splom_to_svg", _wrap_Splom_to_svg},
+{"Datamungec::Splom_save", _wrap_Splom_save},
+{"Datamungec::Splom_save_svg", _wrap_Splom_save_svg},
+{"Datamungec::Splom_show", _wrap_Splom_show},
+{"Datamungec::delete_Splom", _wrap_delete_Splom},
 {"Datamungec::new_LM", _wrap_new_LM},
 {"Datamungec::LM_formula_text", _wrap_LM_formula_text},
 {"Datamungec::LM_has_intercept", _wrap_LM_has_intercept},
@@ -171414,10 +185196,12 @@ static swig_command_info swig_commands[] = {
 {"Datamungec::LDA_confusion_matrix", _wrap_LDA_confusion_matrix},
 {"Datamungec::LDA_summary", _wrap_LDA_summary},
 {"Datamungec::LDA_print_summary", _wrap_LDA_print_summary},
+{"Datamungec::LDA_to_md", _wrap_LDA_to_md},
 {"Datamungec::LDA_predict", _wrap_LDA_predict},
 {"Datamungec::LDA_predict_frame", _wrap_LDA_predict_frame},
 {"Datamungec::LDA_plot_discriminants", _wrap_LDA_plot_discriminants},
 {"Datamungec::LDA_save_discriminant_plot", _wrap_LDA_save_discriminant_plot},
+{"Datamungec::LDA_plot_decision_regions", _wrap_LDA_plot_decision_regions},
 {"Datamungec::delete_LDA", _wrap_delete_LDA},
 {"Datamungec::new_SVM", _wrap_new_SVM},
 {"Datamungec::SVM_classes", _wrap_SVM_classes},
@@ -172106,6 +185890,8 @@ static swig_command_info swig_commands[] = {
 {"Datamungec::DataSeries_bar_width_get", _wrap_DataSeries_bar_width_get},
 {"Datamungec::DataSeries_filled_set", _wrap_DataSeries_filled_set},
 {"Datamungec::DataSeries_filled_get", _wrap_DataSeries_filled_get},
+{"Datamungec::DataSeries_point_colors_set", _wrap_DataSeries_point_colors_set},
+{"Datamungec::DataSeries_point_colors_get", _wrap_DataSeries_point_colors_get},
 {"Datamungec::new_DataSeries", _wrap_new_DataSeries},
 {"Datamungec::delete_DataSeries", _wrap_delete_DataSeries},
 {"Datamungec::ABLine_vertical_set", _wrap_ABLine_vertical_set},
@@ -172129,6 +185915,7 @@ static swig_command_info swig_commands[] = {
 {"Datamungec::delete_Plot", _wrap_delete_Plot},
 {"Datamungec::Plot_size", _wrap_Plot_size},
 {"Datamungec::Plot_title", _wrap_Plot_title},
+{"Datamungec::Plot_subtitle", _wrap_Plot_subtitle},
 {"Datamungec::Plot_x_label", _wrap_Plot_x_label},
 {"Datamungec::Plot_y_label", _wrap_Plot_y_label},
 {"Datamungec::Plot_background", _wrap_Plot_background},
@@ -172139,9 +185926,16 @@ static swig_command_info swig_commands[] = {
 {"Datamungec::Plot_y_limits", _wrap_Plot_y_limits},
 {"Datamungec::Plot_hide_axes", _wrap_Plot_hide_axes},
 {"Datamungec::Plot_x_tick_labels", _wrap_Plot_x_tick_labels},
+{"Datamungec::Plot_x_ticks", _wrap_Plot_x_ticks},
+{"Datamungec::Plot_y_tick_labels", _wrap_Plot_y_tick_labels},
+{"Datamungec::Plot_y_ticks", _wrap_Plot_y_ticks},
+{"Datamungec::Plot_margins", _wrap_Plot_margins},
+{"Datamungec::Plot_tick_font_size", _wrap_Plot_tick_font_size},
+{"Datamungec::Plot_pretty_ticks", _wrap_Plot_pretty_ticks},
 {"Datamungec::Plot_width", _wrap_Plot_width},
 {"Datamungec::Plot_height", _wrap_Plot_height},
 {"Datamungec::Plot_title_text", _wrap_Plot_title_text},
+{"Datamungec::Plot_subtitle_text", _wrap_Plot_subtitle_text},
 {"Datamungec::Plot_x_label_text", _wrap_Plot_x_label_text},
 {"Datamungec::Plot_y_label_text", _wrap_Plot_y_label_text},
 {"Datamungec::Plot_series", _wrap_Plot_series},
@@ -172157,29 +185951,58 @@ static swig_command_info swig_commands[] = {
 {"Datamungec::Plot_y_max", _wrap_Plot_y_max},
 {"Datamungec::Plot_axes_hidden", _wrap_Plot_axes_hidden},
 {"Datamungec::Plot_x_tick_label_list", _wrap_Plot_x_tick_label_list},
+{"Datamungec::Plot_x_tick_position_list", _wrap_Plot_x_tick_position_list},
+{"Datamungec::Plot_y_tick_label_list", _wrap_Plot_y_tick_label_list},
+{"Datamungec::Plot_y_tick_position_list", _wrap_Plot_y_tick_position_list},
 {"Datamungec::Plot_reference_lines", _wrap_Plot_reference_lines},
 {"Datamungec::Plot_legend_entries", _wrap_Plot_legend_entries},
+{"Datamungec::Plot_has_custom_margins", _wrap_Plot_has_custom_margins},
+{"Datamungec::Plot_margin_left", _wrap_Plot_margin_left},
+{"Datamungec::Plot_margin_right", _wrap_Plot_margin_right},
+{"Datamungec::Plot_margin_top", _wrap_Plot_margin_top},
+{"Datamungec::Plot_margin_bottom", _wrap_Plot_margin_bottom},
+{"Datamungec::Plot_tick_font_px", _wrap_Plot_tick_font_px},
+{"Datamungec::Plot_pretty_ticks_enabled", _wrap_Plot_pretty_ticks_enabled},
 {"Datamungec::Plot_to_svg", _wrap_Plot_to_svg},
 {"Datamungec::Plot_save", _wrap_Plot_save},
 {"Datamungec::Plot_save_svg", _wrap_Plot_save_svg},
+{"Datamungec::Plot_to_png", _wrap_Plot_to_png},
+{"Datamungec::Plot_to_pdf", _wrap_Plot_to_pdf},
+{"Datamungec::Plot_save_png", _wrap_Plot_save_png},
+{"Datamungec::Plot_save_pdf", _wrap_Plot_save_pdf},
 {"Datamungec::Plot_view", _wrap_Plot_view},
 {"Datamungec::Plot_show", _wrap_Plot_show},
 {"Datamungec::new_Plot", _wrap_new_Plot},
+{"Datamungec::new_RPlot", _wrap_new_RPlot},
 {"Datamungec::RPlot_create", _wrap_RPlot_create},
 {"Datamungec::RPlot_size", _wrap_RPlot_size},
 {"Datamungec::RPlot_title", _wrap_RPlot_title},
+{"Datamungec::RPlot_subtitle", _wrap_RPlot_subtitle},
 {"Datamungec::RPlot_x_label", _wrap_RPlot_x_label},
 {"Datamungec::RPlot_y_label", _wrap_RPlot_y_label},
 {"Datamungec::RPlot_xlab", _wrap_RPlot_xlab},
 {"Datamungec::RPlot_ylab", _wrap_RPlot_ylab},
+{"Datamungec::RPlot_set_title", _wrap_RPlot_set_title},
+{"Datamungec::RPlot_set_subtitle", _wrap_RPlot_set_subtitle},
+{"Datamungec::RPlot_set_xlab", _wrap_RPlot_set_xlab},
+{"Datamungec::RPlot_set_ylab", _wrap_RPlot_set_ylab},
+{"Datamungec::RPlot_set_col", _wrap_RPlot_set_col},
 {"Datamungec::RPlot_background", _wrap_RPlot_background},
 {"Datamungec::RPlot_axis_color", _wrap_RPlot_axis_color},
 {"Datamungec::RPlot_grid_color", _wrap_RPlot_grid_color},
 {"Datamungec::RPlot_show_grid", _wrap_RPlot_show_grid},
 {"Datamungec::RPlot_x_limits", _wrap_RPlot_x_limits},
 {"Datamungec::RPlot_y_limits", _wrap_RPlot_y_limits},
+{"Datamungec::RPlot_xlim", _wrap_RPlot_xlim},
+{"Datamungec::RPlot_ylim", _wrap_RPlot_ylim},
 {"Datamungec::RPlot_hide_axes", _wrap_RPlot_hide_axes},
 {"Datamungec::RPlot_x_tick_labels", _wrap_RPlot_x_tick_labels},
+{"Datamungec::RPlot_x_ticks", _wrap_RPlot_x_ticks},
+{"Datamungec::RPlot_y_tick_labels", _wrap_RPlot_y_tick_labels},
+{"Datamungec::RPlot_y_ticks", _wrap_RPlot_y_ticks},
+{"Datamungec::RPlot_margins", _wrap_RPlot_margins},
+{"Datamungec::RPlot_tick_font_size", _wrap_RPlot_tick_font_size},
+{"Datamungec::RPlot_pretty_ticks", _wrap_RPlot_pretty_ticks},
 {"Datamungec::RPlot_plot", _wrap_RPlot_plot},
 {"Datamungec::RPlot_hist", _wrap_RPlot_hist},
 {"Datamungec::RPlot_barplot", _wrap_RPlot_barplot},
@@ -172187,6 +186010,7 @@ static swig_command_info swig_commands[] = {
 {"Datamungec::RPlot_pie", _wrap_RPlot_pie},
 {"Datamungec::RPlot_curve", _wrap_RPlot_curve},
 {"Datamungec::RPlot_qqnorm", _wrap_RPlot_qqnorm},
+{"Datamungec::RPlot_points_colored", _wrap_RPlot_points_colored},
 {"Datamungec::RPlot_line", _wrap_RPlot_line},
 {"Datamungec::RPlot_points", _wrap_RPlot_points},
 {"Datamungec::RPlot_lines", _wrap_RPlot_lines},
@@ -172199,19 +186023,39 @@ static swig_command_info swig_commands[] = {
 {"Datamungec::RPlot_legend", _wrap_RPlot_legend},
 {"Datamungec::RPlot_text", _wrap_RPlot_text},
 {"Datamungec::RPlot_polygon", _wrap_RPlot_polygon},
+{"Datamungec::RPlot_image", _wrap_RPlot_image},
 {"Datamungec::RPlot_segments", _wrap_RPlot_segments},
-{"Datamungec::new_RPlot", _wrap_new_RPlot},
 {"Datamungec::delete_RPlot", _wrap_delete_RPlot},
 {"Datamungec::RLayout_create", _wrap_RLayout_create},
 {"Datamungec::RLayout_add", _wrap_RLayout_add},
 {"Datamungec::RLayout_size", _wrap_RLayout_size},
+{"Datamungec::RLayout_title", _wrap_RLayout_title},
+{"Datamungec::RLayout_rows", _wrap_RLayout_rows},
+{"Datamungec::RLayout_cols", _wrap_RLayout_cols},
+{"Datamungec::RLayout_width", _wrap_RLayout_width},
+{"Datamungec::RLayout_height", _wrap_RLayout_height},
+{"Datamungec::RLayout_panel_count", _wrap_RLayout_panel_count},
+{"Datamungec::RLayout_title_text", _wrap_RLayout_title_text},
+{"Datamungec::RLayout_panel", _wrap_RLayout_panel},
 {"Datamungec::RLayout_to_svg", _wrap_RLayout_to_svg},
 {"Datamungec::RLayout_save", _wrap_RLayout_save},
 {"Datamungec::RLayout_save_svg", _wrap_RLayout_save_svg},
+{"Datamungec::RLayout_to_png", _wrap_RLayout_to_png},
+{"Datamungec::RLayout_to_pdf", _wrap_RLayout_to_pdf},
+{"Datamungec::RLayout_save_png", _wrap_RLayout_save_png},
+{"Datamungec::RLayout_save_pdf", _wrap_RLayout_save_pdf},
+{"Datamungec::RLayout_fit_panels", _wrap_RLayout_fit_panels},
+{"Datamungec::RLayout_show", _wrap_RLayout_show},
+{"Datamungec::RLayout_view", _wrap_RLayout_view},
 {"Datamungec::new_RLayout", _wrap_new_RLayout},
 {"Datamungec::delete_RLayout", _wrap_delete_RLayout},
+{"Datamungec::terrain_colors", _wrap_terrain_colors},
+{"Datamungec::diverging_colors", _wrap_diverging_colors},
+{"Datamungec::viridis_colors", _wrap_viridis_colors},
+{"Datamungec::value_colors", _wrap_value_colors},
 {"Datamungec::set_seed", _wrap_set_seed},
 {"Datamungec::unif", _wrap_unif},
+{"Datamungec::runif", _wrap_runif},
 {"Datamungec::rnorm", _wrap_rnorm},
 {"Datamungec::seql", _wrap_seql},
 {"Datamungec::new_BSplineRegression", _wrap_new_BSplineRegression},
@@ -172280,6 +186124,9 @@ static swig_command_info swig_commands[] = {
 {"Datamungec::ARIMA_fitted_values", _wrap_ARIMA_fitted_values},
 {"Datamungec::ARIMA_residuals", _wrap_ARIMA_residuals},
 {"Datamungec::ARIMA_forecast", _wrap_ARIMA_forecast},
+{"Datamungec::ARIMA_expanded_ar_coefficients", _wrap_ARIMA_expanded_ar_coefficients},
+{"Datamungec::ARIMA_expanded_ma_coefficients", _wrap_ARIMA_expanded_ma_coefficients},
+{"Datamungec::ARIMA_psi_weights", _wrap_ARIMA_psi_weights},
 {"Datamungec::ARIMA_forecast_with_intervals", _wrap_ARIMA_forecast_with_intervals},
 {"Datamungec::delete_ARIMA", _wrap_delete_ARIMA},
 {"Datamungec::ExponentialSmoothingOptions_trend_set", _wrap_ExponentialSmoothingOptions_trend_set},
@@ -172350,6 +186197,7 @@ static swig_command_info swig_commands[] = {
 {"Datamungec::wilcoxon_signed_rank_test", _wrap_wilcoxon_signed_rank_test},
 {"Datamungec::wilcoxon_rank_sum_test", _wrap_wilcoxon_rank_sum_test},
 {"Datamungec::ks_test_one_sample_normal", _wrap_ks_test_one_sample_normal},
+{"Datamungec::ks_test_one_sample_uniform", _wrap_ks_test_one_sample_uniform},
 {"Datamungec::ks_test_two_sample", _wrap_ks_test_two_sample},
 {"Datamungec::chi_squared_goodness_of_fit", _wrap_chi_squared_goodness_of_fit},
 {"Datamungec::chi_squared_test_independence", _wrap_chi_squared_test_independence},
@@ -172357,6 +186205,23 @@ static swig_command_info swig_commands[] = {
 {"Datamungec::kruskal_wallis_test", _wrap_kruskal_wallis_test},
 {"Datamungec::pearson_correlation_test", _wrap_pearson_correlation_test},
 {"Datamungec::spearman_correlation_test", _wrap_spearman_correlation_test},
+{"Datamungec::KendallTau_concordant_set", _wrap_KendallTau_concordant_set},
+{"Datamungec::KendallTau_concordant_get", _wrap_KendallTau_concordant_get},
+{"Datamungec::KendallTau_discordant_set", _wrap_KendallTau_discordant_set},
+{"Datamungec::KendallTau_discordant_get", _wrap_KendallTau_discordant_get},
+{"Datamungec::KendallTau_ties_x_set", _wrap_KendallTau_ties_x_set},
+{"Datamungec::KendallTau_ties_x_get", _wrap_KendallTau_ties_x_get},
+{"Datamungec::KendallTau_ties_y_set", _wrap_KendallTau_ties_y_set},
+{"Datamungec::KendallTau_ties_y_get", _wrap_KendallTau_ties_y_get},
+{"Datamungec::KendallTau_ties_xy_set", _wrap_KendallTau_ties_xy_set},
+{"Datamungec::KendallTau_ties_xy_get", _wrap_KendallTau_ties_xy_get},
+{"Datamungec::KendallTau_tau_a_set", _wrap_KendallTau_tau_a_set},
+{"Datamungec::KendallTau_tau_a_get", _wrap_KendallTau_tau_a_get},
+{"Datamungec::KendallTau_tau_b_set", _wrap_KendallTau_tau_b_set},
+{"Datamungec::KendallTau_tau_b_get", _wrap_KendallTau_tau_b_get},
+{"Datamungec::new_KendallTau", _wrap_new_KendallTau},
+{"Datamungec::delete_KendallTau", _wrap_delete_KendallTau},
+{"Datamungec::kendall_tau", _wrap_kendall_tau},
 {"Datamungec::f_test_variance", _wrap_f_test_variance},
 {"Datamungec::proportion_test_one_sample", _wrap_proportion_test_one_sample},
 {"Datamungec::proportion_test_two_sample", _wrap_proportion_test_two_sample},
@@ -172432,6 +186297,7 @@ static swig_command_info swig_commands[] = {
 {"Datamungec::delete_GradientDescentOptions", _wrap_delete_GradientDescentOptions},
 {"Datamungec::new_GradientDescent", _wrap_new_GradientDescent},
 {"Datamungec::GradientDescent_optimize", _wrap_GradientDescent_optimize},
+{"Datamungec::GradientDescent_options", _wrap_GradientDescent_options},
 {"Datamungec::delete_GradientDescent", _wrap_delete_GradientDescent},
 {"Datamungec::AdamOptions_step_size_set", _wrap_AdamOptions_step_size_set},
 {"Datamungec::AdamOptions_step_size_get", _wrap_AdamOptions_step_size_get},
@@ -172449,6 +186315,7 @@ static swig_command_info swig_commands[] = {
 {"Datamungec::delete_AdamOptions", _wrap_delete_AdamOptions},
 {"Datamungec::new_Adam", _wrap_new_Adam},
 {"Datamungec::Adam_optimize", _wrap_Adam_optimize},
+{"Datamungec::Adam_options", _wrap_Adam_options},
 {"Datamungec::delete_Adam", _wrap_delete_Adam},
 {"Datamungec::AdaGradOptions_step_size_set", _wrap_AdaGradOptions_step_size_set},
 {"Datamungec::AdaGradOptions_step_size_get", _wrap_AdaGradOptions_step_size_get},
@@ -172462,6 +186329,7 @@ static swig_command_info swig_commands[] = {
 {"Datamungec::delete_AdaGradOptions", _wrap_delete_AdaGradOptions},
 {"Datamungec::new_AdaGrad", _wrap_new_AdaGrad},
 {"Datamungec::AdaGrad_optimize", _wrap_AdaGrad_optimize},
+{"Datamungec::AdaGrad_options", _wrap_AdaGrad_options},
 {"Datamungec::delete_AdaGrad", _wrap_delete_AdaGrad},
 {"Datamungec::AdaDeltaOptions_decay_rate_set", _wrap_AdaDeltaOptions_decay_rate_set},
 {"Datamungec::AdaDeltaOptions_decay_rate_get", _wrap_AdaDeltaOptions_decay_rate_get},
@@ -172475,6 +186343,7 @@ static swig_command_info swig_commands[] = {
 {"Datamungec::delete_AdaDeltaOptions", _wrap_delete_AdaDeltaOptions},
 {"Datamungec::new_AdaDelta", _wrap_new_AdaDelta},
 {"Datamungec::AdaDelta_optimize", _wrap_AdaDelta_optimize},
+{"Datamungec::AdaDelta_options", _wrap_AdaDelta_options},
 {"Datamungec::delete_AdaDelta", _wrap_delete_AdaDelta},
 {"Datamungec::AMSGradOptions_step_size_set", _wrap_AMSGradOptions_step_size_set},
 {"Datamungec::AMSGradOptions_step_size_get", _wrap_AMSGradOptions_step_size_get},
@@ -172492,6 +186361,7 @@ static swig_command_info swig_commands[] = {
 {"Datamungec::delete_AMSGradOptions", _wrap_delete_AMSGradOptions},
 {"Datamungec::new_AMSGrad", _wrap_new_AMSGrad},
 {"Datamungec::AMSGrad_optimize", _wrap_AMSGrad_optimize},
+{"Datamungec::AMSGrad_options", _wrap_AMSGrad_options},
 {"Datamungec::delete_AMSGrad", _wrap_delete_AMSGrad},
 {"Datamungec::NadamOptions_step_size_set", _wrap_NadamOptions_step_size_set},
 {"Datamungec::NadamOptions_step_size_get", _wrap_NadamOptions_step_size_get},
@@ -172509,6 +186379,7 @@ static swig_command_info swig_commands[] = {
 {"Datamungec::delete_NadamOptions", _wrap_delete_NadamOptions},
 {"Datamungec::new_Nadam", _wrap_new_Nadam},
 {"Datamungec::Nadam_optimize", _wrap_Nadam_optimize},
+{"Datamungec::Nadam_options", _wrap_Nadam_options},
 {"Datamungec::delete_Nadam", _wrap_delete_Nadam},
 {"Datamungec::RMSPropOptions_step_size_set", _wrap_RMSPropOptions_step_size_set},
 {"Datamungec::RMSPropOptions_step_size_get", _wrap_RMSPropOptions_step_size_get},
@@ -172524,6 +186395,7 @@ static swig_command_info swig_commands[] = {
 {"Datamungec::delete_RMSPropOptions", _wrap_delete_RMSPropOptions},
 {"Datamungec::new_RMSProp", _wrap_new_RMSProp},
 {"Datamungec::RMSProp_optimize", _wrap_RMSProp_optimize},
+{"Datamungec::RMSProp_options", _wrap_RMSProp_options},
 {"Datamungec::delete_RMSProp", _wrap_delete_RMSProp},
 {"Datamungec::LBFGSOptions_max_iterations_set", _wrap_LBFGSOptions_max_iterations_set},
 {"Datamungec::LBFGSOptions_max_iterations_get", _wrap_LBFGSOptions_max_iterations_get},
@@ -172541,6 +186413,7 @@ static swig_command_info swig_commands[] = {
 {"Datamungec::delete_LBFGSOptions", _wrap_delete_LBFGSOptions},
 {"Datamungec::new_LBFGS", _wrap_new_LBFGS},
 {"Datamungec::LBFGS_optimize", _wrap_LBFGS_optimize},
+{"Datamungec::LBFGS_options", _wrap_LBFGS_options},
 {"Datamungec::delete_LBFGS", _wrap_delete_LBFGS},
 {"Datamungec::NelderMeadOptions_initial_simplex_scale_set", _wrap_NelderMeadOptions_initial_simplex_scale_set},
 {"Datamungec::NelderMeadOptions_initial_simplex_scale_get", _wrap_NelderMeadOptions_initial_simplex_scale_get},
@@ -172560,6 +186433,7 @@ static swig_command_info swig_commands[] = {
 {"Datamungec::delete_NelderMeadOptions", _wrap_delete_NelderMeadOptions},
 {"Datamungec::new_NelderMead", _wrap_new_NelderMead},
 {"Datamungec::NelderMead_optimize", _wrap_NelderMead_optimize},
+{"Datamungec::NelderMead_options", _wrap_NelderMead_options},
 {"Datamungec::delete_NelderMead", _wrap_delete_NelderMead},
 {"Datamungec::SGDOptions_step_size_set", _wrap_SGDOptions_step_size_set},
 {"Datamungec::SGDOptions_step_size_get", _wrap_SGDOptions_step_size_get},
@@ -172577,6 +186451,7 @@ static swig_command_info swig_commands[] = {
 {"Datamungec::delete_SGDOptions", _wrap_delete_SGDOptions},
 {"Datamungec::new_SGD", _wrap_new_SGD},
 {"Datamungec::SGD_optimize", _wrap_SGD_optimize},
+{"Datamungec::SGD_options", _wrap_SGD_options},
 {"Datamungec::delete_SGD", _wrap_delete_SGD},
 {"Datamungec::SVRGOptions_step_size_set", _wrap_SVRGOptions_step_size_set},
 {"Datamungec::SVRGOptions_step_size_get", _wrap_SVRGOptions_step_size_get},
@@ -172592,6 +186467,7 @@ static swig_command_info swig_commands[] = {
 {"Datamungec::delete_SVRGOptions", _wrap_delete_SVRGOptions},
 {"Datamungec::new_SVRG", _wrap_new_SVRG},
 {"Datamungec::SVRG_optimize", _wrap_SVRG_optimize},
+{"Datamungec::SVRG_options", _wrap_SVRG_options},
 {"Datamungec::delete_SVRG", _wrap_delete_SVRG},
 {"Datamungec::SAGAOptions_step_size_set", _wrap_SAGAOptions_step_size_set},
 {"Datamungec::SAGAOptions_step_size_get", _wrap_SAGAOptions_step_size_get},
@@ -172605,6 +186481,7 @@ static swig_command_info swig_commands[] = {
 {"Datamungec::delete_SAGAOptions", _wrap_delete_SAGAOptions},
 {"Datamungec::new_SAGA", _wrap_new_SAGA},
 {"Datamungec::SAGA_optimize", _wrap_SAGA_optimize},
+{"Datamungec::SAGA_options", _wrap_SAGA_options},
 {"Datamungec::delete_SAGA", _wrap_delete_SAGA},
 {"Datamungec::CoordinateDescentOptions_step_size_set", _wrap_CoordinateDescentOptions_step_size_set},
 {"Datamungec::CoordinateDescentOptions_step_size_get", _wrap_CoordinateDescentOptions_step_size_get},
@@ -172622,6 +186499,7 @@ static swig_command_info swig_commands[] = {
 {"Datamungec::delete_CoordinateDescentOptions", _wrap_delete_CoordinateDescentOptions},
 {"Datamungec::new_CoordinateDescent", _wrap_new_CoordinateDescent},
 {"Datamungec::CoordinateDescent_optimize", _wrap_CoordinateDescent_optimize},
+{"Datamungec::CoordinateDescent_options", _wrap_CoordinateDescent_options},
 {"Datamungec::delete_CoordinateDescent", _wrap_delete_CoordinateDescent},
 {"Datamungec::RandomizedBlockCoordinateDescentOptions_block_size_set", _wrap_RandomizedBlockCoordinateDescentOptions_block_size_set},
 {"Datamungec::RandomizedBlockCoordinateDescentOptions_block_size_get", _wrap_RandomizedBlockCoordinateDescentOptions_block_size_get},
@@ -172643,6 +186521,7 @@ static swig_command_info swig_commands[] = {
 {"Datamungec::delete_RandomizedBlockCoordinateDescentOptions", _wrap_delete_RandomizedBlockCoordinateDescentOptions},
 {"Datamungec::new_RandomizedBlockCoordinateDescent", _wrap_new_RandomizedBlockCoordinateDescent},
 {"Datamungec::RandomizedBlockCoordinateDescent_optimize", _wrap_RandomizedBlockCoordinateDescent_optimize},
+{"Datamungec::RandomizedBlockCoordinateDescent_options", _wrap_RandomizedBlockCoordinateDescent_options},
 {"Datamungec::delete_RandomizedBlockCoordinateDescent", _wrap_delete_RandomizedBlockCoordinateDescent},
 {"Datamungec::NesterovAcceleratedGradientOptions_step_size_set", _wrap_NesterovAcceleratedGradientOptions_step_size_set},
 {"Datamungec::NesterovAcceleratedGradientOptions_step_size_get", _wrap_NesterovAcceleratedGradientOptions_step_size_get},
@@ -172656,6 +186535,7 @@ static swig_command_info swig_commands[] = {
 {"Datamungec::delete_NesterovAcceleratedGradientOptions", _wrap_delete_NesterovAcceleratedGradientOptions},
 {"Datamungec::new_NesterovAcceleratedGradient", _wrap_new_NesterovAcceleratedGradient},
 {"Datamungec::NesterovAcceleratedGradient_optimize", _wrap_NesterovAcceleratedGradient_optimize},
+{"Datamungec::NesterovAcceleratedGradient_options", _wrap_NesterovAcceleratedGradient_options},
 {"Datamungec::delete_NesterovAcceleratedGradient", _wrap_delete_NesterovAcceleratedGradient},
 {"Datamungec::ConjugateGradientOptions_max_iterations_set", _wrap_ConjugateGradientOptions_max_iterations_set},
 {"Datamungec::ConjugateGradientOptions_max_iterations_get", _wrap_ConjugateGradientOptions_max_iterations_get},
@@ -172671,6 +186551,7 @@ static swig_command_info swig_commands[] = {
 {"Datamungec::delete_ConjugateGradientOptions", _wrap_delete_ConjugateGradientOptions},
 {"Datamungec::new_ConjugateGradient", _wrap_new_ConjugateGradient},
 {"Datamungec::ConjugateGradient_optimize", _wrap_ConjugateGradient_optimize},
+{"Datamungec::ConjugateGradient_options", _wrap_ConjugateGradient_options},
 {"Datamungec::delete_ConjugateGradient", _wrap_delete_ConjugateGradient},
 {"Datamungec::CMAESOptions_population_size_set", _wrap_CMAESOptions_population_size_set},
 {"Datamungec::CMAESOptions_population_size_get", _wrap_CMAESOptions_population_size_get},
@@ -172686,6 +186567,7 @@ static swig_command_info swig_commands[] = {
 {"Datamungec::delete_CMAESOptions", _wrap_delete_CMAESOptions},
 {"Datamungec::new_CMAES", _wrap_new_CMAES},
 {"Datamungec::CMAES_optimize", _wrap_CMAES_optimize},
+{"Datamungec::CMAES_options", _wrap_CMAES_options},
 {"Datamungec::delete_CMAES", _wrap_delete_CMAES},
 {"Datamungec::SimulatedAnnealingOptions_initial_temperature_set", _wrap_SimulatedAnnealingOptions_initial_temperature_set},
 {"Datamungec::SimulatedAnnealingOptions_initial_temperature_get", _wrap_SimulatedAnnealingOptions_initial_temperature_get},
@@ -172701,6 +186583,7 @@ static swig_command_info swig_commands[] = {
 {"Datamungec::delete_SimulatedAnnealingOptions", _wrap_delete_SimulatedAnnealingOptions},
 {"Datamungec::new_SimulatedAnnealing", _wrap_new_SimulatedAnnealing},
 {"Datamungec::SimulatedAnnealing_optimize", _wrap_SimulatedAnnealing_optimize},
+{"Datamungec::SimulatedAnnealing_options", _wrap_SimulatedAnnealing_options},
 {"Datamungec::delete_SimulatedAnnealing", _wrap_delete_SimulatedAnnealing},
 {"Datamungec::PSOOptions_population_size_set", _wrap_PSOOptions_population_size_set},
 {"Datamungec::PSOOptions_population_size_get", _wrap_PSOOptions_population_size_get},
@@ -172728,6 +186611,7 @@ static swig_command_info swig_commands[] = {
 {"Datamungec::delete_PSOOptions", _wrap_delete_PSOOptions},
 {"Datamungec::new_PSO", _wrap_new_PSO},
 {"Datamungec::PSO_optimize", _wrap_PSO_optimize},
+{"Datamungec::PSO_options", _wrap_PSO_options},
 {"Datamungec::delete_PSO", _wrap_delete_PSO},
 {"Datamungec::DEOptions_population_size_set", _wrap_DEOptions_population_size_set},
 {"Datamungec::DEOptions_population_size_get", _wrap_DEOptions_population_size_get},
@@ -172749,6 +186633,7 @@ static swig_command_info swig_commands[] = {
 {"Datamungec::delete_DEOptions", _wrap_delete_DEOptions},
 {"Datamungec::new_DifferentialEvolution", _wrap_new_DifferentialEvolution},
 {"Datamungec::DifferentialEvolution_optimize", _wrap_DifferentialEvolution_optimize},
+{"Datamungec::DifferentialEvolution_options", _wrap_DifferentialEvolution_options},
 {"Datamungec::delete_DifferentialEvolution", _wrap_delete_DifferentialEvolution},
 {"Datamungec::GAOptions_population_size_set", _wrap_GAOptions_population_size_set},
 {"Datamungec::GAOptions_population_size_get", _wrap_GAOptions_population_size_get},
@@ -172780,6 +186665,7 @@ static swig_command_info swig_commands[] = {
 {"Datamungec::delete_GAOptions", _wrap_delete_GAOptions},
 {"Datamungec::new_GeneticAlgorithm", _wrap_new_GeneticAlgorithm},
 {"Datamungec::GeneticAlgorithm_optimize", _wrap_GeneticAlgorithm_optimize},
+{"Datamungec::GeneticAlgorithm_options", _wrap_GeneticAlgorithm_options},
 {"Datamungec::delete_GeneticAlgorithm", _wrap_delete_GeneticAlgorithm},
 {"Datamungec::ACOROptions_archive_size_set", _wrap_ACOROptions_archive_size_set},
 {"Datamungec::ACOROptions_archive_size_get", _wrap_ACOROptions_archive_size_get},
@@ -172799,6 +186685,7 @@ static swig_command_info swig_commands[] = {
 {"Datamungec::delete_ACOROptions", _wrap_delete_ACOROptions},
 {"Datamungec::new_ACOR", _wrap_new_ACOR},
 {"Datamungec::ACOR_optimize", _wrap_ACOR_optimize},
+{"Datamungec::ACOR_options", _wrap_ACOR_options},
 {"Datamungec::delete_ACOR", _wrap_delete_ACOR},
 {"Datamungec::ArtificialBeeColonyOptions_population_size_set", _wrap_ArtificialBeeColonyOptions_population_size_set},
 {"Datamungec::ArtificialBeeColonyOptions_population_size_get", _wrap_ArtificialBeeColonyOptions_population_size_get},
@@ -172814,6 +186701,7 @@ static swig_command_info swig_commands[] = {
 {"Datamungec::delete_ArtificialBeeColonyOptions", _wrap_delete_ArtificialBeeColonyOptions},
 {"Datamungec::new_ArtificialBeeColony", _wrap_new_ArtificialBeeColony},
 {"Datamungec::ArtificialBeeColony_optimize", _wrap_ArtificialBeeColony_optimize},
+{"Datamungec::ArtificialBeeColony_options", _wrap_ArtificialBeeColony_options},
 {"Datamungec::delete_ArtificialBeeColony", _wrap_delete_ArtificialBeeColony},
 {"Datamungec::CrossEntropyMethodOptions_population_size_set", _wrap_CrossEntropyMethodOptions_population_size_set},
 {"Datamungec::CrossEntropyMethodOptions_population_size_get", _wrap_CrossEntropyMethodOptions_population_size_get},
@@ -172833,6 +186721,7 @@ static swig_command_info swig_commands[] = {
 {"Datamungec::delete_CrossEntropyMethodOptions", _wrap_delete_CrossEntropyMethodOptions},
 {"Datamungec::new_CrossEntropyMethod", _wrap_new_CrossEntropyMethod},
 {"Datamungec::CrossEntropyMethod_optimize", _wrap_CrossEntropyMethod_optimize},
+{"Datamungec::CrossEntropyMethod_options", _wrap_CrossEntropyMethod_options},
 {"Datamungec::delete_CrossEntropyMethod", _wrap_delete_CrossEntropyMethod},
 {"Datamungec::CuckooSearchOptions_population_size_set", _wrap_CuckooSearchOptions_population_size_set},
 {"Datamungec::CuckooSearchOptions_population_size_get", _wrap_CuckooSearchOptions_population_size_get},
@@ -172852,6 +186741,7 @@ static swig_command_info swig_commands[] = {
 {"Datamungec::delete_CuckooSearchOptions", _wrap_delete_CuckooSearchOptions},
 {"Datamungec::new_CuckooSearch", _wrap_new_CuckooSearch},
 {"Datamungec::CuckooSearch_optimize", _wrap_CuckooSearch_optimize},
+{"Datamungec::CuckooSearch_options", _wrap_CuckooSearch_options},
 {"Datamungec::delete_CuckooSearch", _wrap_delete_CuckooSearch},
 {"Datamungec::EstimationOfDistributionOptions_population_size_set", _wrap_EstimationOfDistributionOptions_population_size_set},
 {"Datamungec::EstimationOfDistributionOptions_population_size_get", _wrap_EstimationOfDistributionOptions_population_size_get},
@@ -172871,6 +186761,7 @@ static swig_command_info swig_commands[] = {
 {"Datamungec::delete_EstimationOfDistributionOptions", _wrap_delete_EstimationOfDistributionOptions},
 {"Datamungec::new_EstimationOfDistribution", _wrap_new_EstimationOfDistribution},
 {"Datamungec::EstimationOfDistribution_optimize", _wrap_EstimationOfDistribution_optimize},
+{"Datamungec::EstimationOfDistribution_options", _wrap_EstimationOfDistribution_options},
 {"Datamungec::delete_EstimationOfDistribution", _wrap_delete_EstimationOfDistribution},
 {"Datamungec::EvolutionStrategyOptions_mu_set", _wrap_EvolutionStrategyOptions_mu_set},
 {"Datamungec::EvolutionStrategyOptions_mu_get", _wrap_EvolutionStrategyOptions_mu_get},
@@ -172890,6 +186781,7 @@ static swig_command_info swig_commands[] = {
 {"Datamungec::delete_EvolutionStrategyOptions", _wrap_delete_EvolutionStrategyOptions},
 {"Datamungec::new_EvolutionStrategy", _wrap_new_EvolutionStrategy},
 {"Datamungec::EvolutionStrategy_optimize", _wrap_EvolutionStrategy_optimize},
+{"Datamungec::EvolutionStrategy_options", _wrap_EvolutionStrategy_options},
 {"Datamungec::delete_EvolutionStrategy", _wrap_delete_EvolutionStrategy},
 {"Datamungec::FireflyAlgorithmOptions_population_size_set", _wrap_FireflyAlgorithmOptions_population_size_set},
 {"Datamungec::FireflyAlgorithmOptions_population_size_get", _wrap_FireflyAlgorithmOptions_population_size_get},
@@ -172911,6 +186803,7 @@ static swig_command_info swig_commands[] = {
 {"Datamungec::delete_FireflyAlgorithmOptions", _wrap_delete_FireflyAlgorithmOptions},
 {"Datamungec::new_FireflyAlgorithm", _wrap_new_FireflyAlgorithm},
 {"Datamungec::FireflyAlgorithm_optimize", _wrap_FireflyAlgorithm_optimize},
+{"Datamungec::FireflyAlgorithm_options", _wrap_FireflyAlgorithm_options},
 {"Datamungec::delete_FireflyAlgorithm", _wrap_delete_FireflyAlgorithm},
 {"Datamungec::GreyWolfOptimizerOptions_population_size_set", _wrap_GreyWolfOptimizerOptions_population_size_set},
 {"Datamungec::GreyWolfOptimizerOptions_population_size_get", _wrap_GreyWolfOptimizerOptions_population_size_get},
@@ -172924,6 +186817,7 @@ static swig_command_info swig_commands[] = {
 {"Datamungec::delete_GreyWolfOptimizerOptions", _wrap_delete_GreyWolfOptimizerOptions},
 {"Datamungec::new_GreyWolfOptimizer", _wrap_new_GreyWolfOptimizer},
 {"Datamungec::GreyWolfOptimizer_optimize", _wrap_GreyWolfOptimizer_optimize},
+{"Datamungec::GreyWolfOptimizer_options", _wrap_GreyWolfOptimizer_options},
 {"Datamungec::delete_GreyWolfOptimizer", _wrap_delete_GreyWolfOptimizer},
 {"Datamungec::HarmonySearchOptions_population_size_set", _wrap_HarmonySearchOptions_population_size_set},
 {"Datamungec::HarmonySearchOptions_population_size_get", _wrap_HarmonySearchOptions_population_size_get},
@@ -172943,6 +186837,7 @@ static swig_command_info swig_commands[] = {
 {"Datamungec::delete_HarmonySearchOptions", _wrap_delete_HarmonySearchOptions},
 {"Datamungec::new_HarmonySearch", _wrap_new_HarmonySearch},
 {"Datamungec::HarmonySearch_optimize", _wrap_HarmonySearch_optimize},
+{"Datamungec::HarmonySearch_options", _wrap_HarmonySearch_options},
 {"Datamungec::delete_HarmonySearch", _wrap_delete_HarmonySearch},
 {"Datamungec::ParallelTemperingOptions_num_replicas_set", _wrap_ParallelTemperingOptions_num_replicas_set},
 {"Datamungec::ParallelTemperingOptions_num_replicas_get", _wrap_ParallelTemperingOptions_num_replicas_get},
@@ -172962,6 +186857,7 @@ static swig_command_info swig_commands[] = {
 {"Datamungec::delete_ParallelTemperingOptions", _wrap_delete_ParallelTemperingOptions},
 {"Datamungec::new_ParallelTempering", _wrap_new_ParallelTempering},
 {"Datamungec::ParallelTempering_optimize", _wrap_ParallelTempering_optimize},
+{"Datamungec::ParallelTempering_options", _wrap_ParallelTempering_options},
 {"Datamungec::delete_ParallelTempering", _wrap_delete_ParallelTempering},
 {"Datamungec::WhaleOptimizationOptions_population_size_set", _wrap_WhaleOptimizationOptions_population_size_set},
 {"Datamungec::WhaleOptimizationOptions_population_size_get", _wrap_WhaleOptimizationOptions_population_size_get},
@@ -172977,6 +186873,7 @@ static swig_command_info swig_commands[] = {
 {"Datamungec::delete_WhaleOptimizationOptions", _wrap_delete_WhaleOptimizationOptions},
 {"Datamungec::new_WhaleOptimization", _wrap_new_WhaleOptimization},
 {"Datamungec::WhaleOptimization_optimize", _wrap_WhaleOptimization_optimize},
+{"Datamungec::WhaleOptimization_options", _wrap_WhaleOptimization_options},
 {"Datamungec::delete_WhaleOptimization", _wrap_delete_WhaleOptimization},
 {"Datamungec::FISTAOptions_step_size_set", _wrap_FISTAOptions_step_size_set},
 {"Datamungec::FISTAOptions_step_size_get", _wrap_FISTAOptions_step_size_get},
@@ -172988,6 +186885,7 @@ static swig_command_info swig_commands[] = {
 {"Datamungec::delete_FISTAOptions", _wrap_delete_FISTAOptions},
 {"Datamungec::new_FISTA", _wrap_new_FISTA},
 {"Datamungec::FISTA_optimize", _wrap_FISTA_optimize},
+{"Datamungec::FISTA_options", _wrap_FISTA_options},
 {"Datamungec::delete_FISTA", _wrap_delete_FISTA},
 {"Datamungec::ProximalGradientOptions_step_size_set", _wrap_ProximalGradientOptions_step_size_set},
 {"Datamungec::ProximalGradientOptions_step_size_get", _wrap_ProximalGradientOptions_step_size_get},
@@ -172999,6 +186897,7 @@ static swig_command_info swig_commands[] = {
 {"Datamungec::delete_ProximalGradientOptions", _wrap_delete_ProximalGradientOptions},
 {"Datamungec::new_ProximalGradient", _wrap_new_ProximalGradient},
 {"Datamungec::ProximalGradient_optimize", _wrap_ProximalGradient_optimize},
+{"Datamungec::ProximalGradient_options", _wrap_ProximalGradient_options},
 {"Datamungec::delete_ProximalGradient", _wrap_delete_ProximalGradient},
 {"Datamungec::LevenbergMarquardtOptions_initial_damping_set", _wrap_LevenbergMarquardtOptions_initial_damping_set},
 {"Datamungec::LevenbergMarquardtOptions_initial_damping_get", _wrap_LevenbergMarquardtOptions_initial_damping_get},
@@ -173010,6 +186909,7 @@ static swig_command_info swig_commands[] = {
 {"Datamungec::delete_LevenbergMarquardtOptions", _wrap_delete_LevenbergMarquardtOptions},
 {"Datamungec::new_LevenbergMarquardt", _wrap_new_LevenbergMarquardt},
 {"Datamungec::LevenbergMarquardt_optimize", _wrap_LevenbergMarquardt_optimize},
+{"Datamungec::LevenbergMarquardt_options", _wrap_LevenbergMarquardt_options},
 {"Datamungec::delete_LevenbergMarquardt", _wrap_delete_LevenbergMarquardt},
 {"Datamungec::NewtonOptions_max_iterations_set", _wrap_NewtonOptions_max_iterations_set},
 {"Datamungec::NewtonOptions_max_iterations_get", _wrap_NewtonOptions_max_iterations_get},
@@ -173021,6 +186921,7 @@ static swig_command_info swig_commands[] = {
 {"Datamungec::delete_NewtonOptions", _wrap_delete_NewtonOptions},
 {"Datamungec::new_Newton", _wrap_new_Newton},
 {"Datamungec::Newton_optimize", _wrap_Newton_optimize},
+{"Datamungec::Newton_options", _wrap_Newton_options},
 {"Datamungec::delete_Newton", _wrap_delete_Newton},
 {"Datamungec::TrustRegionNewtonOptions_initial_radius_set", _wrap_TrustRegionNewtonOptions_initial_radius_set},
 {"Datamungec::TrustRegionNewtonOptions_initial_radius_get", _wrap_TrustRegionNewtonOptions_initial_radius_get},
@@ -173034,6 +186935,7 @@ static swig_command_info swig_commands[] = {
 {"Datamungec::delete_TrustRegionNewtonOptions", _wrap_delete_TrustRegionNewtonOptions},
 {"Datamungec::new_TrustRegionNewton", _wrap_new_TrustRegionNewton},
 {"Datamungec::TrustRegionNewton_optimize", _wrap_TrustRegionNewton_optimize},
+{"Datamungec::TrustRegionNewton_options", _wrap_TrustRegionNewton_options},
 {"Datamungec::delete_TrustRegionNewton", _wrap_delete_TrustRegionNewton},
 {"Datamungec::AugmentedLagrangianOptions_step_size_set", _wrap_AugmentedLagrangianOptions_step_size_set},
 {"Datamungec::AugmentedLagrangianOptions_step_size_get", _wrap_AugmentedLagrangianOptions_step_size_get},
@@ -173049,6 +186951,7 @@ static swig_command_info swig_commands[] = {
 {"Datamungec::delete_AugmentedLagrangianOptions", _wrap_delete_AugmentedLagrangianOptions},
 {"Datamungec::new_AugmentedLagrangian", _wrap_new_AugmentedLagrangian},
 {"Datamungec::AugmentedLagrangian_optimize", _wrap_AugmentedLagrangian_optimize},
+{"Datamungec::AugmentedLagrangian_options", _wrap_AugmentedLagrangian_options},
 {"Datamungec::delete_AugmentedLagrangian", _wrap_delete_AugmentedLagrangian},
 {"Datamungec::SQPOptions_step_size_set", _wrap_SQPOptions_step_size_set},
 {"Datamungec::SQPOptions_step_size_get", _wrap_SQPOptions_step_size_get},
@@ -173062,6 +186965,7 @@ static swig_command_info swig_commands[] = {
 {"Datamungec::delete_SQPOptions", _wrap_delete_SQPOptions},
 {"Datamungec::new_SQP", _wrap_new_SQP},
 {"Datamungec::SQP_optimize", _wrap_SQP_optimize},
+{"Datamungec::SQP_options", _wrap_SQP_options},
 {"Datamungec::delete_SQP", _wrap_delete_SQP},
 {"Datamungec::InteriorPointOptions_step_size_set", _wrap_InteriorPointOptions_step_size_set},
 {"Datamungec::InteriorPointOptions_step_size_get", _wrap_InteriorPointOptions_step_size_get},
@@ -173077,6 +186981,7 @@ static swig_command_info swig_commands[] = {
 {"Datamungec::delete_InteriorPointOptions", _wrap_delete_InteriorPointOptions},
 {"Datamungec::new_InteriorPoint", _wrap_new_InteriorPoint},
 {"Datamungec::InteriorPoint_optimize", _wrap_InteriorPoint_optimize},
+{"Datamungec::InteriorPoint_options", _wrap_InteriorPoint_options},
 {"Datamungec::delete_InteriorPoint", _wrap_delete_InteriorPoint},
 {"Datamungec::delete_BayesianSurrogate", _wrap_delete_BayesianSurrogate},
 {"Datamungec::BayesianSurrogate_fit", _wrap_BayesianSurrogate_fit},
@@ -173090,14 +186995,51 @@ static swig_command_info swig_commands[] = {
 {"Datamungec::BayesianOptimizationOptions_max_iterations_get", _wrap_BayesianOptimizationOptions_max_iterations_get},
 {"Datamungec::BayesianOptimizationOptions_seed_set", _wrap_BayesianOptimizationOptions_seed_set},
 {"Datamungec::BayesianOptimizationOptions_seed_get", _wrap_BayesianOptimizationOptions_seed_get},
+{"Datamungec::BayesianOptimizationOptions_candidates_set", _wrap_BayesianOptimizationOptions_candidates_set},
+{"Datamungec::BayesianOptimizationOptions_candidates_get", _wrap_BayesianOptimizationOptions_candidates_get},
+{"Datamungec::BayesianOptimizationOptions_refine_iterations_set", _wrap_BayesianOptimizationOptions_refine_iterations_set},
+{"Datamungec::BayesianOptimizationOptions_refine_iterations_get", _wrap_BayesianOptimizationOptions_refine_iterations_get},
 {"Datamungec::new_BayesianOptimizationOptions", _wrap_new_BayesianOptimizationOptions},
 {"Datamungec::delete_BayesianOptimizationOptions", _wrap_delete_BayesianOptimizationOptions},
+{"Datamungec::BayesianOptimizationResult_best_point_set", _wrap_BayesianOptimizationResult_best_point_set},
+{"Datamungec::BayesianOptimizationResult_best_point_get", _wrap_BayesianOptimizationResult_best_point_get},
+{"Datamungec::BayesianOptimizationResult_best_value_set", _wrap_BayesianOptimizationResult_best_value_set},
+{"Datamungec::BayesianOptimizationResult_best_value_get", _wrap_BayesianOptimizationResult_best_value_get},
+{"Datamungec::BayesianOptimizationResult_points_set", _wrap_BayesianOptimizationResult_points_set},
+{"Datamungec::BayesianOptimizationResult_points_get", _wrap_BayesianOptimizationResult_points_get},
+{"Datamungec::BayesianOptimizationResult_values_set", _wrap_BayesianOptimizationResult_values_set},
+{"Datamungec::BayesianOptimizationResult_values_get", _wrap_BayesianOptimizationResult_values_get},
+{"Datamungec::BayesianOptimizationResult_best_values_set", _wrap_BayesianOptimizationResult_best_values_set},
+{"Datamungec::BayesianOptimizationResult_best_values_get", _wrap_BayesianOptimizationResult_best_values_get},
+{"Datamungec::BayesianOptimizationResult_acquisition_values_set", _wrap_BayesianOptimizationResult_acquisition_values_set},
+{"Datamungec::BayesianOptimizationResult_acquisition_values_get", _wrap_BayesianOptimizationResult_acquisition_values_get},
+{"Datamungec::new_BayesianOptimizationResult", _wrap_new_BayesianOptimizationResult},
+{"Datamungec::delete_BayesianOptimizationResult", _wrap_delete_BayesianOptimizationResult},
 {"Datamungec::new_BayesianOptimization", _wrap_new_BayesianOptimization},
+{"Datamungec::BayesianOptimization_run", _wrap_BayesianOptimization_run},
 {"Datamungec::BayesianOptimization_optimize", _wrap_BayesianOptimization_optimize},
+{"Datamungec::BayesianOptimization_options", _wrap_BayesianOptimization_options},
 {"Datamungec::delete_BayesianOptimization", _wrap_delete_BayesianOptimization},
+{"Datamungec::expected_improvement", _wrap_expected_improvement},
+{"Datamungec::probability_of_improvement", _wrap_probability_of_improvement},
+{"Datamungec::SurrogatePrediction_mean_set", _wrap_SurrogatePrediction_mean_set},
+{"Datamungec::SurrogatePrediction_mean_get", _wrap_SurrogatePrediction_mean_get},
+{"Datamungec::SurrogatePrediction_sd_set", _wrap_SurrogatePrediction_sd_set},
+{"Datamungec::SurrogatePrediction_sd_get", _wrap_SurrogatePrediction_sd_get},
+{"Datamungec::new_SurrogatePrediction", _wrap_new_SurrogatePrediction},
+{"Datamungec::delete_SurrogatePrediction", _wrap_delete_SurrogatePrediction},
 {"Datamungec::new_RBFGaussianProcessSurrogate", _wrap_new_RBFGaussianProcessSurrogate},
 {"Datamungec::RBFGaussianProcessSurrogate_fit", _wrap_RBFGaussianProcessSurrogate_fit},
 {"Datamungec::RBFGaussianProcessSurrogate_acquisition", _wrap_RBFGaussianProcessSurrogate_acquisition},
+{"Datamungec::RBFGaussianProcessSurrogate_predict", _wrap_RBFGaussianProcessSurrogate_predict},
+{"Datamungec::RBFGaussianProcessSurrogate_log_marginal_likelihood", _wrap_RBFGaussianProcessSurrogate_log_marginal_likelihood},
+{"Datamungec::RBFGaussianProcessSurrogate_length_scale", _wrap_RBFGaussianProcessSurrogate_length_scale},
+{"Datamungec::RBFGaussianProcessSurrogate_noise", _wrap_RBFGaussianProcessSurrogate_noise},
+{"Datamungec::RBFGaussianProcessSurrogate_signal_variance", _wrap_RBFGaussianProcessSurrogate_signal_variance},
+{"Datamungec::RBFGaussianProcessSurrogate_prior_mean", _wrap_RBFGaussianProcessSurrogate_prior_mean},
+{"Datamungec::RBFGaussianProcessSurrogate_value_scale", _wrap_RBFGaussianProcessSurrogate_value_scale},
+{"Datamungec::RBFGaussianProcessSurrogate_points", _wrap_RBFGaussianProcessSurrogate_points},
+{"Datamungec::RBFGaussianProcessSurrogate_values", _wrap_RBFGaussianProcessSurrogate_values},
 {"Datamungec::delete_RBFGaussianProcessSurrogate", _wrap_delete_RBFGaussianProcessSurrogate},
 {"Datamungec::MAPOptions_max_iterations_set", _wrap_MAPOptions_max_iterations_set},
 {"Datamungec::MAPOptions_max_iterations_get", _wrap_MAPOptions_max_iterations_get},
@@ -173109,6 +187051,7 @@ static swig_command_info swig_commands[] = {
 {"Datamungec::delete_MAPOptions", _wrap_delete_MAPOptions},
 {"Datamungec::new_MAP", _wrap_new_MAP},
 {"Datamungec::MAP_optimize", _wrap_MAP_optimize},
+{"Datamungec::MAP_options", _wrap_MAP_options},
 {"Datamungec::delete_MAP", _wrap_delete_MAP},
 {"Datamungec::HMCOptions_num_samples_set", _wrap_HMCOptions_num_samples_set},
 {"Datamungec::HMCOptions_num_samples_get", _wrap_HMCOptions_num_samples_get},
@@ -173134,7 +187077,9 @@ static swig_command_info swig_commands[] = {
 {"Datamungec::delete_HMCResult", _wrap_delete_HMCResult},
 {"Datamungec::new_HMC", _wrap_new_HMC},
 {"Datamungec::HMC_sample", _wrap_HMC_sample},
+{"Datamungec::HMC_options", _wrap_HMC_options},
 {"Datamungec::delete_HMC", _wrap_delete_HMC},
+{"Datamungec::leapfrog_gaussian_acceptance", _wrap_leapfrog_gaussian_acceptance},
 {"Datamungec::NUTSOptions_num_samples_set", _wrap_NUTSOptions_num_samples_set},
 {"Datamungec::NUTSOptions_num_samples_get", _wrap_NUTSOptions_num_samples_get},
 {"Datamungec::NUTSOptions_num_warmup_set", _wrap_NUTSOptions_num_warmup_set},
@@ -173159,10 +187104,19 @@ static swig_command_info swig_commands[] = {
 {"Datamungec::NUTSResult_final_step_size_get", _wrap_NUTSResult_final_step_size_get},
 {"Datamungec::NUTSResult_num_divergences_set", _wrap_NUTSResult_num_divergences_set},
 {"Datamungec::NUTSResult_num_divergences_get", _wrap_NUTSResult_num_divergences_get},
+{"Datamungec::NUTSResult_divergent_set", _wrap_NUTSResult_divergent_set},
+{"Datamungec::NUTSResult_divergent_get", _wrap_NUTSResult_divergent_get},
+{"Datamungec::NUTSResult_tree_depth_set", _wrap_NUTSResult_tree_depth_set},
+{"Datamungec::NUTSResult_tree_depth_get", _wrap_NUTSResult_tree_depth_get},
+{"Datamungec::NUTSResult_n_leapfrog_set", _wrap_NUTSResult_n_leapfrog_set},
+{"Datamungec::NUTSResult_n_leapfrog_get", _wrap_NUTSResult_n_leapfrog_get},
+{"Datamungec::NUTSResult_energy_set", _wrap_NUTSResult_energy_set},
+{"Datamungec::NUTSResult_energy_get", _wrap_NUTSResult_energy_get},
 {"Datamungec::new_NUTSResult", _wrap_new_NUTSResult},
 {"Datamungec::delete_NUTSResult", _wrap_delete_NUTSResult},
 {"Datamungec::new_NUTS", _wrap_new_NUTS},
 {"Datamungec::NUTS_sample", _wrap_NUTS_sample},
+{"Datamungec::NUTS_options", _wrap_NUTS_options},
 {"Datamungec::delete_NUTS", _wrap_delete_NUTS},
 {"Datamungec::RWMOptions_num_samples_set", _wrap_RWMOptions_num_samples_set},
 {"Datamungec::RWMOptions_num_samples_get", _wrap_RWMOptions_num_samples_get},
@@ -173174,6 +187128,8 @@ static swig_command_info swig_commands[] = {
 {"Datamungec::RWMOptions_target_accept_rate_get", _wrap_RWMOptions_target_accept_rate_get},
 {"Datamungec::RWMOptions_seed_set", _wrap_RWMOptions_seed_set},
 {"Datamungec::RWMOptions_seed_get", _wrap_RWMOptions_seed_get},
+{"Datamungec::RWMOptions_adapt_covariance_set", _wrap_RWMOptions_adapt_covariance_set},
+{"Datamungec::RWMOptions_adapt_covariance_get", _wrap_RWMOptions_adapt_covariance_get},
 {"Datamungec::new_RWMOptions", _wrap_new_RWMOptions},
 {"Datamungec::delete_RWMOptions", _wrap_delete_RWMOptions},
 {"Datamungec::RWMResult_samples_set", _wrap_RWMResult_samples_set},
@@ -173182,10 +187138,13 @@ static swig_command_info swig_commands[] = {
 {"Datamungec::RWMResult_accept_rate_get", _wrap_RWMResult_accept_rate_get},
 {"Datamungec::RWMResult_final_step_size_set", _wrap_RWMResult_final_step_size_set},
 {"Datamungec::RWMResult_final_step_size_get", _wrap_RWMResult_final_step_size_get},
+{"Datamungec::RWMResult_proposal_covariance_set", _wrap_RWMResult_proposal_covariance_set},
+{"Datamungec::RWMResult_proposal_covariance_get", _wrap_RWMResult_proposal_covariance_get},
 {"Datamungec::new_RWMResult", _wrap_new_RWMResult},
 {"Datamungec::delete_RWMResult", _wrap_delete_RWMResult},
 {"Datamungec::new_RandomWalkMetropolis", _wrap_new_RandomWalkMetropolis},
 {"Datamungec::RandomWalkMetropolis_sample", _wrap_RandomWalkMetropolis_sample},
+{"Datamungec::RandomWalkMetropolis_options", _wrap_RandomWalkMetropolis_options},
 {"Datamungec::delete_RandomWalkMetropolis", _wrap_delete_RandomWalkMetropolis},
 {"Datamungec::GibbsOptions_num_samples_set", _wrap_GibbsOptions_num_samples_set},
 {"Datamungec::GibbsOptions_num_samples_get", _wrap_GibbsOptions_num_samples_get},
@@ -173209,6 +187168,7 @@ static swig_command_info swig_commands[] = {
 {"Datamungec::delete_GibbsResult", _wrap_delete_GibbsResult},
 {"Datamungec::new_GibbsSampler", _wrap_new_GibbsSampler},
 {"Datamungec::GibbsSampler_sample", _wrap_GibbsSampler_sample},
+{"Datamungec::GibbsSampler_options", _wrap_GibbsSampler_options},
 {"Datamungec::delete_GibbsSampler", _wrap_delete_GibbsSampler},
 {"Datamungec::ImportanceSamplingOptions_num_samples_set", _wrap_ImportanceSamplingOptions_num_samples_set},
 {"Datamungec::ImportanceSamplingOptions_num_samples_get", _wrap_ImportanceSamplingOptions_num_samples_get},
@@ -173228,7 +187188,9 @@ static swig_command_info swig_commands[] = {
 {"Datamungec::delete_ImportanceSamplingResult", _wrap_delete_ImportanceSamplingResult},
 {"Datamungec::new_ImportanceSampling", _wrap_new_ImportanceSampling},
 {"Datamungec::ImportanceSampling_sample", _wrap_ImportanceSampling_sample},
+{"Datamungec::ImportanceSampling_options", _wrap_ImportanceSampling_options},
 {"Datamungec::delete_ImportanceSampling", _wrap_delete_ImportanceSampling},
+{"Datamungec::gaussian_importance_efficiency", _wrap_gaussian_importance_efficiency},
 {"Datamungec::delete_RHS", _wrap_delete_RHS},
 {"Datamungec::RHS_evaluate", _wrap_RHS_evaluate},
 {"Datamungec::ODEOptions_method_set", _wrap_ODEOptions_method_set},
@@ -173257,6 +187219,7 @@ static swig_command_info swig_commands[] = {
 {"Datamungec::new_ODESolver", _wrap_new_ODESolver},
 {"Datamungec::ODESolver_solve", _wrap_ODESolver_solve},
 {"Datamungec::ODESolver_solve_builtin", _wrap_ODESolver_solve_builtin},
+{"Datamungec::ODESolver_options", _wrap_ODESolver_options},
 {"Datamungec::delete_ODESolver", _wrap_delete_ODESolver},
 {0,0}
 };
@@ -173735,8 +187698,10 @@ XS(SWIG_init) {
   SWIG_TypeClientData(SWIGTYPE_p_std__vectorT_std__string_t, (void*) "Datamunge::SVector");
   SWIG_TypeClientData(SWIGTYPE_p_datamunge__Callback, (void*) "Datamunge::Callback");
   SWIG_TypeClientData(SWIGTYPE_p_datamunge__DataFrame, (void*) "Datamunge::DataFrame");
+  SWIG_TypeClientData(SWIGTYPE_p_datamunge__CsvReader, (void*) "Datamunge::CsvReader");
   SWIG_TypeClientData(SWIGTYPE_p_datamunge__ShapeLayer, (void*) "Datamunge::ShapeLayer");
   SWIG_TypeClientData(SWIGTYPE_p_datamunge__GGPlot, (void*) "Datamunge::GGPlot");
+  SWIG_TypeClientData(SWIGTYPE_p_datamunge__Splom, (void*) "Datamunge::Splom");
   SWIG_TypeClientData(SWIGTYPE_p_datamunge__LM, (void*) "Datamunge::LM");
   SWIG_TypeClientData(SWIGTYPE_p_datamunge__LMM, (void*) "Datamunge::LMM");
   SWIG_TypeClientData(SWIGTYPE_p_datamunge__GLMM, (void*) "Datamunge::GLMM");
@@ -173778,131 +187743,142 @@ XS(SWIG_init) {
   SWIG_TypeClientData(SWIGTYPE_p_datamunge__HyperDual, (void*) "Datamunge::HyperDual");
   SWIG_TypeClientData(SWIGTYPE_p_datamunge__Tape, (void*) "Datamunge::Tape");
   SWIG_TypeClientData(SWIGTYPE_p_datamunge__Var, (void*) "Datamunge::Var");
-  SWIG_TypeClientData(SWIGTYPE_p_datamunge__plot__RGB, (void*) "Datamunge::RGB");
-  /*@SWIG:/nix/store/zj6l9n3qz78d3h89aag0nqmq6pnz029v-swig-4.6.0/share/swig/4.6.0/perl5/perltypemaps.swg,67,%set_constant@*/ do {
+  SWIG_TypeClientData(SWIGTYPE_p_datamunge__graphics__RGB, (void*) "Datamunge::RGB");
+  /*@SWIG:/nix/store/zi77nsmi9ag0y77w5vcqv4c0ap3qgm93-swig-4.6.0/share/swig/4.6.0/perl5/perltypemaps.swg,67,%set_constant@*/ do {
     SV *sv = get_sv((char*) SWIG_prefix "DataSeries_Kind_Scatter", TRUE | 0x2 | GV_ADDMULTI);
     sv_setsv(sv, SWIG_From_int  SWIG_PERL_CALL_ARGS_1(static_cast< int >(datamunge::graphics::DataSeries::Kind::Scatter)));
     SvREADONLY_on(sv);
   } while(0) /*@SWIG@*/;
-  /*@SWIG:/nix/store/zj6l9n3qz78d3h89aag0nqmq6pnz029v-swig-4.6.0/share/swig/4.6.0/perl5/perltypemaps.swg,67,%set_constant@*/ do {
+  /*@SWIG:/nix/store/zi77nsmi9ag0y77w5vcqv4c0ap3qgm93-swig-4.6.0/share/swig/4.6.0/perl5/perltypemaps.swg,67,%set_constant@*/ do {
     SV *sv = get_sv((char*) SWIG_prefix "DataSeries_Kind_Line", TRUE | 0x2 | GV_ADDMULTI);
     sv_setsv(sv, SWIG_From_int  SWIG_PERL_CALL_ARGS_1(static_cast< int >(datamunge::graphics::DataSeries::Kind::Line)));
     SvREADONLY_on(sv);
   } while(0) /*@SWIG@*/;
-  /*@SWIG:/nix/store/zj6l9n3qz78d3h89aag0nqmq6pnz029v-swig-4.6.0/share/swig/4.6.0/perl5/perltypemaps.swg,67,%set_constant@*/ do {
+  /*@SWIG:/nix/store/zi77nsmi9ag0y77w5vcqv4c0ap3qgm93-swig-4.6.0/share/swig/4.6.0/perl5/perltypemaps.swg,67,%set_constant@*/ do {
     SV *sv = get_sv((char*) SWIG_prefix "DataSeries_Kind_Bar", TRUE | 0x2 | GV_ADDMULTI);
     sv_setsv(sv, SWIG_From_int  SWIG_PERL_CALL_ARGS_1(static_cast< int >(datamunge::graphics::DataSeries::Kind::Bar)));
     SvREADONLY_on(sv);
   } while(0) /*@SWIG@*/;
-  /*@SWIG:/nix/store/zj6l9n3qz78d3h89aag0nqmq6pnz029v-swig-4.6.0/share/swig/4.6.0/perl5/perltypemaps.swg,67,%set_constant@*/ do {
+  /*@SWIG:/nix/store/zi77nsmi9ag0y77w5vcqv4c0ap3qgm93-swig-4.6.0/share/swig/4.6.0/perl5/perltypemaps.swg,67,%set_constant@*/ do {
     SV *sv = get_sv((char*) SWIG_prefix "DataSeries_Kind_Box", TRUE | 0x2 | GV_ADDMULTI);
     sv_setsv(sv, SWIG_From_int  SWIG_PERL_CALL_ARGS_1(static_cast< int >(datamunge::graphics::DataSeries::Kind::Box)));
     SvREADONLY_on(sv);
   } while(0) /*@SWIG@*/;
-  /*@SWIG:/nix/store/zj6l9n3qz78d3h89aag0nqmq6pnz029v-swig-4.6.0/share/swig/4.6.0/perl5/perltypemaps.swg,67,%set_constant@*/ do {
+  /*@SWIG:/nix/store/zi77nsmi9ag0y77w5vcqv4c0ap3qgm93-swig-4.6.0/share/swig/4.6.0/perl5/perltypemaps.swg,67,%set_constant@*/ do {
     SV *sv = get_sv((char*) SWIG_prefix "DataSeries_Kind_Polygon", TRUE | 0x2 | GV_ADDMULTI);
     sv_setsv(sv, SWIG_From_int  SWIG_PERL_CALL_ARGS_1(static_cast< int >(datamunge::graphics::DataSeries::Kind::Polygon)));
     SvREADONLY_on(sv);
   } while(0) /*@SWIG@*/;
-  /*@SWIG:/nix/store/zj6l9n3qz78d3h89aag0nqmq6pnz029v-swig-4.6.0/share/swig/4.6.0/perl5/perltypemaps.swg,67,%set_constant@*/ do {
+  /*@SWIG:/nix/store/zi77nsmi9ag0y77w5vcqv4c0ap3qgm93-swig-4.6.0/share/swig/4.6.0/perl5/perltypemaps.swg,67,%set_constant@*/ do {
     SV *sv = get_sv((char*) SWIG_prefix "DataSeries_Kind_Text", TRUE | 0x2 | GV_ADDMULTI);
     sv_setsv(sv, SWIG_From_int  SWIG_PERL_CALL_ARGS_1(static_cast< int >(datamunge::graphics::DataSeries::Kind::Text)));
     SvREADONLY_on(sv);
   } while(0) /*@SWIG@*/;
-  /*@SWIG:/nix/store/zj6l9n3qz78d3h89aag0nqmq6pnz029v-swig-4.6.0/share/swig/4.6.0/perl5/perltypemaps.swg,67,%set_constant@*/ do {
+  /*@SWIG:/nix/store/zi77nsmi9ag0y77w5vcqv4c0ap3qgm93-swig-4.6.0/share/swig/4.6.0/perl5/perltypemaps.swg,67,%set_constant@*/ do {
     SV *sv = get_sv((char*) SWIG_prefix "DataSeries_Kind_Segment", TRUE | 0x2 | GV_ADDMULTI);
     sv_setsv(sv, SWIG_From_int  SWIG_PERL_CALL_ARGS_1(static_cast< int >(datamunge::graphics::DataSeries::Kind::Segment)));
     SvREADONLY_on(sv);
   } while(0) /*@SWIG@*/;
-  SWIG_TypeClientData(SWIGTYPE_p_datamunge__plot__DataSeries, (void*) "Datamunge::DataSeries");
-  SWIG_TypeClientData(SWIGTYPE_p_datamunge__plot__ABLine, (void*) "Datamunge::ABLine");
-  SWIG_TypeClientData(SWIGTYPE_p_datamunge__plot__LegendEntry, (void*) "Datamunge::LegendEntry");
-  SWIG_TypeClientData(SWIGTYPE_p_datamunge__plot__Plot, (void*) "Datamunge::Plot");
-  SWIG_TypeClientData(SWIGTYPE_p_datamunge__plot__RPlot, (void*) "Datamunge::RPlot");
-  SWIG_TypeClientData(SWIGTYPE_p_datamunge__plot__RLayout, (void*) "Datamunge::RLayout");
+  SWIG_TypeClientData(SWIGTYPE_p_datamunge__graphics__DataSeries, (void*) "Datamunge::DataSeries");
+  SWIG_TypeClientData(SWIGTYPE_p_datamunge__graphics__ABLine, (void*) "Datamunge::ABLine");
+  SWIG_TypeClientData(SWIGTYPE_p_datamunge__graphics__LegendEntry, (void*) "Datamunge::LegendEntry");
+  SWIG_TypeClientData(SWIGTYPE_p_datamunge__graphics__Plot, (void*) "Datamunge::Plot");
+  SWIG_TypeClientData(SWIGTYPE_p_datamunge__graphics__RPlot, (void*) "Datamunge::RPlot");
+  /*@SWIG:/nix/store/zi77nsmi9ag0y77w5vcqv4c0ap3qgm93-swig-4.6.0/share/swig/4.6.0/perl5/perltypemaps.swg,67,%set_constant@*/ do {
+    SV *sv = get_sv((char*) SWIG_prefix "RLayout_title_band_px", TRUE | 0x2 | GV_ADDMULTI);
+    sv_setsv(sv, SWIG_From_size_t  SWIG_PERL_CALL_ARGS_1(static_cast< size_t >(datamunge::graphics::RLayout::title_band_px)));
+    SvREADONLY_on(sv);
+  } while(0) /*@SWIG@*/;
+  /*@SWIG:/nix/store/zi77nsmi9ag0y77w5vcqv4c0ap3qgm93-swig-4.6.0/share/swig/4.6.0/perl5/perltypemaps.swg,67,%set_constant@*/ do {
+    SV *sv = get_sv((char*) SWIG_prefix "RLayout_min_panel_px", TRUE | 0x2 | GV_ADDMULTI);
+    sv_setsv(sv, SWIG_From_size_t  SWIG_PERL_CALL_ARGS_1(static_cast< size_t >(datamunge::graphics::RLayout::min_panel_px)));
+    SvREADONLY_on(sv);
+  } while(0) /*@SWIG@*/;
+  SWIG_TypeClientData(SWIGTYPE_p_datamunge__graphics__RLayout, (void*) "Datamunge::RLayout");
   SWIG_TypeClientData(SWIGTYPE_p_datamunge__BSplineRegression, (void*) "Datamunge::BSplineRegression");
   SWIG_TypeClientData(SWIGTYPE_p_datamunge__PSplineRegression, (void*) "Datamunge::PSplineRegression");
   SWIG_TypeClientData(SWIGTYPE_p_datamunge__stats__ARIMAOptions, (void*) "Datamunge::ARIMAOptions");
   SWIG_TypeClientData(SWIGTYPE_p_datamunge__stats__ARIMA, (void*) "Datamunge::ARIMA");
-  /*@SWIG:/nix/store/zj6l9n3qz78d3h89aag0nqmq6pnz029v-swig-4.6.0/share/swig/4.6.0/perl5/perltypemaps.swg,67,%set_constant@*/ do {
+  /*@SWIG:/nix/store/zi77nsmi9ag0y77w5vcqv4c0ap3qgm93-swig-4.6.0/share/swig/4.6.0/perl5/perltypemaps.swg,67,%set_constant@*/ do {
     SV *sv = get_sv((char*) SWIG_prefix "TrendType_None", TRUE | 0x2 | GV_ADDMULTI);
     sv_setsv(sv, SWIG_From_int  SWIG_PERL_CALL_ARGS_1(static_cast< int >(datamunge::stats::TrendType::None)));
     SvREADONLY_on(sv);
   } while(0) /*@SWIG@*/;
-  /*@SWIG:/nix/store/zj6l9n3qz78d3h89aag0nqmq6pnz029v-swig-4.6.0/share/swig/4.6.0/perl5/perltypemaps.swg,67,%set_constant@*/ do {
+  /*@SWIG:/nix/store/zi77nsmi9ag0y77w5vcqv4c0ap3qgm93-swig-4.6.0/share/swig/4.6.0/perl5/perltypemaps.swg,67,%set_constant@*/ do {
     SV *sv = get_sv((char*) SWIG_prefix "TrendType_Additive", TRUE | 0x2 | GV_ADDMULTI);
     sv_setsv(sv, SWIG_From_int  SWIG_PERL_CALL_ARGS_1(static_cast< int >(datamunge::stats::TrendType::Additive)));
     SvREADONLY_on(sv);
   } while(0) /*@SWIG@*/;
-  /*@SWIG:/nix/store/zj6l9n3qz78d3h89aag0nqmq6pnz029v-swig-4.6.0/share/swig/4.6.0/perl5/perltypemaps.swg,67,%set_constant@*/ do {
+  /*@SWIG:/nix/store/zi77nsmi9ag0y77w5vcqv4c0ap3qgm93-swig-4.6.0/share/swig/4.6.0/perl5/perltypemaps.swg,67,%set_constant@*/ do {
     SV *sv = get_sv((char*) SWIG_prefix "TrendType_AdditiveDamped", TRUE | 0x2 | GV_ADDMULTI);
     sv_setsv(sv, SWIG_From_int  SWIG_PERL_CALL_ARGS_1(static_cast< int >(datamunge::stats::TrendType::AdditiveDamped)));
     SvREADONLY_on(sv);
   } while(0) /*@SWIG@*/;
-  /*@SWIG:/nix/store/zj6l9n3qz78d3h89aag0nqmq6pnz029v-swig-4.6.0/share/swig/4.6.0/perl5/perltypemaps.swg,67,%set_constant@*/ do {
+  /*@SWIG:/nix/store/zi77nsmi9ag0y77w5vcqv4c0ap3qgm93-swig-4.6.0/share/swig/4.6.0/perl5/perltypemaps.swg,67,%set_constant@*/ do {
     SV *sv = get_sv((char*) SWIG_prefix "SeasonalType_None", TRUE | 0x2 | GV_ADDMULTI);
     sv_setsv(sv, SWIG_From_int  SWIG_PERL_CALL_ARGS_1(static_cast< int >(datamunge::stats::SeasonalType::None)));
     SvREADONLY_on(sv);
   } while(0) /*@SWIG@*/;
-  /*@SWIG:/nix/store/zj6l9n3qz78d3h89aag0nqmq6pnz029v-swig-4.6.0/share/swig/4.6.0/perl5/perltypemaps.swg,67,%set_constant@*/ do {
+  /*@SWIG:/nix/store/zi77nsmi9ag0y77w5vcqv4c0ap3qgm93-swig-4.6.0/share/swig/4.6.0/perl5/perltypemaps.swg,67,%set_constant@*/ do {
     SV *sv = get_sv((char*) SWIG_prefix "SeasonalType_Additive", TRUE | 0x2 | GV_ADDMULTI);
     sv_setsv(sv, SWIG_From_int  SWIG_PERL_CALL_ARGS_1(static_cast< int >(datamunge::stats::SeasonalType::Additive)));
     SvREADONLY_on(sv);
   } while(0) /*@SWIG@*/;
-  /*@SWIG:/nix/store/zj6l9n3qz78d3h89aag0nqmq6pnz029v-swig-4.6.0/share/swig/4.6.0/perl5/perltypemaps.swg,67,%set_constant@*/ do {
+  /*@SWIG:/nix/store/zi77nsmi9ag0y77w5vcqv4c0ap3qgm93-swig-4.6.0/share/swig/4.6.0/perl5/perltypemaps.swg,67,%set_constant@*/ do {
     SV *sv = get_sv((char*) SWIG_prefix "SeasonalType_Multiplicative", TRUE | 0x2 | GV_ADDMULTI);
     sv_setsv(sv, SWIG_From_int  SWIG_PERL_CALL_ARGS_1(static_cast< int >(datamunge::stats::SeasonalType::Multiplicative)));
     SvREADONLY_on(sv);
   } while(0) /*@SWIG@*/;
   SWIG_TypeClientData(SWIGTYPE_p_datamunge__stats__ExponentialSmoothingOptions, (void*) "Datamunge::ExponentialSmoothingOptions");
   SWIG_TypeClientData(SWIGTYPE_p_datamunge__stats__ExponentialSmoothing, (void*) "Datamunge::ExponentialSmoothing");
-  /*@SWIG:/nix/store/zj6l9n3qz78d3h89aag0nqmq6pnz029v-swig-4.6.0/share/swig/4.6.0/perl5/perltypemaps.swg,67,%set_constant@*/ do {
+  /*@SWIG:/nix/store/zi77nsmi9ag0y77w5vcqv4c0ap3qgm93-swig-4.6.0/share/swig/4.6.0/perl5/perltypemaps.swg,67,%set_constant@*/ do {
     SV *sv = get_sv((char*) SWIG_prefix "Alternative_TwoSided", TRUE | 0x2 | GV_ADDMULTI);
     sv_setsv(sv, SWIG_From_int  SWIG_PERL_CALL_ARGS_1(static_cast< int >(datamunge::stats::Alternative::TwoSided)));
     SvREADONLY_on(sv);
   } while(0) /*@SWIG@*/;
-  /*@SWIG:/nix/store/zj6l9n3qz78d3h89aag0nqmq6pnz029v-swig-4.6.0/share/swig/4.6.0/perl5/perltypemaps.swg,67,%set_constant@*/ do {
+  /*@SWIG:/nix/store/zi77nsmi9ag0y77w5vcqv4c0ap3qgm93-swig-4.6.0/share/swig/4.6.0/perl5/perltypemaps.swg,67,%set_constant@*/ do {
     SV *sv = get_sv((char*) SWIG_prefix "Alternative_Less", TRUE | 0x2 | GV_ADDMULTI);
     sv_setsv(sv, SWIG_From_int  SWIG_PERL_CALL_ARGS_1(static_cast< int >(datamunge::stats::Alternative::Less)));
     SvREADONLY_on(sv);
   } while(0) /*@SWIG@*/;
-  /*@SWIG:/nix/store/zj6l9n3qz78d3h89aag0nqmq6pnz029v-swig-4.6.0/share/swig/4.6.0/perl5/perltypemaps.swg,67,%set_constant@*/ do {
+  /*@SWIG:/nix/store/zi77nsmi9ag0y77w5vcqv4c0ap3qgm93-swig-4.6.0/share/swig/4.6.0/perl5/perltypemaps.swg,67,%set_constant@*/ do {
     SV *sv = get_sv((char*) SWIG_prefix "Alternative_Greater", TRUE | 0x2 | GV_ADDMULTI);
     sv_setsv(sv, SWIG_From_int  SWIG_PERL_CALL_ARGS_1(static_cast< int >(datamunge::stats::Alternative::Greater)));
     SvREADONLY_on(sv);
   } while(0) /*@SWIG@*/;
   SWIG_TypeClientData(SWIGTYPE_p_datamunge__stats__HypothesisTestResult, (void*) "Datamunge::HypothesisTestResult");
-  /*@SWIG:/nix/store/zj6l9n3qz78d3h89aag0nqmq6pnz029v-swig-4.6.0/share/swig/4.6.0/perl5/perltypemaps.swg,67,%set_constant@*/ do {
+  SWIG_TypeClientData(SWIGTYPE_p_datamunge__stats__KendallTau, (void*) "Datamunge::KendallTau");
+  /*@SWIG:/nix/store/zi77nsmi9ag0y77w5vcqv4c0ap3qgm93-swig-4.6.0/share/swig/4.6.0/perl5/perltypemaps.swg,67,%set_constant@*/ do {
     SV *sv = get_sv((char*) SWIG_prefix "PAdjustMethod_Bonferroni", TRUE | 0x2 | GV_ADDMULTI);
     sv_setsv(sv, SWIG_From_int  SWIG_PERL_CALL_ARGS_1(static_cast< int >(datamunge::stats::PAdjustMethod::Bonferroni)));
     SvREADONLY_on(sv);
   } while(0) /*@SWIG@*/;
-  /*@SWIG:/nix/store/zj6l9n3qz78d3h89aag0nqmq6pnz029v-swig-4.6.0/share/swig/4.6.0/perl5/perltypemaps.swg,67,%set_constant@*/ do {
+  /*@SWIG:/nix/store/zi77nsmi9ag0y77w5vcqv4c0ap3qgm93-swig-4.6.0/share/swig/4.6.0/perl5/perltypemaps.swg,67,%set_constant@*/ do {
     SV *sv = get_sv((char*) SWIG_prefix "PAdjustMethod_Holm", TRUE | 0x2 | GV_ADDMULTI);
     sv_setsv(sv, SWIG_From_int  SWIG_PERL_CALL_ARGS_1(static_cast< int >(datamunge::stats::PAdjustMethod::Holm)));
     SvREADONLY_on(sv);
   } while(0) /*@SWIG@*/;
-  /*@SWIG:/nix/store/zj6l9n3qz78d3h89aag0nqmq6pnz029v-swig-4.6.0/share/swig/4.6.0/perl5/perltypemaps.swg,67,%set_constant@*/ do {
+  /*@SWIG:/nix/store/zi77nsmi9ag0y77w5vcqv4c0ap3qgm93-swig-4.6.0/share/swig/4.6.0/perl5/perltypemaps.swg,67,%set_constant@*/ do {
     SV *sv = get_sv((char*) SWIG_prefix "PAdjustMethod_Hochberg", TRUE | 0x2 | GV_ADDMULTI);
     sv_setsv(sv, SWIG_From_int  SWIG_PERL_CALL_ARGS_1(static_cast< int >(datamunge::stats::PAdjustMethod::Hochberg)));
     SvREADONLY_on(sv);
   } while(0) /*@SWIG@*/;
-  /*@SWIG:/nix/store/zj6l9n3qz78d3h89aag0nqmq6pnz029v-swig-4.6.0/share/swig/4.6.0/perl5/perltypemaps.swg,67,%set_constant@*/ do {
+  /*@SWIG:/nix/store/zi77nsmi9ag0y77w5vcqv4c0ap3qgm93-swig-4.6.0/share/swig/4.6.0/perl5/perltypemaps.swg,67,%set_constant@*/ do {
     SV *sv = get_sv((char*) SWIG_prefix "PAdjustMethod_Hommel", TRUE | 0x2 | GV_ADDMULTI);
     sv_setsv(sv, SWIG_From_int  SWIG_PERL_CALL_ARGS_1(static_cast< int >(datamunge::stats::PAdjustMethod::Hommel)));
     SvREADONLY_on(sv);
   } while(0) /*@SWIG@*/;
-  /*@SWIG:/nix/store/zj6l9n3qz78d3h89aag0nqmq6pnz029v-swig-4.6.0/share/swig/4.6.0/perl5/perltypemaps.swg,67,%set_constant@*/ do {
+  /*@SWIG:/nix/store/zi77nsmi9ag0y77w5vcqv4c0ap3qgm93-swig-4.6.0/share/swig/4.6.0/perl5/perltypemaps.swg,67,%set_constant@*/ do {
     SV *sv = get_sv((char*) SWIG_prefix "PAdjustMethod_BH", TRUE | 0x2 | GV_ADDMULTI);
     sv_setsv(sv, SWIG_From_int  SWIG_PERL_CALL_ARGS_1(static_cast< int >(datamunge::stats::PAdjustMethod::BH)));
     SvREADONLY_on(sv);
   } while(0) /*@SWIG@*/;
-  /*@SWIG:/nix/store/zj6l9n3qz78d3h89aag0nqmq6pnz029v-swig-4.6.0/share/swig/4.6.0/perl5/perltypemaps.swg,67,%set_constant@*/ do {
+  /*@SWIG:/nix/store/zi77nsmi9ag0y77w5vcqv4c0ap3qgm93-swig-4.6.0/share/swig/4.6.0/perl5/perltypemaps.swg,67,%set_constant@*/ do {
     SV *sv = get_sv((char*) SWIG_prefix "PAdjustMethod_BY", TRUE | 0x2 | GV_ADDMULTI);
     sv_setsv(sv, SWIG_From_int  SWIG_PERL_CALL_ARGS_1(static_cast< int >(datamunge::stats::PAdjustMethod::BY)));
     SvREADONLY_on(sv);
   } while(0) /*@SWIG@*/;
-  /*@SWIG:/nix/store/zj6l9n3qz78d3h89aag0nqmq6pnz029v-swig-4.6.0/share/swig/4.6.0/perl5/perltypemaps.swg,67,%set_constant@*/ do {
+  /*@SWIG:/nix/store/zi77nsmi9ag0y77w5vcqv4c0ap3qgm93-swig-4.6.0/share/swig/4.6.0/perl5/perltypemaps.swg,67,%set_constant@*/ do {
     SV *sv = get_sv((char*) SWIG_prefix "PAdjustMethod_None", TRUE | 0x2 | GV_ADDMULTI);
     sv_setsv(sv, SWIG_From_int  SWIG_PERL_CALL_ARGS_1(static_cast< int >(datamunge::stats::PAdjustMethod::None)));
     SvREADONLY_on(sv);
@@ -173998,7 +187974,9 @@ XS(SWIG_init) {
   SWIG_TypeClientData(SWIGTYPE_p_datamunge__optim__InteriorPoint, (void*) "Datamunge::InteriorPoint");
   SWIG_TypeClientData(SWIGTYPE_p_datamunge__optim__BayesianSurrogate, (void*) "Datamunge::BayesianSurrogate");
   SWIG_TypeClientData(SWIGTYPE_p_datamunge__optim__BayesianOptimizationOptions, (void*) "Datamunge::BayesianOptimizationOptions");
+  SWIG_TypeClientData(SWIGTYPE_p_datamunge__optim__BayesianOptimizationResult, (void*) "Datamunge::BayesianOptimizationResult");
   SWIG_TypeClientData(SWIGTYPE_p_datamunge__optim__BayesianOptimization, (void*) "Datamunge::BayesianOptimization");
+  SWIG_TypeClientData(SWIGTYPE_p_datamunge__optim__SurrogatePrediction, (void*) "Datamunge::SurrogatePrediction");
   SWIG_TypeClientData(SWIGTYPE_p_datamunge__optim__RBFGaussianProcessSurrogate, (void*) "Datamunge::RBFGaussianProcessSurrogate");
   SWIG_TypeClientData(SWIGTYPE_p_datamunge__bayes__MAPOptions, (void*) "Datamunge::MAPOptions");
   SWIG_TypeClientData(SWIGTYPE_p_datamunge__bayes__MAP, (void*) "Datamunge::MAP");
@@ -174018,32 +187996,32 @@ XS(SWIG_init) {
   SWIG_TypeClientData(SWIGTYPE_p_datamunge__bayes__ImportanceSamplingResult, (void*) "Datamunge::ImportanceSamplingResult");
   SWIG_TypeClientData(SWIGTYPE_p_datamunge__bayes__ImportanceSampling, (void*) "Datamunge::ImportanceSampling");
   SWIG_TypeClientData(SWIGTYPE_p_datamunge__ode__RHS, (void*) "Datamunge::RHS");
-  /*@SWIG:/nix/store/zj6l9n3qz78d3h89aag0nqmq6pnz029v-swig-4.6.0/share/swig/4.6.0/perl5/perltypemaps.swg,67,%set_constant@*/ do {
+  /*@SWIG:/nix/store/zi77nsmi9ag0y77w5vcqv4c0ap3qgm93-swig-4.6.0/share/swig/4.6.0/perl5/perltypemaps.swg,67,%set_constant@*/ do {
     SV *sv = get_sv((char*) SWIG_prefix "StepMethod_Euler", TRUE | 0x2 | GV_ADDMULTI);
     sv_setsv(sv, SWIG_From_int  SWIG_PERL_CALL_ARGS_1(static_cast< int >(datamunge::ode::StepMethod::Euler)));
     SvREADONLY_on(sv);
   } while(0) /*@SWIG@*/;
-  /*@SWIG:/nix/store/zj6l9n3qz78d3h89aag0nqmq6pnz029v-swig-4.6.0/share/swig/4.6.0/perl5/perltypemaps.swg,67,%set_constant@*/ do {
+  /*@SWIG:/nix/store/zi77nsmi9ag0y77w5vcqv4c0ap3qgm93-swig-4.6.0/share/swig/4.6.0/perl5/perltypemaps.swg,67,%set_constant@*/ do {
     SV *sv = get_sv((char*) SWIG_prefix "StepMethod_Midpoint", TRUE | 0x2 | GV_ADDMULTI);
     sv_setsv(sv, SWIG_From_int  SWIG_PERL_CALL_ARGS_1(static_cast< int >(datamunge::ode::StepMethod::Midpoint)));
     SvREADONLY_on(sv);
   } while(0) /*@SWIG@*/;
-  /*@SWIG:/nix/store/zj6l9n3qz78d3h89aag0nqmq6pnz029v-swig-4.6.0/share/swig/4.6.0/perl5/perltypemaps.swg,67,%set_constant@*/ do {
+  /*@SWIG:/nix/store/zi77nsmi9ag0y77w5vcqv4c0ap3qgm93-swig-4.6.0/share/swig/4.6.0/perl5/perltypemaps.swg,67,%set_constant@*/ do {
     SV *sv = get_sv((char*) SWIG_prefix "StepMethod_RK4", TRUE | 0x2 | GV_ADDMULTI);
     sv_setsv(sv, SWIG_From_int  SWIG_PERL_CALL_ARGS_1(static_cast< int >(datamunge::ode::StepMethod::RK4)));
     SvREADONLY_on(sv);
   } while(0) /*@SWIG@*/;
-  /*@SWIG:/nix/store/zj6l9n3qz78d3h89aag0nqmq6pnz029v-swig-4.6.0/share/swig/4.6.0/perl5/perltypemaps.swg,67,%set_constant@*/ do {
+  /*@SWIG:/nix/store/zi77nsmi9ag0y77w5vcqv4c0ap3qgm93-swig-4.6.0/share/swig/4.6.0/perl5/perltypemaps.swg,67,%set_constant@*/ do {
     SV *sv = get_sv((char*) SWIG_prefix "StepMethod_RK45", TRUE | 0x2 | GV_ADDMULTI);
     sv_setsv(sv, SWIG_From_int  SWIG_PERL_CALL_ARGS_1(static_cast< int >(datamunge::ode::StepMethod::RK45)));
     SvREADONLY_on(sv);
   } while(0) /*@SWIG@*/;
-  /*@SWIG:/nix/store/zj6l9n3qz78d3h89aag0nqmq6pnz029v-swig-4.6.0/share/swig/4.6.0/perl5/perltypemaps.swg,67,%set_constant@*/ do {
+  /*@SWIG:/nix/store/zi77nsmi9ag0y77w5vcqv4c0ap3qgm93-swig-4.6.0/share/swig/4.6.0/perl5/perltypemaps.swg,67,%set_constant@*/ do {
     SV *sv = get_sv((char*) SWIG_prefix "StepMethod_AdamsBashforth", TRUE | 0x2 | GV_ADDMULTI);
     sv_setsv(sv, SWIG_From_int  SWIG_PERL_CALL_ARGS_1(static_cast< int >(datamunge::ode::StepMethod::AdamsBashforth)));
     SvREADONLY_on(sv);
   } while(0) /*@SWIG@*/;
-  /*@SWIG:/nix/store/zj6l9n3qz78d3h89aag0nqmq6pnz029v-swig-4.6.0/share/swig/4.6.0/perl5/perltypemaps.swg,67,%set_constant@*/ do {
+  /*@SWIG:/nix/store/zi77nsmi9ag0y77w5vcqv4c0ap3qgm93-swig-4.6.0/share/swig/4.6.0/perl5/perltypemaps.swg,67,%set_constant@*/ do {
     SV *sv = get_sv((char*) SWIG_prefix "StepMethod_AdamsMoulton", TRUE | 0x2 | GV_ADDMULTI);
     sv_setsv(sv, SWIG_From_int  SWIG_PERL_CALL_ARGS_1(static_cast< int >(datamunge::ode::StepMethod::AdamsMoulton)));
     SvREADONLY_on(sv);

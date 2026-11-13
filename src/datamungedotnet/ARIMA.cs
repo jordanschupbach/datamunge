@@ -64,69 +64,102 @@ public class ARIMA : global::System.IDisposable {
     }
   }
 
+  /// <summary>Fit the model to a series.</summary>
+  /// <param name="y"> The observed series, in time order.</param> 
+  /// <param name="options"> Model orders and optimizer settings.</param> 
+  /// <exception cref="std::invalid_argument"> If a seasonal order is set while seasonal_period is zero,
+  ///              or if the series is too short for the requested differencing or AR order.</exception>
   public ARIMA(DVector y, ARIMAOptions options) : this(datamungePINVOKE.new_ARIMA__SWIG_0(DVector.getCPtr(y), ARIMAOptions.getCPtr(options)), true) {
     if (datamungePINVOKE.SWIGPendingException.Pending) throw datamungePINVOKE.SWIGPendingException.Retrieve();
   }
 
+  /// <summary>Fit the model to a series.</summary>
+  /// <param name="y"> The observed series, in time order.</param> 
+  /// <exception cref="std::invalid_argument"> If a seasonal order is set while seasonal_period is zero,
+  ///              or if the series is too short for the requested differencing or AR order.</exception>
   public ARIMA(DVector y) : this(datamungePINVOKE.new_ARIMA__SWIG_1(DVector.getCPtr(y)), true) {
     if (datamungePINVOKE.SWIGPendingException.Pending) throw datamungePINVOKE.SWIGPendingException.Retrieve();
   }
 
+  /// <summary>The options the model was fit with.</summary>
+  /// <returns>The stored ARIMAOptions.</returns>
   public ARIMAOptions options() {
     ARIMAOptions ret = new ARIMAOptions(datamungePINVOKE.ARIMA_options(swigCPtr), false);
     return ret;
   }
 
+  /// <summary>Fitted non-seasonal AR coefficients :math:`\phi_1,\dots,\phi_p`.</summary>
+  /// <returns>A vector of length p; the AR polynomial is -_i_i B^i:math:`.`</returns>
   public DVector ar_coefficients() {
     DVector ret = new DVector(datamungePINVOKE.ARIMA_ar_coefficients(swigCPtr), false);
     return ret;
   }
 
+  /// <summary>Fitted non-seasonal MA coefficients :math:`\theta_1,\dots,\theta_q`.</summary>
+  /// <returns>A vector of length q; the MA polynomial is +_j_j B^j:math:`.`</returns>
   public DVector ma_coefficients() {
     DVector ret = new DVector(datamungePINVOKE.ARIMA_ma_coefficients(swigCPtr), false);
     return ret;
   }
 
+  /// <summary>Fitted seasonal AR coefficients :math:`\Phi_1,\dots,\Phi_P`.</summary>
+  /// <returns>A vector of length P; the polynomial is -_i_i B^{is}:math:`.`</returns>
   public DVector seasonal_ar_coefficients() {
     DVector ret = new DVector(datamungePINVOKE.ARIMA_seasonal_ar_coefficients(swigCPtr), false);
     return ret;
   }
 
+  /// <summary>Fitted seasonal MA coefficients :math:`\Theta_1,\dots,\Theta_Q`.</summary>
+  /// <returns>A vector of length Q; the polynomial is +_j_j B^{js}:math:`.`</returns>
   public DVector seasonal_ma_coefficients() {
     DVector ret = new DVector(datamungePINVOKE.ARIMA_seasonal_ma_coefficients(swigCPtr), false);
     return ret;
   }
 
+  /// <summary>Fitted mean of the differenced series.</summary>
+  /// <returns>The mean, or 0 when no mean term was fit (include_mean is false, or d or D is nonzero).</returns>
   public double mean() {
     double ret = datamungePINVOKE.ARIMA_mean(swigCPtr);
     return ret;
   }
 
+  /// <summary>Length of the input series.</summary>
+  /// <returns>The number of observations passed to the constructor.</returns>
   public uint observations() {
     uint ret = datamungePINVOKE.ARIMA_observations(swigCPtr);
     return ret;
   }
 
+  /// <summary>Number of residuals that enter the sum of squares.</summary>
+  /// <returns>The differenced series length minus +sP:math:`(the conditioned-on presample).`</returns>
   public uint n_used() {
     uint ret = datamungePINVOKE.ARIMA_n_used(swigCPtr);
     return ret;
   }
 
+  /// <summary>Innovation variance estimate.</summary>
+  /// <returns>The CSS residual sum of squares divided by n_used().</returns>
   public double sigma2() {
     double ret = datamungePINVOKE.ARIMA_sigma2(swigCPtr);
     return ret;
   }
 
+  /// <summary>Gaussian log-likelihood at the CSS estimate, over n_used() residuals.</summary>
+  /// <returns>:math:`-\tfrac{n}{2}(\log 2\pi + \log\sigma^2 + 1)` with :math:`= n_used().`</returns>
   public double log_likelihood() {
     double ret = datamungePINVOKE.ARIMA_log_likelihood(swigCPtr);
     return ret;
   }
 
+  /// <summary>Akaike information criterion.</summary>
+  /// <returns>:math:`-2\ell + 2k`, where :math:`counts the coefficients, the mean (if fit) and`^2:math:`.`</returns>
   public double aic() {
     double ret = datamungePINVOKE.ARIMA_aic(swigCPtr);
     return ret;
   }
 
+  /// <summary>Bayesian information criterion.</summary>
+  /// <returns>:math:`-2\ell + k\log n`, with :math:`as in aic() and \f$n` = n_used().</returns>
   public double bic() {
     double ret = datamungePINVOKE.ARIMA_bic(swigCPtr);
     return ret;
@@ -145,12 +178,38 @@ public class ARIMA : global::System.IDisposable {
   }
 
   /// <summary>Point forecasts for the next ``horizon`` periods, on the original scale.</summary>
+  /// <param name="horizon"> Number of steps ahead to forecast.</param> 
+  /// <returns>A vector of length ``horizon`` (empty when ``horizon`` is 0).</returns>
   public DVector forecast(uint horizon) {
     DVector ret = new DVector(datamungePINVOKE.ARIMA_forecast(swigCPtr, horizon), true);
     return ret;
   }
 
+  /// <summary>AR coefficients of the stationary (differenced) model after multiplying the regular        and seasonal polynomials, _t=_i a_i w_{t-i}+_t+_j b_j_{t-j}:math:`. @return The \f$a_i`, =1,,p+sP:math:`(zeros where no lag enters).`</summary>
+  public DVector expanded_ar_coefficients() {
+    DVector ret = new DVector(datamungePINVOKE.ARIMA_expanded_ar_coefficients(swigCPtr), false);
+    return ret;
+  }
+
+  /// <summary>MA coefficients _j:math:`of the stationary model, after multiplying the regular and        seasonal MA polynomials; for the airline model`(,0,,0,,):math:`. @return The \f$b_j`, =1,,q+sQ:math:`.`</summary>
+  public DVector expanded_ma_coefficients() {
+    DVector ret = new DVector(datamungePINVOKE.ARIMA_expanded_ma_coefficients(swigCPtr), false);
+    return ret;
+  }
+
+  /// <summary>The first ``count`` :math:`\psi`-weights of the full model, differencing included:        _t=_{j_j_{t-j}:math:`formally, with`_0=1:math:`. The h-step forecast error is`</summary>
+  /// _{j&lt;h}\psi_j\varepsilon_{t+h-j}\f$, so its variance is
+  ///  :math:`\sigma^2\sum_{j&lt;h}\psi_j^2`; forecast_with_intervals() uses exactly these weights.
+  /// <param name="count"> Number of weights.</param> 
+  /// <returns>:math:`\psi_0,\dots,\psi_{count-1}`.</returns>
+  public DVector psi_weights(uint count) {
+    DVector ret = new DVector(datamungePINVOKE.ARIMA_psi_weights(swigCPtr, count), true);
+    return ret;
+  }
+
   /// <summary>Point forecasts and their standard errors (from the psi-weight / MA(infinity)        expansion of the full, non-stationary AR/MA representation of y), on the        original scale.</summary>
+  /// <param name="horizon"> Number of steps ahead to forecast.</param> 
+  /// <returns>A pair (point forecasts, standard errors), each of length ``horizon``.</returns>
   public DVectorPair forecast_with_intervals(uint horizon) {
     DVectorPair ret = new DVectorPair(datamungePINVOKE.ARIMA_forecast_with_intervals(swigCPtr, horizon), true);
     return ret;

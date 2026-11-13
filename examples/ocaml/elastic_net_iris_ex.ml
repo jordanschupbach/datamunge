@@ -1,10 +1,12 @@
+(* CMD: just TARGET=elastic_net_iris_ex run-ocaml *)
+
 open Swig
 open Datamunge
 
 let formula = "Petal.Length ~ Sepal.Length + Sepal.Width + Petal.Width + Sepal.Length:Petal.Width"
 
 let () =
-  let iris = _DataFrame_iris C_void in
+  let iris = _data_iris C_void in
   Printf.printf "iris: %d rows x %d cols\n" (get_int (invoke iris "nrows" C_void)) (get_int (invoke iris "ncols" C_void));
   Printf.printf "formula: %s\n\n" formula;
 

@@ -1,9 +1,11 @@
+# CMD: just TARGET=glm_iris_ex run-perl
+
 use strict;
 use warnings;
 
 use Datamunge;
 
-my $iris = Datamunge::DataFrame::iris();
+my $iris = Datamunge::data_iris();
 
 # Logistic regression: versicolor vs virginica only -- setosa is perfectly separable from
 # the other two on these predictors, which sends logistic regression's coefficients toward

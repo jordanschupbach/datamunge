@@ -66,58 +66,126 @@ public class ARIMA {
     }
   }
 
+  /**
+   *  Fit the model to a series.<br>
+   *  @param y The observed series, in time order.<br>
+   *  @param options Model orders and optimizer settings.<br>
+   *  @throws std::invalid_argument If a seasonal order is set while seasonal_period is zero,<br>
+   *          or if the series is too short for the requested differencing or AR order.
+   */
   public ARIMA(DVector y, ARIMAOptions options) {
     this(datamungeJNI.new_ARIMA__SWIG_0(DVector.getCPtr(y), y, ARIMAOptions.getCPtr(options), options), true);
   }
 
+  /**
+   *  Fit the model to a series.<br>
+   *  @param y The observed series, in time order.<br>
+   *  @throws std::invalid_argument If a seasonal order is set while seasonal_period is zero,<br>
+   *          or if the series is too short for the requested differencing or AR order.
+   */
   public ARIMA(DVector y) {
     this(datamungeJNI.new_ARIMA__SWIG_1(DVector.getCPtr(y), y), true);
   }
 
+  /**
+   *  The options the model was fit with.<br>
+   *  @return The stored ARIMAOptions.
+   */
   public ARIMAOptions options() {
     return new ARIMAOptions(datamungeJNI.ARIMA_options(swigCPtr, this), false);
   }
 
+  /**
+   *  Fitted non-seasonal AR coefficients  \phi_1,\dots,\phi_p.<br>
+   *  @return A vector of length p; the AR polynomial is -_i_i B^i .
+  
+   */
   public DVector ar_coefficients() {
     return new DVector(datamungeJNI.ARIMA_ar_coefficients(swigCPtr, this), false);
   }
 
+  /**
+   *  Fitted non-seasonal MA coefficients  \theta_1,\dots,\theta_q.<br>
+   *  @return A vector of length q; the MA polynomial is +_j_j B^j .
+  
+   */
   public DVector ma_coefficients() {
     return new DVector(datamungeJNI.ARIMA_ma_coefficients(swigCPtr, this), false);
   }
 
+  /**
+   *  Fitted seasonal AR coefficients  \Phi_1,\dots,\Phi_P.<br>
+   *  @return A vector of length P; the polynomial is -_i_i B^{is} .
+  
+   */
   public DVector seasonal_ar_coefficients() {
     return new DVector(datamungeJNI.ARIMA_seasonal_ar_coefficients(swigCPtr, this), false);
   }
 
+  /**
+   *  Fitted seasonal MA coefficients  \Theta_1,\dots,\Theta_Q.<br>
+   *  @return A vector of length Q; the polynomial is +_j_j B^{js} .
+  
+   */
   public DVector seasonal_ma_coefficients() {
     return new DVector(datamungeJNI.ARIMA_seasonal_ma_coefficients(swigCPtr, this), false);
   }
 
+  /**
+   *  Fitted mean of the differenced series.<br>
+   *  @return The mean, or 0 when no mean term was fit (include_mean is false, or d or D is nonzero).
+   */
   public double mean() {
     return datamungeJNI.ARIMA_mean(swigCPtr, this);
   }
 
+  /**
+   *  Length of the input series.<br>
+   *  @return The number of observations passed to the constructor.
+   */
   public long observations() {
     return datamungeJNI.ARIMA_observations(swigCPtr, this);
   }
 
+  /**
+   *  Number of residuals that enter the sum of squares.<br>
+   *  @return The differenced series length minus +sP  (the conditioned-on presample).
+  
+   */
   public long n_used() {
     return datamungeJNI.ARIMA_n_used(swigCPtr, this);
   }
 
+  /**
+   *  Innovation variance estimate.<br>
+   *  @return The CSS residual sum of squares divided by n_used().
+   */
   public double sigma2() {
     return datamungeJNI.ARIMA_sigma2(swigCPtr, this);
   }
 
+  /**
+   *  Gaussian log-likelihood at the CSS estimate, over n_used() residuals.<br>
+   *  @return  -\tfrac{n}{2}(\log 2\pi + \log\sigma^2 + 1) with   = n_used().
+  
+   */
   public double log_likelihood() {
     return datamungeJNI.ARIMA_log_likelihood(swigCPtr, this);
   }
 
+  /**
+   *  Akaike information criterion.<br>
+   *  @return  -2\ell + 2k, where   counts the coefficients, the mean (if fit) and ^2 .
+  
+   */
   public double aic() {
     return datamungeJNI.ARIMA_aic(swigCPtr, this);
   }
 
+  /**
+   *  Bayesian information criterion.<br>
+   *  @return  -2\ell + k\log n, with   as in aic() and \f$n = n_used().
+   */
   public double bic() {
     return datamungeJNI.ARIMA_bic(swigCPtr, this);
   }
@@ -140,16 +208,53 @@ public class ARIMA {
   }
 
   /**
-   *  Point forecasts for the next <code>horizon</code> periods, on the original scale.
+   *  Point forecasts for the next <code>horizon</code> periods, on the original scale.<br>
+   *  @param horizon Number of steps ahead to forecast.<br>
+   *  @return A vector of length <code>horizon</code> (empty when <code>horizon</code> is 0).
    */
   public DVector forecast(long horizon) {
     return new DVector(datamungeJNI.ARIMA_forecast(swigCPtr, this, horizon), true);
   }
 
   /**
+   *  AR coefficients of the stationary (differenced) model after multiplying the regular<br>
+   *         and seasonal polynomials, _t=_i a_i w_{t-i}+_t+_j b_j_{t-j} .
+   @return The \f$a_i, =1,,p+sP  (zeros where no lag enters).
+  
+   */
+  public DVector expanded_ar_coefficients() {
+    return new DVector(datamungeJNI.ARIMA_expanded_ar_coefficients(swigCPtr, this), false);
+  }
+
+  /**
+   *  MA coefficients _j  of the stationary model, after multiplying the regular and
+          seasonal MA polynomials; for the airline model (,0,,0,,) .
+   @return The \f$b_j, =1,,q+sQ .
+  
+   */
+  public DVector expanded_ma_coefficients() {
+    return new DVector(datamungeJNI.ARIMA_expanded_ma_coefficients(swigCPtr, this), false);
+  }
+
+  /**
+   *  The first <code>count</code>  \psi-weights of the full model, differencing included:<br>
+   *         _t=_{j_j_{t-j}  formally, with _0=1 .
+  
+   The h-step forecast error is _{j&lt;h}\psi_j\varepsilon_{t+h-j}\f$, so its variance is<br>
+   *   \sigma^2\sum_{j<h}\psi_j^2; forecast_with_intervals() uses exactly these weights.<br>
+   *  @param count Number of weights.<br>
+   *  @return  \psi_0,\dots,\psi_{count-1}.
+   */
+  public DVector psi_weights(long count) {
+    return new DVector(datamungeJNI.ARIMA_psi_weights(swigCPtr, this, count), true);
+  }
+
+  /**
    *  Point forecasts and their standard errors (from the psi-weight / MA(infinity)<br>
    *         expansion of the full, non-stationary AR/MA representation of y), on the<br>
-   *         original scale.
+   *         original scale.<br>
+   *  @param horizon Number of steps ahead to forecast.<br>
+   *  @return A pair (point forecasts, standard errors), each of length <code>horizon</code>.
    */
   public DVectorPair forecast_with_intervals(long horizon) {
     return new DVectorPair(datamungeJNI.ARIMA_forecast_with_intervals(swigCPtr, this, horizon), true);

@@ -1,3 +1,5 @@
+;; CMD: just TARGET=gis_ex run-lisp
+
 ;;;; ShapeLayer: write a tiny synthetic shapefile (.shp + .dbf) by hand, read it back and draw it as a map.
 ;;;; Real .shp/.dbf files are large binary bundles that don't belong in this repo, so this example
 ;;;; writes two "counties" (one plain square, one with a lake-shaped hole) using the same ESRI byte

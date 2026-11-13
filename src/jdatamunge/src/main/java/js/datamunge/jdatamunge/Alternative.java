@@ -9,12 +9,31 @@
 package js.datamunge.jdatamunge;
 
 /**
- *  Which tail(s) of the null distribution the alternative hypothesis covers,<br>
- *         matching R's `alternative` argument across t.test/wilcox.test/cor.test/etc.
+ *  Prespecified tail of a test's null reference, like R's alternative argument.<br>
+ *  Location/proportion alternatives refer to the signed effect; KS alternatives refer<br>
+ *  to empirical CDF ordering and consequently reverse the stochastic-location direction.<br>
+ *  <p alt="Example"><br>
+ *  {@code 
+ const auto a=dm::stats::Alternative::Less;
+ const auto t=dm::stats::t_test_one_sample({1,2,3,4},0,a);
+ std::print("{}\n",t.alternative==a); // true
+ }</p><br>
+ *  <p alt="References"><br>
+ *  - https://stat.ethz.ch/R-manual/R-devel/library/stats/html/t.test.html<br>
+ *  </p>@see HypothesisTestResult
  */
 public final class Alternative {
+  /**
+   *  Both directions, using each test's stated two-sided ordering.
+   */
   public final static Alternative TwoSided = new Alternative("TwoSided");
+  /**
+   *  Lower signed-effect tail (KS: empirical CDF below reference).
+   */
   public final static Alternative Less = new Alternative("Less");
+  /**
+   *  Upper signed-effect tail (KS: empirical CDF above reference).
+   */
   public final static Alternative Greater = new Alternative("Greater");
 
   public final int swigValue() {

@@ -8,6 +8,17 @@
 
 package js.datamunge.jdatamunge;
 
+/**
+ *  Configuration for DifferentialEvolution; fields retain their documented native defaults.<br>
+ *  Supply finite values in the supported ranges. Controls are copied at construction;<br>
+ *  validation, stopping and loss scaling belong to optimize().<br>
+ *  <p alt="Example"><br>
+ *  {@code 
+ dm::optim::DEOptions o;
+ std::print("{}\n",o.max_generations); // 500
+ }</p><br>
+ *  @see DifferentialEvolution
+ */
 public class DEOptions {
   private transient long swigCPtr;
   protected transient boolean swigCMemOwn;
@@ -64,76 +75,42 @@ public class DEOptions {
     return datamungeJNI.DEOptions_max_generations_get(swigCPtr, this);
   }
 
-  /**
-   *  F: scales the differential perturbation applied by the mutation strategy.
-   */
   public void setDifferential_weight(double value) {
     datamungeJNI.DEOptions_differential_weight_set(swigCPtr, this, value);
   }
 
-  /**
-   *  F: scales the differential perturbation applied by the mutation strategy.
-   */
   public double getDifferential_weight() {
     return datamungeJNI.DEOptions_differential_weight_get(swigCPtr, this);
   }
 
-  /**
-   *  CR: probability that a given gene is taken from the mutant vector.
-   */
   public void setCrossover_rate(double value) {
     datamungeJNI.DEOptions_crossover_rate_set(swigCPtr, this, value);
   }
 
-  /**
-   *  CR: probability that a given gene is taken from the mutant vector.
-   */
   public double getCrossover_rate() {
     return datamungeJNI.DEOptions_crossover_rate_get(swigCPtr, this);
   }
 
-  /**
-   *  One of "rand1", "best1", "current_to_best1", or "rand2" -- Storn &amp; Price's<br>
-   *         DE/x/y/z naming for which base vector(s) the differential perturbation(s) are<br>
-   *         added to.
-   */
   public void setMutation_strategy(String value) {
     datamungeJNI.DEOptions_mutation_strategy_set(swigCPtr, this, value);
   }
 
-  /**
-   *  One of "rand1", "best1", "current_to_best1", or "rand2" -- Storn &amp; Price's<br>
-   *         DE/x/y/z naming for which base vector(s) the differential perturbation(s) are<br>
-   *         added to.
-   */
   public String getMutation_strategy() {
     return datamungeJNI.DEOptions_mutation_strategy_get(swigCPtr, this);
   }
 
-  /**
-   *  One of "binomial" or "exponential".
-   */
   public void setCrossover_strategy(String value) {
     datamungeJNI.DEOptions_crossover_strategy_set(swigCPtr, this, value);
   }
 
-  /**
-   *  One of "binomial" or "exponential".
-   */
   public String getCrossover_strategy() {
     return datamungeJNI.DEOptions_crossover_strategy_get(swigCPtr, this);
   }
 
-  /**
-   *  Stops after the population best has improved by less than this for 20 consecutive generations.
-   */
   public void setTolerance(double value) {
     datamungeJNI.DEOptions_tolerance_set(swigCPtr, this, value);
   }
 
-  /**
-   *  Stops after the population best has improved by less than this for 20 consecutive generations.
-   */
   public double getTolerance() {
     return datamungeJNI.DEOptions_tolerance_get(swigCPtr, this);
   }

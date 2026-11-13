@@ -1,3 +1,5 @@
+// CMD: just TARGET=tensor_ex run-d
+
 module app;
 
 import std.stdio : writeln;
@@ -74,7 +76,7 @@ void main() {
   writeln("count(r >= 6) = ", mask.sum());
 
   writeln("\n=================== A real dataset as a Tensor ===================");
-  auto iris = DataFrame.iris();
+  auto iris = data_iris();
   auto n = iris.nrows();
   double[] flat;
   for (size_t i = 0; i < n; i++) {

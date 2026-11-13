@@ -71,4 +71,11 @@ public class EstimationOfDistribution : global::System.IDisposable {
     return ret;
   }
 
+  /// <summary>The options this EstimationOfDistribution was configured with.</summary>
+  /// <returns>The stored options.</returns>
+  public EstimationOfDistributionOptions options() {
+    EstimationOfDistributionOptions ret = new EstimationOfDistributionOptions(datamungePINVOKE.EstimationOfDistribution_options(swigCPtr), false);
+    return ret;
+  }
+
 }

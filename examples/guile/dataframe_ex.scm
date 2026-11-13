@@ -1,3 +1,5 @@
+;; CMD: just TARGET=dataframe_ex run-guile
+
 (use-modules (datamunge))
 
 (define sales (DataFrame-empty))

@@ -1,5 +1,5 @@
-# CMD: nix develop .#r --command Rscript examples/r/bspline_ex.r
-# REPL: nix develop .#r --command R --no-save --quiet
+# CMD: nix develop .#r --command env R_LIBS_USER=build/r/library Rscript examples/r/bspline_ex.r
+# REPL: nix develop .#r --command env R_LIBS_USER=build/r/library R --no-save --quiet
 # Fits a two-dimensional B-spline surface with the bs(x, y) formula term.
 # The formula uses cubic B-splines with six basis functions per input axis.
 library(datamunger)

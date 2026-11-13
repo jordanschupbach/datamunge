@@ -8,6 +8,9 @@
 
 package js.datamunge.jdatamunge;
 
+/**
+ *  Output of RandomWalkMetropolis::sample().
+ */
 public class RWMResult {
   private transient long swigCPtr;
   protected transient boolean swigCMemOwn;
@@ -79,12 +82,35 @@ public class RWMResult {
     return datamungeJNI.RWMResult_accept_rate_get(swigCPtr, this);
   }
 
+  /**
+   *  Step size used after warmup.
+   */
   public void setFinal_step_size(double value) {
     datamungeJNI.RWMResult_final_step_size_set(swigCPtr, this, value);
   }
 
+  /**
+   *  Step size used after warmup.
+   */
   public double getFinal_step_size() {
     return datamungeJNI.RWMResult_final_step_size_get(swigCPtr, this);
+  }
+
+  /**
+   *  Learned proposal covariance  \hat\Sigma (before scaling by the step size);<br>
+   *         empty unless RWMOptions::adapt_covariance was set and warmup had at least 8 iterations.
+   */
+  public void setProposal_covariance(DVectorVector value) {
+    datamungeJNI.RWMResult_proposal_covariance_set(swigCPtr, this, DVectorVector.getCPtr(value), value);
+  }
+
+  /**
+   *  Learned proposal covariance  \hat\Sigma (before scaling by the step size);<br>
+   *         empty unless RWMOptions::adapt_covariance was set and warmup had at least 8 iterations.
+   */
+  public DVectorVector getProposal_covariance() {
+    long cPtr = datamungeJNI.RWMResult_proposal_covariance_get(swigCPtr, this);
+    return (cPtr == 0) ? null : new DVectorVector(cPtr, false);
   }
 
   public RWMResult() {

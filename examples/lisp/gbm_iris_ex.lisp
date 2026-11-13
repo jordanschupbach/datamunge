@@ -1,3 +1,5 @@
+;; CMD: just TARGET=gbm_iris_ex run-lisp
+
 ;;;; Gradient-boosted trees (GBM) on iris: summary, confusion matrix, misclassified rows, 5 vs 100 rounds.
 (require "asdf")
 (asdf:load-system "datamunge")
@@ -5,7 +7,7 @@
 ;; Print doubles as 5.1 rather than 5.1d0.
 (setf *read-default-float-format* 'double-float)
 
-(defparameter *iris* (dm:data-frame-iris))
+(defparameter *iris* (dm.data:iris))
 (format t "iris: ~a rows x ~a cols~%~%" (dm:nrows *iris*) (dm:ncols *iris*))
 
 (defparameter *model* (dm:make-gbm-classifier *iris* "Species ~ Petal.Length + Petal.Width"))

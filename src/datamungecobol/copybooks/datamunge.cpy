@@ -29572,9 +29572,9 @@
       *>> CALL "dm_data_frame_empty" USING DM-DATA-FRAME-EMPTY DM-STATUS
       *>>
       *>> Equivalent to the default constructor, exposed as a static
-      *>>   factory (like iris()/
-      *>> penguins()) as a workaround for a SWIG R-backend bug where the
-      *>>   plain no-argument
+      *>>   factory (like read_csv())
+      *>> as a workaround for a SWIG R-backend bug where the plain
+      *>>   no-argument
       *>> constructor's ownership-flagged pointer breaks method dispatch
       *>>   on the result.
        01 DM-DATA-FRAME-EMPTY.
@@ -30828,209 +30828,6 @@
           05 DM-DATA-FRAME-STRING-AT-RESULT PIC X(16384).
           05 DM-DATA-FRAME-STRING-AT-RESULT-LENGTH USAGE BINARY-LONG
               SIGNED VALUE 0.
-
-      *>> static datamunge::DataFrame::iris() -> DataFrame *
-      *>> CALL "dm_data_frame_iris" USING DM-DATA-FRAME-IRIS DM-STATUS
-       01 DM-DATA-FRAME-IRIS.
-      *>> Result (DataFrame *): DATA-FRAME handle (new; refers into its
-      *>>   owner, which it keeps alive).
-          05 DM-DATA-FRAME-IRIS-RESULT USAGE BINARY-DOUBLE UNSIGNED.
-
-      *>> static datamunge::DataFrame::penguins() -> DataFrame *
-      *>> CALL "dm_data_frame_penguins" USING DM-DATA-FRAME-PENGUINS
-      *>>   DM-STATUS
-       01 DM-DATA-FRAME-PENGUINS.
-      *>> Result (DataFrame *): DATA-FRAME handle (new; refers into its
-      *>>   owner, which it keeps alive).
-          05 DM-DATA-FRAME-PENGUINS-RESULT USAGE BINARY-DOUBLE UNSIGNED.
-
-      *>> static datamunge::DataFrame::tooth_growth() -> DataFrame *
-      *>> CALL "dm_data_frame_tooth_growth" USING
-      *>>   DM-DATA-FRAME-TOOTH-GROWTH DM-STATUS
-       01 DM-DATA-FRAME-TOOTH-GROWTH.
-      *>> Result (DataFrame *): DATA-FRAME handle (new; refers into its
-      *>>   owner, which it keeps alive).
-          05 DM-DATA-FRAME-TOOTH-GROWTH-RESULT USAGE BINARY-DOUBLE
-              UNSIGNED.
-
-      *>> static datamunge::DataFrame::wine() -> DataFrame *
-      *>> CALL "dm_data_frame_wine" USING DM-DATA-FRAME-WINE DM-STATUS
-      *>>
-      *>> UCI wine recognition data, 178 x 14; see datasets::wine().
-       01 DM-DATA-FRAME-WINE.
-      *>> Result (DataFrame *): DATA-FRAME handle (new; refers into its
-      *>>   owner, which it keeps alive).
-          05 DM-DATA-FRAME-WINE-RESULT USAGE BINARY-DOUBLE UNSIGNED.
-
-      *>> static datamunge::DataFrame::titanic() -> DataFrame *
-      *>> CALL "dm_data_frame_titanic" USING DM-DATA-FRAME-TITANIC
-      *>>   DM-STATUS
-      *>>
-      *>> Kaggle Titanic training set, 891 x 12 with missing values; see
-      *>>   datasets::titanic().
-       01 DM-DATA-FRAME-TITANIC.
-      *>> Result (DataFrame *): DATA-FRAME handle (new; refers into its
-      *>>   owner, which it keeps alive).
-          05 DM-DATA-FRAME-TITANIC-RESULT USAGE BINARY-DOUBLE UNSIGNED.
-
-      *>> static datamunge::DataFrame::eight_schools() -> DataFrame *
-      *>> CALL "dm_data_frame_eight_schools" USING
-      *>>   DM-DATA-FRAME-EIGHT-SCHOOLS DM-STATUS
-      *>>
-      *>> Rubin's eight schools coaching experiment, 8 x 3; see
-      *>>   datasets::eight_schools().
-       01 DM-DATA-FRAME-EIGHT-SCHOOLS.
-      *>> Result (DataFrame *): DATA-FRAME handle (new; refers into its
-      *>>   owner, which it keeps alive).
-          05 DM-DATA-FRAME-EIGHT-SCHOOLS-RESULT USAGE BINARY-DOUBLE
-              UNSIGNED.
-
-      *>> static datamunge::DataFrame::air_passengers() -> DataFrame *
-      *>> CALL "dm_data_frame_air_passengers" USING
-      *>>   DM-DATA-FRAME-AIR-PASSENGERS DM-STATUS
-      *>>
-      *>> Monthly airline passengers 1949-1960, 144 x 3; see
-      *>>   datasets::air_passengers().
-       01 DM-DATA-FRAME-AIR-PASSENGERS.
-      *>> Result (DataFrame *): DATA-FRAME handle (new; refers into its
-      *>>   owner, which it keeps alive).
-          05 DM-DATA-FRAME-AIR-PASSENGERS-RESULT USAGE BINARY-DOUBLE
-              UNSIGNED.
-
-      *>> static datamunge::DataFrame::volcano() -> DataFrame *
-      *>> CALL "dm_data_frame_volcano" USING DM-DATA-FRAME-VOLCANO
-      *>>   DM-STATUS
-      *>>
-      *>> Maunga Whau (Mt Eden) elevations on a 10 m grid, 5307 x 3; see
-      *>>   datasets::volcano().
-       01 DM-DATA-FRAME-VOLCANO.
-      *>> Result (DataFrame *): DATA-FRAME handle (new; refers into its
-      *>>   owner, which it keeps alive).
-          05 DM-DATA-FRAME-VOLCANO-RESULT USAGE BINARY-DOUBLE UNSIGNED.
-
-      *>> static datamunge::DataFrame::faithful() -> DataFrame *
-      *>> CALL "dm_data_frame_faithful" USING DM-DATA-FRAME-FAITHFUL
-      *>>   DM-STATUS
-      *>>
-      *>> Old Faithful eruptions, 272 x 2; see datasets::faithful().
-       01 DM-DATA-FRAME-FAITHFUL.
-      *>> Result (DataFrame *): DATA-FRAME handle (new; refers into its
-      *>>   owner, which it keeps alive).
-          05 DM-DATA-FRAME-FAITHFUL-RESULT USAGE BINARY-DOUBLE UNSIGNED.
-
-      *>> static datamunge::DataFrame::mtcars() -> DataFrame *
-      *>> CALL "dm_data_frame_mtcars" USING DM-DATA-FRAME-MTCARS
-      *>>   DM-STATUS
-      *>>
-      *>> Motor Trend cars, 32 x 12 (row names as `model`); see
-      *>>   datasets::mtcars().
-       01 DM-DATA-FRAME-MTCARS.
-      *>> Result (DataFrame *): DATA-FRAME handle (new; refers into its
-      *>>   owner, which it keeps alive).
-          05 DM-DATA-FRAME-MTCARS-RESULT USAGE BINARY-DOUBLE UNSIGNED.
-
-      *>> static datamunge::DataFrame::airquality() -> DataFrame *
-      *>> CALL "dm_data_frame_airquality" USING DM-DATA-FRAME-AIRQUALITY
-      *>>   DM-STATUS
-      *>>
-      *>> New York air quality 1973, 153 x 6 with missing values; see
-      *>>   datasets::airquality().
-       01 DM-DATA-FRAME-AIRQUALITY.
-      *>> Result (DataFrame *): DATA-FRAME handle (new; refers into its
-      *>>   owner, which it keeps alive).
-          05 DM-DATA-FRAME-AIRQUALITY-RESULT USAGE BINARY-DOUBLE
-              UNSIGNED.
-
-      *>> static datamunge::DataFrame::breast_cancer() -> DataFrame *
-      *>> CALL "dm_data_frame_breast_cancer" USING
-      *>>   DM-DATA-FRAME-BREAST-CANCER DM-STATUS
-      *>>
-      *>> Wisconsin diagnostic breast cancer, 569 x 31; see
-      *>>   datasets::breast_cancer().
-       01 DM-DATA-FRAME-BREAST-CANCER.
-      *>> Result (DataFrame *): DATA-FRAME handle (new; refers into its
-      *>>   owner, which it keeps alive).
-          05 DM-DATA-FRAME-BREAST-CANCER-RESULT USAGE BINARY-DOUBLE
-              UNSIGNED.
-
-      *>> static datamunge::DataFrame::diabetes() -> DataFrame *
-      *>> CALL "dm_data_frame_diabetes" USING DM-DATA-FRAME-DIABETES
-      *>>   DM-STATUS
-      *>>
-      *>> Efron et al.'s diabetes progression data, 442 x 11; see
-      *>>   datasets::diabetes().
-       01 DM-DATA-FRAME-DIABETES.
-      *>> Result (DataFrame *): DATA-FRAME handle (new; refers into its
-      *>>   owner, which it keeps alive).
-          05 DM-DATA-FRAME-DIABETES-RESULT USAGE BINARY-DOUBLE UNSIGNED.
-
-      *>> static datamunge::DataFrame::digits() -> DataFrame *
-      *>> CALL "dm_data_frame_digits" USING DM-DATA-FRAME-DIGITS
-      *>>   DM-STATUS
-      *>>
-      *>> 8x8 handwritten digits, 1797 x 65; see datasets::digits().
-       01 DM-DATA-FRAME-DIGITS.
-      *>> Result (DataFrame *): DATA-FRAME handle (new; refers into its
-      *>>   owner, which it keeps alive).
-          05 DM-DATA-FRAME-DIGITS-RESULT USAGE BINARY-DOUBLE UNSIGNED.
-
-      *>> static datamunge::DataFrame::diamonds() -> DataFrame *
-      *>> CALL "dm_data_frame_diamonds" USING DM-DATA-FRAME-DIAMONDS
-      *>>   DM-STATUS
-      *>>
-      *>> ggplot2's diamonds, 53940 x 10, downloaded once and cached;
-      *>>   see datasets::diamonds().
-       01 DM-DATA-FRAME-DIAMONDS.
-      *>> Result (DataFrame *): DATA-FRAME handle (new; refers into its
-      *>>   owner, which it keeps alive).
-          05 DM-DATA-FRAME-DIAMONDS-RESULT USAGE BINARY-DOUBLE UNSIGNED.
-
-      *>> static datamunge::DataFrame::california_housing() -> DataFrame
-      *>>   *
-      *>> CALL "dm_data_frame_california_housing" USING
-      *>>   DM-DATA-FRAME-CALIFORNIA-HOUSING DM-STATUS
-      *>>
-      *>> California housing, 20640 x 10, downloaded once and cached;
-      *>>   see
-      *>> datasets::california_housing().
-       01 DM-DATA-FRAME-CALIFORNIA-HOUSING.
-      *>> Result (DataFrame *): DATA-FRAME handle (new; refers into its
-      *>>   owner, which it keeps alive).
-          05 DM-DATA-FRAME-CALIFORNIA-HOUSING-RESULT USAGE BINARY-DOUBLE
-              UNSIGNED.
-
-      *>> static datamunge::DataFrame::dataset(const std::string & name)
-      *>>   -> DataFrame *
-      *>> CALL "dm_data_frame_dataset" USING DM-DATA-FRAME-DATASET
-      *>>   DM-STATUS
-      *>>
-      *>> Any table-shaped dataset by name, e.g. "wine"; see
-      *>>   datasets::load().
-      *>>
-      *>> Errors (a non-zero status):
-      *>> - std::invalid_argument: for an unknown or image dataset name.
-       01 DM-DATA-FRAME-DATASET.
-      *>> name (const std::string &): text in PIC X(256); -LENGTH -1
-      *>>   trims trailing spaces.
-          05 DM-DATA-FRAME-DATASET-NAME PIC X(256).
-          05 DM-DATA-FRAME-DATASET-NAME-LENGTH USAGE BINARY-LONG SIGNED
-              VALUE -1.
-      *>> Result (DataFrame *): DATA-FRAME handle (new; refers into its
-      *>>   owner, which it keeps alive).
-          05 DM-DATA-FRAME-DATASET-RESULT USAGE BINARY-DOUBLE UNSIGNED.
-
-      *>> static datamunge::DataFrame::dataset_catalog() -> DataFrame *
-      *>> CALL "dm_data_frame_dataset_catalog" USING
-      *>>   DM-DATA-FRAME-DATASET-CATALOG DM-STATUS
-      *>>
-      *>> One row per available dataset (name, rows, columns, storage,
-      *>>   size_mb,
-      *>> description); see datasets::catalog().
-       01 DM-DATA-FRAME-DATASET-CATALOG.
-      *>> Result (DataFrame *): DATA-FRAME handle (new; refers into its
-      *>>   owner, which it keeps alive).
-          05 DM-DATA-FRAME-DATASET-CATALOG-RESULT USAGE BINARY-DOUBLE
-              UNSIGNED.
 
       *>> static datamunge::DataFrame::read_csv(const std::string &
       *>>   path, char delimiter = ',') -> DataFrame *
@@ -57046,6 +56843,495 @@
           05 DM-SUM-DPAIR-VALUES-SECOND USAGE COMP-2.
       *>> Result (double): double. `values.first` + values.second.
           05 DM-SUM-DPAIR-RESULT USAGE COMP-2.
+
+      *>> datamunge::data::iris() -> DataFrame *
+      *>> CALL "dm_data_iris" USING DM-DATA-IRIS DM-STATUS
+      *>>
+      *>> Edgar Anderson's iris measurements, 150 x 5, as R's
+      *>>   `datasets::iris`.
+      *>>
+      *>> Bundled with the library, so it needs no file or network
+      *>>   access. Columns are documented at
+      *>> datasets::iris().
+      *>>
+      *>> **Example**
+      *>>
+      *>> ```cpp
+      *>> const std::unique_ptr<dm::DataFrame> frame(dm::data::iris());
+      *>> std::print("{} x {}\n", frame->nrows(), frame->ncols()); //
+      *>>   150 x 5
+      *>> ```
+      *>>
+      *>> See also: datasets::iris()
+       01 DM-DATA-IRIS.
+      *>> Result (DataFrame *): DATA-FRAME handle (new; refers into its
+      *>>   owner, which it keeps alive). A new 150 x 5 DataFrame owned
+      *>>   by the caller.
+          05 DM-DATA-IRIS-RESULT USAGE BINARY-DOUBLE UNSIGNED.
+
+      *>> datamunge::data::penguins() -> DataFrame *
+      *>> CALL "dm_data_penguins" USING DM-DATA-PENGUINS DM-STATUS
+      *>>
+      *>> The Palmer penguins, 344 x 8 with missing values, as
+      *>>   `palmerpenguins::penguins`.
+      *>>
+      *>> Bundled with the library, so it needs no file or network
+      *>>   access. Columns are documented at
+      *>> datasets::penguins().
+      *>>
+      *>> **Example**
+      *>>
+      *>> ```cpp
+      *>> const std::unique_ptr<dm::DataFrame>
+      *>>   frame(dm::data::penguins());
+      *>> std::print("{} x {}\n", frame->nrows(), frame->ncols()); //
+      *>>   344 x 8
+      *>> ```
+      *>>
+      *>> See also: datasets::penguins()
+       01 DM-DATA-PENGUINS.
+      *>> Result (DataFrame *): DATA-FRAME handle (new; refers into its
+      *>>   owner, which it keeps alive). A new 344 x 8 DataFrame owned
+      *>>   by the caller.
+          05 DM-DATA-PENGUINS-RESULT USAGE BINARY-DOUBLE UNSIGNED.
+
+      *>> datamunge::data::tooth_growth() -> DataFrame *
+      *>> CALL "dm_data_tooth_growth" USING DM-DATA-TOOTH-GROWTH
+      *>>   DM-STATUS
+      *>>
+      *>> Crampton's guinea pig tooth growth data, 60 x 3, as R's
+      *>>   `datasets::ToothGrowth`.
+      *>>
+      *>> Bundled with the library, so it needs no file or network
+      *>>   access. Columns are documented at
+      *>> datasets::tooth_growth().
+      *>>
+      *>> **Example**
+      *>>
+      *>> ```cpp
+      *>> const std::unique_ptr<dm::DataFrame>
+      *>>   frame(dm::data::tooth_growth());
+      *>> std::print("{} x {}\n", frame->nrows(), frame->ncols()); // 60
+      *>>   x 3
+      *>> ```
+      *>>
+      *>> See also: datasets::tooth_growth()
+       01 DM-DATA-TOOTH-GROWTH.
+      *>> Result (DataFrame *): DATA-FRAME handle (new; refers into its
+      *>>   owner, which it keeps alive). A new 60 x 3 DataFrame owned
+      *>>   by the caller.
+          05 DM-DATA-TOOTH-GROWTH-RESULT USAGE BINARY-DOUBLE UNSIGNED.
+
+      *>> datamunge::data::wine() -> DataFrame *
+      *>> CALL "dm_data_wine" USING DM-DATA-WINE DM-STATUS
+      *>>
+      *>> The UCI wine recognition data, 178 x 14, as scikit-learn's
+      *>>   `load_wine()`.
+      *>>
+      *>> Bundled with the library, so it needs no file or network
+      *>>   access. Columns are documented at
+      *>> datasets::wine().
+      *>>
+      *>> **Example**
+      *>>
+      *>> ```cpp
+      *>> const std::unique_ptr<dm::DataFrame> frame(dm::data::wine());
+      *>> std::print("{} x {}\n", frame->nrows(), frame->ncols()); //
+      *>>   178 x 14
+      *>> ```
+      *>>
+      *>> See also: datasets::wine()
+       01 DM-DATA-WINE.
+      *>> Result (DataFrame *): DATA-FRAME handle (new; refers into its
+      *>>   owner, which it keeps alive). A new 178 x 14 DataFrame owned
+      *>>   by the caller.
+          05 DM-DATA-WINE-RESULT USAGE BINARY-DOUBLE UNSIGNED.
+
+      *>> datamunge::data::titanic() -> DataFrame *
+      *>> CALL "dm_data_titanic" USING DM-DATA-TITANIC DM-STATUS
+      *>>
+      *>> The Kaggle Titanic training set, 891 x 12 with missing values.
+      *>>
+      *>> Bundled with the library, so it needs no file or network
+      *>>   access. Columns are documented at
+      *>> datasets::titanic().
+      *>>
+      *>> **Example**
+      *>>
+      *>> ```cpp
+      *>> const std::unique_ptr<dm::DataFrame>
+      *>>   frame(dm::data::titanic());
+      *>> std::print("{} x {}\n", frame->nrows(), frame->ncols()); //
+      *>>   891 x 12
+      *>> ```
+      *>>
+      *>> See also: datasets::titanic()
+       01 DM-DATA-TITANIC.
+      *>> Result (DataFrame *): DATA-FRAME handle (new; refers into its
+      *>>   owner, which it keeps alive). A new 891 x 12 DataFrame owned
+      *>>   by the caller.
+          05 DM-DATA-TITANIC-RESULT USAGE BINARY-DOUBLE UNSIGNED.
+
+      *>> datamunge::data::eight_schools() -> DataFrame *
+      *>> CALL "dm_data_eight_schools" USING DM-DATA-EIGHT-SCHOOLS
+      *>>   DM-STATUS
+      *>>
+      *>> Rubin's eight schools coaching experiment, 8 x 3.
+      *>>
+      *>> Bundled with the library, so it needs no file or network
+      *>>   access. Columns are documented at
+      *>> datasets::eight_schools().
+      *>>
+      *>> **Example**
+      *>>
+      *>> ```cpp
+      *>> const std::unique_ptr<dm::DataFrame>
+      *>>   frame(dm::data::eight_schools());
+      *>> std::print("{} x {}\n", frame->nrows(), frame->ncols()); // 8
+      *>>   x 3
+      *>> ```
+      *>>
+      *>> See also: datasets::eight_schools()
+       01 DM-DATA-EIGHT-SCHOOLS.
+      *>> Result (DataFrame *): DATA-FRAME handle (new; refers into its
+      *>>   owner, which it keeps alive). A new 8 x 3 DataFrame owned by
+      *>>   the caller.
+          05 DM-DATA-EIGHT-SCHOOLS-RESULT USAGE BINARY-DOUBLE UNSIGNED.
+
+      *>> datamunge::data::air_passengers() -> DataFrame *
+      *>> CALL "dm_data_air_passengers" USING DM-DATA-AIR-PASSENGERS
+      *>>   DM-STATUS
+      *>>
+      *>> Monthly airline passengers 1949-1960, 144 x 3, as R's
+      *>>   `datasets::AirPassengers`.
+      *>>
+      *>> Bundled with the library, so it needs no file or network
+      *>>   access. Columns are documented at
+      *>> datasets::air_passengers().
+      *>>
+      *>> **Example**
+      *>>
+      *>> ```cpp
+      *>> const std::unique_ptr<dm::DataFrame>
+      *>>   frame(dm::data::air_passengers());
+      *>> std::print("{} x {}\n", frame->nrows(), frame->ncols()); //
+      *>>   144 x 3
+      *>> ```
+      *>>
+      *>> See also: datasets::air_passengers()
+       01 DM-DATA-AIR-PASSENGERS.
+      *>> Result (DataFrame *): DATA-FRAME handle (new; refers into its
+      *>>   owner, which it keeps alive). A new 144 x 3 DataFrame owned
+      *>>   by the caller.
+          05 DM-DATA-AIR-PASSENGERS-RESULT USAGE BINARY-DOUBLE UNSIGNED.
+
+      *>> datamunge::data::volcano() -> DataFrame *
+      *>> CALL "dm_data_volcano" USING DM-DATA-VOLCANO DM-STATUS
+      *>>
+      *>> Maunga Whau (Mt Eden) elevations on a 10 m grid, 5307 x 3, as
+      *>>   R's `datasets::volcano` in long form.
+      *>>
+      *>> Bundled with the library, so it needs no file or network
+      *>>   access. Columns are documented at
+      *>> datasets::volcano().
+      *>>
+      *>> **Example**
+      *>>
+      *>> ```cpp
+      *>> const std::unique_ptr<dm::DataFrame>
+      *>>   frame(dm::data::volcano());
+      *>> std::print("{} x {}\n", frame->nrows(), frame->ncols()); //
+      *>>   5307 x 3
+      *>> ```
+      *>>
+      *>> See also: datasets::volcano()
+       01 DM-DATA-VOLCANO.
+      *>> Result (DataFrame *): DATA-FRAME handle (new; refers into its
+      *>>   owner, which it keeps alive). A new 5307 x 3 DataFrame owned
+      *>>   by the caller.
+          05 DM-DATA-VOLCANO-RESULT USAGE BINARY-DOUBLE UNSIGNED.
+
+      *>> datamunge::data::faithful() -> DataFrame *
+      *>> CALL "dm_data_faithful" USING DM-DATA-FAITHFUL DM-STATUS
+      *>>
+      *>> Old Faithful geyser eruptions, 272 x 2, as R's
+      *>>   `datasets::faithful`.
+      *>>
+      *>> Bundled with the library, so it needs no file or network
+      *>>   access. Columns are documented at
+      *>> datasets::faithful().
+      *>>
+      *>> **Example**
+      *>>
+      *>> ```cpp
+      *>> const std::unique_ptr<dm::DataFrame>
+      *>>   frame(dm::data::faithful());
+      *>> std::print("{} x {}\n", frame->nrows(), frame->ncols()); //
+      *>>   272 x 2
+      *>> ```
+      *>>
+      *>> See also: datasets::faithful()
+       01 DM-DATA-FAITHFUL.
+      *>> Result (DataFrame *): DATA-FRAME handle (new; refers into its
+      *>>   owner, which it keeps alive). A new 272 x 2 DataFrame owned
+      *>>   by the caller.
+          05 DM-DATA-FAITHFUL-RESULT USAGE BINARY-DOUBLE UNSIGNED.
+
+      *>> datamunge::data::mtcars() -> DataFrame *
+      *>> CALL "dm_data_mtcars" USING DM-DATA-MTCARS DM-STATUS
+      *>>
+      *>> Motor Trend cars, 32 x 12 with the row names as column
+      *>>   `model`, as R's `datasets::mtcars`.
+      *>>
+      *>> Bundled with the library, so it needs no file or network
+      *>>   access. Columns are documented at
+      *>> datasets::mtcars().
+      *>>
+      *>> **Example**
+      *>>
+      *>> ```cpp
+      *>> const std::unique_ptr<dm::DataFrame>
+      *>>   frame(dm::data::mtcars());
+      *>> std::print("{} x {}\n", frame->nrows(), frame->ncols()); // 32
+      *>>   x 12
+      *>> ```
+      *>>
+      *>> See also: datasets::mtcars()
+       01 DM-DATA-MTCARS.
+      *>> Result (DataFrame *): DATA-FRAME handle (new; refers into its
+      *>>   owner, which it keeps alive). A new 32 x 12 DataFrame owned
+      *>>   by the caller.
+          05 DM-DATA-MTCARS-RESULT USAGE BINARY-DOUBLE UNSIGNED.
+
+      *>> datamunge::data::airquality() -> DataFrame *
+      *>> CALL "dm_data_airquality" USING DM-DATA-AIRQUALITY DM-STATUS
+      *>>
+      *>> New York air quality measurements in 1973, 153 x 6 with
+      *>>   missing values, as R's `datasets::airquality`.
+      *>>
+      *>> Bundled with the library, so it needs no file or network
+      *>>   access. Columns are documented at
+      *>> datasets::airquality().
+      *>>
+      *>> **Example**
+      *>>
+      *>> ```cpp
+      *>> const std::unique_ptr<dm::DataFrame>
+      *>>   frame(dm::data::airquality());
+      *>> std::print("{} x {}\n", frame->nrows(), frame->ncols()); //
+      *>>   153 x 6
+      *>> ```
+      *>>
+      *>> See also: datasets::airquality()
+       01 DM-DATA-AIRQUALITY.
+      *>> Result (DataFrame *): DATA-FRAME handle (new; refers into its
+      *>>   owner, which it keeps alive). A new 153 x 6 DataFrame owned
+      *>>   by the caller.
+          05 DM-DATA-AIRQUALITY-RESULT USAGE BINARY-DOUBLE UNSIGNED.
+
+      *>> datamunge::data::breast_cancer() -> DataFrame *
+      *>> CALL "dm_data_breast_cancer" USING DM-DATA-BREAST-CANCER
+      *>>   DM-STATUS
+      *>>
+      *>> Wisconsin diagnostic breast cancer data, 569 x 31, as
+      *>>   scikit-learn's `load_breast_cancer()`.
+      *>>
+      *>> Bundled with the library, so it needs no file or network
+      *>>   access. Columns are documented at
+      *>> datasets::breast_cancer().
+      *>>
+      *>> **Example**
+      *>>
+      *>> ```cpp
+      *>> const std::unique_ptr<dm::DataFrame>
+      *>>   frame(dm::data::breast_cancer());
+      *>> std::print("{} x {}\n", frame->nrows(), frame->ncols()); //
+      *>>   569 x 31
+      *>> ```
+      *>>
+      *>> See also: datasets::breast_cancer()
+       01 DM-DATA-BREAST-CANCER.
+      *>> Result (DataFrame *): DATA-FRAME handle (new; refers into its
+      *>>   owner, which it keeps alive). A new 569 x 31 DataFrame owned
+      *>>   by the caller.
+          05 DM-DATA-BREAST-CANCER-RESULT USAGE BINARY-DOUBLE UNSIGNED.
+
+      *>> datamunge::data::diabetes() -> DataFrame *
+      *>> CALL "dm_data_diabetes" USING DM-DATA-DIABETES DM-STATUS
+      *>>
+      *>> Efron et al.'s diabetes progression data, 442 x 11, as
+      *>>   scikit-learn's `load_diabetes()`.
+      *>>
+      *>> Bundled with the library, so it needs no file or network
+      *>>   access. Columns are documented at
+      *>> datasets::diabetes().
+      *>>
+      *>> **Example**
+      *>>
+      *>> ```cpp
+      *>> const std::unique_ptr<dm::DataFrame>
+      *>>   frame(dm::data::diabetes());
+      *>> std::print("{} x {}\n", frame->nrows(), frame->ncols()); //
+      *>>   442 x 11
+      *>> ```
+      *>>
+      *>> See also: datasets::diabetes()
+       01 DM-DATA-DIABETES.
+      *>> Result (DataFrame *): DATA-FRAME handle (new; refers into its
+      *>>   owner, which it keeps alive). A new 442 x 11 DataFrame owned
+      *>>   by the caller.
+          05 DM-DATA-DIABETES-RESULT USAGE BINARY-DOUBLE UNSIGNED.
+
+      *>> datamunge::data::digits() -> DataFrame *
+      *>> CALL "dm_data_digits" USING DM-DATA-DIGITS DM-STATUS
+      *>>
+      *>> 8x8 handwritten digits, 1797 x 65, as scikit-learn's
+      *>>   `load_digits()`.
+      *>>
+      *>> Bundled with the library, so it needs no file or network
+      *>>   access. Columns are documented at
+      *>> datasets::digits().
+      *>>
+      *>> **Example**
+      *>>
+      *>> ```cpp
+      *>> const std::unique_ptr<dm::DataFrame>
+      *>>   frame(dm::data::digits());
+      *>> std::print("{} x {}\n", frame->nrows(), frame->ncols()); //
+      *>>   1797 x 65
+      *>> ```
+      *>>
+      *>> See also: datasets::digits()
+       01 DM-DATA-DIGITS.
+      *>> Result (DataFrame *): DATA-FRAME handle (new; refers into its
+      *>>   owner, which it keeps alive). A new 1797 x 65 DataFrame
+      *>>   owned by the caller.
+          05 DM-DATA-DIGITS-RESULT USAGE BINARY-DOUBLE UNSIGNED.
+
+      *>> datamunge::data::diamonds() -> DataFrame *
+      *>> CALL "dm_data_diamonds" USING DM-DATA-DIAMONDS DM-STATUS
+      *>>
+      *>> ggplot2's diamonds, 53940 x 10, downloaded on first use and
+      *>>   cached.
+      *>>
+      *>> The first call downloads the file into the dataset cache (see
+      *>>   datasets::fetch()); later
+      *>> calls read the cached copy. Columns are documented at
+      *>>   datasets::diamonds().
+      *>>
+      *>> **Example**
+      *>>
+      *>> ```cpp
+      *>> const std::unique_ptr<dm::DataFrame>
+      *>>   frame(dm::data::diamonds());
+      *>> std::print("{} x {}\n", frame->nrows(), frame->ncols()); //
+      *>>   53940 x 10
+      *>> ```
+      *>>
+      *>> Errors (a non-zero status):
+      *>> - std::runtime_error: if the file is not cached and cannot be
+      *>>   downloaded or read.
+      *>>
+      *>> See also: datasets::diamonds()
+       01 DM-DATA-DIAMONDS.
+      *>> Result (DataFrame *): DATA-FRAME handle (new; refers into its
+      *>>   owner, which it keeps alive). A new 53940 x 10 DataFrame
+      *>>   owned by the caller.
+          05 DM-DATA-DIAMONDS-RESULT USAGE BINARY-DOUBLE UNSIGNED.
+
+      *>> datamunge::data::california_housing() -> DataFrame *
+      *>> CALL "dm_data_california_housing" USING
+      *>>   DM-DATA-CALIFORNIA-HOUSING DM-STATUS
+      *>>
+      *>> California housing, 20640 x 10, downloaded on first use and
+      *>>   cached, as scikit-learn's `fetch_california_housing()`.
+      *>>
+      *>> The first call downloads the file into the dataset cache (see
+      *>>   datasets::fetch()); later
+      *>> calls read the cached copy. Columns are documented at
+      *>>   datasets::california_housing().
+      *>>
+      *>> **Example**
+      *>>
+      *>> ```cpp
+      *>> const std::unique_ptr<dm::DataFrame>
+      *>>   frame(dm::data::california_housing());
+      *>> std::print("{} x {}\n", frame->nrows(), frame->ncols()); //
+      *>>   20640 x 10
+      *>> ```
+      *>>
+      *>> Errors (a non-zero status):
+      *>> - std::runtime_error: if the file is not cached and cannot be
+      *>>   downloaded or read.
+      *>>
+      *>> See also: datasets::california_housing()
+       01 DM-DATA-CALIFORNIA-HOUSING.
+      *>> Result (DataFrame *): DATA-FRAME handle (new; refers into its
+      *>>   owner, which it keeps alive). A new 20640 x 10 DataFrame
+      *>>   owned by the caller.
+          05 DM-DATA-CALIFORNIA-HOUSING-RESULT USAGE BINARY-DOUBLE
+              UNSIGNED.
+
+      *>> datamunge::data::load(const std::string & name) -> DataFrame *
+      *>> CALL "dm_data_load" USING DM-DATA-LOAD DM-STATUS
+      *>>
+      *>> Any table-shaped dataset by name, e.g. "wine", like
+      *>>   scikit-learn's `fetch_openml()`
+      *>> lookup by name.
+      *>>
+      *>> Accepts every name listed by catalog() whose storage is a
+      *>>   table, bundled or downloaded
+      *>> (a downloaded dataset is cached as described at
+      *>>   datasets::load()).
+      *>>
+      *>> **Example**
+      *>>
+      *>> ```cpp
+      *>> const std::unique_ptr<dm::DataFrame>
+      *>>   wine(dm::data::load("wine"));
+      *>> std::print("{} x {}\n", wine->nrows(), wine->ncols()); // 178
+      *>>   x 14
+      *>> ```
+      *>>
+      *>> Errors (a non-zero status):
+      *>> - std::invalid_argument: for an unknown name, an image
+      *>>   dataset's name or karate_club.
+      *>> - std::runtime_error: if a downloaded dataset is not cached
+      *>>   and cannot be fetched.
+      *>>
+      *>> See also: catalog(), datasets::load()
+       01 DM-DATA-LOAD.
+      *>> name (const std::string &): text in PIC X(256); -LENGTH -1
+      *>>   trims trailing spaces. A dataset name from catalog(), e.g.
+      *>>   "iris" or "diamonds".
+          05 DM-DATA-LOAD-NAME PIC X(256).
+          05 DM-DATA-LOAD-NAME-LENGTH USAGE BINARY-LONG SIGNED VALUE -1.
+      *>> Result (DataFrame *): DATA-FRAME handle (new; refers into its
+      *>>   owner, which it keeps alive). A new DataFrame owned by the
+      *>>   caller.
+          05 DM-DATA-LOAD-RESULT USAGE BINARY-DOUBLE UNSIGNED.
+
+      *>> datamunge::data::catalog() -> DataFrame *
+      *>> CALL "dm_data_catalog" USING DM-DATA-CATALOG DM-STATUS
+      *>>
+      *>> One row per available dataset: `name`, `rows`, `columns`,
+      *>>   `storage`, `size_mb` and
+      *>> `description`, like R's `data()` listing.
+      *>>
+      *>> **Example**
+      *>>
+      *>> ```cpp
+      *>> const std::unique_ptr<dm::DataFrame> all(dm::data::catalog());
+      *>> std::print("{}\n", all->columns()); // ["name", "rows",
+      *>>   "columns", "storage", "size_mb", "description"]
+      *>> ```
+      *>>
+      *>> See also: load(), datasets::catalog()
+       01 DM-DATA-CATALOG.
+      *>> Result (DataFrame *): DATA-FRAME handle (new; refers into its
+      *>>   owner, which it keeps alive). A new DataFrame owned by the
+      *>>   caller.
+          05 DM-DATA-CATALOG-RESULT USAGE BINARY-DOUBLE UNSIGNED.
 
       *>> datamunge::fda::refine_basis(const BSplineBasis & basis, const
       *>>   std::vector<double> & inserted_knots) -> BSplineRefinement

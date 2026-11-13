@@ -1,9 +1,11 @@
+;; CMD: just TARGET=svm_iris_ex run-lisp
+
 ;;;; Support vector machine on iris: RBF vs. linear kernels, confusion matrix and predictions.
 (require "asdf")
 (asdf:load-system "datamunge")
 
 (defparameter *formula* "Species ~ Sepal.Length + Sepal.Width + Petal.Length + Petal.Width")
-(defparameter *iris* (dm:data-frame-iris))
+(defparameter *iris* (dm.data:iris))
 (format t "iris: ~a rows x ~a cols~%~%" (dm:nrows *iris*) (dm:ncols *iris*))
 
 (format t "=== RBF kernel (default) ===~%")

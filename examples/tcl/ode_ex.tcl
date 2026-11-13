@@ -1,3 +1,5 @@
+# CMD: just TARGET=ode_ex run-tcl
+
 package require Datamunge 0.0.1
 
 # NOTE: the Python/Ruby ode examples also demonstrate a live, user-supplied RHS by subclassing

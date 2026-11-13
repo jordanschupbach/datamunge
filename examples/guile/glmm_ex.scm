@@ -1,3 +1,5 @@
+;; CMD: just TARGET=glmm_ex run-guile
+
 (use-modules (datamunge) (srfi srfi-1))
 
 (define (my-rand) (random 1.0))
@@ -6,7 +8,7 @@
     (* (sqrt (* -2.0 (log u1))) (cos (* 2.0 3.14159265358979323846 u2)))))
 
 (format #t "=================== Binomial (logistic) mixed model on a real dataset (penguins) ===================\n")
-(define penguins (DataFrame-penguins))
+(define penguins (data_penguins))
 (define is-male '())
 (define body-mass '())
 (define island '())

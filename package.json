@@ -11,7 +11,7 @@
   },
   "scripts": {
     "generate": "node setup.js",
-    "build": "npm run generate && node-gyp configure build",
+    "build": "npm run generate && node-gyp configure && node-gyp build --jobs max",
     "pretest": "npm run build",
     "test": "jest tests/javascript",
     "start": "node src/index"

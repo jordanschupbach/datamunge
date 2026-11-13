@@ -1,6 +1,6 @@
 *> N-dimensional tensors: construction, shape ops, broadcasting, reductions, linear algebra,
 *> masks, and the iris measurements as a 150 x 4 tensor.
-*> Run with `just run-cobol TARGET=tensor_ex`.
+*> CMD: just TARGET=tensor_ex run-cobol
 IDENTIFICATION DIVISION.
 PROGRAM-ID. TENSOR-EX.
 DATA DIVISION.
@@ -216,9 +216,9 @@ PROCEDURE DIVISION.
 
     DISPLAY " "
     DISPLAY "=================== A real dataset as a Tensor ==================="
-    CALL "dm_data_frame_iris" USING DM-DATA-FRAME-IRIS DM-STATUS
+    CALL "dm_data_iris" USING DM-DATA-IRIS DM-STATUS
     PERFORM CHECK
-    MOVE DM-DATA-FRAME-IRIS-RESULT TO IRIS
+    MOVE DM-DATA-IRIS-RESULT TO IRIS
     MOVE IRIS TO DM-DATA-FRAME-NROWS-SELF
     CALL "dm_data_frame_nrows" USING DM-DATA-FRAME-NROWS DM-STATUS
     MOVE DM-DATA-FRAME-NROWS-RESULT TO NROWS

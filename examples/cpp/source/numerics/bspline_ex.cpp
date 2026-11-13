@@ -1,3 +1,5 @@
+// CMD: just TARGET=bspline_ex run-cpp
+
 #include <datamunge/dstruct/dstruct.hpp>
 #include <datamunge/fda/bspline.hpp>
 #include <datamunge/stats/stats.hpp>

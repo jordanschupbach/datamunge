@@ -8,6 +8,17 @@
 
 package js.datamunge.jdatamunge;
 
+/**
+ *  Configuration for PSO; fields retain their documented native defaults.<br>
+ *  Supply finite values in the supported ranges. Controls are copied at construction;<br>
+ *  validation, stopping and loss scaling belong to optimize().<br>
+ *  <p alt="Example"><br>
+ *  {@code 
+ dm::optim::PSOOptions o;
+ std::print("{}\n",o.max_iterations); // 1000
+ }</p><br>
+ *  @see PSO
+ */
 public class PSOOptions {
   private transient long swigCPtr;
   protected transient boolean swigCMemOwn;
@@ -88,52 +99,26 @@ public class PSOOptions {
     return datamungeJNI.PSOOptions_social_coefficient_get(swigCPtr, this);
   }
 
-  /**
-   *  One of "global" (gbest -- every particle is attracted to the single best<br>
-   *         particle found so far) or "ring" (lbest -- each particle is attracted to the<br>
-   *         best particle within a small ring-shaped neighborhood; slower but less prone<br>
-   *         to premature convergence).
-   */
   public void setTopology(String value) {
     datamungeJNI.PSOOptions_topology_set(swigCPtr, this, value);
   }
 
-  /**
-   *  One of "global" (gbest -- every particle is attracted to the single best<br>
-   *         particle found so far) or "ring" (lbest -- each particle is attracted to the<br>
-   *         best particle within a small ring-shaped neighborhood; slower but less prone<br>
-   *         to premature convergence).
-   */
   public String getTopology() {
     return datamungeJNI.PSOOptions_topology_get(swigCPtr, this);
   }
 
-  /**
-   *  Neighbors considered on each side of a particle when topology == "ring".
-   */
   public void setRing_neighbors(long value) {
     datamungeJNI.PSOOptions_ring_neighbors_set(swigCPtr, this, value);
   }
 
-  /**
-   *  Neighbors considered on each side of a particle when topology == "ring".
-   */
   public long getRing_neighbors() {
     return datamungeJNI.PSOOptions_ring_neighbors_get(swigCPtr, this);
   }
 
-  /**
-   *  One of "constant" or "linear_decay" (anneals from inertia_weight down to<br>
-   *         final_inertia_weight over the course of the run).
-   */
   public void setInertia_strategy(String value) {
     datamungeJNI.PSOOptions_inertia_strategy_set(swigCPtr, this, value);
   }
 
-  /**
-   *  One of "constant" or "linear_decay" (anneals from inertia_weight down to<br>
-   *         final_inertia_weight over the course of the run).
-   */
   public String getInertia_strategy() {
     return datamungeJNI.PSOOptions_inertia_strategy_get(swigCPtr, this);
   }
@@ -146,16 +131,10 @@ public class PSOOptions {
     return datamungeJNI.PSOOptions_final_inertia_weight_get(swigCPtr, this);
   }
 
-  /**
-   *  Stops after the global best has improved by less than this for 20 consecutive iterations.
-   */
   public void setTolerance(double value) {
     datamungeJNI.PSOOptions_tolerance_set(swigCPtr, this, value);
   }
 
-  /**
-   *  Stops after the global best has improved by less than this for 20 consecutive iterations.
-   */
   public double getTolerance() {
     return datamungeJNI.PSOOptions_tolerance_get(swigCPtr, this);
   }

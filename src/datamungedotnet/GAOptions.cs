@@ -9,6 +9,14 @@
 //------------------------------------------------------------------------------
 
 
+/// <summary>Configuration for GeneticAlgorithm; fields retain their documented native defaults. Supply finite values in the supported ranges. Controls are copied at construction; validation, stopping and loss scaling belong to optimize().</summary>
+/// Title: Example
+/// <code>      dm::optim::GAOptions o;
+///      std::print("{}\n",o.max_generations); // 500</code>
+///
+///
+///
+/// <seealso cref="GeneticAlgorithm"/>
 public class GAOptions : global::System.IDisposable {
   private global::System.Runtime.InteropServices.HandleRef swigCPtr;
   protected bool swigCMemOwn;
@@ -86,7 +94,6 @@ public class GAOptions : global::System.IDisposable {
     } 
   }
 
-  /// <summary>Per-gene probability of a Gaussian mutation.</summary>
   public double mutation_rate {
     set {
       datamungePINVOKE.GAOptions_mutation_rate_set(swigCPtr, value);
@@ -97,7 +104,6 @@ public class GAOptions : global::System.IDisposable {
     } 
   }
 
-  /// <summary>Mutation Gaussian standard deviation, as a fraction of each gene's [lower, upper] range.</summary>
   public double mutation_std_dev {
     set {
       datamungePINVOKE.GAOptions_mutation_std_dev_set(swigCPtr, value);
@@ -108,7 +114,6 @@ public class GAOptions : global::System.IDisposable {
     } 
   }
 
-  /// <summary>One of "tournament", "roulette" (fitness-proportionate), or "rank" (linear ranking).</summary>
   public string selection_strategy {
     set {
       datamungePINVOKE.GAOptions_selection_strategy_set(swigCPtr, value);
@@ -131,7 +136,6 @@ public class GAOptions : global::System.IDisposable {
     } 
   }
 
-  /// <summary>One of "single_point", "uniform", or "blend" (BLX-alpha).</summary>
   public string crossover_strategy {
     set {
       datamungePINVOKE.GAOptions_crossover_strategy_set(swigCPtr, value);
@@ -144,7 +148,6 @@ public class GAOptions : global::System.IDisposable {
     } 
   }
 
-  /// <summary>Alpha parameter for BLX-alpha crossover, used only when crossover_strategy == "blend".</summary>
   public double blend_alpha {
     set {
       datamungePINVOKE.GAOptions_blend_alpha_set(swigCPtr, value);
@@ -175,7 +178,6 @@ public class GAOptions : global::System.IDisposable {
     } 
   }
 
-  /// <summary>Stops after the population best has improved by less than this for 20 consecutive generations.</summary>
   public double tolerance {
     set {
       datamungePINVOKE.GAOptions_tolerance_set(swigCPtr, value);

@@ -1,6 +1,6 @@
 *> Nadaraya-Watson kernel regression of petal length on petal width (iris), with the
 *> bandwidth chosen by leave-one-out CV, compared against a too-small and a too-large one.
-*> Run with `just run-cobol TARGET=kernel_regression_iris_ex`.
+*> CMD: just TARGET=kernel_regression_iris_ex run-cobol
 IDENTIFICATION DIVISION.
 PROGRAM-ID. KERNEL-REGRESSION-IRIS-EX.
 DATA DIVISION.
@@ -20,9 +20,9 @@ COPY "datamunge.cpy".
 01 NUM-EDIT-2 PIC Z(8)9.
 
 PROCEDURE DIVISION.
-    CALL "dm_data_frame_iris" USING DM-DATA-FRAME-IRIS DM-STATUS
+    CALL "dm_data_iris" USING DM-DATA-IRIS DM-STATUS
     PERFORM CHECK
-    MOVE DM-DATA-FRAME-IRIS-RESULT TO IRIS
+    MOVE DM-DATA-IRIS-RESULT TO IRIS
     MOVE IRIS TO DM-DATA-FRAME-NROWS-SELF
     CALL "dm_data_frame_nrows" USING DM-DATA-FRAME-NROWS DM-STATUS
     PERFORM CHECK

@@ -1,3 +1,5 @@
+// CMD: just TARGET=geometry_ex run-cpp
+
 #include <datamunge/geometry/geometry.hpp>
 
 #include <iomanip>

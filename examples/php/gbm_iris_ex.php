@@ -1,6 +1,8 @@
 <?php
+// CMD: just TARGET=gbm_iris_ex run-php
 
-$iris = DataFrame::iris();
+
+$iris = data_iris();
 print("iris: " . $iris->nrows() . " rows x " . $iris->ncols() . " cols\n\n");
 
 $model = new GBMClassifier($iris, "Species ~ Petal.Length + Petal.Width");

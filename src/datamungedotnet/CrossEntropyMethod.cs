@@ -71,4 +71,11 @@ public class CrossEntropyMethod : global::System.IDisposable {
     return ret;
   }
 
+  /// <summary>The options this CrossEntropyMethod was configured with.</summary>
+  /// <returns>The stored options.</returns>
+  public CrossEntropyMethodOptions options() {
+    CrossEntropyMethodOptions ret = new CrossEntropyMethodOptions(datamungePINVOKE.CrossEntropyMethod_options(swigCPtr), false);
+    return ret;
+  }
+
 }

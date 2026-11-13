@@ -8,6 +8,17 @@
 
 package js.datamunge.jdatamunge;
 
+/**
+ *  Configuration for CoordinateDescent; fields retain their documented native defaults.<br>
+ *  Supply finite values in the supported ranges. Controls are copied at construction;<br>
+ *  validation, stopping and loss scaling belong to optimize().<br>
+ *  <p alt="Example"><br>
+ *  {@code 
+ dm::optim::CoordinateDescentOptions o;
+ std::print("{}\n",o.max_iterations); // 1000
+ }</p><br>
+ *  @see CoordinateDescent
+ */
 public class CoordinateDescentOptions {
   private transient long swigCPtr;
   protected transient boolean swigCMemOwn;
@@ -48,16 +59,10 @@ public class CoordinateDescentOptions {
     }
   }
 
-  /**
-   *  Initial step considered for each one-dimensional update.
-   */
   public void setStep_size(double value) {
     datamungeJNI.CoordinateDescentOptions_step_size_set(swigCPtr, this, value);
   }
 
-  /**
-   *  Initial step considered for each one-dimensional update.
-   */
   public double getStep_size() {
     return datamungeJNI.CoordinateDescentOptions_step_size_get(swigCPtr, this);
   }
@@ -78,16 +83,10 @@ public class CoordinateDescentOptions {
     return datamungeJNI.CoordinateDescentOptions_tolerance_get(swigCPtr, this);
   }
 
-  /**
-   *  Armijo sufficient-decrease constant used by the per-coordinate line search.
-   */
   public void setArmijo_c1(double value) {
     datamungeJNI.CoordinateDescentOptions_armijo_c1_set(swigCPtr, this, value);
   }
 
-  /**
-   *  Armijo sufficient-decrease constant used by the per-coordinate line search.
-   */
   public double getArmijo_c1() {
     return datamungeJNI.CoordinateDescentOptions_armijo_c1_get(swigCPtr, this);
   }

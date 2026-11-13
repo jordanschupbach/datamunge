@@ -1,3 +1,5 @@
+# CMD: just TARGET=pca_ex run-tcl
+
 package require Datamunge 0.0.1
 
 # Tcl's overload dispatch can't distinguish a vector<string> argument from a std::string one (both
@@ -8,7 +10,7 @@ proc encode_cols {names} {
   return [join $names [format %c 31]]
 }
 
-set iris [datamunge::DataFrame_iris]
+set iris [datamunge::data_iris]
 set features [encode_cols {Sepal.Length Sepal.Width Petal.Length Petal.Width}]
 
 # species labels as a plain list, for the grouped (colored-by-species) scores plot

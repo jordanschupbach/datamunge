@@ -1,3 +1,5 @@
+;; CMD: just TARGET=timeseries_ex run-lisp
+
 ;;;; Time series: ARIMA, seasonal ARIMA and exponential smoothing (SES, Holt, Holt-Winters).
 (require "asdf")
 (asdf:load-system "datamunge")

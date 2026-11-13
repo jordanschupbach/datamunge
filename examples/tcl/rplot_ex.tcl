@@ -1,3 +1,5 @@
+# CMD: just TARGET=rplot_ex run-tcl
+
 package require Datamunge 0.0.1
 
 # Demonstrates datamunge::RPlot / datamunge::RLayout -- the R-base-graphics-style plotting library.

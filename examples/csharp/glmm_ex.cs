@@ -1,3 +1,5 @@
+// CMD: just TARGET=glmm_ex run-csharp
+
 using System;
 using System.Collections.Generic;
 
@@ -12,7 +14,7 @@ class Program {
 
   static void Main() {
     Console.WriteLine("=================== Binomial (logistic) mixed model on a real dataset (penguins) ===================");
-    var penguins = DataFrame.penguins();
+    var penguins = datamunge.data_penguins();
     var isMale = new List<double>();
     var bodyMass = new List<double>();
     var island = new List<string>();

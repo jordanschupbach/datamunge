@@ -9,6 +9,17 @@
 //------------------------------------------------------------------------------
 
 
+/// <summary>SQP on the EqualityConstrainedFunction callback interface. Restricted projection-like implementation, not a general SQP QP solver: takes an objective-gradient step, then sequential linearised row corrections using squared Jacobian-row norms plus regularization. Its stopping condition compares constraint norm and the constant absolute step_size to tolerance, not the actual displacement or Lagrangian gradient. The caller supplies finite, dimensionally consistent callbacks. Inputs are borrowed; coordinates mutate in place and can retain a partial state if a callback throws. Calls use local optimizer state and propagate callback exceptions; sharing a mutable objective across threads requires external synchronisation. Normal return alone is not a uniform convergence certificate.</summary>
+/// Title: Example
+/// <code>      const dm::optim::SQP optimizer;
+///      std::print("{}\n",optimizer.options().max_iterations); // 200</code>
+///
+///
+///
+/// Title: References
+///  - J. Nocedal and S. J. Wright (2006), Numerical Optimization, second edition, https://doi.org/10.1007/978-0-387-40065-5. The implemented variant and stopping rules are specified above.
+///
+/// <seealso cref="SQPOptions, trace_optimize"/>
 public class SQP : global::System.IDisposable {
   private global::System.Runtime.InteropServices.HandleRef swigCPtr;
   protected bool swigCMemOwn;
@@ -56,16 +67,55 @@ public class SQP : global::System.IDisposable {
     }
   }
 
+  /// <summary>Store a copy of the controls without running the objective.</summary>
+  /// <param name="options"> Method-specific controls; defaults are listed by SQPOptions.</param> 
+  /// Title: Example
+  /// <code>      const dm::optim::SQP optimizer;
+  ///      std::print("{}\n",optimizer.options().max_iterations); // 200</code>
+  ///
+  ///
+  ///
+  /// <seealso cref="optimize"/>
   public SQP(SQPOptions options) : this(datamungePINVOKE.new_SQP__SWIG_0(SQPOptions.getCPtr(options)), true) {
     if (datamungePINVOKE.SWIGPendingException.Pending) throw datamungePINVOKE.SWIGPendingException.Retrieve();
   }
 
+  /// <summary>Store a copy of the controls without running the objective.</summary>
+  /// Title: Example
+  /// <code>      const dm::optim::SQP optimizer;
+  ///      std::print("{}\n",optimizer.options().max_iterations); // 200</code>
+  ///
+  ///
+  ///
+  /// <seealso cref="optimize"/>
   public SQP() : this(datamungePINVOKE.new_SQP__SWIG_1(), true) {
   }
 
+  /// <summary>Run SQP from the supplied point using the configured finite budget. Restricted projection-like implementation, not a general SQP QP solver: takes an objective-gradient step, then sequential linearised row corrections using squared Jacobian-row norms plus regularization. Its stopping condition compares constraint norm and the constant absolute step_size to tolerance, not the actual displacement or Lagrangian gradient.</summary>
+  /// <param name="function"> Borrowed EqualityConstrainedFunction with matching finite output shapes.</param> 
+  /// <param name="coordinates"> Owned-by-caller finite start; overwritten with the native returned point.</param> 
+  /// <returns>Objective at the native returned coordinates; not a stop-status code.</returns> 
+  /// <exception cref="std::exception"> Exceptions from supplied callbacks propagate. Raw solvers do not uniformly reject nonfinite inputs.</exception> 
+  /// Title: Example
+  /// <code>      dm::optim::EqualityQuadratic f({2,0},1);
+  ///      dm::optim::SQPOptions controls;controls.max_iterations=5;
+  ///      std::vector&lt;double&gt; x{0,0};
+  ///      const auto value=dm::optim::SQP(controls).optimize(f,x);
+  ///      std::print("{}\n",std::isfinite(value)); // true</code>
+  ///
+  ///
+  ///
+  /// <seealso cref="trace_optimize"/>
   public double optimize(EqualityConstrainedFunction function, DVector coordinates) {
     double ret = datamungePINVOKE.SQP_optimize(swigCPtr, EqualityConstrainedFunction.getCPtr(function), DVector.getCPtr(coordinates));
     if (datamungePINVOKE.SWIGPendingException.Pending) throw datamungePINVOKE.SWIGPendingException.Retrieve();
+    return ret;
+  }
+
+  /// <summary>Borrow this optimizer's stored configuration.</summary>
+  /// <returns>Const option reference, valid during this object's lifetime; no mutation.</returns>
+  public SQPOptions options() {
+    SQPOptions ret = new SQPOptions(datamungePINVOKE.SQP_options(swigCPtr), false);
     return ret;
   }
 

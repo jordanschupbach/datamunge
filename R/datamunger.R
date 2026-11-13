@@ -3142,7 +3142,7 @@ rosetta_ref <- function(value = NULL) {
 #' @seealso dyadic_refine()
 #' @md
 #'
-`refine_basis` <- function(...) .Call(`.rs_215`, NULL, list(...))
+`refine_basis` <- function(...) .Call(`.rs_233`, NULL, list(...))
 #' Halves every knot span of a clamped basis (inserts each positive span's midpoint).
 #'
 #' This is the nested-space step between consecutive levels of HB/THB splines: the refined
@@ -3166,7 +3166,7 @@ rosetta_ref <- function(value = NULL) {
 #' @seealso refine_basis(), TensorBSpline::dyadic_refine()
 #' @md
 #'
-`dyadic_refine` <- function(...) .Call(`.rs_216`, NULL, list(...))
+`dyadic_refine` <- function(...) .Call(`.rs_234`, NULL, list(...))
 #' Fits a tensor-product B-spline to scattered data by ordinary least squares.
 #'
 #' Builds the sparse design B (each row has at most prod(degree_k + 1) nonzeros), then
@@ -3194,7 +3194,7 @@ rosetta_ref <- function(value = NULL) {
 #' @seealso fit_tensor_pspline()
 #' @md
 #'
-`fit_tensor_bspline` <- function(...) .Call(`.rs_217`, NULL, list(...))
+`fit_tensor_bspline` <- function(...) .Call(`.rs_235`, NULL, list(...))
 #' Fits a tensor-product P-spline: least squares plus an anisotropic difference penalty, solving (B^T B + P) c = B^T y with P from tensor_difference_penalty().
 #'
 #' All-zero lambdas reproduce fit_tensor_bspline(). Positive lambdas keep the system
@@ -3228,7 +3228,7 @@ rosetta_ref <- function(value = NULL) {
 #' @seealso fit_tensor_bspline(), fit_pspline()
 #' @md
 #'
-`fit_tensor_pspline` <- function(...) .Call(`.rs_218`, NULL, list(...))
+`fit_tensor_pspline` <- function(...) .Call(`.rs_236`, NULL, list(...))
 #' The GEMM backend nn uses: "inhouse-<isa>" (e.g.
 #'
 #' "inhouse-avx512"), or "accelerate", "openblas" or "cblas" in DATAMUNGE_USE_BLAS builds.
@@ -3237,28 +3237,28 @@ rosetta_ref <- function(value = NULL) {
 #' @return `character`
 #' @md
 #'
-`nn_gemm_backend` <- function(...) .Call(`.rs_219`, NULL, list(...))
+`nn_gemm_backend` <- function(...) .Call(`.rs_237`, NULL, list(...))
 #' Threads used by nn kernels.
 #' @usage
 #' nn_get_num_threads()
 #' @return `integer`
 #' @md
 #'
-`nn_get_num_threads` <- function(...) .Call(`.rs_220`, NULL, list(...))
+`nn_get_num_threads` <- function(...) .Call(`.rs_238`, NULL, list(...))
 #' C++ function `datamunge::nn::nn_set_num_threads`
 #' @usage
 #' nn_set_num_threads(threads)
 #' @param threads `integer`
 #' @md
 #'
-`nn_set_num_threads` <- function(...) invisible(.Call(`.rs_221`, NULL, list(...)))
+`nn_set_num_threads` <- function(...) invisible(.Call(`.rs_239`, NULL, list(...)))
 #' Reseeds the generator shared by unif() and rnorm(), like R's set.seed().
 #' @usage
 #' set_seed(seed)
 #' @param seed `integer`
 #' @md
 #'
-`set_seed` <- function(...) invisible(.Call(`.rs_222`, NULL, list(...)))
+`set_seed` <- function(...) invisible(.Call(`.rs_240`, NULL, list(...)))
 #' n draws from Uniform\[lower, upper).
 #' @usage
 #' unif(lower, upper, n)
@@ -3268,7 +3268,7 @@ rosetta_ref <- function(value = NULL) {
 #' @return `numeric vector`
 #' @md
 #'
-`unif` <- function(...) .Call(`.rs_223`, NULL, list(...))
+`unif` <- function(...) .Call(`.rs_241`, NULL, list(...))
 #' Alias for unif(lower, upper, n), sharing its generator and validation.
 #' @usage
 #' native_runif(lower, upper, n)
@@ -3278,7 +3278,7 @@ rosetta_ref <- function(value = NULL) {
 #' @return `numeric vector`
 #' @md
 #'
-`native_runif` <- function(...) .Call(`.rs_224`, NULL, list(...))
+`native_runif` <- function(...) .Call(`.rs_242`, NULL, list(...))
 #' n draws from Normal(mean, sd).
 #' @usage
 #' native_rnorm(mean, sd, n)
@@ -3288,7 +3288,7 @@ rosetta_ref <- function(value = NULL) {
 #' @return `numeric vector`
 #' @md
 #'
-`native_rnorm` <- function(...) .Call(`.rs_225`, NULL, list(...))
+`native_rnorm` <- function(...) .Call(`.rs_243`, NULL, list(...))
 #' n evenly spaced values from `from` to `to` inclusive.
 #' @usage
 #' seql(from, to, n)
@@ -3298,7 +3298,53 @@ rosetta_ref <- function(value = NULL) {
 #' @return `numeric vector`
 #' @md
 #'
-`seql` <- function(...) .Call(`.rs_226`, NULL, list(...))
+`seql` <- function(...) .Call(`.rs_244`, NULL, list(...))
+#' Functions of the C++ namespace `datamunge::data`
+#'
+#' A list of the functions bound from C++ namespace `datamunge::data`; call them as `data$name(...)`.
+#'
+#' @format A list of functions:
+#' \describe{
+#'   \item{`data$iris()`}{Edgar Anderson's iris measurements, 150 x 5, as R's `datasets::iris`.}
+#'   \item{`data$penguins()`}{The Palmer penguins, 344 x 8 with missing values, as `palmerpenguins::penguins`.}
+#'   \item{`data$tooth_growth()`}{Crampton's guinea pig tooth growth data, 60 x 3, as R's `datasets::ToothGrowth`.}
+#'   \item{`data$wine()`}{The UCI wine recognition data, 178 x 14, as scikit-learn's `load_wine()`.}
+#'   \item{`data$titanic()`}{The Kaggle Titanic training set, 891 x 12 with missing values.}
+#'   \item{`data$eight_schools()`}{Rubin's eight schools coaching experiment, 8 x 3.}
+#'   \item{`data$air_passengers()`}{Monthly airline passengers 1949-1960, 144 x 3, as R's `datasets::AirPassengers`.}
+#'   \item{`data$volcano()`}{Maunga Whau (Mt Eden) elevations on a 10 m grid, 5307 x 3, as R's `datasets::volcano` in long form.}
+#'   \item{`data$faithful()`}{Old Faithful geyser eruptions, 272 x 2, as R's `datasets::faithful`.}
+#'   \item{`data$mtcars()`}{Motor Trend cars, 32 x 12 with the row names as column `model`, as R's `datasets::mtcars`.}
+#'   \item{`data$airquality()`}{New York air quality measurements in 1973, 153 x 6 with missing values, as R's `datasets::airquality`.}
+#'   \item{`data$breast_cancer()`}{Wisconsin diagnostic breast cancer data, 569 x 31, as scikit-learn's `load_breast_cancer()`.}
+#'   \item{`data$diabetes()`}{Efron et al.'s diabetes progression data, 442 x 11, as scikit-learn's `load_diabetes()`.}
+#'   \item{`data$digits()`}{8x8 handwritten digits, 1797 x 65, as scikit-learn's `load_digits()`.}
+#'   \item{`data$diamonds()`}{ggplot2's diamonds, 53940 x 10, downloaded on first use and cached.}
+#'   \item{`data$california_housing()`}{California housing, 20640 x 10, downloaded on first use and cached, as scikit-learn's `fetch_california_housing()`.}
+#'   \item{`data$load(name)`}{Any table-shaped dataset by name, e.g. "wine", like scikit-learn's `fetch_openml()` lookup by name.}
+#'   \item{`data$catalog()`}{One row per available dataset: `name`, `rows`, `columns`, `storage`, `size_mb` and `description`, like R's `data()` listing.}
+#' }
+#' @md
+`data` <- list(
+  `iris` = function(...) .Call(`.rs_215`, NULL, list(...)),
+  `penguins` = function(...) .Call(`.rs_216`, NULL, list(...)),
+  `tooth_growth` = function(...) .Call(`.rs_217`, NULL, list(...)),
+  `wine` = function(...) .Call(`.rs_218`, NULL, list(...)),
+  `titanic` = function(...) .Call(`.rs_219`, NULL, list(...)),
+  `eight_schools` = function(...) .Call(`.rs_220`, NULL, list(...)),
+  `air_passengers` = function(...) .Call(`.rs_221`, NULL, list(...)),
+  `volcano` = function(...) .Call(`.rs_222`, NULL, list(...)),
+  `faithful` = function(...) .Call(`.rs_223`, NULL, list(...)),
+  `mtcars` = function(...) .Call(`.rs_224`, NULL, list(...)),
+  `airquality` = function(...) .Call(`.rs_225`, NULL, list(...)),
+  `breast_cancer` = function(...) .Call(`.rs_226`, NULL, list(...)),
+  `diabetes` = function(...) .Call(`.rs_227`, NULL, list(...)),
+  `digits` = function(...) .Call(`.rs_228`, NULL, list(...)),
+  `diamonds` = function(...) .Call(`.rs_229`, NULL, list(...)),
+  `california_housing` = function(...) .Call(`.rs_230`, NULL, list(...)),
+  `load` = function(...) .Call(`.rs_231`, NULL, list(...)),
+  `catalog` = function(...) .Call(`.rs_232`, NULL, list(...))
+)
 #' A symbolic expression tree over +, -, *, /, ^ (power) and sin/cos/exp/log, supporting symbolic differentiation, basic algebraic simplification, and numeric evaluation.
 #'
 #' Value type wrapping a shared, immutable node tree -- copies are cheap and structural sharing across copies is always safe since nodes are never mutated after construction.
@@ -3381,31 +3427,31 @@ rosetta_ref <- function(value = NULL) {
   public = list(
     initialize = function(...) {
       if (...length() == 1L && inherits(..1, "rosetta_ptr")) self$.ptr <- ..1
-      else { if (!is.null(self$.ptr)) stop("native object already initialized"); self$.ptr <- .Call(`.rs_245`, list(...)) }
+      else { if (!is.null(self$.ptr)) stop("native object already initialized"); self$.ptr <- .Call(`.rs_263`, list(...)) }
       invisible(self)
     },
-    `constant` = function(...) .Call(`.rs_227`, NULL, list(...)),
-    `variable` = function(...) .Call(`.rs_228`, NULL, list(...)),
-    `add` = function(...) .Call(`.rs_229`, self, list(...)),
-    `subtract` = function(...) .Call(`.rs_230`, self, list(...)),
-    `multiply` = function(...) .Call(`.rs_231`, self, list(...)),
-    `divide` = function(...) .Call(`.rs_232`, self, list(...)),
-    `power` = function(...) .Call(`.rs_233`, self, list(...)),
-    `negate` = function(...) .Call(`.rs_234`, self, list(...)),
-    `sin` = function(...) .Call(`.rs_235`, self, list(...)),
-    `cos` = function(...) .Call(`.rs_236`, self, list(...)),
-    `exp` = function(...) .Call(`.rs_237`, self, list(...)),
-    `log` = function(...) .Call(`.rs_238`, self, list(...)),
-    `differentiate` = function(...) .Call(`.rs_239`, self, list(...)),
-    `integrate` = function(...) .Call(`.rs_240`, self, list(...)),
-    `simplify` = function(...) .Call(`.rs_241`, self, list(...)),
-    `evaluate` = function(...) .Call(`.rs_242`, self, list(...)),
-    `to_string` = function(...) .Call(`.rs_243`, self, list(...)),
-    `to_tex` = function(...) .Call(`.rs_244`, self, list(...))
+    `constant` = function(...) .Call(`.rs_245`, NULL, list(...)),
+    `variable` = function(...) .Call(`.rs_246`, NULL, list(...)),
+    `add` = function(...) .Call(`.rs_247`, self, list(...)),
+    `subtract` = function(...) .Call(`.rs_248`, self, list(...)),
+    `multiply` = function(...) .Call(`.rs_249`, self, list(...)),
+    `divide` = function(...) .Call(`.rs_250`, self, list(...)),
+    `power` = function(...) .Call(`.rs_251`, self, list(...)),
+    `negate` = function(...) .Call(`.rs_252`, self, list(...)),
+    `sin` = function(...) .Call(`.rs_253`, self, list(...)),
+    `cos` = function(...) .Call(`.rs_254`, self, list(...)),
+    `exp` = function(...) .Call(`.rs_255`, self, list(...)),
+    `log` = function(...) .Call(`.rs_256`, self, list(...)),
+    `differentiate` = function(...) .Call(`.rs_257`, self, list(...)),
+    `integrate` = function(...) .Call(`.rs_258`, self, list(...)),
+    `simplify` = function(...) .Call(`.rs_259`, self, list(...)),
+    `evaluate` = function(...) .Call(`.rs_260`, self, list(...)),
+    `to_string` = function(...) .Call(`.rs_261`, self, list(...)),
+    `to_tex` = function(...) .Call(`.rs_262`, self, list(...))
   )
 )
-`Expr`$`constant` <- function(...) .Call(`.rs_227`, NULL, list(...))
-`Expr`$`variable` <- function(...) .Call(`.rs_228`, NULL, list(...))
+`Expr`$`constant` <- function(...) .Call(`.rs_245`, NULL, list(...))
+`Expr`$`variable` <- function(...) .Call(`.rs_246`, NULL, list(...))
 #' Dense univariate polynomial over the reals, stored as coefficients in ascending degree order (coefficients()\[i\] is the coefficient of x^i).
 #'
 #' Always kept trimmed -- no trailing (highest-degree) zero coefficients, except for the zero polynomial itself, which is stored as the single coefficient \{0.0\}.
@@ -3474,25 +3520,25 @@ rosetta_ref <- function(value = NULL) {
   public = list(
     initialize = function(...) {
       if (...length() == 1L && inherits(..1, "rosetta_ptr")) self$.ptr <- ..1
-      else { if (!is.null(self$.ptr)) stop("native object already initialized"); self$.ptr <- .Call(`.rs_262`, list(...)) }
+      else { if (!is.null(self$.ptr)) stop("native object already initialized"); self$.ptr <- .Call(`.rs_280`, list(...)) }
       invisible(self)
     },
-    `degree` = function(...) .Call(`.rs_246`, self, list(...)),
-    `is_zero` = function(...) .Call(`.rs_247`, self, list(...)),
-    `coefficient` = function(...) .Call(`.rs_248`, self, list(...)),
-    `coefficients` = function(...) .Call(`.rs_249`, self, list(...)),
-    `evaluate` = function(...) .Call(`.rs_250`, self, list(...)),
-    `derivative` = function(...) .Call(`.rs_251`, self, list(...)),
-    `antiderivative` = function(...) .Call(`.rs_252`, self, list(...)),
-    `add` = function(...) .Call(`.rs_253`, self, list(...)),
-    `subtract` = function(...) .Call(`.rs_254`, self, list(...)),
-    `multiply` = function(...) .Call(`.rs_255`, self, list(...)),
-    `scale` = function(...) .Call(`.rs_256`, self, list(...)),
-    `negate` = function(...) .Call(`.rs_257`, self, list(...)),
-    `to_string` = function(...) .Call(`.rs_258`, self, list(...)),
-    `__eq__` = function(...) .Call(`.rs_259`, self, list(...)),
-    `__ne__` = function(...) .Call(`.rs_260`, self, list(...)),
-    `to_tex` = function(...) .Call(`.rs_261`, self, list(...))
+    `degree` = function(...) .Call(`.rs_264`, self, list(...)),
+    `is_zero` = function(...) .Call(`.rs_265`, self, list(...)),
+    `coefficient` = function(...) .Call(`.rs_266`, self, list(...)),
+    `coefficients` = function(...) .Call(`.rs_267`, self, list(...)),
+    `evaluate` = function(...) .Call(`.rs_268`, self, list(...)),
+    `derivative` = function(...) .Call(`.rs_269`, self, list(...)),
+    `antiderivative` = function(...) .Call(`.rs_270`, self, list(...)),
+    `add` = function(...) .Call(`.rs_271`, self, list(...)),
+    `subtract` = function(...) .Call(`.rs_272`, self, list(...)),
+    `multiply` = function(...) .Call(`.rs_273`, self, list(...)),
+    `scale` = function(...) .Call(`.rs_274`, self, list(...)),
+    `negate` = function(...) .Call(`.rs_275`, self, list(...)),
+    `to_string` = function(...) .Call(`.rs_276`, self, list(...)),
+    `__eq__` = function(...) .Call(`.rs_277`, self, list(...)),
+    `__ne__` = function(...) .Call(`.rs_278`, self, list(...)),
+    `to_tex` = function(...) .Call(`.rs_279`, self, list(...))
   )
 )
 #' Result of the extended Euclidean algorithm on two polynomials: `gcd`, plus the Bezout coefficients `s`/`t` such that `s.multiply(a).add(t.multiply(b)) == gcd`.
@@ -3508,14 +3554,14 @@ rosetta_ref <- function(value = NULL) {
   public = list(
     initialize = function(...) {
       if (...length() == 1L && inherits(..1, "rosetta_ptr")) self$.ptr <- ..1
-      else { if (!is.null(self$.ptr)) stop("native object already initialized"); self$.ptr <- .Call(`.rs_269`, list(...)) }
+      else { if (!is.null(self$.ptr)) stop("native object already initialized"); self$.ptr <- .Call(`.rs_287`, list(...)) }
       invisible(self)
     }
   ),
   active = list(
-    `gcd` = function(value) if (missing(value)) .Call(`.rs_263`, self) else invisible(.Call(`.rs_264`, self, value)),
-    `s` = function(value) if (missing(value)) .Call(`.rs_265`, self) else invisible(.Call(`.rs_266`, self, value)),
-    `t` = function(value) if (missing(value)) .Call(`.rs_267`, self) else invisible(.Call(`.rs_268`, self, value))
+    `gcd` = function(value) if (missing(value)) .Call(`.rs_281`, self) else invisible(.Call(`.rs_282`, self, value)),
+    `s` = function(value) if (missing(value)) .Call(`.rs_283`, self) else invisible(.Call(`.rs_284`, self, value)),
+    `t` = function(value) if (missing(value)) .Call(`.rs_285`, self) else invisible(.Call(`.rs_286`, self, value))
   )
 )
 #' Isolating intervals for every distinct real root of p: parallel lower/upper bound vectors where each (lower\[i\], upper\[i\]) contains exactly one root.
@@ -3532,13 +3578,13 @@ rosetta_ref <- function(value = NULL) {
   public = list(
     initialize = function(...) {
       if (...length() == 1L && inherits(..1, "rosetta_ptr")) self$.ptr <- ..1
-      else { if (!is.null(self$.ptr)) stop("native object already initialized"); self$.ptr <- .Call(`.rs_274`, list(...)) }
+      else { if (!is.null(self$.ptr)) stop("native object already initialized"); self$.ptr <- .Call(`.rs_292`, list(...)) }
       invisible(self)
     }
   ),
   active = list(
-    `lower` = function(value) if (missing(value)) .Call(`.rs_270`, self) else invisible(.Call(`.rs_271`, self, value)),
-    `upper` = function(value) if (missing(value)) .Call(`.rs_272`, self) else invisible(.Call(`.rs_273`, self, value))
+    `lower` = function(value) if (missing(value)) .Call(`.rs_288`, self) else invisible(.Call(`.rs_289`, self, value)),
+    `upper` = function(value) if (missing(value)) .Call(`.rs_290`, self) else invisible(.Call(`.rs_291`, self, value))
   )
 )
 #' A complex number, used to report polynomial roots that are not real.
@@ -3561,16 +3607,16 @@ rosetta_ref <- function(value = NULL) {
   public = list(
     initialize = function(...) {
       if (...length() == 1L && inherits(..1, "rosetta_ptr")) self$.ptr <- ..1
-      else { if (!is.null(self$.ptr)) stop("native object already initialized"); self$.ptr <- .Call(`.rs_282`, list(...)) }
+      else { if (!is.null(self$.ptr)) stop("native object already initialized"); self$.ptr <- .Call(`.rs_300`, list(...)) }
       invisible(self)
     },
-    `modulus` = function(...) .Call(`.rs_275`, self, list(...)),
-    `__eq__` = function(...) .Call(`.rs_276`, self, list(...)),
-    `__ne__` = function(...) .Call(`.rs_277`, self, list(...))
+    `modulus` = function(...) .Call(`.rs_293`, self, list(...)),
+    `__eq__` = function(...) .Call(`.rs_294`, self, list(...)),
+    `__ne__` = function(...) .Call(`.rs_295`, self, list(...))
   ),
   active = list(
-    `re` = function(value) if (missing(value)) .Call(`.rs_278`, self) else invisible(.Call(`.rs_279`, self, value)),
-    `im` = function(value) if (missing(value)) .Call(`.rs_280`, self) else invisible(.Call(`.rs_281`, self, value))
+    `re` = function(value) if (missing(value)) .Call(`.rs_296`, self) else invisible(.Call(`.rs_297`, self, value)),
+    `im` = function(value) if (missing(value)) .Call(`.rs_298`, self) else invisible(.Call(`.rs_299`, self, value))
   )
 )
 #' C++ class `datamunge::algebra::detail::Cplx`
@@ -3585,13 +3631,13 @@ rosetta_ref <- function(value = NULL) {
   public = list(
     initialize = function(...) {
       if (...length() == 1L && inherits(..1, "rosetta_ptr")) self$.ptr <- ..1
-      else { if (!is.null(self$.ptr)) stop("native object already initialized"); self$.ptr <- .Call(`.rs_287`, list(...)) }
+      else { if (!is.null(self$.ptr)) stop("native object already initialized"); self$.ptr <- .Call(`.rs_305`, list(...)) }
       invisible(self)
     }
   ),
   active = list(
-    `re` = function(value) if (missing(value)) .Call(`.rs_283`, self) else invisible(.Call(`.rs_284`, self, value)),
-    `im` = function(value) if (missing(value)) .Call(`.rs_285`, self) else invisible(.Call(`.rs_286`, self, value))
+    `re` = function(value) if (missing(value)) .Call(`.rs_301`, self) else invisible(.Call(`.rs_302`, self, value)),
+    `im` = function(value) if (missing(value)) .Call(`.rs_303`, self) else invisible(.Call(`.rs_304`, self, value))
   )
 )
 #' One factor of a square-free decomposition: `factor` (itself square-free, i.e. no repeated roots) appears with multiplicity `multiplicity` in the original polynomial.
@@ -3606,13 +3652,13 @@ rosetta_ref <- function(value = NULL) {
   public = list(
     initialize = function(...) {
       if (...length() == 1L && inherits(..1, "rosetta_ptr")) self$.ptr <- ..1
-      else { if (!is.null(self$.ptr)) stop("native object already initialized"); self$.ptr <- .Call(`.rs_292`, list(...)) }
+      else { if (!is.null(self$.ptr)) stop("native object already initialized"); self$.ptr <- .Call(`.rs_310`, list(...)) }
       invisible(self)
     }
   ),
   active = list(
-    `factor` = function(value) if (missing(value)) .Call(`.rs_288`, self) else invisible(.Call(`.rs_289`, self, value)),
-    `multiplicity` = function(value) if (missing(value)) .Call(`.rs_290`, self) else invisible(.Call(`.rs_291`, self, value))
+    `factor` = function(value) if (missing(value)) .Call(`.rs_306`, self) else invisible(.Call(`.rs_307`, self, value)),
+    `multiplicity` = function(value) if (missing(value)) .Call(`.rs_308`, self) else invisible(.Call(`.rs_309`, self, value))
   )
 )
 #' One irreducible-over-R factor of a real factorization: `factor` is either linear (x - r) for a real root r, or an irreducible real quadratic (x^2 + bx + c, for a complex-conjugate root pair), appearing with `multiplicity` in the original polynomial.
@@ -3627,13 +3673,13 @@ rosetta_ref <- function(value = NULL) {
   public = list(
     initialize = function(...) {
       if (...length() == 1L && inherits(..1, "rosetta_ptr")) self$.ptr <- ..1
-      else { if (!is.null(self$.ptr)) stop("native object already initialized"); self$.ptr <- .Call(`.rs_297`, list(...)) }
+      else { if (!is.null(self$.ptr)) stop("native object already initialized"); self$.ptr <- .Call(`.rs_315`, list(...)) }
       invisible(self)
     }
   ),
   active = list(
-    `factor` = function(value) if (missing(value)) .Call(`.rs_293`, self) else invisible(.Call(`.rs_294`, self, value)),
-    `multiplicity` = function(value) if (missing(value)) .Call(`.rs_295`, self) else invisible(.Call(`.rs_296`, self, value))
+    `factor` = function(value) if (missing(value)) .Call(`.rs_311`, self) else invisible(.Call(`.rs_312`, self, value)),
+    `multiplicity` = function(value) if (missing(value)) .Call(`.rs_313`, self) else invisible(.Call(`.rs_314`, self, value))
   )
 )
 #' Factors p over the reals into irreducible linear/quadratic pieces plus the overall scale needed to reconstruct p exactly: p == leading_coefficient * prod(factors\[i\].factor ^ factors\[i\].multiplicity).
@@ -3651,14 +3697,14 @@ rosetta_ref <- function(value = NULL) {
   public = list(
     initialize = function(...) {
       if (...length() == 1L && inherits(..1, "rosetta_ptr")) self$.ptr <- ..1
-      else { if (!is.null(self$.ptr)) stop("native object already initialized"); self$.ptr <- .Call(`.rs_302`, list(...)) }
+      else { if (!is.null(self$.ptr)) stop("native object already initialized"); self$.ptr <- .Call(`.rs_320`, list(...)) }
       invisible(self)
     },
-    `num_factors` = function(...) .Call(`.rs_298`, self, list(...)),
-    `factor_at` = function(...) .Call(`.rs_299`, self, list(...))
+    `num_factors` = function(...) .Call(`.rs_316`, self, list(...)),
+    `factor_at` = function(...) .Call(`.rs_317`, self, list(...))
   ),
   active = list(
-    `leading_coefficient` = function(value) if (missing(value)) .Call(`.rs_300`, self) else invisible(.Call(`.rs_301`, self, value))
+    `leading_coefficient` = function(value) if (missing(value)) .Call(`.rs_318`, self) else invisible(.Call(`.rs_319`, self, value))
   )
 )
 #' Sparse multivariate polynomial over the reals in a fixed number of variables (x0, x1, ...), stored internally as a map from exponent vector to coefficient.
@@ -3707,22 +3753,22 @@ rosetta_ref <- function(value = NULL) {
   public = list(
     initialize = function(...) {
       if (...length() == 1L && inherits(..1, "rosetta_ptr")) self$.ptr <- ..1
-      else { if (!is.null(self$.ptr)) stop("native object already initialized"); self$.ptr <- .Call(`.rs_316`, list(...)) }
+      else { if (!is.null(self$.ptr)) stop("native object already initialized"); self$.ptr <- .Call(`.rs_334`, list(...)) }
       invisible(self)
     },
-    `num_variables` = function(...) .Call(`.rs_303`, self, list(...)),
-    `num_terms` = function(...) .Call(`.rs_304`, self, list(...)),
-    `is_zero` = function(...) .Call(`.rs_305`, self, list(...)),
-    `exponents` = function(...) .Call(`.rs_306`, self, list(...)),
-    `coefficients` = function(...) .Call(`.rs_307`, self, list(...)),
-    `evaluate` = function(...) .Call(`.rs_308`, self, list(...)),
-    `add` = function(...) .Call(`.rs_309`, self, list(...)),
-    `subtract` = function(...) .Call(`.rs_310`, self, list(...)),
-    `multiply` = function(...) .Call(`.rs_311`, self, list(...)),
-    `scale` = function(...) .Call(`.rs_312`, self, list(...)),
-    `leading_exponent` = function(...) .Call(`.rs_313`, self, list(...)),
-    `leading_coefficient` = function(...) .Call(`.rs_314`, self, list(...)),
-    `to_string` = function(...) .Call(`.rs_315`, self, list(...))
+    `num_variables` = function(...) .Call(`.rs_321`, self, list(...)),
+    `num_terms` = function(...) .Call(`.rs_322`, self, list(...)),
+    `is_zero` = function(...) .Call(`.rs_323`, self, list(...)),
+    `exponents` = function(...) .Call(`.rs_324`, self, list(...)),
+    `coefficients` = function(...) .Call(`.rs_325`, self, list(...)),
+    `evaluate` = function(...) .Call(`.rs_326`, self, list(...)),
+    `add` = function(...) .Call(`.rs_327`, self, list(...)),
+    `subtract` = function(...) .Call(`.rs_328`, self, list(...)),
+    `multiply` = function(...) .Call(`.rs_329`, self, list(...)),
+    `scale` = function(...) .Call(`.rs_330`, self, list(...)),
+    `leading_exponent` = function(...) .Call(`.rs_331`, self, list(...)),
+    `leading_coefficient` = function(...) .Call(`.rs_332`, self, list(...)),
+    `to_string` = function(...) .Call(`.rs_333`, self, list(...))
   )
 )
 #' Complete factorization over GF(p) from factor_gf_p().
@@ -3738,14 +3784,14 @@ rosetta_ref <- function(value = NULL) {
   public = list(
     initialize = function(...) {
       if (...length() == 1L && inherits(..1, "rosetta_ptr")) self$.ptr <- ..1
-      else { if (!is.null(self$.ptr)) stop("native object already initialized"); self$.ptr <- .Call(`.rs_323`, list(...)) }
+      else { if (!is.null(self$.ptr)) stop("native object already initialized"); self$.ptr <- .Call(`.rs_341`, list(...)) }
       invisible(self)
     }
   ),
   active = list(
-    `leading` = function(value) if (missing(value)) .Call(`.rs_317`, self) else invisible(.Call(`.rs_318`, self, value)),
-    `factors` = function(value) if (missing(value)) .Call(`.rs_319`, self) else invisible(.Call(`.rs_320`, self, value)),
-    `multiplicities` = function(value) if (missing(value)) .Call(`.rs_321`, self) else invisible(.Call(`.rs_322`, self, value))
+    `leading` = function(value) if (missing(value)) .Call(`.rs_335`, self) else invisible(.Call(`.rs_336`, self, value)),
+    `factors` = function(value) if (missing(value)) .Call(`.rs_337`, self) else invisible(.Call(`.rs_338`, self, value)),
+    `multiplicities` = function(value) if (missing(value)) .Call(`.rs_339`, self) else invisible(.Call(`.rs_340`, self, value))
   )
 )
 #' A ratio of two polynomials (numerator / denominator), kept automatically reduced by their GCD -- e.g. (x^2-1)/(x-1) simplifies to x+1 -- with the denominator normalized to monic.
@@ -3782,18 +3828,18 @@ rosetta_ref <- function(value = NULL) {
   public = list(
     initialize = function(...) {
       if (...length() == 1L && inherits(..1, "rosetta_ptr")) self$.ptr <- ..1
-      else { if (!is.null(self$.ptr)) stop("native object already initialized"); self$.ptr <- .Call(`.rs_333`, list(...)) }
+      else { if (!is.null(self$.ptr)) stop("native object already initialized"); self$.ptr <- .Call(`.rs_351`, list(...)) }
       invisible(self)
     },
-    `numerator` = function(...) .Call(`.rs_324`, self, list(...)),
-    `denominator` = function(...) .Call(`.rs_325`, self, list(...)),
-    `evaluate` = function(...) .Call(`.rs_326`, self, list(...)),
-    `add` = function(...) .Call(`.rs_327`, self, list(...)),
-    `subtract` = function(...) .Call(`.rs_328`, self, list(...)),
-    `multiply` = function(...) .Call(`.rs_329`, self, list(...)),
-    `divide` = function(...) .Call(`.rs_330`, self, list(...)),
-    `to_string` = function(...) .Call(`.rs_331`, self, list(...)),
-    `to_tex` = function(...) .Call(`.rs_332`, self, list(...))
+    `numerator` = function(...) .Call(`.rs_342`, self, list(...)),
+    `denominator` = function(...) .Call(`.rs_343`, self, list(...)),
+    `evaluate` = function(...) .Call(`.rs_344`, self, list(...)),
+    `add` = function(...) .Call(`.rs_345`, self, list(...)),
+    `subtract` = function(...) .Call(`.rs_346`, self, list(...)),
+    `multiply` = function(...) .Call(`.rs_347`, self, list(...)),
+    `divide` = function(...) .Call(`.rs_348`, self, list(...)),
+    `to_string` = function(...) .Call(`.rs_349`, self, list(...)),
+    `to_tex` = function(...) .Call(`.rs_350`, self, list(...))
   )
 )
 #' The most general objective function: only supports evaluation.
@@ -3814,10 +3860,10 @@ rosetta_ref <- function(value = NULL) {
   public = list(
     initialize = function(...) {
       if (...length() == 1L && inherits(..1, "rosetta_ptr")) self$.ptr <- ..1
-      else { if (!is.null(self$.ptr)) stop("native object already initialized"); self$.ptr <- .Call(`.rs_335`, list(...), self) }
+      else { if (!is.null(self$.ptr)) stop("native object already initialized"); self$.ptr <- .Call(`.rs_353`, list(...), self) }
       invisible(self)
     },
-    `evaluate` = function(...) .Call(`.rs_334`, self, list(...))
+    `evaluate` = function(...) .Call(`.rs_352`, self, list(...))
   )
 )
 #' An objective function that additionally supports exact gradient evaluation.
@@ -3837,10 +3883,10 @@ rosetta_ref <- function(value = NULL) {
   public = list(
     initialize = function(...) {
       if (...length() == 1L && inherits(..1, "rosetta_ptr")) self$.ptr <- ..1
-      else { if (!is.null(self$.ptr)) stop("native object already initialized"); self$.ptr <- .Call(`.rs_337`, list(...), self) }
+      else { if (!is.null(self$.ptr)) stop("native object already initialized"); self$.ptr <- .Call(`.rs_355`, list(...), self) }
       invisible(self)
     },
-    `gradient` = function(...) .Call(`.rs_336`, self, list(...))
+    `gradient` = function(...) .Call(`.rs_354`, self, list(...))
   )
 )
 #' An objective that decomposes as a sum over num_functions() independent terms (e.g.
@@ -3866,12 +3912,12 @@ rosetta_ref <- function(value = NULL) {
   public = list(
     initialize = function(...) {
       if (...length() == 1L && inherits(..1, "rosetta_ptr")) self$.ptr <- ..1
-      else { if (!is.null(self$.ptr)) stop("native object already initialized"); self$.ptr <- .Call(`.rs_341`, list(...), self) }
+      else { if (!is.null(self$.ptr)) stop("native object already initialized"); self$.ptr <- .Call(`.rs_359`, list(...), self) }
       invisible(self)
     },
-    `num_functions` = function(...) .Call(`.rs_338`, self, list(...)),
-    `evaluate_term` = function(...) .Call(`.rs_339`, self, list(...)),
-    `evaluate` = function(...) .Call(`.rs_340`, self, list(...))
+    `num_functions` = function(...) .Call(`.rs_356`, self, list(...)),
+    `evaluate_term` = function(...) .Call(`.rs_357`, self, list(...)),
+    `evaluate` = function(...) .Call(`.rs_358`, self, list(...))
   )
 )
 #' A function that is both differentiable and separable -- the common case for machine learning loss functions (a sum of per-example losses).
@@ -3903,14 +3949,14 @@ rosetta_ref <- function(value = NULL) {
   public = list(
     initialize = function(...) {
       if (...length() == 1L && inherits(..1, "rosetta_ptr")) self$.ptr <- ..1
-      else { if (!is.null(self$.ptr)) stop("native object already initialized"); self$.ptr <- .Call(`.rs_347`, list(...), self) }
+      else { if (!is.null(self$.ptr)) stop("native object already initialized"); self$.ptr <- .Call(`.rs_365`, list(...), self) }
       invisible(self)
     },
-    `num_functions` = function(...) .Call(`.rs_342`, self, list(...)),
-    `evaluate_term` = function(...) .Call(`.rs_343`, self, list(...)),
-    `gradient_term` = function(...) .Call(`.rs_344`, self, list(...)),
-    `evaluate` = function(...) .Call(`.rs_345`, self, list(...)),
-    `gradient` = function(...) .Call(`.rs_346`, self, list(...))
+    `num_functions` = function(...) .Call(`.rs_360`, self, list(...)),
+    `evaluate_term` = function(...) .Call(`.rs_361`, self, list(...)),
+    `gradient_term` = function(...) .Call(`.rs_362`, self, list(...)),
+    `evaluate` = function(...) .Call(`.rs_363`, self, list(...)),
+    `gradient` = function(...) .Call(`.rs_364`, self, list(...))
   )
 )
 #' Composite objective for proximal methods.
@@ -3928,10 +3974,10 @@ rosetta_ref <- function(value = NULL) {
   public = list(
     initialize = function(...) {
       if (...length() == 1L && inherits(..1, "rosetta_ptr")) self$.ptr <- ..1
-      else { if (!is.null(self$.ptr)) stop("native object already initialized"); self$.ptr <- .Call(`.rs_349`, list(...), self) }
+      else { if (!is.null(self$.ptr)) stop("native object already initialized"); self$.ptr <- .Call(`.rs_367`, list(...), self) }
       invisible(self)
     },
-    `proximal` = function(...) .Call(`.rs_348`, self, list(...))
+    `proximal` = function(...) .Call(`.rs_366`, self, list(...))
   )
 )
 #' C++ class `datamunge::optim::HessianFunction`
@@ -3947,10 +3993,10 @@ rosetta_ref <- function(value = NULL) {
   public = list(
     initialize = function(...) {
       if (...length() == 1L && inherits(..1, "rosetta_ptr")) self$.ptr <- ..1
-      else { if (!is.null(self$.ptr)) stop("native object already initialized"); self$.ptr <- .Call(`.rs_351`, list(...), self) }
+      else { if (!is.null(self$.ptr)) stop("native object already initialized"); self$.ptr <- .Call(`.rs_369`, list(...), self) }
       invisible(self)
     },
-    `hessian` = function(...) .Call(`.rs_350`, self, list(...))
+    `hessian` = function(...) .Call(`.rs_368`, self, list(...))
   )
 )
 #' Smooth equality-constrained objective for constrained optimizers.
@@ -3968,11 +4014,11 @@ rosetta_ref <- function(value = NULL) {
   public = list(
     initialize = function(...) {
       if (...length() == 1L && inherits(..1, "rosetta_ptr")) self$.ptr <- ..1
-      else { if (!is.null(self$.ptr)) stop("native object already initialized"); self$.ptr <- .Call(`.rs_354`, list(...), self) }
+      else { if (!is.null(self$.ptr)) stop("native object already initialized"); self$.ptr <- .Call(`.rs_372`, list(...), self) }
       invisible(self)
     },
-    `constraints` = function(...) .Call(`.rs_352`, self, list(...)),
-    `constraint_jacobian` = function(...) .Call(`.rs_353`, self, list(...))
+    `constraints` = function(...) .Call(`.rs_370`, self, list(...)),
+    `constraint_jacobian` = function(...) .Call(`.rs_371`, self, list(...))
   )
 )
 #' C++ class `datamunge::optim::InequalityConstrainedFunction`
@@ -3990,11 +4036,11 @@ rosetta_ref <- function(value = NULL) {
   public = list(
     initialize = function(...) {
       if (...length() == 1L && inherits(..1, "rosetta_ptr")) self$.ptr <- ..1
-      else { if (!is.null(self$.ptr)) stop("native object already initialized"); self$.ptr <- .Call(`.rs_357`, list(...), self) }
+      else { if (!is.null(self$.ptr)) stop("native object already initialized"); self$.ptr <- .Call(`.rs_375`, list(...), self) }
       invisible(self)
     },
-    `inequalities` = function(...) .Call(`.rs_355`, self, list(...)),
-    `inequality_jacobian` = function(...) .Call(`.rs_356`, self, list(...))
+    `inequalities` = function(...) .Call(`.rs_373`, self, list(...)),
+    `inequality_jacobian` = function(...) .Call(`.rs_374`, self, list(...))
   )
 )
 #' C++ class `datamunge::optim::ResidualFunction`
@@ -4010,11 +4056,11 @@ rosetta_ref <- function(value = NULL) {
   public = list(
     initialize = function(...) {
       if (...length() == 1L && inherits(..1, "rosetta_ptr")) self$.ptr <- ..1
-      else { if (!is.null(self$.ptr)) stop("native object already initialized"); self$.ptr <- .Call(`.rs_360`, list(...), self) }
+      else { if (!is.null(self$.ptr)) stop("native object already initialized"); self$.ptr <- .Call(`.rs_378`, list(...), self) }
       invisible(self)
     },
-    `residuals` = function(...) .Call(`.rs_358`, self, list(...)),
-    `jacobian` = function(...) .Call(`.rs_359`, self, list(...))
+    `residuals` = function(...) .Call(`.rs_376`, self, list(...)),
+    `jacobian` = function(...) .Call(`.rs_377`, self, list(...))
   )
 )
 #' Settings for GibbsSampler.
@@ -4036,16 +4082,16 @@ rosetta_ref <- function(value = NULL) {
   public = list(
     initialize = function(...) {
       if (...length() == 1L && inherits(..1, "rosetta_ptr")) self$.ptr <- ..1
-      else { if (!is.null(self$.ptr)) stop("native object already initialized"); self$.ptr <- .Call(`.rs_371`, list(...)) }
+      else { if (!is.null(self$.ptr)) stop("native object already initialized"); self$.ptr <- .Call(`.rs_389`, list(...)) }
       invisible(self)
     }
   ),
   active = list(
-    `num_samples` = function(value) if (missing(value)) .Call(`.rs_361`, self) else invisible(.Call(`.rs_362`, self, value)),
-    `num_warmup` = function(value) if (missing(value)) .Call(`.rs_363`, self) else invisible(.Call(`.rs_364`, self, value)),
-    `initial_step_sizes` = function(value) if (missing(value)) .Call(`.rs_365`, self) else invisible(.Call(`.rs_366`, self, value)),
-    `target_accept_rate` = function(value) if (missing(value)) .Call(`.rs_367`, self) else invisible(.Call(`.rs_368`, self, value)),
-    `seed` = function(value) if (missing(value)) .Call(`.rs_369`, self) else invisible(.Call(`.rs_370`, self, value))
+    `num_samples` = function(value) if (missing(value)) .Call(`.rs_379`, self) else invisible(.Call(`.rs_380`, self, value)),
+    `num_warmup` = function(value) if (missing(value)) .Call(`.rs_381`, self) else invisible(.Call(`.rs_382`, self, value)),
+    `initial_step_sizes` = function(value) if (missing(value)) .Call(`.rs_383`, self) else invisible(.Call(`.rs_384`, self, value)),
+    `target_accept_rate` = function(value) if (missing(value)) .Call(`.rs_385`, self) else invisible(.Call(`.rs_386`, self, value)),
+    `seed` = function(value) if (missing(value)) .Call(`.rs_387`, self) else invisible(.Call(`.rs_388`, self, value))
   )
 )
 #' Output of GibbsSampler::sample().
@@ -4061,14 +4107,14 @@ rosetta_ref <- function(value = NULL) {
   public = list(
     initialize = function(...) {
       if (...length() == 1L && inherits(..1, "rosetta_ptr")) self$.ptr <- ..1
-      else { if (!is.null(self$.ptr)) stop("native object already initialized"); self$.ptr <- .Call(`.rs_378`, list(...)) }
+      else { if (!is.null(self$.ptr)) stop("native object already initialized"); self$.ptr <- .Call(`.rs_396`, list(...)) }
       invisible(self)
     }
   ),
   active = list(
-    `samples` = function(value) if (missing(value)) .Call(`.rs_372`, self) else invisible(.Call(`.rs_373`, self, value)),
-    `accept_rates` = function(value) if (missing(value)) .Call(`.rs_374`, self) else invisible(.Call(`.rs_375`, self, value)),
-    `final_step_sizes` = function(value) if (missing(value)) .Call(`.rs_376`, self) else invisible(.Call(`.rs_377`, self, value))
+    `samples` = function(value) if (missing(value)) .Call(`.rs_390`, self) else invisible(.Call(`.rs_391`, self, value)),
+    `accept_rates` = function(value) if (missing(value)) .Call(`.rs_392`, self) else invisible(.Call(`.rs_393`, self, value)),
+    `final_step_sizes` = function(value) if (missing(value)) .Call(`.rs_394`, self) else invisible(.Call(`.rs_395`, self, value))
   )
 )
 #' Metropolis-within-Gibbs: updates one coordinate at a time, each via a scalar random-walk Metropolis step evaluated against the SAME joint log-density with every other coordinate held fixed -- mathematically equivalent to a Metropolis step targeting the exact full conditional p(x_i | x_-i), since the joint-density ratio with everything else held fixed IS the full-conditional-density ratio.
@@ -4098,11 +4144,11 @@ rosetta_ref <- function(value = NULL) {
   public = list(
     initialize = function(...) {
       if (...length() == 1L && inherits(..1, "rosetta_ptr")) self$.ptr <- ..1
-      else { if (!is.null(self$.ptr)) stop("native object already initialized"); self$.ptr <- .Call(`.rs_381`, list(...)) }
+      else { if (!is.null(self$.ptr)) stop("native object already initialized"); self$.ptr <- .Call(`.rs_399`, list(...)) }
       invisible(self)
     },
-    `sample` = function(...) .Call(`.rs_379`, self, list(...)),
-    `options` = function(...) .Call(`.rs_380`, self, list(...))
+    `sample` = function(...) .Call(`.rs_397`, self, list(...)),
+    `options` = function(...) .Call(`.rs_398`, self, list(...))
   )
 )
 #' Settings for HMC.
@@ -4121,17 +4167,17 @@ rosetta_ref <- function(value = NULL) {
   public = list(
     initialize = function(...) {
       if (...length() == 1L && inherits(..1, "rosetta_ptr")) self$.ptr <- ..1
-      else { if (!is.null(self$.ptr)) stop("native object already initialized"); self$.ptr <- .Call(`.rs_394`, list(...)) }
+      else { if (!is.null(self$.ptr)) stop("native object already initialized"); self$.ptr <- .Call(`.rs_412`, list(...)) }
       invisible(self)
     }
   ),
   active = list(
-    `num_samples` = function(value) if (missing(value)) .Call(`.rs_382`, self) else invisible(.Call(`.rs_383`, self, value)),
-    `num_warmup` = function(value) if (missing(value)) .Call(`.rs_384`, self) else invisible(.Call(`.rs_385`, self, value)),
-    `num_leapfrog_steps` = function(value) if (missing(value)) .Call(`.rs_386`, self) else invisible(.Call(`.rs_387`, self, value)),
-    `initial_step_size` = function(value) if (missing(value)) .Call(`.rs_388`, self) else invisible(.Call(`.rs_389`, self, value)),
-    `target_accept_rate` = function(value) if (missing(value)) .Call(`.rs_390`, self) else invisible(.Call(`.rs_391`, self, value)),
-    `seed` = function(value) if (missing(value)) .Call(`.rs_392`, self) else invisible(.Call(`.rs_393`, self, value))
+    `num_samples` = function(value) if (missing(value)) .Call(`.rs_400`, self) else invisible(.Call(`.rs_401`, self, value)),
+    `num_warmup` = function(value) if (missing(value)) .Call(`.rs_402`, self) else invisible(.Call(`.rs_403`, self, value)),
+    `num_leapfrog_steps` = function(value) if (missing(value)) .Call(`.rs_404`, self) else invisible(.Call(`.rs_405`, self, value)),
+    `initial_step_size` = function(value) if (missing(value)) .Call(`.rs_406`, self) else invisible(.Call(`.rs_407`, self, value)),
+    `target_accept_rate` = function(value) if (missing(value)) .Call(`.rs_408`, self) else invisible(.Call(`.rs_409`, self, value)),
+    `seed` = function(value) if (missing(value)) .Call(`.rs_410`, self) else invisible(.Call(`.rs_411`, self, value))
   )
 )
 #' Output of HMC::sample().
@@ -4147,14 +4193,14 @@ rosetta_ref <- function(value = NULL) {
   public = list(
     initialize = function(...) {
       if (...length() == 1L && inherits(..1, "rosetta_ptr")) self$.ptr <- ..1
-      else { if (!is.null(self$.ptr)) stop("native object already initialized"); self$.ptr <- .Call(`.rs_401`, list(...)) }
+      else { if (!is.null(self$.ptr)) stop("native object already initialized"); self$.ptr <- .Call(`.rs_419`, list(...)) }
       invisible(self)
     }
   ),
   active = list(
-    `samples` = function(value) if (missing(value)) .Call(`.rs_395`, self) else invisible(.Call(`.rs_396`, self, value)),
-    `accept_rate` = function(value) if (missing(value)) .Call(`.rs_397`, self) else invisible(.Call(`.rs_398`, self, value)),
-    `final_step_size` = function(value) if (missing(value)) .Call(`.rs_399`, self) else invisible(.Call(`.rs_400`, self, value))
+    `samples` = function(value) if (missing(value)) .Call(`.rs_413`, self) else invisible(.Call(`.rs_414`, self, value)),
+    `accept_rate` = function(value) if (missing(value)) .Call(`.rs_415`, self) else invisible(.Call(`.rs_416`, self, value)),
+    `final_step_size` = function(value) if (missing(value)) .Call(`.rs_417`, self) else invisible(.Call(`.rs_418`, self, value))
   )
 )
 #' Hamiltonian Monte Carlo with a fixed leapfrog trajectory length and Nesterov dual-averaging step-size adaptation during warmup (Hoffman & Gelman 2014), using an identity mass matrix.
@@ -4184,11 +4230,11 @@ rosetta_ref <- function(value = NULL) {
   public = list(
     initialize = function(...) {
       if (...length() == 1L && inherits(..1, "rosetta_ptr")) self$.ptr <- ..1
-      else { if (!is.null(self$.ptr)) stop("native object already initialized"); self$.ptr <- .Call(`.rs_404`, list(...)) }
+      else { if (!is.null(self$.ptr)) stop("native object already initialized"); self$.ptr <- .Call(`.rs_422`, list(...)) }
       invisible(self)
     },
-    `sample` = function(...) .Call(`.rs_402`, self, list(...)),
-    `options` = function(...) .Call(`.rs_403`, self, list(...))
+    `sample` = function(...) .Call(`.rs_420`, self, list(...)),
+    `options` = function(...) .Call(`.rs_421`, self, list(...))
   )
 )
 #' Settings for ImportanceSampling.
@@ -4203,13 +4249,13 @@ rosetta_ref <- function(value = NULL) {
   public = list(
     initialize = function(...) {
       if (...length() == 1L && inherits(..1, "rosetta_ptr")) self$.ptr <- ..1
-      else { if (!is.null(self$.ptr)) stop("native object already initialized"); self$.ptr <- .Call(`.rs_409`, list(...)) }
+      else { if (!is.null(self$.ptr)) stop("native object already initialized"); self$.ptr <- .Call(`.rs_427`, list(...)) }
       invisible(self)
     }
   ),
   active = list(
-    `num_samples` = function(value) if (missing(value)) .Call(`.rs_405`, self) else invisible(.Call(`.rs_406`, self, value)),
-    `seed` = function(value) if (missing(value)) .Call(`.rs_407`, self) else invisible(.Call(`.rs_408`, self, value))
+    `num_samples` = function(value) if (missing(value)) .Call(`.rs_423`, self) else invisible(.Call(`.rs_424`, self, value)),
+    `seed` = function(value) if (missing(value)) .Call(`.rs_425`, self) else invisible(.Call(`.rs_426`, self, value))
   )
 )
 #' Output of ImportanceSampling::sample().
@@ -4230,15 +4276,15 @@ rosetta_ref <- function(value = NULL) {
   public = list(
     initialize = function(...) {
       if (...length() == 1L && inherits(..1, "rosetta_ptr")) self$.ptr <- ..1
-      else { if (!is.null(self$.ptr)) stop("native object already initialized"); self$.ptr <- .Call(`.rs_418`, list(...)) }
+      else { if (!is.null(self$.ptr)) stop("native object already initialized"); self$.ptr <- .Call(`.rs_436`, list(...)) }
       invisible(self)
     }
   ),
   active = list(
-    `samples` = function(value) if (missing(value)) .Call(`.rs_410`, self) else invisible(.Call(`.rs_411`, self, value)),
-    `normalized_weights` = function(value) if (missing(value)) .Call(`.rs_412`, self) else invisible(.Call(`.rs_413`, self, value)),
-    `effective_sample_size` = function(value) if (missing(value)) .Call(`.rs_414`, self) else invisible(.Call(`.rs_415`, self, value)),
-    `log_evidence` = function(value) if (missing(value)) .Call(`.rs_416`, self) else invisible(.Call(`.rs_417`, self, value))
+    `samples` = function(value) if (missing(value)) .Call(`.rs_428`, self) else invisible(.Call(`.rs_429`, self, value)),
+    `normalized_weights` = function(value) if (missing(value)) .Call(`.rs_430`, self) else invisible(.Call(`.rs_431`, self, value)),
+    `effective_sample_size` = function(value) if (missing(value)) .Call(`.rs_432`, self) else invisible(.Call(`.rs_433`, self, value)),
+    `log_evidence` = function(value) if (missing(value)) .Call(`.rs_434`, self) else invisible(.Call(`.rs_435`, self, value))
   )
 )
 #' Importance sampling against a multivariate Gaussian proposal N(mean, covariance) -- a natural choice when a Laplace approximation is available and reasonably close to the target's shape (e.g.
@@ -4269,11 +4315,11 @@ rosetta_ref <- function(value = NULL) {
   public = list(
     initialize = function(...) {
       if (...length() == 1L && inherits(..1, "rosetta_ptr")) self$.ptr <- ..1
-      else { if (!is.null(self$.ptr)) stop("native object already initialized"); self$.ptr <- .Call(`.rs_421`, list(...)) }
+      else { if (!is.null(self$.ptr)) stop("native object already initialized"); self$.ptr <- .Call(`.rs_439`, list(...)) }
       invisible(self)
     },
-    `sample` = function(...) .Call(`.rs_419`, self, list(...)),
-    `options` = function(...) .Call(`.rs_420`, self, list(...))
+    `sample` = function(...) .Call(`.rs_437`, self, list(...)),
+    `options` = function(...) .Call(`.rs_438`, self, list(...))
   )
 )
 #' C++ class `datamunge::bayes::MAPOptions`
@@ -4289,14 +4335,14 @@ rosetta_ref <- function(value = NULL) {
   public = list(
     initialize = function(...) {
       if (...length() == 1L && inherits(..1, "rosetta_ptr")) self$.ptr <- ..1
-      else { if (!is.null(self$.ptr)) stop("native object already initialized"); self$.ptr <- .Call(`.rs_428`, list(...)) }
+      else { if (!is.null(self$.ptr)) stop("native object already initialized"); self$.ptr <- .Call(`.rs_446`, list(...)) }
       invisible(self)
     }
   ),
   active = list(
-    `max_iterations` = function(value) if (missing(value)) .Call(`.rs_422`, self) else invisible(.Call(`.rs_423`, self, value)),
-    `tolerance` = function(value) if (missing(value)) .Call(`.rs_424`, self) else invisible(.Call(`.rs_425`, self, value)),
-    `history_size` = function(value) if (missing(value)) .Call(`.rs_426`, self) else invisible(.Call(`.rs_427`, self, value))
+    `max_iterations` = function(value) if (missing(value)) .Call(`.rs_440`, self) else invisible(.Call(`.rs_441`, self, value)),
+    `tolerance` = function(value) if (missing(value)) .Call(`.rs_442`, self) else invisible(.Call(`.rs_443`, self, value)),
+    `history_size` = function(value) if (missing(value)) .Call(`.rs_444`, self) else invisible(.Call(`.rs_445`, self, value))
   )
 )
 #' Maximum a posteriori estimation: finds the mode of a log-posterior density via L-BFGS (datamunge::optim::LBFGS), analogous to Stan's `optimizing()`.
@@ -4320,11 +4366,11 @@ rosetta_ref <- function(value = NULL) {
   public = list(
     initialize = function(...) {
       if (...length() == 1L && inherits(..1, "rosetta_ptr")) self$.ptr <- ..1
-      else { if (!is.null(self$.ptr)) stop("native object already initialized"); self$.ptr <- .Call(`.rs_431`, list(...)) }
+      else { if (!is.null(self$.ptr)) stop("native object already initialized"); self$.ptr <- .Call(`.rs_449`, list(...)) }
       invisible(self)
     },
-    `optimize` = function(...) .Call(`.rs_429`, self, list(...)),
-    `options` = function(...) .Call(`.rs_430`, self, list(...))
+    `optimize` = function(...) .Call(`.rs_447`, self, list(...)),
+    `options` = function(...) .Call(`.rs_448`, self, list(...))
   )
 )
 #' Settings for NUTS.
@@ -4345,18 +4391,18 @@ rosetta_ref <- function(value = NULL) {
   public = list(
     initialize = function(...) {
       if (...length() == 1L && inherits(..1, "rosetta_ptr")) self$.ptr <- ..1
-      else { if (!is.null(self$.ptr)) stop("native object already initialized"); self$.ptr <- .Call(`.rs_446`, list(...)) }
+      else { if (!is.null(self$.ptr)) stop("native object already initialized"); self$.ptr <- .Call(`.rs_464`, list(...)) }
       invisible(self)
     }
   ),
   active = list(
-    `num_samples` = function(value) if (missing(value)) .Call(`.rs_432`, self) else invisible(.Call(`.rs_433`, self, value)),
-    `num_warmup` = function(value) if (missing(value)) .Call(`.rs_434`, self) else invisible(.Call(`.rs_435`, self, value)),
-    `max_tree_depth` = function(value) if (missing(value)) .Call(`.rs_436`, self) else invisible(.Call(`.rs_437`, self, value)),
-    `initial_step_size` = function(value) if (missing(value)) .Call(`.rs_438`, self) else invisible(.Call(`.rs_439`, self, value)),
-    `target_accept_rate` = function(value) if (missing(value)) .Call(`.rs_440`, self) else invisible(.Call(`.rs_441`, self, value)),
-    `max_delta_error` = function(value) if (missing(value)) .Call(`.rs_442`, self) else invisible(.Call(`.rs_443`, self, value)),
-    `seed` = function(value) if (missing(value)) .Call(`.rs_444`, self) else invisible(.Call(`.rs_445`, self, value))
+    `num_samples` = function(value) if (missing(value)) .Call(`.rs_450`, self) else invisible(.Call(`.rs_451`, self, value)),
+    `num_warmup` = function(value) if (missing(value)) .Call(`.rs_452`, self) else invisible(.Call(`.rs_453`, self, value)),
+    `max_tree_depth` = function(value) if (missing(value)) .Call(`.rs_454`, self) else invisible(.Call(`.rs_455`, self, value)),
+    `initial_step_size` = function(value) if (missing(value)) .Call(`.rs_456`, self) else invisible(.Call(`.rs_457`, self, value)),
+    `target_accept_rate` = function(value) if (missing(value)) .Call(`.rs_458`, self) else invisible(.Call(`.rs_459`, self, value)),
+    `max_delta_error` = function(value) if (missing(value)) .Call(`.rs_460`, self) else invisible(.Call(`.rs_461`, self, value)),
+    `seed` = function(value) if (missing(value)) .Call(`.rs_462`, self) else invisible(.Call(`.rs_463`, self, value))
   )
 )
 #' Output of NUTS::sample().
@@ -4378,19 +4424,19 @@ rosetta_ref <- function(value = NULL) {
   public = list(
     initialize = function(...) {
       if (...length() == 1L && inherits(..1, "rosetta_ptr")) self$.ptr <- ..1
-      else { if (!is.null(self$.ptr)) stop("native object already initialized"); self$.ptr <- .Call(`.rs_463`, list(...)) }
+      else { if (!is.null(self$.ptr)) stop("native object already initialized"); self$.ptr <- .Call(`.rs_481`, list(...)) }
       invisible(self)
     }
   ),
   active = list(
-    `samples` = function(value) if (missing(value)) .Call(`.rs_447`, self) else invisible(.Call(`.rs_448`, self, value)),
-    `accept_rate` = function(value) if (missing(value)) .Call(`.rs_449`, self) else invisible(.Call(`.rs_450`, self, value)),
-    `final_step_size` = function(value) if (missing(value)) .Call(`.rs_451`, self) else invisible(.Call(`.rs_452`, self, value)),
-    `num_divergences` = function(value) if (missing(value)) .Call(`.rs_453`, self) else invisible(.Call(`.rs_454`, self, value)),
-    `divergent` = function(value) if (missing(value)) .Call(`.rs_455`, self) else invisible(.Call(`.rs_456`, self, value)),
-    `tree_depth` = function(value) if (missing(value)) .Call(`.rs_457`, self) else invisible(.Call(`.rs_458`, self, value)),
-    `n_leapfrog` = function(value) if (missing(value)) .Call(`.rs_459`, self) else invisible(.Call(`.rs_460`, self, value)),
-    `energy` = function(value) if (missing(value)) .Call(`.rs_461`, self) else invisible(.Call(`.rs_462`, self, value))
+    `samples` = function(value) if (missing(value)) .Call(`.rs_465`, self) else invisible(.Call(`.rs_466`, self, value)),
+    `accept_rate` = function(value) if (missing(value)) .Call(`.rs_467`, self) else invisible(.Call(`.rs_468`, self, value)),
+    `final_step_size` = function(value) if (missing(value)) .Call(`.rs_469`, self) else invisible(.Call(`.rs_470`, self, value)),
+    `num_divergences` = function(value) if (missing(value)) .Call(`.rs_471`, self) else invisible(.Call(`.rs_472`, self, value)),
+    `divergent` = function(value) if (missing(value)) .Call(`.rs_473`, self) else invisible(.Call(`.rs_474`, self, value)),
+    `tree_depth` = function(value) if (missing(value)) .Call(`.rs_475`, self) else invisible(.Call(`.rs_476`, self, value)),
+    `n_leapfrog` = function(value) if (missing(value)) .Call(`.rs_477`, self) else invisible(.Call(`.rs_478`, self, value)),
+    `energy` = function(value) if (missing(value)) .Call(`.rs_479`, self) else invisible(.Call(`.rs_480`, self, value))
   )
 )
 #' The No-U-Turn Sampler (Hoffman & Gelman 2014, the efficient slice-sampling variant, Algorithm 3): Hamiltonian Monte Carlo with an automatically chosen trajectory length -- the leapfrog trajectory is grown by repeated doubling until it would start turning back on itself (a "U-turn"), removing the need to hand-tune a fixed number of leapfrog steps.
@@ -4420,11 +4466,11 @@ rosetta_ref <- function(value = NULL) {
   public = list(
     initialize = function(...) {
       if (...length() == 1L && inherits(..1, "rosetta_ptr")) self$.ptr <- ..1
-      else { if (!is.null(self$.ptr)) stop("native object already initialized"); self$.ptr <- .Call(`.rs_466`, list(...)) }
+      else { if (!is.null(self$.ptr)) stop("native object already initialized"); self$.ptr <- .Call(`.rs_484`, list(...)) }
       invisible(self)
     },
-    `sample` = function(...) .Call(`.rs_464`, self, list(...)),
-    `options` = function(...) .Call(`.rs_465`, self, list(...))
+    `sample` = function(...) .Call(`.rs_482`, self, list(...)),
+    `options` = function(...) .Call(`.rs_483`, self, list(...))
   )
 )
 #' Settings for RandomWalkMetropolis.
@@ -4449,17 +4495,17 @@ rosetta_ref <- function(value = NULL) {
   public = list(
     initialize = function(...) {
       if (...length() == 1L && inherits(..1, "rosetta_ptr")) self$.ptr <- ..1
-      else { if (!is.null(self$.ptr)) stop("native object already initialized"); self$.ptr <- .Call(`.rs_479`, list(...)) }
+      else { if (!is.null(self$.ptr)) stop("native object already initialized"); self$.ptr <- .Call(`.rs_497`, list(...)) }
       invisible(self)
     }
   ),
   active = list(
-    `num_samples` = function(value) if (missing(value)) .Call(`.rs_467`, self) else invisible(.Call(`.rs_468`, self, value)),
-    `num_warmup` = function(value) if (missing(value)) .Call(`.rs_469`, self) else invisible(.Call(`.rs_470`, self, value)),
-    `initial_step_size` = function(value) if (missing(value)) .Call(`.rs_471`, self) else invisible(.Call(`.rs_472`, self, value)),
-    `target_accept_rate` = function(value) if (missing(value)) .Call(`.rs_473`, self) else invisible(.Call(`.rs_474`, self, value)),
-    `seed` = function(value) if (missing(value)) .Call(`.rs_475`, self) else invisible(.Call(`.rs_476`, self, value)),
-    `adapt_covariance` = function(value) if (missing(value)) .Call(`.rs_477`, self) else invisible(.Call(`.rs_478`, self, value))
+    `num_samples` = function(value) if (missing(value)) .Call(`.rs_485`, self) else invisible(.Call(`.rs_486`, self, value)),
+    `num_warmup` = function(value) if (missing(value)) .Call(`.rs_487`, self) else invisible(.Call(`.rs_488`, self, value)),
+    `initial_step_size` = function(value) if (missing(value)) .Call(`.rs_489`, self) else invisible(.Call(`.rs_490`, self, value)),
+    `target_accept_rate` = function(value) if (missing(value)) .Call(`.rs_491`, self) else invisible(.Call(`.rs_492`, self, value)),
+    `seed` = function(value) if (missing(value)) .Call(`.rs_493`, self) else invisible(.Call(`.rs_494`, self, value)),
+    `adapt_covariance` = function(value) if (missing(value)) .Call(`.rs_495`, self) else invisible(.Call(`.rs_496`, self, value))
   )
 )
 #' Output of RandomWalkMetropolis::sample().
@@ -4477,15 +4523,15 @@ rosetta_ref <- function(value = NULL) {
   public = list(
     initialize = function(...) {
       if (...length() == 1L && inherits(..1, "rosetta_ptr")) self$.ptr <- ..1
-      else { if (!is.null(self$.ptr)) stop("native object already initialized"); self$.ptr <- .Call(`.rs_488`, list(...)) }
+      else { if (!is.null(self$.ptr)) stop("native object already initialized"); self$.ptr <- .Call(`.rs_506`, list(...)) }
       invisible(self)
     }
   ),
   active = list(
-    `samples` = function(value) if (missing(value)) .Call(`.rs_480`, self) else invisible(.Call(`.rs_481`, self, value)),
-    `accept_rate` = function(value) if (missing(value)) .Call(`.rs_482`, self) else invisible(.Call(`.rs_483`, self, value)),
-    `final_step_size` = function(value) if (missing(value)) .Call(`.rs_484`, self) else invisible(.Call(`.rs_485`, self, value)),
-    `proposal_covariance` = function(value) if (missing(value)) .Call(`.rs_486`, self) else invisible(.Call(`.rs_487`, self, value))
+    `samples` = function(value) if (missing(value)) .Call(`.rs_498`, self) else invisible(.Call(`.rs_499`, self, value)),
+    `accept_rate` = function(value) if (missing(value)) .Call(`.rs_500`, self) else invisible(.Call(`.rs_501`, self, value)),
+    `final_step_size` = function(value) if (missing(value)) .Call(`.rs_502`, self) else invisible(.Call(`.rs_503`, self, value)),
+    `proposal_covariance` = function(value) if (missing(value)) .Call(`.rs_504`, self) else invisible(.Call(`.rs_505`, self, value))
   )
 )
 #' Random-walk Metropolis-Hastings: the classic gradient-free MCMC baseline, proposing x' = x + step_size * N(0, I) and accepting with probability min(1, exp(log_posterior(x') - log_posterior(x))).
@@ -4516,11 +4562,11 @@ rosetta_ref <- function(value = NULL) {
   public = list(
     initialize = function(...) {
       if (...length() == 1L && inherits(..1, "rosetta_ptr")) self$.ptr <- ..1
-      else { if (!is.null(self$.ptr)) stop("native object already initialized"); self$.ptr <- .Call(`.rs_491`, list(...)) }
+      else { if (!is.null(self$.ptr)) stop("native object already initialized"); self$.ptr <- .Call(`.rs_509`, list(...)) }
       invisible(self)
     },
-    `sample` = function(...) .Call(`.rs_489`, self, list(...)),
-    `options` = function(...) .Call(`.rs_490`, self, list(...))
+    `sample` = function(...) .Call(`.rs_507`, self, list(...)),
+    `options` = function(...) .Call(`.rs_508`, self, list(...))
   )
 )
 #' A pixel value in fully-expanded RGBA form, regardless of the owning Image's actual mode -- always 4 plain uint8 fields (rather than a variable-length per-mode vector) so this stays trivially bindable across languages, matching this codebase's established preference for fixed-shape structs.
@@ -4539,15 +4585,15 @@ rosetta_ref <- function(value = NULL) {
   public = list(
     initialize = function(...) {
       if (...length() == 1L && inherits(..1, "rosetta_ptr")) self$.ptr <- ..1
-      else { if (!is.null(self$.ptr)) stop("native object already initialized"); self$.ptr <- .Call(`.rs_500`, list(...)) }
+      else { if (!is.null(self$.ptr)) stop("native object already initialized"); self$.ptr <- .Call(`.rs_518`, list(...)) }
       invisible(self)
     }
   ),
   active = list(
-    `r` = function(value) if (missing(value)) .Call(`.rs_492`, self) else invisible(.Call(`.rs_493`, self, value)),
-    `g` = function(value) if (missing(value)) .Call(`.rs_494`, self) else invisible(.Call(`.rs_495`, self, value)),
-    `b` = function(value) if (missing(value)) .Call(`.rs_496`, self) else invisible(.Call(`.rs_497`, self, value)),
-    `a` = function(value) if (missing(value)) .Call(`.rs_498`, self) else invisible(.Call(`.rs_499`, self, value))
+    `r` = function(value) if (missing(value)) .Call(`.rs_510`, self) else invisible(.Call(`.rs_511`, self, value)),
+    `g` = function(value) if (missing(value)) .Call(`.rs_512`, self) else invisible(.Call(`.rs_513`, self, value)),
+    `b` = function(value) if (missing(value)) .Call(`.rs_514`, self) else invisible(.Call(`.rs_515`, self, value)),
+    `a` = function(value) if (missing(value)) .Call(`.rs_516`, self) else invisible(.Call(`.rs_517`, self, value))
   )
 )
 #' A 2D raster image: row-major, top-left origin, interleaved channel bytes (matching the layout every common image codec uses on disk, so I/O needs no reshuffling).
@@ -4588,21 +4634,21 @@ rosetta_ref <- function(value = NULL) {
   public = list(
     initialize = function(...) {
       if (...length() == 1L && inherits(..1, "rosetta_ptr")) self$.ptr <- ..1
-      else { if (!is.null(self$.ptr)) stop("native object already initialized"); self$.ptr <- .Call(`.rs_510`, list(...)) }
+      else { if (!is.null(self$.ptr)) stop("native object already initialized"); self$.ptr <- .Call(`.rs_528`, list(...)) }
       invisible(self)
     },
-    `width` = function(...) .Call(`.rs_501`, self, list(...)),
-    `height` = function(...) .Call(`.rs_502`, self, list(...)),
-    `mode` = function(...) .Call(`.rs_503`, self, list(...)),
-    `channels` = function(...) .Call(`.rs_504`, self, list(...)),
-    `data` = function(...) .Call(`.rs_505`, self, list(...)),
-    `get_pixel` = function(...) .Call(`.rs_506`, self, list(...)),
-    `set_pixel` = function(...) invisible(.Call(`.rs_507`, self, list(...))),
-    `fill` = function(...) invisible(.Call(`.rs_508`, self, list(...))),
-    `channel_count` = function(...) .Call(`.rs_509`, NULL, list(...))
+    `width` = function(...) .Call(`.rs_519`, self, list(...)),
+    `height` = function(...) .Call(`.rs_520`, self, list(...)),
+    `mode` = function(...) .Call(`.rs_521`, self, list(...)),
+    `channels` = function(...) .Call(`.rs_522`, self, list(...)),
+    `data` = function(...) .Call(`.rs_523`, self, list(...)),
+    `get_pixel` = function(...) .Call(`.rs_524`, self, list(...)),
+    `set_pixel` = function(...) invisible(.Call(`.rs_525`, self, list(...))),
+    `fill` = function(...) invisible(.Call(`.rs_526`, self, list(...))),
+    `channel_count` = function(...) .Call(`.rs_527`, NULL, list(...))
   )
 )
-`Image`$`channel_count` <- function(...) .Call(`.rs_509`, NULL, list(...))
+`Image`$`channel_count` <- function(...) .Call(`.rs_527`, NULL, list(...))
 #' A pixel color in HSV space: h in \[0, 360), s and v in \[0, 1\].
 #' @section Constructor:
 #' `HSV$new()`
@@ -4616,14 +4662,14 @@ rosetta_ref <- function(value = NULL) {
   public = list(
     initialize = function(...) {
       if (...length() == 1L && inherits(..1, "rosetta_ptr")) self$.ptr <- ..1
-      else { if (!is.null(self$.ptr)) stop("native object already initialized"); self$.ptr <- .Call(`.rs_517`, list(...)) }
+      else { if (!is.null(self$.ptr)) stop("native object already initialized"); self$.ptr <- .Call(`.rs_535`, list(...)) }
       invisible(self)
     }
   ),
   active = list(
-    `h` = function(value) if (missing(value)) .Call(`.rs_511`, self) else invisible(.Call(`.rs_512`, self, value)),
-    `s` = function(value) if (missing(value)) .Call(`.rs_513`, self) else invisible(.Call(`.rs_514`, self, value)),
-    `v` = function(value) if (missing(value)) .Call(`.rs_515`, self) else invisible(.Call(`.rs_516`, self, value))
+    `h` = function(value) if (missing(value)) .Call(`.rs_529`, self) else invisible(.Call(`.rs_530`, self, value)),
+    `s` = function(value) if (missing(value)) .Call(`.rs_531`, self) else invisible(.Call(`.rs_532`, self, value)),
+    `v` = function(value) if (missing(value)) .Call(`.rs_533`, self) else invisible(.Call(`.rs_534`, self, value))
   )
 )
 #' A detected blob keypoint: its pixel location, the Gaussian scale (sigma) at which it was found, and the Difference-of-Gaussians response at that scale (higher magnitude is a stronger blob).
@@ -4640,15 +4686,15 @@ rosetta_ref <- function(value = NULL) {
   public = list(
     initialize = function(...) {
       if (...length() == 1L && inherits(..1, "rosetta_ptr")) self$.ptr <- ..1
-      else { if (!is.null(self$.ptr)) stop("native object already initialized"); self$.ptr <- .Call(`.rs_526`, list(...)) }
+      else { if (!is.null(self$.ptr)) stop("native object already initialized"); self$.ptr <- .Call(`.rs_544`, list(...)) }
       invisible(self)
     }
   ),
   active = list(
-    `x` = function(value) if (missing(value)) .Call(`.rs_518`, self) else invisible(.Call(`.rs_519`, self, value)),
-    `y` = function(value) if (missing(value)) .Call(`.rs_520`, self) else invisible(.Call(`.rs_521`, self, value)),
-    `scale` = function(value) if (missing(value)) .Call(`.rs_522`, self) else invisible(.Call(`.rs_523`, self, value)),
-    `response` = function(value) if (missing(value)) .Call(`.rs_524`, self) else invisible(.Call(`.rs_525`, self, value))
+    `x` = function(value) if (missing(value)) .Call(`.rs_536`, self) else invisible(.Call(`.rs_537`, self, value)),
+    `y` = function(value) if (missing(value)) .Call(`.rs_538`, self) else invisible(.Call(`.rs_539`, self, value)),
+    `scale` = function(value) if (missing(value)) .Call(`.rs_540`, self) else invisible(.Call(`.rs_541`, self, value)),
+    `response` = function(value) if (missing(value)) .Call(`.rs_542`, self) else invisible(.Call(`.rs_543`, self, value))
   )
 )
 #' A detected corner: its pixel location and a detector-specific response score (higher is a stronger corner).
@@ -4666,14 +4712,14 @@ rosetta_ref <- function(value = NULL) {
   public = list(
     initialize = function(...) {
       if (...length() == 1L && inherits(..1, "rosetta_ptr")) self$.ptr <- ..1
-      else { if (!is.null(self$.ptr)) stop("native object already initialized"); self$.ptr <- .Call(`.rs_533`, list(...)) }
+      else { if (!is.null(self$.ptr)) stop("native object already initialized"); self$.ptr <- .Call(`.rs_551`, list(...)) }
       invisible(self)
     }
   ),
   active = list(
-    `x` = function(value) if (missing(value)) .Call(`.rs_527`, self) else invisible(.Call(`.rs_528`, self, value)),
-    `y` = function(value) if (missing(value)) .Call(`.rs_529`, self) else invisible(.Call(`.rs_530`, self, value)),
-    `response` = function(value) if (missing(value)) .Call(`.rs_531`, self) else invisible(.Call(`.rs_532`, self, value))
+    `x` = function(value) if (missing(value)) .Call(`.rs_545`, self) else invisible(.Call(`.rs_546`, self, value)),
+    `y` = function(value) if (missing(value)) .Call(`.rs_547`, self) else invisible(.Call(`.rs_548`, self, value)),
+    `response` = function(value) if (missing(value)) .Call(`.rs_549`, self) else invisible(.Call(`.rs_550`, self, value))
   )
 )
 #' C++ class `datamunge::cv::detail::StructureTensorField`
@@ -4689,14 +4735,14 @@ rosetta_ref <- function(value = NULL) {
   public = list(
     initialize = function(...) {
       if (...length() == 1L && inherits(..1, "rosetta_ptr")) self$.ptr <- ..1
-      else { if (!is.null(self$.ptr)) stop("native object already initialized"); self$.ptr <- .Call(`.rs_540`, list(...)) }
+      else { if (!is.null(self$.ptr)) stop("native object already initialized"); self$.ptr <- .Call(`.rs_558`, list(...)) }
       invisible(self)
     }
   ),
   active = list(
-    `sxx` = function(value) if (missing(value)) .Call(`.rs_534`, self) else invisible(.Call(`.rs_535`, self, value)),
-    `syy` = function(value) if (missing(value)) .Call(`.rs_536`, self) else invisible(.Call(`.rs_537`, self, value)),
-    `sxy` = function(value) if (missing(value)) .Call(`.rs_538`, self) else invisible(.Call(`.rs_539`, self, value))
+    `sxx` = function(value) if (missing(value)) .Call(`.rs_552`, self) else invisible(.Call(`.rs_553`, self, value)),
+    `syy` = function(value) if (missing(value)) .Call(`.rs_554`, self) else invisible(.Call(`.rs_555`, self, value)),
+    `sxy` = function(value) if (missing(value)) .Call(`.rs_556`, self) else invisible(.Call(`.rs_557`, self, value))
   )
 )
 #' A detected line in the classical (rho, theta) normal-form parameterization: every point (x, y) on the line satisfies x*cos(theta) + y*sin(theta) = rho.
@@ -4714,14 +4760,14 @@ rosetta_ref <- function(value = NULL) {
   public = list(
     initialize = function(...) {
       if (...length() == 1L && inherits(..1, "rosetta_ptr")) self$.ptr <- ..1
-      else { if (!is.null(self$.ptr)) stop("native object already initialized"); self$.ptr <- .Call(`.rs_547`, list(...)) }
+      else { if (!is.null(self$.ptr)) stop("native object already initialized"); self$.ptr <- .Call(`.rs_565`, list(...)) }
       invisible(self)
     }
   ),
   active = list(
-    `rho` = function(value) if (missing(value)) .Call(`.rs_541`, self) else invisible(.Call(`.rs_542`, self, value)),
-    `theta` = function(value) if (missing(value)) .Call(`.rs_543`, self) else invisible(.Call(`.rs_544`, self, value)),
-    `votes` = function(value) if (missing(value)) .Call(`.rs_545`, self) else invisible(.Call(`.rs_546`, self, value))
+    `rho` = function(value) if (missing(value)) .Call(`.rs_559`, self) else invisible(.Call(`.rs_560`, self, value)),
+    `theta` = function(value) if (missing(value)) .Call(`.rs_561`, self) else invisible(.Call(`.rs_562`, self, value)),
+    `votes` = function(value) if (missing(value)) .Call(`.rs_563`, self) else invisible(.Call(`.rs_564`, self, value))
   )
 )
 #' A detected circle: center, radius, and the raw vote count that found it.
@@ -4738,15 +4784,15 @@ rosetta_ref <- function(value = NULL) {
   public = list(
     initialize = function(...) {
       if (...length() == 1L && inherits(..1, "rosetta_ptr")) self$.ptr <- ..1
-      else { if (!is.null(self$.ptr)) stop("native object already initialized"); self$.ptr <- .Call(`.rs_556`, list(...)) }
+      else { if (!is.null(self$.ptr)) stop("native object already initialized"); self$.ptr <- .Call(`.rs_574`, list(...)) }
       invisible(self)
     }
   ),
   active = list(
-    `cx` = function(value) if (missing(value)) .Call(`.rs_548`, self) else invisible(.Call(`.rs_549`, self, value)),
-    `cy` = function(value) if (missing(value)) .Call(`.rs_550`, self) else invisible(.Call(`.rs_551`, self, value)),
-    `radius` = function(value) if (missing(value)) .Call(`.rs_552`, self) else invisible(.Call(`.rs_553`, self, value)),
-    `votes` = function(value) if (missing(value)) .Call(`.rs_554`, self) else invisible(.Call(`.rs_555`, self, value))
+    `cx` = function(value) if (missing(value)) .Call(`.rs_566`, self) else invisible(.Call(`.rs_567`, self, value)),
+    `cy` = function(value) if (missing(value)) .Call(`.rs_568`, self) else invisible(.Call(`.rs_569`, self, value)),
+    `radius` = function(value) if (missing(value)) .Call(`.rs_570`, self) else invisible(.Call(`.rs_571`, self, value)),
+    `votes` = function(value) if (missing(value)) .Call(`.rs_572`, self) else invisible(.Call(`.rs_573`, self, value))
   )
 )
 #' The estimated motion of one tracked point between two frames.
@@ -4764,14 +4810,14 @@ rosetta_ref <- function(value = NULL) {
   public = list(
     initialize = function(...) {
       if (...length() == 1L && inherits(..1, "rosetta_ptr")) self$.ptr <- ..1
-      else { if (!is.null(self$.ptr)) stop("native object already initialized"); self$.ptr <- .Call(`.rs_563`, list(...)) }
+      else { if (!is.null(self$.ptr)) stop("native object already initialized"); self$.ptr <- .Call(`.rs_581`, list(...)) }
       invisible(self)
     }
   ),
   active = list(
-    `dx` = function(value) if (missing(value)) .Call(`.rs_557`, self) else invisible(.Call(`.rs_558`, self, value)),
-    `dy` = function(value) if (missing(value)) .Call(`.rs_559`, self) else invisible(.Call(`.rs_560`, self, value)),
-    `valid` = function(value) if (missing(value)) .Call(`.rs_561`, self) else invisible(.Call(`.rs_562`, self, value))
+    `dx` = function(value) if (missing(value)) .Call(`.rs_575`, self) else invisible(.Call(`.rs_576`, self, value)),
+    `dy` = function(value) if (missing(value)) .Call(`.rs_577`, self) else invisible(.Call(`.rs_578`, self, value)),
+    `valid` = function(value) if (missing(value)) .Call(`.rs_579`, self) else invisible(.Call(`.rs_580`, self, value))
   )
 )
 #' The result of connected_components(): a per-pixel label image (row-major, same layout as image::Image::data() but one int per pixel rather than per channel byte).
@@ -4790,15 +4836,15 @@ rosetta_ref <- function(value = NULL) {
   public = list(
     initialize = function(...) {
       if (...length() == 1L && inherits(..1, "rosetta_ptr")) self$.ptr <- ..1
-      else { if (!is.null(self$.ptr)) stop("native object already initialized"); self$.ptr <- .Call(`.rs_572`, list(...)) }
+      else { if (!is.null(self$.ptr)) stop("native object already initialized"); self$.ptr <- .Call(`.rs_590`, list(...)) }
       invisible(self)
     }
   ),
   active = list(
-    `labels` = function(value) if (missing(value)) .Call(`.rs_564`, self) else invisible(.Call(`.rs_565`, self, value)),
-    `width` = function(value) if (missing(value)) .Call(`.rs_566`, self) else invisible(.Call(`.rs_567`, self, value)),
-    `height` = function(value) if (missing(value)) .Call(`.rs_568`, self) else invisible(.Call(`.rs_569`, self, value)),
-    `count` = function(value) if (missing(value)) .Call(`.rs_570`, self) else invisible(.Call(`.rs_571`, self, value))
+    `labels` = function(value) if (missing(value)) .Call(`.rs_582`, self) else invisible(.Call(`.rs_583`, self, value)),
+    `width` = function(value) if (missing(value)) .Call(`.rs_584`, self) else invisible(.Call(`.rs_585`, self, value)),
+    `height` = function(value) if (missing(value)) .Call(`.rs_586`, self) else invisible(.Call(`.rs_587`, self, value)),
+    `count` = function(value) if (missing(value)) .Call(`.rs_588`, self) else invisible(.Call(`.rs_589`, self, value))
   )
 )
 #' One batch of images and labels returned by ImageLoader.
@@ -4832,18 +4878,18 @@ rosetta_ref <- function(value = NULL) {
   public = list(
     initialize = function(...) {
       if (...length() == 1L && inherits(..1, "rosetta_ptr")) self$.ptr <- ..1
-      else { if (!is.null(self$.ptr)) stop("native object already initialized"); self$.ptr <- .Call(`.rs_584`, list(...)) }
+      else { if (!is.null(self$.ptr)) stop("native object already initialized"); self$.ptr <- .Call(`.rs_602`, list(...)) }
       invisible(self)
     },
-    `size` = function(...) .Call(`.rs_573`, self, list(...)),
-    `features` = function(...) .Call(`.rs_574`, self, list(...)),
-    `image` = function(...) .Call(`.rs_575`, self, list(...))
+    `size` = function(...) .Call(`.rs_591`, self, list(...)),
+    `features` = function(...) .Call(`.rs_592`, self, list(...)),
+    `image` = function(...) .Call(`.rs_593`, self, list(...))
   ),
   active = list(
-    `pixels` = function(value) if (missing(value)) .Call(`.rs_576`, self) else invisible(.Call(`.rs_577`, self, value)),
-    `labels` = function(value) if (missing(value)) .Call(`.rs_578`, self) else invisible(.Call(`.rs_579`, self, value)),
-    `indices` = function(value) if (missing(value)) .Call(`.rs_580`, self) else invisible(.Call(`.rs_581`, self, value)),
-    `shape` = function(value) if (missing(value)) .Call(`.rs_582`, self) else invisible(.Call(`.rs_583`, self, value))
+    `pixels` = function(value) if (missing(value)) .Call(`.rs_594`, self) else invisible(.Call(`.rs_595`, self, value)),
+    `labels` = function(value) if (missing(value)) .Call(`.rs_596`, self) else invisible(.Call(`.rs_597`, self, value)),
+    `indices` = function(value) if (missing(value)) .Call(`.rs_598`, self) else invisible(.Call(`.rs_599`, self, value)),
+    `shape` = function(value) if (missing(value)) .Call(`.rs_600`, self) else invisible(.Call(`.rs_601`, self, value))
   )
 )
 #' A configurable, disk-backed batch iterator over a standard image dataset.
@@ -5026,43 +5072,43 @@ rosetta_ref <- function(value = NULL) {
   public = list(
     initialize = function(...) {
       if (...length() == 1L && inherits(..1, "rosetta_ptr")) self$.ptr <- ..1
-      else { if (!is.null(self$.ptr)) stop("native object already initialized"); self$.ptr <- .Call(`.rs_619`, list(...)) }
+      else { if (!is.null(self$.ptr)) stop("native object already initialized"); self$.ptr <- .Call(`.rs_637`, list(...)) }
       invisible(self)
     },
-    `set_batch_size` = function(...) .Call(`.rs_585`, self, list(...)),
-    `set_shuffle` = function(...) .Call(`.rs_586`, self, list(...)),
-    `set_seed` = function(...) .Call(`.rs_587`, self, list(...)),
-    `set_drop_last` = function(...) .Call(`.rs_588`, self, list(...)),
-    `set_normalize` = function(...) .Call(`.rs_589`, self, list(...)),
-    `set_layout` = function(...) .Call(`.rs_590`, self, list(...)),
-    `set_limit` = function(...) .Call(`.rs_591`, self, list(...)),
-    `set_coarse_labels` = function(...) .Call(`.rs_592`, self, list(...)),
-    `dataset` = function(...) .Call(`.rs_593`, self, list(...)),
-    `split` = function(...) .Call(`.rs_594`, self, list(...)),
-    `directory` = function(...) .Call(`.rs_595`, self, list(...)),
-    `batch_size` = function(...) .Call(`.rs_596`, self, list(...)),
-    `shuffle` = function(...) .Call(`.rs_597`, self, list(...)),
-    `seed` = function(...) .Call(`.rs_598`, self, list(...)),
-    `drop_last` = function(...) .Call(`.rs_599`, self, list(...)),
-    `normalize` = function(...) .Call(`.rs_600`, self, list(...)),
-    `layout` = function(...) .Call(`.rs_601`, self, list(...)),
-    `coarse_labels` = function(...) .Call(`.rs_602`, self, list(...)),
-    `size` = function(...) .Call(`.rs_603`, self, list(...)),
-    `split_size` = function(...) .Call(`.rs_604`, self, list(...)),
-    `num_batches` = function(...) .Call(`.rs_605`, self, list(...)),
-    `height` = function(...) .Call(`.rs_606`, self, list(...)),
-    `width` = function(...) .Call(`.rs_607`, self, list(...)),
-    `channels` = function(...) .Call(`.rs_608`, self, list(...)),
-    `num_classes` = function(...) .Call(`.rs_609`, self, list(...)),
-    `class_names` = function(...) .Call(`.rs_610`, self, list(...)),
-    `epoch` = function(...) .Call(`.rs_611`, self, list(...)),
-    `position` = function(...) .Call(`.rs_612`, self, list(...)),
-    `has_next` = function(...) .Call(`.rs_613`, self, list(...)),
-    `next_batch` = function(...) .Call(`.rs_614`, self, list(...)),
-    `reset` = function(...) invisible(.Call(`.rs_615`, self, list(...))),
-    `batch` = function(...) .Call(`.rs_616`, self, list(...)),
-    `take` = function(...) .Call(`.rs_617`, self, list(...)),
-    `load_all` = function(...) .Call(`.rs_618`, self, list(...))
+    `set_batch_size` = function(...) .Call(`.rs_603`, self, list(...)),
+    `set_shuffle` = function(...) .Call(`.rs_604`, self, list(...)),
+    `set_seed` = function(...) .Call(`.rs_605`, self, list(...)),
+    `set_drop_last` = function(...) .Call(`.rs_606`, self, list(...)),
+    `set_normalize` = function(...) .Call(`.rs_607`, self, list(...)),
+    `set_layout` = function(...) .Call(`.rs_608`, self, list(...)),
+    `set_limit` = function(...) .Call(`.rs_609`, self, list(...)),
+    `set_coarse_labels` = function(...) .Call(`.rs_610`, self, list(...)),
+    `dataset` = function(...) .Call(`.rs_611`, self, list(...)),
+    `split` = function(...) .Call(`.rs_612`, self, list(...)),
+    `directory` = function(...) .Call(`.rs_613`, self, list(...)),
+    `batch_size` = function(...) .Call(`.rs_614`, self, list(...)),
+    `shuffle` = function(...) .Call(`.rs_615`, self, list(...)),
+    `seed` = function(...) .Call(`.rs_616`, self, list(...)),
+    `drop_last` = function(...) .Call(`.rs_617`, self, list(...)),
+    `normalize` = function(...) .Call(`.rs_618`, self, list(...)),
+    `layout` = function(...) .Call(`.rs_619`, self, list(...)),
+    `coarse_labels` = function(...) .Call(`.rs_620`, self, list(...)),
+    `size` = function(...) .Call(`.rs_621`, self, list(...)),
+    `split_size` = function(...) .Call(`.rs_622`, self, list(...)),
+    `num_batches` = function(...) .Call(`.rs_623`, self, list(...)),
+    `height` = function(...) .Call(`.rs_624`, self, list(...)),
+    `width` = function(...) .Call(`.rs_625`, self, list(...)),
+    `channels` = function(...) .Call(`.rs_626`, self, list(...)),
+    `num_classes` = function(...) .Call(`.rs_627`, self, list(...)),
+    `class_names` = function(...) .Call(`.rs_628`, self, list(...)),
+    `epoch` = function(...) .Call(`.rs_629`, self, list(...)),
+    `position` = function(...) .Call(`.rs_630`, self, list(...)),
+    `has_next` = function(...) .Call(`.rs_631`, self, list(...)),
+    `next_batch` = function(...) .Call(`.rs_632`, self, list(...)),
+    `reset` = function(...) invisible(.Call(`.rs_633`, self, list(...))),
+    `batch` = function(...) .Call(`.rs_634`, self, list(...)),
+    `take` = function(...) .Call(`.rs_635`, self, list(...)),
+    `load_all` = function(...) .Call(`.rs_636`, self, list(...))
   )
 )
 #' A 1D finite-element mesh: a strictly increasing sequence of node coordinates.
@@ -5084,13 +5130,13 @@ rosetta_ref <- function(value = NULL) {
   public = list(
     initialize = function(...) {
       if (...length() == 1L && inherits(..1, "rosetta_ptr")) self$.ptr <- ..1
-      else { if (!is.null(self$.ptr)) stop("native object already initialized"); self$.ptr <- .Call(`.rs_624`, list(...)) }
+      else { if (!is.null(self$.ptr)) stop("native object already initialized"); self$.ptr <- .Call(`.rs_642`, list(...)) }
       invisible(self)
     },
-    `num_nodes` = function(...) .Call(`.rs_620`, self, list(...)),
-    `num_elements` = function(...) .Call(`.rs_621`, self, list(...)),
-    `node_at` = function(...) .Call(`.rs_622`, self, list(...)),
-    `element_length` = function(...) .Call(`.rs_623`, self, list(...))
+    `num_nodes` = function(...) .Call(`.rs_638`, self, list(...)),
+    `num_elements` = function(...) .Call(`.rs_639`, self, list(...)),
+    `node_at` = function(...) .Call(`.rs_640`, self, list(...)),
+    `element_length` = function(...) .Call(`.rs_641`, self, list(...))
   )
 )
 #' A user-supplied scalar source-term function of one spatial variable, f(x).
@@ -5106,10 +5152,10 @@ rosetta_ref <- function(value = NULL) {
   public = list(
     initialize = function(...) {
       if (...length() == 1L && inherits(..1, "rosetta_ptr")) self$.ptr <- ..1
-      else { if (!is.null(self$.ptr)) stop("native object already initialized"); self$.ptr <- .Call(`.rs_626`, list(...), self) }
+      else { if (!is.null(self$.ptr)) stop("native object already initialized"); self$.ptr <- .Call(`.rs_644`, list(...), self) }
       invisible(self)
     },
-    `evaluate` = function(...) .Call(`.rs_625`, self, list(...))
+    `evaluate` = function(...) .Call(`.rs_643`, self, list(...))
   )
 )
 #' A user-supplied scalar source-term function of two spatial variables, f(x, y).
@@ -5125,10 +5171,10 @@ rosetta_ref <- function(value = NULL) {
   public = list(
     initialize = function(...) {
       if (...length() == 1L && inherits(..1, "rosetta_ptr")) self$.ptr <- ..1
-      else { if (!is.null(self$.ptr)) stop("native object already initialized"); self$.ptr <- .Call(`.rs_628`, list(...), self) }
+      else { if (!is.null(self$.ptr)) stop("native object already initialized"); self$.ptr <- .Call(`.rs_646`, list(...), self) }
       invisible(self)
     },
-    `evaluate` = function(...) .Call(`.rs_627`, self, list(...))
+    `evaluate` = function(...) .Call(`.rs_645`, self, list(...))
   )
 )
 #' Owned endpoint data for Dirichlet, outward-conormal Neumann or Robin conditions.
@@ -5152,14 +5198,14 @@ rosetta_ref <- function(value = NULL) {
   public = list(
     initialize = function(...) {
       if (...length() == 1L && inherits(..1, "rosetta_ptr")) self$.ptr <- ..1
-      else { if (!is.null(self$.ptr)) stop("native object already initialized"); self$.ptr <- .Call(`.rs_635`, list(...)) }
+      else { if (!is.null(self$.ptr)) stop("native object already initialized"); self$.ptr <- .Call(`.rs_653`, list(...)) }
       invisible(self)
     }
   ),
   active = list(
-    `type` = function(value) if (missing(value)) .Call(`.rs_629`, self) else invisible(.Call(`.rs_630`, self, value)),
-    `value` = function(value) if (missing(value)) .Call(`.rs_631`, self) else invisible(.Call(`.rs_632`, self, value)),
-    `robin_coefficient` = function(value) if (missing(value)) .Call(`.rs_633`, self) else invisible(.Call(`.rs_634`, self, value))
+    `type` = function(value) if (missing(value)) .Call(`.rs_647`, self) else invisible(.Call(`.rs_648`, self, value)),
+    `value` = function(value) if (missing(value)) .Call(`.rs_649`, self) else invisible(.Call(`.rs_650`, self, value)),
+    `robin_coefficient` = function(value) if (missing(value)) .Call(`.rs_651`, self) else invisible(.Call(`.rs_652`, self, value))
   )
 )
 #' Owned nodal P1 steady solution, with checked scalar accessors for language bindings.
@@ -5196,12 +5242,12 @@ rosetta_ref <- function(value = NULL) {
   public = list(
     initialize = function(...) {
       if (...length() == 1L && inherits(..1, "rosetta_ptr")) self$.ptr <- ..1
-      else { if (!is.null(self$.ptr)) stop("native object already initialized"); self$.ptr <- .Call(`.rs_639`, list(...)) }
+      else { if (!is.null(self$.ptr)) stop("native object already initialized"); self$.ptr <- .Call(`.rs_657`, list(...)) }
       invisible(self)
     },
-    `size` = function(...) .Call(`.rs_636`, self, list(...)),
-    `node_at` = function(...) .Call(`.rs_637`, self, list(...)),
-    `value_at` = function(...) .Call(`.rs_638`, self, list(...))
+    `size` = function(...) .Call(`.rs_654`, self, list(...)),
+    `node_at` = function(...) .Call(`.rs_655`, self, list(...)),
+    `value_at` = function(...) .Call(`.rs_656`, self, list(...))
   )
 )
 #' Owned initial state and actual strictly advancing backward-Euler time slices.
@@ -5250,14 +5296,14 @@ rosetta_ref <- function(value = NULL) {
   public = list(
     initialize = function(...) {
       if (...length() == 1L && inherits(..1, "rosetta_ptr")) self$.ptr <- ..1
-      else { if (!is.null(self$.ptr)) stop("native object already initialized"); self$.ptr <- .Call(`.rs_645`, list(...)) }
+      else { if (!is.null(self$.ptr)) stop("native object already initialized"); self$.ptr <- .Call(`.rs_663`, list(...)) }
       invisible(self)
     },
-    `num_steps` = function(...) .Call(`.rs_640`, self, list(...)),
-    `num_nodes` = function(...) .Call(`.rs_641`, self, list(...)),
-    `node_at` = function(...) .Call(`.rs_642`, self, list(...)),
-    `time_at` = function(...) .Call(`.rs_643`, self, list(...)),
-    `value_at` = function(...) .Call(`.rs_644`, self, list(...))
+    `num_steps` = function(...) .Call(`.rs_658`, self, list(...)),
+    `num_nodes` = function(...) .Call(`.rs_659`, self, list(...)),
+    `node_at` = function(...) .Call(`.rs_660`, self, list(...)),
+    `time_at` = function(...) .Call(`.rs_661`, self, list(...)),
+    `value_at` = function(...) .Call(`.rs_662`, self, list(...))
   )
 )
 #' Solve steady or transient one-dimensional divergence-form problems with P1 Galerkin FEM.
@@ -5361,19 +5407,19 @@ rosetta_ref <- function(value = NULL) {
   public = list(
     initialize = function(...) {
       if (...length() == 1L && inherits(..1, "rosetta_ptr")) self$.ptr <- ..1
-      else { if (!is.null(self$.ptr)) stop("native object already initialized"); self$.ptr <- .Call(`.rs_650`, list(...)) }
+      else { if (!is.null(self$.ptr)) stop("native object already initialized"); self$.ptr <- .Call(`.rs_668`, list(...)) }
       invisible(self)
     },
-    `solve` = function(...) .Call(`.rs_646`, NULL, list(...)),
-    `solve_builtin` = function(...) .Call(`.rs_647`, NULL, list(...)),
-    `solve_transient` = function(...) .Call(`.rs_648`, NULL, list(...)),
-    `solve_transient_builtin` = function(...) .Call(`.rs_649`, NULL, list(...))
+    `solve` = function(...) .Call(`.rs_664`, NULL, list(...)),
+    `solve_builtin` = function(...) .Call(`.rs_665`, NULL, list(...)),
+    `solve_transient` = function(...) .Call(`.rs_666`, NULL, list(...)),
+    `solve_transient_builtin` = function(...) .Call(`.rs_667`, NULL, list(...))
   )
 )
-`FEM1D`$`solve` <- function(...) .Call(`.rs_646`, NULL, list(...))
-`FEM1D`$`solve_builtin` <- function(...) .Call(`.rs_647`, NULL, list(...))
-`FEM1D`$`solve_transient` <- function(...) .Call(`.rs_648`, NULL, list(...))
-`FEM1D`$`solve_transient_builtin` <- function(...) .Call(`.rs_649`, NULL, list(...))
+`FEM1D`$`solve` <- function(...) .Call(`.rs_664`, NULL, list(...))
+`FEM1D`$`solve_builtin` <- function(...) .Call(`.rs_665`, NULL, list(...))
+`FEM1D`$`solve_transient` <- function(...) .Call(`.rs_666`, NULL, list(...))
+`FEM1D`$`solve_transient_builtin` <- function(...) .Call(`.rs_667`, NULL, list(...))
 #' A copied point or free vector with ordinary double coordinates.
 #'
 #' Construction does not validate finiteness; checked algorithms document their own input contracts. Default coordinates are zero. Equality is numeric, so signed zeros compare equal and NaN coordinates do not compare equal.
@@ -5406,15 +5452,15 @@ rosetta_ref <- function(value = NULL) {
   public = list(
     initialize = function(...) {
       if (...length() == 1L && inherits(..1, "rosetta_ptr")) self$.ptr <- ..1
-      else { if (!is.null(self$.ptr)) stop("native object already initialized"); self$.ptr <- .Call(`.rs_657`, list(...)) }
+      else { if (!is.null(self$.ptr)) stop("native object already initialized"); self$.ptr <- .Call(`.rs_675`, list(...)) }
       invisible(self)
     },
-    `__eq__` = function(...) .Call(`.rs_651`, self, list(...)),
-    `__ne__` = function(...) .Call(`.rs_652`, self, list(...))
+    `__eq__` = function(...) .Call(`.rs_669`, self, list(...)),
+    `__ne__` = function(...) .Call(`.rs_670`, self, list(...))
   ),
   active = list(
-    `x` = function(value) if (missing(value)) .Call(`.rs_653`, self) else invisible(.Call(`.rs_654`, self, value)),
-    `y` = function(value) if (missing(value)) .Call(`.rs_655`, self) else invisible(.Call(`.rs_656`, self, value))
+    `x` = function(value) if (missing(value)) .Call(`.rs_671`, self) else invisible(.Call(`.rs_672`, self, value)),
+    `y` = function(value) if (missing(value)) .Call(`.rs_673`, self) else invisible(.Call(`.rs_674`, self, value))
   )
 )
 #' Three original point indices in counterclockwise order for finite mesh faces.
@@ -5437,14 +5483,14 @@ rosetta_ref <- function(value = NULL) {
   public = list(
     initialize = function(...) {
       if (...length() == 1L && inherits(..1, "rosetta_ptr")) self$.ptr <- ..1
-      else { if (!is.null(self$.ptr)) stop("native object already initialized"); self$.ptr <- .Call(`.rs_664`, list(...)) }
+      else { if (!is.null(self$.ptr)) stop("native object already initialized"); self$.ptr <- .Call(`.rs_682`, list(...)) }
       invisible(self)
     }
   ),
   active = list(
-    `a` = function(value) if (missing(value)) .Call(`.rs_658`, self) else invisible(.Call(`.rs_659`, self, value)),
-    `b` = function(value) if (missing(value)) .Call(`.rs_660`, self) else invisible(.Call(`.rs_661`, self, value)),
-    `c` = function(value) if (missing(value)) .Call(`.rs_662`, self) else invisible(.Call(`.rs_663`, self, value))
+    `a` = function(value) if (missing(value)) .Call(`.rs_676`, self) else invisible(.Call(`.rs_677`, self, value)),
+    `b` = function(value) if (missing(value)) .Call(`.rs_678`, self) else invisible(.Call(`.rs_679`, self, value)),
+    `c` = function(value) if (missing(value)) .Call(`.rs_680`, self) else invisible(.Call(`.rs_681`, self, value))
   )
 )
 #' Actual seed and cavity operations, excluding validation, sorting and copies.
@@ -5472,18 +5518,18 @@ rosetta_ref <- function(value = NULL) {
   public = list(
     initialize = function(...) {
       if (...length() == 1L && inherits(..1, "rosetta_ptr")) self$.ptr <- ..1
-      else { if (!is.null(self$.ptr)) stop("native object already initialized"); self$.ptr <- .Call(`.rs_679`, list(...)) }
+      else { if (!is.null(self$.ptr)) stop("native object already initialized"); self$.ptr <- .Call(`.rs_697`, list(...)) }
       invisible(self)
     }
   ),
   active = list(
-    `seed_orientation_tests` = function(value) if (missing(value)) .Call(`.rs_665`, self) else invisible(.Call(`.rs_666`, self, value)),
-    `insertions` = function(value) if (missing(value)) .Call(`.rs_667`, self) else invisible(.Call(`.rs_668`, self, value)),
-    `incircle_tests` = function(value) if (missing(value)) .Call(`.rs_669`, self) else invisible(.Call(`.rs_670`, self, value)),
-    `hull_side_tests` = function(value) if (missing(value)) .Call(`.rs_671`, self) else invisible(.Call(`.rs_672`, self, value)),
-    `removed_faces` = function(value) if (missing(value)) .Call(`.rs_673`, self) else invisible(.Call(`.rs_674`, self, value)),
-    `boundary_edges` = function(value) if (missing(value)) .Call(`.rs_675`, self) else invisible(.Call(`.rs_676`, self, value)),
-    `created_faces` = function(value) if (missing(value)) .Call(`.rs_677`, self) else invisible(.Call(`.rs_678`, self, value))
+    `seed_orientation_tests` = function(value) if (missing(value)) .Call(`.rs_683`, self) else invisible(.Call(`.rs_684`, self, value)),
+    `insertions` = function(value) if (missing(value)) .Call(`.rs_685`, self) else invisible(.Call(`.rs_686`, self, value)),
+    `incircle_tests` = function(value) if (missing(value)) .Call(`.rs_687`, self) else invisible(.Call(`.rs_688`, self, value)),
+    `hull_side_tests` = function(value) if (missing(value)) .Call(`.rs_689`, self) else invisible(.Call(`.rs_690`, self, value)),
+    `removed_faces` = function(value) if (missing(value)) .Call(`.rs_691`, self) else invisible(.Call(`.rs_692`, self, value)),
+    `boundary_edges` = function(value) if (missing(value)) .Call(`.rs_693`, self) else invisible(.Call(`.rs_694`, self, value)),
+    `created_faces` = function(value) if (missing(value)) .Call(`.rs_695`, self) else invisible(.Call(`.rs_696`, self, value))
   )
 )
 #' Owned actual cavity removal, directed boundary and replacement for one site.
@@ -5510,17 +5556,17 @@ rosetta_ref <- function(value = NULL) {
   public = list(
     initialize = function(...) {
       if (...length() == 1L && inherits(..1, "rosetta_ptr")) self$.ptr <- ..1
-      else { if (!is.null(self$.ptr)) stop("native object already initialized"); self$.ptr <- .Call(`.rs_692`, list(...)) }
+      else { if (!is.null(self$.ptr)) stop("native object already initialized"); self$.ptr <- .Call(`.rs_710`, list(...)) }
       invisible(self)
     }
   ),
   active = list(
-    `input_index` = function(value) if (missing(value)) .Call(`.rs_680`, self) else invisible(.Call(`.rs_681`, self, value)),
-    `faces_before` = function(value) if (missing(value)) .Call(`.rs_682`, self) else invisible(.Call(`.rs_683`, self, value)),
-    `faces_after` = function(value) if (missing(value)) .Call(`.rs_684`, self) else invisible(.Call(`.rs_685`, self, value)),
-    `removed` = function(value) if (missing(value)) .Call(`.rs_686`, self) else invisible(.Call(`.rs_687`, self, value)),
-    `boundary` = function(value) if (missing(value)) .Call(`.rs_688`, self) else invisible(.Call(`.rs_689`, self, value)),
-    `added` = function(value) if (missing(value)) .Call(`.rs_690`, self) else invisible(.Call(`.rs_691`, self, value))
+    `input_index` = function(value) if (missing(value)) .Call(`.rs_698`, self) else invisible(.Call(`.rs_699`, self, value)),
+    `faces_before` = function(value) if (missing(value)) .Call(`.rs_700`, self) else invisible(.Call(`.rs_701`, self, value)),
+    `faces_after` = function(value) if (missing(value)) .Call(`.rs_702`, self) else invisible(.Call(`.rs_703`, self, value)),
+    `removed` = function(value) if (missing(value)) .Call(`.rs_704`, self) else invisible(.Call(`.rs_705`, self, value)),
+    `boundary` = function(value) if (missing(value)) .Call(`.rs_706`, self) else invisible(.Call(`.rs_707`, self, value)),
+    `added` = function(value) if (missing(value)) .Call(`.rs_708`, self) else invisible(.Call(`.rs_709`, self, value))
   )
 )
 #' Complete owned sites, earliest-identity mapping, finite mesh and actual events.
@@ -5549,19 +5595,19 @@ rosetta_ref <- function(value = NULL) {
   public = list(
     initialize = function(...) {
       if (...length() == 1L && inherits(..1, "rosetta_ptr")) self$.ptr <- ..1
-      else { if (!is.null(self$.ptr)) stop("native object already initialized"); self$.ptr <- .Call(`.rs_709`, list(...)) }
+      else { if (!is.null(self$.ptr)) stop("native object already initialized"); self$.ptr <- .Call(`.rs_727`, list(...)) }
       invisible(self)
     }
   ),
   active = list(
-    `points` = function(value) if (missing(value)) .Call(`.rs_693`, self) else invisible(.Call(`.rs_694`, self, value)),
-    `representatives` = function(value) if (missing(value)) .Call(`.rs_695`, self) else invisible(.Call(`.rs_696`, self, value)),
-    `representative_for_input` = function(value) if (missing(value)) .Call(`.rs_697`, self) else invisible(.Call(`.rs_698`, self, value)),
-    `has_seed` = function(value) if (missing(value)) .Call(`.rs_699`, self) else invisible(.Call(`.rs_700`, self, value)),
-    `seed` = function(value) if (missing(value)) .Call(`.rs_701`, self) else invisible(.Call(`.rs_702`, self, value)),
-    `triangles` = function(value) if (missing(value)) .Call(`.rs_703`, self) else invisible(.Call(`.rs_704`, self, value)),
-    `steps` = function(value) if (missing(value)) .Call(`.rs_705`, self) else invisible(.Call(`.rs_706`, self, value)),
-    `work` = function(value) if (missing(value)) .Call(`.rs_707`, self) else invisible(.Call(`.rs_708`, self, value))
+    `points` = function(value) if (missing(value)) .Call(`.rs_711`, self) else invisible(.Call(`.rs_712`, self, value)),
+    `representatives` = function(value) if (missing(value)) .Call(`.rs_713`, self) else invisible(.Call(`.rs_714`, self, value)),
+    `representative_for_input` = function(value) if (missing(value)) .Call(`.rs_715`, self) else invisible(.Call(`.rs_716`, self, value)),
+    `has_seed` = function(value) if (missing(value)) .Call(`.rs_717`, self) else invisible(.Call(`.rs_718`, self, value)),
+    `seed` = function(value) if (missing(value)) .Call(`.rs_719`, self) else invisible(.Call(`.rs_720`, self, value)),
+    `triangles` = function(value) if (missing(value)) .Call(`.rs_721`, self) else invisible(.Call(`.rs_722`, self, value)),
+    `steps` = function(value) if (missing(value)) .Call(`.rs_723`, self) else invisible(.Call(`.rs_724`, self, value)),
+    `work` = function(value) if (missing(value)) .Call(`.rs_725`, self) else invisible(.Call(`.rs_726`, self, value))
   )
 )
 #' Coordinate-deduplicated topology counts and exact local empty-circle checks.
@@ -5591,19 +5637,19 @@ rosetta_ref <- function(value = NULL) {
   public = list(
     initialize = function(...) {
       if (...length() == 1L && inherits(..1, "rosetta_ptr")) self$.ptr <- ..1
-      else { if (!is.null(self$.ptr)) stop("native object already initialized"); self$.ptr <- .Call(`.rs_726`, list(...)) }
+      else { if (!is.null(self$.ptr)) stop("native object already initialized"); self$.ptr <- .Call(`.rs_744`, list(...)) }
       invisible(self)
     }
   ),
   active = list(
-    `distinct_points` = function(value) if (missing(value)) .Call(`.rs_710`, self) else invisible(.Call(`.rs_711`, self, value)),
-    `used_points` = function(value) if (missing(value)) .Call(`.rs_712`, self) else invisible(.Call(`.rs_713`, self, value)),
-    `triangles` = function(value) if (missing(value)) .Call(`.rs_714`, self) else invisible(.Call(`.rs_715`, self, value)),
-    `edges` = function(value) if (missing(value)) .Call(`.rs_716`, self) else invisible(.Call(`.rs_717`, self, value)),
-    `boundary_edges` = function(value) if (missing(value)) .Call(`.rs_718`, self) else invisible(.Call(`.rs_719`, self, value)),
-    `circle_tests` = function(value) if (missing(value)) .Call(`.rs_720`, self) else invisible(.Call(`.rs_721`, self, value)),
-    `interior_violations` = function(value) if (missing(value)) .Call(`.rs_722`, self) else invisible(.Call(`.rs_723`, self, value)),
-    `minimum_angle_degrees` = function(value) if (missing(value)) .Call(`.rs_724`, self) else invisible(.Call(`.rs_725`, self, value))
+    `distinct_points` = function(value) if (missing(value)) .Call(`.rs_728`, self) else invisible(.Call(`.rs_729`, self, value)),
+    `used_points` = function(value) if (missing(value)) .Call(`.rs_730`, self) else invisible(.Call(`.rs_731`, self, value)),
+    `triangles` = function(value) if (missing(value)) .Call(`.rs_732`, self) else invisible(.Call(`.rs_733`, self, value)),
+    `edges` = function(value) if (missing(value)) .Call(`.rs_734`, self) else invisible(.Call(`.rs_735`, self, value)),
+    `boundary_edges` = function(value) if (missing(value)) .Call(`.rs_736`, self) else invisible(.Call(`.rs_737`, self, value)),
+    `circle_tests` = function(value) if (missing(value)) .Call(`.rs_738`, self) else invisible(.Call(`.rs_739`, self, value)),
+    `interior_violations` = function(value) if (missing(value)) .Call(`.rs_740`, self) else invisible(.Call(`.rs_741`, self, value)),
+    `minimum_angle_degrees` = function(value) if (missing(value)) .Call(`.rs_742`, self) else invisible(.Call(`.rs_743`, self, value))
   )
 )
 #' A 2D triangular finite-element mesh: shared vertex coordinates plus a triangle connectivity list.
@@ -5625,13 +5671,13 @@ rosetta_ref <- function(value = NULL) {
   public = list(
     initialize = function(...) {
       if (...length() == 1L && inherits(..1, "rosetta_ptr")) self$.ptr <- ..1
-      else { if (!is.null(self$.ptr)) stop("native object already initialized"); self$.ptr <- .Call(`.rs_731`, list(...)) }
+      else { if (!is.null(self$.ptr)) stop("native object already initialized"); self$.ptr <- .Call(`.rs_749`, list(...)) }
       invisible(self)
     },
-    `num_nodes` = function(...) .Call(`.rs_727`, self, list(...)),
-    `num_triangles` = function(...) .Call(`.rs_728`, self, list(...)),
-    `node_at` = function(...) .Call(`.rs_729`, self, list(...)),
-    `triangle_at` = function(...) .Call(`.rs_730`, self, list(...))
+    `num_nodes` = function(...) .Call(`.rs_745`, self, list(...)),
+    `num_triangles` = function(...) .Call(`.rs_746`, self, list(...)),
+    `node_at` = function(...) .Call(`.rs_747`, self, list(...)),
+    `triangle_at` = function(...) .Call(`.rs_748`, self, list(...))
   )
 )
 #' The nodal solution of a 2D FEM Poisson solve.
@@ -5649,12 +5695,12 @@ rosetta_ref <- function(value = NULL) {
   public = list(
     initialize = function(...) {
       if (...length() == 1L && inherits(..1, "rosetta_ptr")) self$.ptr <- ..1
-      else { if (!is.null(self$.ptr)) stop("native object already initialized"); self$.ptr <- .Call(`.rs_735`, list(...)) }
+      else { if (!is.null(self$.ptr)) stop("native object already initialized"); self$.ptr <- .Call(`.rs_753`, list(...)) }
       invisible(self)
     },
-    `size` = function(...) .Call(`.rs_732`, self, list(...)),
-    `node_at` = function(...) .Call(`.rs_733`, self, list(...)),
-    `value_at` = function(...) .Call(`.rs_734`, self, list(...))
+    `size` = function(...) .Call(`.rs_750`, self, list(...)),
+    `node_at` = function(...) .Call(`.rs_751`, self, list(...)),
+    `value_at` = function(...) .Call(`.rs_752`, self, list(...))
   )
 )
 #' Galerkin finite-element solver for the 2D Poisson equation -k * (u_xx + u_yy) = f(x, y) on a triangular mesh, using piecewise-linear (P1) Lagrange elements and Dirichlet boundary conditions only (this "basic" 2D solver does not offer FEM1D's Neumann/Robin options).
@@ -5687,15 +5733,15 @@ rosetta_ref <- function(value = NULL) {
   public = list(
     initialize = function(...) {
       if (...length() == 1L && inherits(..1, "rosetta_ptr")) self$.ptr <- ..1
-      else { if (!is.null(self$.ptr)) stop("native object already initialized"); self$.ptr <- .Call(`.rs_738`, list(...)) }
+      else { if (!is.null(self$.ptr)) stop("native object already initialized"); self$.ptr <- .Call(`.rs_756`, list(...)) }
       invisible(self)
     },
-    `solve` = function(...) .Call(`.rs_736`, NULL, list(...)),
-    `solve_builtin` = function(...) .Call(`.rs_737`, NULL, list(...))
+    `solve` = function(...) .Call(`.rs_754`, NULL, list(...)),
+    `solve_builtin` = function(...) .Call(`.rs_755`, NULL, list(...))
   )
 )
-`FEM2D`$`solve` <- function(...) .Call(`.rs_736`, NULL, list(...))
-`FEM2D`$`solve_builtin` <- function(...) .Call(`.rs_737`, NULL, list(...))
+`FEM2D`$`solve` <- function(...) .Call(`.rs_754`, NULL, list(...))
+`FEM2D`$`solve_builtin` <- function(...) .Call(`.rs_755`, NULL, list(...))
 #' The position/velocity estimate returned by AlphaBetaFilter at each step.
 #' @section Constructor:
 #' `AlphaBetaState$new()`
@@ -5708,13 +5754,13 @@ rosetta_ref <- function(value = NULL) {
   public = list(
     initialize = function(...) {
       if (...length() == 1L && inherits(..1, "rosetta_ptr")) self$.ptr <- ..1
-      else { if (!is.null(self$.ptr)) stop("native object already initialized"); self$.ptr <- .Call(`.rs_743`, list(...)) }
+      else { if (!is.null(self$.ptr)) stop("native object already initialized"); self$.ptr <- .Call(`.rs_761`, list(...)) }
       invisible(self)
     }
   ),
   active = list(
-    `position` = function(value) if (missing(value)) .Call(`.rs_739`, self) else invisible(.Call(`.rs_740`, self, value)),
-    `velocity` = function(value) if (missing(value)) .Call(`.rs_741`, self) else invisible(.Call(`.rs_742`, self, value))
+    `position` = function(value) if (missing(value)) .Call(`.rs_757`, self) else invisible(.Call(`.rs_758`, self, value)),
+    `velocity` = function(value) if (missing(value)) .Call(`.rs_759`, self) else invisible(.Call(`.rs_760`, self, value))
   )
 )
 #' The constant-gain alpha-beta ("g-h") filter: a constant-velocity tracker that uses the SAME predict/correct structure as KalmanFilter, but with fixed gains alpha (position correction) and beta (velocity correction) instead of a covariance-driven Kalman gain -- it is exactly the steady-state behavior a 1D constant-velocity KalmanFilter converges to once its covariance stops changing, with the covariance bookkeeping stripped out entirely.
@@ -5760,16 +5806,16 @@ rosetta_ref <- function(value = NULL) {
   public = list(
     initialize = function(...) {
       if (...length() == 1L && inherits(..1, "rosetta_ptr")) self$.ptr <- ..1
-      else { if (!is.null(self$.ptr)) stop("native object already initialized"); self$.ptr <- .Call(`.rs_751`, list(...)) }
+      else { if (!is.null(self$.ptr)) stop("native object already initialized"); self$.ptr <- .Call(`.rs_769`, list(...)) }
       invisible(self)
     },
-    `update` = function(...) invisible(.Call(`.rs_744`, self, list(...))),
-    `position` = function(...) .Call(`.rs_745`, self, list(...)),
-    `velocity` = function(...) .Call(`.rs_746`, self, list(...)),
-    `alpha` = function(...) .Call(`.rs_747`, self, list(...)),
-    `beta` = function(...) .Call(`.rs_748`, self, list(...)),
-    `dt` = function(...) .Call(`.rs_749`, self, list(...)),
-    `filter` = function(...) .Call(`.rs_750`, self, list(...))
+    `update` = function(...) invisible(.Call(`.rs_762`, self, list(...))),
+    `position` = function(...) .Call(`.rs_763`, self, list(...)),
+    `velocity` = function(...) .Call(`.rs_764`, self, list(...)),
+    `alpha` = function(...) .Call(`.rs_765`, self, list(...)),
+    `beta` = function(...) .Call(`.rs_766`, self, list(...)),
+    `dt` = function(...) .Call(`.rs_767`, self, list(...)),
+    `filter` = function(...) .Call(`.rs_768`, self, list(...))
   )
 )
 #' The position/velocity/acceleration estimate returned by AlphaBetaGammaFilter.
@@ -5785,14 +5831,14 @@ rosetta_ref <- function(value = NULL) {
   public = list(
     initialize = function(...) {
       if (...length() == 1L && inherits(..1, "rosetta_ptr")) self$.ptr <- ..1
-      else { if (!is.null(self$.ptr)) stop("native object already initialized"); self$.ptr <- .Call(`.rs_758`, list(...)) }
+      else { if (!is.null(self$.ptr)) stop("native object already initialized"); self$.ptr <- .Call(`.rs_776`, list(...)) }
       invisible(self)
     }
   ),
   active = list(
-    `position` = function(value) if (missing(value)) .Call(`.rs_752`, self) else invisible(.Call(`.rs_753`, self, value)),
-    `velocity` = function(value) if (missing(value)) .Call(`.rs_754`, self) else invisible(.Call(`.rs_755`, self, value)),
-    `acceleration` = function(value) if (missing(value)) .Call(`.rs_756`, self) else invisible(.Call(`.rs_757`, self, value))
+    `position` = function(value) if (missing(value)) .Call(`.rs_770`, self) else invisible(.Call(`.rs_771`, self, value)),
+    `velocity` = function(value) if (missing(value)) .Call(`.rs_772`, self) else invisible(.Call(`.rs_773`, self, value)),
+    `acceleration` = function(value) if (missing(value)) .Call(`.rs_774`, self) else invisible(.Call(`.rs_775`, self, value))
   )
 )
 #' The constant-gain alpha-beta-gamma filter: AlphaBetaFilter's constant-ACCELERATION generalization (a 3-state g-h-k filter), adding a third fixed gain gamma for the acceleration correction.
@@ -5844,18 +5890,18 @@ rosetta_ref <- function(value = NULL) {
   public = list(
     initialize = function(...) {
       if (...length() == 1L && inherits(..1, "rosetta_ptr")) self$.ptr <- ..1
-      else { if (!is.null(self$.ptr)) stop("native object already initialized"); self$.ptr <- .Call(`.rs_768`, list(...)) }
+      else { if (!is.null(self$.ptr)) stop("native object already initialized"); self$.ptr <- .Call(`.rs_786`, list(...)) }
       invisible(self)
     },
-    `update` = function(...) invisible(.Call(`.rs_759`, self, list(...))),
-    `position` = function(...) .Call(`.rs_760`, self, list(...)),
-    `velocity` = function(...) .Call(`.rs_761`, self, list(...)),
-    `acceleration` = function(...) .Call(`.rs_762`, self, list(...)),
-    `alpha` = function(...) .Call(`.rs_763`, self, list(...)),
-    `beta` = function(...) .Call(`.rs_764`, self, list(...)),
-    `gamma` = function(...) .Call(`.rs_765`, self, list(...)),
-    `dt` = function(...) .Call(`.rs_766`, self, list(...)),
-    `filter` = function(...) .Call(`.rs_767`, self, list(...))
+    `update` = function(...) invisible(.Call(`.rs_777`, self, list(...))),
+    `position` = function(...) .Call(`.rs_778`, self, list(...)),
+    `velocity` = function(...) .Call(`.rs_779`, self, list(...)),
+    `acceleration` = function(...) .Call(`.rs_780`, self, list(...)),
+    `alpha` = function(...) .Call(`.rs_781`, self, list(...)),
+    `beta` = function(...) .Call(`.rs_782`, self, list(...)),
+    `gamma` = function(...) .Call(`.rs_783`, self, list(...)),
+    `dt` = function(...) .Call(`.rs_784`, self, list(...)),
+    `filter` = function(...) .Call(`.rs_785`, self, list(...))
   )
 )
 #' One state estimate + its covariance -- the common return shape for every "give me the state at every timestep" result in this module (filtered sequences, smoothed sequences, ensemble-filter output, ...).
@@ -5870,13 +5916,13 @@ rosetta_ref <- function(value = NULL) {
   public = list(
     initialize = function(...) {
       if (...length() == 1L && inherits(..1, "rosetta_ptr")) self$.ptr <- ..1
-      else { if (!is.null(self$.ptr)) stop("native object already initialized"); self$.ptr <- .Call(`.rs_773`, list(...)) }
+      else { if (!is.null(self$.ptr)) stop("native object already initialized"); self$.ptr <- .Call(`.rs_791`, list(...)) }
       invisible(self)
     }
   ),
   active = list(
-    `x` = function(value) if (missing(value)) .Call(`.rs_769`, self) else invisible(.Call(`.rs_770`, self, value)),
-    `P` = function(value) if (missing(value)) .Call(`.rs_771`, self) else invisible(.Call(`.rs_772`, self, value))
+    `x` = function(value) if (missing(value)) .Call(`.rs_787`, self) else invisible(.Call(`.rs_788`, self, value)),
+    `P` = function(value) if (missing(value)) .Call(`.rs_789`, self) else invisible(.Call(`.rs_790`, self, value))
   )
 )
 #' The result of KalmanFilter::smooth(): the forward-pass (filtered, causal) estimates alongside the RTS backward-pass (smoothed, uses the whole sequence) estimates.
@@ -5893,13 +5939,13 @@ rosetta_ref <- function(value = NULL) {
   public = list(
     initialize = function(...) {
       if (...length() == 1L && inherits(..1, "rosetta_ptr")) self$.ptr <- ..1
-      else { if (!is.null(self$.ptr)) stop("native object already initialized"); self$.ptr <- .Call(`.rs_778`, list(...)) }
+      else { if (!is.null(self$.ptr)) stop("native object already initialized"); self$.ptr <- .Call(`.rs_796`, list(...)) }
       invisible(self)
     }
   ),
   active = list(
-    `filtered` = function(value) if (missing(value)) .Call(`.rs_774`, self) else invisible(.Call(`.rs_775`, self, value)),
-    `smoothed` = function(value) if (missing(value)) .Call(`.rs_776`, self) else invisible(.Call(`.rs_777`, self, value))
+    `filtered` = function(value) if (missing(value)) .Call(`.rs_792`, self) else invisible(.Call(`.rs_793`, self, value)),
+    `smoothed` = function(value) if (missing(value)) .Call(`.rs_794`, self) else invisible(.Call(`.rs_795`, self, value))
   )
 )
 #' The standard discrete-time linear Kalman filter: x_k = F x_\{k-1\} + w_k, z_k = H x_k + v_k, w_k ~ N(0, Q), v_k ~ N(0, R) -- the minimum-mean-squared-error linear   estimator for exactly this model.
@@ -5950,15 +5996,15 @@ rosetta_ref <- function(value = NULL) {
   public = list(
     initialize = function(...) {
       if (...length() == 1L && inherits(..1, "rosetta_ptr")) self$.ptr <- ..1
-      else { if (!is.null(self$.ptr)) stop("native object already initialized"); self$.ptr <- .Call(`.rs_785`, list(...)) }
+      else { if (!is.null(self$.ptr)) stop("native object already initialized"); self$.ptr <- .Call(`.rs_803`, list(...)) }
       invisible(self)
     },
-    `predict` = function(...) invisible(.Call(`.rs_779`, self, list(...))),
-    `update` = function(...) invisible(.Call(`.rs_780`, self, list(...))),
-    `state` = function(...) .Call(`.rs_781`, self, list(...)),
-    `covariance` = function(...) .Call(`.rs_782`, self, list(...)),
-    `filter` = function(...) .Call(`.rs_783`, self, list(...)),
-    `smooth` = function(...) .Call(`.rs_784`, self, list(...))
+    `predict` = function(...) invisible(.Call(`.rs_797`, self, list(...))),
+    `update` = function(...) invisible(.Call(`.rs_798`, self, list(...))),
+    `state` = function(...) .Call(`.rs_799`, self, list(...)),
+    `covariance` = function(...) .Call(`.rs_800`, self, list(...)),
+    `filter` = function(...) .Call(`.rs_801`, self, list(...)),
+    `smooth` = function(...) .Call(`.rs_802`, self, list(...))
   )
 )
 #' A vector-valued function R^n -> R^m: the state-transition or observation model supplied to this module's nonlinear filters (ExtendedKalmanFilter, UnscentedKalmanFilter, EnsembleKalmanFilter, ParticleFilter).
@@ -5976,10 +6022,10 @@ rosetta_ref <- function(value = NULL) {
   public = list(
     initialize = function(...) {
       if (...length() == 1L && inherits(..1, "rosetta_ptr")) self$.ptr <- ..1
-      else { if (!is.null(self$.ptr)) stop("native object already initialized"); self$.ptr <- .Call(`.rs_787`, list(...), self) }
+      else { if (!is.null(self$.ptr)) stop("native object already initialized"); self$.ptr <- .Call(`.rs_805`, list(...), self) }
       invisible(self)
     },
-    `evaluate` = function(...) .Call(`.rs_786`, self, list(...))
+    `evaluate` = function(...) .Call(`.rs_804`, self, list(...))
   )
 )
 #' The (stochastic, "perturbed observations") Ensemble Kalman Filter: represents the state distribution as a finite ensemble of sample state vectors rather than an explicit mean/covariance, propagating each member through the true nonlinear f (plus sampled process noise) and estimating the covariances the Kalman update needs from the ensemble's own sample statistics.
@@ -6023,14 +6069,14 @@ rosetta_ref <- function(value = NULL) {
   public = list(
     initialize = function(...) {
       if (...length() == 1L && inherits(..1, "rosetta_ptr")) self$.ptr <- ..1
-      else { if (!is.null(self$.ptr)) stop("native object already initialized"); self$.ptr <- .Call(`.rs_793`, list(...)) }
+      else { if (!is.null(self$.ptr)) stop("native object already initialized"); self$.ptr <- .Call(`.rs_811`, list(...)) }
       invisible(self)
     },
-    `predict` = function(...) invisible(.Call(`.rs_788`, self, list(...))),
-    `update` = function(...) invisible(.Call(`.rs_789`, self, list(...))),
-    `state` = function(...) .Call(`.rs_790`, self, list(...)),
-    `covariance` = function(...) .Call(`.rs_791`, self, list(...)),
-    `filter` = function(...) .Call(`.rs_792`, self, list(...))
+    `predict` = function(...) invisible(.Call(`.rs_806`, self, list(...))),
+    `update` = function(...) invisible(.Call(`.rs_807`, self, list(...))),
+    `state` = function(...) .Call(`.rs_808`, self, list(...)),
+    `covariance` = function(...) .Call(`.rs_809`, self, list(...)),
+    `filter` = function(...) .Call(`.rs_810`, self, list(...))
   )
 )
 #' The Extended Kalman Filter: the standard first-order generalization of KalmanFilter to a nonlinear model x_k = f(x_\{k-1\}) + w_k, z_k = h(x_k) + v_k -- linearizes f and h (via numerical Jacobians, see detail::numerical_jacobian()) about the current state estimate at every step and otherwise runs the exact same predict/update algebra as the linear filter.
@@ -6062,14 +6108,14 @@ rosetta_ref <- function(value = NULL) {
   public = list(
     initialize = function(...) {
       if (...length() == 1L && inherits(..1, "rosetta_ptr")) self$.ptr <- ..1
-      else { if (!is.null(self$.ptr)) stop("native object already initialized"); self$.ptr <- .Call(`.rs_799`, list(...)) }
+      else { if (!is.null(self$.ptr)) stop("native object already initialized"); self$.ptr <- .Call(`.rs_817`, list(...)) }
       invisible(self)
     },
-    `predict` = function(...) invisible(.Call(`.rs_794`, self, list(...))),
-    `update` = function(...) invisible(.Call(`.rs_795`, self, list(...))),
-    `state` = function(...) .Call(`.rs_796`, self, list(...)),
-    `covariance` = function(...) .Call(`.rs_797`, self, list(...)),
-    `filter` = function(...) .Call(`.rs_798`, self, list(...))
+    `predict` = function(...) invisible(.Call(`.rs_812`, self, list(...))),
+    `update` = function(...) invisible(.Call(`.rs_813`, self, list(...))),
+    `state` = function(...) .Call(`.rs_814`, self, list(...)),
+    `covariance` = function(...) .Call(`.rs_815`, self, list(...)),
+    `filter` = function(...) .Call(`.rs_816`, self, list(...))
   )
 )
 #' The Information Filter: the algebraic dual of KalmanFilter, tracking the information matrix Y = P^-1 and information vector y = Y x instead of (x, P) directly.
@@ -6102,14 +6148,14 @@ rosetta_ref <- function(value = NULL) {
   public = list(
     initialize = function(...) {
       if (...length() == 1L && inherits(..1, "rosetta_ptr")) self$.ptr <- ..1
-      else { if (!is.null(self$.ptr)) stop("native object already initialized"); self$.ptr <- .Call(`.rs_805`, list(...)) }
+      else { if (!is.null(self$.ptr)) stop("native object already initialized"); self$.ptr <- .Call(`.rs_823`, list(...)) }
       invisible(self)
     },
-    `predict` = function(...) invisible(.Call(`.rs_800`, self, list(...))),
-    `update` = function(...) invisible(.Call(`.rs_801`, self, list(...))),
-    `state` = function(...) .Call(`.rs_802`, self, list(...)),
-    `covariance` = function(...) .Call(`.rs_803`, self, list(...)),
-    `filter` = function(...) .Call(`.rs_804`, self, list(...))
+    `predict` = function(...) invisible(.Call(`.rs_818`, self, list(...))),
+    `update` = function(...) invisible(.Call(`.rs_819`, self, list(...))),
+    `state` = function(...) .Call(`.rs_820`, self, list(...)),
+    `covariance` = function(...) .Call(`.rs_821`, self, list(...)),
+    `filter` = function(...) .Call(`.rs_822`, self, list(...))
   )
 )
 #' A bootstrap particle filter (Sequential Importance Resampling): the fully general, non-Gaussian generalization of the Kalman family -- represents the state's entire posterior distribution as a weighted swarm of sample points rather than assuming any particular family of distribution (Gaussian, etc.), so it remains correct even for strongly non-Gaussian or multimodal posteriors where every other filter in this module (which all assume approximately-Gaussian beliefs) can fail.
@@ -6154,14 +6200,14 @@ rosetta_ref <- function(value = NULL) {
   public = list(
     initialize = function(...) {
       if (...length() == 1L && inherits(..1, "rosetta_ptr")) self$.ptr <- ..1
-      else { if (!is.null(self$.ptr)) stop("native object already initialized"); self$.ptr <- .Call(`.rs_811`, list(...)) }
+      else { if (!is.null(self$.ptr)) stop("native object already initialized"); self$.ptr <- .Call(`.rs_829`, list(...)) }
       invisible(self)
     },
-    `predict` = function(...) invisible(.Call(`.rs_806`, self, list(...))),
-    `update` = function(...) invisible(.Call(`.rs_807`, self, list(...))),
-    `state` = function(...) .Call(`.rs_808`, self, list(...)),
-    `covariance` = function(...) .Call(`.rs_809`, self, list(...)),
-    `filter` = function(...) .Call(`.rs_810`, self, list(...))
+    `predict` = function(...) invisible(.Call(`.rs_824`, self, list(...))),
+    `update` = function(...) invisible(.Call(`.rs_825`, self, list(...))),
+    `state` = function(...) .Call(`.rs_826`, self, list(...)),
+    `covariance` = function(...) .Call(`.rs_827`, self, list(...)),
+    `filter` = function(...) .Call(`.rs_828`, self, list(...))
   )
 )
 #' The Unscented Kalman Filter: propagates a small deterministic set of "sigma points" through the true nonlinear f/h (rather than linearizing f/h itself, as ExtendedKalmanFilter does), then reconstructs the predicted mean/covariance from the propagated points' weighted statistics.
@@ -6195,14 +6241,14 @@ rosetta_ref <- function(value = NULL) {
   public = list(
     initialize = function(...) {
       if (...length() == 1L && inherits(..1, "rosetta_ptr")) self$.ptr <- ..1
-      else { if (!is.null(self$.ptr)) stop("native object already initialized"); self$.ptr <- .Call(`.rs_817`, list(...)) }
+      else { if (!is.null(self$.ptr)) stop("native object already initialized"); self$.ptr <- .Call(`.rs_835`, list(...)) }
       invisible(self)
     },
-    `predict` = function(...) invisible(.Call(`.rs_812`, self, list(...))),
-    `update` = function(...) invisible(.Call(`.rs_813`, self, list(...))),
-    `state` = function(...) .Call(`.rs_814`, self, list(...)),
-    `covariance` = function(...) .Call(`.rs_815`, self, list(...)),
-    `filter` = function(...) .Call(`.rs_816`, self, list(...))
+    `predict` = function(...) invisible(.Call(`.rs_830`, self, list(...))),
+    `update` = function(...) invisible(.Call(`.rs_831`, self, list(...))),
+    `state` = function(...) .Call(`.rs_832`, self, list(...)),
+    `covariance` = function(...) .Call(`.rs_833`, self, list(...)),
+    `filter` = function(...) .Call(`.rs_834`, self, list(...))
   )
 )
 #' C++ class `datamunge::geometry::BoundingBox`
@@ -6217,13 +6263,13 @@ rosetta_ref <- function(value = NULL) {
   public = list(
     initialize = function(...) {
       if (...length() == 1L && inherits(..1, "rosetta_ptr")) self$.ptr <- ..1
-      else { if (!is.null(self$.ptr)) stop("native object already initialized"); self$.ptr <- .Call(`.rs_822`, list(...)) }
+      else { if (!is.null(self$.ptr)) stop("native object already initialized"); self$.ptr <- .Call(`.rs_840`, list(...)) }
       invisible(self)
     }
   ),
   active = list(
-    `min` = function(value) if (missing(value)) .Call(`.rs_818`, self) else invisible(.Call(`.rs_819`, self, value)),
-    `max` = function(value) if (missing(value)) .Call(`.rs_820`, self) else invisible(.Call(`.rs_821`, self, value))
+    `min` = function(value) if (missing(value)) .Call(`.rs_836`, self) else invisible(.Call(`.rs_837`, self, value)),
+    `max` = function(value) if (missing(value)) .Call(`.rs_838`, self) else invisible(.Call(`.rs_839`, self, value))
   )
 )
 #' Owned closest-point coordinate copies and legacy finite-double distance.
@@ -6247,14 +6293,14 @@ rosetta_ref <- function(value = NULL) {
   public = list(
     initialize = function(...) {
       if (...length() == 1L && inherits(..1, "rosetta_ptr")) self$.ptr <- ..1
-      else { if (!is.null(self$.ptr)) stop("native object already initialized"); self$.ptr <- .Call(`.rs_829`, list(...)) }
+      else { if (!is.null(self$.ptr)) stop("native object already initialized"); self$.ptr <- .Call(`.rs_847`, list(...)) }
       invisible(self)
     }
   ),
   active = list(
-    `a` = function(value) if (missing(value)) .Call(`.rs_823`, self) else invisible(.Call(`.rs_824`, self, value)),
-    `b` = function(value) if (missing(value)) .Call(`.rs_825`, self) else invisible(.Call(`.rs_826`, self, value)),
-    `distance` = function(value) if (missing(value)) .Call(`.rs_827`, self) else invisible(.Call(`.rs_828`, self, value))
+    `a` = function(value) if (missing(value)) .Call(`.rs_841`, self) else invisible(.Call(`.rs_842`, self, value)),
+    `b` = function(value) if (missing(value)) .Call(`.rs_843`, self) else invisible(.Call(`.rs_844`, self, value)),
+    `distance` = function(value) if (missing(value)) .Call(`.rs_845`, self) else invisible(.Call(`.rs_846`, self, value))
   )
 )
 #' Limits for complete input storage and actual optional hull trace events.
@@ -6277,13 +6323,13 @@ rosetta_ref <- function(value = NULL) {
   public = list(
     initialize = function(...) {
       if (...length() == 1L && inherits(..1, "rosetta_ptr")) self$.ptr <- ..1
-      else { if (!is.null(self$.ptr)) stop("native object already initialized"); self$.ptr <- .Call(`.rs_834`, list(...)) }
+      else { if (!is.null(self$.ptr)) stop("native object already initialized"); self$.ptr <- .Call(`.rs_852`, list(...)) }
       invisible(self)
     }
   ),
   active = list(
-    `max_points` = function(value) if (missing(value)) .Call(`.rs_830`, self) else invisible(.Call(`.rs_831`, self, value)),
-    `max_events` = function(value) if (missing(value)) .Call(`.rs_832`, self) else invisible(.Call(`.rs_833`, self, value))
+    `max_points` = function(value) if (missing(value)) .Call(`.rs_848`, self) else invisible(.Call(`.rs_849`, self, value)),
+    `max_events` = function(value) if (missing(value)) .Call(`.rs_850`, self) else invisible(.Call(`.rs_851`, self, value))
   )
 )
 #' Owned distinct coordinate with the earliest matching input identity.
@@ -6306,13 +6352,13 @@ rosetta_ref <- function(value = NULL) {
   public = list(
     initialize = function(...) {
       if (...length() == 1L && inherits(..1, "rosetta_ptr")) self$.ptr <- ..1
-      else { if (!is.null(self$.ptr)) stop("native object already initialized"); self$.ptr <- .Call(`.rs_839`, list(...)) }
+      else { if (!is.null(self$.ptr)) stop("native object already initialized"); self$.ptr <- .Call(`.rs_857`, list(...)) }
       invisible(self)
     }
   ),
   active = list(
-    `point` = function(value) if (missing(value)) .Call(`.rs_835`, self) else invisible(.Call(`.rs_836`, self, value)),
-    `input_index` = function(value) if (missing(value)) .Call(`.rs_837`, self) else invisible(.Call(`.rs_838`, self, value))
+    `point` = function(value) if (missing(value)) .Call(`.rs_853`, self) else invisible(.Call(`.rs_854`, self, value)),
+    `input_index` = function(value) if (missing(value)) .Call(`.rs_855`, self) else invisible(.Call(`.rs_856`, self, value))
   )
 )
 #' Actual sorting, deduplication and two-scan work, with checked counters.
@@ -6341,19 +6387,19 @@ rosetta_ref <- function(value = NULL) {
   public = list(
     initialize = function(...) {
       if (...length() == 1L && inherits(..1, "rosetta_ptr")) self$.ptr <- ..1
-      else { if (!is.null(self$.ptr)) stop("native object already initialized"); self$.ptr <- .Call(`.rs_856`, list(...)) }
+      else { if (!is.null(self$.ptr)) stop("native object already initialized"); self$.ptr <- .Call(`.rs_874`, list(...)) }
       invisible(self)
     }
   ),
   active = list(
-    `input_points` = function(value) if (missing(value)) .Call(`.rs_840`, self) else invisible(.Call(`.rs_841`, self, value)),
-    `distinct_points` = function(value) if (missing(value)) .Call(`.rs_842`, self) else invisible(.Call(`.rs_843`, self, value)),
-    `sort_comparisons` = function(value) if (missing(value)) .Call(`.rs_844`, self) else invisible(.Call(`.rs_845`, self, value)),
-    `duplicate_comparisons` = function(value) if (missing(value)) .Call(`.rs_846`, self) else invisible(.Call(`.rs_847`, self, value)),
-    `orientation_tests` = function(value) if (missing(value)) .Call(`.rs_848`, self) else invisible(.Call(`.rs_849`, self, value)),
-    `pushes` = function(value) if (missing(value)) .Call(`.rs_850`, self) else invisible(.Call(`.rs_851`, self, value)),
-    `pops` = function(value) if (missing(value)) .Call(`.rs_852`, self) else invisible(.Call(`.rs_853`, self, value)),
-    `max_stack` = function(value) if (missing(value)) .Call(`.rs_854`, self) else invisible(.Call(`.rs_855`, self, value))
+    `input_points` = function(value) if (missing(value)) .Call(`.rs_858`, self) else invisible(.Call(`.rs_859`, self, value)),
+    `distinct_points` = function(value) if (missing(value)) .Call(`.rs_860`, self) else invisible(.Call(`.rs_861`, self, value)),
+    `sort_comparisons` = function(value) if (missing(value)) .Call(`.rs_862`, self) else invisible(.Call(`.rs_863`, self, value)),
+    `duplicate_comparisons` = function(value) if (missing(value)) .Call(`.rs_864`, self) else invisible(.Call(`.rs_865`, self, value)),
+    `orientation_tests` = function(value) if (missing(value)) .Call(`.rs_866`, self) else invisible(.Call(`.rs_867`, self, value)),
+    `pushes` = function(value) if (missing(value)) .Call(`.rs_868`, self) else invisible(.Call(`.rs_869`, self, value)),
+    `pops` = function(value) if (missing(value)) .Call(`.rs_870`, self) else invisible(.Call(`.rs_871`, self, value)),
+    `max_stack` = function(value) if (missing(value)) .Call(`.rs_872`, self) else invisible(.Call(`.rs_873`, self, value))
   )
 )
 #' Actual scan event, referring to indices in the trace's sorted unique points.
@@ -6382,19 +6428,19 @@ rosetta_ref <- function(value = NULL) {
   public = list(
     initialize = function(...) {
       if (...length() == 1L && inherits(..1, "rosetta_ptr")) self$.ptr <- ..1
-      else { if (!is.null(self$.ptr)) stop("native object already initialized"); self$.ptr <- .Call(`.rs_873`, list(...)) }
+      else { if (!is.null(self$.ptr)) stop("native object already initialized"); self$.ptr <- .Call(`.rs_891`, list(...)) }
       invisible(self)
     }
   ),
   active = list(
-    `pass` = function(value) if (missing(value)) .Call(`.rs_857`, self) else invisible(.Call(`.rs_858`, self, value)),
-    `action` = function(value) if (missing(value)) .Call(`.rs_859`, self) else invisible(.Call(`.rs_860`, self, value)),
-    `candidate` = function(value) if (missing(value)) .Call(`.rs_861`, self) else invisible(.Call(`.rs_862`, self, value)),
-    `point` = function(value) if (missing(value)) .Call(`.rs_863`, self) else invisible(.Call(`.rs_864`, self, value)),
-    `a` = function(value) if (missing(value)) .Call(`.rs_865`, self) else invisible(.Call(`.rs_866`, self, value)),
-    `b` = function(value) if (missing(value)) .Call(`.rs_867`, self) else invisible(.Call(`.rs_868`, self, value)),
-    `turn` = function(value) if (missing(value)) .Call(`.rs_869`, self) else invisible(.Call(`.rs_870`, self, value)),
-    `stack_size` = function(value) if (missing(value)) .Call(`.rs_871`, self) else invisible(.Call(`.rs_872`, self, value))
+    `pass` = function(value) if (missing(value)) .Call(`.rs_875`, self) else invisible(.Call(`.rs_876`, self, value)),
+    `action` = function(value) if (missing(value)) .Call(`.rs_877`, self) else invisible(.Call(`.rs_878`, self, value)),
+    `candidate` = function(value) if (missing(value)) .Call(`.rs_879`, self) else invisible(.Call(`.rs_880`, self, value)),
+    `point` = function(value) if (missing(value)) .Call(`.rs_881`, self) else invisible(.Call(`.rs_882`, self, value)),
+    `a` = function(value) if (missing(value)) .Call(`.rs_883`, self) else invisible(.Call(`.rs_884`, self, value)),
+    `b` = function(value) if (missing(value)) .Call(`.rs_885`, self) else invisible(.Call(`.rs_886`, self, value)),
+    `turn` = function(value) if (missing(value)) .Call(`.rs_887`, self) else invisible(.Call(`.rs_888`, self, value)),
+    `stack_size` = function(value) if (missing(value)) .Call(`.rs_889`, self) else invisible(.Call(`.rs_890`, self, value))
   )
 )
 #' Owned strict hull, earliest original identities and actual work without history.
@@ -6418,14 +6464,14 @@ rosetta_ref <- function(value = NULL) {
   public = list(
     initialize = function(...) {
       if (...length() == 1L && inherits(..1, "rosetta_ptr")) self$.ptr <- ..1
-      else { if (!is.null(self$.ptr)) stop("native object already initialized"); self$.ptr <- .Call(`.rs_880`, list(...)) }
+      else { if (!is.null(self$.ptr)) stop("native object already initialized"); self$.ptr <- .Call(`.rs_898`, list(...)) }
       invisible(self)
     }
   ),
   active = list(
-    `hull` = function(value) if (missing(value)) .Call(`.rs_874`, self) else invisible(.Call(`.rs_875`, self, value)),
-    `input_indices` = function(value) if (missing(value)) .Call(`.rs_876`, self) else invisible(.Call(`.rs_877`, self, value)),
-    `work` = function(value) if (missing(value)) .Call(`.rs_878`, self) else invisible(.Call(`.rs_879`, self, value))
+    `hull` = function(value) if (missing(value)) .Call(`.rs_892`, self) else invisible(.Call(`.rs_893`, self, value)),
+    `input_indices` = function(value) if (missing(value)) .Call(`.rs_894`, self) else invisible(.Call(`.rs_895`, self, value)),
+    `work` = function(value) if (missing(value)) .Call(`.rs_896`, self) else invisible(.Call(`.rs_897`, self, value))
   )
 )
 #' Owned actual sorted identities, compact stack edits and completed scan chains.
@@ -6451,16 +6497,16 @@ rosetta_ref <- function(value = NULL) {
   public = list(
     initialize = function(...) {
       if (...length() == 1L && inherits(..1, "rosetta_ptr")) self$.ptr <- ..1
-      else { if (!is.null(self$.ptr)) stop("native object already initialized"); self$.ptr <- .Call(`.rs_891`, list(...)) }
+      else { if (!is.null(self$.ptr)) stop("native object already initialized"); self$.ptr <- .Call(`.rs_909`, list(...)) }
       invisible(self)
     }
   ),
   active = list(
-    `analysis` = function(value) if (missing(value)) .Call(`.rs_881`, self) else invisible(.Call(`.rs_882`, self, value)),
-    `sorted` = function(value) if (missing(value)) .Call(`.rs_883`, self) else invisible(.Call(`.rs_884`, self, value)),
-    `events` = function(value) if (missing(value)) .Call(`.rs_885`, self) else invisible(.Call(`.rs_886`, self, value)),
-    `lower` = function(value) if (missing(value)) .Call(`.rs_887`, self) else invisible(.Call(`.rs_888`, self, value)),
-    `upper` = function(value) if (missing(value)) .Call(`.rs_889`, self) else invisible(.Call(`.rs_890`, self, value))
+    `analysis` = function(value) if (missing(value)) .Call(`.rs_899`, self) else invisible(.Call(`.rs_900`, self, value)),
+    `sorted` = function(value) if (missing(value)) .Call(`.rs_901`, self) else invisible(.Call(`.rs_902`, self, value)),
+    `events` = function(value) if (missing(value)) .Call(`.rs_903`, self) else invisible(.Call(`.rs_904`, self, value)),
+    `lower` = function(value) if (missing(value)) .Call(`.rs_905`, self) else invisible(.Call(`.rs_906`, self, value)),
+    `upper` = function(value) if (missing(value)) .Call(`.rs_907`, self) else invisible(.Call(`.rs_908`, self, value))
   )
 )
 #' Base class for user-defined callbacks invoked by datamunge functions.
@@ -6481,10 +6527,10 @@ rosetta_ref <- function(value = NULL) {
   public = list(
     initialize = function(...) {
       if (...length() == 1L && inherits(..1, "rosetta_ptr")) self$.ptr <- ..1
-      else { if (!is.null(self$.ptr)) stop("native object already initialized"); self$.ptr <- .Call(`.rs_893`, list(...), self) }
+      else { if (!is.null(self$.ptr)) stop("native object already initialized"); self$.ptr <- .Call(`.rs_911`, list(...), self) }
       invisible(self)
     },
-    `call` = function(...) .Call(`.rs_892`, self, list(...))
+    `call` = function(...) .Call(`.rs_910`, self, list(...))
   )
 )
 #' A plotting color: 8-bit red, green, and blue channels plus an alpha opacity, the C++ counterpart of R's `rgb(r, g, b, alpha, maxColorValue = 255)`.
@@ -6558,15 +6604,15 @@ rosetta_ref <- function(value = NULL) {
   public = list(
     initialize = function(...) {
       if (...length() == 1L && inherits(..1, "rosetta_ptr")) self$.ptr <- ..1
-      else { if (!is.null(self$.ptr)) stop("native object already initialized"); self$.ptr <- .Call(`.rs_902`, list(...)) }
+      else { if (!is.null(self$.ptr)) stop("native object already initialized"); self$.ptr <- .Call(`.rs_920`, list(...)) }
       invisible(self)
     }
   ),
   active = list(
-    `r` = function(value) if (missing(value)) .Call(`.rs_894`, self) else invisible(.Call(`.rs_895`, self, value)),
-    `g` = function(value) if (missing(value)) .Call(`.rs_896`, self) else invisible(.Call(`.rs_897`, self, value)),
-    `b` = function(value) if (missing(value)) .Call(`.rs_898`, self) else invisible(.Call(`.rs_899`, self, value)),
-    `alpha` = function(value) if (missing(value)) .Call(`.rs_900`, self) else invisible(.Call(`.rs_901`, self, value))
+    `r` = function(value) if (missing(value)) .Call(`.rs_912`, self) else invisible(.Call(`.rs_913`, self, value)),
+    `g` = function(value) if (missing(value)) .Call(`.rs_914`, self) else invisible(.Call(`.rs_915`, self, value)),
+    `b` = function(value) if (missing(value)) .Call(`.rs_916`, self) else invisible(.Call(`.rs_917`, self, value)),
+    `alpha` = function(value) if (missing(value)) .Call(`.rs_918`, self) else invisible(.Call(`.rs_919`, self, value))
   )
 )
 #' One drawn layer of a plot (points, a line, bars, a box, a polygon, a label, or segments), as stored by RPlot's layer verbs and read back through Plot::series().
@@ -6604,21 +6650,21 @@ rosetta_ref <- function(value = NULL) {
   public = list(
     initialize = function(...) {
       if (...length() == 1L && inherits(..1, "rosetta_ptr")) self$.ptr <- ..1
-      else { if (!is.null(self$.ptr)) stop("native object already initialized"); self$.ptr <- .Call(`.rs_923`, list(...)) }
+      else { if (!is.null(self$.ptr)) stop("native object already initialized"); self$.ptr <- .Call(`.rs_941`, list(...)) }
       invisible(self)
     }
   ),
   active = list(
-    `kind` = function(value) if (missing(value)) .Call(`.rs_903`, self) else invisible(.Call(`.rs_904`, self, value)),
-    `x` = function(value) if (missing(value)) .Call(`.rs_905`, self) else invisible(.Call(`.rs_906`, self, value)),
-    `y` = function(value) if (missing(value)) .Call(`.rs_907`, self) else invisible(.Call(`.rs_908`, self, value)),
-    `label` = function(value) if (missing(value)) .Call(`.rs_909`, self) else invisible(.Call(`.rs_910`, self, value)),
-    `color` = function(value) if (missing(value)) .Call(`.rs_911`, self) else invisible(.Call(`.rs_912`, self, value)),
-    `stroke_width` = function(value) if (missing(value)) .Call(`.rs_913`, self) else invisible(.Call(`.rs_914`, self, value)),
-    `marker_size` = function(value) if (missing(value)) .Call(`.rs_915`, self) else invisible(.Call(`.rs_916`, self, value)),
-    `bar_width` = function(value) if (missing(value)) .Call(`.rs_917`, self) else invisible(.Call(`.rs_918`, self, value)),
-    `filled` = function(value) if (missing(value)) .Call(`.rs_919`, self) else invisible(.Call(`.rs_920`, self, value)),
-    `point_colors` = function(value) if (missing(value)) .Call(`.rs_921`, self) else invisible(.Call(`.rs_922`, self, value))
+    `kind` = function(value) if (missing(value)) .Call(`.rs_921`, self) else invisible(.Call(`.rs_922`, self, value)),
+    `x` = function(value) if (missing(value)) .Call(`.rs_923`, self) else invisible(.Call(`.rs_924`, self, value)),
+    `y` = function(value) if (missing(value)) .Call(`.rs_925`, self) else invisible(.Call(`.rs_926`, self, value)),
+    `label` = function(value) if (missing(value)) .Call(`.rs_927`, self) else invisible(.Call(`.rs_928`, self, value)),
+    `color` = function(value) if (missing(value)) .Call(`.rs_929`, self) else invisible(.Call(`.rs_930`, self, value)),
+    `stroke_width` = function(value) if (missing(value)) .Call(`.rs_931`, self) else invisible(.Call(`.rs_932`, self, value)),
+    `marker_size` = function(value) if (missing(value)) .Call(`.rs_933`, self) else invisible(.Call(`.rs_934`, self, value)),
+    `bar_width` = function(value) if (missing(value)) .Call(`.rs_935`, self) else invisible(.Call(`.rs_936`, self, value)),
+    `filled` = function(value) if (missing(value)) .Call(`.rs_937`, self) else invisible(.Call(`.rs_938`, self, value)),
+    `point_colors` = function(value) if (missing(value)) .Call(`.rs_939`, self) else invisible(.Call(`.rs_940`, self, value))
   )
 )
 #' A straight reference line across the whole plotting area, as drawn by R's `abline(a, b)`, `abline(h =)` and `abline(v =)`.
@@ -6650,16 +6696,16 @@ rosetta_ref <- function(value = NULL) {
   public = list(
     initialize = function(...) {
       if (...length() == 1L && inherits(..1, "rosetta_ptr")) self$.ptr <- ..1
-      else { if (!is.null(self$.ptr)) stop("native object already initialized"); self$.ptr <- .Call(`.rs_934`, list(...)) }
+      else { if (!is.null(self$.ptr)) stop("native object already initialized"); self$.ptr <- .Call(`.rs_952`, list(...)) }
       invisible(self)
     }
   ),
   active = list(
-    `vertical` = function(value) if (missing(value)) .Call(`.rs_924`, self) else invisible(.Call(`.rs_925`, self, value)),
-    `value` = function(value) if (missing(value)) .Call(`.rs_926`, self) else invisible(.Call(`.rs_927`, self, value)),
-    `slope` = function(value) if (missing(value)) .Call(`.rs_928`, self) else invisible(.Call(`.rs_929`, self, value)),
-    `color` = function(value) if (missing(value)) .Call(`.rs_930`, self) else invisible(.Call(`.rs_931`, self, value)),
-    `stroke_width` = function(value) if (missing(value)) .Call(`.rs_932`, self) else invisible(.Call(`.rs_933`, self, value))
+    `vertical` = function(value) if (missing(value)) .Call(`.rs_942`, self) else invisible(.Call(`.rs_943`, self, value)),
+    `value` = function(value) if (missing(value)) .Call(`.rs_944`, self) else invisible(.Call(`.rs_945`, self, value)),
+    `slope` = function(value) if (missing(value)) .Call(`.rs_946`, self) else invisible(.Call(`.rs_947`, self, value)),
+    `color` = function(value) if (missing(value)) .Call(`.rs_948`, self) else invisible(.Call(`.rs_949`, self, value)),
+    `stroke_width` = function(value) if (missing(value)) .Call(`.rs_950`, self) else invisible(.Call(`.rs_951`, self, value))
   )
 )
 #' One manually specified legend row, as drawn by R's `legend()`.
@@ -6685,13 +6731,13 @@ rosetta_ref <- function(value = NULL) {
   public = list(
     initialize = function(...) {
       if (...length() == 1L && inherits(..1, "rosetta_ptr")) self$.ptr <- ..1
-      else { if (!is.null(self$.ptr)) stop("native object already initialized"); self$.ptr <- .Call(`.rs_939`, list(...)) }
+      else { if (!is.null(self$.ptr)) stop("native object already initialized"); self$.ptr <- .Call(`.rs_957`, list(...)) }
       invisible(self)
     }
   ),
   active = list(
-    `label` = function(value) if (missing(value)) .Call(`.rs_935`, self) else invisible(.Call(`.rs_936`, self, value)),
-    `color` = function(value) if (missing(value)) .Call(`.rs_937`, self) else invisible(.Call(`.rs_938`, self, value))
+    `label` = function(value) if (missing(value)) .Call(`.rs_953`, self) else invisible(.Call(`.rs_954`, self, value)),
+    `color` = function(value) if (missing(value)) .Call(`.rs_955`, self) else invisible(.Call(`.rs_956`, self, value))
   )
 )
 #' Renderer-facing state shared by every 2-D plot: canvas, labels, axes, and series.
@@ -7048,68 +7094,68 @@ rosetta_ref <- function(value = NULL) {
   public = list(
     initialize = function(...) {
       if (...length() == 1L && inherits(..1, "rosetta_ptr")) self$.ptr <- ..1
-      else { if (!is.null(self$.ptr)) stop("native object already initialized"); self$.ptr <- .Call(`.rs_999`, list(...)) }
+      else { if (!is.null(self$.ptr)) stop("native object already initialized"); self$.ptr <- .Call(`.rs_1017`, list(...)) }
       invisible(self)
     },
-    `size` = function(...) .Call(`.rs_940`, self, list(...)),
-    `title` = function(...) .Call(`.rs_941`, self, list(...)),
-    `subtitle` = function(...) .Call(`.rs_942`, self, list(...)),
-    `x_label` = function(...) .Call(`.rs_943`, self, list(...)),
-    `y_label` = function(...) .Call(`.rs_944`, self, list(...)),
-    `background` = function(...) .Call(`.rs_945`, self, list(...)),
-    `axis_color` = function(...) .Call(`.rs_946`, self, list(...)),
-    `grid_color` = function(...) .Call(`.rs_947`, self, list(...)),
-    `show_grid` = function(...) .Call(`.rs_948`, self, list(...)),
-    `x_limits` = function(...) .Call(`.rs_949`, self, list(...)),
-    `y_limits` = function(...) .Call(`.rs_950`, self, list(...)),
-    `hide_axes` = function(...) .Call(`.rs_951`, self, list(...)),
-    `x_tick_labels` = function(...) .Call(`.rs_952`, self, list(...)),
-    `x_ticks` = function(...) .Call(`.rs_953`, self, list(...)),
-    `y_tick_labels` = function(...) .Call(`.rs_954`, self, list(...)),
-    `y_ticks` = function(...) .Call(`.rs_955`, self, list(...)),
-    `margins` = function(...) .Call(`.rs_956`, self, list(...)),
-    `tick_font_size` = function(...) .Call(`.rs_957`, self, list(...)),
-    `pretty_ticks` = function(...) .Call(`.rs_958`, self, list(...)),
-    `width` = function(...) .Call(`.rs_959`, self, list(...)),
-    `height` = function(...) .Call(`.rs_960`, self, list(...)),
-    `title_text` = function(...) .Call(`.rs_961`, self, list(...)),
-    `subtitle_text` = function(...) .Call(`.rs_962`, self, list(...)),
-    `x_label_text` = function(...) .Call(`.rs_963`, self, list(...)),
-    `y_label_text` = function(...) .Call(`.rs_964`, self, list(...)),
-    `series` = function(...) .Call(`.rs_965`, self, list(...)),
-    `background_color` = function(...) .Call(`.rs_966`, self, list(...)),
-    `axes_color` = function(...) .Call(`.rs_967`, self, list(...)),
-    `major_grid_color` = function(...) .Call(`.rs_968`, self, list(...)),
-    `grid_visible` = function(...) .Call(`.rs_969`, self, list(...)),
-    `has_x_limits` = function(...) .Call(`.rs_970`, self, list(...)),
-    `has_y_limits` = function(...) .Call(`.rs_971`, self, list(...)),
-    `x_min` = function(...) .Call(`.rs_972`, self, list(...)),
-    `x_max` = function(...) .Call(`.rs_973`, self, list(...)),
-    `y_min` = function(...) .Call(`.rs_974`, self, list(...)),
-    `y_max` = function(...) .Call(`.rs_975`, self, list(...)),
-    `axes_hidden` = function(...) .Call(`.rs_976`, self, list(...)),
-    `x_tick_label_list` = function(...) .Call(`.rs_977`, self, list(...)),
-    `x_tick_position_list` = function(...) .Call(`.rs_978`, self, list(...)),
-    `y_tick_label_list` = function(...) .Call(`.rs_979`, self, list(...)),
-    `y_tick_position_list` = function(...) .Call(`.rs_980`, self, list(...)),
-    `reference_lines` = function(...) .Call(`.rs_981`, self, list(...)),
-    `legend_entries` = function(...) .Call(`.rs_982`, self, list(...)),
-    `has_custom_margins` = function(...) .Call(`.rs_983`, self, list(...)),
-    `margin_left` = function(...) .Call(`.rs_984`, self, list(...)),
-    `margin_right` = function(...) .Call(`.rs_985`, self, list(...)),
-    `margin_top` = function(...) .Call(`.rs_986`, self, list(...)),
-    `margin_bottom` = function(...) .Call(`.rs_987`, self, list(...)),
-    `tick_font_px` = function(...) .Call(`.rs_988`, self, list(...)),
-    `pretty_ticks_enabled` = function(...) .Call(`.rs_989`, self, list(...)),
-    `to_svg` = function(...) .Call(`.rs_990`, self, list(...)),
-    `save` = function(...) invisible(.Call(`.rs_991`, self, list(...))),
-    `save_svg` = function(...) invisible(.Call(`.rs_992`, self, list(...))),
-    `to_png` = function(...) .Call(`.rs_993`, self, list(...)),
-    `to_pdf` = function(...) .Call(`.rs_994`, self, list(...)),
-    `save_png` = function(...) invisible(.Call(`.rs_995`, self, list(...))),
-    `save_pdf` = function(...) invisible(.Call(`.rs_996`, self, list(...))),
-    `view` = function(...) invisible(.Call(`.rs_997`, self, list(...))),
-    `show` = function(...) invisible(.Call(`.rs_998`, self, list(...)))
+    `size` = function(...) .Call(`.rs_958`, self, list(...)),
+    `title` = function(...) .Call(`.rs_959`, self, list(...)),
+    `subtitle` = function(...) .Call(`.rs_960`, self, list(...)),
+    `x_label` = function(...) .Call(`.rs_961`, self, list(...)),
+    `y_label` = function(...) .Call(`.rs_962`, self, list(...)),
+    `background` = function(...) .Call(`.rs_963`, self, list(...)),
+    `axis_color` = function(...) .Call(`.rs_964`, self, list(...)),
+    `grid_color` = function(...) .Call(`.rs_965`, self, list(...)),
+    `show_grid` = function(...) .Call(`.rs_966`, self, list(...)),
+    `x_limits` = function(...) .Call(`.rs_967`, self, list(...)),
+    `y_limits` = function(...) .Call(`.rs_968`, self, list(...)),
+    `hide_axes` = function(...) .Call(`.rs_969`, self, list(...)),
+    `x_tick_labels` = function(...) .Call(`.rs_970`, self, list(...)),
+    `x_ticks` = function(...) .Call(`.rs_971`, self, list(...)),
+    `y_tick_labels` = function(...) .Call(`.rs_972`, self, list(...)),
+    `y_ticks` = function(...) .Call(`.rs_973`, self, list(...)),
+    `margins` = function(...) .Call(`.rs_974`, self, list(...)),
+    `tick_font_size` = function(...) .Call(`.rs_975`, self, list(...)),
+    `pretty_ticks` = function(...) .Call(`.rs_976`, self, list(...)),
+    `width` = function(...) .Call(`.rs_977`, self, list(...)),
+    `height` = function(...) .Call(`.rs_978`, self, list(...)),
+    `title_text` = function(...) .Call(`.rs_979`, self, list(...)),
+    `subtitle_text` = function(...) .Call(`.rs_980`, self, list(...)),
+    `x_label_text` = function(...) .Call(`.rs_981`, self, list(...)),
+    `y_label_text` = function(...) .Call(`.rs_982`, self, list(...)),
+    `series` = function(...) .Call(`.rs_983`, self, list(...)),
+    `background_color` = function(...) .Call(`.rs_984`, self, list(...)),
+    `axes_color` = function(...) .Call(`.rs_985`, self, list(...)),
+    `major_grid_color` = function(...) .Call(`.rs_986`, self, list(...)),
+    `grid_visible` = function(...) .Call(`.rs_987`, self, list(...)),
+    `has_x_limits` = function(...) .Call(`.rs_988`, self, list(...)),
+    `has_y_limits` = function(...) .Call(`.rs_989`, self, list(...)),
+    `x_min` = function(...) .Call(`.rs_990`, self, list(...)),
+    `x_max` = function(...) .Call(`.rs_991`, self, list(...)),
+    `y_min` = function(...) .Call(`.rs_992`, self, list(...)),
+    `y_max` = function(...) .Call(`.rs_993`, self, list(...)),
+    `axes_hidden` = function(...) .Call(`.rs_994`, self, list(...)),
+    `x_tick_label_list` = function(...) .Call(`.rs_995`, self, list(...)),
+    `x_tick_position_list` = function(...) .Call(`.rs_996`, self, list(...)),
+    `y_tick_label_list` = function(...) .Call(`.rs_997`, self, list(...)),
+    `y_tick_position_list` = function(...) .Call(`.rs_998`, self, list(...)),
+    `reference_lines` = function(...) .Call(`.rs_999`, self, list(...)),
+    `legend_entries` = function(...) .Call(`.rs_1000`, self, list(...)),
+    `has_custom_margins` = function(...) .Call(`.rs_1001`, self, list(...)),
+    `margin_left` = function(...) .Call(`.rs_1002`, self, list(...)),
+    `margin_right` = function(...) .Call(`.rs_1003`, self, list(...)),
+    `margin_top` = function(...) .Call(`.rs_1004`, self, list(...)),
+    `margin_bottom` = function(...) .Call(`.rs_1005`, self, list(...)),
+    `tick_font_px` = function(...) .Call(`.rs_1006`, self, list(...)),
+    `pretty_ticks_enabled` = function(...) .Call(`.rs_1007`, self, list(...)),
+    `to_svg` = function(...) .Call(`.rs_1008`, self, list(...)),
+    `save` = function(...) invisible(.Call(`.rs_1009`, self, list(...))),
+    `save_svg` = function(...) invisible(.Call(`.rs_1010`, self, list(...))),
+    `to_png` = function(...) .Call(`.rs_1011`, self, list(...)),
+    `to_pdf` = function(...) .Call(`.rs_1012`, self, list(...)),
+    `save_png` = function(...) invisible(.Call(`.rs_1013`, self, list(...))),
+    `save_pdf` = function(...) invisible(.Call(`.rs_1014`, self, list(...))),
+    `view` = function(...) invisible(.Call(`.rs_1015`, self, list(...))),
+    `show` = function(...) invisible(.Call(`.rs_1016`, self, list(...)))
   )
 )
 #' A single R-base-graphics-style plot, spelled `dm::Plot` in user code.
@@ -7627,70 +7673,70 @@ rosetta_ref <- function(value = NULL) {
   public = list(
     initialize = function(...) {
       if (...length() == 1L && inherits(..1, "rosetta_ptr")) self$.ptr <- ..1
-      else { if (!is.null(self$.ptr)) stop("native object already initialized"); self$.ptr <- .Call(`.rs_1051`, list(...)) }
+      else { if (!is.null(self$.ptr)) stop("native object already initialized"); self$.ptr <- .Call(`.rs_1069`, list(...)) }
       invisible(self)
     },
-    `create` = function(...) .Call(`.rs_1000`, NULL, list(...)),
-    `size` = function(...) .Call(`.rs_1001`, self, list(...)),
-    `title` = function(...) .Call(`.rs_1002`, self, list(...)),
-    `subtitle` = function(...) .Call(`.rs_1003`, self, list(...)),
-    `x_label` = function(...) .Call(`.rs_1004`, self, list(...)),
-    `y_label` = function(...) .Call(`.rs_1005`, self, list(...)),
-    `xlab` = function(...) .Call(`.rs_1006`, self, list(...)),
-    `ylab` = function(...) .Call(`.rs_1007`, self, list(...)),
-    `set_title` = function(...) .Call(`.rs_1008`, self, list(...)),
-    `set_subtitle` = function(...) .Call(`.rs_1009`, self, list(...)),
-    `set_xlab` = function(...) .Call(`.rs_1010`, self, list(...)),
-    `set_ylab` = function(...) .Call(`.rs_1011`, self, list(...)),
-    `set_col` = function(...) .Call(`.rs_1012`, self, list(...)),
-    `background` = function(...) .Call(`.rs_1013`, self, list(...)),
-    `axis_color` = function(...) .Call(`.rs_1014`, self, list(...)),
-    `grid_color` = function(...) .Call(`.rs_1015`, self, list(...)),
-    `show_grid` = function(...) .Call(`.rs_1016`, self, list(...)),
-    `x_limits` = function(...) .Call(`.rs_1017`, self, list(...)),
-    `y_limits` = function(...) .Call(`.rs_1018`, self, list(...)),
-    `xlim` = function(...) .Call(`.rs_1019`, self, list(...)),
-    `ylim` = function(...) .Call(`.rs_1020`, self, list(...)),
-    `hide_axes` = function(...) .Call(`.rs_1021`, self, list(...)),
-    `x_tick_labels` = function(...) .Call(`.rs_1022`, self, list(...)),
-    `x_ticks` = function(...) .Call(`.rs_1023`, self, list(...)),
-    `y_tick_labels` = function(...) .Call(`.rs_1024`, self, list(...)),
-    `y_ticks` = function(...) .Call(`.rs_1025`, self, list(...)),
-    `margins` = function(...) .Call(`.rs_1026`, self, list(...)),
-    `tick_font_size` = function(...) .Call(`.rs_1027`, self, list(...)),
-    `pretty_ticks` = function(...) .Call(`.rs_1028`, self, list(...)),
-    `plot` = function(...) .Call(`.rs_1029`, NULL, list(...)),
-    `hist` = function(...) .Call(`.rs_1030`, NULL, list(...)),
-    `barplot` = function(...) .Call(`.rs_1031`, NULL, list(...)),
-    `boxplot` = function(...) .Call(`.rs_1032`, NULL, list(...)),
-    `pie` = function(...) .Call(`.rs_1033`, NULL, list(...)),
-    `curve` = function(...) .Call(`.rs_1034`, NULL, list(...)),
-    `qqnorm` = function(...) .Call(`.rs_1035`, NULL, list(...)),
-    `points` = function(...) .Call(`.rs_1036`, self, list(...)),
-    `points_colored` = function(...) .Call(`.rs_1037`, self, list(...)),
-    `line` = function(...) .Call(`.rs_1038`, self, list(...)),
-    `lines` = function(...) .Call(`.rs_1039`, self, list(...)),
-    `bars` = function(...) .Call(`.rs_1040`, self, list(...)),
-    `box` = function(...) .Call(`.rs_1041`, self, list(...)),
-    `abline` = function(...) .Call(`.rs_1042`, self, list(...)),
-    `abline_h` = function(...) .Call(`.rs_1043`, self, list(...)),
-    `abline_v` = function(...) .Call(`.rs_1044`, self, list(...)),
-    `qqline` = function(...) .Call(`.rs_1045`, self, list(...)),
-    `legend` = function(...) .Call(`.rs_1046`, self, list(...)),
-    `text` = function(...) .Call(`.rs_1047`, self, list(...)),
-    `polygon` = function(...) .Call(`.rs_1048`, self, list(...)),
-    `image` = function(...) .Call(`.rs_1049`, self, list(...)),
-    `segments` = function(...) .Call(`.rs_1050`, self, list(...))
+    `create` = function(...) .Call(`.rs_1018`, NULL, list(...)),
+    `size` = function(...) .Call(`.rs_1019`, self, list(...)),
+    `title` = function(...) .Call(`.rs_1020`, self, list(...)),
+    `subtitle` = function(...) .Call(`.rs_1021`, self, list(...)),
+    `x_label` = function(...) .Call(`.rs_1022`, self, list(...)),
+    `y_label` = function(...) .Call(`.rs_1023`, self, list(...)),
+    `xlab` = function(...) .Call(`.rs_1024`, self, list(...)),
+    `ylab` = function(...) .Call(`.rs_1025`, self, list(...)),
+    `set_title` = function(...) .Call(`.rs_1026`, self, list(...)),
+    `set_subtitle` = function(...) .Call(`.rs_1027`, self, list(...)),
+    `set_xlab` = function(...) .Call(`.rs_1028`, self, list(...)),
+    `set_ylab` = function(...) .Call(`.rs_1029`, self, list(...)),
+    `set_col` = function(...) .Call(`.rs_1030`, self, list(...)),
+    `background` = function(...) .Call(`.rs_1031`, self, list(...)),
+    `axis_color` = function(...) .Call(`.rs_1032`, self, list(...)),
+    `grid_color` = function(...) .Call(`.rs_1033`, self, list(...)),
+    `show_grid` = function(...) .Call(`.rs_1034`, self, list(...)),
+    `x_limits` = function(...) .Call(`.rs_1035`, self, list(...)),
+    `y_limits` = function(...) .Call(`.rs_1036`, self, list(...)),
+    `xlim` = function(...) .Call(`.rs_1037`, self, list(...)),
+    `ylim` = function(...) .Call(`.rs_1038`, self, list(...)),
+    `hide_axes` = function(...) .Call(`.rs_1039`, self, list(...)),
+    `x_tick_labels` = function(...) .Call(`.rs_1040`, self, list(...)),
+    `x_ticks` = function(...) .Call(`.rs_1041`, self, list(...)),
+    `y_tick_labels` = function(...) .Call(`.rs_1042`, self, list(...)),
+    `y_ticks` = function(...) .Call(`.rs_1043`, self, list(...)),
+    `margins` = function(...) .Call(`.rs_1044`, self, list(...)),
+    `tick_font_size` = function(...) .Call(`.rs_1045`, self, list(...)),
+    `pretty_ticks` = function(...) .Call(`.rs_1046`, self, list(...)),
+    `plot` = function(...) .Call(`.rs_1047`, NULL, list(...)),
+    `hist` = function(...) .Call(`.rs_1048`, NULL, list(...)),
+    `barplot` = function(...) .Call(`.rs_1049`, NULL, list(...)),
+    `boxplot` = function(...) .Call(`.rs_1050`, NULL, list(...)),
+    `pie` = function(...) .Call(`.rs_1051`, NULL, list(...)),
+    `curve` = function(...) .Call(`.rs_1052`, NULL, list(...)),
+    `qqnorm` = function(...) .Call(`.rs_1053`, NULL, list(...)),
+    `points` = function(...) .Call(`.rs_1054`, self, list(...)),
+    `points_colored` = function(...) .Call(`.rs_1055`, self, list(...)),
+    `line` = function(...) .Call(`.rs_1056`, self, list(...)),
+    `lines` = function(...) .Call(`.rs_1057`, self, list(...)),
+    `bars` = function(...) .Call(`.rs_1058`, self, list(...)),
+    `box` = function(...) .Call(`.rs_1059`, self, list(...)),
+    `abline` = function(...) .Call(`.rs_1060`, self, list(...)),
+    `abline_h` = function(...) .Call(`.rs_1061`, self, list(...)),
+    `abline_v` = function(...) .Call(`.rs_1062`, self, list(...)),
+    `qqline` = function(...) .Call(`.rs_1063`, self, list(...)),
+    `legend` = function(...) .Call(`.rs_1064`, self, list(...)),
+    `text` = function(...) .Call(`.rs_1065`, self, list(...)),
+    `polygon` = function(...) .Call(`.rs_1066`, self, list(...)),
+    `image` = function(...) .Call(`.rs_1067`, self, list(...)),
+    `segments` = function(...) .Call(`.rs_1068`, self, list(...))
   )
 )
-`RPlot`$`create` <- function(...) .Call(`.rs_1000`, NULL, list(...))
-`RPlot`$`plot` <- function(...) .Call(`.rs_1029`, NULL, list(...))
-`RPlot`$`hist` <- function(...) .Call(`.rs_1030`, NULL, list(...))
-`RPlot`$`barplot` <- function(...) .Call(`.rs_1031`, NULL, list(...))
-`RPlot`$`boxplot` <- function(...) .Call(`.rs_1032`, NULL, list(...))
-`RPlot`$`pie` <- function(...) .Call(`.rs_1033`, NULL, list(...))
-`RPlot`$`curve` <- function(...) .Call(`.rs_1034`, NULL, list(...))
-`RPlot`$`qqnorm` <- function(...) .Call(`.rs_1035`, NULL, list(...))
+`RPlot`$`create` <- function(...) .Call(`.rs_1018`, NULL, list(...))
+`RPlot`$`plot` <- function(...) .Call(`.rs_1047`, NULL, list(...))
+`RPlot`$`hist` <- function(...) .Call(`.rs_1048`, NULL, list(...))
+`RPlot`$`barplot` <- function(...) .Call(`.rs_1049`, NULL, list(...))
+`RPlot`$`boxplot` <- function(...) .Call(`.rs_1050`, NULL, list(...))
+`RPlot`$`pie` <- function(...) .Call(`.rs_1051`, NULL, list(...))
+`RPlot`$`curve` <- function(...) .Call(`.rs_1052`, NULL, list(...))
+`RPlot`$`qqnorm` <- function(...) .Call(`.rs_1053`, NULL, list(...))
 #' Tiles independently built plots into one multi-panel figure, like R's `par(mfrow = c(rows, cols))` followed by one plot per panel.
 #'
 #' Create it with create(rows, cols), then add() up to rows * cols panels; they fill the grid
@@ -7838,33 +7884,33 @@ rosetta_ref <- function(value = NULL) {
   public = list(
     initialize = function(...) {
       if (...length() == 1L && inherits(..1, "rosetta_ptr")) self$.ptr <- ..1
-      else { if (!is.null(self$.ptr)) stop("native object already initialized"); self$.ptr <- .Call(`.rs_1073`, list(...)) }
+      else { if (!is.null(self$.ptr)) stop("native object already initialized"); self$.ptr <- .Call(`.rs_1091`, list(...)) }
       invisible(self)
     },
-    `create` = function(...) .Call(`.rs_1052`, NULL, list(...)),
-    `add` = function(...) .Call(`.rs_1053`, self, list(...)),
-    `size` = function(...) .Call(`.rs_1054`, self, list(...)),
-    `title` = function(...) .Call(`.rs_1055`, self, list(...)),
-    `rows` = function(...) .Call(`.rs_1056`, self, list(...)),
-    `cols` = function(...) .Call(`.rs_1057`, self, list(...)),
-    `width` = function(...) .Call(`.rs_1058`, self, list(...)),
-    `height` = function(...) .Call(`.rs_1059`, self, list(...)),
-    `panel_count` = function(...) .Call(`.rs_1060`, self, list(...)),
-    `title_text` = function(...) .Call(`.rs_1061`, self, list(...)),
-    `panel` = function(...) .Call(`.rs_1062`, self, list(...)),
-    `to_svg` = function(...) .Call(`.rs_1063`, self, list(...)),
-    `save` = function(...) invisible(.Call(`.rs_1064`, self, list(...))),
-    `save_svg` = function(...) invisible(.Call(`.rs_1065`, self, list(...))),
-    `to_png` = function(...) .Call(`.rs_1066`, self, list(...)),
-    `to_pdf` = function(...) .Call(`.rs_1067`, self, list(...)),
-    `save_png` = function(...) invisible(.Call(`.rs_1068`, self, list(...))),
-    `save_pdf` = function(...) invisible(.Call(`.rs_1069`, self, list(...))),
-    `fit_panels` = function(...) .Call(`.rs_1070`, self, list(...)),
-    `show` = function(...) invisible(.Call(`.rs_1071`, self, list(...))),
-    `view` = function(...) invisible(.Call(`.rs_1072`, self, list(...)))
+    `create` = function(...) .Call(`.rs_1070`, NULL, list(...)),
+    `add` = function(...) .Call(`.rs_1071`, self, list(...)),
+    `size` = function(...) .Call(`.rs_1072`, self, list(...)),
+    `title` = function(...) .Call(`.rs_1073`, self, list(...)),
+    `rows` = function(...) .Call(`.rs_1074`, self, list(...)),
+    `cols` = function(...) .Call(`.rs_1075`, self, list(...)),
+    `width` = function(...) .Call(`.rs_1076`, self, list(...)),
+    `height` = function(...) .Call(`.rs_1077`, self, list(...)),
+    `panel_count` = function(...) .Call(`.rs_1078`, self, list(...)),
+    `title_text` = function(...) .Call(`.rs_1079`, self, list(...)),
+    `panel` = function(...) .Call(`.rs_1080`, self, list(...)),
+    `to_svg` = function(...) .Call(`.rs_1081`, self, list(...)),
+    `save` = function(...) invisible(.Call(`.rs_1082`, self, list(...))),
+    `save_svg` = function(...) invisible(.Call(`.rs_1083`, self, list(...))),
+    `to_png` = function(...) .Call(`.rs_1084`, self, list(...)),
+    `to_pdf` = function(...) .Call(`.rs_1085`, self, list(...)),
+    `save_png` = function(...) invisible(.Call(`.rs_1086`, self, list(...))),
+    `save_pdf` = function(...) invisible(.Call(`.rs_1087`, self, list(...))),
+    `fit_panels` = function(...) .Call(`.rs_1088`, self, list(...)),
+    `show` = function(...) invisible(.Call(`.rs_1089`, self, list(...))),
+    `view` = function(...) invisible(.Call(`.rs_1090`, self, list(...)))
   )
 )
-`RLayout`$`create` <- function(...) .Call(`.rs_1052`, NULL, list(...))
+`RLayout`$`create` <- function(...) .Call(`.rs_1070`, NULL, list(...))
 #' Owned unrestricted scalar DTW result, preserving the original three-field layout.
 #'
 #' Distance is the unnormalized sum of absolute differences along the returned inclusive path. Default construction is an uncomputed placeholder. Copies own independent buffers. Positive lengths fit int; steps advance a, b or both by one.
@@ -7886,14 +7932,14 @@ rosetta_ref <- function(value = NULL) {
   public = list(
     initialize = function(...) {
       if (...length() == 1L && inherits(..1, "rosetta_ptr")) self$.ptr <- ..1
-      else { if (!is.null(self$.ptr)) stop("native object already initialized"); self$.ptr <- .Call(`.rs_1080`, list(...)) }
+      else { if (!is.null(self$.ptr)) stop("native object already initialized"); self$.ptr <- .Call(`.rs_1098`, list(...)) }
       invisible(self)
     }
   ),
   active = list(
-    `distance` = function(value) if (missing(value)) .Call(`.rs_1074`, self) else invisible(.Call(`.rs_1075`, self, value)),
-    `path_a` = function(value) if (missing(value)) .Call(`.rs_1076`, self) else invisible(.Call(`.rs_1077`, self, value)),
-    `path_b` = function(value) if (missing(value)) .Call(`.rs_1078`, self) else invisible(.Call(`.rs_1079`, self, value))
+    `distance` = function(value) if (missing(value)) .Call(`.rs_1092`, self) else invisible(.Call(`.rs_1093`, self, value)),
+    `path_a` = function(value) if (missing(value)) .Call(`.rs_1094`, self) else invisible(.Call(`.rs_1095`, self, value)),
+    `path_b` = function(value) if (missing(value)) .Call(`.rs_1096`, self) else invisible(.Call(`.rs_1097`, self, value))
   )
 )
 #' Logical work of the shared DTW recurrence and actual traceback.
@@ -7917,14 +7963,14 @@ rosetta_ref <- function(value = NULL) {
   public = list(
     initialize = function(...) {
       if (...length() == 1L && inherits(..1, "rosetta_ptr")) self$.ptr <- ..1
-      else { if (!is.null(self$.ptr)) stop("native object already initialized"); self$.ptr <- .Call(`.rs_1087`, list(...)) }
+      else { if (!is.null(self$.ptr)) stop("native object already initialized"); self$.ptr <- .Call(`.rs_1105`, list(...)) }
       invisible(self)
     }
   ),
   active = list(
-    `cells` = function(value) if (missing(value)) .Call(`.rs_1081`, self) else invisible(.Call(`.rs_1082`, self, value)),
-    `predecessor_reads` = function(value) if (missing(value)) .Call(`.rs_1083`, self) else invisible(.Call(`.rs_1084`, self, value)),
-    `traceback_steps` = function(value) if (missing(value)) .Call(`.rs_1085`, self) else invisible(.Call(`.rs_1086`, self, value))
+    `cells` = function(value) if (missing(value)) .Call(`.rs_1099`, self) else invisible(.Call(`.rs_1100`, self, value)),
+    `predecessor_reads` = function(value) if (missing(value)) .Call(`.rs_1101`, self) else invisible(.Call(`.rs_1102`, self, value)),
+    `traceback_steps` = function(value) if (missing(value)) .Call(`.rs_1103`, self) else invisible(.Call(`.rs_1104`, self, value))
   )
 )
 #' Owned ordinary result and logical work, without retained cost-table history.
@@ -7947,13 +7993,13 @@ rosetta_ref <- function(value = NULL) {
   public = list(
     initialize = function(...) {
       if (...length() == 1L && inherits(..1, "rosetta_ptr")) self$.ptr <- ..1
-      else { if (!is.null(self$.ptr)) stop("native object already initialized"); self$.ptr <- .Call(`.rs_1092`, list(...)) }
+      else { if (!is.null(self$.ptr)) stop("native object already initialized"); self$.ptr <- .Call(`.rs_1110`, list(...)) }
       invisible(self)
     }
   ),
   active = list(
-    `result` = function(value) if (missing(value)) .Call(`.rs_1088`, self) else invisible(.Call(`.rs_1089`, self, value)),
-    `work` = function(value) if (missing(value)) .Call(`.rs_1090`, self) else invisible(.Call(`.rs_1091`, self, value))
+    `result` = function(value) if (missing(value)) .Call(`.rs_1106`, self) else invisible(.Call(`.rs_1107`, self, value)),
+    `work` = function(value) if (missing(value)) .Call(`.rs_1108`, self) else invisible(.Call(`.rs_1109`, self, value))
   )
 )
 #' Owned input, actual accumulated costs and chosen predecessors from one DTW run.
@@ -7981,18 +8027,18 @@ rosetta_ref <- function(value = NULL) {
   public = list(
     initialize = function(...) {
       if (...length() == 1L && inherits(..1, "rosetta_ptr")) self$.ptr <- ..1
-      else { if (!is.null(self$.ptr)) stop("native object already initialized"); self$.ptr <- .Call(`.rs_1107`, list(...)) }
+      else { if (!is.null(self$.ptr)) stop("native object already initialized"); self$.ptr <- .Call(`.rs_1125`, list(...)) }
       invisible(self)
     }
   ),
   active = list(
-    `a` = function(value) if (missing(value)) .Call(`.rs_1093`, self) else invisible(.Call(`.rs_1094`, self, value)),
-    `b` = function(value) if (missing(value)) .Call(`.rs_1095`, self) else invisible(.Call(`.rs_1096`, self, value)),
-    `cumulative` = function(value) if (missing(value)) .Call(`.rs_1097`, self) else invisible(.Call(`.rs_1098`, self, value)),
-    `predecessors` = function(value) if (missing(value)) .Call(`.rs_1099`, self) else invisible(.Call(`.rs_1100`, self, value)),
-    `result` = function(value) if (missing(value)) .Call(`.rs_1101`, self) else invisible(.Call(`.rs_1102`, self, value)),
-    `work` = function(value) if (missing(value)) .Call(`.rs_1103`, self) else invisible(.Call(`.rs_1104`, self, value)),
-    `captured_entries` = function(value) if (missing(value)) .Call(`.rs_1105`, self) else invisible(.Call(`.rs_1106`, self, value))
+    `a` = function(value) if (missing(value)) .Call(`.rs_1111`, self) else invisible(.Call(`.rs_1112`, self, value)),
+    `b` = function(value) if (missing(value)) .Call(`.rs_1113`, self) else invisible(.Call(`.rs_1114`, self, value)),
+    `cumulative` = function(value) if (missing(value)) .Call(`.rs_1115`, self) else invisible(.Call(`.rs_1116`, self, value)),
+    `predecessors` = function(value) if (missing(value)) .Call(`.rs_1117`, self) else invisible(.Call(`.rs_1118`, self, value)),
+    `result` = function(value) if (missing(value)) .Call(`.rs_1119`, self) else invisible(.Call(`.rs_1120`, self, value)),
+    `work` = function(value) if (missing(value)) .Call(`.rs_1121`, self) else invisible(.Call(`.rs_1122`, self, value)),
+    `captured_entries` = function(value) if (missing(value)) .Call(`.rs_1123`, self) else invisible(.Call(`.rs_1124`, self, value))
   )
 )
 #' A 2D k-d tree for nearest-neighbor / range queries over a fixed point set, built once (via a median-splitting, alternating-axis partition) at construction -- doesn't support incremental insertion/removal after that.
@@ -8023,14 +8069,14 @@ rosetta_ref <- function(value = NULL) {
   public = list(
     initialize = function(...) {
       if (...length() == 1L && inherits(..1, "rosetta_ptr")) self$.ptr <- ..1
-      else { if (!is.null(self$.ptr)) stop("native object already initialized"); self$.ptr <- .Call(`.rs_1113`, list(...)) }
+      else { if (!is.null(self$.ptr)) stop("native object already initialized"); self$.ptr <- .Call(`.rs_1131`, list(...)) }
       invisible(self)
     },
-    `empty` = function(...) .Call(`.rs_1108`, self, list(...)),
-    `size` = function(...) .Call(`.rs_1109`, self, list(...)),
-    `nearest` = function(...) .Call(`.rs_1110`, self, list(...)),
-    `k_nearest` = function(...) .Call(`.rs_1111`, self, list(...)),
-    `points_in_radius` = function(...) .Call(`.rs_1112`, self, list(...))
+    `empty` = function(...) .Call(`.rs_1126`, self, list(...)),
+    `size` = function(...) .Call(`.rs_1127`, self, list(...)),
+    `nearest` = function(...) .Call(`.rs_1128`, self, list(...)),
+    `k_nearest` = function(...) .Call(`.rs_1129`, self, list(...)),
+    `points_in_radius` = function(...) .Call(`.rs_1130`, self, list(...))
   )
 )
 #' C++ class `datamunge::geometry::Circle`
@@ -8045,13 +8091,13 @@ rosetta_ref <- function(value = NULL) {
   public = list(
     initialize = function(...) {
       if (...length() == 1L && inherits(..1, "rosetta_ptr")) self$.ptr <- ..1
-      else { if (!is.null(self$.ptr)) stop("native object already initialized"); self$.ptr <- .Call(`.rs_1118`, list(...)) }
+      else { if (!is.null(self$.ptr)) stop("native object already initialized"); self$.ptr <- .Call(`.rs_1136`, list(...)) }
       invisible(self)
     }
   ),
   active = list(
-    `center` = function(value) if (missing(value)) .Call(`.rs_1114`, self) else invisible(.Call(`.rs_1115`, self, value)),
-    `radius` = function(value) if (missing(value)) .Call(`.rs_1116`, self) else invisible(.Call(`.rs_1117`, self, value))
+    `center` = function(value) if (missing(value)) .Call(`.rs_1132`, self) else invisible(.Call(`.rs_1133`, self, value)),
+    `radius` = function(value) if (missing(value)) .Call(`.rs_1134`, self) else invisible(.Call(`.rs_1135`, self, value))
   )
 )
 #' C++ class `datamunge::geometry::DiameterResult`
@@ -8067,14 +8113,14 @@ rosetta_ref <- function(value = NULL) {
   public = list(
     initialize = function(...) {
       if (...length() == 1L && inherits(..1, "rosetta_ptr")) self$.ptr <- ..1
-      else { if (!is.null(self$.ptr)) stop("native object already initialized"); self$.ptr <- .Call(`.rs_1125`, list(...)) }
+      else { if (!is.null(self$.ptr)) stop("native object already initialized"); self$.ptr <- .Call(`.rs_1143`, list(...)) }
       invisible(self)
     }
   ),
   active = list(
-    `a` = function(value) if (missing(value)) .Call(`.rs_1119`, self) else invisible(.Call(`.rs_1120`, self, value)),
-    `b` = function(value) if (missing(value)) .Call(`.rs_1121`, self) else invisible(.Call(`.rs_1122`, self, value)),
-    `distance` = function(value) if (missing(value)) .Call(`.rs_1123`, self) else invisible(.Call(`.rs_1124`, self, value))
+    `a` = function(value) if (missing(value)) .Call(`.rs_1137`, self) else invisible(.Call(`.rs_1138`, self, value)),
+    `b` = function(value) if (missing(value)) .Call(`.rs_1139`, self) else invisible(.Call(`.rs_1140`, self, value)),
+    `distance` = function(value) if (missing(value)) .Call(`.rs_1141`, self) else invisible(.Call(`.rs_1142`, self, value))
   )
 )
 #' C++ class `datamunge::geometry::MinimumBoundingRectangle`
@@ -8092,15 +8138,15 @@ rosetta_ref <- function(value = NULL) {
   public = list(
     initialize = function(...) {
       if (...length() == 1L && inherits(..1, "rosetta_ptr")) self$.ptr <- ..1
-      else { if (!is.null(self$.ptr)) stop("native object already initialized"); self$.ptr <- .Call(`.rs_1134`, list(...)) }
+      else { if (!is.null(self$.ptr)) stop("native object already initialized"); self$.ptr <- .Call(`.rs_1152`, list(...)) }
       invisible(self)
     }
   ),
   active = list(
-    `corners` = function(value) if (missing(value)) .Call(`.rs_1126`, self) else invisible(.Call(`.rs_1127`, self, value)),
-    `width` = function(value) if (missing(value)) .Call(`.rs_1128`, self) else invisible(.Call(`.rs_1129`, self, value)),
-    `height` = function(value) if (missing(value)) .Call(`.rs_1130`, self) else invisible(.Call(`.rs_1131`, self, value)),
-    `area` = function(value) if (missing(value)) .Call(`.rs_1132`, self) else invisible(.Call(`.rs_1133`, self, value))
+    `corners` = function(value) if (missing(value)) .Call(`.rs_1144`, self) else invisible(.Call(`.rs_1145`, self, value)),
+    `width` = function(value) if (missing(value)) .Call(`.rs_1146`, self) else invisible(.Call(`.rs_1147`, self, value)),
+    `height` = function(value) if (missing(value)) .Call(`.rs_1148`, self) else invisible(.Call(`.rs_1149`, self, value)),
+    `area` = function(value) if (missing(value)) .Call(`.rs_1150`, self) else invisible(.Call(`.rs_1151`, self, value))
   )
 )
 #' C++ class `datamunge::geometry::VoronoiDiagram`
@@ -8125,13 +8171,13 @@ rosetta_ref <- function(value = NULL) {
   public = list(
     initialize = function(...) {
       if (...length() == 1L && inherits(..1, "rosetta_ptr")) self$.ptr <- ..1
-      else { if (!is.null(self$.ptr)) stop("native object already initialized"); self$.ptr <- .Call(`.rs_1139`, list(...)) }
+      else { if (!is.null(self$.ptr)) stop("native object already initialized"); self$.ptr <- .Call(`.rs_1157`, list(...)) }
       invisible(self)
     }
   ),
   active = list(
-    `vertices` = function(value) if (missing(value)) .Call(`.rs_1135`, self) else invisible(.Call(`.rs_1136`, self, value)),
-    `cells` = function(value) if (missing(value)) .Call(`.rs_1137`, self) else invisible(.Call(`.rs_1138`, self, value))
+    `vertices` = function(value) if (missing(value)) .Call(`.rs_1153`, self) else invisible(.Call(`.rs_1154`, self, value)),
+    `cells` = function(value) if (missing(value)) .Call(`.rs_1155`, self) else invisible(.Call(`.rs_1156`, self, value))
   )
 )
 #' Binding counterpart of Mat/SpMat with shared, immutable expression operands.
@@ -8215,19 +8261,19 @@ rosetta_ref <- function(value = NULL) {
   public = list(
     initialize = function(...) {
       if (...length() == 1L && inherits(..1, "rosetta_ptr")) self$.ptr <- ..1
-      else { if (!is.null(self$.ptr)) stop("native object already initialized"); self$.ptr <- .Call(`.rs_1150`, list(...)) }
+      else { if (!is.null(self$.ptr)) stop("native object already initialized"); self$.ptr <- .Call(`.rs_1168`, list(...)) }
       invisible(self)
     },
-    `rows` = function(...) .Call(`.rs_1140`, self, list(...)),
-    `cols` = function(...) .Call(`.rs_1141`, self, list(...)),
-    `is_sparse` = function(...) .Call(`.rs_1142`, self, list(...)),
-    `transpose` = function(...) .Call(`.rs_1143`, self, list(...)),
-    `multiply` = function(...) .Call(`.rs_1144`, self, list(...)),
-    `inverse_action` = function(...) .Call(`.rs_1145`, self, list(...)),
-    `solve` = function(...) .Call(`.rs_1146`, self, list(...)),
-    `eval` = function(...) .Call(`.rs_1147`, self, list(...)),
-    `values` = function(...) .Call(`.rs_1148`, self, list(...)),
-    `text` = function(...) .Call(`.rs_1149`, self, list(...))
+    `rows` = function(...) .Call(`.rs_1158`, self, list(...)),
+    `cols` = function(...) .Call(`.rs_1159`, self, list(...)),
+    `is_sparse` = function(...) .Call(`.rs_1160`, self, list(...)),
+    `transpose` = function(...) .Call(`.rs_1161`, self, list(...)),
+    `multiply` = function(...) .Call(`.rs_1162`, self, list(...)),
+    `inverse_action` = function(...) .Call(`.rs_1163`, self, list(...)),
+    `solve` = function(...) .Call(`.rs_1164`, self, list(...)),
+    `eval` = function(...) .Call(`.rs_1165`, self, list(...)),
+    `values` = function(...) .Call(`.rs_1166`, self, list(...)),
+    `text` = function(...) .Call(`.rs_1167`, self, list(...))
   )
 )
 #' Right-hand side of a first-order ODE system dy/dt = f(t, y): R x R^n -> R^n.
@@ -8243,10 +8289,10 @@ rosetta_ref <- function(value = NULL) {
   public = list(
     initialize = function(...) {
       if (...length() == 1L && inherits(..1, "rosetta_ptr")) self$.ptr <- ..1
-      else { if (!is.null(self$.ptr)) stop("native object already initialized"); self$.ptr <- .Call(`.rs_1152`, list(...), self) }
+      else { if (!is.null(self$.ptr)) stop("native object already initialized"); self$.ptr <- .Call(`.rs_1170`, list(...), self) }
       invisible(self)
     },
-    `evaluate` = function(...) .Call(`.rs_1151`, self, list(...))
+    `evaluate` = function(...) .Call(`.rs_1169`, self, list(...))
   )
 )
 #' C++ class `datamunge::ode::ODEOptions`
@@ -8266,17 +8312,17 @@ rosetta_ref <- function(value = NULL) {
   public = list(
     initialize = function(...) {
       if (...length() == 1L && inherits(..1, "rosetta_ptr")) self$.ptr <- ..1
-      else { if (!is.null(self$.ptr)) stop("native object already initialized"); self$.ptr <- .Call(`.rs_1165`, list(...)) }
+      else { if (!is.null(self$.ptr)) stop("native object already initialized"); self$.ptr <- .Call(`.rs_1183`, list(...)) }
       invisible(self)
     }
   ),
   active = list(
-    `method` = function(value) if (missing(value)) .Call(`.rs_1153`, self) else invisible(.Call(`.rs_1154`, self, value)),
-    `multistep_order` = function(value) if (missing(value)) .Call(`.rs_1155`, self) else invisible(.Call(`.rs_1156`, self, value)),
-    `step_size` = function(value) if (missing(value)) .Call(`.rs_1157`, self) else invisible(.Call(`.rs_1158`, self, value)),
-    `abs_tol` = function(value) if (missing(value)) .Call(`.rs_1159`, self) else invisible(.Call(`.rs_1160`, self, value)),
-    `rel_tol` = function(value) if (missing(value)) .Call(`.rs_1161`, self) else invisible(.Call(`.rs_1162`, self, value)),
-    `max_step` = function(value) if (missing(value)) .Call(`.rs_1163`, self) else invisible(.Call(`.rs_1164`, self, value))
+    `method` = function(value) if (missing(value)) .Call(`.rs_1171`, self) else invisible(.Call(`.rs_1172`, self, value)),
+    `multistep_order` = function(value) if (missing(value)) .Call(`.rs_1173`, self) else invisible(.Call(`.rs_1174`, self, value)),
+    `step_size` = function(value) if (missing(value)) .Call(`.rs_1175`, self) else invisible(.Call(`.rs_1176`, self, value)),
+    `abs_tol` = function(value) if (missing(value)) .Call(`.rs_1177`, self) else invisible(.Call(`.rs_1178`, self, value)),
+    `rel_tol` = function(value) if (missing(value)) .Call(`.rs_1179`, self) else invisible(.Call(`.rs_1180`, self, value)),
+    `max_step` = function(value) if (missing(value)) .Call(`.rs_1181`, self) else invisible(.Call(`.rs_1182`, self, value))
   )
 )
 #' One numerically integrated trajectory: t\[i\] paired with y\[i\] (the full state vector at that time), in increasing-time order, always including both endpoints.
@@ -8301,16 +8347,16 @@ rosetta_ref <- function(value = NULL) {
   public = list(
     initialize = function(...) {
       if (...length() == 1L && inherits(..1, "rosetta_ptr")) self$.ptr <- ..1
-      else { if (!is.null(self$.ptr)) stop("native object already initialized"); self$.ptr <- .Call(`.rs_1173`, list(...)) }
+      else { if (!is.null(self$.ptr)) stop("native object already initialized"); self$.ptr <- .Call(`.rs_1191`, list(...)) }
       invisible(self)
     },
-    `size` = function(...) .Call(`.rs_1166`, self, list(...)),
-    `time_at` = function(...) .Call(`.rs_1167`, self, list(...)),
-    `state_at` = function(...) .Call(`.rs_1168`, self, list(...))
+    `size` = function(...) .Call(`.rs_1184`, self, list(...)),
+    `time_at` = function(...) .Call(`.rs_1185`, self, list(...)),
+    `state_at` = function(...) .Call(`.rs_1186`, self, list(...))
   ),
   active = list(
-    `steps_taken` = function(value) if (missing(value)) .Call(`.rs_1169`, self) else invisible(.Call(`.rs_1170`, self, value)),
-    `function_evaluations` = function(value) if (missing(value)) .Call(`.rs_1171`, self) else invisible(.Call(`.rs_1172`, self, value))
+    `steps_taken` = function(value) if (missing(value)) .Call(`.rs_1187`, self) else invisible(.Call(`.rs_1188`, self, value)),
+    `function_evaluations` = function(value) if (missing(value)) .Call(`.rs_1189`, self) else invisible(.Call(`.rs_1190`, self, value))
   )
 )
 #' Numerically integrates dy/dt = f(t, y) forward from t_start to t_end (t_end must be greater than t_start; this project's "basic" ODE support does not handle backward integration) given an initial state y0, via one of: explicit Euler, the explicit midpoint rule (RK2), classical Runge-Kutta (RK4), adaptive Dormand-Prince Runge-Kutta 4(5) (RK45), explicit Adams-Bashforth (order 2-4), or Adams-Bashforth-Moulton predictor-corrector (order 2-4 -- the "implicit" linear multistep option; this project uses a PECE predictor-corrector rather than a full Newton-iteration implicit solve, avoiding the need for a Jacobian).
@@ -8346,12 +8392,12 @@ rosetta_ref <- function(value = NULL) {
   public = list(
     initialize = function(...) {
       if (...length() == 1L && inherits(..1, "rosetta_ptr")) self$.ptr <- ..1
-      else { if (!is.null(self$.ptr)) stop("native object already initialized"); self$.ptr <- .Call(`.rs_1177`, list(...)) }
+      else { if (!is.null(self$.ptr)) stop("native object already initialized"); self$.ptr <- .Call(`.rs_1195`, list(...)) }
       invisible(self)
     },
-    `solve` = function(...) .Call(`.rs_1174`, self, list(...)),
-    `solve_builtin` = function(...) .Call(`.rs_1175`, self, list(...)),
-    `options` = function(...) .Call(`.rs_1176`, self, list(...))
+    `solve` = function(...) .Call(`.rs_1192`, self, list(...)),
+    `solve_builtin` = function(...) .Call(`.rs_1193`, self, list(...)),
+    `options` = function(...) .Call(`.rs_1194`, self, list(...))
   )
 )
 #' C++ class `datamunge::optim::ACOROptions`
@@ -8374,18 +8420,18 @@ rosetta_ref <- function(value = NULL) {
   public = list(
     initialize = function(...) {
       if (...length() == 1L && inherits(..1, "rosetta_ptr")) self$.ptr <- ..1
-      else { if (!is.null(self$.ptr)) stop("native object already initialized"); self$.ptr <- .Call(`.rs_1192`, list(...)) }
+      else { if (!is.null(self$.ptr)) stop("native object already initialized"); self$.ptr <- .Call(`.rs_1210`, list(...)) }
       invisible(self)
     }
   ),
   active = list(
-    `archive_size` = function(value) if (missing(value)) .Call(`.rs_1178`, self) else invisible(.Call(`.rs_1179`, self, value)),
-    `samples_per_iteration` = function(value) if (missing(value)) .Call(`.rs_1180`, self) else invisible(.Call(`.rs_1181`, self, value)),
-    `locality` = function(value) if (missing(value)) .Call(`.rs_1182`, self) else invisible(.Call(`.rs_1183`, self, value)),
-    `convergence_speed` = function(value) if (missing(value)) .Call(`.rs_1184`, self) else invisible(.Call(`.rs_1185`, self, value)),
-    `max_iterations` = function(value) if (missing(value)) .Call(`.rs_1186`, self) else invisible(.Call(`.rs_1187`, self, value)),
-    `tolerance` = function(value) if (missing(value)) .Call(`.rs_1188`, self) else invisible(.Call(`.rs_1189`, self, value)),
-    `seed` = function(value) if (missing(value)) .Call(`.rs_1190`, self) else invisible(.Call(`.rs_1191`, self, value))
+    `archive_size` = function(value) if (missing(value)) .Call(`.rs_1196`, self) else invisible(.Call(`.rs_1197`, self, value)),
+    `samples_per_iteration` = function(value) if (missing(value)) .Call(`.rs_1198`, self) else invisible(.Call(`.rs_1199`, self, value)),
+    `locality` = function(value) if (missing(value)) .Call(`.rs_1200`, self) else invisible(.Call(`.rs_1201`, self, value)),
+    `convergence_speed` = function(value) if (missing(value)) .Call(`.rs_1202`, self) else invisible(.Call(`.rs_1203`, self, value)),
+    `max_iterations` = function(value) if (missing(value)) .Call(`.rs_1204`, self) else invisible(.Call(`.rs_1205`, self, value)),
+    `tolerance` = function(value) if (missing(value)) .Call(`.rs_1206`, self) else invisible(.Call(`.rs_1207`, self, value)),
+    `seed` = function(value) if (missing(value)) .Call(`.rs_1208`, self) else invisible(.Call(`.rs_1209`, self, value))
   )
 )
 #' Ant Colony Optimization for continuous domains (ACOR), Socha & Dorigo (2008).
@@ -8412,11 +8458,11 @@ rosetta_ref <- function(value = NULL) {
   public = list(
     initialize = function(...) {
       if (...length() == 1L && inherits(..1, "rosetta_ptr")) self$.ptr <- ..1
-      else { if (!is.null(self$.ptr)) stop("native object already initialized"); self$.ptr <- .Call(`.rs_1195`, list(...)) }
+      else { if (!is.null(self$.ptr)) stop("native object already initialized"); self$.ptr <- .Call(`.rs_1213`, list(...)) }
       invisible(self)
     },
-    `optimize` = function(...) .Call(`.rs_1193`, self, list(...)),
-    `options` = function(...) .Call(`.rs_1194`, self, list(...))
+    `optimize` = function(...) .Call(`.rs_1211`, self, list(...)),
+    `options` = function(...) .Call(`.rs_1212`, self, list(...))
   )
 )
 #' Configuration for Adam; fields retain their documented native defaults.
@@ -8443,17 +8489,17 @@ rosetta_ref <- function(value = NULL) {
   public = list(
     initialize = function(...) {
       if (...length() == 1L && inherits(..1, "rosetta_ptr")) self$.ptr <- ..1
-      else { if (!is.null(self$.ptr)) stop("native object already initialized"); self$.ptr <- .Call(`.rs_1208`, list(...)) }
+      else { if (!is.null(self$.ptr)) stop("native object already initialized"); self$.ptr <- .Call(`.rs_1226`, list(...)) }
       invisible(self)
     }
   ),
   active = list(
-    `step_size` = function(value) if (missing(value)) .Call(`.rs_1196`, self) else invisible(.Call(`.rs_1197`, self, value)),
-    `beta1` = function(value) if (missing(value)) .Call(`.rs_1198`, self) else invisible(.Call(`.rs_1199`, self, value)),
-    `beta2` = function(value) if (missing(value)) .Call(`.rs_1200`, self) else invisible(.Call(`.rs_1201`, self, value)),
-    `epsilon` = function(value) if (missing(value)) .Call(`.rs_1202`, self) else invisible(.Call(`.rs_1203`, self, value)),
-    `max_iterations` = function(value) if (missing(value)) .Call(`.rs_1204`, self) else invisible(.Call(`.rs_1205`, self, value)),
-    `tolerance` = function(value) if (missing(value)) .Call(`.rs_1206`, self) else invisible(.Call(`.rs_1207`, self, value))
+    `step_size` = function(value) if (missing(value)) .Call(`.rs_1214`, self) else invisible(.Call(`.rs_1215`, self, value)),
+    `beta1` = function(value) if (missing(value)) .Call(`.rs_1216`, self) else invisible(.Call(`.rs_1217`, self, value)),
+    `beta2` = function(value) if (missing(value)) .Call(`.rs_1218`, self) else invisible(.Call(`.rs_1219`, self, value)),
+    `epsilon` = function(value) if (missing(value)) .Call(`.rs_1220`, self) else invisible(.Call(`.rs_1221`, self, value)),
+    `max_iterations` = function(value) if (missing(value)) .Call(`.rs_1222`, self) else invisible(.Call(`.rs_1223`, self, value)),
+    `tolerance` = function(value) if (missing(value)) .Call(`.rs_1224`, self) else invisible(.Call(`.rs_1225`, self, value))
   )
 )
 #' Adam on the DifferentiableFunction callback interface.
@@ -8491,11 +8537,11 @@ rosetta_ref <- function(value = NULL) {
   public = list(
     initialize = function(...) {
       if (...length() == 1L && inherits(..1, "rosetta_ptr")) self$.ptr <- ..1
-      else { if (!is.null(self$.ptr)) stop("native object already initialized"); self$.ptr <- .Call(`.rs_1211`, list(...)) }
+      else { if (!is.null(self$.ptr)) stop("native object already initialized"); self$.ptr <- .Call(`.rs_1229`, list(...)) }
       invisible(self)
     },
-    `optimize` = function(...) .Call(`.rs_1209`, self, list(...)),
-    `options` = function(...) .Call(`.rs_1210`, self, list(...))
+    `optimize` = function(...) .Call(`.rs_1227`, self, list(...)),
+    `options` = function(...) .Call(`.rs_1228`, self, list(...))
   )
 )
 #' Configuration for AdaGrad; fields retain their documented native defaults.
@@ -8520,15 +8566,15 @@ rosetta_ref <- function(value = NULL) {
   public = list(
     initialize = function(...) {
       if (...length() == 1L && inherits(..1, "rosetta_ptr")) self$.ptr <- ..1
-      else { if (!is.null(self$.ptr)) stop("native object already initialized"); self$.ptr <- .Call(`.rs_1220`, list(...)) }
+      else { if (!is.null(self$.ptr)) stop("native object already initialized"); self$.ptr <- .Call(`.rs_1238`, list(...)) }
       invisible(self)
     }
   ),
   active = list(
-    `step_size` = function(value) if (missing(value)) .Call(`.rs_1212`, self) else invisible(.Call(`.rs_1213`, self, value)),
-    `epsilon` = function(value) if (missing(value)) .Call(`.rs_1214`, self) else invisible(.Call(`.rs_1215`, self, value)),
-    `max_iterations` = function(value) if (missing(value)) .Call(`.rs_1216`, self) else invisible(.Call(`.rs_1217`, self, value)),
-    `tolerance` = function(value) if (missing(value)) .Call(`.rs_1218`, self) else invisible(.Call(`.rs_1219`, self, value))
+    `step_size` = function(value) if (missing(value)) .Call(`.rs_1230`, self) else invisible(.Call(`.rs_1231`, self, value)),
+    `epsilon` = function(value) if (missing(value)) .Call(`.rs_1232`, self) else invisible(.Call(`.rs_1233`, self, value)),
+    `max_iterations` = function(value) if (missing(value)) .Call(`.rs_1234`, self) else invisible(.Call(`.rs_1235`, self, value)),
+    `tolerance` = function(value) if (missing(value)) .Call(`.rs_1236`, self) else invisible(.Call(`.rs_1237`, self, value))
   )
 )
 #' AdaGrad on the DifferentiableFunction callback interface.
@@ -8566,11 +8612,11 @@ rosetta_ref <- function(value = NULL) {
   public = list(
     initialize = function(...) {
       if (...length() == 1L && inherits(..1, "rosetta_ptr")) self$.ptr <- ..1
-      else { if (!is.null(self$.ptr)) stop("native object already initialized"); self$.ptr <- .Call(`.rs_1223`, list(...)) }
+      else { if (!is.null(self$.ptr)) stop("native object already initialized"); self$.ptr <- .Call(`.rs_1241`, list(...)) }
       invisible(self)
     },
-    `optimize` = function(...) .Call(`.rs_1221`, self, list(...)),
-    `options` = function(...) .Call(`.rs_1222`, self, list(...))
+    `optimize` = function(...) .Call(`.rs_1239`, self, list(...)),
+    `options` = function(...) .Call(`.rs_1240`, self, list(...))
   )
 )
 #' Configuration for AdaDelta; fields retain their documented native defaults.
@@ -8595,15 +8641,15 @@ rosetta_ref <- function(value = NULL) {
   public = list(
     initialize = function(...) {
       if (...length() == 1L && inherits(..1, "rosetta_ptr")) self$.ptr <- ..1
-      else { if (!is.null(self$.ptr)) stop("native object already initialized"); self$.ptr <- .Call(`.rs_1232`, list(...)) }
+      else { if (!is.null(self$.ptr)) stop("native object already initialized"); self$.ptr <- .Call(`.rs_1250`, list(...)) }
       invisible(self)
     }
   ),
   active = list(
-    `decay_rate` = function(value) if (missing(value)) .Call(`.rs_1224`, self) else invisible(.Call(`.rs_1225`, self, value)),
-    `epsilon` = function(value) if (missing(value)) .Call(`.rs_1226`, self) else invisible(.Call(`.rs_1227`, self, value)),
-    `max_iterations` = function(value) if (missing(value)) .Call(`.rs_1228`, self) else invisible(.Call(`.rs_1229`, self, value)),
-    `tolerance` = function(value) if (missing(value)) .Call(`.rs_1230`, self) else invisible(.Call(`.rs_1231`, self, value))
+    `decay_rate` = function(value) if (missing(value)) .Call(`.rs_1242`, self) else invisible(.Call(`.rs_1243`, self, value)),
+    `epsilon` = function(value) if (missing(value)) .Call(`.rs_1244`, self) else invisible(.Call(`.rs_1245`, self, value)),
+    `max_iterations` = function(value) if (missing(value)) .Call(`.rs_1246`, self) else invisible(.Call(`.rs_1247`, self, value)),
+    `tolerance` = function(value) if (missing(value)) .Call(`.rs_1248`, self) else invisible(.Call(`.rs_1249`, self, value))
   )
 )
 #' AdaDelta on the DifferentiableFunction callback interface.
@@ -8641,11 +8687,11 @@ rosetta_ref <- function(value = NULL) {
   public = list(
     initialize = function(...) {
       if (...length() == 1L && inherits(..1, "rosetta_ptr")) self$.ptr <- ..1
-      else { if (!is.null(self$.ptr)) stop("native object already initialized"); self$.ptr <- .Call(`.rs_1235`, list(...)) }
+      else { if (!is.null(self$.ptr)) stop("native object already initialized"); self$.ptr <- .Call(`.rs_1253`, list(...)) }
       invisible(self)
     },
-    `optimize` = function(...) .Call(`.rs_1233`, self, list(...)),
-    `options` = function(...) .Call(`.rs_1234`, self, list(...))
+    `optimize` = function(...) .Call(`.rs_1251`, self, list(...)),
+    `options` = function(...) .Call(`.rs_1252`, self, list(...))
   )
 )
 #' Configuration for AMSGrad; fields retain their documented native defaults.
@@ -8672,17 +8718,17 @@ rosetta_ref <- function(value = NULL) {
   public = list(
     initialize = function(...) {
       if (...length() == 1L && inherits(..1, "rosetta_ptr")) self$.ptr <- ..1
-      else { if (!is.null(self$.ptr)) stop("native object already initialized"); self$.ptr <- .Call(`.rs_1248`, list(...)) }
+      else { if (!is.null(self$.ptr)) stop("native object already initialized"); self$.ptr <- .Call(`.rs_1266`, list(...)) }
       invisible(self)
     }
   ),
   active = list(
-    `step_size` = function(value) if (missing(value)) .Call(`.rs_1236`, self) else invisible(.Call(`.rs_1237`, self, value)),
-    `beta1` = function(value) if (missing(value)) .Call(`.rs_1238`, self) else invisible(.Call(`.rs_1239`, self, value)),
-    `beta2` = function(value) if (missing(value)) .Call(`.rs_1240`, self) else invisible(.Call(`.rs_1241`, self, value)),
-    `epsilon` = function(value) if (missing(value)) .Call(`.rs_1242`, self) else invisible(.Call(`.rs_1243`, self, value)),
-    `max_iterations` = function(value) if (missing(value)) .Call(`.rs_1244`, self) else invisible(.Call(`.rs_1245`, self, value)),
-    `tolerance` = function(value) if (missing(value)) .Call(`.rs_1246`, self) else invisible(.Call(`.rs_1247`, self, value))
+    `step_size` = function(value) if (missing(value)) .Call(`.rs_1254`, self) else invisible(.Call(`.rs_1255`, self, value)),
+    `beta1` = function(value) if (missing(value)) .Call(`.rs_1256`, self) else invisible(.Call(`.rs_1257`, self, value)),
+    `beta2` = function(value) if (missing(value)) .Call(`.rs_1258`, self) else invisible(.Call(`.rs_1259`, self, value)),
+    `epsilon` = function(value) if (missing(value)) .Call(`.rs_1260`, self) else invisible(.Call(`.rs_1261`, self, value)),
+    `max_iterations` = function(value) if (missing(value)) .Call(`.rs_1262`, self) else invisible(.Call(`.rs_1263`, self, value)),
+    `tolerance` = function(value) if (missing(value)) .Call(`.rs_1264`, self) else invisible(.Call(`.rs_1265`, self, value))
   )
 )
 #' AMSGrad on the DifferentiableFunction callback interface.
@@ -8720,11 +8766,11 @@ rosetta_ref <- function(value = NULL) {
   public = list(
     initialize = function(...) {
       if (...length() == 1L && inherits(..1, "rosetta_ptr")) self$.ptr <- ..1
-      else { if (!is.null(self$.ptr)) stop("native object already initialized"); self$.ptr <- .Call(`.rs_1251`, list(...)) }
+      else { if (!is.null(self$.ptr)) stop("native object already initialized"); self$.ptr <- .Call(`.rs_1269`, list(...)) }
       invisible(self)
     },
-    `optimize` = function(...) .Call(`.rs_1249`, self, list(...)),
-    `options` = function(...) .Call(`.rs_1250`, self, list(...))
+    `optimize` = function(...) .Call(`.rs_1267`, self, list(...)),
+    `options` = function(...) .Call(`.rs_1268`, self, list(...))
   )
 )
 #' C++ class `datamunge::optim::ArtificialBeeColonyOptions`
@@ -8746,16 +8792,16 @@ rosetta_ref <- function(value = NULL) {
   public = list(
     initialize = function(...) {
       if (...length() == 1L && inherits(..1, "rosetta_ptr")) self$.ptr <- ..1
-      else { if (!is.null(self$.ptr)) stop("native object already initialized"); self$.ptr <- .Call(`.rs_1262`, list(...)) }
+      else { if (!is.null(self$.ptr)) stop("native object already initialized"); self$.ptr <- .Call(`.rs_1280`, list(...)) }
       invisible(self)
     }
   ),
   active = list(
-    `population_size` = function(value) if (missing(value)) .Call(`.rs_1252`, self) else invisible(.Call(`.rs_1253`, self, value)),
-    `abandonment_limit` = function(value) if (missing(value)) .Call(`.rs_1254`, self) else invisible(.Call(`.rs_1255`, self, value)),
-    `max_generations` = function(value) if (missing(value)) .Call(`.rs_1256`, self) else invisible(.Call(`.rs_1257`, self, value)),
-    `tolerance` = function(value) if (missing(value)) .Call(`.rs_1258`, self) else invisible(.Call(`.rs_1259`, self, value)),
-    `seed` = function(value) if (missing(value)) .Call(`.rs_1260`, self) else invisible(.Call(`.rs_1261`, self, value))
+    `population_size` = function(value) if (missing(value)) .Call(`.rs_1270`, self) else invisible(.Call(`.rs_1271`, self, value)),
+    `abandonment_limit` = function(value) if (missing(value)) .Call(`.rs_1272`, self) else invisible(.Call(`.rs_1273`, self, value)),
+    `max_generations` = function(value) if (missing(value)) .Call(`.rs_1274`, self) else invisible(.Call(`.rs_1275`, self, value)),
+    `tolerance` = function(value) if (missing(value)) .Call(`.rs_1276`, self) else invisible(.Call(`.rs_1277`, self, value)),
+    `seed` = function(value) if (missing(value)) .Call(`.rs_1278`, self) else invisible(.Call(`.rs_1279`, self, value))
   )
 )
 #' Artificial Bee Colony (Karaboga, 2005): a swarm-intelligence method inspired by honey bee foraging.
@@ -8782,11 +8828,11 @@ rosetta_ref <- function(value = NULL) {
   public = list(
     initialize = function(...) {
       if (...length() == 1L && inherits(..1, "rosetta_ptr")) self$.ptr <- ..1
-      else { if (!is.null(self$.ptr)) stop("native object already initialized"); self$.ptr <- .Call(`.rs_1265`, list(...)) }
+      else { if (!is.null(self$.ptr)) stop("native object already initialized"); self$.ptr <- .Call(`.rs_1283`, list(...)) }
       invisible(self)
     },
-    `optimize` = function(...) .Call(`.rs_1263`, self, list(...)),
-    `options` = function(...) .Call(`.rs_1264`, self, list(...))
+    `optimize` = function(...) .Call(`.rs_1281`, self, list(...)),
+    `options` = function(...) .Call(`.rs_1282`, self, list(...))
   )
 )
 #' Configuration for AugmentedLagrangian; fields retain their documented native defaults.
@@ -8812,16 +8858,16 @@ rosetta_ref <- function(value = NULL) {
   public = list(
     initialize = function(...) {
       if (...length() == 1L && inherits(..1, "rosetta_ptr")) self$.ptr <- ..1
-      else { if (!is.null(self$.ptr)) stop("native object already initialized"); self$.ptr <- .Call(`.rs_1276`, list(...)) }
+      else { if (!is.null(self$.ptr)) stop("native object already initialized"); self$.ptr <- .Call(`.rs_1294`, list(...)) }
       invisible(self)
     }
   ),
   active = list(
-    `step_size` = function(value) if (missing(value)) .Call(`.rs_1266`, self) else invisible(.Call(`.rs_1267`, self, value)),
-    `initial_penalty` = function(value) if (missing(value)) .Call(`.rs_1268`, self) else invisible(.Call(`.rs_1269`, self, value)),
-    `max_outer_iterations` = function(value) if (missing(value)) .Call(`.rs_1270`, self) else invisible(.Call(`.rs_1271`, self, value)),
-    `inner_iterations` = function(value) if (missing(value)) .Call(`.rs_1272`, self) else invisible(.Call(`.rs_1273`, self, value)),
-    `tolerance` = function(value) if (missing(value)) .Call(`.rs_1274`, self) else invisible(.Call(`.rs_1275`, self, value))
+    `step_size` = function(value) if (missing(value)) .Call(`.rs_1284`, self) else invisible(.Call(`.rs_1285`, self, value)),
+    `initial_penalty` = function(value) if (missing(value)) .Call(`.rs_1286`, self) else invisible(.Call(`.rs_1287`, self, value)),
+    `max_outer_iterations` = function(value) if (missing(value)) .Call(`.rs_1288`, self) else invisible(.Call(`.rs_1289`, self, value)),
+    `inner_iterations` = function(value) if (missing(value)) .Call(`.rs_1290`, self) else invisible(.Call(`.rs_1291`, self, value)),
+    `tolerance` = function(value) if (missing(value)) .Call(`.rs_1292`, self) else invisible(.Call(`.rs_1293`, self, value))
   )
 )
 #' AugmentedLagrangian on the EqualityConstrainedFunction callback interface.
@@ -8859,11 +8905,11 @@ rosetta_ref <- function(value = NULL) {
   public = list(
     initialize = function(...) {
       if (...length() == 1L && inherits(..1, "rosetta_ptr")) self$.ptr <- ..1
-      else { if (!is.null(self$.ptr)) stop("native object already initialized"); self$.ptr <- .Call(`.rs_1279`, list(...)) }
+      else { if (!is.null(self$.ptr)) stop("native object already initialized"); self$.ptr <- .Call(`.rs_1297`, list(...)) }
       invisible(self)
     },
-    `optimize` = function(...) .Call(`.rs_1277`, self, list(...)),
-    `options` = function(...) .Call(`.rs_1278`, self, list(...))
+    `optimize` = function(...) .Call(`.rs_1295`, self, list(...)),
+    `options` = function(...) .Call(`.rs_1296`, self, list(...))
   )
 )
 #' Surrogate/acquisition extension point for BayesianOptimization.
@@ -8892,11 +8938,11 @@ rosetta_ref <- function(value = NULL) {
   public = list(
     initialize = function(...) {
       if (...length() == 1L && inherits(..1, "rosetta_ptr")) self$.ptr <- ..1
-      else { if (!is.null(self$.ptr)) stop("native object already initialized"); self$.ptr <- .Call(`.rs_1282`, list(...), self) }
+      else { if (!is.null(self$.ptr)) stop("native object already initialized"); self$.ptr <- .Call(`.rs_1300`, list(...), self) }
       invisible(self)
     },
-    `fit` = function(...) invisible(.Call(`.rs_1280`, self, list(...))),
-    `acquisition` = function(...) .Call(`.rs_1281`, self, list(...))
+    `fit` = function(...) invisible(.Call(`.rs_1298`, self, list(...))),
+    `acquisition` = function(...) .Call(`.rs_1299`, self, list(...))
   )
 )
 #' Settings for BayesianOptimization.
@@ -8915,16 +8961,16 @@ rosetta_ref <- function(value = NULL) {
   public = list(
     initialize = function(...) {
       if (...length() == 1L && inherits(..1, "rosetta_ptr")) self$.ptr <- ..1
-      else { if (!is.null(self$.ptr)) stop("native object already initialized"); self$.ptr <- .Call(`.rs_1293`, list(...)) }
+      else { if (!is.null(self$.ptr)) stop("native object already initialized"); self$.ptr <- .Call(`.rs_1311`, list(...)) }
       invisible(self)
     }
   ),
   active = list(
-    `initial_samples` = function(value) if (missing(value)) .Call(`.rs_1283`, self) else invisible(.Call(`.rs_1284`, self, value)),
-    `max_iterations` = function(value) if (missing(value)) .Call(`.rs_1285`, self) else invisible(.Call(`.rs_1286`, self, value)),
-    `seed` = function(value) if (missing(value)) .Call(`.rs_1287`, self) else invisible(.Call(`.rs_1288`, self, value)),
-    `candidates` = function(value) if (missing(value)) .Call(`.rs_1289`, self) else invisible(.Call(`.rs_1290`, self, value)),
-    `refine_iterations` = function(value) if (missing(value)) .Call(`.rs_1291`, self) else invisible(.Call(`.rs_1292`, self, value))
+    `initial_samples` = function(value) if (missing(value)) .Call(`.rs_1301`, self) else invisible(.Call(`.rs_1302`, self, value)),
+    `max_iterations` = function(value) if (missing(value)) .Call(`.rs_1303`, self) else invisible(.Call(`.rs_1304`, self, value)),
+    `seed` = function(value) if (missing(value)) .Call(`.rs_1305`, self) else invisible(.Call(`.rs_1306`, self, value)),
+    `candidates` = function(value) if (missing(value)) .Call(`.rs_1307`, self) else invisible(.Call(`.rs_1308`, self, value)),
+    `refine_iterations` = function(value) if (missing(value)) .Call(`.rs_1309`, self) else invisible(.Call(`.rs_1310`, self, value))
   )
 )
 #' Everything a BayesianOptimization::run() evaluated, in order.
@@ -8943,17 +8989,17 @@ rosetta_ref <- function(value = NULL) {
   public = list(
     initialize = function(...) {
       if (...length() == 1L && inherits(..1, "rosetta_ptr")) self$.ptr <- ..1
-      else { if (!is.null(self$.ptr)) stop("native object already initialized"); self$.ptr <- .Call(`.rs_1306`, list(...)) }
+      else { if (!is.null(self$.ptr)) stop("native object already initialized"); self$.ptr <- .Call(`.rs_1324`, list(...)) }
       invisible(self)
     }
   ),
   active = list(
-    `best_point` = function(value) if (missing(value)) .Call(`.rs_1294`, self) else invisible(.Call(`.rs_1295`, self, value)),
-    `best_value` = function(value) if (missing(value)) .Call(`.rs_1296`, self) else invisible(.Call(`.rs_1297`, self, value)),
-    `points` = function(value) if (missing(value)) .Call(`.rs_1298`, self) else invisible(.Call(`.rs_1299`, self, value)),
-    `values` = function(value) if (missing(value)) .Call(`.rs_1300`, self) else invisible(.Call(`.rs_1301`, self, value)),
-    `best_values` = function(value) if (missing(value)) .Call(`.rs_1302`, self) else invisible(.Call(`.rs_1303`, self, value)),
-    `acquisition_values` = function(value) if (missing(value)) .Call(`.rs_1304`, self) else invisible(.Call(`.rs_1305`, self, value))
+    `best_point` = function(value) if (missing(value)) .Call(`.rs_1312`, self) else invisible(.Call(`.rs_1313`, self, value)),
+    `best_value` = function(value) if (missing(value)) .Call(`.rs_1314`, self) else invisible(.Call(`.rs_1315`, self, value)),
+    `points` = function(value) if (missing(value)) .Call(`.rs_1316`, self) else invisible(.Call(`.rs_1317`, self, value)),
+    `values` = function(value) if (missing(value)) .Call(`.rs_1318`, self) else invisible(.Call(`.rs_1319`, self, value)),
+    `best_values` = function(value) if (missing(value)) .Call(`.rs_1320`, self) else invisible(.Call(`.rs_1321`, self, value)),
+    `acquisition_values` = function(value) if (missing(value)) .Call(`.rs_1322`, self) else invisible(.Call(`.rs_1323`, self, value))
   )
 )
 #' Minimises an expensive black-box function on a box with few evaluations.
@@ -9020,12 +9066,12 @@ rosetta_ref <- function(value = NULL) {
   public = list(
     initialize = function(...) {
       if (...length() == 1L && inherits(..1, "rosetta_ptr")) self$.ptr <- ..1
-      else { if (!is.null(self$.ptr)) stop("native object already initialized"); self$.ptr <- .Call(`.rs_1310`, list(...)) }
+      else { if (!is.null(self$.ptr)) stop("native object already initialized"); self$.ptr <- .Call(`.rs_1328`, list(...)) }
       invisible(self)
     },
-    `run` = function(...) .Call(`.rs_1307`, self, list(...)),
-    `optimize` = function(...) .Call(`.rs_1308`, self, list(...)),
-    `options` = function(...) .Call(`.rs_1309`, self, list(...))
+    `run` = function(...) .Call(`.rs_1325`, self, list(...)),
+    `optimize` = function(...) .Call(`.rs_1326`, self, list(...)),
+    `options` = function(...) .Call(`.rs_1327`, self, list(...))
   )
 )
 #' Configuration for ConjugateGradient; fields retain their documented native defaults.
@@ -9051,16 +9097,16 @@ rosetta_ref <- function(value = NULL) {
   public = list(
     initialize = function(...) {
       if (...length() == 1L && inherits(..1, "rosetta_ptr")) self$.ptr <- ..1
-      else { if (!is.null(self$.ptr)) stop("native object already initialized"); self$.ptr <- .Call(`.rs_1321`, list(...)) }
+      else { if (!is.null(self$.ptr)) stop("native object already initialized"); self$.ptr <- .Call(`.rs_1339`, list(...)) }
       invisible(self)
     }
   ),
   active = list(
-    `max_iterations` = function(value) if (missing(value)) .Call(`.rs_1311`, self) else invisible(.Call(`.rs_1312`, self, value)),
-    `tolerance` = function(value) if (missing(value)) .Call(`.rs_1313`, self) else invisible(.Call(`.rs_1314`, self, value)),
-    `armijo_c1` = function(value) if (missing(value)) .Call(`.rs_1315`, self) else invisible(.Call(`.rs_1316`, self, value)),
-    `backtracking_factor` = function(value) if (missing(value)) .Call(`.rs_1317`, self) else invisible(.Call(`.rs_1318`, self, value)),
-    `max_line_search_trials` = function(value) if (missing(value)) .Call(`.rs_1319`, self) else invisible(.Call(`.rs_1320`, self, value))
+    `max_iterations` = function(value) if (missing(value)) .Call(`.rs_1329`, self) else invisible(.Call(`.rs_1330`, self, value)),
+    `tolerance` = function(value) if (missing(value)) .Call(`.rs_1331`, self) else invisible(.Call(`.rs_1332`, self, value)),
+    `armijo_c1` = function(value) if (missing(value)) .Call(`.rs_1333`, self) else invisible(.Call(`.rs_1334`, self, value)),
+    `backtracking_factor` = function(value) if (missing(value)) .Call(`.rs_1335`, self) else invisible(.Call(`.rs_1336`, self, value)),
+    `max_line_search_trials` = function(value) if (missing(value)) .Call(`.rs_1337`, self) else invisible(.Call(`.rs_1338`, self, value))
   )
 )
 #' ConjugateGradient on the DifferentiableFunction callback interface.
@@ -9098,11 +9144,11 @@ rosetta_ref <- function(value = NULL) {
   public = list(
     initialize = function(...) {
       if (...length() == 1L && inherits(..1, "rosetta_ptr")) self$.ptr <- ..1
-      else { if (!is.null(self$.ptr)) stop("native object already initialized"); self$.ptr <- .Call(`.rs_1324`, list(...)) }
+      else { if (!is.null(self$.ptr)) stop("native object already initialized"); self$.ptr <- .Call(`.rs_1342`, list(...)) }
       invisible(self)
     },
-    `optimize` = function(...) .Call(`.rs_1322`, self, list(...)),
-    `options` = function(...) .Call(`.rs_1323`, self, list(...))
+    `optimize` = function(...) .Call(`.rs_1340`, self, list(...)),
+    `options` = function(...) .Call(`.rs_1341`, self, list(...))
   )
 )
 #' Configuration for CMAES; fields retain their documented native defaults.
@@ -9128,16 +9174,16 @@ rosetta_ref <- function(value = NULL) {
   public = list(
     initialize = function(...) {
       if (...length() == 1L && inherits(..1, "rosetta_ptr")) self$.ptr <- ..1
-      else { if (!is.null(self$.ptr)) stop("native object already initialized"); self$.ptr <- .Call(`.rs_1335`, list(...)) }
+      else { if (!is.null(self$.ptr)) stop("native object already initialized"); self$.ptr <- .Call(`.rs_1353`, list(...)) }
       invisible(self)
     }
   ),
   active = list(
-    `population_size` = function(value) if (missing(value)) .Call(`.rs_1325`, self) else invisible(.Call(`.rs_1326`, self, value)),
-    `initial_step_size` = function(value) if (missing(value)) .Call(`.rs_1327`, self) else invisible(.Call(`.rs_1328`, self, value)),
-    `max_generations` = function(value) if (missing(value)) .Call(`.rs_1329`, self) else invisible(.Call(`.rs_1330`, self, value)),
-    `tolerance` = function(value) if (missing(value)) .Call(`.rs_1331`, self) else invisible(.Call(`.rs_1332`, self, value)),
-    `seed` = function(value) if (missing(value)) .Call(`.rs_1333`, self) else invisible(.Call(`.rs_1334`, self, value))
+    `population_size` = function(value) if (missing(value)) .Call(`.rs_1343`, self) else invisible(.Call(`.rs_1344`, self, value)),
+    `initial_step_size` = function(value) if (missing(value)) .Call(`.rs_1345`, self) else invisible(.Call(`.rs_1346`, self, value)),
+    `max_generations` = function(value) if (missing(value)) .Call(`.rs_1347`, self) else invisible(.Call(`.rs_1348`, self, value)),
+    `tolerance` = function(value) if (missing(value)) .Call(`.rs_1349`, self) else invisible(.Call(`.rs_1350`, self, value)),
+    `seed` = function(value) if (missing(value)) .Call(`.rs_1351`, self) else invisible(.Call(`.rs_1352`, self, value))
   )
 )
 #' CMAES on the ArbitraryFunction callback interface.
@@ -9175,11 +9221,11 @@ rosetta_ref <- function(value = NULL) {
   public = list(
     initialize = function(...) {
       if (...length() == 1L && inherits(..1, "rosetta_ptr")) self$.ptr <- ..1
-      else { if (!is.null(self$.ptr)) stop("native object already initialized"); self$.ptr <- .Call(`.rs_1338`, list(...)) }
+      else { if (!is.null(self$.ptr)) stop("native object already initialized"); self$.ptr <- .Call(`.rs_1356`, list(...)) }
       invisible(self)
     },
-    `optimize` = function(...) .Call(`.rs_1336`, self, list(...)),
-    `options` = function(...) .Call(`.rs_1337`, self, list(...))
+    `optimize` = function(...) .Call(`.rs_1354`, self, list(...)),
+    `options` = function(...) .Call(`.rs_1355`, self, list(...))
   )
 )
 #' Configuration for CoordinateDescent; fields retain their documented native defaults.
@@ -9206,17 +9252,17 @@ rosetta_ref <- function(value = NULL) {
   public = list(
     initialize = function(...) {
       if (...length() == 1L && inherits(..1, "rosetta_ptr")) self$.ptr <- ..1
-      else { if (!is.null(self$.ptr)) stop("native object already initialized"); self$.ptr <- .Call(`.rs_1351`, list(...)) }
+      else { if (!is.null(self$.ptr)) stop("native object already initialized"); self$.ptr <- .Call(`.rs_1369`, list(...)) }
       invisible(self)
     }
   ),
   active = list(
-    `step_size` = function(value) if (missing(value)) .Call(`.rs_1339`, self) else invisible(.Call(`.rs_1340`, self, value)),
-    `max_iterations` = function(value) if (missing(value)) .Call(`.rs_1341`, self) else invisible(.Call(`.rs_1342`, self, value)),
-    `tolerance` = function(value) if (missing(value)) .Call(`.rs_1343`, self) else invisible(.Call(`.rs_1344`, self, value)),
-    `armijo_c1` = function(value) if (missing(value)) .Call(`.rs_1345`, self) else invisible(.Call(`.rs_1346`, self, value)),
-    `backtracking_factor` = function(value) if (missing(value)) .Call(`.rs_1347`, self) else invisible(.Call(`.rs_1348`, self, value)),
-    `max_line_search_trials` = function(value) if (missing(value)) .Call(`.rs_1349`, self) else invisible(.Call(`.rs_1350`, self, value))
+    `step_size` = function(value) if (missing(value)) .Call(`.rs_1357`, self) else invisible(.Call(`.rs_1358`, self, value)),
+    `max_iterations` = function(value) if (missing(value)) .Call(`.rs_1359`, self) else invisible(.Call(`.rs_1360`, self, value)),
+    `tolerance` = function(value) if (missing(value)) .Call(`.rs_1361`, self) else invisible(.Call(`.rs_1362`, self, value)),
+    `armijo_c1` = function(value) if (missing(value)) .Call(`.rs_1363`, self) else invisible(.Call(`.rs_1364`, self, value)),
+    `backtracking_factor` = function(value) if (missing(value)) .Call(`.rs_1365`, self) else invisible(.Call(`.rs_1366`, self, value)),
+    `max_line_search_trials` = function(value) if (missing(value)) .Call(`.rs_1367`, self) else invisible(.Call(`.rs_1368`, self, value))
   )
 )
 #' CoordinateDescent on the DifferentiableFunction callback interface.
@@ -9254,11 +9300,11 @@ rosetta_ref <- function(value = NULL) {
   public = list(
     initialize = function(...) {
       if (...length() == 1L && inherits(..1, "rosetta_ptr")) self$.ptr <- ..1
-      else { if (!is.null(self$.ptr)) stop("native object already initialized"); self$.ptr <- .Call(`.rs_1354`, list(...)) }
+      else { if (!is.null(self$.ptr)) stop("native object already initialized"); self$.ptr <- .Call(`.rs_1372`, list(...)) }
       invisible(self)
     },
-    `optimize` = function(...) .Call(`.rs_1352`, self, list(...)),
-    `options` = function(...) .Call(`.rs_1353`, self, list(...))
+    `optimize` = function(...) .Call(`.rs_1370`, self, list(...)),
+    `options` = function(...) .Call(`.rs_1371`, self, list(...))
   )
 )
 #' C++ class `datamunge::optim::CrossEntropyMethodOptions`
@@ -9282,18 +9328,18 @@ rosetta_ref <- function(value = NULL) {
   public = list(
     initialize = function(...) {
       if (...length() == 1L && inherits(..1, "rosetta_ptr")) self$.ptr <- ..1
-      else { if (!is.null(self$.ptr)) stop("native object already initialized"); self$.ptr <- .Call(`.rs_1369`, list(...)) }
+      else { if (!is.null(self$.ptr)) stop("native object already initialized"); self$.ptr <- .Call(`.rs_1387`, list(...)) }
       invisible(self)
     }
   ),
   active = list(
-    `population_size` = function(value) if (missing(value)) .Call(`.rs_1355`, self) else invisible(.Call(`.rs_1356`, self, value)),
-    `elite_ratio` = function(value) if (missing(value)) .Call(`.rs_1357`, self) else invisible(.Call(`.rs_1358`, self, value)),
-    `initial_std_dev` = function(value) if (missing(value)) .Call(`.rs_1359`, self) else invisible(.Call(`.rs_1360`, self, value)),
-    `smoothing` = function(value) if (missing(value)) .Call(`.rs_1361`, self) else invisible(.Call(`.rs_1362`, self, value)),
-    `max_iterations` = function(value) if (missing(value)) .Call(`.rs_1363`, self) else invisible(.Call(`.rs_1364`, self, value)),
-    `tolerance` = function(value) if (missing(value)) .Call(`.rs_1365`, self) else invisible(.Call(`.rs_1366`, self, value)),
-    `seed` = function(value) if (missing(value)) .Call(`.rs_1367`, self) else invisible(.Call(`.rs_1368`, self, value))
+    `population_size` = function(value) if (missing(value)) .Call(`.rs_1373`, self) else invisible(.Call(`.rs_1374`, self, value)),
+    `elite_ratio` = function(value) if (missing(value)) .Call(`.rs_1375`, self) else invisible(.Call(`.rs_1376`, self, value)),
+    `initial_std_dev` = function(value) if (missing(value)) .Call(`.rs_1377`, self) else invisible(.Call(`.rs_1378`, self, value)),
+    `smoothing` = function(value) if (missing(value)) .Call(`.rs_1379`, self) else invisible(.Call(`.rs_1380`, self, value)),
+    `max_iterations` = function(value) if (missing(value)) .Call(`.rs_1381`, self) else invisible(.Call(`.rs_1382`, self, value)),
+    `tolerance` = function(value) if (missing(value)) .Call(`.rs_1383`, self) else invisible(.Call(`.rs_1384`, self, value)),
+    `seed` = function(value) if (missing(value)) .Call(`.rs_1385`, self) else invisible(.Call(`.rs_1386`, self, value))
   )
 )
 #' The Cross-Entropy Method (CEM) for derivative-free continuous optimization on an ArbitraryFunction within a box constraint.
@@ -9320,11 +9366,11 @@ rosetta_ref <- function(value = NULL) {
   public = list(
     initialize = function(...) {
       if (...length() == 1L && inherits(..1, "rosetta_ptr")) self$.ptr <- ..1
-      else { if (!is.null(self$.ptr)) stop("native object already initialized"); self$.ptr <- .Call(`.rs_1372`, list(...)) }
+      else { if (!is.null(self$.ptr)) stop("native object already initialized"); self$.ptr <- .Call(`.rs_1390`, list(...)) }
       invisible(self)
     },
-    `optimize` = function(...) .Call(`.rs_1370`, self, list(...)),
-    `options` = function(...) .Call(`.rs_1371`, self, list(...))
+    `optimize` = function(...) .Call(`.rs_1388`, self, list(...)),
+    `options` = function(...) .Call(`.rs_1389`, self, list(...))
   )
 )
 #' C++ class `datamunge::optim::CuckooSearchOptions`
@@ -9353,18 +9399,18 @@ rosetta_ref <- function(value = NULL) {
   public = list(
     initialize = function(...) {
       if (...length() == 1L && inherits(..1, "rosetta_ptr")) self$.ptr <- ..1
-      else { if (!is.null(self$.ptr)) stop("native object already initialized"); self$.ptr <- .Call(`.rs_1387`, list(...)) }
+      else { if (!is.null(self$.ptr)) stop("native object already initialized"); self$.ptr <- .Call(`.rs_1405`, list(...)) }
       invisible(self)
     }
   ),
   active = list(
-    `population_size` = function(value) if (missing(value)) .Call(`.rs_1373`, self) else invisible(.Call(`.rs_1374`, self, value)),
-    `discovery_rate` = function(value) if (missing(value)) .Call(`.rs_1375`, self) else invisible(.Call(`.rs_1376`, self, value)),
-    `levy_beta` = function(value) if (missing(value)) .Call(`.rs_1377`, self) else invisible(.Call(`.rs_1378`, self, value)),
-    `step_scale` = function(value) if (missing(value)) .Call(`.rs_1379`, self) else invisible(.Call(`.rs_1380`, self, value)),
-    `max_iterations` = function(value) if (missing(value)) .Call(`.rs_1381`, self) else invisible(.Call(`.rs_1382`, self, value)),
-    `tolerance` = function(value) if (missing(value)) .Call(`.rs_1383`, self) else invisible(.Call(`.rs_1384`, self, value)),
-    `seed` = function(value) if (missing(value)) .Call(`.rs_1385`, self) else invisible(.Call(`.rs_1386`, self, value))
+    `population_size` = function(value) if (missing(value)) .Call(`.rs_1391`, self) else invisible(.Call(`.rs_1392`, self, value)),
+    `discovery_rate` = function(value) if (missing(value)) .Call(`.rs_1393`, self) else invisible(.Call(`.rs_1394`, self, value)),
+    `levy_beta` = function(value) if (missing(value)) .Call(`.rs_1395`, self) else invisible(.Call(`.rs_1396`, self, value)),
+    `step_scale` = function(value) if (missing(value)) .Call(`.rs_1397`, self) else invisible(.Call(`.rs_1398`, self, value)),
+    `max_iterations` = function(value) if (missing(value)) .Call(`.rs_1399`, self) else invisible(.Call(`.rs_1400`, self, value)),
+    `tolerance` = function(value) if (missing(value)) .Call(`.rs_1401`, self) else invisible(.Call(`.rs_1402`, self, value)),
+    `seed` = function(value) if (missing(value)) .Call(`.rs_1403`, self) else invisible(.Call(`.rs_1404`, self, value))
   )
 )
 #' Cuckoo Search (Yang & Deb, 2009) on an ArbitraryFunction within a box constraint: a population of nests is perturbed by heavy-tailed Levy flights (via Mantegna's algorithm) and a fraction of the worst nests is abandoned and rebuilt each iteration, mimicking brood parasitism.
@@ -9391,11 +9437,11 @@ rosetta_ref <- function(value = NULL) {
   public = list(
     initialize = function(...) {
       if (...length() == 1L && inherits(..1, "rosetta_ptr")) self$.ptr <- ..1
-      else { if (!is.null(self$.ptr)) stop("native object already initialized"); self$.ptr <- .Call(`.rs_1390`, list(...)) }
+      else { if (!is.null(self$.ptr)) stop("native object already initialized"); self$.ptr <- .Call(`.rs_1408`, list(...)) }
       invisible(self)
     },
-    `optimize` = function(...) .Call(`.rs_1388`, self, list(...)),
-    `options` = function(...) .Call(`.rs_1389`, self, list(...))
+    `optimize` = function(...) .Call(`.rs_1406`, self, list(...)),
+    `options` = function(...) .Call(`.rs_1407`, self, list(...))
   )
 )
 #' Configuration for DifferentialEvolution; fields retain their documented native defaults.
@@ -9424,19 +9470,19 @@ rosetta_ref <- function(value = NULL) {
   public = list(
     initialize = function(...) {
       if (...length() == 1L && inherits(..1, "rosetta_ptr")) self$.ptr <- ..1
-      else { if (!is.null(self$.ptr)) stop("native object already initialized"); self$.ptr <- .Call(`.rs_1407`, list(...)) }
+      else { if (!is.null(self$.ptr)) stop("native object already initialized"); self$.ptr <- .Call(`.rs_1425`, list(...)) }
       invisible(self)
     }
   ),
   active = list(
-    `population_size` = function(value) if (missing(value)) .Call(`.rs_1391`, self) else invisible(.Call(`.rs_1392`, self, value)),
-    `max_generations` = function(value) if (missing(value)) .Call(`.rs_1393`, self) else invisible(.Call(`.rs_1394`, self, value)),
-    `differential_weight` = function(value) if (missing(value)) .Call(`.rs_1395`, self) else invisible(.Call(`.rs_1396`, self, value)),
-    `crossover_rate` = function(value) if (missing(value)) .Call(`.rs_1397`, self) else invisible(.Call(`.rs_1398`, self, value)),
-    `mutation_strategy` = function(value) if (missing(value)) .Call(`.rs_1399`, self) else invisible(.Call(`.rs_1400`, self, value)),
-    `crossover_strategy` = function(value) if (missing(value)) .Call(`.rs_1401`, self) else invisible(.Call(`.rs_1402`, self, value)),
-    `tolerance` = function(value) if (missing(value)) .Call(`.rs_1403`, self) else invisible(.Call(`.rs_1404`, self, value)),
-    `seed` = function(value) if (missing(value)) .Call(`.rs_1405`, self) else invisible(.Call(`.rs_1406`, self, value))
+    `population_size` = function(value) if (missing(value)) .Call(`.rs_1409`, self) else invisible(.Call(`.rs_1410`, self, value)),
+    `max_generations` = function(value) if (missing(value)) .Call(`.rs_1411`, self) else invisible(.Call(`.rs_1412`, self, value)),
+    `differential_weight` = function(value) if (missing(value)) .Call(`.rs_1413`, self) else invisible(.Call(`.rs_1414`, self, value)),
+    `crossover_rate` = function(value) if (missing(value)) .Call(`.rs_1415`, self) else invisible(.Call(`.rs_1416`, self, value)),
+    `mutation_strategy` = function(value) if (missing(value)) .Call(`.rs_1417`, self) else invisible(.Call(`.rs_1418`, self, value)),
+    `crossover_strategy` = function(value) if (missing(value)) .Call(`.rs_1419`, self) else invisible(.Call(`.rs_1420`, self, value)),
+    `tolerance` = function(value) if (missing(value)) .Call(`.rs_1421`, self) else invisible(.Call(`.rs_1422`, self, value)),
+    `seed` = function(value) if (missing(value)) .Call(`.rs_1423`, self) else invisible(.Call(`.rs_1424`, self, value))
   )
 )
 #' DifferentialEvolution on the ArbitraryFunction callback interface.
@@ -9476,11 +9522,11 @@ rosetta_ref <- function(value = NULL) {
   public = list(
     initialize = function(...) {
       if (...length() == 1L && inherits(..1, "rosetta_ptr")) self$.ptr <- ..1
-      else { if (!is.null(self$.ptr)) stop("native object already initialized"); self$.ptr <- .Call(`.rs_1410`, list(...)) }
+      else { if (!is.null(self$.ptr)) stop("native object already initialized"); self$.ptr <- .Call(`.rs_1428`, list(...)) }
       invisible(self)
     },
-    `optimize` = function(...) .Call(`.rs_1408`, self, list(...)),
-    `options` = function(...) .Call(`.rs_1409`, self, list(...))
+    `optimize` = function(...) .Call(`.rs_1426`, self, list(...)),
+    `options` = function(...) .Call(`.rs_1427`, self, list(...))
   )
 )
 #' C++ class `datamunge::optim::EstimationOfDistributionOptions`
@@ -9504,18 +9550,18 @@ rosetta_ref <- function(value = NULL) {
   public = list(
     initialize = function(...) {
       if (...length() == 1L && inherits(..1, "rosetta_ptr")) self$.ptr <- ..1
-      else { if (!is.null(self$.ptr)) stop("native object already initialized"); self$.ptr <- .Call(`.rs_1425`, list(...)) }
+      else { if (!is.null(self$.ptr)) stop("native object already initialized"); self$.ptr <- .Call(`.rs_1443`, list(...)) }
       invisible(self)
     }
   ),
   active = list(
-    `population_size` = function(value) if (missing(value)) .Call(`.rs_1411`, self) else invisible(.Call(`.rs_1412`, self, value)),
-    `selection_ratio` = function(value) if (missing(value)) .Call(`.rs_1413`, self) else invisible(.Call(`.rs_1414`, self, value)),
-    `initial_std_dev` = function(value) if (missing(value)) .Call(`.rs_1415`, self) else invisible(.Call(`.rs_1416`, self, value)),
-    `covariance_regularization` = function(value) if (missing(value)) .Call(`.rs_1417`, self) else invisible(.Call(`.rs_1418`, self, value)),
-    `max_generations` = function(value) if (missing(value)) .Call(`.rs_1419`, self) else invisible(.Call(`.rs_1420`, self, value)),
-    `tolerance` = function(value) if (missing(value)) .Call(`.rs_1421`, self) else invisible(.Call(`.rs_1422`, self, value)),
-    `seed` = function(value) if (missing(value)) .Call(`.rs_1423`, self) else invisible(.Call(`.rs_1424`, self, value))
+    `population_size` = function(value) if (missing(value)) .Call(`.rs_1429`, self) else invisible(.Call(`.rs_1430`, self, value)),
+    `selection_ratio` = function(value) if (missing(value)) .Call(`.rs_1431`, self) else invisible(.Call(`.rs_1432`, self, value)),
+    `initial_std_dev` = function(value) if (missing(value)) .Call(`.rs_1433`, self) else invisible(.Call(`.rs_1434`, self, value)),
+    `covariance_regularization` = function(value) if (missing(value)) .Call(`.rs_1435`, self) else invisible(.Call(`.rs_1436`, self, value)),
+    `max_generations` = function(value) if (missing(value)) .Call(`.rs_1437`, self) else invisible(.Call(`.rs_1438`, self, value)),
+    `tolerance` = function(value) if (missing(value)) .Call(`.rs_1439`, self) else invisible(.Call(`.rs_1440`, self, value)),
+    `seed` = function(value) if (missing(value)) .Call(`.rs_1441`, self) else invisible(.Call(`.rs_1442`, self, value))
   )
 )
 #' Estimation of Distribution Algorithm (EMNA-style, full-covariance Gaussian) on an ArbitraryFunction within a box constraint.
@@ -9542,11 +9588,11 @@ rosetta_ref <- function(value = NULL) {
   public = list(
     initialize = function(...) {
       if (...length() == 1L && inherits(..1, "rosetta_ptr")) self$.ptr <- ..1
-      else { if (!is.null(self$.ptr)) stop("native object already initialized"); self$.ptr <- .Call(`.rs_1428`, list(...)) }
+      else { if (!is.null(self$.ptr)) stop("native object already initialized"); self$.ptr <- .Call(`.rs_1446`, list(...)) }
       invisible(self)
     },
-    `optimize` = function(...) .Call(`.rs_1426`, self, list(...)),
-    `options` = function(...) .Call(`.rs_1427`, self, list(...))
+    `optimize` = function(...) .Call(`.rs_1444`, self, list(...)),
+    `options` = function(...) .Call(`.rs_1445`, self, list(...))
   )
 )
 #' C++ class `datamunge::optim::EvolutionStrategyOptions`
@@ -9569,18 +9615,18 @@ rosetta_ref <- function(value = NULL) {
   public = list(
     initialize = function(...) {
       if (...length() == 1L && inherits(..1, "rosetta_ptr")) self$.ptr <- ..1
-      else { if (!is.null(self$.ptr)) stop("native object already initialized"); self$.ptr <- .Call(`.rs_1443`, list(...)) }
+      else { if (!is.null(self$.ptr)) stop("native object already initialized"); self$.ptr <- .Call(`.rs_1461`, list(...)) }
       invisible(self)
     }
   ),
   active = list(
-    `mu` = function(value) if (missing(value)) .Call(`.rs_1429`, self) else invisible(.Call(`.rs_1430`, self, value)),
-    `offspring_size` = function(value) if (missing(value)) .Call(`.rs_1431`, self) else invisible(.Call(`.rs_1432`, self, value)),
-    `strategy` = function(value) if (missing(value)) .Call(`.rs_1433`, self) else invisible(.Call(`.rs_1434`, self, value)),
-    `initial_step_size` = function(value) if (missing(value)) .Call(`.rs_1435`, self) else invisible(.Call(`.rs_1436`, self, value)),
-    `max_generations` = function(value) if (missing(value)) .Call(`.rs_1437`, self) else invisible(.Call(`.rs_1438`, self, value)),
-    `tolerance` = function(value) if (missing(value)) .Call(`.rs_1439`, self) else invisible(.Call(`.rs_1440`, self, value)),
-    `seed` = function(value) if (missing(value)) .Call(`.rs_1441`, self) else invisible(.Call(`.rs_1442`, self, value))
+    `mu` = function(value) if (missing(value)) .Call(`.rs_1447`, self) else invisible(.Call(`.rs_1448`, self, value)),
+    `offspring_size` = function(value) if (missing(value)) .Call(`.rs_1449`, self) else invisible(.Call(`.rs_1450`, self, value)),
+    `strategy` = function(value) if (missing(value)) .Call(`.rs_1451`, self) else invisible(.Call(`.rs_1452`, self, value)),
+    `initial_step_size` = function(value) if (missing(value)) .Call(`.rs_1453`, self) else invisible(.Call(`.rs_1454`, self, value)),
+    `max_generations` = function(value) if (missing(value)) .Call(`.rs_1455`, self) else invisible(.Call(`.rs_1456`, self, value)),
+    `tolerance` = function(value) if (missing(value)) .Call(`.rs_1457`, self) else invisible(.Call(`.rs_1458`, self, value)),
+    `seed` = function(value) if (missing(value)) .Call(`.rs_1459`, self) else invisible(.Call(`.rs_1460`, self, value))
   )
 )
 #' Classic self-adaptive (mu, lambda) / (mu+lambda) Evolution Strategy with a single global step size mutated log-normally each generation (Rechenberg 1973, Schwefel 1981).
@@ -9607,11 +9653,11 @@ rosetta_ref <- function(value = NULL) {
   public = list(
     initialize = function(...) {
       if (...length() == 1L && inherits(..1, "rosetta_ptr")) self$.ptr <- ..1
-      else { if (!is.null(self$.ptr)) stop("native object already initialized"); self$.ptr <- .Call(`.rs_1446`, list(...)) }
+      else { if (!is.null(self$.ptr)) stop("native object already initialized"); self$.ptr <- .Call(`.rs_1464`, list(...)) }
       invisible(self)
     },
-    `optimize` = function(...) .Call(`.rs_1444`, self, list(...)),
-    `options` = function(...) .Call(`.rs_1445`, self, list(...))
+    `optimize` = function(...) .Call(`.rs_1462`, self, list(...)),
+    `options` = function(...) .Call(`.rs_1463`, self, list(...))
   )
 )
 #' C++ class `datamunge::optim::FireflyAlgorithmOptions`
@@ -9634,19 +9680,19 @@ rosetta_ref <- function(value = NULL) {
   public = list(
     initialize = function(...) {
       if (...length() == 1L && inherits(..1, "rosetta_ptr")) self$.ptr <- ..1
-      else { if (!is.null(self$.ptr)) stop("native object already initialized"); self$.ptr <- .Call(`.rs_1463`, list(...)) }
+      else { if (!is.null(self$.ptr)) stop("native object already initialized"); self$.ptr <- .Call(`.rs_1481`, list(...)) }
       invisible(self)
     }
   ),
   active = list(
-    `population_size` = function(value) if (missing(value)) .Call(`.rs_1447`, self) else invisible(.Call(`.rs_1448`, self, value)),
-    `attractiveness_at_zero` = function(value) if (missing(value)) .Call(`.rs_1449`, self) else invisible(.Call(`.rs_1450`, self, value)),
-    `light_absorption` = function(value) if (missing(value)) .Call(`.rs_1451`, self) else invisible(.Call(`.rs_1452`, self, value)),
-    `randomization_step` = function(value) if (missing(value)) .Call(`.rs_1453`, self) else invisible(.Call(`.rs_1454`, self, value)),
-    `randomization_decay` = function(value) if (missing(value)) .Call(`.rs_1455`, self) else invisible(.Call(`.rs_1456`, self, value)),
-    `max_iterations` = function(value) if (missing(value)) .Call(`.rs_1457`, self) else invisible(.Call(`.rs_1458`, self, value)),
-    `tolerance` = function(value) if (missing(value)) .Call(`.rs_1459`, self) else invisible(.Call(`.rs_1460`, self, value)),
-    `seed` = function(value) if (missing(value)) .Call(`.rs_1461`, self) else invisible(.Call(`.rs_1462`, self, value))
+    `population_size` = function(value) if (missing(value)) .Call(`.rs_1465`, self) else invisible(.Call(`.rs_1466`, self, value)),
+    `attractiveness_at_zero` = function(value) if (missing(value)) .Call(`.rs_1467`, self) else invisible(.Call(`.rs_1468`, self, value)),
+    `light_absorption` = function(value) if (missing(value)) .Call(`.rs_1469`, self) else invisible(.Call(`.rs_1470`, self, value)),
+    `randomization_step` = function(value) if (missing(value)) .Call(`.rs_1471`, self) else invisible(.Call(`.rs_1472`, self, value)),
+    `randomization_decay` = function(value) if (missing(value)) .Call(`.rs_1473`, self) else invisible(.Call(`.rs_1474`, self, value)),
+    `max_iterations` = function(value) if (missing(value)) .Call(`.rs_1475`, self) else invisible(.Call(`.rs_1476`, self, value)),
+    `tolerance` = function(value) if (missing(value)) .Call(`.rs_1477`, self) else invisible(.Call(`.rs_1478`, self, value)),
+    `seed` = function(value) if (missing(value)) .Call(`.rs_1479`, self) else invisible(.Call(`.rs_1480`, self, value))
   )
 )
 #' The Firefly Algorithm (Yang, 2008/2009): a population of fireflies is pairwise attracted toward brighter (better) neighbors, with attractiveness decaying with squared distance and a shrinking random-walk term for exploration.
@@ -9673,11 +9719,11 @@ rosetta_ref <- function(value = NULL) {
   public = list(
     initialize = function(...) {
       if (...length() == 1L && inherits(..1, "rosetta_ptr")) self$.ptr <- ..1
-      else { if (!is.null(self$.ptr)) stop("native object already initialized"); self$.ptr <- .Call(`.rs_1466`, list(...)) }
+      else { if (!is.null(self$.ptr)) stop("native object already initialized"); self$.ptr <- .Call(`.rs_1484`, list(...)) }
       invisible(self)
     },
-    `optimize` = function(...) .Call(`.rs_1464`, self, list(...)),
-    `options` = function(...) .Call(`.rs_1465`, self, list(...))
+    `optimize` = function(...) .Call(`.rs_1482`, self, list(...)),
+    `options` = function(...) .Call(`.rs_1483`, self, list(...))
   )
 )
 #' Configuration for FISTA; fields retain their documented native defaults.
@@ -9701,14 +9747,14 @@ rosetta_ref <- function(value = NULL) {
   public = list(
     initialize = function(...) {
       if (...length() == 1L && inherits(..1, "rosetta_ptr")) self$.ptr <- ..1
-      else { if (!is.null(self$.ptr)) stop("native object already initialized"); self$.ptr <- .Call(`.rs_1473`, list(...)) }
+      else { if (!is.null(self$.ptr)) stop("native object already initialized"); self$.ptr <- .Call(`.rs_1491`, list(...)) }
       invisible(self)
     }
   ),
   active = list(
-    `step_size` = function(value) if (missing(value)) .Call(`.rs_1467`, self) else invisible(.Call(`.rs_1468`, self, value)),
-    `max_iterations` = function(value) if (missing(value)) .Call(`.rs_1469`, self) else invisible(.Call(`.rs_1470`, self, value)),
-    `tolerance` = function(value) if (missing(value)) .Call(`.rs_1471`, self) else invisible(.Call(`.rs_1472`, self, value))
+    `step_size` = function(value) if (missing(value)) .Call(`.rs_1485`, self) else invisible(.Call(`.rs_1486`, self, value)),
+    `max_iterations` = function(value) if (missing(value)) .Call(`.rs_1487`, self) else invisible(.Call(`.rs_1488`, self, value)),
+    `tolerance` = function(value) if (missing(value)) .Call(`.rs_1489`, self) else invisible(.Call(`.rs_1490`, self, value))
   )
 )
 #' FISTA on the ProximalFunction callback interface.
@@ -9746,11 +9792,11 @@ rosetta_ref <- function(value = NULL) {
   public = list(
     initialize = function(...) {
       if (...length() == 1L && inherits(..1, "rosetta_ptr")) self$.ptr <- ..1
-      else { if (!is.null(self$.ptr)) stop("native object already initialized"); self$.ptr <- .Call(`.rs_1476`, list(...)) }
+      else { if (!is.null(self$.ptr)) stop("native object already initialized"); self$.ptr <- .Call(`.rs_1494`, list(...)) }
       invisible(self)
     },
-    `optimize` = function(...) .Call(`.rs_1474`, self, list(...)),
-    `options` = function(...) .Call(`.rs_1475`, self, list(...))
+    `optimize` = function(...) .Call(`.rs_1492`, self, list(...)),
+    `options` = function(...) .Call(`.rs_1493`, self, list(...))
   )
 )
 #' Configuration for GeneticAlgorithm; fields retain their documented native defaults.
@@ -9784,24 +9830,24 @@ rosetta_ref <- function(value = NULL) {
   public = list(
     initialize = function(...) {
       if (...length() == 1L && inherits(..1, "rosetta_ptr")) self$.ptr <- ..1
-      else { if (!is.null(self$.ptr)) stop("native object already initialized"); self$.ptr <- .Call(`.rs_1503`, list(...)) }
+      else { if (!is.null(self$.ptr)) stop("native object already initialized"); self$.ptr <- .Call(`.rs_1521`, list(...)) }
       invisible(self)
     }
   ),
   active = list(
-    `population_size` = function(value) if (missing(value)) .Call(`.rs_1477`, self) else invisible(.Call(`.rs_1478`, self, value)),
-    `max_generations` = function(value) if (missing(value)) .Call(`.rs_1479`, self) else invisible(.Call(`.rs_1480`, self, value)),
-    `crossover_rate` = function(value) if (missing(value)) .Call(`.rs_1481`, self) else invisible(.Call(`.rs_1482`, self, value)),
-    `mutation_rate` = function(value) if (missing(value)) .Call(`.rs_1483`, self) else invisible(.Call(`.rs_1484`, self, value)),
-    `mutation_std_dev` = function(value) if (missing(value)) .Call(`.rs_1485`, self) else invisible(.Call(`.rs_1486`, self, value)),
-    `selection_strategy` = function(value) if (missing(value)) .Call(`.rs_1487`, self) else invisible(.Call(`.rs_1488`, self, value)),
-    `tournament_size` = function(value) if (missing(value)) .Call(`.rs_1489`, self) else invisible(.Call(`.rs_1490`, self, value)),
-    `crossover_strategy` = function(value) if (missing(value)) .Call(`.rs_1491`, self) else invisible(.Call(`.rs_1492`, self, value)),
-    `blend_alpha` = function(value) if (missing(value)) .Call(`.rs_1493`, self) else invisible(.Call(`.rs_1494`, self, value)),
-    `elitism` = function(value) if (missing(value)) .Call(`.rs_1495`, self) else invisible(.Call(`.rs_1496`, self, value)),
-    `elite_count` = function(value) if (missing(value)) .Call(`.rs_1497`, self) else invisible(.Call(`.rs_1498`, self, value)),
-    `tolerance` = function(value) if (missing(value)) .Call(`.rs_1499`, self) else invisible(.Call(`.rs_1500`, self, value)),
-    `seed` = function(value) if (missing(value)) .Call(`.rs_1501`, self) else invisible(.Call(`.rs_1502`, self, value))
+    `population_size` = function(value) if (missing(value)) .Call(`.rs_1495`, self) else invisible(.Call(`.rs_1496`, self, value)),
+    `max_generations` = function(value) if (missing(value)) .Call(`.rs_1497`, self) else invisible(.Call(`.rs_1498`, self, value)),
+    `crossover_rate` = function(value) if (missing(value)) .Call(`.rs_1499`, self) else invisible(.Call(`.rs_1500`, self, value)),
+    `mutation_rate` = function(value) if (missing(value)) .Call(`.rs_1501`, self) else invisible(.Call(`.rs_1502`, self, value)),
+    `mutation_std_dev` = function(value) if (missing(value)) .Call(`.rs_1503`, self) else invisible(.Call(`.rs_1504`, self, value)),
+    `selection_strategy` = function(value) if (missing(value)) .Call(`.rs_1505`, self) else invisible(.Call(`.rs_1506`, self, value)),
+    `tournament_size` = function(value) if (missing(value)) .Call(`.rs_1507`, self) else invisible(.Call(`.rs_1508`, self, value)),
+    `crossover_strategy` = function(value) if (missing(value)) .Call(`.rs_1509`, self) else invisible(.Call(`.rs_1510`, self, value)),
+    `blend_alpha` = function(value) if (missing(value)) .Call(`.rs_1511`, self) else invisible(.Call(`.rs_1512`, self, value)),
+    `elitism` = function(value) if (missing(value)) .Call(`.rs_1513`, self) else invisible(.Call(`.rs_1514`, self, value)),
+    `elite_count` = function(value) if (missing(value)) .Call(`.rs_1515`, self) else invisible(.Call(`.rs_1516`, self, value)),
+    `tolerance` = function(value) if (missing(value)) .Call(`.rs_1517`, self) else invisible(.Call(`.rs_1518`, self, value)),
+    `seed` = function(value) if (missing(value)) .Call(`.rs_1519`, self) else invisible(.Call(`.rs_1520`, self, value))
   )
 )
 #' GeneticAlgorithm on the ArbitraryFunction callback interface.
@@ -9841,11 +9887,11 @@ rosetta_ref <- function(value = NULL) {
   public = list(
     initialize = function(...) {
       if (...length() == 1L && inherits(..1, "rosetta_ptr")) self$.ptr <- ..1
-      else { if (!is.null(self$.ptr)) stop("native object already initialized"); self$.ptr <- .Call(`.rs_1506`, list(...)) }
+      else { if (!is.null(self$.ptr)) stop("native object already initialized"); self$.ptr <- .Call(`.rs_1524`, list(...)) }
       invisible(self)
     },
-    `optimize` = function(...) .Call(`.rs_1504`, self, list(...)),
-    `options` = function(...) .Call(`.rs_1505`, self, list(...))
+    `optimize` = function(...) .Call(`.rs_1522`, self, list(...)),
+    `options` = function(...) .Call(`.rs_1523`, self, list(...))
   )
 )
 #' Configuration for GradientDescent; fields retain their documented native defaults.
@@ -9870,15 +9916,15 @@ rosetta_ref <- function(value = NULL) {
   public = list(
     initialize = function(...) {
       if (...length() == 1L && inherits(..1, "rosetta_ptr")) self$.ptr <- ..1
-      else { if (!is.null(self$.ptr)) stop("native object already initialized"); self$.ptr <- .Call(`.rs_1515`, list(...)) }
+      else { if (!is.null(self$.ptr)) stop("native object already initialized"); self$.ptr <- .Call(`.rs_1533`, list(...)) }
       invisible(self)
     }
   ),
   active = list(
-    `step_size` = function(value) if (missing(value)) .Call(`.rs_1507`, self) else invisible(.Call(`.rs_1508`, self, value)),
-    `momentum` = function(value) if (missing(value)) .Call(`.rs_1509`, self) else invisible(.Call(`.rs_1510`, self, value)),
-    `max_iterations` = function(value) if (missing(value)) .Call(`.rs_1511`, self) else invisible(.Call(`.rs_1512`, self, value)),
-    `tolerance` = function(value) if (missing(value)) .Call(`.rs_1513`, self) else invisible(.Call(`.rs_1514`, self, value))
+    `step_size` = function(value) if (missing(value)) .Call(`.rs_1525`, self) else invisible(.Call(`.rs_1526`, self, value)),
+    `momentum` = function(value) if (missing(value)) .Call(`.rs_1527`, self) else invisible(.Call(`.rs_1528`, self, value)),
+    `max_iterations` = function(value) if (missing(value)) .Call(`.rs_1529`, self) else invisible(.Call(`.rs_1530`, self, value)),
+    `tolerance` = function(value) if (missing(value)) .Call(`.rs_1531`, self) else invisible(.Call(`.rs_1532`, self, value))
   )
 )
 #' GradientDescent on the DifferentiableFunction callback interface.
@@ -9916,11 +9962,11 @@ rosetta_ref <- function(value = NULL) {
   public = list(
     initialize = function(...) {
       if (...length() == 1L && inherits(..1, "rosetta_ptr")) self$.ptr <- ..1
-      else { if (!is.null(self$.ptr)) stop("native object already initialized"); self$.ptr <- .Call(`.rs_1518`, list(...)) }
+      else { if (!is.null(self$.ptr)) stop("native object already initialized"); self$.ptr <- .Call(`.rs_1536`, list(...)) }
       invisible(self)
     },
-    `optimize` = function(...) .Call(`.rs_1516`, self, list(...)),
-    `options` = function(...) .Call(`.rs_1517`, self, list(...))
+    `optimize` = function(...) .Call(`.rs_1534`, self, list(...)),
+    `options` = function(...) .Call(`.rs_1535`, self, list(...))
   )
 )
 #' C++ class `datamunge::optim::GreyWolfOptimizerOptions`
@@ -9937,15 +9983,15 @@ rosetta_ref <- function(value = NULL) {
   public = list(
     initialize = function(...) {
       if (...length() == 1L && inherits(..1, "rosetta_ptr")) self$.ptr <- ..1
-      else { if (!is.null(self$.ptr)) stop("native object already initialized"); self$.ptr <- .Call(`.rs_1527`, list(...)) }
+      else { if (!is.null(self$.ptr)) stop("native object already initialized"); self$.ptr <- .Call(`.rs_1545`, list(...)) }
       invisible(self)
     }
   ),
   active = list(
-    `population_size` = function(value) if (missing(value)) .Call(`.rs_1519`, self) else invisible(.Call(`.rs_1520`, self, value)),
-    `max_iterations` = function(value) if (missing(value)) .Call(`.rs_1521`, self) else invisible(.Call(`.rs_1522`, self, value)),
-    `tolerance` = function(value) if (missing(value)) .Call(`.rs_1523`, self) else invisible(.Call(`.rs_1524`, self, value)),
-    `seed` = function(value) if (missing(value)) .Call(`.rs_1525`, self) else invisible(.Call(`.rs_1526`, self, value))
+    `population_size` = function(value) if (missing(value)) .Call(`.rs_1537`, self) else invisible(.Call(`.rs_1538`, self, value)),
+    `max_iterations` = function(value) if (missing(value)) .Call(`.rs_1539`, self) else invisible(.Call(`.rs_1540`, self, value)),
+    `tolerance` = function(value) if (missing(value)) .Call(`.rs_1541`, self) else invisible(.Call(`.rs_1542`, self, value)),
+    `seed` = function(value) if (missing(value)) .Call(`.rs_1543`, self) else invisible(.Call(`.rs_1544`, self, value))
   )
 )
 #' Grey Wolf Optimizer (GWO) on an ArbitraryFunction within a box constraint: a population of wolves is guided each iteration by its three best members (alpha, beta, delta), moving every wolf to the elementwise average of three independently randomized pulls toward those leaders.
@@ -9972,11 +10018,11 @@ rosetta_ref <- function(value = NULL) {
   public = list(
     initialize = function(...) {
       if (...length() == 1L && inherits(..1, "rosetta_ptr")) self$.ptr <- ..1
-      else { if (!is.null(self$.ptr)) stop("native object already initialized"); self$.ptr <- .Call(`.rs_1530`, list(...)) }
+      else { if (!is.null(self$.ptr)) stop("native object already initialized"); self$.ptr <- .Call(`.rs_1548`, list(...)) }
       invisible(self)
     },
-    `optimize` = function(...) .Call(`.rs_1528`, self, list(...)),
-    `options` = function(...) .Call(`.rs_1529`, self, list(...))
+    `optimize` = function(...) .Call(`.rs_1546`, self, list(...)),
+    `options` = function(...) .Call(`.rs_1547`, self, list(...))
   )
 )
 #' C++ class `datamunge::optim::HarmonySearchOptions`
@@ -10000,18 +10046,18 @@ rosetta_ref <- function(value = NULL) {
   public = list(
     initialize = function(...) {
       if (...length() == 1L && inherits(..1, "rosetta_ptr")) self$.ptr <- ..1
-      else { if (!is.null(self$.ptr)) stop("native object already initialized"); self$.ptr <- .Call(`.rs_1545`, list(...)) }
+      else { if (!is.null(self$.ptr)) stop("native object already initialized"); self$.ptr <- .Call(`.rs_1563`, list(...)) }
       invisible(self)
     }
   ),
   active = list(
-    `population_size` = function(value) if (missing(value)) .Call(`.rs_1531`, self) else invisible(.Call(`.rs_1532`, self, value)),
-    `memory_consideration_rate` = function(value) if (missing(value)) .Call(`.rs_1533`, self) else invisible(.Call(`.rs_1534`, self, value)),
-    `pitch_adjustment_rate` = function(value) if (missing(value)) .Call(`.rs_1535`, self) else invisible(.Call(`.rs_1536`, self, value)),
-    `bandwidth_fraction` = function(value) if (missing(value)) .Call(`.rs_1537`, self) else invisible(.Call(`.rs_1538`, self, value)),
-    `max_iterations` = function(value) if (missing(value)) .Call(`.rs_1539`, self) else invisible(.Call(`.rs_1540`, self, value)),
-    `tolerance` = function(value) if (missing(value)) .Call(`.rs_1541`, self) else invisible(.Call(`.rs_1542`, self, value)),
-    `seed` = function(value) if (missing(value)) .Call(`.rs_1543`, self) else invisible(.Call(`.rs_1544`, self, value))
+    `population_size` = function(value) if (missing(value)) .Call(`.rs_1549`, self) else invisible(.Call(`.rs_1550`, self, value)),
+    `memory_consideration_rate` = function(value) if (missing(value)) .Call(`.rs_1551`, self) else invisible(.Call(`.rs_1552`, self, value)),
+    `pitch_adjustment_rate` = function(value) if (missing(value)) .Call(`.rs_1553`, self) else invisible(.Call(`.rs_1554`, self, value)),
+    `bandwidth_fraction` = function(value) if (missing(value)) .Call(`.rs_1555`, self) else invisible(.Call(`.rs_1556`, self, value)),
+    `max_iterations` = function(value) if (missing(value)) .Call(`.rs_1557`, self) else invisible(.Call(`.rs_1558`, self, value)),
+    `tolerance` = function(value) if (missing(value)) .Call(`.rs_1559`, self) else invisible(.Call(`.rs_1560`, self, value)),
+    `seed` = function(value) if (missing(value)) .Call(`.rs_1561`, self) else invisible(.Call(`.rs_1562`, self, value))
   )
 )
 #' Harmony search on an ArbitraryFunction within a box constraint: a fixed-size harmony memory of candidate solutions is improvised one new vector at a time, mixing memory consideration, pitch adjustment, and random selection per dimension, with greedy replacement of the worst memory member.
@@ -10038,11 +10084,11 @@ rosetta_ref <- function(value = NULL) {
   public = list(
     initialize = function(...) {
       if (...length() == 1L && inherits(..1, "rosetta_ptr")) self$.ptr <- ..1
-      else { if (!is.null(self$.ptr)) stop("native object already initialized"); self$.ptr <- .Call(`.rs_1548`, list(...)) }
+      else { if (!is.null(self$.ptr)) stop("native object already initialized"); self$.ptr <- .Call(`.rs_1566`, list(...)) }
       invisible(self)
     },
-    `optimize` = function(...) .Call(`.rs_1546`, self, list(...)),
-    `options` = function(...) .Call(`.rs_1547`, self, list(...))
+    `optimize` = function(...) .Call(`.rs_1564`, self, list(...)),
+    `options` = function(...) .Call(`.rs_1565`, self, list(...))
   )
 )
 #' Configuration for InteriorPoint; fields retain their documented native defaults.
@@ -10068,16 +10114,16 @@ rosetta_ref <- function(value = NULL) {
   public = list(
     initialize = function(...) {
       if (...length() == 1L && inherits(..1, "rosetta_ptr")) self$.ptr <- ..1
-      else { if (!is.null(self$.ptr)) stop("native object already initialized"); self$.ptr <- .Call(`.rs_1559`, list(...)) }
+      else { if (!is.null(self$.ptr)) stop("native object already initialized"); self$.ptr <- .Call(`.rs_1577`, list(...)) }
       invisible(self)
     }
   ),
   active = list(
-    `step_size` = function(value) if (missing(value)) .Call(`.rs_1549`, self) else invisible(.Call(`.rs_1550`, self, value)),
-    `initial_barrier` = function(value) if (missing(value)) .Call(`.rs_1551`, self) else invisible(.Call(`.rs_1552`, self, value)),
-    `barrier_decay` = function(value) if (missing(value)) .Call(`.rs_1553`, self) else invisible(.Call(`.rs_1554`, self, value)),
-    `max_outer_iterations` = function(value) if (missing(value)) .Call(`.rs_1555`, self) else invisible(.Call(`.rs_1556`, self, value)),
-    `inner_iterations` = function(value) if (missing(value)) .Call(`.rs_1557`, self) else invisible(.Call(`.rs_1558`, self, value))
+    `step_size` = function(value) if (missing(value)) .Call(`.rs_1567`, self) else invisible(.Call(`.rs_1568`, self, value)),
+    `initial_barrier` = function(value) if (missing(value)) .Call(`.rs_1569`, self) else invisible(.Call(`.rs_1570`, self, value)),
+    `barrier_decay` = function(value) if (missing(value)) .Call(`.rs_1571`, self) else invisible(.Call(`.rs_1572`, self, value)),
+    `max_outer_iterations` = function(value) if (missing(value)) .Call(`.rs_1573`, self) else invisible(.Call(`.rs_1574`, self, value)),
+    `inner_iterations` = function(value) if (missing(value)) .Call(`.rs_1575`, self) else invisible(.Call(`.rs_1576`, self, value))
   )
 )
 #' InteriorPoint on the InequalityConstrainedFunction callback interface.
@@ -10115,11 +10161,11 @@ rosetta_ref <- function(value = NULL) {
   public = list(
     initialize = function(...) {
       if (...length() == 1L && inherits(..1, "rosetta_ptr")) self$.ptr <- ..1
-      else { if (!is.null(self$.ptr)) stop("native object already initialized"); self$.ptr <- .Call(`.rs_1562`, list(...)) }
+      else { if (!is.null(self$.ptr)) stop("native object already initialized"); self$.ptr <- .Call(`.rs_1580`, list(...)) }
       invisible(self)
     },
-    `optimize` = function(...) .Call(`.rs_1560`, self, list(...)),
-    `options` = function(...) .Call(`.rs_1561`, self, list(...))
+    `optimize` = function(...) .Call(`.rs_1578`, self, list(...)),
+    `options` = function(...) .Call(`.rs_1579`, self, list(...))
   )
 )
 #' Configuration for LBFGS; fields retain their documented native defaults.
@@ -10146,17 +10192,17 @@ rosetta_ref <- function(value = NULL) {
   public = list(
     initialize = function(...) {
       if (...length() == 1L && inherits(..1, "rosetta_ptr")) self$.ptr <- ..1
-      else { if (!is.null(self$.ptr)) stop("native object already initialized"); self$.ptr <- .Call(`.rs_1575`, list(...)) }
+      else { if (!is.null(self$.ptr)) stop("native object already initialized"); self$.ptr <- .Call(`.rs_1593`, list(...)) }
       invisible(self)
     }
   ),
   active = list(
-    `max_iterations` = function(value) if (missing(value)) .Call(`.rs_1563`, self) else invisible(.Call(`.rs_1564`, self, value)),
-    `tolerance` = function(value) if (missing(value)) .Call(`.rs_1565`, self) else invisible(.Call(`.rs_1566`, self, value)),
-    `history_size` = function(value) if (missing(value)) .Call(`.rs_1567`, self) else invisible(.Call(`.rs_1568`, self, value)),
-    `armijo_c1` = function(value) if (missing(value)) .Call(`.rs_1569`, self) else invisible(.Call(`.rs_1570`, self, value)),
-    `wolfe_c2` = function(value) if (missing(value)) .Call(`.rs_1571`, self) else invisible(.Call(`.rs_1572`, self, value)),
-    `max_line_search_trials` = function(value) if (missing(value)) .Call(`.rs_1573`, self) else invisible(.Call(`.rs_1574`, self, value))
+    `max_iterations` = function(value) if (missing(value)) .Call(`.rs_1581`, self) else invisible(.Call(`.rs_1582`, self, value)),
+    `tolerance` = function(value) if (missing(value)) .Call(`.rs_1583`, self) else invisible(.Call(`.rs_1584`, self, value)),
+    `history_size` = function(value) if (missing(value)) .Call(`.rs_1585`, self) else invisible(.Call(`.rs_1586`, self, value)),
+    `armijo_c1` = function(value) if (missing(value)) .Call(`.rs_1587`, self) else invisible(.Call(`.rs_1588`, self, value)),
+    `wolfe_c2` = function(value) if (missing(value)) .Call(`.rs_1589`, self) else invisible(.Call(`.rs_1590`, self, value)),
+    `max_line_search_trials` = function(value) if (missing(value)) .Call(`.rs_1591`, self) else invisible(.Call(`.rs_1592`, self, value))
   )
 )
 #' LBFGS on the DifferentiableFunction callback interface.
@@ -10194,11 +10240,11 @@ rosetta_ref <- function(value = NULL) {
   public = list(
     initialize = function(...) {
       if (...length() == 1L && inherits(..1, "rosetta_ptr")) self$.ptr <- ..1
-      else { if (!is.null(self$.ptr)) stop("native object already initialized"); self$.ptr <- .Call(`.rs_1578`, list(...)) }
+      else { if (!is.null(self$.ptr)) stop("native object already initialized"); self$.ptr <- .Call(`.rs_1596`, list(...)) }
       invisible(self)
     },
-    `optimize` = function(...) .Call(`.rs_1576`, self, list(...)),
-    `options` = function(...) .Call(`.rs_1577`, self, list(...))
+    `optimize` = function(...) .Call(`.rs_1594`, self, list(...)),
+    `options` = function(...) .Call(`.rs_1595`, self, list(...))
   )
 )
 #' Configuration for LevenbergMarquardt; fields retain their documented native defaults.
@@ -10222,14 +10268,14 @@ rosetta_ref <- function(value = NULL) {
   public = list(
     initialize = function(...) {
       if (...length() == 1L && inherits(..1, "rosetta_ptr")) self$.ptr <- ..1
-      else { if (!is.null(self$.ptr)) stop("native object already initialized"); self$.ptr <- .Call(`.rs_1585`, list(...)) }
+      else { if (!is.null(self$.ptr)) stop("native object already initialized"); self$.ptr <- .Call(`.rs_1603`, list(...)) }
       invisible(self)
     }
   ),
   active = list(
-    `initial_damping` = function(value) if (missing(value)) .Call(`.rs_1579`, self) else invisible(.Call(`.rs_1580`, self, value)),
-    `max_iterations` = function(value) if (missing(value)) .Call(`.rs_1581`, self) else invisible(.Call(`.rs_1582`, self, value)),
-    `tolerance` = function(value) if (missing(value)) .Call(`.rs_1583`, self) else invisible(.Call(`.rs_1584`, self, value))
+    `initial_damping` = function(value) if (missing(value)) .Call(`.rs_1597`, self) else invisible(.Call(`.rs_1598`, self, value)),
+    `max_iterations` = function(value) if (missing(value)) .Call(`.rs_1599`, self) else invisible(.Call(`.rs_1600`, self, value)),
+    `tolerance` = function(value) if (missing(value)) .Call(`.rs_1601`, self) else invisible(.Call(`.rs_1602`, self, value))
   )
 )
 #' LevenbergMarquardt on the ResidualFunction callback interface.
@@ -10267,11 +10313,11 @@ rosetta_ref <- function(value = NULL) {
   public = list(
     initialize = function(...) {
       if (...length() == 1L && inherits(..1, "rosetta_ptr")) self$.ptr <- ..1
-      else { if (!is.null(self$.ptr)) stop("native object already initialized"); self$.ptr <- .Call(`.rs_1588`, list(...)) }
+      else { if (!is.null(self$.ptr)) stop("native object already initialized"); self$.ptr <- .Call(`.rs_1606`, list(...)) }
       invisible(self)
     },
-    `optimize` = function(...) .Call(`.rs_1586`, self, list(...)),
-    `options` = function(...) .Call(`.rs_1587`, self, list(...))
+    `optimize` = function(...) .Call(`.rs_1604`, self, list(...)),
+    `options` = function(...) .Call(`.rs_1605`, self, list(...))
   )
 )
 #' Configuration for NelderMead; fields retain their documented native defaults.
@@ -10299,18 +10345,18 @@ rosetta_ref <- function(value = NULL) {
   public = list(
     initialize = function(...) {
       if (...length() == 1L && inherits(..1, "rosetta_ptr")) self$.ptr <- ..1
-      else { if (!is.null(self$.ptr)) stop("native object already initialized"); self$.ptr <- .Call(`.rs_1603`, list(...)) }
+      else { if (!is.null(self$.ptr)) stop("native object already initialized"); self$.ptr <- .Call(`.rs_1621`, list(...)) }
       invisible(self)
     }
   ),
   active = list(
-    `initial_simplex_scale` = function(value) if (missing(value)) .Call(`.rs_1589`, self) else invisible(.Call(`.rs_1590`, self, value)),
-    `reflection` = function(value) if (missing(value)) .Call(`.rs_1591`, self) else invisible(.Call(`.rs_1592`, self, value)),
-    `expansion` = function(value) if (missing(value)) .Call(`.rs_1593`, self) else invisible(.Call(`.rs_1594`, self, value)),
-    `contraction` = function(value) if (missing(value)) .Call(`.rs_1595`, self) else invisible(.Call(`.rs_1596`, self, value)),
-    `shrink` = function(value) if (missing(value)) .Call(`.rs_1597`, self) else invisible(.Call(`.rs_1598`, self, value)),
-    `max_iterations` = function(value) if (missing(value)) .Call(`.rs_1599`, self) else invisible(.Call(`.rs_1600`, self, value)),
-    `tolerance` = function(value) if (missing(value)) .Call(`.rs_1601`, self) else invisible(.Call(`.rs_1602`, self, value))
+    `initial_simplex_scale` = function(value) if (missing(value)) .Call(`.rs_1607`, self) else invisible(.Call(`.rs_1608`, self, value)),
+    `reflection` = function(value) if (missing(value)) .Call(`.rs_1609`, self) else invisible(.Call(`.rs_1610`, self, value)),
+    `expansion` = function(value) if (missing(value)) .Call(`.rs_1611`, self) else invisible(.Call(`.rs_1612`, self, value)),
+    `contraction` = function(value) if (missing(value)) .Call(`.rs_1613`, self) else invisible(.Call(`.rs_1614`, self, value)),
+    `shrink` = function(value) if (missing(value)) .Call(`.rs_1615`, self) else invisible(.Call(`.rs_1616`, self, value)),
+    `max_iterations` = function(value) if (missing(value)) .Call(`.rs_1617`, self) else invisible(.Call(`.rs_1618`, self, value)),
+    `tolerance` = function(value) if (missing(value)) .Call(`.rs_1619`, self) else invisible(.Call(`.rs_1620`, self, value))
   )
 )
 #' NelderMead on the ArbitraryFunction callback interface.
@@ -10348,11 +10394,11 @@ rosetta_ref <- function(value = NULL) {
   public = list(
     initialize = function(...) {
       if (...length() == 1L && inherits(..1, "rosetta_ptr")) self$.ptr <- ..1
-      else { if (!is.null(self$.ptr)) stop("native object already initialized"); self$.ptr <- .Call(`.rs_1606`, list(...)) }
+      else { if (!is.null(self$.ptr)) stop("native object already initialized"); self$.ptr <- .Call(`.rs_1624`, list(...)) }
       invisible(self)
     },
-    `optimize` = function(...) .Call(`.rs_1604`, self, list(...)),
-    `options` = function(...) .Call(`.rs_1605`, self, list(...))
+    `optimize` = function(...) .Call(`.rs_1622`, self, list(...)),
+    `options` = function(...) .Call(`.rs_1623`, self, list(...))
   )
 )
 #' Configuration for NesterovAcceleratedGradient; fields retain their documented native defaults.
@@ -10377,15 +10423,15 @@ rosetta_ref <- function(value = NULL) {
   public = list(
     initialize = function(...) {
       if (...length() == 1L && inherits(..1, "rosetta_ptr")) self$.ptr <- ..1
-      else { if (!is.null(self$.ptr)) stop("native object already initialized"); self$.ptr <- .Call(`.rs_1615`, list(...)) }
+      else { if (!is.null(self$.ptr)) stop("native object already initialized"); self$.ptr <- .Call(`.rs_1633`, list(...)) }
       invisible(self)
     }
   ),
   active = list(
-    `step_size` = function(value) if (missing(value)) .Call(`.rs_1607`, self) else invisible(.Call(`.rs_1608`, self, value)),
-    `momentum` = function(value) if (missing(value)) .Call(`.rs_1609`, self) else invisible(.Call(`.rs_1610`, self, value)),
-    `max_iterations` = function(value) if (missing(value)) .Call(`.rs_1611`, self) else invisible(.Call(`.rs_1612`, self, value)),
-    `tolerance` = function(value) if (missing(value)) .Call(`.rs_1613`, self) else invisible(.Call(`.rs_1614`, self, value))
+    `step_size` = function(value) if (missing(value)) .Call(`.rs_1625`, self) else invisible(.Call(`.rs_1626`, self, value)),
+    `momentum` = function(value) if (missing(value)) .Call(`.rs_1627`, self) else invisible(.Call(`.rs_1628`, self, value)),
+    `max_iterations` = function(value) if (missing(value)) .Call(`.rs_1629`, self) else invisible(.Call(`.rs_1630`, self, value)),
+    `tolerance` = function(value) if (missing(value)) .Call(`.rs_1631`, self) else invisible(.Call(`.rs_1632`, self, value))
   )
 )
 #' NesterovAcceleratedGradient on the DifferentiableFunction callback interface.
@@ -10423,11 +10469,11 @@ rosetta_ref <- function(value = NULL) {
   public = list(
     initialize = function(...) {
       if (...length() == 1L && inherits(..1, "rosetta_ptr")) self$.ptr <- ..1
-      else { if (!is.null(self$.ptr)) stop("native object already initialized"); self$.ptr <- .Call(`.rs_1618`, list(...)) }
+      else { if (!is.null(self$.ptr)) stop("native object already initialized"); self$.ptr <- .Call(`.rs_1636`, list(...)) }
       invisible(self)
     },
-    `optimize` = function(...) .Call(`.rs_1616`, self, list(...)),
-    `options` = function(...) .Call(`.rs_1617`, self, list(...))
+    `optimize` = function(...) .Call(`.rs_1634`, self, list(...)),
+    `options` = function(...) .Call(`.rs_1635`, self, list(...))
   )
 )
 #' Configuration for Nadam; fields retain their documented native defaults.
@@ -10454,17 +10500,17 @@ rosetta_ref <- function(value = NULL) {
   public = list(
     initialize = function(...) {
       if (...length() == 1L && inherits(..1, "rosetta_ptr")) self$.ptr <- ..1
-      else { if (!is.null(self$.ptr)) stop("native object already initialized"); self$.ptr <- .Call(`.rs_1631`, list(...)) }
+      else { if (!is.null(self$.ptr)) stop("native object already initialized"); self$.ptr <- .Call(`.rs_1649`, list(...)) }
       invisible(self)
     }
   ),
   active = list(
-    `step_size` = function(value) if (missing(value)) .Call(`.rs_1619`, self) else invisible(.Call(`.rs_1620`, self, value)),
-    `beta1` = function(value) if (missing(value)) .Call(`.rs_1621`, self) else invisible(.Call(`.rs_1622`, self, value)),
-    `beta2` = function(value) if (missing(value)) .Call(`.rs_1623`, self) else invisible(.Call(`.rs_1624`, self, value)),
-    `epsilon` = function(value) if (missing(value)) .Call(`.rs_1625`, self) else invisible(.Call(`.rs_1626`, self, value)),
-    `max_iterations` = function(value) if (missing(value)) .Call(`.rs_1627`, self) else invisible(.Call(`.rs_1628`, self, value)),
-    `tolerance` = function(value) if (missing(value)) .Call(`.rs_1629`, self) else invisible(.Call(`.rs_1630`, self, value))
+    `step_size` = function(value) if (missing(value)) .Call(`.rs_1637`, self) else invisible(.Call(`.rs_1638`, self, value)),
+    `beta1` = function(value) if (missing(value)) .Call(`.rs_1639`, self) else invisible(.Call(`.rs_1640`, self, value)),
+    `beta2` = function(value) if (missing(value)) .Call(`.rs_1641`, self) else invisible(.Call(`.rs_1642`, self, value)),
+    `epsilon` = function(value) if (missing(value)) .Call(`.rs_1643`, self) else invisible(.Call(`.rs_1644`, self, value)),
+    `max_iterations` = function(value) if (missing(value)) .Call(`.rs_1645`, self) else invisible(.Call(`.rs_1646`, self, value)),
+    `tolerance` = function(value) if (missing(value)) .Call(`.rs_1647`, self) else invisible(.Call(`.rs_1648`, self, value))
   )
 )
 #' Nadam on the DifferentiableFunction callback interface.
@@ -10502,11 +10548,11 @@ rosetta_ref <- function(value = NULL) {
   public = list(
     initialize = function(...) {
       if (...length() == 1L && inherits(..1, "rosetta_ptr")) self$.ptr <- ..1
-      else { if (!is.null(self$.ptr)) stop("native object already initialized"); self$.ptr <- .Call(`.rs_1634`, list(...)) }
+      else { if (!is.null(self$.ptr)) stop("native object already initialized"); self$.ptr <- .Call(`.rs_1652`, list(...)) }
       invisible(self)
     },
-    `optimize` = function(...) .Call(`.rs_1632`, self, list(...)),
-    `options` = function(...) .Call(`.rs_1633`, self, list(...))
+    `optimize` = function(...) .Call(`.rs_1650`, self, list(...)),
+    `options` = function(...) .Call(`.rs_1651`, self, list(...))
   )
 )
 #' Configuration for Newton; fields retain their documented native defaults.
@@ -10530,14 +10576,14 @@ rosetta_ref <- function(value = NULL) {
   public = list(
     initialize = function(...) {
       if (...length() == 1L && inherits(..1, "rosetta_ptr")) self$.ptr <- ..1
-      else { if (!is.null(self$.ptr)) stop("native object already initialized"); self$.ptr <- .Call(`.rs_1641`, list(...)) }
+      else { if (!is.null(self$.ptr)) stop("native object already initialized"); self$.ptr <- .Call(`.rs_1659`, list(...)) }
       invisible(self)
     }
   ),
   active = list(
-    `max_iterations` = function(value) if (missing(value)) .Call(`.rs_1635`, self) else invisible(.Call(`.rs_1636`, self, value)),
-    `tolerance` = function(value) if (missing(value)) .Call(`.rs_1637`, self) else invisible(.Call(`.rs_1638`, self, value)),
-    `damping` = function(value) if (missing(value)) .Call(`.rs_1639`, self) else invisible(.Call(`.rs_1640`, self, value))
+    `max_iterations` = function(value) if (missing(value)) .Call(`.rs_1653`, self) else invisible(.Call(`.rs_1654`, self, value)),
+    `tolerance` = function(value) if (missing(value)) .Call(`.rs_1655`, self) else invisible(.Call(`.rs_1656`, self, value)),
+    `damping` = function(value) if (missing(value)) .Call(`.rs_1657`, self) else invisible(.Call(`.rs_1658`, self, value))
   )
 )
 #' Newton on the HessianFunction callback interface.
@@ -10575,11 +10621,11 @@ rosetta_ref <- function(value = NULL) {
   public = list(
     initialize = function(...) {
       if (...length() == 1L && inherits(..1, "rosetta_ptr")) self$.ptr <- ..1
-      else { if (!is.null(self$.ptr)) stop("native object already initialized"); self$.ptr <- .Call(`.rs_1644`, list(...)) }
+      else { if (!is.null(self$.ptr)) stop("native object already initialized"); self$.ptr <- .Call(`.rs_1662`, list(...)) }
       invisible(self)
     },
-    `optimize` = function(...) .Call(`.rs_1642`, self, list(...)),
-    `options` = function(...) .Call(`.rs_1643`, self, list(...))
+    `optimize` = function(...) .Call(`.rs_1660`, self, list(...)),
+    `options` = function(...) .Call(`.rs_1661`, self, list(...))
   )
 )
 #' C++ class `datamunge::optim::ParallelTemperingOptions`
@@ -10600,18 +10646,18 @@ rosetta_ref <- function(value = NULL) {
   public = list(
     initialize = function(...) {
       if (...length() == 1L && inherits(..1, "rosetta_ptr")) self$.ptr <- ..1
-      else { if (!is.null(self$.ptr)) stop("native object already initialized"); self$.ptr <- .Call(`.rs_1659`, list(...)) }
+      else { if (!is.null(self$.ptr)) stop("native object already initialized"); self$.ptr <- .Call(`.rs_1677`, list(...)) }
       invisible(self)
     }
   ),
   active = list(
-    `num_replicas` = function(value) if (missing(value)) .Call(`.rs_1645`, self) else invisible(.Call(`.rs_1646`, self, value)),
-    `initial_temperature` = function(value) if (missing(value)) .Call(`.rs_1647`, self) else invisible(.Call(`.rs_1648`, self, value)),
-    `final_temperature` = function(value) if (missing(value)) .Call(`.rs_1649`, self) else invisible(.Call(`.rs_1650`, self, value)),
-    `step_std_dev` = function(value) if (missing(value)) .Call(`.rs_1651`, self) else invisible(.Call(`.rs_1652`, self, value)),
-    `swap_interval` = function(value) if (missing(value)) .Call(`.rs_1653`, self) else invisible(.Call(`.rs_1654`, self, value)),
-    `max_sweeps` = function(value) if (missing(value)) .Call(`.rs_1655`, self) else invisible(.Call(`.rs_1656`, self, value)),
-    `seed` = function(value) if (missing(value)) .Call(`.rs_1657`, self) else invisible(.Call(`.rs_1658`, self, value))
+    `num_replicas` = function(value) if (missing(value)) .Call(`.rs_1663`, self) else invisible(.Call(`.rs_1664`, self, value)),
+    `initial_temperature` = function(value) if (missing(value)) .Call(`.rs_1665`, self) else invisible(.Call(`.rs_1666`, self, value)),
+    `final_temperature` = function(value) if (missing(value)) .Call(`.rs_1667`, self) else invisible(.Call(`.rs_1668`, self, value)),
+    `step_std_dev` = function(value) if (missing(value)) .Call(`.rs_1669`, self) else invisible(.Call(`.rs_1670`, self, value)),
+    `swap_interval` = function(value) if (missing(value)) .Call(`.rs_1671`, self) else invisible(.Call(`.rs_1672`, self, value)),
+    `max_sweeps` = function(value) if (missing(value)) .Call(`.rs_1673`, self) else invisible(.Call(`.rs_1674`, self, value)),
+    `seed` = function(value) if (missing(value)) .Call(`.rs_1675`, self) else invisible(.Call(`.rs_1676`, self, value))
   )
 )
 #' Parallel tempering (replica exchange Monte Carlo): the population-based generalization of SimulatedAnnealing.
@@ -10634,11 +10680,11 @@ rosetta_ref <- function(value = NULL) {
   public = list(
     initialize = function(...) {
       if (...length() == 1L && inherits(..1, "rosetta_ptr")) self$.ptr <- ..1
-      else { if (!is.null(self$.ptr)) stop("native object already initialized"); self$.ptr <- .Call(`.rs_1662`, list(...)) }
+      else { if (!is.null(self$.ptr)) stop("native object already initialized"); self$.ptr <- .Call(`.rs_1680`, list(...)) }
       invisible(self)
     },
-    `optimize` = function(...) .Call(`.rs_1660`, self, list(...)),
-    `options` = function(...) .Call(`.rs_1661`, self, list(...))
+    `optimize` = function(...) .Call(`.rs_1678`, self, list(...)),
+    `options` = function(...) .Call(`.rs_1679`, self, list(...))
   )
 )
 #' Configuration for PSO; fields retain their documented native defaults.
@@ -10670,22 +10716,22 @@ rosetta_ref <- function(value = NULL) {
   public = list(
     initialize = function(...) {
       if (...length() == 1L && inherits(..1, "rosetta_ptr")) self$.ptr <- ..1
-      else { if (!is.null(self$.ptr)) stop("native object already initialized"); self$.ptr <- .Call(`.rs_1685`, list(...)) }
+      else { if (!is.null(self$.ptr)) stop("native object already initialized"); self$.ptr <- .Call(`.rs_1703`, list(...)) }
       invisible(self)
     }
   ),
   active = list(
-    `population_size` = function(value) if (missing(value)) .Call(`.rs_1663`, self) else invisible(.Call(`.rs_1664`, self, value)),
-    `max_iterations` = function(value) if (missing(value)) .Call(`.rs_1665`, self) else invisible(.Call(`.rs_1666`, self, value)),
-    `inertia_weight` = function(value) if (missing(value)) .Call(`.rs_1667`, self) else invisible(.Call(`.rs_1668`, self, value)),
-    `cognitive_coefficient` = function(value) if (missing(value)) .Call(`.rs_1669`, self) else invisible(.Call(`.rs_1670`, self, value)),
-    `social_coefficient` = function(value) if (missing(value)) .Call(`.rs_1671`, self) else invisible(.Call(`.rs_1672`, self, value)),
-    `topology` = function(value) if (missing(value)) .Call(`.rs_1673`, self) else invisible(.Call(`.rs_1674`, self, value)),
-    `ring_neighbors` = function(value) if (missing(value)) .Call(`.rs_1675`, self) else invisible(.Call(`.rs_1676`, self, value)),
-    `inertia_strategy` = function(value) if (missing(value)) .Call(`.rs_1677`, self) else invisible(.Call(`.rs_1678`, self, value)),
-    `final_inertia_weight` = function(value) if (missing(value)) .Call(`.rs_1679`, self) else invisible(.Call(`.rs_1680`, self, value)),
-    `tolerance` = function(value) if (missing(value)) .Call(`.rs_1681`, self) else invisible(.Call(`.rs_1682`, self, value)),
-    `seed` = function(value) if (missing(value)) .Call(`.rs_1683`, self) else invisible(.Call(`.rs_1684`, self, value))
+    `population_size` = function(value) if (missing(value)) .Call(`.rs_1681`, self) else invisible(.Call(`.rs_1682`, self, value)),
+    `max_iterations` = function(value) if (missing(value)) .Call(`.rs_1683`, self) else invisible(.Call(`.rs_1684`, self, value)),
+    `inertia_weight` = function(value) if (missing(value)) .Call(`.rs_1685`, self) else invisible(.Call(`.rs_1686`, self, value)),
+    `cognitive_coefficient` = function(value) if (missing(value)) .Call(`.rs_1687`, self) else invisible(.Call(`.rs_1688`, self, value)),
+    `social_coefficient` = function(value) if (missing(value)) .Call(`.rs_1689`, self) else invisible(.Call(`.rs_1690`, self, value)),
+    `topology` = function(value) if (missing(value)) .Call(`.rs_1691`, self) else invisible(.Call(`.rs_1692`, self, value)),
+    `ring_neighbors` = function(value) if (missing(value)) .Call(`.rs_1693`, self) else invisible(.Call(`.rs_1694`, self, value)),
+    `inertia_strategy` = function(value) if (missing(value)) .Call(`.rs_1695`, self) else invisible(.Call(`.rs_1696`, self, value)),
+    `final_inertia_weight` = function(value) if (missing(value)) .Call(`.rs_1697`, self) else invisible(.Call(`.rs_1698`, self, value)),
+    `tolerance` = function(value) if (missing(value)) .Call(`.rs_1699`, self) else invisible(.Call(`.rs_1700`, self, value)),
+    `seed` = function(value) if (missing(value)) .Call(`.rs_1701`, self) else invisible(.Call(`.rs_1702`, self, value))
   )
 )
 #' PSO on the ArbitraryFunction callback interface.
@@ -10725,11 +10771,11 @@ rosetta_ref <- function(value = NULL) {
   public = list(
     initialize = function(...) {
       if (...length() == 1L && inherits(..1, "rosetta_ptr")) self$.ptr <- ..1
-      else { if (!is.null(self$.ptr)) stop("native object already initialized"); self$.ptr <- .Call(`.rs_1688`, list(...)) }
+      else { if (!is.null(self$.ptr)) stop("native object already initialized"); self$.ptr <- .Call(`.rs_1706`, list(...)) }
       invisible(self)
     },
-    `optimize` = function(...) .Call(`.rs_1686`, self, list(...)),
-    `options` = function(...) .Call(`.rs_1687`, self, list(...))
+    `optimize` = function(...) .Call(`.rs_1704`, self, list(...)),
+    `options` = function(...) .Call(`.rs_1705`, self, list(...))
   )
 )
 #' Configuration for ProximalGradient; fields retain their documented native defaults.
@@ -10753,14 +10799,14 @@ rosetta_ref <- function(value = NULL) {
   public = list(
     initialize = function(...) {
       if (...length() == 1L && inherits(..1, "rosetta_ptr")) self$.ptr <- ..1
-      else { if (!is.null(self$.ptr)) stop("native object already initialized"); self$.ptr <- .Call(`.rs_1695`, list(...)) }
+      else { if (!is.null(self$.ptr)) stop("native object already initialized"); self$.ptr <- .Call(`.rs_1713`, list(...)) }
       invisible(self)
     }
   ),
   active = list(
-    `step_size` = function(value) if (missing(value)) .Call(`.rs_1689`, self) else invisible(.Call(`.rs_1690`, self, value)),
-    `max_iterations` = function(value) if (missing(value)) .Call(`.rs_1691`, self) else invisible(.Call(`.rs_1692`, self, value)),
-    `tolerance` = function(value) if (missing(value)) .Call(`.rs_1693`, self) else invisible(.Call(`.rs_1694`, self, value))
+    `step_size` = function(value) if (missing(value)) .Call(`.rs_1707`, self) else invisible(.Call(`.rs_1708`, self, value)),
+    `max_iterations` = function(value) if (missing(value)) .Call(`.rs_1709`, self) else invisible(.Call(`.rs_1710`, self, value)),
+    `tolerance` = function(value) if (missing(value)) .Call(`.rs_1711`, self) else invisible(.Call(`.rs_1712`, self, value))
   )
 )
 #' ProximalGradient on the ProximalFunction callback interface.
@@ -10798,11 +10844,11 @@ rosetta_ref <- function(value = NULL) {
   public = list(
     initialize = function(...) {
       if (...length() == 1L && inherits(..1, "rosetta_ptr")) self$.ptr <- ..1
-      else { if (!is.null(self$.ptr)) stop("native object already initialized"); self$.ptr <- .Call(`.rs_1698`, list(...)) }
+      else { if (!is.null(self$.ptr)) stop("native object already initialized"); self$.ptr <- .Call(`.rs_1716`, list(...)) }
       invisible(self)
     },
-    `optimize` = function(...) .Call(`.rs_1696`, self, list(...)),
-    `options` = function(...) .Call(`.rs_1697`, self, list(...))
+    `optimize` = function(...) .Call(`.rs_1714`, self, list(...)),
+    `options` = function(...) .Call(`.rs_1715`, self, list(...))
   )
 )
 #' Configuration for RandomizedBlockCoordinateDescent; fields retain their documented native defaults.
@@ -10831,19 +10877,19 @@ rosetta_ref <- function(value = NULL) {
   public = list(
     initialize = function(...) {
       if (...length() == 1L && inherits(..1, "rosetta_ptr")) self$.ptr <- ..1
-      else { if (!is.null(self$.ptr)) stop("native object already initialized"); self$.ptr <- .Call(`.rs_1715`, list(...)) }
+      else { if (!is.null(self$.ptr)) stop("native object already initialized"); self$.ptr <- .Call(`.rs_1733`, list(...)) }
       invisible(self)
     }
   ),
   active = list(
-    `block_size` = function(value) if (missing(value)) .Call(`.rs_1699`, self) else invisible(.Call(`.rs_1700`, self, value)),
-    `step_size` = function(value) if (missing(value)) .Call(`.rs_1701`, self) else invisible(.Call(`.rs_1702`, self, value)),
-    `max_iterations` = function(value) if (missing(value)) .Call(`.rs_1703`, self) else invisible(.Call(`.rs_1704`, self, value)),
-    `tolerance` = function(value) if (missing(value)) .Call(`.rs_1705`, self) else invisible(.Call(`.rs_1706`, self, value)),
-    `armijo_c1` = function(value) if (missing(value)) .Call(`.rs_1707`, self) else invisible(.Call(`.rs_1708`, self, value)),
-    `backtracking_factor` = function(value) if (missing(value)) .Call(`.rs_1709`, self) else invisible(.Call(`.rs_1710`, self, value)),
-    `max_line_search_trials` = function(value) if (missing(value)) .Call(`.rs_1711`, self) else invisible(.Call(`.rs_1712`, self, value)),
-    `seed` = function(value) if (missing(value)) .Call(`.rs_1713`, self) else invisible(.Call(`.rs_1714`, self, value))
+    `block_size` = function(value) if (missing(value)) .Call(`.rs_1717`, self) else invisible(.Call(`.rs_1718`, self, value)),
+    `step_size` = function(value) if (missing(value)) .Call(`.rs_1719`, self) else invisible(.Call(`.rs_1720`, self, value)),
+    `max_iterations` = function(value) if (missing(value)) .Call(`.rs_1721`, self) else invisible(.Call(`.rs_1722`, self, value)),
+    `tolerance` = function(value) if (missing(value)) .Call(`.rs_1723`, self) else invisible(.Call(`.rs_1724`, self, value)),
+    `armijo_c1` = function(value) if (missing(value)) .Call(`.rs_1725`, self) else invisible(.Call(`.rs_1726`, self, value)),
+    `backtracking_factor` = function(value) if (missing(value)) .Call(`.rs_1727`, self) else invisible(.Call(`.rs_1728`, self, value)),
+    `max_line_search_trials` = function(value) if (missing(value)) .Call(`.rs_1729`, self) else invisible(.Call(`.rs_1730`, self, value)),
+    `seed` = function(value) if (missing(value)) .Call(`.rs_1731`, self) else invisible(.Call(`.rs_1732`, self, value))
   )
 )
 #' RandomizedBlockCoordinateDescent on the DifferentiableFunction callback interface.
@@ -10881,11 +10927,11 @@ rosetta_ref <- function(value = NULL) {
   public = list(
     initialize = function(...) {
       if (...length() == 1L && inherits(..1, "rosetta_ptr")) self$.ptr <- ..1
-      else { if (!is.null(self$.ptr)) stop("native object already initialized"); self$.ptr <- .Call(`.rs_1718`, list(...)) }
+      else { if (!is.null(self$.ptr)) stop("native object already initialized"); self$.ptr <- .Call(`.rs_1736`, list(...)) }
       invisible(self)
     },
-    `optimize` = function(...) .Call(`.rs_1716`, self, list(...)),
-    `options` = function(...) .Call(`.rs_1717`, self, list(...))
+    `optimize` = function(...) .Call(`.rs_1734`, self, list(...)),
+    `options` = function(...) .Call(`.rs_1735`, self, list(...))
   )
 )
 #' Configuration for RMSProp; fields retain their documented native defaults.
@@ -10911,16 +10957,16 @@ rosetta_ref <- function(value = NULL) {
   public = list(
     initialize = function(...) {
       if (...length() == 1L && inherits(..1, "rosetta_ptr")) self$.ptr <- ..1
-      else { if (!is.null(self$.ptr)) stop("native object already initialized"); self$.ptr <- .Call(`.rs_1729`, list(...)) }
+      else { if (!is.null(self$.ptr)) stop("native object already initialized"); self$.ptr <- .Call(`.rs_1747`, list(...)) }
       invisible(self)
     }
   ),
   active = list(
-    `step_size` = function(value) if (missing(value)) .Call(`.rs_1719`, self) else invisible(.Call(`.rs_1720`, self, value)),
-    `decay_rate` = function(value) if (missing(value)) .Call(`.rs_1721`, self) else invisible(.Call(`.rs_1722`, self, value)),
-    `epsilon` = function(value) if (missing(value)) .Call(`.rs_1723`, self) else invisible(.Call(`.rs_1724`, self, value)),
-    `max_iterations` = function(value) if (missing(value)) .Call(`.rs_1725`, self) else invisible(.Call(`.rs_1726`, self, value)),
-    `tolerance` = function(value) if (missing(value)) .Call(`.rs_1727`, self) else invisible(.Call(`.rs_1728`, self, value))
+    `step_size` = function(value) if (missing(value)) .Call(`.rs_1737`, self) else invisible(.Call(`.rs_1738`, self, value)),
+    `decay_rate` = function(value) if (missing(value)) .Call(`.rs_1739`, self) else invisible(.Call(`.rs_1740`, self, value)),
+    `epsilon` = function(value) if (missing(value)) .Call(`.rs_1741`, self) else invisible(.Call(`.rs_1742`, self, value)),
+    `max_iterations` = function(value) if (missing(value)) .Call(`.rs_1743`, self) else invisible(.Call(`.rs_1744`, self, value)),
+    `tolerance` = function(value) if (missing(value)) .Call(`.rs_1745`, self) else invisible(.Call(`.rs_1746`, self, value))
   )
 )
 #' RMSProp on the DifferentiableFunction callback interface.
@@ -10958,11 +11004,11 @@ rosetta_ref <- function(value = NULL) {
   public = list(
     initialize = function(...) {
       if (...length() == 1L && inherits(..1, "rosetta_ptr")) self$.ptr <- ..1
-      else { if (!is.null(self$.ptr)) stop("native object already initialized"); self$.ptr <- .Call(`.rs_1732`, list(...)) }
+      else { if (!is.null(self$.ptr)) stop("native object already initialized"); self$.ptr <- .Call(`.rs_1750`, list(...)) }
       invisible(self)
     },
-    `optimize` = function(...) .Call(`.rs_1730`, self, list(...)),
-    `options` = function(...) .Call(`.rs_1731`, self, list(...))
+    `optimize` = function(...) .Call(`.rs_1748`, self, list(...)),
+    `options` = function(...) .Call(`.rs_1749`, self, list(...))
   )
 )
 #' The Gaussian-process posterior of the objective at one point.
@@ -10977,13 +11023,13 @@ rosetta_ref <- function(value = NULL) {
   public = list(
     initialize = function(...) {
       if (...length() == 1L && inherits(..1, "rosetta_ptr")) self$.ptr <- ..1
-      else { if (!is.null(self$.ptr)) stop("native object already initialized"); self$.ptr <- .Call(`.rs_1737`, list(...)) }
+      else { if (!is.null(self$.ptr)) stop("native object already initialized"); self$.ptr <- .Call(`.rs_1755`, list(...)) }
       invisible(self)
     }
   ),
   active = list(
-    `mean` = function(value) if (missing(value)) .Call(`.rs_1733`, self) else invisible(.Call(`.rs_1734`, self, value)),
-    `sd` = function(value) if (missing(value)) .Call(`.rs_1735`, self) else invisible(.Call(`.rs_1736`, self, value))
+    `mean` = function(value) if (missing(value)) .Call(`.rs_1751`, self) else invisible(.Call(`.rs_1752`, self, value)),
+    `sd` = function(value) if (missing(value)) .Call(`.rs_1753`, self) else invisible(.Call(`.rs_1754`, self, value))
   )
 )
 #' Settings of an RBFGaussianProcessSurrogate built from options.
@@ -11013,22 +11059,22 @@ rosetta_ref <- function(value = NULL) {
   public = list(
     initialize = function(...) {
       if (...length() == 1L && inherits(..1, "rosetta_ptr")) self$.ptr <- ..1
-      else { if (!is.null(self$.ptr)) stop("native object already initialized"); self$.ptr <- .Call(`.rs_1760`, list(...)) }
+      else { if (!is.null(self$.ptr)) stop("native object already initialized"); self$.ptr <- .Call(`.rs_1778`, list(...)) }
       invisible(self)
     }
   ),
   active = list(
-    `length_scale` = function(value) if (missing(value)) .Call(`.rs_1738`, self) else invisible(.Call(`.rs_1739`, self, value)),
-    `signal_variance` = function(value) if (missing(value)) .Call(`.rs_1740`, self) else invisible(.Call(`.rs_1741`, self, value)),
-    `noise` = function(value) if (missing(value)) .Call(`.rs_1742`, self) else invisible(.Call(`.rs_1743`, self, value)),
-    `normalize_values` = function(value) if (missing(value)) .Call(`.rs_1744`, self) else invisible(.Call(`.rs_1745`, self, value)),
-    `fit_hyperparameters` = function(value) if (missing(value)) .Call(`.rs_1746`, self) else invisible(.Call(`.rs_1747`, self, value)),
-    `fit_noise` = function(value) if (missing(value)) .Call(`.rs_1748`, self) else invisible(.Call(`.rs_1749`, self, value)),
-    `min_length_scale` = function(value) if (missing(value)) .Call(`.rs_1750`, self) else invisible(.Call(`.rs_1751`, self, value)),
-    `max_length_scale` = function(value) if (missing(value)) .Call(`.rs_1752`, self) else invisible(.Call(`.rs_1753`, self, value)),
-    `acquisition` = function(value) if (missing(value)) .Call(`.rs_1754`, self) else invisible(.Call(`.rs_1755`, self, value)),
-    `exploration` = function(value) if (missing(value)) .Call(`.rs_1756`, self) else invisible(.Call(`.rs_1757`, self, value)),
-    `kappa` = function(value) if (missing(value)) .Call(`.rs_1758`, self) else invisible(.Call(`.rs_1759`, self, value))
+    `length_scale` = function(value) if (missing(value)) .Call(`.rs_1756`, self) else invisible(.Call(`.rs_1757`, self, value)),
+    `signal_variance` = function(value) if (missing(value)) .Call(`.rs_1758`, self) else invisible(.Call(`.rs_1759`, self, value)),
+    `noise` = function(value) if (missing(value)) .Call(`.rs_1760`, self) else invisible(.Call(`.rs_1761`, self, value)),
+    `normalize_values` = function(value) if (missing(value)) .Call(`.rs_1762`, self) else invisible(.Call(`.rs_1763`, self, value)),
+    `fit_hyperparameters` = function(value) if (missing(value)) .Call(`.rs_1764`, self) else invisible(.Call(`.rs_1765`, self, value)),
+    `fit_noise` = function(value) if (missing(value)) .Call(`.rs_1766`, self) else invisible(.Call(`.rs_1767`, self, value)),
+    `min_length_scale` = function(value) if (missing(value)) .Call(`.rs_1768`, self) else invisible(.Call(`.rs_1769`, self, value)),
+    `max_length_scale` = function(value) if (missing(value)) .Call(`.rs_1770`, self) else invisible(.Call(`.rs_1771`, self, value)),
+    `acquisition` = function(value) if (missing(value)) .Call(`.rs_1772`, self) else invisible(.Call(`.rs_1773`, self, value)),
+    `exploration` = function(value) if (missing(value)) .Call(`.rs_1774`, self) else invisible(.Call(`.rs_1775`, self, value)),
+    `kappa` = function(value) if (missing(value)) .Call(`.rs_1776`, self) else invisible(.Call(`.rs_1777`, self, value))
   )
 )
 #' Exact Gaussian-process regression surrogate with the squared-exponential kernel
@@ -11136,21 +11182,21 @@ rosetta_ref <- function(value = NULL) {
   public = list(
     initialize = function(...) {
       if (...length() == 1L && inherits(..1, "rosetta_ptr")) self$.ptr <- ..1
-      else { if (!is.null(self$.ptr)) stop("native object already initialized"); self$.ptr <- .Call(`.rs_1773`, list(...), self) }
+      else { if (!is.null(self$.ptr)) stop("native object already initialized"); self$.ptr <- .Call(`.rs_1791`, list(...), self) }
       invisible(self)
     },
-    `options` = function(...) .Call(`.rs_1761`, self, list(...)),
-    `fit` = function(...) invisible(.Call(`.rs_1762`, self, list(...))),
-    `acquisition` = function(...) .Call(`.rs_1763`, self, list(...)),
-    `predict` = function(...) .Call(`.rs_1764`, self, list(...)),
-    `log_marginal_likelihood` = function(...) .Call(`.rs_1765`, self, list(...)),
-    `length_scale` = function(...) .Call(`.rs_1766`, self, list(...)),
-    `noise` = function(...) .Call(`.rs_1767`, self, list(...)),
-    `signal_variance` = function(...) .Call(`.rs_1768`, self, list(...)),
-    `prior_mean` = function(...) .Call(`.rs_1769`, self, list(...)),
-    `value_scale` = function(...) .Call(`.rs_1770`, self, list(...)),
-    `points` = function(...) .Call(`.rs_1771`, self, list(...)),
-    `values` = function(...) .Call(`.rs_1772`, self, list(...))
+    `options` = function(...) .Call(`.rs_1779`, self, list(...)),
+    `fit` = function(...) invisible(.Call(`.rs_1780`, self, list(...))),
+    `acquisition` = function(...) .Call(`.rs_1781`, self, list(...)),
+    `predict` = function(...) .Call(`.rs_1782`, self, list(...)),
+    `log_marginal_likelihood` = function(...) .Call(`.rs_1783`, self, list(...)),
+    `length_scale` = function(...) .Call(`.rs_1784`, self, list(...)),
+    `noise` = function(...) .Call(`.rs_1785`, self, list(...)),
+    `signal_variance` = function(...) .Call(`.rs_1786`, self, list(...)),
+    `prior_mean` = function(...) .Call(`.rs_1787`, self, list(...)),
+    `value_scale` = function(...) .Call(`.rs_1788`, self, list(...)),
+    `points` = function(...) .Call(`.rs_1789`, self, list(...)),
+    `values` = function(...) .Call(`.rs_1790`, self, list(...))
   )
 )
 #' Configuration for SGD; fields retain their documented native defaults.
@@ -11177,17 +11223,17 @@ rosetta_ref <- function(value = NULL) {
   public = list(
     initialize = function(...) {
       if (...length() == 1L && inherits(..1, "rosetta_ptr")) self$.ptr <- ..1
-      else { if (!is.null(self$.ptr)) stop("native object already initialized"); self$.ptr <- .Call(`.rs_1786`, list(...)) }
+      else { if (!is.null(self$.ptr)) stop("native object already initialized"); self$.ptr <- .Call(`.rs_1804`, list(...)) }
       invisible(self)
     }
   ),
   active = list(
-    `step_size` = function(value) if (missing(value)) .Call(`.rs_1774`, self) else invisible(.Call(`.rs_1775`, self, value)),
-    `max_epochs` = function(value) if (missing(value)) .Call(`.rs_1776`, self) else invisible(.Call(`.rs_1777`, self, value)),
-    `batch_size` = function(value) if (missing(value)) .Call(`.rs_1778`, self) else invisible(.Call(`.rs_1779`, self, value)),
-    `tolerance` = function(value) if (missing(value)) .Call(`.rs_1780`, self) else invisible(.Call(`.rs_1781`, self, value)),
-    `shuffle` = function(value) if (missing(value)) .Call(`.rs_1782`, self) else invisible(.Call(`.rs_1783`, self, value)),
-    `seed` = function(value) if (missing(value)) .Call(`.rs_1784`, self) else invisible(.Call(`.rs_1785`, self, value))
+    `step_size` = function(value) if (missing(value)) .Call(`.rs_1792`, self) else invisible(.Call(`.rs_1793`, self, value)),
+    `max_epochs` = function(value) if (missing(value)) .Call(`.rs_1794`, self) else invisible(.Call(`.rs_1795`, self, value)),
+    `batch_size` = function(value) if (missing(value)) .Call(`.rs_1796`, self) else invisible(.Call(`.rs_1797`, self, value)),
+    `tolerance` = function(value) if (missing(value)) .Call(`.rs_1798`, self) else invisible(.Call(`.rs_1799`, self, value)),
+    `shuffle` = function(value) if (missing(value)) .Call(`.rs_1800`, self) else invisible(.Call(`.rs_1801`, self, value)),
+    `seed` = function(value) if (missing(value)) .Call(`.rs_1802`, self) else invisible(.Call(`.rs_1803`, self, value))
   )
 )
 #' SGD on the DifferentiableSeparableFunction callback interface.
@@ -11225,11 +11271,11 @@ rosetta_ref <- function(value = NULL) {
   public = list(
     initialize = function(...) {
       if (...length() == 1L && inherits(..1, "rosetta_ptr")) self$.ptr <- ..1
-      else { if (!is.null(self$.ptr)) stop("native object already initialized"); self$.ptr <- .Call(`.rs_1789`, list(...)) }
+      else { if (!is.null(self$.ptr)) stop("native object already initialized"); self$.ptr <- .Call(`.rs_1807`, list(...)) }
       invisible(self)
     },
-    `optimize` = function(...) .Call(`.rs_1787`, self, list(...)),
-    `options` = function(...) .Call(`.rs_1788`, self, list(...))
+    `optimize` = function(...) .Call(`.rs_1805`, self, list(...)),
+    `options` = function(...) .Call(`.rs_1806`, self, list(...))
   )
 )
 #' Configuration for SimulatedAnnealing; fields retain their documented native defaults.
@@ -11255,16 +11301,16 @@ rosetta_ref <- function(value = NULL) {
   public = list(
     initialize = function(...) {
       if (...length() == 1L && inherits(..1, "rosetta_ptr")) self$.ptr <- ..1
-      else { if (!is.null(self$.ptr)) stop("native object already initialized"); self$.ptr <- .Call(`.rs_1800`, list(...)) }
+      else { if (!is.null(self$.ptr)) stop("native object already initialized"); self$.ptr <- .Call(`.rs_1818`, list(...)) }
       invisible(self)
     }
   ),
   active = list(
-    `initial_temperature` = function(value) if (missing(value)) .Call(`.rs_1790`, self) else invisible(.Call(`.rs_1791`, self, value)),
-    `cooling_rate` = function(value) if (missing(value)) .Call(`.rs_1792`, self) else invisible(.Call(`.rs_1793`, self, value)),
-    `max_iterations` = function(value) if (missing(value)) .Call(`.rs_1794`, self) else invisible(.Call(`.rs_1795`, self, value)),
-    `step_std_dev` = function(value) if (missing(value)) .Call(`.rs_1796`, self) else invisible(.Call(`.rs_1797`, self, value)),
-    `seed` = function(value) if (missing(value)) .Call(`.rs_1798`, self) else invisible(.Call(`.rs_1799`, self, value))
+    `initial_temperature` = function(value) if (missing(value)) .Call(`.rs_1808`, self) else invisible(.Call(`.rs_1809`, self, value)),
+    `cooling_rate` = function(value) if (missing(value)) .Call(`.rs_1810`, self) else invisible(.Call(`.rs_1811`, self, value)),
+    `max_iterations` = function(value) if (missing(value)) .Call(`.rs_1812`, self) else invisible(.Call(`.rs_1813`, self, value)),
+    `step_std_dev` = function(value) if (missing(value)) .Call(`.rs_1814`, self) else invisible(.Call(`.rs_1815`, self, value)),
+    `seed` = function(value) if (missing(value)) .Call(`.rs_1816`, self) else invisible(.Call(`.rs_1817`, self, value))
   )
 )
 #' SimulatedAnnealing on the ArbitraryFunction callback interface.
@@ -11302,11 +11348,11 @@ rosetta_ref <- function(value = NULL) {
   public = list(
     initialize = function(...) {
       if (...length() == 1L && inherits(..1, "rosetta_ptr")) self$.ptr <- ..1
-      else { if (!is.null(self$.ptr)) stop("native object already initialized"); self$.ptr <- .Call(`.rs_1803`, list(...)) }
+      else { if (!is.null(self$.ptr)) stop("native object already initialized"); self$.ptr <- .Call(`.rs_1821`, list(...)) }
       invisible(self)
     },
-    `optimize` = function(...) .Call(`.rs_1801`, self, list(...)),
-    `options` = function(...) .Call(`.rs_1802`, self, list(...))
+    `optimize` = function(...) .Call(`.rs_1819`, self, list(...)),
+    `options` = function(...) .Call(`.rs_1820`, self, list(...))
   )
 )
 #' Configuration for SAGA; fields retain their documented native defaults.
@@ -11331,15 +11377,15 @@ rosetta_ref <- function(value = NULL) {
   public = list(
     initialize = function(...) {
       if (...length() == 1L && inherits(..1, "rosetta_ptr")) self$.ptr <- ..1
-      else { if (!is.null(self$.ptr)) stop("native object already initialized"); self$.ptr <- .Call(`.rs_1812`, list(...)) }
+      else { if (!is.null(self$.ptr)) stop("native object already initialized"); self$.ptr <- .Call(`.rs_1830`, list(...)) }
       invisible(self)
     }
   ),
   active = list(
-    `step_size` = function(value) if (missing(value)) .Call(`.rs_1804`, self) else invisible(.Call(`.rs_1805`, self, value)),
-    `max_iterations` = function(value) if (missing(value)) .Call(`.rs_1806`, self) else invisible(.Call(`.rs_1807`, self, value)),
-    `tolerance` = function(value) if (missing(value)) .Call(`.rs_1808`, self) else invisible(.Call(`.rs_1809`, self, value)),
-    `seed` = function(value) if (missing(value)) .Call(`.rs_1810`, self) else invisible(.Call(`.rs_1811`, self, value))
+    `step_size` = function(value) if (missing(value)) .Call(`.rs_1822`, self) else invisible(.Call(`.rs_1823`, self, value)),
+    `max_iterations` = function(value) if (missing(value)) .Call(`.rs_1824`, self) else invisible(.Call(`.rs_1825`, self, value)),
+    `tolerance` = function(value) if (missing(value)) .Call(`.rs_1826`, self) else invisible(.Call(`.rs_1827`, self, value)),
+    `seed` = function(value) if (missing(value)) .Call(`.rs_1828`, self) else invisible(.Call(`.rs_1829`, self, value))
   )
 )
 #' SAGA on the DifferentiableSeparableFunction callback interface.
@@ -11377,11 +11423,11 @@ rosetta_ref <- function(value = NULL) {
   public = list(
     initialize = function(...) {
       if (...length() == 1L && inherits(..1, "rosetta_ptr")) self$.ptr <- ..1
-      else { if (!is.null(self$.ptr)) stop("native object already initialized"); self$.ptr <- .Call(`.rs_1815`, list(...)) }
+      else { if (!is.null(self$.ptr)) stop("native object already initialized"); self$.ptr <- .Call(`.rs_1833`, list(...)) }
       invisible(self)
     },
-    `optimize` = function(...) .Call(`.rs_1813`, self, list(...)),
-    `options` = function(...) .Call(`.rs_1814`, self, list(...))
+    `optimize` = function(...) .Call(`.rs_1831`, self, list(...)),
+    `options` = function(...) .Call(`.rs_1832`, self, list(...))
   )
 )
 #' Configuration for SVRG; fields retain their documented native defaults.
@@ -11407,16 +11453,16 @@ rosetta_ref <- function(value = NULL) {
   public = list(
     initialize = function(...) {
       if (...length() == 1L && inherits(..1, "rosetta_ptr")) self$.ptr <- ..1
-      else { if (!is.null(self$.ptr)) stop("native object already initialized"); self$.ptr <- .Call(`.rs_1826`, list(...)) }
+      else { if (!is.null(self$.ptr)) stop("native object already initialized"); self$.ptr <- .Call(`.rs_1844`, list(...)) }
       invisible(self)
     }
   ),
   active = list(
-    `step_size` = function(value) if (missing(value)) .Call(`.rs_1816`, self) else invisible(.Call(`.rs_1817`, self, value)),
-    `max_epochs` = function(value) if (missing(value)) .Call(`.rs_1818`, self) else invisible(.Call(`.rs_1819`, self, value)),
-    `inner_iterations` = function(value) if (missing(value)) .Call(`.rs_1820`, self) else invisible(.Call(`.rs_1821`, self, value)),
-    `tolerance` = function(value) if (missing(value)) .Call(`.rs_1822`, self) else invisible(.Call(`.rs_1823`, self, value)),
-    `seed` = function(value) if (missing(value)) .Call(`.rs_1824`, self) else invisible(.Call(`.rs_1825`, self, value))
+    `step_size` = function(value) if (missing(value)) .Call(`.rs_1834`, self) else invisible(.Call(`.rs_1835`, self, value)),
+    `max_epochs` = function(value) if (missing(value)) .Call(`.rs_1836`, self) else invisible(.Call(`.rs_1837`, self, value)),
+    `inner_iterations` = function(value) if (missing(value)) .Call(`.rs_1838`, self) else invisible(.Call(`.rs_1839`, self, value)),
+    `tolerance` = function(value) if (missing(value)) .Call(`.rs_1840`, self) else invisible(.Call(`.rs_1841`, self, value)),
+    `seed` = function(value) if (missing(value)) .Call(`.rs_1842`, self) else invisible(.Call(`.rs_1843`, self, value))
   )
 )
 #' SVRG on the DifferentiableSeparableFunction callback interface.
@@ -11454,11 +11500,11 @@ rosetta_ref <- function(value = NULL) {
   public = list(
     initialize = function(...) {
       if (...length() == 1L && inherits(..1, "rosetta_ptr")) self$.ptr <- ..1
-      else { if (!is.null(self$.ptr)) stop("native object already initialized"); self$.ptr <- .Call(`.rs_1829`, list(...)) }
+      else { if (!is.null(self$.ptr)) stop("native object already initialized"); self$.ptr <- .Call(`.rs_1847`, list(...)) }
       invisible(self)
     },
-    `optimize` = function(...) .Call(`.rs_1827`, self, list(...)),
-    `options` = function(...) .Call(`.rs_1828`, self, list(...))
+    `optimize` = function(...) .Call(`.rs_1845`, self, list(...)),
+    `options` = function(...) .Call(`.rs_1846`, self, list(...))
   )
 )
 #' Configuration for SQP; fields retain their documented native defaults.
@@ -11483,15 +11529,15 @@ rosetta_ref <- function(value = NULL) {
   public = list(
     initialize = function(...) {
       if (...length() == 1L && inherits(..1, "rosetta_ptr")) self$.ptr <- ..1
-      else { if (!is.null(self$.ptr)) stop("native object already initialized"); self$.ptr <- .Call(`.rs_1838`, list(...)) }
+      else { if (!is.null(self$.ptr)) stop("native object already initialized"); self$.ptr <- .Call(`.rs_1856`, list(...)) }
       invisible(self)
     }
   ),
   active = list(
-    `step_size` = function(value) if (missing(value)) .Call(`.rs_1830`, self) else invisible(.Call(`.rs_1831`, self, value)),
-    `regularization` = function(value) if (missing(value)) .Call(`.rs_1832`, self) else invisible(.Call(`.rs_1833`, self, value)),
-    `max_iterations` = function(value) if (missing(value)) .Call(`.rs_1834`, self) else invisible(.Call(`.rs_1835`, self, value)),
-    `tolerance` = function(value) if (missing(value)) .Call(`.rs_1836`, self) else invisible(.Call(`.rs_1837`, self, value))
+    `step_size` = function(value) if (missing(value)) .Call(`.rs_1848`, self) else invisible(.Call(`.rs_1849`, self, value)),
+    `regularization` = function(value) if (missing(value)) .Call(`.rs_1850`, self) else invisible(.Call(`.rs_1851`, self, value)),
+    `max_iterations` = function(value) if (missing(value)) .Call(`.rs_1852`, self) else invisible(.Call(`.rs_1853`, self, value)),
+    `tolerance` = function(value) if (missing(value)) .Call(`.rs_1854`, self) else invisible(.Call(`.rs_1855`, self, value))
   )
 )
 #' SQP on the EqualityConstrainedFunction callback interface.
@@ -11529,11 +11575,11 @@ rosetta_ref <- function(value = NULL) {
   public = list(
     initialize = function(...) {
       if (...length() == 1L && inherits(..1, "rosetta_ptr")) self$.ptr <- ..1
-      else { if (!is.null(self$.ptr)) stop("native object already initialized"); self$.ptr <- .Call(`.rs_1841`, list(...)) }
+      else { if (!is.null(self$.ptr)) stop("native object already initialized"); self$.ptr <- .Call(`.rs_1859`, list(...)) }
       invisible(self)
     },
-    `optimize` = function(...) .Call(`.rs_1839`, self, list(...)),
-    `options` = function(...) .Call(`.rs_1840`, self, list(...))
+    `optimize` = function(...) .Call(`.rs_1857`, self, list(...)),
+    `options` = function(...) .Call(`.rs_1858`, self, list(...))
   )
 )
 #' Configuration for TrustRegionNewton; fields retain their documented native defaults.
@@ -11558,15 +11604,15 @@ rosetta_ref <- function(value = NULL) {
   public = list(
     initialize = function(...) {
       if (...length() == 1L && inherits(..1, "rosetta_ptr")) self$.ptr <- ..1
-      else { if (!is.null(self$.ptr)) stop("native object already initialized"); self$.ptr <- .Call(`.rs_1850`, list(...)) }
+      else { if (!is.null(self$.ptr)) stop("native object already initialized"); self$.ptr <- .Call(`.rs_1868`, list(...)) }
       invisible(self)
     }
   ),
   active = list(
-    `initial_radius` = function(value) if (missing(value)) .Call(`.rs_1842`, self) else invisible(.Call(`.rs_1843`, self, value)),
-    `max_radius` = function(value) if (missing(value)) .Call(`.rs_1844`, self) else invisible(.Call(`.rs_1845`, self, value)),
-    `max_iterations` = function(value) if (missing(value)) .Call(`.rs_1846`, self) else invisible(.Call(`.rs_1847`, self, value)),
-    `tolerance` = function(value) if (missing(value)) .Call(`.rs_1848`, self) else invisible(.Call(`.rs_1849`, self, value))
+    `initial_radius` = function(value) if (missing(value)) .Call(`.rs_1860`, self) else invisible(.Call(`.rs_1861`, self, value)),
+    `max_radius` = function(value) if (missing(value)) .Call(`.rs_1862`, self) else invisible(.Call(`.rs_1863`, self, value)),
+    `max_iterations` = function(value) if (missing(value)) .Call(`.rs_1864`, self) else invisible(.Call(`.rs_1865`, self, value)),
+    `tolerance` = function(value) if (missing(value)) .Call(`.rs_1866`, self) else invisible(.Call(`.rs_1867`, self, value))
   )
 )
 #' TrustRegionNewton on the HessianFunction callback interface.
@@ -11604,11 +11650,11 @@ rosetta_ref <- function(value = NULL) {
   public = list(
     initialize = function(...) {
       if (...length() == 1L && inherits(..1, "rosetta_ptr")) self$.ptr <- ..1
-      else { if (!is.null(self$.ptr)) stop("native object already initialized"); self$.ptr <- .Call(`.rs_1853`, list(...)) }
+      else { if (!is.null(self$.ptr)) stop("native object already initialized"); self$.ptr <- .Call(`.rs_1871`, list(...)) }
       invisible(self)
     },
-    `optimize` = function(...) .Call(`.rs_1851`, self, list(...)),
-    `options` = function(...) .Call(`.rs_1852`, self, list(...))
+    `optimize` = function(...) .Call(`.rs_1869`, self, list(...)),
+    `options` = function(...) .Call(`.rs_1870`, self, list(...))
   )
 )
 #' C++ class `datamunge::optim::WhaleOptimizationOptions`
@@ -11626,16 +11672,16 @@ rosetta_ref <- function(value = NULL) {
   public = list(
     initialize = function(...) {
       if (...length() == 1L && inherits(..1, "rosetta_ptr")) self$.ptr <- ..1
-      else { if (!is.null(self$.ptr)) stop("native object already initialized"); self$.ptr <- .Call(`.rs_1864`, list(...)) }
+      else { if (!is.null(self$.ptr)) stop("native object already initialized"); self$.ptr <- .Call(`.rs_1882`, list(...)) }
       invisible(self)
     }
   ),
   active = list(
-    `population_size` = function(value) if (missing(value)) .Call(`.rs_1854`, self) else invisible(.Call(`.rs_1855`, self, value)),
-    `spiral_constant` = function(value) if (missing(value)) .Call(`.rs_1856`, self) else invisible(.Call(`.rs_1857`, self, value)),
-    `max_iterations` = function(value) if (missing(value)) .Call(`.rs_1858`, self) else invisible(.Call(`.rs_1859`, self, value)),
-    `tolerance` = function(value) if (missing(value)) .Call(`.rs_1860`, self) else invisible(.Call(`.rs_1861`, self, value)),
-    `seed` = function(value) if (missing(value)) .Call(`.rs_1862`, self) else invisible(.Call(`.rs_1863`, self, value))
+    `population_size` = function(value) if (missing(value)) .Call(`.rs_1872`, self) else invisible(.Call(`.rs_1873`, self, value)),
+    `spiral_constant` = function(value) if (missing(value)) .Call(`.rs_1874`, self) else invisible(.Call(`.rs_1875`, self, value)),
+    `max_iterations` = function(value) if (missing(value)) .Call(`.rs_1876`, self) else invisible(.Call(`.rs_1877`, self, value)),
+    `tolerance` = function(value) if (missing(value)) .Call(`.rs_1878`, self) else invisible(.Call(`.rs_1879`, self, value)),
+    `seed` = function(value) if (missing(value)) .Call(`.rs_1880`, self) else invisible(.Call(`.rs_1881`, self, value))
   )
 )
 #' Whale Optimization Algorithm (Mirjalili & Lewis, 2016): a population of whales alternates between encircling prey, random search, and a logarithmic bubble-net spiral to home in on the best point found so far.
@@ -11662,11 +11708,11 @@ rosetta_ref <- function(value = NULL) {
   public = list(
     initialize = function(...) {
       if (...length() == 1L && inherits(..1, "rosetta_ptr")) self$.ptr <- ..1
-      else { if (!is.null(self$.ptr)) stop("native object already initialized"); self$.ptr <- .Call(`.rs_1867`, list(...)) }
+      else { if (!is.null(self$.ptr)) stop("native object already initialized"); self$.ptr <- .Call(`.rs_1885`, list(...)) }
       invisible(self)
     },
-    `optimize` = function(...) .Call(`.rs_1865`, self, list(...)),
-    `options` = function(...) .Call(`.rs_1866`, self, list(...))
+    `optimize` = function(...) .Call(`.rs_1883`, self, list(...)),
+    `options` = function(...) .Call(`.rs_1884`, self, list(...))
   )
 )
 #' C++ class `datamunge::fda::BSplineBasis`
@@ -11695,17 +11741,17 @@ rosetta_ref <- function(value = NULL) {
   public = list(
     initialize = function(...) {
       if (...length() == 1L && inherits(..1, "rosetta_ptr")) self$.ptr <- ..1
-      else { if (!is.null(self$.ptr)) stop("native object already initialized"); self$.ptr <- .Call(`.rs_1873`, list(...)) }
+      else { if (!is.null(self$.ptr)) stop("native object already initialized"); self$.ptr <- .Call(`.rs_1891`, list(...)) }
       invisible(self)
     },
-    `open_uniform` = function(...) .Call(`.rs_1868`, NULL, list(...)),
-    `degree` = function(...) .Call(`.rs_1869`, self, list(...)),
-    `basis_size` = function(...) .Call(`.rs_1870`, self, list(...)),
-    `knots` = function(...) .Call(`.rs_1871`, self, list(...)),
-    `domain` = function(...) .Call(`.rs_1872`, self, list(...))
+    `open_uniform` = function(...) .Call(`.rs_1886`, NULL, list(...)),
+    `degree` = function(...) .Call(`.rs_1887`, self, list(...)),
+    `basis_size` = function(...) .Call(`.rs_1888`, self, list(...)),
+    `knots` = function(...) .Call(`.rs_1889`, self, list(...)),
+    `domain` = function(...) .Call(`.rs_1890`, self, list(...))
   )
 )
-`BSplineBasis`$`open_uniform` <- function(...) .Call(`.rs_1868`, NULL, list(...))
+`BSplineBasis`$`open_uniform` <- function(...) .Call(`.rs_1886`, NULL, list(...))
 #' Owned hypothesis-test result, analogous to R's htest list.
 #'
 #' Each test documents which fields it populates and what its interval estimates. Unused numeric fields retain zero; this default is storage, not a claim of zero effect. Read bounds only when has_conf_int is true; one-sided intervals may be unbounded. p_value is a null-model tail probability, not a posterior probability of the null. Objects own their method string and contain no borrowed references or shared state.
@@ -11736,22 +11782,22 @@ rosetta_ref <- function(value = NULL) {
   public = list(
     initialize = function(...) {
       if (...length() == 1L && inherits(..1, "rosetta_ptr")) self$.ptr <- ..1
-      else { if (!is.null(self$.ptr)) stop("native object already initialized"); self$.ptr <- .Call(`.rs_1896`, list(...)) }
+      else { if (!is.null(self$.ptr)) stop("native object already initialized"); self$.ptr <- .Call(`.rs_1914`, list(...)) }
       invisible(self)
     }
   ),
   active = list(
-    `statistic` = function(value) if (missing(value)) .Call(`.rs_1874`, self) else invisible(.Call(`.rs_1875`, self, value)),
-    `parameter1` = function(value) if (missing(value)) .Call(`.rs_1876`, self) else invisible(.Call(`.rs_1877`, self, value)),
-    `parameter2` = function(value) if (missing(value)) .Call(`.rs_1878`, self) else invisible(.Call(`.rs_1879`, self, value)),
-    `p_value` = function(value) if (missing(value)) .Call(`.rs_1880`, self) else invisible(.Call(`.rs_1881`, self, value)),
-    `estimate1` = function(value) if (missing(value)) .Call(`.rs_1882`, self) else invisible(.Call(`.rs_1883`, self, value)),
-    `estimate2` = function(value) if (missing(value)) .Call(`.rs_1884`, self) else invisible(.Call(`.rs_1885`, self, value)),
-    `conf_int_lower` = function(value) if (missing(value)) .Call(`.rs_1886`, self) else invisible(.Call(`.rs_1887`, self, value)),
-    `conf_int_upper` = function(value) if (missing(value)) .Call(`.rs_1888`, self) else invisible(.Call(`.rs_1889`, self, value)),
-    `has_conf_int` = function(value) if (missing(value)) .Call(`.rs_1890`, self) else invisible(.Call(`.rs_1891`, self, value)),
-    `alternative` = function(value) if (missing(value)) .Call(`.rs_1892`, self) else invisible(.Call(`.rs_1893`, self, value)),
-    `method` = function(value) if (missing(value)) .Call(`.rs_1894`, self) else invisible(.Call(`.rs_1895`, self, value))
+    `statistic` = function(value) if (missing(value)) .Call(`.rs_1892`, self) else invisible(.Call(`.rs_1893`, self, value)),
+    `parameter1` = function(value) if (missing(value)) .Call(`.rs_1894`, self) else invisible(.Call(`.rs_1895`, self, value)),
+    `parameter2` = function(value) if (missing(value)) .Call(`.rs_1896`, self) else invisible(.Call(`.rs_1897`, self, value)),
+    `p_value` = function(value) if (missing(value)) .Call(`.rs_1898`, self) else invisible(.Call(`.rs_1899`, self, value)),
+    `estimate1` = function(value) if (missing(value)) .Call(`.rs_1900`, self) else invisible(.Call(`.rs_1901`, self, value)),
+    `estimate2` = function(value) if (missing(value)) .Call(`.rs_1902`, self) else invisible(.Call(`.rs_1903`, self, value)),
+    `conf_int_lower` = function(value) if (missing(value)) .Call(`.rs_1904`, self) else invisible(.Call(`.rs_1905`, self, value)),
+    `conf_int_upper` = function(value) if (missing(value)) .Call(`.rs_1906`, self) else invisible(.Call(`.rs_1907`, self, value)),
+    `has_conf_int` = function(value) if (missing(value)) .Call(`.rs_1908`, self) else invisible(.Call(`.rs_1909`, self, value)),
+    `alternative` = function(value) if (missing(value)) .Call(`.rs_1910`, self) else invisible(.Call(`.rs_1911`, self, value)),
+    `method` = function(value) if (missing(value)) .Call(`.rs_1912`, self) else invisible(.Call(`.rs_1913`, self, value))
   )
 )
 #' Model orders and optimizer settings for an ARIMA fit.
@@ -11781,23 +11827,23 @@ rosetta_ref <- function(value = NULL) {
   public = list(
     initialize = function(...) {
       if (...length() == 1L && inherits(..1, "rosetta_ptr")) self$.ptr <- ..1
-      else { if (!is.null(self$.ptr)) stop("native object already initialized"); self$.ptr <- .Call(`.rs_1921`, list(...)) }
+      else { if (!is.null(self$.ptr)) stop("native object already initialized"); self$.ptr <- .Call(`.rs_1939`, list(...)) }
       invisible(self)
     }
   ),
   active = list(
-    `p` = function(value) if (missing(value)) .Call(`.rs_1897`, self) else invisible(.Call(`.rs_1898`, self, value)),
-    `d` = function(value) if (missing(value)) .Call(`.rs_1899`, self) else invisible(.Call(`.rs_1900`, self, value)),
-    `q` = function(value) if (missing(value)) .Call(`.rs_1901`, self) else invisible(.Call(`.rs_1902`, self, value)),
-    `seasonal_p` = function(value) if (missing(value)) .Call(`.rs_1903`, self) else invisible(.Call(`.rs_1904`, self, value)),
-    `seasonal_d` = function(value) if (missing(value)) .Call(`.rs_1905`, self) else invisible(.Call(`.rs_1906`, self, value)),
-    `seasonal_q` = function(value) if (missing(value)) .Call(`.rs_1907`, self) else invisible(.Call(`.rs_1908`, self, value)),
-    `seasonal_period` = function(value) if (missing(value)) .Call(`.rs_1909`, self) else invisible(.Call(`.rs_1910`, self, value)),
-    `include_mean` = function(value) if (missing(value)) .Call(`.rs_1911`, self) else invisible(.Call(`.rs_1912`, self, value)),
-    `de_population_size` = function(value) if (missing(value)) .Call(`.rs_1913`, self) else invisible(.Call(`.rs_1914`, self, value)),
-    `de_max_generations` = function(value) if (missing(value)) .Call(`.rs_1915`, self) else invisible(.Call(`.rs_1916`, self, value)),
-    `coefficient_bound` = function(value) if (missing(value)) .Call(`.rs_1917`, self) else invisible(.Call(`.rs_1918`, self, value)),
-    `seed` = function(value) if (missing(value)) .Call(`.rs_1919`, self) else invisible(.Call(`.rs_1920`, self, value))
+    `p` = function(value) if (missing(value)) .Call(`.rs_1915`, self) else invisible(.Call(`.rs_1916`, self, value)),
+    `d` = function(value) if (missing(value)) .Call(`.rs_1917`, self) else invisible(.Call(`.rs_1918`, self, value)),
+    `q` = function(value) if (missing(value)) .Call(`.rs_1919`, self) else invisible(.Call(`.rs_1920`, self, value)),
+    `seasonal_p` = function(value) if (missing(value)) .Call(`.rs_1921`, self) else invisible(.Call(`.rs_1922`, self, value)),
+    `seasonal_d` = function(value) if (missing(value)) .Call(`.rs_1923`, self) else invisible(.Call(`.rs_1924`, self, value)),
+    `seasonal_q` = function(value) if (missing(value)) .Call(`.rs_1925`, self) else invisible(.Call(`.rs_1926`, self, value)),
+    `seasonal_period` = function(value) if (missing(value)) .Call(`.rs_1927`, self) else invisible(.Call(`.rs_1928`, self, value)),
+    `include_mean` = function(value) if (missing(value)) .Call(`.rs_1929`, self) else invisible(.Call(`.rs_1930`, self, value)),
+    `de_population_size` = function(value) if (missing(value)) .Call(`.rs_1931`, self) else invisible(.Call(`.rs_1932`, self, value)),
+    `de_max_generations` = function(value) if (missing(value)) .Call(`.rs_1933`, self) else invisible(.Call(`.rs_1934`, self, value)),
+    `coefficient_bound` = function(value) if (missing(value)) .Call(`.rs_1935`, self) else invisible(.Call(`.rs_1936`, self, value)),
+    `seed` = function(value) if (missing(value)) .Call(`.rs_1937`, self) else invisible(.Call(`.rs_1938`, self, value))
   )
 )
 #' A Box-Jenkins seasonal ARIMA(p, d, q)(P, D, Q)_s model, fit to a single numeric series by conditional sum of squares (CSS): the series is differenced (regular d times, then seasonal D times with period s) to stationarity, the combined AR/MA polynomials (regular composed with seasonal, via polynomial multiplication) are estimated by minimizing the conditional residual sum of squares with DifferentialEvolution, and forecasts are produced by recursing the fitted difference equation forward and re-integrating through the differencing steps.
@@ -11924,28 +11970,28 @@ rosetta_ref <- function(value = NULL) {
   public = list(
     initialize = function(...) {
       if (...length() == 1L && inherits(..1, "rosetta_ptr")) self$.ptr <- ..1
-      else { if (!is.null(self$.ptr)) stop("native object already initialized"); self$.ptr <- .Call(`.rs_1941`, list(...)) }
+      else { if (!is.null(self$.ptr)) stop("native object already initialized"); self$.ptr <- .Call(`.rs_1959`, list(...)) }
       invisible(self)
     },
-    `options` = function(...) .Call(`.rs_1922`, self, list(...)),
-    `ar_coefficients` = function(...) .Call(`.rs_1923`, self, list(...)),
-    `ma_coefficients` = function(...) .Call(`.rs_1924`, self, list(...)),
-    `seasonal_ar_coefficients` = function(...) .Call(`.rs_1925`, self, list(...)),
-    `seasonal_ma_coefficients` = function(...) .Call(`.rs_1926`, self, list(...)),
-    `mean` = function(...) .Call(`.rs_1927`, self, list(...)),
-    `observations` = function(...) .Call(`.rs_1928`, self, list(...)),
-    `n_used` = function(...) .Call(`.rs_1929`, self, list(...)),
-    `sigma2` = function(...) .Call(`.rs_1930`, self, list(...)),
-    `log_likelihood` = function(...) .Call(`.rs_1931`, self, list(...)),
-    `aic` = function(...) .Call(`.rs_1932`, self, list(...)),
-    `bic` = function(...) .Call(`.rs_1933`, self, list(...)),
-    `fitted_values` = function(...) .Call(`.rs_1934`, self, list(...)),
-    `residuals` = function(...) .Call(`.rs_1935`, self, list(...)),
-    `forecast` = function(...) .Call(`.rs_1936`, self, list(...)),
-    `expanded_ar_coefficients` = function(...) .Call(`.rs_1937`, self, list(...)),
-    `expanded_ma_coefficients` = function(...) .Call(`.rs_1938`, self, list(...)),
-    `psi_weights` = function(...) .Call(`.rs_1939`, self, list(...)),
-    `forecast_with_intervals` = function(...) .Call(`.rs_1940`, self, list(...))
+    `options` = function(...) .Call(`.rs_1940`, self, list(...)),
+    `ar_coefficients` = function(...) .Call(`.rs_1941`, self, list(...)),
+    `ma_coefficients` = function(...) .Call(`.rs_1942`, self, list(...)),
+    `seasonal_ar_coefficients` = function(...) .Call(`.rs_1943`, self, list(...)),
+    `seasonal_ma_coefficients` = function(...) .Call(`.rs_1944`, self, list(...)),
+    `mean` = function(...) .Call(`.rs_1945`, self, list(...)),
+    `observations` = function(...) .Call(`.rs_1946`, self, list(...)),
+    `n_used` = function(...) .Call(`.rs_1947`, self, list(...)),
+    `sigma2` = function(...) .Call(`.rs_1948`, self, list(...)),
+    `log_likelihood` = function(...) .Call(`.rs_1949`, self, list(...)),
+    `aic` = function(...) .Call(`.rs_1950`, self, list(...)),
+    `bic` = function(...) .Call(`.rs_1951`, self, list(...)),
+    `fitted_values` = function(...) .Call(`.rs_1952`, self, list(...)),
+    `residuals` = function(...) .Call(`.rs_1953`, self, list(...)),
+    `forecast` = function(...) .Call(`.rs_1954`, self, list(...)),
+    `expanded_ar_coefficients` = function(...) .Call(`.rs_1955`, self, list(...)),
+    `expanded_ma_coefficients` = function(...) .Call(`.rs_1956`, self, list(...)),
+    `psi_weights` = function(...) .Call(`.rs_1957`, self, list(...)),
+    `forecast_with_intervals` = function(...) .Call(`.rs_1958`, self, list(...))
   )
 )
 #' Owned pair counts and coefficients from kendall_tau().
@@ -11968,18 +12014,18 @@ rosetta_ref <- function(value = NULL) {
   public = list(
     initialize = function(...) {
       if (...length() == 1L && inherits(..1, "rosetta_ptr")) self$.ptr <- ..1
-      else { if (!is.null(self$.ptr)) stop("native object already initialized"); self$.ptr <- .Call(`.rs_1956`, list(...)) }
+      else { if (!is.null(self$.ptr)) stop("native object already initialized"); self$.ptr <- .Call(`.rs_1974`, list(...)) }
       invisible(self)
     }
   ),
   active = list(
-    `concordant` = function(value) if (missing(value)) .Call(`.rs_1942`, self) else invisible(.Call(`.rs_1943`, self, value)),
-    `discordant` = function(value) if (missing(value)) .Call(`.rs_1944`, self) else invisible(.Call(`.rs_1945`, self, value)),
-    `ties_x` = function(value) if (missing(value)) .Call(`.rs_1946`, self) else invisible(.Call(`.rs_1947`, self, value)),
-    `ties_y` = function(value) if (missing(value)) .Call(`.rs_1948`, self) else invisible(.Call(`.rs_1949`, self, value)),
-    `ties_xy` = function(value) if (missing(value)) .Call(`.rs_1950`, self) else invisible(.Call(`.rs_1951`, self, value)),
-    `tau_a` = function(value) if (missing(value)) .Call(`.rs_1952`, self) else invisible(.Call(`.rs_1953`, self, value)),
-    `tau_b` = function(value) if (missing(value)) .Call(`.rs_1954`, self) else invisible(.Call(`.rs_1955`, self, value))
+    `concordant` = function(value) if (missing(value)) .Call(`.rs_1960`, self) else invisible(.Call(`.rs_1961`, self, value)),
+    `discordant` = function(value) if (missing(value)) .Call(`.rs_1962`, self) else invisible(.Call(`.rs_1963`, self, value)),
+    `ties_x` = function(value) if (missing(value)) .Call(`.rs_1964`, self) else invisible(.Call(`.rs_1965`, self, value)),
+    `ties_y` = function(value) if (missing(value)) .Call(`.rs_1966`, self) else invisible(.Call(`.rs_1967`, self, value)),
+    `ties_xy` = function(value) if (missing(value)) .Call(`.rs_1968`, self) else invisible(.Call(`.rs_1969`, self, value)),
+    `tau_a` = function(value) if (missing(value)) .Call(`.rs_1970`, self) else invisible(.Call(`.rs_1971`, self, value)),
+    `tau_b` = function(value) if (missing(value)) .Call(`.rs_1972`, self) else invisible(.Call(`.rs_1973`, self, value))
   )
 )
 #' C++ class `datamunge::stats::ExponentialSmoothingOptions`
@@ -12002,21 +12048,21 @@ rosetta_ref <- function(value = NULL) {
   public = list(
     initialize = function(...) {
       if (...length() == 1L && inherits(..1, "rosetta_ptr")) self$.ptr <- ..1
-      else { if (!is.null(self$.ptr)) stop("native object already initialized"); self$.ptr <- .Call(`.rs_1977`, list(...)) }
+      else { if (!is.null(self$.ptr)) stop("native object already initialized"); self$.ptr <- .Call(`.rs_1995`, list(...)) }
       invisible(self)
     }
   ),
   active = list(
-    `trend` = function(value) if (missing(value)) .Call(`.rs_1957`, self) else invisible(.Call(`.rs_1958`, self, value)),
-    `seasonal` = function(value) if (missing(value)) .Call(`.rs_1959`, self) else invisible(.Call(`.rs_1960`, self, value)),
-    `seasonal_period` = function(value) if (missing(value)) .Call(`.rs_1961`, self) else invisible(.Call(`.rs_1962`, self, value)),
-    `alpha` = function(value) if (missing(value)) .Call(`.rs_1963`, self) else invisible(.Call(`.rs_1964`, self, value)),
-    `beta` = function(value) if (missing(value)) .Call(`.rs_1965`, self) else invisible(.Call(`.rs_1966`, self, value)),
-    `gamma` = function(value) if (missing(value)) .Call(`.rs_1967`, self) else invisible(.Call(`.rs_1968`, self, value)),
-    `phi` = function(value) if (missing(value)) .Call(`.rs_1969`, self) else invisible(.Call(`.rs_1970`, self, value)),
-    `de_population_size` = function(value) if (missing(value)) .Call(`.rs_1971`, self) else invisible(.Call(`.rs_1972`, self, value)),
-    `de_max_generations` = function(value) if (missing(value)) .Call(`.rs_1973`, self) else invisible(.Call(`.rs_1974`, self, value)),
-    `seed` = function(value) if (missing(value)) .Call(`.rs_1975`, self) else invisible(.Call(`.rs_1976`, self, value))
+    `trend` = function(value) if (missing(value)) .Call(`.rs_1975`, self) else invisible(.Call(`.rs_1976`, self, value)),
+    `seasonal` = function(value) if (missing(value)) .Call(`.rs_1977`, self) else invisible(.Call(`.rs_1978`, self, value)),
+    `seasonal_period` = function(value) if (missing(value)) .Call(`.rs_1979`, self) else invisible(.Call(`.rs_1980`, self, value)),
+    `alpha` = function(value) if (missing(value)) .Call(`.rs_1981`, self) else invisible(.Call(`.rs_1982`, self, value)),
+    `beta` = function(value) if (missing(value)) .Call(`.rs_1983`, self) else invisible(.Call(`.rs_1984`, self, value)),
+    `gamma` = function(value) if (missing(value)) .Call(`.rs_1985`, self) else invisible(.Call(`.rs_1986`, self, value)),
+    `phi` = function(value) if (missing(value)) .Call(`.rs_1987`, self) else invisible(.Call(`.rs_1988`, self, value)),
+    `de_population_size` = function(value) if (missing(value)) .Call(`.rs_1989`, self) else invisible(.Call(`.rs_1990`, self, value)),
+    `de_max_generations` = function(value) if (missing(value)) .Call(`.rs_1991`, self) else invisible(.Call(`.rs_1992`, self, value)),
+    `seed` = function(value) if (missing(value)) .Call(`.rs_1993`, self) else invisible(.Call(`.rs_1994`, self, value))
   )
 )
 #' Exponential smoothing (Holt-Winters family): simple exponential smoothing (no trend, no seasonality), Holt linear trend (with optional damping), and seasonal Holt-Winters (additive or multiplicative), unified under one class the way R's HoltWinters() and statsmodels' ExponentialSmoothing() are -- which components are active is controlled entirely by ExponentialSmoothingOptions::trend/seasonal.
@@ -12070,23 +12116,23 @@ rosetta_ref <- function(value = NULL) {
   public = list(
     initialize = function(...) {
       if (...length() == 1L && inherits(..1, "rosetta_ptr")) self$.ptr <- ..1
-      else { if (!is.null(self$.ptr)) stop("native object already initialized"); self$.ptr <- .Call(`.rs_1992`, list(...)) }
+      else { if (!is.null(self$.ptr)) stop("native object already initialized"); self$.ptr <- .Call(`.rs_2010`, list(...)) }
       invisible(self)
     },
-    `options` = function(...) .Call(`.rs_1978`, self, list(...)),
-    `alpha` = function(...) .Call(`.rs_1979`, self, list(...)),
-    `beta` = function(...) .Call(`.rs_1980`, self, list(...)),
-    `gamma` = function(...) .Call(`.rs_1981`, self, list(...)),
-    `phi` = function(...) .Call(`.rs_1982`, self, list(...)),
-    `observations` = function(...) .Call(`.rs_1983`, self, list(...)),
-    `sse` = function(...) .Call(`.rs_1984`, self, list(...)),
-    `sigma2` = function(...) .Call(`.rs_1985`, self, list(...)),
-    `log_likelihood` = function(...) .Call(`.rs_1986`, self, list(...)),
-    `aic` = function(...) .Call(`.rs_1987`, self, list(...)),
-    `bic` = function(...) .Call(`.rs_1988`, self, list(...)),
-    `fitted_values` = function(...) .Call(`.rs_1989`, self, list(...)),
-    `residuals` = function(...) .Call(`.rs_1990`, self, list(...)),
-    `forecast` = function(...) .Call(`.rs_1991`, self, list(...))
+    `options` = function(...) .Call(`.rs_1996`, self, list(...)),
+    `alpha` = function(...) .Call(`.rs_1997`, self, list(...)),
+    `beta` = function(...) .Call(`.rs_1998`, self, list(...)),
+    `gamma` = function(...) .Call(`.rs_1999`, self, list(...)),
+    `phi` = function(...) .Call(`.rs_2000`, self, list(...)),
+    `observations` = function(...) .Call(`.rs_2001`, self, list(...)),
+    `sse` = function(...) .Call(`.rs_2002`, self, list(...)),
+    `sigma2` = function(...) .Call(`.rs_2003`, self, list(...)),
+    `log_likelihood` = function(...) .Call(`.rs_2004`, self, list(...)),
+    `aic` = function(...) .Call(`.rs_2005`, self, list(...)),
+    `bic` = function(...) .Call(`.rs_2006`, self, list(...)),
+    `fitted_values` = function(...) .Call(`.rs_2007`, self, list(...)),
+    `residuals` = function(...) .Call(`.rs_2008`, self, list(...)),
+    `forecast` = function(...) .Call(`.rs_2009`, self, list(...))
   )
 )
 #' B-spline design factory, analogous to R's splines::bs().
@@ -12122,7 +12168,7 @@ rosetta_ref <- function(value = NULL) {
   public = list(
     initialize = function(...) {
       if (...length() == 1L && inherits(..1, "rosetta_ptr")) self$.ptr <- ..1
-      else { if (!is.null(self$.ptr)) stop("native object already initialized"); self$.ptr <- .Call(`.rs_1993`, list(...)) }
+      else { if (!is.null(self$.ptr)) stop("native object already initialized"); self$.ptr <- .Call(`.rs_2011`, list(...)) }
       invisible(self)
     }
   )
@@ -12183,18 +12229,18 @@ rosetta_ref <- function(value = NULL) {
   public = list(
     initialize = function(...) {
       if (...length() == 1L && inherits(..1, "rosetta_ptr")) self$.ptr <- ..1
-      else { if (!is.null(self$.ptr)) stop("native object already initialized"); self$.ptr <- .Call(`.rs_2003`, list(...)) }
+      else { if (!is.null(self$.ptr)) stop("native object already initialized"); self$.ptr <- .Call(`.rs_2021`, list(...)) }
       invisible(self)
     },
-    `predict` = function(...) .Call(`.rs_1994`, self, list(...)),
-    `coefficients` = function(...) .Call(`.rs_1995`, self, list(...)),
-    `fitted` = function(...) .Call(`.rs_1996`, self, list(...)),
-    `residuals` = function(...) .Call(`.rs_1997`, self, list(...)),
-    `r_squared` = function(...) .Call(`.rs_1998`, self, list(...)),
-    `basis_size` = function(...) .Call(`.rs_1999`, self, list(...)),
-    `degree` = function(...) .Call(`.rs_2000`, self, list(...)),
-    `knots` = function(...) .Call(`.rs_2001`, self, list(...)),
-    `domain` = function(...) .Call(`.rs_2002`, self, list(...))
+    `predict` = function(...) .Call(`.rs_2012`, self, list(...)),
+    `coefficients` = function(...) .Call(`.rs_2013`, self, list(...)),
+    `fitted` = function(...) .Call(`.rs_2014`, self, list(...)),
+    `residuals` = function(...) .Call(`.rs_2015`, self, list(...)),
+    `r_squared` = function(...) .Call(`.rs_2016`, self, list(...)),
+    `basis_size` = function(...) .Call(`.rs_2017`, self, list(...)),
+    `degree` = function(...) .Call(`.rs_2018`, self, list(...)),
+    `knots` = function(...) .Call(`.rs_2019`, self, list(...)),
+    `domain` = function(...) .Call(`.rs_2020`, self, list(...))
   )
 )
 #' A P-spline regression curve y ≈ Σ_j β_j B_j(x) (Eilers & Marx).
@@ -12353,23 +12399,23 @@ rosetta_ref <- function(value = NULL) {
   public = list(
     initialize = function(...) {
       if (...length() == 1L && inherits(..1, "rosetta_ptr")) self$.ptr <- ..1
-      else { if (!is.null(self$.ptr)) stop("native object already initialized"); self$.ptr <- .Call(`.rs_2018`, list(...)) }
+      else { if (!is.null(self$.ptr)) stop("native object already initialized"); self$.ptr <- .Call(`.rs_2036`, list(...)) }
       invisible(self)
     },
-    `predict` = function(...) .Call(`.rs_2004`, self, list(...)),
-    `coefficients` = function(...) .Call(`.rs_2005`, self, list(...)),
-    `fitted` = function(...) .Call(`.rs_2006`, self, list(...)),
-    `residuals` = function(...) .Call(`.rs_2007`, self, list(...)),
-    `r_squared` = function(...) .Call(`.rs_2008`, self, list(...)),
-    `lambda` = function(...) .Call(`.rs_2009`, self, list(...)),
-    `penalty_order` = function(...) .Call(`.rs_2010`, self, list(...)),
-    `effective_df` = function(...) .Call(`.rs_2011`, self, list(...)),
-    `gcv` = function(...) .Call(`.rs_2012`, self, list(...)),
-    `basis_size` = function(...) .Call(`.rs_2013`, self, list(...)),
-    `degree` = function(...) .Call(`.rs_2014`, self, list(...)),
-    `knots` = function(...) .Call(`.rs_2015`, self, list(...)),
-    `domain` = function(...) .Call(`.rs_2016`, self, list(...)),
-    `coefficient_differences` = function(...) .Call(`.rs_2017`, self, list(...))
+    `predict` = function(...) .Call(`.rs_2022`, self, list(...)),
+    `coefficients` = function(...) .Call(`.rs_2023`, self, list(...)),
+    `fitted` = function(...) .Call(`.rs_2024`, self, list(...)),
+    `residuals` = function(...) .Call(`.rs_2025`, self, list(...)),
+    `r_squared` = function(...) .Call(`.rs_2026`, self, list(...)),
+    `lambda` = function(...) .Call(`.rs_2027`, self, list(...)),
+    `penalty_order` = function(...) .Call(`.rs_2028`, self, list(...)),
+    `effective_df` = function(...) .Call(`.rs_2029`, self, list(...)),
+    `gcv` = function(...) .Call(`.rs_2030`, self, list(...)),
+    `basis_size` = function(...) .Call(`.rs_2031`, self, list(...)),
+    `degree` = function(...) .Call(`.rs_2032`, self, list(...)),
+    `knots` = function(...) .Call(`.rs_2033`, self, list(...)),
+    `domain` = function(...) .Call(`.rs_2034`, self, list(...)),
+    `coefficient_differences` = function(...) .Call(`.rs_2035`, self, list(...))
   )
 )
 #' SWIG-friendly facade for the C++ dataframe API exposed to bindings.
@@ -12547,77 +12593,9 @@ rosetta_ref <- function(value = NULL) {
 #' @section Static methods:
 #' * `DataFrame$empty()` -> `DataFrame or NULL`
 #'
-#'   Equivalent to the default constructor, exposed as a static factory (like iris()/
-#'   penguins()) as a workaround for a SWIG R-backend bug where the plain no-argument
+#'   Equivalent to the default constructor, exposed as a static factory (like read_csv())
+#'   as a workaround for a SWIG R-backend bug where the plain no-argument
 #'   constructor's ownership-flagged pointer breaks method dispatch on the result.
-#'
-#' * `DataFrame$iris()` -> `DataFrame or NULL`
-#'
-#' * `DataFrame$penguins()` -> `DataFrame or NULL`
-#'
-#' * `DataFrame$tooth_growth()` -> `DataFrame or NULL`
-#'
-#' * `DataFrame$wine()` -> `DataFrame or NULL`
-#'
-#'   UCI wine recognition data, 178 x 14; see datasets::wine().
-#'
-#' * `DataFrame$titanic()` -> `DataFrame or NULL`
-#'
-#'   Kaggle Titanic training set, 891 x 12 with missing values; see datasets::titanic().
-#'
-#' * `DataFrame$eight_schools()` -> `DataFrame or NULL`
-#'
-#'   Rubin's eight schools coaching experiment, 8 x 3; see datasets::eight_schools().
-#'
-#' * `DataFrame$air_passengers()` -> `DataFrame or NULL`
-#'
-#'   Monthly airline passengers 1949-1960, 144 x 3; see datasets::air_passengers().
-#'
-#' * `DataFrame$volcano()` -> `DataFrame or NULL`
-#'
-#'   Maunga Whau (Mt Eden) elevations on a 10 m grid, 5307 x 3; see datasets::volcano().
-#'
-#' * `DataFrame$faithful()` -> `DataFrame or NULL`
-#'
-#'   Old Faithful eruptions, 272 x 2; see datasets::faithful().
-#'
-#' * `DataFrame$mtcars()` -> `DataFrame or NULL`
-#'
-#'   Motor Trend cars, 32 x 12 (row names as `model`); see datasets::mtcars().
-#'
-#' * `DataFrame$airquality()` -> `DataFrame or NULL`
-#'
-#'   New York air quality 1973, 153 x 6 with missing values; see datasets::airquality().
-#'
-#' * `DataFrame$breast_cancer()` -> `DataFrame or NULL`
-#'
-#'   Wisconsin diagnostic breast cancer, 569 x 31; see datasets::breast_cancer().
-#'
-#' * `DataFrame$diabetes()` -> `DataFrame or NULL`
-#'
-#'   Efron et al.'s diabetes progression data, 442 x 11; see datasets::diabetes().
-#'
-#' * `DataFrame$digits()` -> `DataFrame or NULL`
-#'
-#'   8x8 handwritten digits, 1797 x 65; see datasets::digits().
-#'
-#' * `DataFrame$diamonds()` -> `DataFrame or NULL`
-#'
-#'   ggplot2's diamonds, 53940 x 10, downloaded once and cached; see datasets::diamonds().
-#'
-#' * `DataFrame$california_housing()` -> `DataFrame or NULL`
-#'
-#'   California housing, 20640 x 10, downloaded once and cached; see
-#'   datasets::california_housing().
-#'
-#' * `DataFrame$dataset(name)` -> `DataFrame or NULL`
-#'
-#'   Any table-shaped dataset by name, e.g. "wine"; see datasets::load().
-#'
-#' * `DataFrame$dataset_catalog()` -> `DataFrame or NULL`
-#'
-#'   One row per available dataset (name, rows, columns, storage, size_mb,
-#'   description); see datasets::catalog().
 #'
 #' * `DataFrame$read_csv(path, delimiter = ",")` -> `DataFrame or NULL`
 #'
@@ -12644,103 +12622,67 @@ rosetta_ref <- function(value = NULL) {
       else { if (!is.null(self$.ptr)) stop("native object already initialized"); self$.ptr <- .Call(`.rs_2095`, list(...)) }
       invisible(self)
     },
-    `empty` = function(...) .Call(`.rs_2019`, NULL, list(...)),
-    `nrows` = function(...) .Call(`.rs_2020`, self, list(...)),
-    `ncols` = function(...) .Call(`.rs_2021`, self, list(...)),
-    `shape` = function(...) .Call(`.rs_2022`, self, list(...)),
-    `columns` = function(...) .Call(`.rs_2023`, self, list(...)),
-    `add_numeric_column` = function(...) invisible(.Call(`.rs_2024`, self, list(...))),
-    `add_string_column` = function(...) invisible(.Call(`.rs_2025`, self, list(...))),
-    `add_string_column_encoded` = function(...) invisible(.Call(`.rs_2026`, self, list(...))),
-    `fill_null_numeric` = function(...) invisible(.Call(`.rs_2027`, self, list(...))),
-    `fill_null_string` = function(...) invisible(.Call(`.rs_2028`, self, list(...))),
-    `mutate_numeric` = function(...) .Call(`.rs_2029`, self, list(...)),
-    `mutate_string` = function(...) .Call(`.rs_2030`, self, list(...)),
-    `mutate_string_encoded` = function(...) .Call(`.rs_2031`, self, list(...)),
-    `rename` = function(...) .Call(`.rs_2032`, self, list(...)),
-    `select` = function(...) .Call(`.rs_2033`, self, list(...)),
-    `select_encoded` = function(...) .Call(`.rs_2034`, self, list(...)),
-    `relocate` = function(...) .Call(`.rs_2035`, self, list(...)),
-    `relocate_encoded` = function(...) .Call(`.rs_2036`, self, list(...)),
-    `sort_by` = function(...) .Call(`.rs_2037`, self, list(...)),
-    `arrange` = function(...) .Call(`.rs_2038`, self, list(...)),
-    `arrange_encoded` = function(...) .Call(`.rs_2039`, self, list(...)),
-    `drop_duplicates` = function(...) .Call(`.rs_2040`, self, list(...)),
-    `drop_duplicates_encoded` = function(...) .Call(`.rs_2041`, self, list(...)),
-    `distinct` = function(...) .Call(`.rs_2042`, self, list(...)),
-    `distinct_encoded` = function(...) .Call(`.rs_2043`, self, list(...)),
-    `pull_numeric` = function(...) .Call(`.rs_2044`, self, list(...)),
-    `pull_numeric_valid` = function(...) .Call(`.rs_2045`, self, list(...)),
-    `pull_string` = function(...) .Call(`.rs_2046`, self, list(...)),
-    `pull_string_valid` = function(...) .Call(`.rs_2047`, self, list(...)),
-    `n_distinct` = function(...) .Call(`.rs_2048`, self, list(...)),
-    `group_by_sum` = function(...) .Call(`.rs_2049`, self, list(...)),
-    `group_by_sum_encoded` = function(...) .Call(`.rs_2050`, self, list(...)),
-    `count` = function(...) .Call(`.rs_2051`, self, list(...)),
-    `count_encoded` = function(...) .Call(`.rs_2052`, self, list(...)),
-    `summarise` = function(...) .Call(`.rs_2053`, self, list(...)),
-    `summarise_encoded` = function(...) .Call(`.rs_2054`, self, list(...)),
-    `pivot_longer` = function(...) .Call(`.rs_2055`, self, list(...)),
-    `pivot_longer_encoded` = function(...) .Call(`.rs_2056`, self, list(...)),
-    `pivot_wider` = function(...) .Call(`.rs_2057`, self, list(...)),
-    `pivot_wider_encoded` = function(...) .Call(`.rs_2058`, self, list(...)),
-    `bind_rows` = function(...) .Call(`.rs_2059`, self, list(...)),
-    `bind_cols` = function(...) .Call(`.rs_2060`, self, list(...)),
-    `join` = function(...) .Call(`.rs_2061`, self, list(...)),
-    `numeric_count` = function(...) .Call(`.rs_2062`, self, list(...)),
-    `numeric_null_count` = function(...) .Call(`.rs_2063`, self, list(...)),
-    `numeric_sum` = function(...) .Call(`.rs_2064`, self, list(...)),
-    `numeric_mean` = function(...) .Call(`.rs_2065`, self, list(...)),
-    `numeric_min` = function(...) .Call(`.rs_2066`, self, list(...)),
-    `numeric_max` = function(...) .Call(`.rs_2067`, self, list(...)),
-    `to_string` = function(...) .Call(`.rs_2068`, self, list(...)),
-    `to_md` = function(...) .Call(`.rs_2069`, self, list(...)),
-    `is_numeric_column` = function(...) .Call(`.rs_2070`, self, list(...)),
-    `is_null` = function(...) .Call(`.rs_2071`, self, list(...)),
-    `numeric_at` = function(...) .Call(`.rs_2072`, self, list(...)),
-    `string_at` = function(...) .Call(`.rs_2073`, self, list(...)),
-    `iris` = function(...) .Call(`.rs_2074`, NULL, list(...)),
-    `penguins` = function(...) .Call(`.rs_2075`, NULL, list(...)),
-    `tooth_growth` = function(...) .Call(`.rs_2076`, NULL, list(...)),
-    `wine` = function(...) .Call(`.rs_2077`, NULL, list(...)),
-    `titanic` = function(...) .Call(`.rs_2078`, NULL, list(...)),
-    `eight_schools` = function(...) .Call(`.rs_2079`, NULL, list(...)),
-    `air_passengers` = function(...) .Call(`.rs_2080`, NULL, list(...)),
-    `volcano` = function(...) .Call(`.rs_2081`, NULL, list(...)),
-    `faithful` = function(...) .Call(`.rs_2082`, NULL, list(...)),
-    `mtcars` = function(...) .Call(`.rs_2083`, NULL, list(...)),
-    `airquality` = function(...) .Call(`.rs_2084`, NULL, list(...)),
-    `breast_cancer` = function(...) .Call(`.rs_2085`, NULL, list(...)),
-    `diabetes` = function(...) .Call(`.rs_2086`, NULL, list(...)),
-    `digits` = function(...) .Call(`.rs_2087`, NULL, list(...)),
-    `diamonds` = function(...) .Call(`.rs_2088`, NULL, list(...)),
-    `california_housing` = function(...) .Call(`.rs_2089`, NULL, list(...)),
-    `dataset` = function(...) .Call(`.rs_2090`, NULL, list(...)),
-    `dataset_catalog` = function(...) .Call(`.rs_2091`, NULL, list(...)),
+    `empty` = function(...) .Call(`.rs_2037`, NULL, list(...)),
+    `nrows` = function(...) .Call(`.rs_2038`, self, list(...)),
+    `ncols` = function(...) .Call(`.rs_2039`, self, list(...)),
+    `shape` = function(...) .Call(`.rs_2040`, self, list(...)),
+    `columns` = function(...) .Call(`.rs_2041`, self, list(...)),
+    `add_numeric_column` = function(...) invisible(.Call(`.rs_2042`, self, list(...))),
+    `add_string_column` = function(...) invisible(.Call(`.rs_2043`, self, list(...))),
+    `add_string_column_encoded` = function(...) invisible(.Call(`.rs_2044`, self, list(...))),
+    `fill_null_numeric` = function(...) invisible(.Call(`.rs_2045`, self, list(...))),
+    `fill_null_string` = function(...) invisible(.Call(`.rs_2046`, self, list(...))),
+    `mutate_numeric` = function(...) .Call(`.rs_2047`, self, list(...)),
+    `mutate_string` = function(...) .Call(`.rs_2048`, self, list(...)),
+    `mutate_string_encoded` = function(...) .Call(`.rs_2049`, self, list(...)),
+    `rename` = function(...) .Call(`.rs_2050`, self, list(...)),
+    `select` = function(...) .Call(`.rs_2051`, self, list(...)),
+    `select_encoded` = function(...) .Call(`.rs_2052`, self, list(...)),
+    `relocate` = function(...) .Call(`.rs_2053`, self, list(...)),
+    `relocate_encoded` = function(...) .Call(`.rs_2054`, self, list(...)),
+    `sort_by` = function(...) .Call(`.rs_2055`, self, list(...)),
+    `arrange` = function(...) .Call(`.rs_2056`, self, list(...)),
+    `arrange_encoded` = function(...) .Call(`.rs_2057`, self, list(...)),
+    `drop_duplicates` = function(...) .Call(`.rs_2058`, self, list(...)),
+    `drop_duplicates_encoded` = function(...) .Call(`.rs_2059`, self, list(...)),
+    `distinct` = function(...) .Call(`.rs_2060`, self, list(...)),
+    `distinct_encoded` = function(...) .Call(`.rs_2061`, self, list(...)),
+    `pull_numeric` = function(...) .Call(`.rs_2062`, self, list(...)),
+    `pull_numeric_valid` = function(...) .Call(`.rs_2063`, self, list(...)),
+    `pull_string` = function(...) .Call(`.rs_2064`, self, list(...)),
+    `pull_string_valid` = function(...) .Call(`.rs_2065`, self, list(...)),
+    `n_distinct` = function(...) .Call(`.rs_2066`, self, list(...)),
+    `group_by_sum` = function(...) .Call(`.rs_2067`, self, list(...)),
+    `group_by_sum_encoded` = function(...) .Call(`.rs_2068`, self, list(...)),
+    `count` = function(...) .Call(`.rs_2069`, self, list(...)),
+    `count_encoded` = function(...) .Call(`.rs_2070`, self, list(...)),
+    `summarise` = function(...) .Call(`.rs_2071`, self, list(...)),
+    `summarise_encoded` = function(...) .Call(`.rs_2072`, self, list(...)),
+    `pivot_longer` = function(...) .Call(`.rs_2073`, self, list(...)),
+    `pivot_longer_encoded` = function(...) .Call(`.rs_2074`, self, list(...)),
+    `pivot_wider` = function(...) .Call(`.rs_2075`, self, list(...)),
+    `pivot_wider_encoded` = function(...) .Call(`.rs_2076`, self, list(...)),
+    `bind_rows` = function(...) .Call(`.rs_2077`, self, list(...)),
+    `bind_cols` = function(...) .Call(`.rs_2078`, self, list(...)),
+    `join` = function(...) .Call(`.rs_2079`, self, list(...)),
+    `numeric_count` = function(...) .Call(`.rs_2080`, self, list(...)),
+    `numeric_null_count` = function(...) .Call(`.rs_2081`, self, list(...)),
+    `numeric_sum` = function(...) .Call(`.rs_2082`, self, list(...)),
+    `numeric_mean` = function(...) .Call(`.rs_2083`, self, list(...)),
+    `numeric_min` = function(...) .Call(`.rs_2084`, self, list(...)),
+    `numeric_max` = function(...) .Call(`.rs_2085`, self, list(...)),
+    `to_string` = function(...) .Call(`.rs_2086`, self, list(...)),
+    `to_md` = function(...) .Call(`.rs_2087`, self, list(...)),
+    `is_numeric_column` = function(...) .Call(`.rs_2088`, self, list(...)),
+    `is_null` = function(...) .Call(`.rs_2089`, self, list(...)),
+    `numeric_at` = function(...) .Call(`.rs_2090`, self, list(...)),
+    `string_at` = function(...) .Call(`.rs_2091`, self, list(...)),
     `read_csv` = function(...) .Call(`.rs_2092`, NULL, list(...)),
     `parse_csv` = function(...) .Call(`.rs_2093`, NULL, list(...)),
     `from_image_batch` = function(...) .Call(`.rs_2094`, NULL, list(...))
   )
 )
-`DataFrame`$`empty` <- function(...) .Call(`.rs_2019`, NULL, list(...))
-`DataFrame`$`iris` <- function(...) .Call(`.rs_2074`, NULL, list(...))
-`DataFrame`$`penguins` <- function(...) .Call(`.rs_2075`, NULL, list(...))
-`DataFrame`$`tooth_growth` <- function(...) .Call(`.rs_2076`, NULL, list(...))
-`DataFrame`$`wine` <- function(...) .Call(`.rs_2077`, NULL, list(...))
-`DataFrame`$`titanic` <- function(...) .Call(`.rs_2078`, NULL, list(...))
-`DataFrame`$`eight_schools` <- function(...) .Call(`.rs_2079`, NULL, list(...))
-`DataFrame`$`air_passengers` <- function(...) .Call(`.rs_2080`, NULL, list(...))
-`DataFrame`$`volcano` <- function(...) .Call(`.rs_2081`, NULL, list(...))
-`DataFrame`$`faithful` <- function(...) .Call(`.rs_2082`, NULL, list(...))
-`DataFrame`$`mtcars` <- function(...) .Call(`.rs_2083`, NULL, list(...))
-`DataFrame`$`airquality` <- function(...) .Call(`.rs_2084`, NULL, list(...))
-`DataFrame`$`breast_cancer` <- function(...) .Call(`.rs_2085`, NULL, list(...))
-`DataFrame`$`diabetes` <- function(...) .Call(`.rs_2086`, NULL, list(...))
-`DataFrame`$`digits` <- function(...) .Call(`.rs_2087`, NULL, list(...))
-`DataFrame`$`diamonds` <- function(...) .Call(`.rs_2088`, NULL, list(...))
-`DataFrame`$`california_housing` <- function(...) .Call(`.rs_2089`, NULL, list(...))
-`DataFrame`$`dataset` <- function(...) .Call(`.rs_2090`, NULL, list(...))
-`DataFrame`$`dataset_catalog` <- function(...) .Call(`.rs_2091`, NULL, list(...))
+`DataFrame`$`empty` <- function(...) .Call(`.rs_2037`, NULL, list(...))
 `DataFrame`$`read_csv` <- function(...) .Call(`.rs_2092`, NULL, list(...))
 `DataFrame`$`parse_csv` <- function(...) .Call(`.rs_2093`, NULL, list(...))
 `DataFrame`$`from_image_batch` <- function(...) .Call(`.rs_2094`, NULL, list(...))
@@ -16758,7 +16700,7 @@ rosetta_ref <- function(value = NULL) {
 #'
 #'   Reverse sweep from `output`: d(output)/d(node) for every node on the tape.
 #'   - `output`: A Var recorded on this tape (usually the final expression).
-#'   - Returns: One adjoint per node, indexed by Var::index() (0-based; add 1 in R).
+#'   - Returns: One adjoint per node, indexed by Var::index() (0-based; add 1 in R and Lua).
 #' @md
 #'
 `Tape` <- R6::R6Class("Tape", inherit = `.rosetta_object`, cloneable = FALSE,
@@ -18866,4 +18808,4 @@ base::rm(list = base::intersect(base::c(".rosetta_name", ".rosetta_pkg", ".roset
   }
   invisible(NULL)
 }
-.rosetta_exports <- c("ABLine", "ACOR", "ACOROptions", "AMSGrad", "AMSGradOptions", "ARIMA", "ARIMAOptions", "Acquisition", "AdaDelta", "AdaDeltaOptions", "AdaGrad", "AdaGradOptions", "Adam", "AdamOptions", "AgglomerativeClustering", "AlphaBetaFilter", "AlphaBetaGammaFilter", "AlphaBetaGammaState", "AlphaBetaState", "Alternative", "ArbitraryFunction", "ArtificialBeeColony", "ArtificialBeeColonyOptions", "AugmentedLagrangian", "AugmentedLagrangianOptions", "AxisRefinement", "BCType", "BSR", "BSplineBasis", "BSplineRefinement", "BSplineRegression", "BayesianOptimization", "BayesianOptimizationOptions", "BayesianOptimizationResult", "BayesianSurrogate", "BoundaryCondition1D", "BoundingBox", "Bspline", "CMAES", "CMAESOptions", "CadScene", "CadSolid", "Callback", "Circle", "ClosestPairResult", "Complex", "ConjugateGradient", "ConjugateGradientOptions", "ConvexHullAnalysis", "ConvexHullOptions", "ConvexHullTrace", "ConvexHullWork", "CoordinateDescent", "CoordinateDescentOptions", "Corner", "Cplx", "CrossEntropyMethod", "CrossEntropyMethodOptions", "CsvReader", "CuckooSearch", "CuckooSearchOptions", "DBSCAN", "DEOptions", "DTWComputation", "DTWPredecessor", "DTWResult", "DTWTrace", "DTWWork", "DataFrame", "DataSeries", "DataSeries_Kind", "DecisionTreeClassifier", "DecisionTreeRegressor", "DelaunayAnalysis", "DelaunayInsertion", "DelaunayTrace", "DelaunayWork", "DiameterResult", "DifferentiableFunction", "DifferentiableSeparableFunction", "DifferentialEvolution", "DiffusionMaps", "DirectedGraph", "Dual", "ElasticNet", "EnsembleKalmanFilter", "EqualityConstrainedFunction", "EstimationOfDistribution", "EstimationOfDistributionOptions", "EvolutionStrategy", "EvolutionStrategyOptions", "ExponentialSmoothing", "ExponentialSmoothingOptions", "Expr", "ExtendedKalmanFilter", "FEM1D", "FEM1DResult", "FEM1DTimeSeries", "FEM2D", "FEM2DResult", "FISTA", "FISTAOptions", "FireflyAlgorithm", "FireflyAlgorithmOptions", "FlowVector", "GAOptions", "GBMClassifier", "GBMRegressor", "GGPlot", "GLM", "GLMM", "GaussianProcessRegression", "GaussianProcessSurrogateOptions", "GeneticAlgorithm", "GfFactorization", "GibbsOptions", "GibbsResult", "GibbsSampler", "GradientDescent", "GradientDescentOptions", "GreyWolfOptimizer", "GreyWolfOptimizerOptions", "HMC", "HMCOptions", "HMCResult", "HSV", "HarmonySearch", "HarmonySearchOptions", "HessianFunction", "HierarchicalBSpline", "HoughCircle", "HoughLine", "HullAction", "HullEvent", "HullIndexedPoint", "HullPass", "HyperDual", "HypothesisTestResult", "INLAMixedModel", "Image", "ImageBatch", "ImageLoader", "ImageMode", "ImportanceSampling", "ImportanceSamplingOptions", "ImportanceSamplingResult", "InequalityConstrainedFunction", "InformationFilter", "InteriorPoint", "InteriorPointOptions", "Isomap", "KDTree2D", "KMeans", "KNNClassifier", "KNNRegressor", "KalmanFilter", "KalmanState", "KendallTau", "KernelPCA", "KernelRegression", "KeyPoint", "LBFGS", "LBFGSOptions", "LDA", "LLE", "LM", "LMM", "LabelMap", "LaplacianEigenmaps", "Lasso", "LegendEntry", "LevenbergMarquardt", "LevenbergMarquardtOptions", "LinalgMatrix", "MAP", "MAPOptions", "MDS", "Mesh1D", "Mesh2D", "MinimumBoundingRectangle", "MonomialOrder", "MultivariatePolynomial", "NUTS", "NUTSOptions", "NUTSResult", "Nadam", "NadamOptions", "NaiveBayesClassifier", "NelderMead", "NelderMeadOptions", "NesterovAcceleratedGradient", "NesterovAcceleratedGradientOptions", "Newton", "NewtonOptions", "NnModel", "NnTensor", "ODEOptions", "ODESolution", "ODESolver", "Orientation", "OrthantCellTree", "PAdjustMethod", "PCA", "PSO", "PSOOptions", "PSR", "PSplineRegression", "ParallelTempering", "ParallelTemperingOptions", "ParticleFilter", "Pixel", "Plot", "Point2D", "PolyExtendedGcdResult", "Polynomial", "ProximalFunction", "ProximalGradient", "ProximalGradientOptions", "RBFGaussianProcessSurrogate", "RGB", "RGBA", "RHS", "RLayout", "RMSProp", "RMSPropOptions", "RPlot", "RWMOptions", "RWMResult", "RandomForestClassifier", "RandomForestRegressor", "RandomWalkMetropolis", "RandomizedBlockCoordinateDescent", "RandomizedBlockCoordinateDescentOptions", "RationalFunction", "RealFactor", "RealFactorization", "RealRootIntervals", "ResampleFilter", "ResidualFunction", "Ridge", "SAGA", "SAGAOptions", "SGD", "SGDOptions", "SQP", "SQPOptions", "SVM", "SVRG", "SVRGOptions", "SammonMapping", "ScalarField1D", "ScalarField2D", "SeasonalType", "SeparableFunction", "ShapeLayer", "SimulatedAnnealing", "SimulatedAnnealingOptions", "SmoothResult", "SplineSolveOptions", "SplineSolver", "Splom", "SquareFreeFactor", "StepMethod", "StructureTensorField", "StructuringElement", "SurrogatePrediction", "TSNE", "Tape", "Task", "TaskBatch", "TaskOutput", "Tensor", "TensorBSpline", "TrendType", "Triangle", "TruncatedHierarchicalBSpline", "TrustRegionNewton", "TrustRegionNewtonOptions", "UMAP", "UndirectedGraph", "UnscentedKalmanFilter", "Var", "VectorFunction", "VoronoiDiagram", "WeightedGraph", "WhaleOptimization", "WhaleOptimizationOptions", "XGBoostClassifier", "XGBoostRegressor", "adaptive_simpson_recurse", "adjust_brightness", "adjust_contrast", "berlekamp_factor_count", "berlekamp_factor_mod", "berlekamp_null_space", "bilinear_sample", "binomial_test", "boundary_nodes", "bounding_box", "box_blur", "box_kernel", "bs", "c_abs", "c_add", "c_div", "c_eval", "c_mul", "c_sub", "call_with_callback", "cauchy_root_bound", "chi_squared_goodness_of_fit", "chi_squared_test_independence", "circle_contains", "circle_from_one_point", "circle_from_three_points", "circle_from_two_points", "circumcenter", "clip_polygon", "closest_pair", "compare_monomials", "complex_roots", "connected_components", "convex_hull", "convex_hull_analyze", "convex_hull_trace", "count_monic_irreducibles", "crop", "cross", "crt", "data_home", "definite_integral", "delaunay_analyze", "delaunay_trace", "delaunay_triangulation", "delaunay_uniform_cloud", "descartes_negative_root_bound", "descartes_sign_changes", "determinant", "dilate", "discrete_frechet_distance", "discriminant", "distance", "diverging_colors", "dog_blobs", "download_file", "downloadable", "draw_circle", "draw_line", "draw_polygon", "draw_rectangle", "dtw_path_cost", "dtw_trace_entries", "dyadic_refine", "dynamic_time_warping", "dynamic_time_warping_trace", "dynamic_time_warping_work", "erode", "expected_distinct_irreducible_factors", "expected_improvement", "extract_local_maxima", "f_test_variance", "factor_gf_p", "factor_over_reals", "fast_corners", "fetch", "fisher_exact_test_2x2", "fit_tensor_bspline", "fit_tensor_pspline", "flip_horizontal", "flip_vertical", "gaussian_blur", "gaussian_importance_efficiency", "gaussian_kernel", "gaussian_pyramid", "gf_derivative", "gf_mul", "gf_square_free", "groebner_basis", "harris_corners", "hello", "hough_circles", "hough_lines", "hsv_to_rgb", "image_convolve", "in_structuring_element", "inside_clip_edge", "is_convex_polygon", "is_foreground", "is_negligible_remainder", "isolate_real_roots", "kendall_tau", "kmeans_segment", "kruskal_wallis_test", "ks_test_one_sample_normal", "ks_test_one_sample_uniform", "ks_test_two_sample", "lagrange_interpolate", "laplacian_pyramid", "lcm_exponent", "leapfrog_gaussian_acceptance", "lerp_byte", "line_endpoints", "line_intersection_point", "lucas_kanade_optical_flow", "make_dpair", "make_dvector", "make_mesh2d_from_points", "make_rectangular_mesh2d", "make_uniform_mesh1d", "map_dvector_with_callback", "merge_channels", "min_enclosing_circle", "minimum_bounding_rectangle", "mkdir", "mod_inverse", "mod_pow", "monic", "monomial_divides", "morphological_close", "morphological_open", "multivariate_reduce", "native_rnorm", "native_runif", "newton_interpolate", "nn_gemm_backend", "nn_get_num_threads", "nn_set_num_threads", "on_segment", "one_way_anova", "orientation", "otsu_threshold", "p_adjust", "pearson_correlation_test", "plot_dtw_alignment", "point_in_polygon", "point_in_triangle", "point_to_line_distance", "poly_extended_gcd", "poly_gcd", "poly_gcd_pseudo_remainder_sequence", "poly_quotient", "poly_remainder", "polygon_area", "polygon_centroid", "polygon_diameter", "probability_of_improvement", "proportion_test_one_sample", "proportion_test_two_sample", "rational_roots", "read_bmp", "read_pbm", "read_pgm", "read_png", "read_ppm", "real_roots", "reduce", "refine_basis", "refine_root", "resize", "resultant", "rgb_to_gray", "rgb_to_hsv", "romano_wolf_adjust", "rosetta_ref", "rotate", "rotate90", "s_polynomial", "sample_gaussian_points", "segment_intersection_point", "segments_intersect", "seql", "set_pixel_clipped", "set_seed", "shapiro_francia_test", "sharpen", "shi_tomasi_corners", "signed_difference_image", "signed_polygon_area", "simplify_polyline", "simpson_estimate", "sobel_edges", "spearman_correlation_test", "split_channels", "square_free_factorization", "squared_distance", "stamp", "structure_tensor", "sturm_root_count", "sturm_sequence", "sturm_sign_changes", "sum_dpair", "sum_dvector", "sylvester_matrix", "t_test_one_sample", "t_test_paired", "t_test_two_sample", "taylor_series", "terrain_colors", "threshold", "to_grayscale", "to_integer", "to_rgb", "to_rgba", "total_degree", "triangulate_polygon", "unif", "value_colors", "viridis_colors", "voronoi_diagram", "westfall_young_adjust", "wilcoxon_rank_sum_test", "wilcoxon_signed_rank_test", "write_bmp", "write_pbm", "write_pgm", "write_png", "write_ppm")
+.rosetta_exports <- c("ABLine", "ACOR", "ACOROptions", "AMSGrad", "AMSGradOptions", "ARIMA", "ARIMAOptions", "Acquisition", "AdaDelta", "AdaDeltaOptions", "AdaGrad", "AdaGradOptions", "Adam", "AdamOptions", "AgglomerativeClustering", "AlphaBetaFilter", "AlphaBetaGammaFilter", "AlphaBetaGammaState", "AlphaBetaState", "Alternative", "ArbitraryFunction", "ArtificialBeeColony", "ArtificialBeeColonyOptions", "AugmentedLagrangian", "AugmentedLagrangianOptions", "AxisRefinement", "BCType", "BSR", "BSplineBasis", "BSplineRefinement", "BSplineRegression", "BayesianOptimization", "BayesianOptimizationOptions", "BayesianOptimizationResult", "BayesianSurrogate", "BoundaryCondition1D", "BoundingBox", "Bspline", "CMAES", "CMAESOptions", "CadScene", "CadSolid", "Callback", "Circle", "ClosestPairResult", "Complex", "ConjugateGradient", "ConjugateGradientOptions", "ConvexHullAnalysis", "ConvexHullOptions", "ConvexHullTrace", "ConvexHullWork", "CoordinateDescent", "CoordinateDescentOptions", "Corner", "Cplx", "CrossEntropyMethod", "CrossEntropyMethodOptions", "CsvReader", "CuckooSearch", "CuckooSearchOptions", "DBSCAN", "DEOptions", "DTWComputation", "DTWPredecessor", "DTWResult", "DTWTrace", "DTWWork", "DataFrame", "DataSeries", "DataSeries_Kind", "DecisionTreeClassifier", "DecisionTreeRegressor", "DelaunayAnalysis", "DelaunayInsertion", "DelaunayTrace", "DelaunayWork", "DiameterResult", "DifferentiableFunction", "DifferentiableSeparableFunction", "DifferentialEvolution", "DiffusionMaps", "DirectedGraph", "Dual", "ElasticNet", "EnsembleKalmanFilter", "EqualityConstrainedFunction", "EstimationOfDistribution", "EstimationOfDistributionOptions", "EvolutionStrategy", "EvolutionStrategyOptions", "ExponentialSmoothing", "ExponentialSmoothingOptions", "Expr", "ExtendedKalmanFilter", "FEM1D", "FEM1DResult", "FEM1DTimeSeries", "FEM2D", "FEM2DResult", "FISTA", "FISTAOptions", "FireflyAlgorithm", "FireflyAlgorithmOptions", "FlowVector", "GAOptions", "GBMClassifier", "GBMRegressor", "GGPlot", "GLM", "GLMM", "GaussianProcessRegression", "GaussianProcessSurrogateOptions", "GeneticAlgorithm", "GfFactorization", "GibbsOptions", "GibbsResult", "GibbsSampler", "GradientDescent", "GradientDescentOptions", "GreyWolfOptimizer", "GreyWolfOptimizerOptions", "HMC", "HMCOptions", "HMCResult", "HSV", "HarmonySearch", "HarmonySearchOptions", "HessianFunction", "HierarchicalBSpline", "HoughCircle", "HoughLine", "HullAction", "HullEvent", "HullIndexedPoint", "HullPass", "HyperDual", "HypothesisTestResult", "INLAMixedModel", "Image", "ImageBatch", "ImageLoader", "ImageMode", "ImportanceSampling", "ImportanceSamplingOptions", "ImportanceSamplingResult", "InequalityConstrainedFunction", "InformationFilter", "InteriorPoint", "InteriorPointOptions", "Isomap", "KDTree2D", "KMeans", "KNNClassifier", "KNNRegressor", "KalmanFilter", "KalmanState", "KendallTau", "KernelPCA", "KernelRegression", "KeyPoint", "LBFGS", "LBFGSOptions", "LDA", "LLE", "LM", "LMM", "LabelMap", "LaplacianEigenmaps", "Lasso", "LegendEntry", "LevenbergMarquardt", "LevenbergMarquardtOptions", "LinalgMatrix", "MAP", "MAPOptions", "MDS", "Mesh1D", "Mesh2D", "MinimumBoundingRectangle", "MonomialOrder", "MultivariatePolynomial", "NUTS", "NUTSOptions", "NUTSResult", "Nadam", "NadamOptions", "NaiveBayesClassifier", "NelderMead", "NelderMeadOptions", "NesterovAcceleratedGradient", "NesterovAcceleratedGradientOptions", "Newton", "NewtonOptions", "NnModel", "NnTensor", "ODEOptions", "ODESolution", "ODESolver", "Orientation", "OrthantCellTree", "PAdjustMethod", "PCA", "PSO", "PSOOptions", "PSR", "PSplineRegression", "ParallelTempering", "ParallelTemperingOptions", "ParticleFilter", "Pixel", "Plot", "Point2D", "PolyExtendedGcdResult", "Polynomial", "ProximalFunction", "ProximalGradient", "ProximalGradientOptions", "RBFGaussianProcessSurrogate", "RGB", "RGBA", "RHS", "RLayout", "RMSProp", "RMSPropOptions", "RPlot", "RWMOptions", "RWMResult", "RandomForestClassifier", "RandomForestRegressor", "RandomWalkMetropolis", "RandomizedBlockCoordinateDescent", "RandomizedBlockCoordinateDescentOptions", "RationalFunction", "RealFactor", "RealFactorization", "RealRootIntervals", "ResampleFilter", "ResidualFunction", "Ridge", "SAGA", "SAGAOptions", "SGD", "SGDOptions", "SQP", "SQPOptions", "SVM", "SVRG", "SVRGOptions", "SammonMapping", "ScalarField1D", "ScalarField2D", "SeasonalType", "SeparableFunction", "ShapeLayer", "SimulatedAnnealing", "SimulatedAnnealingOptions", "SmoothResult", "SplineSolveOptions", "SplineSolver", "Splom", "SquareFreeFactor", "StepMethod", "StructureTensorField", "StructuringElement", "SurrogatePrediction", "TSNE", "Tape", "Task", "TaskBatch", "TaskOutput", "Tensor", "TensorBSpline", "TrendType", "Triangle", "TruncatedHierarchicalBSpline", "TrustRegionNewton", "TrustRegionNewtonOptions", "UMAP", "UndirectedGraph", "UnscentedKalmanFilter", "Var", "VectorFunction", "VoronoiDiagram", "WeightedGraph", "WhaleOptimization", "WhaleOptimizationOptions", "XGBoostClassifier", "XGBoostRegressor", "adaptive_simpson_recurse", "adjust_brightness", "adjust_contrast", "berlekamp_factor_count", "berlekamp_factor_mod", "berlekamp_null_space", "bilinear_sample", "binomial_test", "boundary_nodes", "bounding_box", "box_blur", "box_kernel", "bs", "c_abs", "c_add", "c_div", "c_eval", "c_mul", "c_sub", "call_with_callback", "cauchy_root_bound", "chi_squared_goodness_of_fit", "chi_squared_test_independence", "circle_contains", "circle_from_one_point", "circle_from_three_points", "circle_from_two_points", "circumcenter", "clip_polygon", "closest_pair", "compare_monomials", "complex_roots", "connected_components", "convex_hull", "convex_hull_analyze", "convex_hull_trace", "count_monic_irreducibles", "crop", "cross", "crt", "data", "data_home", "definite_integral", "delaunay_analyze", "delaunay_trace", "delaunay_triangulation", "delaunay_uniform_cloud", "descartes_negative_root_bound", "descartes_sign_changes", "determinant", "dilate", "discrete_frechet_distance", "discriminant", "distance", "diverging_colors", "dog_blobs", "download_file", "downloadable", "draw_circle", "draw_line", "draw_polygon", "draw_rectangle", "dtw_path_cost", "dtw_trace_entries", "dyadic_refine", "dynamic_time_warping", "dynamic_time_warping_trace", "dynamic_time_warping_work", "erode", "expected_distinct_irreducible_factors", "expected_improvement", "extract_local_maxima", "f_test_variance", "factor_gf_p", "factor_over_reals", "fast_corners", "fetch", "fisher_exact_test_2x2", "fit_tensor_bspline", "fit_tensor_pspline", "flip_horizontal", "flip_vertical", "gaussian_blur", "gaussian_importance_efficiency", "gaussian_kernel", "gaussian_pyramid", "gf_derivative", "gf_mul", "gf_square_free", "groebner_basis", "harris_corners", "hello", "hough_circles", "hough_lines", "hsv_to_rgb", "image_convolve", "in_structuring_element", "inside_clip_edge", "is_convex_polygon", "is_foreground", "is_negligible_remainder", "isolate_real_roots", "kendall_tau", "kmeans_segment", "kruskal_wallis_test", "ks_test_one_sample_normal", "ks_test_one_sample_uniform", "ks_test_two_sample", "lagrange_interpolate", "laplacian_pyramid", "lcm_exponent", "leapfrog_gaussian_acceptance", "lerp_byte", "line_endpoints", "line_intersection_point", "lucas_kanade_optical_flow", "make_dpair", "make_dvector", "make_mesh2d_from_points", "make_rectangular_mesh2d", "make_uniform_mesh1d", "map_dvector_with_callback", "merge_channels", "min_enclosing_circle", "minimum_bounding_rectangle", "mkdir", "mod_inverse", "mod_pow", "monic", "monomial_divides", "morphological_close", "morphological_open", "multivariate_reduce", "native_rnorm", "native_runif", "newton_interpolate", "nn_gemm_backend", "nn_get_num_threads", "nn_set_num_threads", "on_segment", "one_way_anova", "orientation", "otsu_threshold", "p_adjust", "pearson_correlation_test", "plot_dtw_alignment", "point_in_polygon", "point_in_triangle", "point_to_line_distance", "poly_extended_gcd", "poly_gcd", "poly_gcd_pseudo_remainder_sequence", "poly_quotient", "poly_remainder", "polygon_area", "polygon_centroid", "polygon_diameter", "probability_of_improvement", "proportion_test_one_sample", "proportion_test_two_sample", "rational_roots", "read_bmp", "read_pbm", "read_pgm", "read_png", "read_ppm", "real_roots", "reduce", "refine_basis", "refine_root", "resize", "resultant", "rgb_to_gray", "rgb_to_hsv", "romano_wolf_adjust", "rosetta_ref", "rotate", "rotate90", "s_polynomial", "sample_gaussian_points", "segment_intersection_point", "segments_intersect", "seql", "set_pixel_clipped", "set_seed", "shapiro_francia_test", "sharpen", "shi_tomasi_corners", "signed_difference_image", "signed_polygon_area", "simplify_polyline", "simpson_estimate", "sobel_edges", "spearman_correlation_test", "split_channels", "square_free_factorization", "squared_distance", "stamp", "structure_tensor", "sturm_root_count", "sturm_sequence", "sturm_sign_changes", "sum_dpair", "sum_dvector", "sylvester_matrix", "t_test_one_sample", "t_test_paired", "t_test_two_sample", "taylor_series", "terrain_colors", "threshold", "to_grayscale", "to_integer", "to_rgb", "to_rgba", "total_degree", "triangulate_polygon", "unif", "value_colors", "viridis_colors", "voronoi_diagram", "westfall_young_adjust", "wilcoxon_rank_sum_test", "wilcoxon_signed_rank_test", "write_bmp", "write_pbm", "write_pgm", "write_png", "write_ppm")

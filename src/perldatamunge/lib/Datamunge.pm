@@ -56,8 +56,31 @@ package Datamunge;
 *sum_dvector = *Datamungec::sum_dvector;
 *make_dpair = *Datamungec::make_dpair;
 *sum_dpair = *Datamungec::sum_dpair;
+*data_iris = *Datamungec::data_iris;
+*data_penguins = *Datamungec::data_penguins;
+*data_tooth_growth = *Datamungec::data_tooth_growth;
+*data_wine = *Datamungec::data_wine;
+*data_titanic = *Datamungec::data_titanic;
+*data_eight_schools = *Datamungec::data_eight_schools;
+*data_air_passengers = *Datamungec::data_air_passengers;
+*data_volcano = *Datamungec::data_volcano;
+*data_faithful = *Datamungec::data_faithful;
+*data_mtcars = *Datamungec::data_mtcars;
+*data_airquality = *Datamungec::data_airquality;
+*data_breast_cancer = *Datamungec::data_breast_cancer;
+*data_diabetes = *Datamungec::data_diabetes;
+*data_digits = *Datamungec::data_digits;
+*data_diamonds = *Datamungec::data_diamonds;
+*data_california_housing = *Datamungec::data_california_housing;
+*data_load = *Datamungec::data_load;
+*data_catalog = *Datamungec::data_catalog;
+*terrain_colors = *Datamungec::terrain_colors;
+*diverging_colors = *Datamungec::diverging_colors;
+*viridis_colors = *Datamungec::viridis_colors;
+*value_colors = *Datamungec::value_colors;
 *set_seed = *Datamungec::set_seed;
 *unif = *Datamungec::unif;
+*runif = *Datamungec::runif;
 *rnorm = *Datamungec::rnorm;
 *seql = *Datamungec::seql;
 *t_test_one_sample = *Datamungec::t_test_one_sample;
@@ -66,6 +89,7 @@ package Datamunge;
 *wilcoxon_signed_rank_test = *Datamungec::wilcoxon_signed_rank_test;
 *wilcoxon_rank_sum_test = *Datamungec::wilcoxon_rank_sum_test;
 *ks_test_one_sample_normal = *Datamungec::ks_test_one_sample_normal;
+*ks_test_one_sample_uniform = *Datamungec::ks_test_one_sample_uniform;
 *ks_test_two_sample = *Datamungec::ks_test_two_sample;
 *chi_squared_goodness_of_fit = *Datamungec::chi_squared_goodness_of_fit;
 *chi_squared_test_independence = *Datamungec::chi_squared_test_independence;
@@ -73,6 +97,7 @@ package Datamunge;
 *kruskal_wallis_test = *Datamungec::kruskal_wallis_test;
 *pearson_correlation_test = *Datamungec::pearson_correlation_test;
 *spearman_correlation_test = *Datamungec::spearman_correlation_test;
+*kendall_tau = *Datamungec::kendall_tau;
 *f_test_variance = *Datamungec::f_test_variance;
 *proportion_test_one_sample = *Datamungec::proportion_test_one_sample;
 *proportion_test_two_sample = *Datamungec::proportion_test_two_sample;
@@ -82,6 +107,10 @@ package Datamunge;
 *p_adjust = *Datamungec::p_adjust;
 *westfall_young_adjust = *Datamungec::westfall_young_adjust;
 *romano_wolf_adjust = *Datamungec::romano_wolf_adjust;
+*expected_improvement = *Datamungec::expected_improvement;
+*probability_of_improvement = *Datamungec::probability_of_improvement;
+*leapfrog_gaussian_acceptance = *Datamungec::leapfrog_gaussian_acceptance;
+*gaussian_importance_efficiency = *Datamungec::gaussian_importance_efficiency;
 
 ############# Class : Datamunge::IPair ##############
 
@@ -588,12 +617,14 @@ sub new {
 *numeric_min = *Datamungec::DataFrame_numeric_min;
 *numeric_max = *Datamungec::DataFrame_numeric_max;
 *to_string = *Datamungec::DataFrame_to_string;
+*to_md = *Datamungec::DataFrame_to_md;
 *is_numeric_column = *Datamungec::DataFrame_is_numeric_column;
 *is_null = *Datamungec::DataFrame_is_null;
 *numeric_at = *Datamungec::DataFrame_numeric_at;
 *string_at = *Datamungec::DataFrame_string_at;
-*iris = *Datamungec::DataFrame_iris;
-*penguins = *Datamungec::DataFrame_penguins;
+*read_csv = *Datamungec::DataFrame_read_csv;
+*parse_csv = *Datamungec::DataFrame_parse_csv;
+*from_image_batch = *Datamungec::DataFrame_from_image_batch;
 sub DESTROY {
     return unless $_[0]->isa('HASH');
     my $self = tied(%{$_[0]});
@@ -601,6 +632,50 @@ sub DESTROY {
     delete $ITERATORS{$self};
     if (exists $OWNER{$self}) {
         Datamungec::delete_DataFrame($self);
+        delete $OWNER{$self};
+    }
+}
+
+sub DISOWN {
+    my $self = shift;
+    my $ptr = tied(%$self);
+    delete $OWNER{$ptr};
+}
+
+sub ACQUIRE {
+    my $self = shift;
+    my $ptr = tied(%$self);
+    $OWNER{$ptr} = 1;
+}
+
+
+############# Class : Datamunge::CsvReader ##############
+
+package Datamunge::CsvReader;
+use vars qw(@ISA %OWNER %ITERATORS %BLESSEDMEMBERS);
+@ISA = qw( Datamunge );
+%OWNER = ();
+%ITERATORS = ();
+sub new {
+    my $pkg = shift;
+    my $self = Datamungec::new_CsvReader(@_);
+    bless $self, $pkg if defined($self);
+}
+
+*has_next = *Datamungec::CsvReader_has_next;
+*next = *Datamungec::CsvReader_next;
+*reset = *Datamungec::CsvReader_reset;
+*batch_size = *Datamungec::CsvReader_batch_size;
+*set_batch_size = *Datamungec::CsvReader_set_batch_size;
+*column_names = *Datamungec::CsvReader_column_names;
+*rows_read = *Datamungec::CsvReader_rows_read;
+sub DESTROY {
+    return unless $_[0]->isa('HASH');
+    my $self = tied(%{$_[0]});
+    return unless defined $self;
+    delete $ITERATORS{$self};
+    if (exists $OWNER{$self}) {
+        Datamungec::delete_CsvReader($self);
         delete $OWNER{$self};
     }
 }
@@ -694,6 +769,17 @@ sub new {
 *save = *Datamungec::GGPlot_save;
 *save_svg = *Datamungec::GGPlot_save_svg;
 *show = *Datamungec::GGPlot_show;
+*rows = *Datamungec::GGPlot_rows;
+*x_column = *Datamungec::GGPlot_x_column;
+*y_column = *Datamungec::GGPlot_y_column;
+*color_column = *Datamungec::GGPlot_color_column;
+*layer_count = *Datamungec::GGPlot_layer_count;
+*layer_kinds = *Datamungec::GGPlot_layer_kinds;
+*theme_name = *Datamungec::GGPlot_theme_name;
+*facet_column = *Datamungec::GGPlot_facet_column;
+*title_text = *Datamungec::GGPlot_title_text;
+*x_label = *Datamungec::GGPlot_x_label;
+*y_label = *Datamungec::GGPlot_y_label;
 sub DESTROY {
     return unless $_[0]->isa('HASH');
     my $self = tied(%{$_[0]});
@@ -701,6 +787,67 @@ sub DESTROY {
     delete $ITERATORS{$self};
     if (exists $OWNER{$self}) {
         Datamungec::delete_GGPlot($self);
+        delete $OWNER{$self};
+    }
+}
+
+sub DISOWN {
+    my $self = shift;
+    my $ptr = tied(%$self);
+    delete $OWNER{$ptr};
+}
+
+sub ACQUIRE {
+    my $self = shift;
+    my $ptr = tied(%$self);
+    $OWNER{$ptr} = 1;
+}
+
+
+############# Class : Datamunge::Splom ##############
+
+package Datamunge::Splom;
+use vars qw(@ISA %OWNER %ITERATORS %BLESSEDMEMBERS);
+@ISA = qw( Datamunge );
+%OWNER = ();
+%ITERATORS = ();
+sub new {
+    my $pkg = shift;
+    my $self = Datamungec::new_Splom(@_);
+    bless $self, $pkg if defined($self);
+}
+
+*title = *Datamungec::Splom_title;
+*size = *Datamungec::Splom_size;
+*color = *Datamungec::Splom_color;
+*group_by = *Datamungec::Splom_group_by;
+*point_colors = *Datamungec::Splom_point_colors;
+*level_palette = *Datamungec::Splom_level_palette;
+*marker_size = *Datamungec::Splom_marker_size;
+*diagonal_names = *Datamungec::Splom_diagonal_names;
+*diagonal_density = *Datamungec::Splom_diagonal_density;
+*diagonal_histogram = *Datamungec::Splom_diagonal_histogram;
+*span = *Datamungec::Splom_span;
+*prediction_level = *Datamungec::Splom_prediction_level;
+*bins = *Datamungec::Splom_bins;
+*show_grid = *Datamungec::Splom_show_grid;
+*variables = *Datamungec::Splom_variables;
+*groups = *Datamungec::Splom_groups;
+*title_text = *Datamungec::Splom_title_text;
+*width = *Datamungec::Splom_width;
+*height = *Datamungec::Splom_height;
+*panel = *Datamungec::Splom_panel;
+*to_svg = *Datamungec::Splom_to_svg;
+*save = *Datamungec::Splom_save;
+*save_svg = *Datamungec::Splom_save_svg;
+*show = *Datamungec::Splom_show;
+sub DESTROY {
+    return unless $_[0]->isa('HASH');
+    my $self = tied(%{$_[0]});
+    return unless defined $self;
+    delete $ITERATORS{$self};
+    if (exists $OWNER{$self}) {
+        Datamungec::delete_Splom($self);
         delete $OWNER{$self};
     }
 }
@@ -995,10 +1142,12 @@ sub new {
 *confusion_matrix = *Datamungec::LDA_confusion_matrix;
 *summary = *Datamungec::LDA_summary;
 *print_summary = *Datamungec::LDA_print_summary;
+*to_md = *Datamungec::LDA_to_md;
 *predict = *Datamungec::LDA_predict;
 *predict_frame = *Datamungec::LDA_predict_frame;
 *plot_discriminants = *Datamungec::LDA_plot_discriminants;
 *save_discriminant_plot = *Datamungec::LDA_save_discriminant_plot;
+*plot_decision_regions = *Datamungec::LDA_plot_decision_regions;
 sub DESTROY {
     return unless $_[0]->isa('HASH');
     my $self = tied(%{$_[0]});
@@ -3019,6 +3168,8 @@ use vars qw(@ISA %OWNER %ITERATORS %BLESSEDMEMBERS);
 *swig_bar_width_set = *Datamungec::DataSeries_bar_width_set;
 *swig_filled_get = *Datamungec::DataSeries_filled_get;
 *swig_filled_set = *Datamungec::DataSeries_filled_set;
+*swig_point_colors_get = *Datamungec::DataSeries_point_colors_get;
+*swig_point_colors_set = *Datamungec::DataSeries_point_colors_set;
 sub new {
     my $pkg = shift;
     my $self = Datamungec::new_DataSeries(@_);
@@ -3157,6 +3308,7 @@ sub DESTROY {
 
 *size = *Datamungec::Plot_size;
 *title = *Datamungec::Plot_title;
+*subtitle = *Datamungec::Plot_subtitle;
 *x_label = *Datamungec::Plot_x_label;
 *y_label = *Datamungec::Plot_y_label;
 *background = *Datamungec::Plot_background;
@@ -3167,9 +3319,16 @@ sub DESTROY {
 *y_limits = *Datamungec::Plot_y_limits;
 *hide_axes = *Datamungec::Plot_hide_axes;
 *x_tick_labels = *Datamungec::Plot_x_tick_labels;
+*x_ticks = *Datamungec::Plot_x_ticks;
+*y_tick_labels = *Datamungec::Plot_y_tick_labels;
+*y_ticks = *Datamungec::Plot_y_ticks;
+*margins = *Datamungec::Plot_margins;
+*tick_font_size = *Datamungec::Plot_tick_font_size;
+*pretty_ticks = *Datamungec::Plot_pretty_ticks;
 *width = *Datamungec::Plot_width;
 *height = *Datamungec::Plot_height;
 *title_text = *Datamungec::Plot_title_text;
+*subtitle_text = *Datamungec::Plot_subtitle_text;
 *x_label_text = *Datamungec::Plot_x_label_text;
 *y_label_text = *Datamungec::Plot_y_label_text;
 *series = *Datamungec::Plot_series;
@@ -3185,11 +3344,25 @@ sub DESTROY {
 *y_max = *Datamungec::Plot_y_max;
 *axes_hidden = *Datamungec::Plot_axes_hidden;
 *x_tick_label_list = *Datamungec::Plot_x_tick_label_list;
+*x_tick_position_list = *Datamungec::Plot_x_tick_position_list;
+*y_tick_label_list = *Datamungec::Plot_y_tick_label_list;
+*y_tick_position_list = *Datamungec::Plot_y_tick_position_list;
 *reference_lines = *Datamungec::Plot_reference_lines;
 *legend_entries = *Datamungec::Plot_legend_entries;
+*has_custom_margins = *Datamungec::Plot_has_custom_margins;
+*margin_left = *Datamungec::Plot_margin_left;
+*margin_right = *Datamungec::Plot_margin_right;
+*margin_top = *Datamungec::Plot_margin_top;
+*margin_bottom = *Datamungec::Plot_margin_bottom;
+*tick_font_px = *Datamungec::Plot_tick_font_px;
+*pretty_ticks_enabled = *Datamungec::Plot_pretty_ticks_enabled;
 *to_svg = *Datamungec::Plot_to_svg;
 *save = *Datamungec::Plot_save;
 *save_svg = *Datamungec::Plot_save_svg;
+*to_png = *Datamungec::Plot_to_png;
+*to_pdf = *Datamungec::Plot_to_pdf;
+*save_png = *Datamungec::Plot_save_png;
+*save_pdf = *Datamungec::Plot_save_pdf;
 *view = *Datamungec::Plot_view;
 *show = *Datamungec::Plot_show;
 sub new {
@@ -3218,21 +3391,41 @@ use vars qw(@ISA %OWNER %ITERATORS %BLESSEDMEMBERS);
 @ISA = qw( Datamunge::Plot Datamunge );
 %OWNER = ();
 %ITERATORS = ();
+sub new {
+    my $pkg = shift;
+    my $self = Datamungec::new_RPlot(@_);
+    bless $self, $pkg if defined($self);
+}
+
 *create = *Datamungec::RPlot_create;
 *size = *Datamungec::RPlot_size;
 *title = *Datamungec::RPlot_title;
+*subtitle = *Datamungec::RPlot_subtitle;
 *x_label = *Datamungec::RPlot_x_label;
 *y_label = *Datamungec::RPlot_y_label;
 *xlab = *Datamungec::RPlot_xlab;
 *ylab = *Datamungec::RPlot_ylab;
+*set_title = *Datamungec::RPlot_set_title;
+*set_subtitle = *Datamungec::RPlot_set_subtitle;
+*set_xlab = *Datamungec::RPlot_set_xlab;
+*set_ylab = *Datamungec::RPlot_set_ylab;
+*set_col = *Datamungec::RPlot_set_col;
 *background = *Datamungec::RPlot_background;
 *axis_color = *Datamungec::RPlot_axis_color;
 *grid_color = *Datamungec::RPlot_grid_color;
 *show_grid = *Datamungec::RPlot_show_grid;
 *x_limits = *Datamungec::RPlot_x_limits;
 *y_limits = *Datamungec::RPlot_y_limits;
+*xlim = *Datamungec::RPlot_xlim;
+*ylim = *Datamungec::RPlot_ylim;
 *hide_axes = *Datamungec::RPlot_hide_axes;
 *x_tick_labels = *Datamungec::RPlot_x_tick_labels;
+*x_ticks = *Datamungec::RPlot_x_ticks;
+*y_tick_labels = *Datamungec::RPlot_y_tick_labels;
+*y_ticks = *Datamungec::RPlot_y_ticks;
+*margins = *Datamungec::RPlot_margins;
+*tick_font_size = *Datamungec::RPlot_tick_font_size;
+*pretty_ticks = *Datamungec::RPlot_pretty_ticks;
 *plot = *Datamungec::RPlot_plot;
 *hist = *Datamungec::RPlot_hist;
 *barplot = *Datamungec::RPlot_barplot;
@@ -3240,6 +3433,7 @@ use vars qw(@ISA %OWNER %ITERATORS %BLESSEDMEMBERS);
 *pie = *Datamungec::RPlot_pie;
 *curve = *Datamungec::RPlot_curve;
 *qqnorm = *Datamungec::RPlot_qqnorm;
+*points_colored = *Datamungec::RPlot_points_colored;
 *line = *Datamungec::RPlot_line;
 *points = *Datamungec::RPlot_points;
 *lines = *Datamungec::RPlot_lines;
@@ -3252,13 +3446,8 @@ use vars qw(@ISA %OWNER %ITERATORS %BLESSEDMEMBERS);
 *legend = *Datamungec::RPlot_legend;
 *text = *Datamungec::RPlot_text;
 *polygon = *Datamungec::RPlot_polygon;
+*image = *Datamungec::RPlot_image;
 *segments = *Datamungec::RPlot_segments;
-sub new {
-    my $pkg = shift;
-    my $self = Datamungec::new_RPlot(@_);
-    bless $self, $pkg if defined($self);
-}
-
 sub DESTROY {
     return unless $_[0]->isa('HASH');
     my $self = tied(%{$_[0]});
@@ -3290,12 +3479,31 @@ use vars qw(@ISA %OWNER %ITERATORS %BLESSEDMEMBERS);
 @ISA = qw( Datamunge );
 %OWNER = ();
 %ITERATORS = ();
+*title_band_px = *Datamungec::RLayout_title_band_px;
+*title_band_px = *Datamungec::RLayout_title_band_px;
+*min_panel_px = *Datamungec::RLayout_min_panel_px;
+*min_panel_px = *Datamungec::RLayout_min_panel_px;
 *create = *Datamungec::RLayout_create;
 *add = *Datamungec::RLayout_add;
 *size = *Datamungec::RLayout_size;
+*title = *Datamungec::RLayout_title;
+*rows = *Datamungec::RLayout_rows;
+*cols = *Datamungec::RLayout_cols;
+*width = *Datamungec::RLayout_width;
+*height = *Datamungec::RLayout_height;
+*panel_count = *Datamungec::RLayout_panel_count;
+*title_text = *Datamungec::RLayout_title_text;
+*panel = *Datamungec::RLayout_panel;
 *to_svg = *Datamungec::RLayout_to_svg;
 *save = *Datamungec::RLayout_save;
 *save_svg = *Datamungec::RLayout_save_svg;
+*to_png = *Datamungec::RLayout_to_png;
+*to_pdf = *Datamungec::RLayout_to_pdf;
+*save_png = *Datamungec::RLayout_save_png;
+*save_pdf = *Datamungec::RLayout_save_pdf;
+*fit_panels = *Datamungec::RLayout_fit_panels;
+*show = *Datamungec::RLayout_show;
+*view = *Datamungec::RLayout_view;
 sub new {
     my $pkg = shift;
     my $self = Datamungec::new_RLayout(@_);
@@ -3509,6 +3717,9 @@ sub new {
 *fitted_values = *Datamungec::ARIMA_fitted_values;
 *residuals = *Datamungec::ARIMA_residuals;
 *forecast = *Datamungec::ARIMA_forecast;
+*expanded_ar_coefficients = *Datamungec::ARIMA_expanded_ar_coefficients;
+*expanded_ma_coefficients = *Datamungec::ARIMA_expanded_ma_coefficients;
+*psi_weights = *Datamungec::ARIMA_psi_weights;
 *forecast_with_intervals = *Datamungec::ARIMA_forecast_with_intervals;
 sub DESTROY {
     return unless $_[0]->isa('HASH');
@@ -3684,6 +3895,57 @@ sub DESTROY {
     delete $ITERATORS{$self};
     if (exists $OWNER{$self}) {
         Datamungec::delete_HypothesisTestResult($self);
+        delete $OWNER{$self};
+    }
+}
+
+sub DISOWN {
+    my $self = shift;
+    my $ptr = tied(%$self);
+    delete $OWNER{$ptr};
+}
+
+sub ACQUIRE {
+    my $self = shift;
+    my $ptr = tied(%$self);
+    $OWNER{$ptr} = 1;
+}
+
+
+############# Class : Datamunge::KendallTau ##############
+
+package Datamunge::KendallTau;
+use vars qw(@ISA %OWNER %ITERATORS %BLESSEDMEMBERS);
+@ISA = qw( Datamunge );
+%OWNER = ();
+%ITERATORS = ();
+*swig_concordant_get = *Datamungec::KendallTau_concordant_get;
+*swig_concordant_set = *Datamungec::KendallTau_concordant_set;
+*swig_discordant_get = *Datamungec::KendallTau_discordant_get;
+*swig_discordant_set = *Datamungec::KendallTau_discordant_set;
+*swig_ties_x_get = *Datamungec::KendallTau_ties_x_get;
+*swig_ties_x_set = *Datamungec::KendallTau_ties_x_set;
+*swig_ties_y_get = *Datamungec::KendallTau_ties_y_get;
+*swig_ties_y_set = *Datamungec::KendallTau_ties_y_set;
+*swig_ties_xy_get = *Datamungec::KendallTau_ties_xy_get;
+*swig_ties_xy_set = *Datamungec::KendallTau_ties_xy_set;
+*swig_tau_a_get = *Datamungec::KendallTau_tau_a_get;
+*swig_tau_a_set = *Datamungec::KendallTau_tau_a_set;
+*swig_tau_b_get = *Datamungec::KendallTau_tau_b_get;
+*swig_tau_b_set = *Datamungec::KendallTau_tau_b_set;
+sub new {
+    my $pkg = shift;
+    my $self = Datamungec::new_KendallTau(@_);
+    bless $self, $pkg if defined($self);
+}
+
+sub DESTROY {
+    return unless $_[0]->isa('HASH');
+    my $self = tied(%{$_[0]});
+    return unless defined $self;
+    delete $ITERATORS{$self};
+    if (exists $OWNER{$self}) {
+        Datamungec::delete_KendallTau($self);
         delete $OWNER{$self};
     }
 }
@@ -4291,6 +4553,7 @@ sub new {
 }
 
 *optimize = *Datamungec::GradientDescent_optimize;
+*options = *Datamungec::GradientDescent_options;
 sub DESTROY {
     return unless $_[0]->isa('HASH');
     my $self = tied(%{$_[0]});
@@ -4378,6 +4641,7 @@ sub new {
 }
 
 *optimize = *Datamungec::Adam_optimize;
+*options = *Datamungec::Adam_options;
 sub DESTROY {
     return unless $_[0]->isa('HASH');
     my $self = tied(%{$_[0]});
@@ -4461,6 +4725,7 @@ sub new {
 }
 
 *optimize = *Datamungec::AdaGrad_optimize;
+*options = *Datamungec::AdaGrad_options;
 sub DESTROY {
     return unless $_[0]->isa('HASH');
     my $self = tied(%{$_[0]});
@@ -4544,6 +4809,7 @@ sub new {
 }
 
 *optimize = *Datamungec::AdaDelta_optimize;
+*options = *Datamungec::AdaDelta_options;
 sub DESTROY {
     return unless $_[0]->isa('HASH');
     my $self = tied(%{$_[0]});
@@ -4631,6 +4897,7 @@ sub new {
 }
 
 *optimize = *Datamungec::AMSGrad_optimize;
+*options = *Datamungec::AMSGrad_options;
 sub DESTROY {
     return unless $_[0]->isa('HASH');
     my $self = tied(%{$_[0]});
@@ -4718,6 +4985,7 @@ sub new {
 }
 
 *optimize = *Datamungec::Nadam_optimize;
+*options = *Datamungec::Nadam_options;
 sub DESTROY {
     return unless $_[0]->isa('HASH');
     my $self = tied(%{$_[0]});
@@ -4803,6 +5071,7 @@ sub new {
 }
 
 *optimize = *Datamungec::RMSProp_optimize;
+*options = *Datamungec::RMSProp_options;
 sub DESTROY {
     return unless $_[0]->isa('HASH');
     my $self = tied(%{$_[0]});
@@ -4890,6 +5159,7 @@ sub new {
 }
 
 *optimize = *Datamungec::LBFGS_optimize;
+*options = *Datamungec::LBFGS_options;
 sub DESTROY {
     return unless $_[0]->isa('HASH');
     my $self = tied(%{$_[0]});
@@ -4979,6 +5249,7 @@ sub new {
 }
 
 *optimize = *Datamungec::NelderMead_optimize;
+*options = *Datamungec::NelderMead_options;
 sub DESTROY {
     return unless $_[0]->isa('HASH');
     my $self = tied(%{$_[0]});
@@ -5066,6 +5337,7 @@ sub new {
 }
 
 *optimize = *Datamungec::SGD_optimize;
+*options = *Datamungec::SGD_options;
 sub DESTROY {
     return unless $_[0]->isa('HASH');
     my $self = tied(%{$_[0]});
@@ -5151,6 +5423,7 @@ sub new {
 }
 
 *optimize = *Datamungec::SVRG_optimize;
+*options = *Datamungec::SVRG_options;
 sub DESTROY {
     return unless $_[0]->isa('HASH');
     my $self = tied(%{$_[0]});
@@ -5234,6 +5507,7 @@ sub new {
 }
 
 *optimize = *Datamungec::SAGA_optimize;
+*options = *Datamungec::SAGA_options;
 sub DESTROY {
     return unless $_[0]->isa('HASH');
     my $self = tied(%{$_[0]});
@@ -5321,6 +5595,7 @@ sub new {
 }
 
 *optimize = *Datamungec::CoordinateDescent_optimize;
+*options = *Datamungec::CoordinateDescent_options;
 sub DESTROY {
     return unless $_[0]->isa('HASH');
     my $self = tied(%{$_[0]});
@@ -5412,6 +5687,7 @@ sub new {
 }
 
 *optimize = *Datamungec::RandomizedBlockCoordinateDescent_optimize;
+*options = *Datamungec::RandomizedBlockCoordinateDescent_options;
 sub DESTROY {
     return unless $_[0]->isa('HASH');
     my $self = tied(%{$_[0]});
@@ -5495,6 +5771,7 @@ sub new {
 }
 
 *optimize = *Datamungec::NesterovAcceleratedGradient_optimize;
+*options = *Datamungec::NesterovAcceleratedGradient_options;
 sub DESTROY {
     return unless $_[0]->isa('HASH');
     my $self = tied(%{$_[0]});
@@ -5580,6 +5857,7 @@ sub new {
 }
 
 *optimize = *Datamungec::ConjugateGradient_optimize;
+*options = *Datamungec::ConjugateGradient_options;
 sub DESTROY {
     return unless $_[0]->isa('HASH');
     my $self = tied(%{$_[0]});
@@ -5665,6 +5943,7 @@ sub new {
 }
 
 *optimize = *Datamungec::CMAES_optimize;
+*options = *Datamungec::CMAES_options;
 sub DESTROY {
     return unless $_[0]->isa('HASH');
     my $self = tied(%{$_[0]});
@@ -5750,6 +6029,7 @@ sub new {
 }
 
 *optimize = *Datamungec::SimulatedAnnealing_optimize;
+*options = *Datamungec::SimulatedAnnealing_options;
 sub DESTROY {
     return unless $_[0]->isa('HASH');
     my $self = tied(%{$_[0]});
@@ -5847,6 +6127,7 @@ sub new {
 }
 
 *optimize = *Datamungec::PSO_optimize;
+*options = *Datamungec::PSO_options;
 sub DESTROY {
     return unless $_[0]->isa('HASH');
     my $self = tied(%{$_[0]});
@@ -5938,6 +6219,7 @@ sub new {
 }
 
 *optimize = *Datamungec::DifferentialEvolution_optimize;
+*options = *Datamungec::DifferentialEvolution_options;
 sub DESTROY {
     return unless $_[0]->isa('HASH');
     my $self = tied(%{$_[0]});
@@ -6039,6 +6321,7 @@ sub new {
 }
 
 *optimize = *Datamungec::GeneticAlgorithm_optimize;
+*options = *Datamungec::GeneticAlgorithm_options;
 sub DESTROY {
     return unless $_[0]->isa('HASH');
     my $self = tied(%{$_[0]});
@@ -6128,6 +6411,7 @@ sub new {
 }
 
 *optimize = *Datamungec::ACOR_optimize;
+*options = *Datamungec::ACOR_options;
 sub DESTROY {
     return unless $_[0]->isa('HASH');
     my $self = tied(%{$_[0]});
@@ -6213,6 +6497,7 @@ sub new {
 }
 
 *optimize = *Datamungec::ArtificialBeeColony_optimize;
+*options = *Datamungec::ArtificialBeeColony_options;
 sub DESTROY {
     return unless $_[0]->isa('HASH');
     my $self = tied(%{$_[0]});
@@ -6302,6 +6587,7 @@ sub new {
 }
 
 *optimize = *Datamungec::CrossEntropyMethod_optimize;
+*options = *Datamungec::CrossEntropyMethod_options;
 sub DESTROY {
     return unless $_[0]->isa('HASH');
     my $self = tied(%{$_[0]});
@@ -6391,6 +6677,7 @@ sub new {
 }
 
 *optimize = *Datamungec::CuckooSearch_optimize;
+*options = *Datamungec::CuckooSearch_options;
 sub DESTROY {
     return unless $_[0]->isa('HASH');
     my $self = tied(%{$_[0]});
@@ -6480,6 +6767,7 @@ sub new {
 }
 
 *optimize = *Datamungec::EstimationOfDistribution_optimize;
+*options = *Datamungec::EstimationOfDistribution_options;
 sub DESTROY {
     return unless $_[0]->isa('HASH');
     my $self = tied(%{$_[0]});
@@ -6569,6 +6857,7 @@ sub new {
 }
 
 *optimize = *Datamungec::EvolutionStrategy_optimize;
+*options = *Datamungec::EvolutionStrategy_options;
 sub DESTROY {
     return unless $_[0]->isa('HASH');
     my $self = tied(%{$_[0]});
@@ -6660,6 +6949,7 @@ sub new {
 }
 
 *optimize = *Datamungec::FireflyAlgorithm_optimize;
+*options = *Datamungec::FireflyAlgorithm_options;
 sub DESTROY {
     return unless $_[0]->isa('HASH');
     my $self = tied(%{$_[0]});
@@ -6743,6 +7033,7 @@ sub new {
 }
 
 *optimize = *Datamungec::GreyWolfOptimizer_optimize;
+*options = *Datamungec::GreyWolfOptimizer_options;
 sub DESTROY {
     return unless $_[0]->isa('HASH');
     my $self = tied(%{$_[0]});
@@ -6832,6 +7123,7 @@ sub new {
 }
 
 *optimize = *Datamungec::HarmonySearch_optimize;
+*options = *Datamungec::HarmonySearch_options;
 sub DESTROY {
     return unless $_[0]->isa('HASH');
     my $self = tied(%{$_[0]});
@@ -6921,6 +7213,7 @@ sub new {
 }
 
 *optimize = *Datamungec::ParallelTempering_optimize;
+*options = *Datamungec::ParallelTempering_options;
 sub DESTROY {
     return unless $_[0]->isa('HASH');
     my $self = tied(%{$_[0]});
@@ -7006,6 +7299,7 @@ sub new {
 }
 
 *optimize = *Datamungec::WhaleOptimization_optimize;
+*options = *Datamungec::WhaleOptimization_options;
 sub DESTROY {
     return unless $_[0]->isa('HASH');
     my $self = tied(%{$_[0]});
@@ -7087,6 +7381,7 @@ sub new {
 }
 
 *optimize = *Datamungec::FISTA_optimize;
+*options = *Datamungec::FISTA_options;
 sub DESTROY {
     return unless $_[0]->isa('HASH');
     my $self = tied(%{$_[0]});
@@ -7168,6 +7463,7 @@ sub new {
 }
 
 *optimize = *Datamungec::ProximalGradient_optimize;
+*options = *Datamungec::ProximalGradient_options;
 sub DESTROY {
     return unless $_[0]->isa('HASH');
     my $self = tied(%{$_[0]});
@@ -7249,6 +7545,7 @@ sub new {
 }
 
 *optimize = *Datamungec::LevenbergMarquardt_optimize;
+*options = *Datamungec::LevenbergMarquardt_options;
 sub DESTROY {
     return unless $_[0]->isa('HASH');
     my $self = tied(%{$_[0]});
@@ -7330,6 +7627,7 @@ sub new {
 }
 
 *optimize = *Datamungec::Newton_optimize;
+*options = *Datamungec::Newton_options;
 sub DESTROY {
     return unless $_[0]->isa('HASH');
     my $self = tied(%{$_[0]});
@@ -7413,6 +7711,7 @@ sub new {
 }
 
 *optimize = *Datamungec::TrustRegionNewton_optimize;
+*options = *Datamungec::TrustRegionNewton_options;
 sub DESTROY {
     return unless $_[0]->isa('HASH');
     my $self = tied(%{$_[0]});
@@ -7498,6 +7797,7 @@ sub new {
 }
 
 *optimize = *Datamungec::AugmentedLagrangian_optimize;
+*options = *Datamungec::AugmentedLagrangian_options;
 sub DESTROY {
     return unless $_[0]->isa('HASH');
     my $self = tied(%{$_[0]});
@@ -7581,6 +7881,7 @@ sub new {
 }
 
 *optimize = *Datamungec::SQP_optimize;
+*options = *Datamungec::SQP_options;
 sub DESTROY {
     return unless $_[0]->isa('HASH');
     my $self = tied(%{$_[0]});
@@ -7666,6 +7967,7 @@ sub new {
 }
 
 *optimize = *Datamungec::InteriorPoint_optimize;
+*options = *Datamungec::InteriorPoint_options;
 sub DESTROY {
     return unless $_[0]->isa('HASH');
     my $self = tied(%{$_[0]});
@@ -7762,6 +8064,10 @@ use vars qw(@ISA %OWNER %ITERATORS %BLESSEDMEMBERS);
 *swig_max_iterations_set = *Datamungec::BayesianOptimizationOptions_max_iterations_set;
 *swig_seed_get = *Datamungec::BayesianOptimizationOptions_seed_get;
 *swig_seed_set = *Datamungec::BayesianOptimizationOptions_seed_set;
+*swig_candidates_get = *Datamungec::BayesianOptimizationOptions_candidates_get;
+*swig_candidates_set = *Datamungec::BayesianOptimizationOptions_candidates_set;
+*swig_refine_iterations_get = *Datamungec::BayesianOptimizationOptions_refine_iterations_get;
+*swig_refine_iterations_set = *Datamungec::BayesianOptimizationOptions_refine_iterations_set;
 sub new {
     my $pkg = shift;
     my $self = Datamungec::new_BayesianOptimizationOptions(@_);
@@ -7792,6 +8098,55 @@ sub ACQUIRE {
 }
 
 
+############# Class : Datamunge::BayesianOptimizationResult ##############
+
+package Datamunge::BayesianOptimizationResult;
+use vars qw(@ISA %OWNER %ITERATORS %BLESSEDMEMBERS);
+@ISA = qw( Datamunge );
+%OWNER = ();
+%ITERATORS = ();
+*swig_best_point_get = *Datamungec::BayesianOptimizationResult_best_point_get;
+*swig_best_point_set = *Datamungec::BayesianOptimizationResult_best_point_set;
+*swig_best_value_get = *Datamungec::BayesianOptimizationResult_best_value_get;
+*swig_best_value_set = *Datamungec::BayesianOptimizationResult_best_value_set;
+*swig_points_get = *Datamungec::BayesianOptimizationResult_points_get;
+*swig_points_set = *Datamungec::BayesianOptimizationResult_points_set;
+*swig_values_get = *Datamungec::BayesianOptimizationResult_values_get;
+*swig_values_set = *Datamungec::BayesianOptimizationResult_values_set;
+*swig_best_values_get = *Datamungec::BayesianOptimizationResult_best_values_get;
+*swig_best_values_set = *Datamungec::BayesianOptimizationResult_best_values_set;
+*swig_acquisition_values_get = *Datamungec::BayesianOptimizationResult_acquisition_values_get;
+*swig_acquisition_values_set = *Datamungec::BayesianOptimizationResult_acquisition_values_set;
+sub new {
+    my $pkg = shift;
+    my $self = Datamungec::new_BayesianOptimizationResult(@_);
+    bless $self, $pkg if defined($self);
+}
+
+sub DESTROY {
+    return unless $_[0]->isa('HASH');
+    my $self = tied(%{$_[0]});
+    return unless defined $self;
+    delete $ITERATORS{$self};
+    if (exists $OWNER{$self}) {
+        Datamungec::delete_BayesianOptimizationResult($self);
+        delete $OWNER{$self};
+    }
+}
+
+sub DISOWN {
+    my $self = shift;
+    my $ptr = tied(%$self);
+    delete $OWNER{$ptr};
+}
+
+sub ACQUIRE {
+    my $self = shift;
+    my $ptr = tied(%$self);
+    $OWNER{$ptr} = 1;
+}
+
+
 ############# Class : Datamunge::BayesianOptimization ##############
 
 package Datamunge::BayesianOptimization;
@@ -7805,7 +8160,9 @@ sub new {
     bless $self, $pkg if defined($self);
 }
 
+*run = *Datamungec::BayesianOptimization_run;
 *optimize = *Datamungec::BayesianOptimization_optimize;
+*options = *Datamungec::BayesianOptimization_options;
 sub DESTROY {
     return unless $_[0]->isa('HASH');
     my $self = tied(%{$_[0]});
@@ -7813,6 +8170,47 @@ sub DESTROY {
     delete $ITERATORS{$self};
     if (exists $OWNER{$self}) {
         Datamungec::delete_BayesianOptimization($self);
+        delete $OWNER{$self};
+    }
+}
+
+sub DISOWN {
+    my $self = shift;
+    my $ptr = tied(%$self);
+    delete $OWNER{$ptr};
+}
+
+sub ACQUIRE {
+    my $self = shift;
+    my $ptr = tied(%$self);
+    $OWNER{$ptr} = 1;
+}
+
+
+############# Class : Datamunge::SurrogatePrediction ##############
+
+package Datamunge::SurrogatePrediction;
+use vars qw(@ISA %OWNER %ITERATORS %BLESSEDMEMBERS);
+@ISA = qw( Datamunge );
+%OWNER = ();
+%ITERATORS = ();
+*swig_mean_get = *Datamungec::SurrogatePrediction_mean_get;
+*swig_mean_set = *Datamungec::SurrogatePrediction_mean_set;
+*swig_sd_get = *Datamungec::SurrogatePrediction_sd_get;
+*swig_sd_set = *Datamungec::SurrogatePrediction_sd_set;
+sub new {
+    my $pkg = shift;
+    my $self = Datamungec::new_SurrogatePrediction(@_);
+    bless $self, $pkg if defined($self);
+}
+
+sub DESTROY {
+    return unless $_[0]->isa('HASH');
+    my $self = tied(%{$_[0]});
+    return unless defined $self;
+    delete $ITERATORS{$self};
+    if (exists $OWNER{$self}) {
+        Datamungec::delete_SurrogatePrediction($self);
         delete $OWNER{$self};
     }
 }
@@ -7845,6 +8243,15 @@ sub new {
 
 *fit = *Datamungec::RBFGaussianProcessSurrogate_fit;
 *acquisition = *Datamungec::RBFGaussianProcessSurrogate_acquisition;
+*predict = *Datamungec::RBFGaussianProcessSurrogate_predict;
+*log_marginal_likelihood = *Datamungec::RBFGaussianProcessSurrogate_log_marginal_likelihood;
+*length_scale = *Datamungec::RBFGaussianProcessSurrogate_length_scale;
+*noise = *Datamungec::RBFGaussianProcessSurrogate_noise;
+*signal_variance = *Datamungec::RBFGaussianProcessSurrogate_signal_variance;
+*prior_mean = *Datamungec::RBFGaussianProcessSurrogate_prior_mean;
+*value_scale = *Datamungec::RBFGaussianProcessSurrogate_value_scale;
+*points = *Datamungec::RBFGaussianProcessSurrogate_points;
+*values = *Datamungec::RBFGaussianProcessSurrogate_values;
 sub DESTROY {
     return unless $_[0]->isa('HASH');
     my $self = tied(%{$_[0]});
@@ -7926,6 +8333,7 @@ sub new {
 }
 
 *optimize = *Datamungec::MAP_optimize;
+*options = *Datamungec::MAP_options;
 sub DESTROY {
     return unless $_[0]->isa('HASH');
     my $self = tied(%{$_[0]});
@@ -8056,6 +8464,7 @@ sub new {
 }
 
 *sample = *Datamungec::HMC_sample;
+*options = *Datamungec::HMC_options;
 sub DESTROY {
     return unless $_[0]->isa('HASH');
     my $self = tied(%{$_[0]});
@@ -8146,6 +8555,14 @@ use vars qw(@ISA %OWNER %ITERATORS %BLESSEDMEMBERS);
 *swig_final_step_size_set = *Datamungec::NUTSResult_final_step_size_set;
 *swig_num_divergences_get = *Datamungec::NUTSResult_num_divergences_get;
 *swig_num_divergences_set = *Datamungec::NUTSResult_num_divergences_set;
+*swig_divergent_get = *Datamungec::NUTSResult_divergent_get;
+*swig_divergent_set = *Datamungec::NUTSResult_divergent_set;
+*swig_tree_depth_get = *Datamungec::NUTSResult_tree_depth_get;
+*swig_tree_depth_set = *Datamungec::NUTSResult_tree_depth_set;
+*swig_n_leapfrog_get = *Datamungec::NUTSResult_n_leapfrog_get;
+*swig_n_leapfrog_set = *Datamungec::NUTSResult_n_leapfrog_set;
+*swig_energy_get = *Datamungec::NUTSResult_energy_get;
+*swig_energy_set = *Datamungec::NUTSResult_energy_set;
 sub new {
     my $pkg = shift;
     my $self = Datamungec::new_NUTSResult(@_);
@@ -8190,6 +8607,7 @@ sub new {
 }
 
 *sample = *Datamungec::NUTS_sample;
+*options = *Datamungec::NUTS_options;
 sub DESTROY {
     return unless $_[0]->isa('HASH');
     my $self = tied(%{$_[0]});
@@ -8231,6 +8649,8 @@ use vars qw(@ISA %OWNER %ITERATORS %BLESSEDMEMBERS);
 *swig_target_accept_rate_set = *Datamungec::RWMOptions_target_accept_rate_set;
 *swig_seed_get = *Datamungec::RWMOptions_seed_get;
 *swig_seed_set = *Datamungec::RWMOptions_seed_set;
+*swig_adapt_covariance_get = *Datamungec::RWMOptions_adapt_covariance_get;
+*swig_adapt_covariance_set = *Datamungec::RWMOptions_adapt_covariance_set;
 sub new {
     my $pkg = shift;
     my $self = Datamungec::new_RWMOptions(@_);
@@ -8274,6 +8694,8 @@ use vars qw(@ISA %OWNER %ITERATORS %BLESSEDMEMBERS);
 *swig_accept_rate_set = *Datamungec::RWMResult_accept_rate_set;
 *swig_final_step_size_get = *Datamungec::RWMResult_final_step_size_get;
 *swig_final_step_size_set = *Datamungec::RWMResult_final_step_size_set;
+*swig_proposal_covariance_get = *Datamungec::RWMResult_proposal_covariance_get;
+*swig_proposal_covariance_set = *Datamungec::RWMResult_proposal_covariance_set;
 sub new {
     my $pkg = shift;
     my $self = Datamungec::new_RWMResult(@_);
@@ -8318,6 +8740,7 @@ sub new {
 }
 
 *sample = *Datamungec::RandomWalkMetropolis_sample;
+*options = *Datamungec::RandomWalkMetropolis_options;
 sub DESTROY {
     return unless $_[0]->isa('HASH');
     my $self = tied(%{$_[0]});
@@ -8446,6 +8869,7 @@ sub new {
 }
 
 *sample = *Datamungec::GibbsSampler_sample;
+*options = *Datamungec::GibbsSampler_options;
 sub DESTROY {
     return unless $_[0]->isa('HASH');
     my $self = tied(%{$_[0]});
@@ -8570,6 +8994,7 @@ sub new {
 }
 
 *sample = *Datamungec::ImportanceSampling_sample;
+*options = *Datamungec::ImportanceSampling_options;
 sub DESTROY {
     return unless $_[0]->isa('HASH');
     my $self = tied(%{$_[0]});
@@ -8734,6 +9159,7 @@ sub new {
 
 *solve = *Datamungec::ODESolver_solve;
 *solve_builtin = *Datamungec::ODESolver_solve_builtin;
+*options = *Datamungec::ODESolver_options;
 sub DESTROY {
     return unless $_[0]->isa('HASH');
     my $self = tied(%{$_[0]});

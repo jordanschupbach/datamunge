@@ -1,3 +1,5 @@
+// CMD: just TARGET=bayes_sampling_ex run-cpp
+
 #include <datamunge/bayes/bayes.hpp>
 #include <datamunge/optim/function_types.hpp>
 

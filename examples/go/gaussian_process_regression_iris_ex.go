@@ -1,3 +1,5 @@
+// CMD: just TARGET=gaussian_process_regression_iris_ex run-go
+
 package main
 
 import (
@@ -16,7 +18,7 @@ func dvector(values []float64) datamunge.DVector {
 func main() {
 	FORMULA := "Petal.Length ~ Petal.Width"
 
-	iris := datamunge.DataFrameIris()
+	iris := datamunge.DataIris()
 	fmt.Printf("iris: %d rows x %d cols\n", iris.Nrows(), iris.Ncols())
 	fmt.Printf("formula: %s\n\n", FORMULA)
 

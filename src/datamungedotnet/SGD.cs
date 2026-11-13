@@ -9,7 +9,17 @@
 //------------------------------------------------------------------------------
 
 
-/// <summary>Stochastic (mini-batch) gradient descent on a DifferentiableSeparableFunction: each        step updates coordinates from the average gradient of one shuffled mini-batch of        terms, rather than the full objective's gradient.</summary>
+/// <summary>SGD on the DifferentiableSeparableFunction callback interface. Uses the mean gradient of each mini-batch, reshuffling component indices each epoch when enabled. Full objective remains the sum of components. Stops on absolute full-objective change per epoch. Nonempty components and positive batch_size are required; seeds reproduce the same build, not a cross-library shuffle transcript. The caller supplies finite, dimensionally consistent callbacks. Inputs are borrowed; coordinates mutate in place and can retain a partial state if a callback throws. Calls use local optimizer state and propagate callback exceptions; sharing a mutable objective across threads requires external synchronisation. Normal return alone is not a uniform convergence certificate.</summary>
+/// Title: Example
+/// <code>      const dm::optim::SGD optimizer;
+///      std::print("{}\n",optimizer.options().max_epochs); // 100</code>
+///
+///
+///
+/// Title: References
+///  - H. Robbins and S. Monro (1951), A Stochastic Approximation Method, https://doi.org/10.1214/aoms/1177729586. The fixed-rate reshuffling variant here differs from their decreasing-step stochastic approximation.
+///
+/// <seealso cref="SGDOptions, trace_optimize"/>
 public class SGD : global::System.IDisposable {
   private global::System.Runtime.InteropServices.HandleRef swigCPtr;
   protected bool swigCMemOwn;
@@ -57,16 +67,56 @@ public class SGD : global::System.IDisposable {
     }
   }
 
+  /// <summary>Store a copy of the controls without running the objective.</summary>
+  /// <param name="options"> Method-specific controls; defaults are listed by SGDOptions.</param> 
+  /// Title: Example
+  /// <code>      const dm::optim::SGD optimizer;
+  ///      std::print("{}\n",optimizer.options().max_epochs); // 100</code>
+  ///
+  ///
+  ///
+  /// <seealso cref="optimize"/>
   public SGD(SGDOptions options) : this(datamungePINVOKE.new_SGD__SWIG_0(SGDOptions.getCPtr(options)), true) {
     if (datamungePINVOKE.SWIGPendingException.Pending) throw datamungePINVOKE.SWIGPendingException.Retrieve();
   }
 
+  /// <summary>Store a copy of the controls without running the objective.</summary>
+  /// Title: Example
+  /// <code>      const dm::optim::SGD optimizer;
+  ///      std::print("{}\n",optimizer.options().max_epochs); // 100</code>
+  ///
+  ///
+  ///
+  /// <seealso cref="optimize"/>
   public SGD() : this(datamungePINVOKE.new_SGD__SWIG_1(), true) {
   }
 
+  /// <summary>Run SGD from the supplied point using the configured finite budget. Uses the mean gradient of each mini-batch, reshuffling component indices each epoch when enabled. Full objective remains the sum of components. Stops on absolute full-objective change per epoch. Nonempty components and positive batch_size are required; seeds reproduce the same build, not a cross-library shuffle transcript.</summary>
+  /// <param name="function"> Borrowed DifferentiableSeparableFunction with matching finite output shapes.</param> 
+  /// <param name="coordinates"> Owned-by-caller finite start; overwritten with the native returned point.</param> 
+  /// <returns>Objective at the native returned coordinates; not a stop-status code.</returns> 
+  /// <exception cref="std::invalid_argument"> SGD: batch_size must be positive; SGD::optimize: function has zero terms.</exception> 
+  /// <exception cref="std::exception"> Exceptions from supplied callbacks propagate. Raw solvers do not uniformly reject nonfinite inputs.</exception> 
+  /// Title: Example
+  /// <code>      dm::optim::LeastSquaresObjective f({{1},{1}},{1,3});
+  ///      dm::optim::SGDOptions controls;controls.max_epochs=5;
+  ///      std::vector&lt;double&gt; x{0};
+  ///      const auto value=dm::optim::SGD(controls).optimize(f,x);
+  ///      std::print("{}\n",std::isfinite(value)); // true</code>
+  ///
+  ///
+  ///
+  /// <seealso cref="trace_optimize"/>
   public double optimize(DifferentiableSeparableFunction function, DVector coordinates) {
     double ret = datamungePINVOKE.SGD_optimize(swigCPtr, DifferentiableSeparableFunction.getCPtr(function), DVector.getCPtr(coordinates));
     if (datamungePINVOKE.SWIGPendingException.Pending) throw datamungePINVOKE.SWIGPendingException.Retrieve();
+    return ret;
+  }
+
+  /// <summary>Borrow this optimizer's stored configuration.</summary>
+  /// <returns>Const option reference, valid during this object's lifetime; no mutation.</returns>
+  public SGDOptions options() {
+    SGDOptions ret = new SGDOptions(datamungePINVOKE.SGD_options(swigCPtr), false);
     return ret;
   }
 

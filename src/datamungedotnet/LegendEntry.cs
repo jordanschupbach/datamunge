@@ -9,8 +9,24 @@
 //------------------------------------------------------------------------------
 
 
-/// One manually-specified legend row, as drawn by R's `legend()`. When a plot has any manual
-/// entries, they replace the default auto-generated (one-row-per-labeled-series) legend.
+/// <summary>One manually specified legend row, as drawn by R's `legend()`.</summary>
+///  When a plot has any manual entries, they replace the default auto-generated
+///  (one-row-per-labeled-series) legend. Each row is a color swatch followed by the label,
+///  stacked from the top-right corner of the plotting area in insertion order.
+///
+/// Title: Example
+/// <code>      auto plt = dm::Plot(dm::c(1.0, 2.0), dm::c(1.0, 2.0)).legend({"data"}, {dm::RGB{0, 0, 255}});
+///      std::print("{} {}\n", plt.legend_entries()[0].label, plt.legend_entries()[0].color.b);  // data 255</code>
+///
+///
+///
+///
+/// Title: References
+///  - R `legend()`: https://stat.ethz.ch/R-manual/R-devel/library/graphics/html/legend.html
+///
+///
+///
+/// <seealso cref="RPlot.legend"/>
 public class LegendEntry : global::System.IDisposable {
   private global::System.Runtime.InteropServices.HandleRef swigCPtr;
   protected bool swigCMemOwn;
@@ -58,6 +74,7 @@ public class LegendEntry : global::System.IDisposable {
     }
   }
 
+  ///  Row text.
   public string label {
     set {
       datamungePINVOKE.LegendEntry_label_set(swigCPtr, value);

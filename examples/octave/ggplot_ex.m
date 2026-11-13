@@ -1,3 +1,5 @@
+% CMD: just TARGET=ggplot_ex run-octave
+
 1;
 
 % Demonstrates GGPlot -- the ggplot2-style grammar-of-graphics library.
@@ -11,7 +13,7 @@ function c = rgb(r, g, b)
   RGB_b_set(c, b);
 endfunction
 
-iris = DataFrame_iris();
+iris = data_iris();
 
 % ggplot(iris, aes(x = Sepal.Length, y = Sepal.Width, color = Species)) + geom_point()
 scatter = GGPlot(iris, "Sepal.Length", "Sepal.Width", "Species");

@@ -1,3 +1,5 @@
+;; CMD: just TARGET=optim_advanced_ex run-lisp
+
 ;;;; Advanced datamunge optimizers (ProximalGradient, FISTA, LevenbergMarquardt, Newton, TrustRegionNewton,
 ;;;; AugmentedLagrangian, SQP, InteriorPoint, BayesianOptimization, RBFGaussianProcessSurrogate) from Lisp.
 ;;;;

@@ -1,10 +1,12 @@
+# CMD: just TARGET=glmm_ex run-ruby
+
 require "octruby"
 
 puts "=================== Binomial (logistic) mixed model on a real dataset (penguins) ===================\n"
 # Predicting sex from body mass, grouped by island: unlike species (which is almost perfectly
 # confounded with island in this dataset -- Gentoo penguins occur on Biscoe island only), sex
 # is not tied to location, so this is a well-behaved fit.
-penguins = Datamunge::DataFrame.penguins
+penguins = Datamunge.data_penguins
 is_male = []
 body_mass = []
 island = []

@@ -1,3 +1,5 @@
+(* CMD: just TARGET=stl_ex run-ocaml *)
+
 open Swig
 open Datamunge
 

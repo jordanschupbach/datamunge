@@ -1,3 +1,5 @@
+;; CMD: just TARGET=optim_advanced_ex run-guile
+
 (use-modules (datamunge))
 (use-modules (ice-9 format))
 

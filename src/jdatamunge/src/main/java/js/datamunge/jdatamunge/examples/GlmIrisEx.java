@@ -13,7 +13,7 @@ public class GlmIrisEx {
   }
 
   public static void run() {
-    var iris = DataFrame.iris();
+    var iris = datamunge.data_iris();
 
     List<Double> isVirginica = new ArrayList<>();
     List<Double> petalLength = new ArrayList<>();

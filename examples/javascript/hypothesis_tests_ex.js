@@ -1,16 +1,6 @@
+// CMD: just TARGET=hypothesis_tests_ex run-javascript
+
 const datamunge = require("../../index.js");
-
-function dvector(values) {
-  const out = new datamunge.DVector(values.length);
-  for (let i = 0; i < values.length; i++) out.set(i, values[i]);
-  return out;
-}
-
-function szvector(values) {
-  const out = new datamunge.SizeVector(values.length);
-  for (let i = 0; i < values.length; i++) out.set(i, values[i]);
-  return out;
-}
 
 function printResult(label, r) {
   let line = `${label}: statistic=${r.statistic}`;
@@ -32,21 +22,21 @@ function columnForSpecies(df, column, species) {
   return out;
 }
 
-const iris = datamunge.DataFrame.iris();
+const iris = datamunge.data.iris();
 
 const setosaPetal = columnForSpecies(iris, "Petal.Length", "setosa");
 const versicolorPetal = columnForSpecies(iris, "Petal.Length", "versicolor");
 const virginicaPetal = columnForSpecies(iris, "Petal.Length", "virginica");
 
 console.log("=================== t-tests: petal length, setosa vs. versicolor ===================");
-printResult("Welch two-sample t-test", datamunge.t_test_two_sample(dvector(setosaPetal), dvector(versicolorPetal)));
-printResult("Wilcoxon rank-sum test", datamunge.wilcoxon_rank_sum_test(dvector(setosaPetal), dvector(versicolorPetal)));
+printResult("Welch two-sample t-test", datamunge.t_test_two_sample(setosaPetal, versicolorPetal));
+printResult("Wilcoxon rank-sum test", datamunge.wilcoxon_rank_sum_test(setosaPetal, versicolorPetal));
 
 console.log("\n=================== One-way ANOVA / Kruskal-Wallis across all 3 species ===================");
 const allPetal = setosaPetal.concat(versicolorPetal, virginicaPetal);
-const sizes = szvector([setosaPetal.length, versicolorPetal.length, virginicaPetal.length]);
-printResult("One-way ANOVA", datamunge.one_way_anova(dvector(allPetal), sizes));
-printResult("Kruskal-Wallis", datamunge.kruskal_wallis_test(dvector(allPetal), sizes));
+const sizes = [setosaPetal.length, versicolorPetal.length, virginicaPetal.length];
+printResult("One-way ANOVA", datamunge.one_way_anova(allPetal, sizes));
+printResult("Kruskal-Wallis", datamunge.kruskal_wallis_test(allPetal, sizes));
 
 console.log("\n=================== Correlation: sepal length vs. petal length ===================");
 const n = iris.nrows();
@@ -56,16 +46,16 @@ for (let i = 0; i < n; i++) {
   sepalLength.push(iris.numeric_at("Sepal.Length", i));
   petalLength.push(iris.numeric_at("Petal.Length", i));
 }
-printResult("Pearson correlation", datamunge.pearson_correlation_test(dvector(sepalLength), dvector(petalLength)));
-printResult("Spearman correlation", datamunge.spearman_correlation_test(dvector(sepalLength), dvector(petalLength)));
+printResult("Pearson correlation", datamunge.pearson_correlation_test(sepalLength, petalLength));
+printResult("Spearman correlation", datamunge.spearman_correlation_test(sepalLength, petalLength));
 
 console.log("\n=================== F-test: petal length variance, setosa vs. virginica ===================");
-printResult("F test", datamunge.f_test_variance(dvector(setosaPetal), dvector(virginicaPetal)));
+printResult("F test", datamunge.f_test_variance(setosaPetal, virginicaPetal));
 
 console.log('\n=================== Normality: is sepal length normally distributed within setosa? ===================');
 const setosaSepal = columnForSpecies(iris, "Sepal.Length", "setosa");
-printResult("Shapiro-Francia", datamunge.shapiro_francia_test(dvector(setosaSepal)));
-printResult("KS vs. fitted normal", datamunge.ks_test_one_sample_normal(dvector(setosaSepal), 5.006, 0.3525));
+printResult("Shapiro-Francia", datamunge.shapiro_francia_test(setosaSepal));
+printResult("KS vs. fitted normal", datamunge.ks_test_one_sample_normal(setosaSepal, 5.006, 0.3525));
 
 console.log('\n=================== Chi-squared / Fisher: is petal length "long" independent of species? ===================');
 const sortedAll = [...allPetal].sort((a, b) => a - b);
@@ -75,7 +65,7 @@ const setosaShort = setosaPetal.length - setosaLong;
 const versicolorLong = versicolorPetal.filter((x) => x > medianAll).length;
 const versicolorShort = versicolorPetal.length - versicolorLong;
 console.log(`table: setosa=[${setosaLong},${setosaShort}] versicolor=[${versicolorLong},${versicolorShort}]`);
-const tableVec = dvector([setosaLong, setosaShort, versicolorLong, versicolorShort]);
+const tableVec = [setosaLong, setosaShort, versicolorLong, versicolorShort];
 printResult("Chi-squared independence", datamunge.chi_squared_test_independence(tableVec, 2, 2));
 printResult("Fisher's exact test", datamunge.fisher_exact_test_2x2(setosaLong, setosaShort, versicolorLong, versicolorShort));
 

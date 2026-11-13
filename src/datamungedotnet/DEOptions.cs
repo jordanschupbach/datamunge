@@ -9,6 +9,14 @@
 //------------------------------------------------------------------------------
 
 
+/// <summary>Configuration for DifferentialEvolution; fields retain their documented native defaults. Supply finite values in the supported ranges. Controls are copied at construction; validation, stopping and loss scaling belong to optimize().</summary>
+/// Title: Example
+/// <code>      dm::optim::DEOptions o;
+///      std::print("{}\n",o.max_generations); // 500</code>
+///
+///
+///
+/// <seealso cref="DifferentialEvolution"/>
 public class DEOptions : global::System.IDisposable {
   private global::System.Runtime.InteropServices.HandleRef swigCPtr;
   protected bool swigCMemOwn;
@@ -76,7 +84,6 @@ public class DEOptions : global::System.IDisposable {
     } 
   }
 
-  /// <summary>F: scales the differential perturbation applied by the mutation strategy.</summary>
   public double differential_weight {
     set {
       datamungePINVOKE.DEOptions_differential_weight_set(swigCPtr, value);
@@ -87,7 +94,6 @@ public class DEOptions : global::System.IDisposable {
     } 
   }
 
-  /// <summary>CR: probability that a given gene is taken from the mutant vector.</summary>
   public double crossover_rate {
     set {
       datamungePINVOKE.DEOptions_crossover_rate_set(swigCPtr, value);
@@ -98,7 +104,6 @@ public class DEOptions : global::System.IDisposable {
     } 
   }
 
-  /// <summary>One of "rand1", "best1", "current_to_best1", or "rand2" -- Storn &amp; Price's        DE/x/y/z naming for which base vector(s) the differential perturbation(s) are        added to.</summary>
   public string mutation_strategy {
     set {
       datamungePINVOKE.DEOptions_mutation_strategy_set(swigCPtr, value);
@@ -111,7 +116,6 @@ public class DEOptions : global::System.IDisposable {
     } 
   }
 
-  /// <summary>One of "binomial" or "exponential".</summary>
   public string crossover_strategy {
     set {
       datamungePINVOKE.DEOptions_crossover_strategy_set(swigCPtr, value);
@@ -124,7 +128,6 @@ public class DEOptions : global::System.IDisposable {
     } 
   }
 
-  /// <summary>Stops after the population best has improved by less than this for 20 consecutive generations.</summary>
   public double tolerance {
     set {
       datamungePINVOKE.DEOptions_tolerance_set(swigCPtr, value);

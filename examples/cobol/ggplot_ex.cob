@@ -1,5 +1,5 @@
 *> GGPlot, the ggplot2-style grammar-of-graphics library: seven iris plots.
-*> Run with `just run-cobol TARGET=ggplot_ex`.
+*> CMD: just TARGET=ggplot_ex run-cobol
 IDENTIFICATION DIVISION.
 PROGRAM-ID. GGPLOT-EX.
 DATA DIVISION.
@@ -11,9 +11,9 @@ COPY "datamunge.cpy".
 01 GRAY      USAGE BINARY-DOUBLE UNSIGNED.
 
 PROCEDURE DIVISION.
-    CALL "dm_data_frame_iris" USING DM-DATA-FRAME-IRIS DM-STATUS
+    CALL "dm_data_iris" USING DM-DATA-IRIS DM-STATUS
     PERFORM CHECK
-    MOVE DM-DATA-FRAME-IRIS-RESULT TO IRIS
+    MOVE DM-DATA-IRIS-RESULT TO IRIS
     MOVE IRIS TO DM-GG-PLOT-NEW-DATA
 
     *> ggplot(iris, aes(x = Sepal.Length, y = Sepal.Width, color = Species)) + geom_point()

@@ -1,3 +1,5 @@
+// CMD: just TARGET=lm_ex run-csharp
+
 using System;
 
 class Program {

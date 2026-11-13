@@ -1,19 +1,19 @@
-# CMD: nix develop .#r --command Rscript examples/r/datasets_ex.r
-# REPL: nix develop .#r --command R --no-save --quiet
+# CMD: nix develop .#r --command env R_LIBS_USER=build/r/library Rscript examples/r/datasets_ex.r
+# REPL: nix develop .#r --command env R_LIBS_USER=build/r/library R --no-save --quiet
 # Tour of the example datasets: built-in tables, cached downloads, and streaming loaders.
 # The download and stream parts fetch data once into data_home(); set DATAMUNGE_DATA_OFFLINE=1 to skip them.
 library(datamunger)
 
-cat(DataFrame$dataset_catalog()$to_md(), "\n")
+cat(data$catalog()$to_md(), "\n")
 
-wine <- DataFrame$wine()
+wine <- data$wine()
 cat("wine:", wine$nrows(), "wines x", wine$ncols(), "columns\n")
-titanic <- DataFrame$titanic()
+titanic <- data$titanic()
 cat("titanic: first passenger is", titanic$string_at("Name", 0), "\n")
-cat(DataFrame$eight_schools()$to_md(), "\n")
+cat(data$eight_schools()$to_md(), "\n")
 
 tryCatch({
-  diamonds <- DataFrame$diamonds()
+  diamonds <- data$diamonds()
   cat("diamonds:", diamonds$nrows(), "rows\n")
   reader <- CsvReader$new(fetch("diamonds"), 10000L)
   total <- 0

@@ -1,3 +1,5 @@
+# CMD: nix develop .#r --command env R_LIBS_USER=build/r/library Rscript examples/r/simulation_ex.R
+
 # Native CPU pendulum batch with explicit end-of-episode handling.
 library(datamunger)
 task <- TaskBatch$create("InvertedPendulum", 4L, 2L, 42L, 100L)

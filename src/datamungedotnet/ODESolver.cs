@@ -77,4 +77,11 @@ public class ODESolver : global::System.IDisposable {
     return ret;
   }
 
+  /// <summary>The options this ODESolver was configured with.</summary>
+  /// <returns>The stored options.</returns>
+  public ODEOptions options() {
+    ODEOptions ret = new ODEOptions(datamungePINVOKE.ODESolver_options(swigCPtr), false);
+    return ret;
+  }
+
 }

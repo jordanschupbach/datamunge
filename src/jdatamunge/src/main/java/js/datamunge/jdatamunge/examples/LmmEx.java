@@ -21,7 +21,7 @@ public class LmmEx {
 
   public static void run() {
     System.out.println("=================== Random intercept on a real dataset (penguins) ===================");
-    var penguins = DataFrame.penguins();
+    var penguins = datamunge.data_penguins();
     var speciesModel = new LMM(penguins, "body_mass_g ~ flipper_length_mm + bill_length_mm + (1 | species)");
     speciesModel.print_summary();
 

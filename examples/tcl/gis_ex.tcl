@@ -1,3 +1,5 @@
+# CMD: just TARGET=gis_ex run-tcl
+
 package require Datamunge 0.0.1
 
 # Demonstrates datamunge::ShapeLayer: reading a shapefile (.shp geometry + .dbf attributes) and

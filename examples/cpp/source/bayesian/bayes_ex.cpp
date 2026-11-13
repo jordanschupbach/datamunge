@@ -1,3 +1,5 @@
+// CMD: just TARGET=bayes_ex run-cpp
+
 #include <datamunge/bayes/bayes.hpp>
 #include <datamunge/datasets/datasets.hpp>
 #include <datamunge/dstruct/dstruct.hpp>

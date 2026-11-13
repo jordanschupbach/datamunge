@@ -1,3 +1,5 @@
+-- CMD: just TARGET=glmm_ex run-lua
+
 local dm = require("datamunge")
 
 local function dv(t)
@@ -21,7 +23,7 @@ print("=================== Binomial (logistic) mixed model on a real dataset (pe
 -- Predicting sex from body mass, grouped by island: unlike species (which is almost perfectly
 -- confounded with island in this dataset -- Gentoo penguins occur on Biscoe island only), sex
 -- is not tied to location, so this is a well-behaved fit.
-local penguins = dm.DataFrame.penguins()
+local penguins = dm.data.penguins()
 local is_male, body_mass, island = {}, {}, {}
 for i = 0, penguins:nrows() - 1 do
   if not (penguins:is_null("sex", i) or penguins:is_null("body_mass_g", i) or penguins:is_null("island", i)) then

@@ -1,9 +1,11 @@
+# CMD: just TARGET=pca_ex run-perl
+
 use strict;
 use warnings;
 
 use Datamunge;
 
-my $iris = Datamunge::DataFrame::iris();
+my $iris = Datamunge::data_iris();
 my @features = ("Sepal.Length", "Sepal.Width", "Petal.Length", "Petal.Width");
 my @species = map { $iris->string_at("Species", $_) } (0 .. $iris->nrows() - 1);
 

@@ -1,3 +1,5 @@
+// CMD: just TARGET=glm_iris_ex run-d
+
 module app;
 
 import std.stdio : writeln;
@@ -12,7 +14,7 @@ DVector dv(double[] t) {
 }
 
 void main() {
-  auto iris = DataFrame.iris();
+  auto iris = data_iris();
 
   // Logistic regression: versicolor vs virginica only.
   double[] is_virginica;

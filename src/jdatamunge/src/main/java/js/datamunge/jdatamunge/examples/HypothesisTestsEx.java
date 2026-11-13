@@ -36,7 +36,7 @@ public class HypothesisTestsEx {
   }
 
   public static void run() {
-    var iris = DataFrame.iris();
+    var iris = datamunge.data_iris();
 
     var setosaPetal = columnForSpecies(iris, "Petal.Length", "setosa");
     var versicolorPetal = columnForSpecies(iris, "Petal.Length", "versicolor");

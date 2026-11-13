@@ -211,6 +211,7 @@
 %include "datamunge/datasets/download.hpp"
 %include "datamunge/datasets/image_loader.hpp"
 %exception;
+%include "datamunge/data_names.i"
 %include "datamunge/datamunge.hpp"
 %include "datamunge/plot/plot.hpp"
 %template(RGBVector) std::vector<datamunge::graphics::RGB>;

@@ -6,7 +6,7 @@ from pydatamunge import datamunge as dm
 # exposed on the SWIG-bound DataFrame facade) -- NaiveBayesClassifier drops incomplete rows
 # for its own formula columns internally when fitting, matching every other formula-based
 # model in this library.
-penguins = dm.DataFrame.penguins()
+penguins = dm.data.penguins()
 print(f"penguins: {penguins.nrows()} rows x {penguins.ncols()} cols\n")
 
 # A mix of numeric (Gaussian likelihood) and categorical (frequency-table likelihood)

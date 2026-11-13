@@ -8636,8 +8636,8 @@ function datamunge.PSplineRegression:coefficient_differences() end
 ---@overload fun(values: number[], names: string[]): datamunge.DataFrame
 datamunge.DataFrame = {}
 
----Equivalent to the default constructor, exposed as a static factory (like iris()/
----penguins()) as a workaround for a SWIG R-backend bug where the plain no-argument
+---Equivalent to the default constructor, exposed as a static factory (like read_csv())
+---as a workaround for a SWIG R-backend bug where the plain no-argument
 ---constructor's ownership-flagged pointer breaks method dispatch on the result.
 ---@return datamunge.DataFrame?
 function datamunge.DataFrame.empty() end
@@ -8965,84 +8965,6 @@ function datamunge.DataFrame:numeric_at(column_name, row_index) end
 ---@param row_index integer
 ---@return string
 function datamunge.DataFrame:string_at(column_name, row_index) end
-
----C++ `datamunge::DataFrame::iris`
----@return datamunge.DataFrame?
-function datamunge.DataFrame.iris() end
-
----C++ `datamunge::DataFrame::penguins`
----@return datamunge.DataFrame?
-function datamunge.DataFrame.penguins() end
-
----C++ `datamunge::DataFrame::tooth_growth`
----@return datamunge.DataFrame?
-function datamunge.DataFrame.tooth_growth() end
-
----UCI wine recognition data, 178 x 14; see datasets::wine().
----@return datamunge.DataFrame?
-function datamunge.DataFrame.wine() end
-
----Kaggle Titanic training set, 891 x 12 with missing values; see datasets::titanic().
----@return datamunge.DataFrame?
-function datamunge.DataFrame.titanic() end
-
----Rubin's eight schools coaching experiment, 8 x 3; see datasets::eight_schools().
----@return datamunge.DataFrame?
-function datamunge.DataFrame.eight_schools() end
-
----Monthly airline passengers 1949-1960, 144 x 3; see datasets::air_passengers().
----@return datamunge.DataFrame?
-function datamunge.DataFrame.air_passengers() end
-
----Maunga Whau (Mt Eden) elevations on a 10 m grid, 5307 x 3; see datasets::volcano().
----@return datamunge.DataFrame?
-function datamunge.DataFrame.volcano() end
-
----Old Faithful eruptions, 272 x 2; see datasets::faithful().
----@return datamunge.DataFrame?
-function datamunge.DataFrame.faithful() end
-
----Motor Trend cars, 32 x 12 (row names as `model`); see datasets::mtcars().
----@return datamunge.DataFrame?
-function datamunge.DataFrame.mtcars() end
-
----New York air quality 1973, 153 x 6 with missing values; see datasets::airquality().
----@return datamunge.DataFrame?
-function datamunge.DataFrame.airquality() end
-
----Wisconsin diagnostic breast cancer, 569 x 31; see datasets::breast_cancer().
----@return datamunge.DataFrame?
-function datamunge.DataFrame.breast_cancer() end
-
----Efron et al.'s diabetes progression data, 442 x 11; see datasets::diabetes().
----@return datamunge.DataFrame?
-function datamunge.DataFrame.diabetes() end
-
----8x8 handwritten digits, 1797 x 65; see datasets::digits().
----@return datamunge.DataFrame?
-function datamunge.DataFrame.digits() end
-
----ggplot2's diamonds, 53940 x 10, downloaded once and cached; see datasets::diamonds().
----@return datamunge.DataFrame?
-function datamunge.DataFrame.diamonds() end
-
----California housing, 20640 x 10, downloaded once and cached; see
----datasets::california_housing().
----@return datamunge.DataFrame?
-function datamunge.DataFrame.california_housing() end
-
----Any table-shaped dataset by name, e.g. "wine"; see datasets::load().
----
----**Errors** (raised as Lua errors)
----* `std::invalid_argument`: for an unknown or image dataset name.
----@param name string
----@return datamunge.DataFrame?
-function datamunge.DataFrame.dataset(name) end
-
----One row per available dataset (name, rows, columns, storage, size_mb,
----description); see datasets::catalog().
----@return datamunge.DataFrame?
-function datamunge.DataFrame.dataset_catalog() end
 
 ---Reads a whole CSV file, typing columns automatically; see datasets::read_csv().
 ---
@@ -18454,6 +18376,307 @@ function datamunge.rnorm(mean, sd, n) end
 ---@param n integer
 ---@return number[]
 function datamunge.seql(from, to, n) end
+
+---Functions of the C++ namespace mapped to `data` by the binding policy.
+datamunge.data = {}
+
+---Edgar Anderson's iris measurements, 150 x 5, as R's `datasets::iris`.
+---
+---Bundled with the library, so it needs no file or network access. Columns are documented at
+---datasets::iris().
+---
+---**Example**
+---
+---```cpp
+---const std::unique_ptr<dm::DataFrame> frame(dm::data::iris());
+---std::print("{} x {}\n", frame->nrows(), frame->ncols());   // 150 x 5
+---```
+---
+---See also: `datasets::iris()`
+---@return datamunge.DataFrame? # A new 150 x 5 DataFrame owned by the caller.
+function datamunge.data.iris() end
+
+---The Palmer penguins, 344 x 8 with missing values, as `palmerpenguins::penguins`.
+---
+---Bundled with the library, so it needs no file or network access. Columns are documented at
+---datasets::penguins().
+---
+---**Example**
+---
+---```cpp
+---const std::unique_ptr<dm::DataFrame> frame(dm::data::penguins());
+---std::print("{} x {}\n", frame->nrows(), frame->ncols());   // 344 x 8
+---```
+---
+---See also: `datasets::penguins()`
+---@return datamunge.DataFrame? # A new 344 x 8 DataFrame owned by the caller.
+function datamunge.data.penguins() end
+
+---Crampton's guinea pig tooth growth data, 60 x 3, as R's `datasets::ToothGrowth`.
+---
+---Bundled with the library, so it needs no file or network access. Columns are documented at
+---datasets::tooth_growth().
+---
+---**Example**
+---
+---```cpp
+---const std::unique_ptr<dm::DataFrame> frame(dm::data::tooth_growth());
+---std::print("{} x {}\n", frame->nrows(), frame->ncols());   // 60 x 3
+---```
+---
+---See also: `datasets::tooth_growth()`
+---@return datamunge.DataFrame? # A new 60 x 3 DataFrame owned by the caller.
+function datamunge.data.tooth_growth() end
+
+---The UCI wine recognition data, 178 x 14, as scikit-learn's `load_wine()`.
+---
+---Bundled with the library, so it needs no file or network access. Columns are documented at
+---datasets::wine().
+---
+---**Example**
+---
+---```cpp
+---const std::unique_ptr<dm::DataFrame> frame(dm::data::wine());
+---std::print("{} x {}\n", frame->nrows(), frame->ncols());   // 178 x 14
+---```
+---
+---See also: `datasets::wine()`
+---@return datamunge.DataFrame? # A new 178 x 14 DataFrame owned by the caller.
+function datamunge.data.wine() end
+
+---The Kaggle Titanic training set, 891 x 12 with missing values.
+---
+---Bundled with the library, so it needs no file or network access. Columns are documented at
+---datasets::titanic().
+---
+---**Example**
+---
+---```cpp
+---const std::unique_ptr<dm::DataFrame> frame(dm::data::titanic());
+---std::print("{} x {}\n", frame->nrows(), frame->ncols());   // 891 x 12
+---```
+---
+---See also: `datasets::titanic()`
+---@return datamunge.DataFrame? # A new 891 x 12 DataFrame owned by the caller.
+function datamunge.data.titanic() end
+
+---Rubin's eight schools coaching experiment, 8 x 3.
+---
+---Bundled with the library, so it needs no file or network access. Columns are documented at
+---datasets::eight_schools().
+---
+---**Example**
+---
+---```cpp
+---const std::unique_ptr<dm::DataFrame> frame(dm::data::eight_schools());
+---std::print("{} x {}\n", frame->nrows(), frame->ncols());   // 8 x 3
+---```
+---
+---See also: `datasets::eight_schools()`
+---@return datamunge.DataFrame? # A new 8 x 3 DataFrame owned by the caller.
+function datamunge.data.eight_schools() end
+
+---Monthly airline passengers 1949-1960, 144 x 3, as R's `datasets::AirPassengers`.
+---
+---Bundled with the library, so it needs no file or network access. Columns are documented at
+---datasets::air_passengers().
+---
+---**Example**
+---
+---```cpp
+---const std::unique_ptr<dm::DataFrame> frame(dm::data::air_passengers());
+---std::print("{} x {}\n", frame->nrows(), frame->ncols());   // 144 x 3
+---```
+---
+---See also: `datasets::air_passengers()`
+---@return datamunge.DataFrame? # A new 144 x 3 DataFrame owned by the caller.
+function datamunge.data.air_passengers() end
+
+---Maunga Whau (Mt Eden) elevations on a 10 m grid, 5307 x 3, as R's `datasets::volcano` in long form.
+---
+---Bundled with the library, so it needs no file or network access. Columns are documented at
+---datasets::volcano().
+---
+---**Example**
+---
+---```cpp
+---const std::unique_ptr<dm::DataFrame> frame(dm::data::volcano());
+---std::print("{} x {}\n", frame->nrows(), frame->ncols());   // 5307 x 3
+---```
+---
+---See also: `datasets::volcano()`
+---@return datamunge.DataFrame? # A new 5307 x 3 DataFrame owned by the caller.
+function datamunge.data.volcano() end
+
+---Old Faithful geyser eruptions, 272 x 2, as R's `datasets::faithful`.
+---
+---Bundled with the library, so it needs no file or network access. Columns are documented at
+---datasets::faithful().
+---
+---**Example**
+---
+---```cpp
+---const std::unique_ptr<dm::DataFrame> frame(dm::data::faithful());
+---std::print("{} x {}\n", frame->nrows(), frame->ncols());   // 272 x 2
+---```
+---
+---See also: `datasets::faithful()`
+---@return datamunge.DataFrame? # A new 272 x 2 DataFrame owned by the caller.
+function datamunge.data.faithful() end
+
+---Motor Trend cars, 32 x 12 with the row names as column `model`, as R's `datasets::mtcars`.
+---
+---Bundled with the library, so it needs no file or network access. Columns are documented at
+---datasets::mtcars().
+---
+---**Example**
+---
+---```cpp
+---const std::unique_ptr<dm::DataFrame> frame(dm::data::mtcars());
+---std::print("{} x {}\n", frame->nrows(), frame->ncols());   // 32 x 12
+---```
+---
+---See also: `datasets::mtcars()`
+---@return datamunge.DataFrame? # A new 32 x 12 DataFrame owned by the caller.
+function datamunge.data.mtcars() end
+
+---New York air quality measurements in 1973, 153 x 6 with missing values, as R's `datasets::airquality`.
+---
+---Bundled with the library, so it needs no file or network access. Columns are documented at
+---datasets::airquality().
+---
+---**Example**
+---
+---```cpp
+---const std::unique_ptr<dm::DataFrame> frame(dm::data::airquality());
+---std::print("{} x {}\n", frame->nrows(), frame->ncols());   // 153 x 6
+---```
+---
+---See also: `datasets::airquality()`
+---@return datamunge.DataFrame? # A new 153 x 6 DataFrame owned by the caller.
+function datamunge.data.airquality() end
+
+---Wisconsin diagnostic breast cancer data, 569 x 31, as scikit-learn's `load_breast_cancer()`.
+---
+---Bundled with the library, so it needs no file or network access. Columns are documented at
+---datasets::breast_cancer().
+---
+---**Example**
+---
+---```cpp
+---const std::unique_ptr<dm::DataFrame> frame(dm::data::breast_cancer());
+---std::print("{} x {}\n", frame->nrows(), frame->ncols());   // 569 x 31
+---```
+---
+---See also: `datasets::breast_cancer()`
+---@return datamunge.DataFrame? # A new 569 x 31 DataFrame owned by the caller.
+function datamunge.data.breast_cancer() end
+
+---Efron et al.'s diabetes progression data, 442 x 11, as scikit-learn's `load_diabetes()`.
+---
+---Bundled with the library, so it needs no file or network access. Columns are documented at
+---datasets::diabetes().
+---
+---**Example**
+---
+---```cpp
+---const std::unique_ptr<dm::DataFrame> frame(dm::data::diabetes());
+---std::print("{} x {}\n", frame->nrows(), frame->ncols());   // 442 x 11
+---```
+---
+---See also: `datasets::diabetes()`
+---@return datamunge.DataFrame? # A new 442 x 11 DataFrame owned by the caller.
+function datamunge.data.diabetes() end
+
+---8x8 handwritten digits, 1797 x 65, as scikit-learn's `load_digits()`.
+---
+---Bundled with the library, so it needs no file or network access. Columns are documented at
+---datasets::digits().
+---
+---**Example**
+---
+---```cpp
+---const std::unique_ptr<dm::DataFrame> frame(dm::data::digits());
+---std::print("{} x {}\n", frame->nrows(), frame->ncols());   // 1797 x 65
+---```
+---
+---See also: `datasets::digits()`
+---@return datamunge.DataFrame? # A new 1797 x 65 DataFrame owned by the caller.
+function datamunge.data.digits() end
+
+---ggplot2's diamonds, 53940 x 10, downloaded on first use and cached.
+---
+---The first call downloads the file into the dataset cache (see datasets::fetch()); later
+---calls read the cached copy. Columns are documented at datasets::diamonds().
+---
+---**Example**
+---
+---```cpp
+---const std::unique_ptr<dm::DataFrame> frame(dm::data::diamonds());
+---std::print("{} x {}\n", frame->nrows(), frame->ncols());   // 53940 x 10
+---```
+---
+---**Errors** (raised as Lua errors)
+---* `std::runtime_error`: if the file is not cached and cannot be downloaded or read.
+---
+---See also: `datasets::diamonds()`
+---@return datamunge.DataFrame? # A new 53940 x 10 DataFrame owned by the caller.
+function datamunge.data.diamonds() end
+
+---California housing, 20640 x 10, downloaded on first use and cached, as scikit-learn's `fetch_california_housing()`.
+---
+---The first call downloads the file into the dataset cache (see datasets::fetch()); later
+---calls read the cached copy. Columns are documented at datasets::california_housing().
+---
+---**Example**
+---
+---```cpp
+---const std::unique_ptr<dm::DataFrame> frame(dm::data::california_housing());
+---std::print("{} x {}\n", frame->nrows(), frame->ncols());   // 20640 x 10
+---```
+---
+---**Errors** (raised as Lua errors)
+---* `std::runtime_error`: if the file is not cached and cannot be downloaded or read.
+---
+---See also: `datasets::california_housing()`
+---@return datamunge.DataFrame? # A new 20640 x 10 DataFrame owned by the caller.
+function datamunge.data.california_housing() end
+
+---Any table-shaped dataset by name, e.g. "wine", like scikit-learn's `fetch_openml()`
+---lookup by name.
+---
+---Accepts every name listed by catalog() whose storage is a table, bundled or downloaded
+---(a downloaded dataset is cached as described at datasets::load()).
+---
+---**Example**
+---
+---```cpp
+---const std::unique_ptr<dm::DataFrame> wine(dm::data::load("wine"));
+---std::print("{} x {}\n", wine->nrows(), wine->ncols());   // 178 x 14
+---```
+---
+---**Errors** (raised as Lua errors)
+---* `std::invalid_argument`: for an unknown name, an image dataset's name or karate_club.
+---* `std::runtime_error`: if a downloaded dataset is not cached and cannot be fetched.
+---
+---See also: `catalog()`, `datasets::load()`
+---@param name string A dataset name from catalog(), e.g. "iris" or "diamonds".
+---@return datamunge.DataFrame? # A new DataFrame owned by the caller.
+function datamunge.data.load(name) end
+
+---One row per available dataset: `name`, `rows`, `columns`, `storage`, `size_mb` and
+---`description`, like R's `data()` listing.
+---
+---**Example**
+---
+---```cpp
+---const std::unique_ptr<dm::DataFrame> all(dm::data::catalog());
+---std::print("{}\n", all->columns());   // ["name", "rows", "columns", "storage", "size_mb", "description"]
+---```
+---
+---See also: `load()`, `datasets::catalog()`
+---@return datamunge.DataFrame? # A new DataFrame owned by the caller.
+function datamunge.data.catalog() end
 
 datamunge.RGBA = datamunge.RGB
 datamunge.BSR = datamunge.BSplineRegression

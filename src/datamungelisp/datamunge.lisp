@@ -458,24 +458,6 @@
    #:data-frame
    #:make-data-frame
    #:data-frame-empty
-   #:data-frame-iris
-   #:data-frame-penguins
-   #:data-frame-tooth-growth
-   #:data-frame-wine
-   #:data-frame-titanic
-   #:data-frame-eight-schools
-   #:data-frame-air-passengers
-   #:data-frame-volcano
-   #:data-frame-faithful
-   #:data-frame-mtcars
-   #:data-frame-airquality
-   #:data-frame-breast-cancer
-   #:data-frame-diabetes
-   #:data-frame-digits
-   #:data-frame-diamonds
-   #:data-frame-california-housing
-   #:data-frame-dataset
-   #:data-frame-dataset-catalog
    #:data-frame-read-csv
    #:data-frame-parse-csv
    #:data-frame-from-image-batch
@@ -1818,6 +1800,30 @@
    #:make-bsr
    #:psr
    #:make-psr))
+
+(defpackage #:datamunge.data
+  (:use)
+  (:nicknames #:dm.data)
+  (:documentation "Functions of the C++ namespace mapped to submodule data of datamunge.")
+  (:export
+   #:iris
+   #:penguins
+   #:tooth-growth
+   #:wine
+   #:titanic
+   #:eight-schools
+   #:air-passengers
+   #:volcano
+   #:faithful
+   #:mtcars
+   #:airquality
+   #:breast-cancer
+   #:diabetes
+   #:digits
+   #:diamonds
+   #:california-housing
+   #:load
+   #:catalog))
 
 (defpackage #:datamunge.rosetta
   (:use #:common-lisp)
@@ -7230,7 +7236,7 @@ Constructors:
 
 ;;; ------------------------------------------------------------------ constructors
 
-(register-constructor 'datamunge:expr 246 nil)
+(register-constructor 'datamunge:expr 264 nil)
 (defun datamunge:make-expr (&rest args)
   "Construct a symbolic constant from a C++ numeric value, including implicit conversion.
 
@@ -7256,7 +7262,7 @@ See also: constant(), evaluate()
     value*  double-float  Numeric constant, stored as a double without evaluation or simplification."
   (make-instance 'datamunge:expr :args args))
 
-(register-constructor 'datamunge:polynomial 262 nil)
+(register-constructor 'datamunge:polynomial 280 nil)
 (defun datamunge:make-polynomial (&rest args)
   "C++ datamunge::algebra::Polynomial::Polynomial.
 
@@ -7267,56 +7273,56 @@ See also: constant(), evaluate()
     coeffs  (vector double-float)"
   (make-instance 'datamunge:polynomial :args args))
 
-(register-constructor 'datamunge:poly-extended-gcd-result 269 nil)
+(register-constructor 'datamunge:poly-extended-gcd-result 287 nil)
 (defun datamunge:make-poly-extended-gcd-result ()
   "C++ datamunge::algebra::PolyExtendedGcdResult::PolyExtendedGcdResult.
 
   (make-poly-extended-gcd-result) → poly-extended-gcd-result"
   (make-instance 'datamunge:poly-extended-gcd-result :args (list)))
 
-(register-constructor 'datamunge:real-root-intervals 274 nil)
+(register-constructor 'datamunge:real-root-intervals 292 nil)
 (defun datamunge:make-real-root-intervals ()
   "C++ datamunge::algebra::RealRootIntervals::RealRootIntervals.
 
   (make-real-root-intervals) → real-root-intervals"
   (make-instance 'datamunge:real-root-intervals :args (list)))
 
-(register-constructor 'datamunge:complex 281 nil)
+(register-constructor 'datamunge:complex 299 nil)
 (defun datamunge:make-complex ()
   "C++ datamunge::algebra::Complex::Complex.
 
   (make-complex) → complex"
   (make-instance 'datamunge:complex :args (list)))
 
-(register-constructor 'datamunge:cplx 286 nil)
+(register-constructor 'datamunge:cplx 304 nil)
 (defun datamunge:make-cplx ()
   "C++ datamunge::algebra::detail::Cplx::Cplx.
 
   (make-cplx) → cplx"
   (make-instance 'datamunge:cplx :args (list)))
 
-(register-constructor 'datamunge:square-free-factor 291 nil)
+(register-constructor 'datamunge:square-free-factor 309 nil)
 (defun datamunge:make-square-free-factor ()
   "C++ datamunge::algebra::SquareFreeFactor::SquareFreeFactor.
 
   (make-square-free-factor) → square-free-factor"
   (make-instance 'datamunge:square-free-factor :args (list)))
 
-(register-constructor 'datamunge:real-factor 296 nil)
+(register-constructor 'datamunge:real-factor 314 nil)
 (defun datamunge:make-real-factor ()
   "C++ datamunge::algebra::RealFactor::RealFactor.
 
   (make-real-factor) → real-factor"
   (make-instance 'datamunge:real-factor :args (list)))
 
-(register-constructor 'datamunge:real-factorization 301 nil)
+(register-constructor 'datamunge:real-factorization 319 nil)
 (defun datamunge:make-real-factorization ()
   "C++ datamunge::algebra::RealFactorization::RealFactorization.
 
   (make-real-factorization) → real-factorization"
   (make-instance 'datamunge:real-factorization :args (list)))
 
-(register-constructor 'datamunge:multivariate-polynomial 315 nil)
+(register-constructor 'datamunge:multivariate-polynomial 333 nil)
 (defun datamunge:make-multivariate-polynomial (&rest args)
   "C++ datamunge::algebra::MultivariatePolynomial::MultivariatePolynomial.
 
@@ -7329,14 +7335,14 @@ See also: constant(), evaluate()
     coefficients  (vector double-float)  Parallel to exponents; terms with equal exponent vectors are summed, and any resulting zero coefficient is dropped."
   (make-instance 'datamunge:multivariate-polynomial :args args))
 
-(register-constructor 'datamunge:gf-factorization 322 nil)
+(register-constructor 'datamunge:gf-factorization 340 nil)
 (defun datamunge:make-gf-factorization ()
   "C++ datamunge::algebra::GfFactorization::GfFactorization.
 
   (make-gf-factorization) → gf-factorization"
   (make-instance 'datamunge:gf-factorization :args (list)))
 
-(register-constructor 'datamunge:rational-function 332 nil)
+(register-constructor 'datamunge:rational-function 350 nil)
 (defun datamunge:make-rational-function (&rest args)
   "C++ datamunge::algebra::RationalFunction::RationalFunction.
 
@@ -7346,84 +7352,84 @@ See also: constant(), evaluate()
     denominator  polynomial"
   (make-instance 'datamunge:rational-function :args args))
 
-(register-constructor 'datamunge:arbitrary-function 334 t)
+(register-constructor 'datamunge:arbitrary-function 352 t)
 (defun datamunge:make-arbitrary-function ()
   "C++ datamunge::optim::ArbitraryFunction::ArbitraryFunction.
 
   (make-arbitrary-function) → arbitrary-function"
   (make-instance 'datamunge:arbitrary-function :args (list)))
 
-(register-constructor 'datamunge:differentiable-function 336 t)
+(register-constructor 'datamunge:differentiable-function 354 t)
 (defun datamunge:make-differentiable-function ()
   "C++ datamunge::optim::DifferentiableFunction::DifferentiableFunction.
 
   (make-differentiable-function) → differentiable-function"
   (make-instance 'datamunge:differentiable-function :args (list)))
 
-(register-constructor 'datamunge:separable-function 340 t)
+(register-constructor 'datamunge:separable-function 358 t)
 (defun datamunge:make-separable-function ()
   "C++ datamunge::optim::SeparableFunction::SeparableFunction.
 
   (make-separable-function) → separable-function"
   (make-instance 'datamunge:separable-function :args (list)))
 
-(register-constructor 'datamunge:differentiable-separable-function 346 t)
+(register-constructor 'datamunge:differentiable-separable-function 364 t)
 (defun datamunge:make-differentiable-separable-function ()
   "C++ datamunge::optim::DifferentiableSeparableFunction::DifferentiableSeparableFunction.
 
   (make-differentiable-separable-function) → differentiable-separable-function"
   (make-instance 'datamunge:differentiable-separable-function :args (list)))
 
-(register-constructor 'datamunge:proximal-function 348 t)
+(register-constructor 'datamunge:proximal-function 366 t)
 (defun datamunge:make-proximal-function ()
   "C++ datamunge::optim::ProximalFunction::ProximalFunction.
 
   (make-proximal-function) → proximal-function"
   (make-instance 'datamunge:proximal-function :args (list)))
 
-(register-constructor 'datamunge:hessian-function 350 t)
+(register-constructor 'datamunge:hessian-function 368 t)
 (defun datamunge:make-hessian-function ()
   "C++ datamunge::optim::HessianFunction::HessianFunction.
 
   (make-hessian-function) → hessian-function"
   (make-instance 'datamunge:hessian-function :args (list)))
 
-(register-constructor 'datamunge:equality-constrained-function 353 t)
+(register-constructor 'datamunge:equality-constrained-function 371 t)
 (defun datamunge:make-equality-constrained-function ()
   "C++ datamunge::optim::EqualityConstrainedFunction::EqualityConstrainedFunction.
 
   (make-equality-constrained-function) → equality-constrained-function"
   (make-instance 'datamunge:equality-constrained-function :args (list)))
 
-(register-constructor 'datamunge:inequality-constrained-function 356 t)
+(register-constructor 'datamunge:inequality-constrained-function 374 t)
 (defun datamunge:make-inequality-constrained-function ()
   "C++ datamunge::optim::InequalityConstrainedFunction::InequalityConstrainedFunction.
 
   (make-inequality-constrained-function) → inequality-constrained-function"
   (make-instance 'datamunge:inequality-constrained-function :args (list)))
 
-(register-constructor 'datamunge:residual-function 359 t)
+(register-constructor 'datamunge:residual-function 377 t)
 (defun datamunge:make-residual-function ()
   "C++ datamunge::optim::ResidualFunction::ResidualFunction.
 
   (make-residual-function) → residual-function"
   (make-instance 'datamunge:residual-function :args (list)))
 
-(register-constructor 'datamunge:gibbs-options 370 nil)
+(register-constructor 'datamunge:gibbs-options 388 nil)
 (defun datamunge:make-gibbs-options ()
   "C++ datamunge::bayes::GibbsOptions::GibbsOptions.
 
   (make-gibbs-options) → gibbs-options"
   (make-instance 'datamunge:gibbs-options :args (list)))
 
-(register-constructor 'datamunge:gibbs-result 377 nil)
+(register-constructor 'datamunge:gibbs-result 395 nil)
 (defun datamunge:make-gibbs-result ()
   "C++ datamunge::bayes::GibbsResult::GibbsResult.
 
   (make-gibbs-result) → gibbs-result"
   (make-instance 'datamunge:gibbs-result :args (list)))
 
-(register-constructor 'datamunge:gibbs-sampler 380 nil)
+(register-constructor 'datamunge:gibbs-sampler 398 nil)
 (defun datamunge:make-gibbs-sampler (&optional (options nil options-p))
   "Stores the sampler settings.
 
@@ -7431,21 +7437,21 @@ See also: constant(), evaluate()
     options  gibbs-options  Sampler settings."
   (make-instance 'datamunge:gibbs-sampler :args (cond (options-p (list options)) (t (list)))))
 
-(register-constructor 'datamunge:hmc-options 393 nil)
+(register-constructor 'datamunge:hmc-options 411 nil)
 (defun datamunge:make-hmc-options ()
   "C++ datamunge::bayes::HMCOptions::HMCOptions.
 
   (make-hmc-options) → hmc-options"
   (make-instance 'datamunge:hmc-options :args (list)))
 
-(register-constructor 'datamunge:hmc-result 400 nil)
+(register-constructor 'datamunge:hmc-result 418 nil)
 (defun datamunge:make-hmc-result ()
   "C++ datamunge::bayes::HMCResult::HMCResult.
 
   (make-hmc-result) → hmc-result"
   (make-instance 'datamunge:hmc-result :args (list)))
 
-(register-constructor 'datamunge:hmc 403 nil)
+(register-constructor 'datamunge:hmc 421 nil)
 (defun datamunge:make-hmc (&optional (options nil options-p))
   "Stores the sampler settings.
 
@@ -7453,21 +7459,21 @@ See also: constant(), evaluate()
     options  hmc-options  Sampler settings."
   (make-instance 'datamunge:hmc :args (cond (options-p (list options)) (t (list)))))
 
-(register-constructor 'datamunge:importance-sampling-options 408 nil)
+(register-constructor 'datamunge:importance-sampling-options 426 nil)
 (defun datamunge:make-importance-sampling-options ()
   "C++ datamunge::bayes::ImportanceSamplingOptions::ImportanceSamplingOptions.
 
   (make-importance-sampling-options) → importance-sampling-options"
   (make-instance 'datamunge:importance-sampling-options :args (list)))
 
-(register-constructor 'datamunge:importance-sampling-result 417 nil)
+(register-constructor 'datamunge:importance-sampling-result 435 nil)
 (defun datamunge:make-importance-sampling-result ()
   "C++ datamunge::bayes::ImportanceSamplingResult::ImportanceSamplingResult.
 
   (make-importance-sampling-result) → importance-sampling-result"
   (make-instance 'datamunge:importance-sampling-result :args (list)))
 
-(register-constructor 'datamunge:importance-sampling 420 nil)
+(register-constructor 'datamunge:importance-sampling 438 nil)
 (defun datamunge:make-importance-sampling (&optional (options nil options-p))
   "Stores the sampler settings.
 
@@ -7475,14 +7481,14 @@ See also: constant(), evaluate()
     options  importance-sampling-options  Sampler settings."
   (make-instance 'datamunge:importance-sampling :args (cond (options-p (list options)) (t (list)))))
 
-(register-constructor 'datamunge:map-options 427 nil)
+(register-constructor 'datamunge:map-options 445 nil)
 (defun datamunge:make-map-options ()
   "C++ datamunge::bayes::MAPOptions::MAPOptions.
 
   (make-map-options) → map-options"
   (make-instance 'datamunge:map-options :args (list)))
 
-(register-constructor 'datamunge:map 430 nil)
+(register-constructor 'datamunge:map 448 nil)
 (defun datamunge:make-map (&optional (options nil options-p))
   "C++ datamunge::bayes::MAP::MAP.
 
@@ -7490,21 +7496,21 @@ See also: constant(), evaluate()
     options  map-options"
   (make-instance 'datamunge:map :args (cond (options-p (list options)) (t (list)))))
 
-(register-constructor 'datamunge:nuts-options 445 nil)
+(register-constructor 'datamunge:nuts-options 463 nil)
 (defun datamunge:make-nuts-options ()
   "C++ datamunge::bayes::NUTSOptions::NUTSOptions.
 
   (make-nuts-options) → nuts-options"
   (make-instance 'datamunge:nuts-options :args (list)))
 
-(register-constructor 'datamunge:nuts-result 462 nil)
+(register-constructor 'datamunge:nuts-result 480 nil)
 (defun datamunge:make-nuts-result ()
   "C++ datamunge::bayes::NUTSResult::NUTSResult.
 
   (make-nuts-result) → nuts-result"
   (make-instance 'datamunge:nuts-result :args (list)))
 
-(register-constructor 'datamunge:nuts 465 nil)
+(register-constructor 'datamunge:nuts 483 nil)
 (defun datamunge:make-nuts (&optional (options nil options-p))
   "Stores the sampler settings.
 
@@ -7512,21 +7518,21 @@ See also: constant(), evaluate()
     options  nuts-options  Sampler settings."
   (make-instance 'datamunge:nuts :args (cond (options-p (list options)) (t (list)))))
 
-(register-constructor 'datamunge:rwm-options 478 nil)
+(register-constructor 'datamunge:rwm-options 496 nil)
 (defun datamunge:make-rwm-options ()
   "C++ datamunge::bayes::RWMOptions::RWMOptions.
 
   (make-rwm-options) → rwm-options"
   (make-instance 'datamunge:rwm-options :args (list)))
 
-(register-constructor 'datamunge:rwm-result 487 nil)
+(register-constructor 'datamunge:rwm-result 505 nil)
 (defun datamunge:make-rwm-result ()
   "C++ datamunge::bayes::RWMResult::RWMResult.
 
   (make-rwm-result) → rwm-result"
   (make-instance 'datamunge:rwm-result :args (list)))
 
-(register-constructor 'datamunge:random-walk-metropolis 490 nil)
+(register-constructor 'datamunge:random-walk-metropolis 508 nil)
 (defun datamunge:make-random-walk-metropolis (&optional (options nil options-p))
   "Stores the sampler settings.
 
@@ -7534,14 +7540,14 @@ See also: constant(), evaluate()
     options  rwm-options  Sampler settings."
   (make-instance 'datamunge:random-walk-metropolis :args (cond (options-p (list options)) (t (list)))))
 
-(register-constructor 'datamunge:pixel 499 nil)
+(register-constructor 'datamunge:pixel 517 nil)
 (defun datamunge:make-pixel ()
   "C++ datamunge::image::Pixel::Pixel.
 
   (make-pixel) → pixel"
   (make-instance 'datamunge:pixel :args (list)))
 
-(register-constructor 'datamunge:image 509 nil)
+(register-constructor 'datamunge:image 527 nil)
 (defun datamunge:make-image (&rest args)
   "C++ datamunge::image::Image::Image.
 
@@ -7557,70 +7563,70 @@ See also: constant(), evaluate()
     fill-color  pixel"
   (make-instance 'datamunge:image :args args))
 
-(register-constructor 'datamunge:hsv 516 nil)
+(register-constructor 'datamunge:hsv 534 nil)
 (defun datamunge:make-hsv ()
   "C++ datamunge::image::HSV::HSV.
 
   (make-hsv) → hsv"
   (make-instance 'datamunge:hsv :args (list)))
 
-(register-constructor 'datamunge:key-point 525 nil)
+(register-constructor 'datamunge:key-point 543 nil)
 (defun datamunge:make-key-point ()
   "C++ datamunge::cv::KeyPoint::KeyPoint.
 
   (make-key-point) → key-point"
   (make-instance 'datamunge:key-point :args (list)))
 
-(register-constructor 'datamunge:corner 532 nil)
+(register-constructor 'datamunge:corner 550 nil)
 (defun datamunge:make-corner ()
   "C++ datamunge::cv::Corner::Corner.
 
   (make-corner) → corner"
   (make-instance 'datamunge:corner :args (list)))
 
-(register-constructor 'datamunge:structure-tensor-field 539 nil)
+(register-constructor 'datamunge:structure-tensor-field 557 nil)
 (defun datamunge:make-structure-tensor-field ()
   "C++ datamunge::cv::detail::StructureTensorField::StructureTensorField.
 
   (make-structure-tensor-field) → structure-tensor-field"
   (make-instance 'datamunge:structure-tensor-field :args (list)))
 
-(register-constructor 'datamunge:hough-line 546 nil)
+(register-constructor 'datamunge:hough-line 564 nil)
 (defun datamunge:make-hough-line ()
   "C++ datamunge::cv::HoughLine::HoughLine.
 
   (make-hough-line) → hough-line"
   (make-instance 'datamunge:hough-line :args (list)))
 
-(register-constructor 'datamunge:hough-circle 555 nil)
+(register-constructor 'datamunge:hough-circle 573 nil)
 (defun datamunge:make-hough-circle ()
   "C++ datamunge::cv::HoughCircle::HoughCircle.
 
   (make-hough-circle) → hough-circle"
   (make-instance 'datamunge:hough-circle :args (list)))
 
-(register-constructor 'datamunge:flow-vector 562 nil)
+(register-constructor 'datamunge:flow-vector 580 nil)
 (defun datamunge:make-flow-vector ()
   "C++ datamunge::cv::FlowVector::FlowVector.
 
   (make-flow-vector) → flow-vector"
   (make-instance 'datamunge:flow-vector :args (list)))
 
-(register-constructor 'datamunge:label-map 571 nil)
+(register-constructor 'datamunge:label-map 589 nil)
 (defun datamunge:make-label-map ()
   "C++ datamunge::cv::LabelMap::LabelMap.
 
   (make-label-map) → label-map"
   (make-instance 'datamunge:label-map :args (list)))
 
-(register-constructor 'datamunge:image-batch 583 nil)
+(register-constructor 'datamunge:image-batch 601 nil)
 (defun datamunge:make-image-batch ()
   "C++ datamunge::datasets::ImageBatch::ImageBatch.
 
   (make-image-batch) → image-batch"
   (make-instance 'datamunge:image-batch :args (list)))
 
-(register-constructor 'datamunge:image-loader 618 nil)
+(register-constructor 'datamunge:image-loader 636 nil)
 (defun datamunge:make-image-loader (dataset &optional (split nil split-p) (directory nil directory-p))
   "Opens a dataset split, downloading the files first if they are missing.
 
@@ -7634,126 +7640,126 @@ Errors (signalled as datamunge:native-error):
     directory  string  Where the dataset's files are (or should be downloaded); empty means `data_home() + \"/\" + dataset`."
   (make-instance 'datamunge:image-loader :args (cond (directory-p (list dataset split directory)) (split-p (list dataset split)) (t (list dataset)))))
 
-(register-constructor 'datamunge:mesh1-d 623 nil)
+(register-constructor 'datamunge:mesh1-d 641 nil)
 (defun datamunge:make-mesh1-d ()
   "C++ datamunge::fem::Mesh1D::Mesh1D.
 
   (make-mesh1-d) → mesh1-d"
   (make-instance 'datamunge:mesh1-d :args (list)))
 
-(register-constructor 'datamunge:scalar-field1-d 625 t)
+(register-constructor 'datamunge:scalar-field1-d 643 t)
 (defun datamunge:make-scalar-field1-d ()
   "C++ datamunge::fem::ScalarField1D::ScalarField1D.
 
   (make-scalar-field1-d) → scalar-field1-d"
   (make-instance 'datamunge:scalar-field1-d :args (list)))
 
-(register-constructor 'datamunge:scalar-field2-d 627 t)
+(register-constructor 'datamunge:scalar-field2-d 645 t)
 (defun datamunge:make-scalar-field2-d ()
   "C++ datamunge::fem::ScalarField2D::ScalarField2D.
 
   (make-scalar-field2-d) → scalar-field2-d"
   (make-instance 'datamunge:scalar-field2-d :args (list)))
 
-(register-constructor 'datamunge:boundary-condition1-d 634 nil)
+(register-constructor 'datamunge:boundary-condition1-d 652 nil)
 (defun datamunge:make-boundary-condition1-d ()
   "C++ datamunge::fem::BoundaryCondition1D::BoundaryCondition1D.
 
   (make-boundary-condition1-d) → boundary-condition1-d"
   (make-instance 'datamunge:boundary-condition1-d :args (list)))
 
-(register-constructor 'datamunge:fem1-d-result 638 nil)
+(register-constructor 'datamunge:fem1-d-result 656 nil)
 (defun datamunge:make-fem1-d-result ()
   "C++ datamunge::fem::FEM1DResult::FEM1DResult.
 
   (make-fem1-d-result) → fem1-d-result"
   (make-instance 'datamunge:fem1-d-result :args (list)))
 
-(register-constructor 'datamunge:fem1-d-time-series 644 nil)
+(register-constructor 'datamunge:fem1-d-time-series 662 nil)
 (defun datamunge:make-fem1-d-time-series ()
   "C++ datamunge::fem::FEM1DTimeSeries::FEM1DTimeSeries.
 
   (make-fem1-d-time-series) → fem1-d-time-series"
   (make-instance 'datamunge:fem1-d-time-series :args (list)))
 
-(register-constructor 'datamunge:fem1-d 649 nil)
+(register-constructor 'datamunge:fem1-d 667 nil)
 (defun datamunge:make-fem1-d ()
   "C++ datamunge::fem::FEM1D::FEM1D.
 
   (make-fem1-d) → fem1-d"
   (make-instance 'datamunge:fem1-d :args (list)))
 
-(register-constructor 'datamunge:point2-d 655 nil)
+(register-constructor 'datamunge:point2-d 673 nil)
 (defun datamunge:make-point2-d ()
   "C++ datamunge::geometry::Point2D::Point2D.
 
   (make-point2-d) → point2-d"
   (make-instance 'datamunge:point2-d :args (list)))
 
-(register-constructor 'datamunge:triangle 662 nil)
+(register-constructor 'datamunge:triangle 680 nil)
 (defun datamunge:make-triangle ()
   "C++ datamunge::geometry::Triangle::Triangle.
 
   (make-triangle) → triangle"
   (make-instance 'datamunge:triangle :args (list)))
 
-(register-constructor 'datamunge:delaunay-work 677 nil)
+(register-constructor 'datamunge:delaunay-work 695 nil)
 (defun datamunge:make-delaunay-work ()
   "C++ datamunge::geometry::DelaunayWork::DelaunayWork.
 
   (make-delaunay-work) → delaunay-work"
   (make-instance 'datamunge:delaunay-work :args (list)))
 
-(register-constructor 'datamunge:delaunay-insertion 690 nil)
+(register-constructor 'datamunge:delaunay-insertion 708 nil)
 (defun datamunge:make-delaunay-insertion ()
   "C++ datamunge::geometry::DelaunayInsertion::DelaunayInsertion.
 
   (make-delaunay-insertion) → delaunay-insertion"
   (make-instance 'datamunge:delaunay-insertion :args (list)))
 
-(register-constructor 'datamunge:delaunay-trace 707 nil)
+(register-constructor 'datamunge:delaunay-trace 725 nil)
 (defun datamunge:make-delaunay-trace ()
   "C++ datamunge::geometry::DelaunayTrace::DelaunayTrace.
 
   (make-delaunay-trace) → delaunay-trace"
   (make-instance 'datamunge:delaunay-trace :args (list)))
 
-(register-constructor 'datamunge:delaunay-analysis 724 nil)
+(register-constructor 'datamunge:delaunay-analysis 742 nil)
 (defun datamunge:make-delaunay-analysis ()
   "C++ datamunge::geometry::DelaunayAnalysis::DelaunayAnalysis.
 
   (make-delaunay-analysis) → delaunay-analysis"
   (make-instance 'datamunge:delaunay-analysis :args (list)))
 
-(register-constructor 'datamunge:mesh2-d 729 nil)
+(register-constructor 'datamunge:mesh2-d 747 nil)
 (defun datamunge:make-mesh2-d ()
   "C++ datamunge::fem::Mesh2D::Mesh2D.
 
   (make-mesh2-d) → mesh2-d"
   (make-instance 'datamunge:mesh2-d :args (list)))
 
-(register-constructor 'datamunge:fem2-d-result 733 nil)
+(register-constructor 'datamunge:fem2-d-result 751 nil)
 (defun datamunge:make-fem2-d-result ()
   "C++ datamunge::fem::FEM2DResult::FEM2DResult.
 
   (make-fem2-d-result) → fem2-d-result"
   (make-instance 'datamunge:fem2-d-result :args (list)))
 
-(register-constructor 'datamunge:fem2-d 736 nil)
+(register-constructor 'datamunge:fem2-d 754 nil)
 (defun datamunge:make-fem2-d ()
   "C++ datamunge::fem::FEM2D::FEM2D.
 
   (make-fem2-d) → fem2-d"
   (make-instance 'datamunge:fem2-d :args (list)))
 
-(register-constructor 'datamunge:alpha-beta-state 741 nil)
+(register-constructor 'datamunge:alpha-beta-state 759 nil)
 (defun datamunge:make-alpha-beta-state ()
   "C++ datamunge::filter::AlphaBetaState::AlphaBetaState.
 
   (make-alpha-beta-state) → alpha-beta-state"
   (make-instance 'datamunge:alpha-beta-state :args (list)))
 
-(register-constructor 'datamunge:alpha-beta-filter 749 nil)
+(register-constructor 'datamunge:alpha-beta-filter 767 nil)
 (defun datamunge:make-alpha-beta-filter (alpha beta dt &optional (x0 nil x0-p) (v0 nil v0-p))
   "C++ datamunge::filter::AlphaBetaFilter::AlphaBetaFilter.
 
@@ -7765,14 +7771,14 @@ Errors (signalled as datamunge:native-error):
     v0  double-float"
   (make-instance 'datamunge:alpha-beta-filter :args (cond (v0-p (list alpha beta dt x0 v0)) (x0-p (list alpha beta dt x0)) (t (list alpha beta dt)))))
 
-(register-constructor 'datamunge:alpha-beta-gamma-state 756 nil)
+(register-constructor 'datamunge:alpha-beta-gamma-state 774 nil)
 (defun datamunge:make-alpha-beta-gamma-state ()
   "C++ datamunge::filter::AlphaBetaGammaState::AlphaBetaGammaState.
 
   (make-alpha-beta-gamma-state) → alpha-beta-gamma-state"
   (make-instance 'datamunge:alpha-beta-gamma-state :args (list)))
 
-(register-constructor 'datamunge:alpha-beta-gamma-filter 766 nil)
+(register-constructor 'datamunge:alpha-beta-gamma-filter 784 nil)
 (defun datamunge:make-alpha-beta-gamma-filter (alpha beta gamma dt &optional (x0 nil x0-p) (v0 nil v0-p) (a0 nil a0-p))
   "C++ datamunge::filter::AlphaBetaGammaFilter::AlphaBetaGammaFilter.
 
@@ -7786,21 +7792,21 @@ Errors (signalled as datamunge:native-error):
     a0  double-float"
   (make-instance 'datamunge:alpha-beta-gamma-filter :args (cond (a0-p (list alpha beta gamma dt x0 v0 a0)) (v0-p (list alpha beta gamma dt x0 v0)) (x0-p (list alpha beta gamma dt x0)) (t (list alpha beta gamma dt)))))
 
-(register-constructor 'datamunge:kalman-state 771 nil)
+(register-constructor 'datamunge:kalman-state 789 nil)
 (defun datamunge:make-kalman-state ()
   "C++ datamunge::filter::KalmanState::KalmanState.
 
   (make-kalman-state) → kalman-state"
   (make-instance 'datamunge:kalman-state :args (list)))
 
-(register-constructor 'datamunge:smooth-result 776 nil)
+(register-constructor 'datamunge:smooth-result 794 nil)
 (defun datamunge:make-smooth-result ()
   "C++ datamunge::filter::SmoothResult::SmoothResult.
 
   (make-smooth-result) → smooth-result"
   (make-instance 'datamunge:smooth-result :args (list)))
 
-(register-constructor 'datamunge:kalman-filter 783 nil)
+(register-constructor 'datamunge:kalman-filter 801 nil)
 (defun datamunge:make-kalman-filter (f h q r x0 p0)
   "C++ datamunge::filter::KalmanFilter::KalmanFilter.
 
@@ -7813,14 +7819,14 @@ Errors (signalled as datamunge:native-error):
     p0  (vector (vector double-float))"
   (make-instance 'datamunge:kalman-filter :args (list f h q r x0 p0)))
 
-(register-constructor 'datamunge:vector-function 785 t)
+(register-constructor 'datamunge:vector-function 803 t)
 (defun datamunge:make-vector-function ()
   "C++ datamunge::filter::VectorFunction::VectorFunction.
 
   (make-vector-function) → vector-function"
   (make-instance 'datamunge:vector-function :args (list)))
 
-(register-constructor 'datamunge:ensemble-kalman-filter 791 nil)
+(register-constructor 'datamunge:ensemble-kalman-filter 809 nil)
 (defun datamunge:make-ensemble-kalman-filter (f h q r x0 p0 &optional (ensemble-size nil ensemble-size-p) (seed nil seed-p))
   "C++ datamunge::filter::EnsembleKalmanFilter::EnsembleKalmanFilter.
 
@@ -7835,7 +7841,7 @@ Errors (signalled as datamunge:native-error):
     seed  integer"
   (make-instance 'datamunge:ensemble-kalman-filter :args (cond (seed-p (list f h q r x0 p0 ensemble-size seed)) (ensemble-size-p (list f h q r x0 p0 ensemble-size)) (t (list f h q r x0 p0)))))
 
-(register-constructor 'datamunge:extended-kalman-filter 797 nil)
+(register-constructor 'datamunge:extended-kalman-filter 815 nil)
 (defun datamunge:make-extended-kalman-filter (f h q r x0 p0 &optional (jacobian-step nil jacobian-step-p))
   "C++ datamunge::filter::ExtendedKalmanFilter::ExtendedKalmanFilter.
 
@@ -7849,7 +7855,7 @@ Errors (signalled as datamunge:native-error):
     jacobian-step  double-float"
   (make-instance 'datamunge:extended-kalman-filter :args (cond (jacobian-step-p (list f h q r x0 p0 jacobian-step)) (t (list f h q r x0 p0)))))
 
-(register-constructor 'datamunge:information-filter 803 nil)
+(register-constructor 'datamunge:information-filter 821 nil)
 (defun datamunge:make-information-filter (f h q r x0 p0)
   "C++ datamunge::filter::InformationFilter::InformationFilter.
 
@@ -7862,7 +7868,7 @@ Errors (signalled as datamunge:native-error):
     p0  (vector (vector double-float))"
   (make-instance 'datamunge:information-filter :args (list f h q r x0 p0)))
 
-(register-constructor 'datamunge:particle-filter 809 nil)
+(register-constructor 'datamunge:particle-filter 827 nil)
 (defun datamunge:make-particle-filter (f h q r x0 p0 &optional (num-particles nil num-particles-p) (seed nil seed-p))
   "C++ datamunge::filter::ParticleFilter::ParticleFilter.
 
@@ -7877,7 +7883,7 @@ Errors (signalled as datamunge:native-error):
     seed  integer"
   (make-instance 'datamunge:particle-filter :args (cond (seed-p (list f h q r x0 p0 num-particles seed)) (num-particles-p (list f h q r x0 p0 num-particles)) (t (list f h q r x0 p0)))))
 
-(register-constructor 'datamunge:unscented-kalman-filter 815 nil)
+(register-constructor 'datamunge:unscented-kalman-filter 833 nil)
 (defun datamunge:make-unscented-kalman-filter (f h q r x0 p0 &optional (alpha nil alpha-p) (beta nil beta-p) (kappa nil kappa-p))
   "C++ datamunge::filter::UnscentedKalmanFilter::UnscentedKalmanFilter.
 
@@ -7893,70 +7899,70 @@ Errors (signalled as datamunge:native-error):
     kappa  double-float"
   (make-instance 'datamunge:unscented-kalman-filter :args (cond (kappa-p (list f h q r x0 p0 alpha beta kappa)) (beta-p (list f h q r x0 p0 alpha beta)) (alpha-p (list f h q r x0 p0 alpha)) (t (list f h q r x0 p0)))))
 
-(register-constructor 'datamunge:bounding-box 820 nil)
+(register-constructor 'datamunge:bounding-box 838 nil)
 (defun datamunge:make-bounding-box ()
   "C++ datamunge::geometry::BoundingBox::BoundingBox.
 
   (make-bounding-box) → bounding-box"
   (make-instance 'datamunge:bounding-box :args (list)))
 
-(register-constructor 'datamunge:closest-pair-result 827 nil)
+(register-constructor 'datamunge:closest-pair-result 845 nil)
 (defun datamunge:make-closest-pair-result ()
   "C++ datamunge::geometry::ClosestPairResult::ClosestPairResult.
 
   (make-closest-pair-result) → closest-pair-result"
   (make-instance 'datamunge:closest-pair-result :args (list)))
 
-(register-constructor 'datamunge:convex-hull-options 832 nil)
+(register-constructor 'datamunge:convex-hull-options 850 nil)
 (defun datamunge:make-convex-hull-options ()
   "C++ datamunge::geometry::ConvexHullOptions::ConvexHullOptions.
 
   (make-convex-hull-options) → convex-hull-options"
   (make-instance 'datamunge:convex-hull-options :args (list)))
 
-(register-constructor 'datamunge:hull-indexed-point 837 nil)
+(register-constructor 'datamunge:hull-indexed-point 855 nil)
 (defun datamunge:make-hull-indexed-point ()
   "C++ datamunge::geometry::HullIndexedPoint::HullIndexedPoint.
 
   (make-hull-indexed-point) → hull-indexed-point"
   (make-instance 'datamunge:hull-indexed-point :args (list)))
 
-(register-constructor 'datamunge:convex-hull-work 854 nil)
+(register-constructor 'datamunge:convex-hull-work 872 nil)
 (defun datamunge:make-convex-hull-work ()
   "C++ datamunge::geometry::ConvexHullWork::ConvexHullWork.
 
   (make-convex-hull-work) → convex-hull-work"
   (make-instance 'datamunge:convex-hull-work :args (list)))
 
-(register-constructor 'datamunge:hull-event 871 nil)
+(register-constructor 'datamunge:hull-event 889 nil)
 (defun datamunge:make-hull-event ()
   "C++ datamunge::geometry::HullEvent::HullEvent.
 
   (make-hull-event) → hull-event"
   (make-instance 'datamunge:hull-event :args (list)))
 
-(register-constructor 'datamunge:convex-hull-analysis 878 nil)
+(register-constructor 'datamunge:convex-hull-analysis 896 nil)
 (defun datamunge:make-convex-hull-analysis ()
   "C++ datamunge::geometry::ConvexHullAnalysis::ConvexHullAnalysis.
 
   (make-convex-hull-analysis) → convex-hull-analysis"
   (make-instance 'datamunge:convex-hull-analysis :args (list)))
 
-(register-constructor 'datamunge:convex-hull-trace 889 nil)
+(register-constructor 'datamunge:convex-hull-trace 907 nil)
 (defun datamunge:make-convex-hull-trace ()
   "C++ datamunge::geometry::ConvexHullTrace::ConvexHullTrace.
 
   (make-convex-hull-trace) → convex-hull-trace"
   (make-instance 'datamunge:convex-hull-trace :args (list)))
 
-(register-constructor 'datamunge:callback 891 t)
+(register-constructor 'datamunge:callback 909 t)
 (defun datamunge:make-callback ()
   "C++ datamunge::Callback::Callback.
 
   (make-callback) → callback"
   (make-instance 'datamunge:callback :args (list)))
 
-(register-constructor 'datamunge:rgb 900 nil)
+(register-constructor 'datamunge:rgb 918 nil)
 (defun datamunge:make-rgb (&rest args)
   "Construct the default opaque dark-slate ink color.
 
@@ -8025,35 +8031,35 @@ Errors (signalled as datamunge:native-error):
     color  string  Color text; supported names are listed in the class description."
   (make-instance 'datamunge:rgb :args args))
 
-(register-constructor 'datamunge:data-series 921 nil)
+(register-constructor 'datamunge:data-series 939 nil)
 (defun datamunge:make-data-series ()
   "C++ datamunge::graphics::DataSeries::DataSeries.
 
   (make-data-series) → data-series"
   (make-instance 'datamunge:data-series :args (list)))
 
-(register-constructor 'datamunge:ab-line 932 nil)
+(register-constructor 'datamunge:ab-line 950 nil)
 (defun datamunge:make-ab-line ()
   "C++ datamunge::graphics::ABLine::ABLine.
 
   (make-ab-line) → ab-line"
   (make-instance 'datamunge:ab-line :args (list)))
 
-(register-constructor 'datamunge:legend-entry 937 nil)
+(register-constructor 'datamunge:legend-entry 955 nil)
 (defun datamunge:make-legend-entry ()
   "C++ datamunge::graphics::LegendEntry::LegendEntry.
 
   (make-legend-entry) → legend-entry"
   (make-instance 'datamunge:legend-entry :args (list)))
 
-(register-constructor 'datamunge:plot 997 nil)
+(register-constructor 'datamunge:plot 1015 nil)
 (defun datamunge:make-plot ()
   "C++ datamunge::graphics::Plot::Plot.
 
   (make-plot) → plot"
   (make-instance 'datamunge:plot :args (list)))
 
-(register-constructor 'datamunge:r-plot 1049 nil)
+(register-constructor 'datamunge:r-plot 1067 nil)
 (defun datamunge:make-r-plot (&rest args)
   "Constructs an empty plot with default labels and styling, ready for layers.
 
@@ -8093,42 +8099,42 @@ See also: points(), set_col(), plot()
     y  (vector double-float)  Vertical coordinates, paired with `x` by position."
   (make-instance 'datamunge:r-plot :args args))
 
-(register-constructor 'datamunge:r-layout 1073 nil)
+(register-constructor 'datamunge:r-layout 1091 nil)
 (defun datamunge:make-r-layout ()
   "C++ datamunge::graphics::RLayout::RLayout.
 
   (make-r-layout) → r-layout"
   (make-instance 'datamunge:r-layout :args (list)))
 
-(register-constructor 'datamunge:dtw-result 1080 nil)
+(register-constructor 'datamunge:dtw-result 1098 nil)
 (defun datamunge:make-dtw-result ()
   "C++ datamunge::geometry::DTWResult::DTWResult.
 
   (make-dtw-result) → dtw-result"
   (make-instance 'datamunge:dtw-result :args (list)))
 
-(register-constructor 'datamunge:dtw-work 1087 nil)
+(register-constructor 'datamunge:dtw-work 1105 nil)
 (defun datamunge:make-dtw-work ()
   "C++ datamunge::geometry::DTWWork::DTWWork.
 
   (make-dtw-work) → dtw-work"
   (make-instance 'datamunge:dtw-work :args (list)))
 
-(register-constructor 'datamunge:dtw-computation 1092 nil)
+(register-constructor 'datamunge:dtw-computation 1110 nil)
 (defun datamunge:make-dtw-computation ()
   "C++ datamunge::geometry::DTWComputation::DTWComputation.
 
   (make-dtw-computation) → dtw-computation"
   (make-instance 'datamunge:dtw-computation :args (list)))
 
-(register-constructor 'datamunge:dtw-trace 1107 nil)
+(register-constructor 'datamunge:dtw-trace 1125 nil)
 (defun datamunge:make-dtw-trace ()
   "C++ datamunge::geometry::DTWTrace::DTWTrace.
 
   (make-dtw-trace) → dtw-trace"
   (make-instance 'datamunge:dtw-trace :args (list)))
 
-(register-constructor 'datamunge:kd-tree2-d 1113 nil)
+(register-constructor 'datamunge:kd-tree2-d 1131 nil)
 (defun datamunge:make-kd-tree2-d (points)
   "C++ datamunge::geometry::KDTree2D::KDTree2D.
 
@@ -8136,35 +8142,35 @@ See also: points(), set_col(), plot()
     points  (vector point2-d)"
   (make-instance 'datamunge:kd-tree2-d :args (list points)))
 
-(register-constructor 'datamunge:circle 1118 nil)
+(register-constructor 'datamunge:circle 1136 nil)
 (defun datamunge:make-circle ()
   "C++ datamunge::geometry::Circle::Circle.
 
   (make-circle) → circle"
   (make-instance 'datamunge:circle :args (list)))
 
-(register-constructor 'datamunge:diameter-result 1125 nil)
+(register-constructor 'datamunge:diameter-result 1143 nil)
 (defun datamunge:make-diameter-result ()
   "C++ datamunge::geometry::DiameterResult::DiameterResult.
 
   (make-diameter-result) → diameter-result"
   (make-instance 'datamunge:diameter-result :args (list)))
 
-(register-constructor 'datamunge:minimum-bounding-rectangle 1134 nil)
+(register-constructor 'datamunge:minimum-bounding-rectangle 1152 nil)
 (defun datamunge:make-minimum-bounding-rectangle ()
   "C++ datamunge::geometry::MinimumBoundingRectangle::MinimumBoundingRectangle.
 
   (make-minimum-bounding-rectangle) → minimum-bounding-rectangle"
   (make-instance 'datamunge:minimum-bounding-rectangle :args (list)))
 
-(register-constructor 'datamunge:voronoi-diagram 1139 nil)
+(register-constructor 'datamunge:voronoi-diagram 1157 nil)
 (defun datamunge:make-voronoi-diagram ()
   "C++ datamunge::geometry::VoronoiDiagram::VoronoiDiagram.
 
   (make-voronoi-diagram) → voronoi-diagram"
   (make-instance 'datamunge:voronoi-diagram :args (list)))
 
-(register-constructor 'datamunge:linalg-matrix 1150 nil)
+(register-constructor 'datamunge:linalg-matrix 1168 nil)
 (defun datamunge:make-linalg-matrix (values rows cols &optional (sparse nil sparse-p))
   "Construct an owned dense or CSR matrix from row-major values.
 
@@ -8185,28 +8191,28 @@ Errors (signalled as datamunge:native-error):
     sparse  boolean  Select CSR storage, default false."
   (make-instance 'datamunge:linalg-matrix :args (cond (sparse-p (list values rows cols sparse)) (t (list values rows cols)))))
 
-(register-constructor 'datamunge:rhs 1152 t)
+(register-constructor 'datamunge:rhs 1170 t)
 (defun datamunge:make-rhs ()
   "C++ datamunge::ode::RHS::RHS.
 
   (make-rhs) → rhs"
   (make-instance 'datamunge:rhs :args (list)))
 
-(register-constructor 'datamunge:ode-options 1165 nil)
+(register-constructor 'datamunge:ode-options 1183 nil)
 (defun datamunge:make-ode-options ()
   "C++ datamunge::ode::ODEOptions::ODEOptions.
 
   (make-ode-options) → ode-options"
   (make-instance 'datamunge:ode-options :args (list)))
 
-(register-constructor 'datamunge:ode-solution 1173 nil)
+(register-constructor 'datamunge:ode-solution 1191 nil)
 (defun datamunge:make-ode-solution ()
   "C++ datamunge::ode::ODESolution::ODESolution.
 
   (make-ode-solution) → ode-solution"
   (make-instance 'datamunge:ode-solution :args (list)))
 
-(register-constructor 'datamunge:ode-solver 1177 nil)
+(register-constructor 'datamunge:ode-solver 1195 nil)
 (defun datamunge:make-ode-solver (&optional (options nil options-p))
   "C++ datamunge::ode::ODESolver::ODESolver.
 
@@ -8214,14 +8220,14 @@ Errors (signalled as datamunge:native-error):
     options  ode-options"
   (make-instance 'datamunge:ode-solver :args (cond (options-p (list options)) (t (list)))))
 
-(register-constructor 'datamunge:acor-options 1192 nil)
+(register-constructor 'datamunge:acor-options 1210 nil)
 (defun datamunge:make-acor-options ()
   "C++ datamunge::optim::ACOROptions::ACOROptions.
 
   (make-acor-options) → acor-options"
   (make-instance 'datamunge:acor-options :args (list)))
 
-(register-constructor 'datamunge:acor 1195 nil)
+(register-constructor 'datamunge:acor 1213 nil)
 (defun datamunge:make-acor (&optional (options nil options-p))
   "C++ datamunge::optim::ACOR::ACOR.
 
@@ -8229,14 +8235,14 @@ Errors (signalled as datamunge:native-error):
     options  acor-options"
   (make-instance 'datamunge:acor :args (cond (options-p (list options)) (t (list)))))
 
-(register-constructor 'datamunge:adam-options 1208 nil)
+(register-constructor 'datamunge:adam-options 1226 nil)
 (defun datamunge:make-adam-options ()
   "C++ datamunge::optim::AdamOptions::AdamOptions.
 
   (make-adam-options) → adam-options"
   (make-instance 'datamunge:adam-options :args (list)))
 
-(register-constructor 'datamunge:adam 1211 nil)
+(register-constructor 'datamunge:adam 1229 nil)
 (defun datamunge:make-adam (&optional (options nil options-p))
   "Store a copy of the controls without running the objective.
 
@@ -8253,14 +8259,14 @@ See also: optimize()
     options  adam-options  Method-specific controls; defaults are listed by AdamOptions."
   (make-instance 'datamunge:adam :args (cond (options-p (list options)) (t (list)))))
 
-(register-constructor 'datamunge:ada-grad-options 1220 nil)
+(register-constructor 'datamunge:ada-grad-options 1238 nil)
 (defun datamunge:make-ada-grad-options ()
   "C++ datamunge::optim::AdaGradOptions::AdaGradOptions.
 
   (make-ada-grad-options) → ada-grad-options"
   (make-instance 'datamunge:ada-grad-options :args (list)))
 
-(register-constructor 'datamunge:ada-grad 1223 nil)
+(register-constructor 'datamunge:ada-grad 1241 nil)
 (defun datamunge:make-ada-grad (&optional (options nil options-p))
   "Store a copy of the controls without running the objective.
 
@@ -8277,14 +8283,14 @@ See also: optimize()
     options  ada-grad-options  Method-specific controls; defaults are listed by AdaGradOptions."
   (make-instance 'datamunge:ada-grad :args (cond (options-p (list options)) (t (list)))))
 
-(register-constructor 'datamunge:ada-delta-options 1232 nil)
+(register-constructor 'datamunge:ada-delta-options 1250 nil)
 (defun datamunge:make-ada-delta-options ()
   "C++ datamunge::optim::AdaDeltaOptions::AdaDeltaOptions.
 
   (make-ada-delta-options) → ada-delta-options"
   (make-instance 'datamunge:ada-delta-options :args (list)))
 
-(register-constructor 'datamunge:ada-delta 1235 nil)
+(register-constructor 'datamunge:ada-delta 1253 nil)
 (defun datamunge:make-ada-delta (&optional (options nil options-p))
   "Store a copy of the controls without running the objective.
 
@@ -8301,14 +8307,14 @@ See also: optimize()
     options  ada-delta-options  Method-specific controls; defaults are listed by AdaDeltaOptions."
   (make-instance 'datamunge:ada-delta :args (cond (options-p (list options)) (t (list)))))
 
-(register-constructor 'datamunge:ams-grad-options 1248 nil)
+(register-constructor 'datamunge:ams-grad-options 1266 nil)
 (defun datamunge:make-ams-grad-options ()
   "C++ datamunge::optim::AMSGradOptions::AMSGradOptions.
 
   (make-ams-grad-options) → ams-grad-options"
   (make-instance 'datamunge:ams-grad-options :args (list)))
 
-(register-constructor 'datamunge:ams-grad 1251 nil)
+(register-constructor 'datamunge:ams-grad 1269 nil)
 (defun datamunge:make-ams-grad (&optional (options nil options-p))
   "Store a copy of the controls without running the objective.
 
@@ -8325,14 +8331,14 @@ See also: optimize()
     options  ams-grad-options  Method-specific controls; defaults are listed by AMSGradOptions."
   (make-instance 'datamunge:ams-grad :args (cond (options-p (list options)) (t (list)))))
 
-(register-constructor 'datamunge:artificial-bee-colony-options 1262 nil)
+(register-constructor 'datamunge:artificial-bee-colony-options 1280 nil)
 (defun datamunge:make-artificial-bee-colony-options ()
   "C++ datamunge::optim::ArtificialBeeColonyOptions::ArtificialBeeColonyOptions.
 
   (make-artificial-bee-colony-options) → artificial-bee-colony-options"
   (make-instance 'datamunge:artificial-bee-colony-options :args (list)))
 
-(register-constructor 'datamunge:artificial-bee-colony 1265 nil)
+(register-constructor 'datamunge:artificial-bee-colony 1283 nil)
 (defun datamunge:make-artificial-bee-colony (&optional (options nil options-p))
   "C++ datamunge::optim::ArtificialBeeColony::ArtificialBeeColony.
 
@@ -8340,14 +8346,14 @@ See also: optimize()
     options  artificial-bee-colony-options"
   (make-instance 'datamunge:artificial-bee-colony :args (cond (options-p (list options)) (t (list)))))
 
-(register-constructor 'datamunge:augmented-lagrangian-options 1276 nil)
+(register-constructor 'datamunge:augmented-lagrangian-options 1294 nil)
 (defun datamunge:make-augmented-lagrangian-options ()
   "C++ datamunge::optim::AugmentedLagrangianOptions::AugmentedLagrangianOptions.
 
   (make-augmented-lagrangian-options) → augmented-lagrangian-options"
   (make-instance 'datamunge:augmented-lagrangian-options :args (list)))
 
-(register-constructor 'datamunge:augmented-lagrangian 1279 nil)
+(register-constructor 'datamunge:augmented-lagrangian 1297 nil)
 (defun datamunge:make-augmented-lagrangian (&optional (options nil options-p))
   "Store a copy of the controls without running the objective.
 
@@ -8364,28 +8370,28 @@ See also: optimize()
     options  augmented-lagrangian-options  Method-specific controls; defaults are listed by AugmentedLagrangianOptions."
   (make-instance 'datamunge:augmented-lagrangian :args (cond (options-p (list options)) (t (list)))))
 
-(register-constructor 'datamunge:bayesian-surrogate 1282 t)
+(register-constructor 'datamunge:bayesian-surrogate 1300 t)
 (defun datamunge:make-bayesian-surrogate ()
   "C++ datamunge::optim::BayesianSurrogate::BayesianSurrogate.
 
   (make-bayesian-surrogate) → bayesian-surrogate"
   (make-instance 'datamunge:bayesian-surrogate :args (list)))
 
-(register-constructor 'datamunge:bayesian-optimization-options 1293 nil)
+(register-constructor 'datamunge:bayesian-optimization-options 1311 nil)
 (defun datamunge:make-bayesian-optimization-options ()
   "C++ datamunge::optim::BayesianOptimizationOptions::BayesianOptimizationOptions.
 
   (make-bayesian-optimization-options) → bayesian-optimization-options"
   (make-instance 'datamunge:bayesian-optimization-options :args (list)))
 
-(register-constructor 'datamunge:bayesian-optimization-result 1306 nil)
+(register-constructor 'datamunge:bayesian-optimization-result 1324 nil)
 (defun datamunge:make-bayesian-optimization-result ()
   "C++ datamunge::optim::BayesianOptimizationResult::BayesianOptimizationResult.
 
   (make-bayesian-optimization-result) → bayesian-optimization-result"
   (make-instance 'datamunge:bayesian-optimization-result :args (list)))
 
-(register-constructor 'datamunge:bayesian-optimization 1310 nil)
+(register-constructor 'datamunge:bayesian-optimization 1328 nil)
 (defun datamunge:make-bayesian-optimization (&optional (options nil options-p))
   "Creates the optimizer.
 
@@ -8393,14 +8399,14 @@ See also: optimize()
     options  bayesian-optimization-options  Design size, iteration count, seed and acquisition search settings."
   (make-instance 'datamunge:bayesian-optimization :args (cond (options-p (list options)) (t (list)))))
 
-(register-constructor 'datamunge:conjugate-gradient-options 1321 nil)
+(register-constructor 'datamunge:conjugate-gradient-options 1339 nil)
 (defun datamunge:make-conjugate-gradient-options ()
   "C++ datamunge::optim::ConjugateGradientOptions::ConjugateGradientOptions.
 
   (make-conjugate-gradient-options) → conjugate-gradient-options"
   (make-instance 'datamunge:conjugate-gradient-options :args (list)))
 
-(register-constructor 'datamunge:conjugate-gradient 1324 nil)
+(register-constructor 'datamunge:conjugate-gradient 1342 nil)
 (defun datamunge:make-conjugate-gradient (&optional (options nil options-p))
   "Store a copy of the controls without running the objective.
 
@@ -8417,14 +8423,14 @@ See also: optimize()
     options  conjugate-gradient-options  Method-specific controls; defaults are listed by ConjugateGradientOptions."
   (make-instance 'datamunge:conjugate-gradient :args (cond (options-p (list options)) (t (list)))))
 
-(register-constructor 'datamunge:cmaes-options 1335 nil)
+(register-constructor 'datamunge:cmaes-options 1353 nil)
 (defun datamunge:make-cmaes-options ()
   "C++ datamunge::optim::CMAESOptions::CMAESOptions.
 
   (make-cmaes-options) → cmaes-options"
   (make-instance 'datamunge:cmaes-options :args (list)))
 
-(register-constructor 'datamunge:cmaes 1338 nil)
+(register-constructor 'datamunge:cmaes 1356 nil)
 (defun datamunge:make-cmaes (&optional (options nil options-p))
   "Store a copy of the controls without running the objective.
 
@@ -8441,14 +8447,14 @@ See also: optimize()
     options  cmaes-options  Method-specific controls; defaults are listed by CMAESOptions."
   (make-instance 'datamunge:cmaes :args (cond (options-p (list options)) (t (list)))))
 
-(register-constructor 'datamunge:coordinate-descent-options 1351 nil)
+(register-constructor 'datamunge:coordinate-descent-options 1369 nil)
 (defun datamunge:make-coordinate-descent-options ()
   "C++ datamunge::optim::CoordinateDescentOptions::CoordinateDescentOptions.
 
   (make-coordinate-descent-options) → coordinate-descent-options"
   (make-instance 'datamunge:coordinate-descent-options :args (list)))
 
-(register-constructor 'datamunge:coordinate-descent 1354 nil)
+(register-constructor 'datamunge:coordinate-descent 1372 nil)
 (defun datamunge:make-coordinate-descent (&optional (options nil options-p))
   "Store a copy of the controls without running the objective.
 
@@ -8465,14 +8471,14 @@ See also: optimize()
     options  coordinate-descent-options  Method-specific controls; defaults are listed by CoordinateDescentOptions."
   (make-instance 'datamunge:coordinate-descent :args (cond (options-p (list options)) (t (list)))))
 
-(register-constructor 'datamunge:cross-entropy-method-options 1369 nil)
+(register-constructor 'datamunge:cross-entropy-method-options 1387 nil)
 (defun datamunge:make-cross-entropy-method-options ()
   "C++ datamunge::optim::CrossEntropyMethodOptions::CrossEntropyMethodOptions.
 
   (make-cross-entropy-method-options) → cross-entropy-method-options"
   (make-instance 'datamunge:cross-entropy-method-options :args (list)))
 
-(register-constructor 'datamunge:cross-entropy-method 1372 nil)
+(register-constructor 'datamunge:cross-entropy-method 1390 nil)
 (defun datamunge:make-cross-entropy-method (&optional (options nil options-p))
   "C++ datamunge::optim::CrossEntropyMethod::CrossEntropyMethod.
 
@@ -8480,14 +8486,14 @@ See also: optimize()
     options  cross-entropy-method-options"
   (make-instance 'datamunge:cross-entropy-method :args (cond (options-p (list options)) (t (list)))))
 
-(register-constructor 'datamunge:cuckoo-search-options 1387 nil)
+(register-constructor 'datamunge:cuckoo-search-options 1405 nil)
 (defun datamunge:make-cuckoo-search-options ()
   "C++ datamunge::optim::CuckooSearchOptions::CuckooSearchOptions.
 
   (make-cuckoo-search-options) → cuckoo-search-options"
   (make-instance 'datamunge:cuckoo-search-options :args (list)))
 
-(register-constructor 'datamunge:cuckoo-search 1390 nil)
+(register-constructor 'datamunge:cuckoo-search 1408 nil)
 (defun datamunge:make-cuckoo-search (&optional (options nil options-p))
   "C++ datamunge::optim::CuckooSearch::CuckooSearch.
 
@@ -8495,14 +8501,14 @@ See also: optimize()
     options  cuckoo-search-options"
   (make-instance 'datamunge:cuckoo-search :args (cond (options-p (list options)) (t (list)))))
 
-(register-constructor 'datamunge:de-options 1407 nil)
+(register-constructor 'datamunge:de-options 1425 nil)
 (defun datamunge:make-de-options ()
   "C++ datamunge::optim::DEOptions::DEOptions.
 
   (make-de-options) → de-options"
   (make-instance 'datamunge:de-options :args (list)))
 
-(register-constructor 'datamunge:differential-evolution 1410 nil)
+(register-constructor 'datamunge:differential-evolution 1428 nil)
 (defun datamunge:make-differential-evolution (&optional (options nil options-p))
   "Store a copy of the controls without running the objective.
 
@@ -8519,14 +8525,14 @@ See also: optimize()
     options  de-options  Method-specific controls; defaults are listed by DEOptions."
   (make-instance 'datamunge:differential-evolution :args (cond (options-p (list options)) (t (list)))))
 
-(register-constructor 'datamunge:estimation-of-distribution-options 1425 nil)
+(register-constructor 'datamunge:estimation-of-distribution-options 1443 nil)
 (defun datamunge:make-estimation-of-distribution-options ()
   "C++ datamunge::optim::EstimationOfDistributionOptions::EstimationOfDistributionOptions.
 
   (make-estimation-of-distribution-options) → estimation-of-distribution-options"
   (make-instance 'datamunge:estimation-of-distribution-options :args (list)))
 
-(register-constructor 'datamunge:estimation-of-distribution 1428 nil)
+(register-constructor 'datamunge:estimation-of-distribution 1446 nil)
 (defun datamunge:make-estimation-of-distribution (&optional (options nil options-p))
   "C++ datamunge::optim::EstimationOfDistribution::EstimationOfDistribution.
 
@@ -8534,14 +8540,14 @@ See also: optimize()
     options  estimation-of-distribution-options"
   (make-instance 'datamunge:estimation-of-distribution :args (cond (options-p (list options)) (t (list)))))
 
-(register-constructor 'datamunge:evolution-strategy-options 1443 nil)
+(register-constructor 'datamunge:evolution-strategy-options 1461 nil)
 (defun datamunge:make-evolution-strategy-options ()
   "C++ datamunge::optim::EvolutionStrategyOptions::EvolutionStrategyOptions.
 
   (make-evolution-strategy-options) → evolution-strategy-options"
   (make-instance 'datamunge:evolution-strategy-options :args (list)))
 
-(register-constructor 'datamunge:evolution-strategy 1446 nil)
+(register-constructor 'datamunge:evolution-strategy 1464 nil)
 (defun datamunge:make-evolution-strategy (&optional (options nil options-p))
   "C++ datamunge::optim::EvolutionStrategy::EvolutionStrategy.
 
@@ -8549,14 +8555,14 @@ See also: optimize()
     options  evolution-strategy-options"
   (make-instance 'datamunge:evolution-strategy :args (cond (options-p (list options)) (t (list)))))
 
-(register-constructor 'datamunge:firefly-algorithm-options 1463 nil)
+(register-constructor 'datamunge:firefly-algorithm-options 1481 nil)
 (defun datamunge:make-firefly-algorithm-options ()
   "C++ datamunge::optim::FireflyAlgorithmOptions::FireflyAlgorithmOptions.
 
   (make-firefly-algorithm-options) → firefly-algorithm-options"
   (make-instance 'datamunge:firefly-algorithm-options :args (list)))
 
-(register-constructor 'datamunge:firefly-algorithm 1466 nil)
+(register-constructor 'datamunge:firefly-algorithm 1484 nil)
 (defun datamunge:make-firefly-algorithm (&optional (options nil options-p))
   "C++ datamunge::optim::FireflyAlgorithm::FireflyAlgorithm.
 
@@ -8564,14 +8570,14 @@ See also: optimize()
     options  firefly-algorithm-options"
   (make-instance 'datamunge:firefly-algorithm :args (cond (options-p (list options)) (t (list)))))
 
-(register-constructor 'datamunge:fista-options 1473 nil)
+(register-constructor 'datamunge:fista-options 1491 nil)
 (defun datamunge:make-fista-options ()
   "C++ datamunge::optim::FISTAOptions::FISTAOptions.
 
   (make-fista-options) → fista-options"
   (make-instance 'datamunge:fista-options :args (list)))
 
-(register-constructor 'datamunge:fista 1476 nil)
+(register-constructor 'datamunge:fista 1494 nil)
 (defun datamunge:make-fista (&optional (options nil options-p))
   "Store a copy of the controls without running the objective.
 
@@ -8588,14 +8594,14 @@ See also: optimize()
     options  fista-options  Method-specific controls; defaults are listed by FISTAOptions."
   (make-instance 'datamunge:fista :args (cond (options-p (list options)) (t (list)))))
 
-(register-constructor 'datamunge:ga-options 1503 nil)
+(register-constructor 'datamunge:ga-options 1521 nil)
 (defun datamunge:make-ga-options ()
   "C++ datamunge::optim::GAOptions::GAOptions.
 
   (make-ga-options) → ga-options"
   (make-instance 'datamunge:ga-options :args (list)))
 
-(register-constructor 'datamunge:genetic-algorithm 1506 nil)
+(register-constructor 'datamunge:genetic-algorithm 1524 nil)
 (defun datamunge:make-genetic-algorithm (&optional (options nil options-p))
   "Store a copy of the controls without running the objective.
 
@@ -8612,14 +8618,14 @@ See also: optimize()
     options  ga-options  Method-specific controls; defaults are listed by GAOptions."
   (make-instance 'datamunge:genetic-algorithm :args (cond (options-p (list options)) (t (list)))))
 
-(register-constructor 'datamunge:gradient-descent-options 1515 nil)
+(register-constructor 'datamunge:gradient-descent-options 1533 nil)
 (defun datamunge:make-gradient-descent-options ()
   "C++ datamunge::optim::GradientDescentOptions::GradientDescentOptions.
 
   (make-gradient-descent-options) → gradient-descent-options"
   (make-instance 'datamunge:gradient-descent-options :args (list)))
 
-(register-constructor 'datamunge:gradient-descent 1518 nil)
+(register-constructor 'datamunge:gradient-descent 1536 nil)
 (defun datamunge:make-gradient-descent (&optional (options nil options-p))
   "Store a copy of the controls without running the objective.
 
@@ -8636,14 +8642,14 @@ See also: optimize()
     options  gradient-descent-options  Method-specific controls; defaults are listed by GradientDescentOptions."
   (make-instance 'datamunge:gradient-descent :args (cond (options-p (list options)) (t (list)))))
 
-(register-constructor 'datamunge:grey-wolf-optimizer-options 1527 nil)
+(register-constructor 'datamunge:grey-wolf-optimizer-options 1545 nil)
 (defun datamunge:make-grey-wolf-optimizer-options ()
   "C++ datamunge::optim::GreyWolfOptimizerOptions::GreyWolfOptimizerOptions.
 
   (make-grey-wolf-optimizer-options) → grey-wolf-optimizer-options"
   (make-instance 'datamunge:grey-wolf-optimizer-options :args (list)))
 
-(register-constructor 'datamunge:grey-wolf-optimizer 1530 nil)
+(register-constructor 'datamunge:grey-wolf-optimizer 1548 nil)
 (defun datamunge:make-grey-wolf-optimizer (&optional (options nil options-p))
   "C++ datamunge::optim::GreyWolfOptimizer::GreyWolfOptimizer.
 
@@ -8651,14 +8657,14 @@ See also: optimize()
     options  grey-wolf-optimizer-options"
   (make-instance 'datamunge:grey-wolf-optimizer :args (cond (options-p (list options)) (t (list)))))
 
-(register-constructor 'datamunge:harmony-search-options 1545 nil)
+(register-constructor 'datamunge:harmony-search-options 1563 nil)
 (defun datamunge:make-harmony-search-options ()
   "C++ datamunge::optim::HarmonySearchOptions::HarmonySearchOptions.
 
   (make-harmony-search-options) → harmony-search-options"
   (make-instance 'datamunge:harmony-search-options :args (list)))
 
-(register-constructor 'datamunge:harmony-search 1548 nil)
+(register-constructor 'datamunge:harmony-search 1566 nil)
 (defun datamunge:make-harmony-search (&optional (options nil options-p))
   "C++ datamunge::optim::HarmonySearch::HarmonySearch.
 
@@ -8666,14 +8672,14 @@ See also: optimize()
     options  harmony-search-options"
   (make-instance 'datamunge:harmony-search :args (cond (options-p (list options)) (t (list)))))
 
-(register-constructor 'datamunge:interior-point-options 1559 nil)
+(register-constructor 'datamunge:interior-point-options 1577 nil)
 (defun datamunge:make-interior-point-options ()
   "C++ datamunge::optim::InteriorPointOptions::InteriorPointOptions.
 
   (make-interior-point-options) → interior-point-options"
   (make-instance 'datamunge:interior-point-options :args (list)))
 
-(register-constructor 'datamunge:interior-point 1562 nil)
+(register-constructor 'datamunge:interior-point 1580 nil)
 (defun datamunge:make-interior-point (&optional (options nil options-p))
   "Store a copy of the controls without running the objective.
 
@@ -8690,14 +8696,14 @@ See also: optimize()
     options  interior-point-options  Method-specific controls; defaults are listed by InteriorPointOptions."
   (make-instance 'datamunge:interior-point :args (cond (options-p (list options)) (t (list)))))
 
-(register-constructor 'datamunge:lbfgs-options 1575 nil)
+(register-constructor 'datamunge:lbfgs-options 1593 nil)
 (defun datamunge:make-lbfgs-options ()
   "C++ datamunge::optim::LBFGSOptions::LBFGSOptions.
 
   (make-lbfgs-options) → lbfgs-options"
   (make-instance 'datamunge:lbfgs-options :args (list)))
 
-(register-constructor 'datamunge:lbfgs 1578 nil)
+(register-constructor 'datamunge:lbfgs 1596 nil)
 (defun datamunge:make-lbfgs (&optional (options nil options-p))
   "Store a copy of the controls without running the objective.
 
@@ -8714,14 +8720,14 @@ See also: optimize()
     options  lbfgs-options  Method-specific controls; defaults are listed by LBFGSOptions."
   (make-instance 'datamunge:lbfgs :args (cond (options-p (list options)) (t (list)))))
 
-(register-constructor 'datamunge:levenberg-marquardt-options 1585 nil)
+(register-constructor 'datamunge:levenberg-marquardt-options 1603 nil)
 (defun datamunge:make-levenberg-marquardt-options ()
   "C++ datamunge::optim::LevenbergMarquardtOptions::LevenbergMarquardtOptions.
 
   (make-levenberg-marquardt-options) → levenberg-marquardt-options"
   (make-instance 'datamunge:levenberg-marquardt-options :args (list)))
 
-(register-constructor 'datamunge:levenberg-marquardt 1588 nil)
+(register-constructor 'datamunge:levenberg-marquardt 1606 nil)
 (defun datamunge:make-levenberg-marquardt (&optional (options nil options-p))
   "Store a copy of the controls without running the objective.
 
@@ -8738,14 +8744,14 @@ See also: optimize()
     options  levenberg-marquardt-options  Method-specific controls; defaults are listed by LevenbergMarquardtOptions."
   (make-instance 'datamunge:levenberg-marquardt :args (cond (options-p (list options)) (t (list)))))
 
-(register-constructor 'datamunge:nelder-mead-options 1603 nil)
+(register-constructor 'datamunge:nelder-mead-options 1621 nil)
 (defun datamunge:make-nelder-mead-options ()
   "C++ datamunge::optim::NelderMeadOptions::NelderMeadOptions.
 
   (make-nelder-mead-options) → nelder-mead-options"
   (make-instance 'datamunge:nelder-mead-options :args (list)))
 
-(register-constructor 'datamunge:nelder-mead 1606 nil)
+(register-constructor 'datamunge:nelder-mead 1624 nil)
 (defun datamunge:make-nelder-mead (&optional (options nil options-p))
   "Store a copy of the controls without running the objective.
 
@@ -8762,14 +8768,14 @@ See also: optimize()
     options  nelder-mead-options  Method-specific controls; defaults are listed by NelderMeadOptions."
   (make-instance 'datamunge:nelder-mead :args (cond (options-p (list options)) (t (list)))))
 
-(register-constructor 'datamunge:nesterov-accelerated-gradient-options 1615 nil)
+(register-constructor 'datamunge:nesterov-accelerated-gradient-options 1633 nil)
 (defun datamunge:make-nesterov-accelerated-gradient-options ()
   "C++ datamunge::optim::NesterovAcceleratedGradientOptions::NesterovAcceleratedGradientOptions.
 
   (make-nesterov-accelerated-gradient-options) → nesterov-accelerated-gradient-options"
   (make-instance 'datamunge:nesterov-accelerated-gradient-options :args (list)))
 
-(register-constructor 'datamunge:nesterov-accelerated-gradient 1618 nil)
+(register-constructor 'datamunge:nesterov-accelerated-gradient 1636 nil)
 (defun datamunge:make-nesterov-accelerated-gradient (&optional (options nil options-p))
   "Store a copy of the controls without running the objective.
 
@@ -8786,14 +8792,14 @@ See also: optimize()
     options  nesterov-accelerated-gradient-options  Method-specific controls; defaults are listed by NesterovAcceleratedGradientOptions."
   (make-instance 'datamunge:nesterov-accelerated-gradient :args (cond (options-p (list options)) (t (list)))))
 
-(register-constructor 'datamunge:nadam-options 1631 nil)
+(register-constructor 'datamunge:nadam-options 1649 nil)
 (defun datamunge:make-nadam-options ()
   "C++ datamunge::optim::NadamOptions::NadamOptions.
 
   (make-nadam-options) → nadam-options"
   (make-instance 'datamunge:nadam-options :args (list)))
 
-(register-constructor 'datamunge:nadam 1634 nil)
+(register-constructor 'datamunge:nadam 1652 nil)
 (defun datamunge:make-nadam (&optional (options nil options-p))
   "Store a copy of the controls without running the objective.
 
@@ -8810,14 +8816,14 @@ See also: optimize()
     options  nadam-options  Method-specific controls; defaults are listed by NadamOptions."
   (make-instance 'datamunge:nadam :args (cond (options-p (list options)) (t (list)))))
 
-(register-constructor 'datamunge:newton-options 1641 nil)
+(register-constructor 'datamunge:newton-options 1659 nil)
 (defun datamunge:make-newton-options ()
   "C++ datamunge::optim::NewtonOptions::NewtonOptions.
 
   (make-newton-options) → newton-options"
   (make-instance 'datamunge:newton-options :args (list)))
 
-(register-constructor 'datamunge:newton 1644 nil)
+(register-constructor 'datamunge:newton 1662 nil)
 (defun datamunge:make-newton (&optional (options nil options-p))
   "Store a copy of the controls without running the objective.
 
@@ -8834,14 +8840,14 @@ See also: optimize()
     options  newton-options  Method-specific controls; defaults are listed by NewtonOptions."
   (make-instance 'datamunge:newton :args (cond (options-p (list options)) (t (list)))))
 
-(register-constructor 'datamunge:parallel-tempering-options 1659 nil)
+(register-constructor 'datamunge:parallel-tempering-options 1677 nil)
 (defun datamunge:make-parallel-tempering-options ()
   "C++ datamunge::optim::ParallelTemperingOptions::ParallelTemperingOptions.
 
   (make-parallel-tempering-options) → parallel-tempering-options"
   (make-instance 'datamunge:parallel-tempering-options :args (list)))
 
-(register-constructor 'datamunge:parallel-tempering 1662 nil)
+(register-constructor 'datamunge:parallel-tempering 1680 nil)
 (defun datamunge:make-parallel-tempering (&optional (options nil options-p))
   "C++ datamunge::optim::ParallelTempering::ParallelTempering.
 
@@ -8849,14 +8855,14 @@ See also: optimize()
     options  parallel-tempering-options"
   (make-instance 'datamunge:parallel-tempering :args (cond (options-p (list options)) (t (list)))))
 
-(register-constructor 'datamunge:pso-options 1685 nil)
+(register-constructor 'datamunge:pso-options 1703 nil)
 (defun datamunge:make-pso-options ()
   "C++ datamunge::optim::PSOOptions::PSOOptions.
 
   (make-pso-options) → pso-options"
   (make-instance 'datamunge:pso-options :args (list)))
 
-(register-constructor 'datamunge:pso 1688 nil)
+(register-constructor 'datamunge:pso 1706 nil)
 (defun datamunge:make-pso (&optional (options nil options-p))
   "Store a copy of the controls without running the objective.
 
@@ -8873,14 +8879,14 @@ See also: optimize()
     options  pso-options  Method-specific controls; defaults are listed by PSOOptions."
   (make-instance 'datamunge:pso :args (cond (options-p (list options)) (t (list)))))
 
-(register-constructor 'datamunge:proximal-gradient-options 1695 nil)
+(register-constructor 'datamunge:proximal-gradient-options 1713 nil)
 (defun datamunge:make-proximal-gradient-options ()
   "C++ datamunge::optim::ProximalGradientOptions::ProximalGradientOptions.
 
   (make-proximal-gradient-options) → proximal-gradient-options"
   (make-instance 'datamunge:proximal-gradient-options :args (list)))
 
-(register-constructor 'datamunge:proximal-gradient 1698 nil)
+(register-constructor 'datamunge:proximal-gradient 1716 nil)
 (defun datamunge:make-proximal-gradient (&optional (options nil options-p))
   "Store a copy of the controls without running the objective.
 
@@ -8897,14 +8903,14 @@ See also: optimize()
     options  proximal-gradient-options  Method-specific controls; defaults are listed by ProximalGradientOptions."
   (make-instance 'datamunge:proximal-gradient :args (cond (options-p (list options)) (t (list)))))
 
-(register-constructor 'datamunge:randomized-block-coordinate-descent-options 1715 nil)
+(register-constructor 'datamunge:randomized-block-coordinate-descent-options 1733 nil)
 (defun datamunge:make-randomized-block-coordinate-descent-options ()
   "C++ datamunge::optim::RandomizedBlockCoordinateDescentOptions::RandomizedBlockCoordinateDescentOptions.
 
   (make-randomized-block-coordinate-descent-options) → randomized-block-coordinate-descent-options"
   (make-instance 'datamunge:randomized-block-coordinate-descent-options :args (list)))
 
-(register-constructor 'datamunge:randomized-block-coordinate-descent 1718 nil)
+(register-constructor 'datamunge:randomized-block-coordinate-descent 1736 nil)
 (defun datamunge:make-randomized-block-coordinate-descent (&optional (options nil options-p))
   "Store a copy of the controls without running the objective.
 
@@ -8921,14 +8927,14 @@ See also: optimize()
     options  randomized-block-coordinate-descent-options  Method-specific controls; defaults are listed by RandomizedBlockCoordinateDescentOptions."
   (make-instance 'datamunge:randomized-block-coordinate-descent :args (cond (options-p (list options)) (t (list)))))
 
-(register-constructor 'datamunge:rms-prop-options 1729 nil)
+(register-constructor 'datamunge:rms-prop-options 1747 nil)
 (defun datamunge:make-rms-prop-options ()
   "C++ datamunge::optim::RMSPropOptions::RMSPropOptions.
 
   (make-rms-prop-options) → rms-prop-options"
   (make-instance 'datamunge:rms-prop-options :args (list)))
 
-(register-constructor 'datamunge:rms-prop 1732 nil)
+(register-constructor 'datamunge:rms-prop 1750 nil)
 (defun datamunge:make-rms-prop (&optional (options nil options-p))
   "Store a copy of the controls without running the objective.
 
@@ -8945,21 +8951,21 @@ See also: optimize()
     options  rms-prop-options  Method-specific controls; defaults are listed by RMSPropOptions."
   (make-instance 'datamunge:rms-prop :args (cond (options-p (list options)) (t (list)))))
 
-(register-constructor 'datamunge:surrogate-prediction 1737 nil)
+(register-constructor 'datamunge:surrogate-prediction 1755 nil)
 (defun datamunge:make-surrogate-prediction ()
   "C++ datamunge::optim::SurrogatePrediction::SurrogatePrediction.
 
   (make-surrogate-prediction) → surrogate-prediction"
   (make-instance 'datamunge:surrogate-prediction :args (list)))
 
-(register-constructor 'datamunge:gaussian-process-surrogate-options 1760 nil)
+(register-constructor 'datamunge:gaussian-process-surrogate-options 1778 nil)
 (defun datamunge:make-gaussian-process-surrogate-options ()
   "C++ datamunge::optim::GaussianProcessSurrogateOptions::GaussianProcessSurrogateOptions.
 
   (make-gaussian-process-surrogate-options) → gaussian-process-surrogate-options"
   (make-instance 'datamunge:gaussian-process-surrogate-options :args (list)))
 
-(register-constructor 'datamunge:rbf-gaussian-process-surrogate 1773 t)
+(register-constructor 'datamunge:rbf-gaussian-process-surrogate 1791 t)
 (defun datamunge:make-rbf-gaussian-process-surrogate (&rest args)
   "Fixed-hyperparameter surrogate with expected improvement.
 
@@ -8982,14 +8988,14 @@ Errors (signalled as datamunge:native-error):
     options  gaussian-process-surrogate-options  Hyperparameters, normalisation, fitting and acquisition."
   (make-instance 'datamunge:rbf-gaussian-process-surrogate :args args))
 
-(register-constructor 'datamunge:sgd-options 1786 nil)
+(register-constructor 'datamunge:sgd-options 1804 nil)
 (defun datamunge:make-sgd-options ()
   "C++ datamunge::optim::SGDOptions::SGDOptions.
 
   (make-sgd-options) → sgd-options"
   (make-instance 'datamunge:sgd-options :args (list)))
 
-(register-constructor 'datamunge:sgd 1789 nil)
+(register-constructor 'datamunge:sgd 1807 nil)
 (defun datamunge:make-sgd (&optional (options nil options-p))
   "Store a copy of the controls without running the objective.
 
@@ -9006,14 +9012,14 @@ See also: optimize()
     options  sgd-options  Method-specific controls; defaults are listed by SGDOptions."
   (make-instance 'datamunge:sgd :args (cond (options-p (list options)) (t (list)))))
 
-(register-constructor 'datamunge:simulated-annealing-options 1800 nil)
+(register-constructor 'datamunge:simulated-annealing-options 1818 nil)
 (defun datamunge:make-simulated-annealing-options ()
   "C++ datamunge::optim::SimulatedAnnealingOptions::SimulatedAnnealingOptions.
 
   (make-simulated-annealing-options) → simulated-annealing-options"
   (make-instance 'datamunge:simulated-annealing-options :args (list)))
 
-(register-constructor 'datamunge:simulated-annealing 1803 nil)
+(register-constructor 'datamunge:simulated-annealing 1821 nil)
 (defun datamunge:make-simulated-annealing (&optional (options nil options-p))
   "Store a copy of the controls without running the objective.
 
@@ -9030,14 +9036,14 @@ See also: optimize()
     options  simulated-annealing-options  Method-specific controls; defaults are listed by SimulatedAnnealingOptions."
   (make-instance 'datamunge:simulated-annealing :args (cond (options-p (list options)) (t (list)))))
 
-(register-constructor 'datamunge:saga-options 1812 nil)
+(register-constructor 'datamunge:saga-options 1830 nil)
 (defun datamunge:make-saga-options ()
   "C++ datamunge::optim::SAGAOptions::SAGAOptions.
 
   (make-saga-options) → saga-options"
   (make-instance 'datamunge:saga-options :args (list)))
 
-(register-constructor 'datamunge:saga 1815 nil)
+(register-constructor 'datamunge:saga 1833 nil)
 (defun datamunge:make-saga (&optional (options nil options-p))
   "Store a copy of the controls without running the objective.
 
@@ -9054,14 +9060,14 @@ See also: optimize()
     options  saga-options  Method-specific controls; defaults are listed by SAGAOptions."
   (make-instance 'datamunge:saga :args (cond (options-p (list options)) (t (list)))))
 
-(register-constructor 'datamunge:svrg-options 1826 nil)
+(register-constructor 'datamunge:svrg-options 1844 nil)
 (defun datamunge:make-svrg-options ()
   "C++ datamunge::optim::SVRGOptions::SVRGOptions.
 
   (make-svrg-options) → svrg-options"
   (make-instance 'datamunge:svrg-options :args (list)))
 
-(register-constructor 'datamunge:svrg 1829 nil)
+(register-constructor 'datamunge:svrg 1847 nil)
 (defun datamunge:make-svrg (&optional (options nil options-p))
   "Store a copy of the controls without running the objective.
 
@@ -9078,14 +9084,14 @@ See also: optimize()
     options  svrg-options  Method-specific controls; defaults are listed by SVRGOptions."
   (make-instance 'datamunge:svrg :args (cond (options-p (list options)) (t (list)))))
 
-(register-constructor 'datamunge:sqp-options 1838 nil)
+(register-constructor 'datamunge:sqp-options 1856 nil)
 (defun datamunge:make-sqp-options ()
   "C++ datamunge::optim::SQPOptions::SQPOptions.
 
   (make-sqp-options) → sqp-options"
   (make-instance 'datamunge:sqp-options :args (list)))
 
-(register-constructor 'datamunge:sqp 1841 nil)
+(register-constructor 'datamunge:sqp 1859 nil)
 (defun datamunge:make-sqp (&optional (options nil options-p))
   "Store a copy of the controls without running the objective.
 
@@ -9102,14 +9108,14 @@ See also: optimize()
     options  sqp-options  Method-specific controls; defaults are listed by SQPOptions."
   (make-instance 'datamunge:sqp :args (cond (options-p (list options)) (t (list)))))
 
-(register-constructor 'datamunge:trust-region-newton-options 1850 nil)
+(register-constructor 'datamunge:trust-region-newton-options 1868 nil)
 (defun datamunge:make-trust-region-newton-options ()
   "C++ datamunge::optim::TrustRegionNewtonOptions::TrustRegionNewtonOptions.
 
   (make-trust-region-newton-options) → trust-region-newton-options"
   (make-instance 'datamunge:trust-region-newton-options :args (list)))
 
-(register-constructor 'datamunge:trust-region-newton 1853 nil)
+(register-constructor 'datamunge:trust-region-newton 1871 nil)
 (defun datamunge:make-trust-region-newton (&optional (options nil options-p))
   "Store a copy of the controls without running the objective.
 
@@ -9126,14 +9132,14 @@ See also: optimize()
     options  trust-region-newton-options  Method-specific controls; defaults are listed by TrustRegionNewtonOptions."
   (make-instance 'datamunge:trust-region-newton :args (cond (options-p (list options)) (t (list)))))
 
-(register-constructor 'datamunge:whale-optimization-options 1864 nil)
+(register-constructor 'datamunge:whale-optimization-options 1882 nil)
 (defun datamunge:make-whale-optimization-options ()
   "C++ datamunge::optim::WhaleOptimizationOptions::WhaleOptimizationOptions.
 
   (make-whale-optimization-options) → whale-optimization-options"
   (make-instance 'datamunge:whale-optimization-options :args (list)))
 
-(register-constructor 'datamunge:whale-optimization 1867 nil)
+(register-constructor 'datamunge:whale-optimization 1885 nil)
 (defun datamunge:make-whale-optimization (&optional (options nil options-p))
   "C++ datamunge::optim::WhaleOptimization::WhaleOptimization.
 
@@ -9141,7 +9147,7 @@ See also: optimize()
     options  whale-optimization-options"
   (make-instance 'datamunge:whale-optimization :args (cond (options-p (list options)) (t (list)))))
 
-(register-constructor 'datamunge:b-spline-basis 1873 nil)
+(register-constructor 'datamunge:b-spline-basis 1891 nil)
 (defun datamunge:make-b-spline-basis (&rest args)
   "Degree-0 basis with knots {0, 1}: one constant function on [0, 1].
 
@@ -9161,21 +9167,21 @@ std::print(\"{} {}\\n\", b.degree(), b.basis_size()); // 0 1
     knots  (vector double-float)"
   (make-instance 'datamunge:b-spline-basis :args args))
 
-(register-constructor 'datamunge:hypothesis-test-result 1896 nil)
+(register-constructor 'datamunge:hypothesis-test-result 1914 nil)
 (defun datamunge:make-hypothesis-test-result ()
   "C++ datamunge::stats::HypothesisTestResult::HypothesisTestResult.
 
   (make-hypothesis-test-result) → hypothesis-test-result"
   (make-instance 'datamunge:hypothesis-test-result :args (list)))
 
-(register-constructor 'datamunge:arima-options 1921 nil)
+(register-constructor 'datamunge:arima-options 1939 nil)
 (defun datamunge:make-arima-options ()
   "C++ datamunge::stats::ARIMAOptions::ARIMAOptions.
 
   (make-arima-options) → arima-options"
   (make-instance 'datamunge:arima-options :args (list)))
 
-(register-constructor 'datamunge:arima 1941 nil)
+(register-constructor 'datamunge:arima 1959 nil)
 (defun datamunge:make-arima (y &optional (options nil options-p))
   "Fit the model to a series.
 
@@ -9187,21 +9193,21 @@ Errors (signalled as datamunge:native-error):
     options  arima-options  Model orders and optimizer settings."
   (make-instance 'datamunge:arima :args (cond (options-p (list y options)) (t (list y)))))
 
-(register-constructor 'datamunge:kendall-tau 1956 nil)
+(register-constructor 'datamunge:kendall-tau 1974 nil)
 (defun datamunge:make-kendall-tau ()
   "C++ datamunge::stats::KendallTau::KendallTau.
 
   (make-kendall-tau) → kendall-tau"
   (make-instance 'datamunge:kendall-tau :args (list)))
 
-(register-constructor 'datamunge:exponential-smoothing-options 1977 nil)
+(register-constructor 'datamunge:exponential-smoothing-options 1995 nil)
 (defun datamunge:make-exponential-smoothing-options ()
   "C++ datamunge::stats::ExponentialSmoothingOptions::ExponentialSmoothingOptions.
 
   (make-exponential-smoothing-options) → exponential-smoothing-options"
   (make-instance 'datamunge:exponential-smoothing-options :args (list)))
 
-(register-constructor 'datamunge:exponential-smoothing 1992 nil)
+(register-constructor 'datamunge:exponential-smoothing 2010 nil)
 (defun datamunge:make-exponential-smoothing (y &optional (options nil options-p))
   "C++ datamunge::stats::ExponentialSmoothing::ExponentialSmoothing.
 
@@ -9210,7 +9216,7 @@ Errors (signalled as datamunge:native-error):
     options  exponential-smoothing-options"
   (make-instance 'datamunge:exponential-smoothing :args (cond (options-p (list y options)) (t (list y)))))
 
-(register-constructor 'datamunge:bspline 1993 nil)
+(register-constructor 'datamunge:bspline 2011 nil)
 (defun datamunge:make-bspline (lower upper knots &optional (degree nil degree-p) (intercept nil intercept-p))
   "Build a clamped basis from strictly increasing knot breakpoints.
 
@@ -9232,7 +9238,7 @@ Errors (signalled as datamunge:native-error):
     intercept  boolean  Include the first basis column, default false; use a no-intercept formula when true. Column count is interior knots + degree + (intercept ? 1 : 0)."
   (make-instance 'datamunge:bspline :args (cond (intercept-p (list lower upper knots degree intercept)) (degree-p (list lower upper knots degree)) (t (list lower upper knots)))))
 
-(register-constructor 'datamunge:b-spline-regression 2003 nil)
+(register-constructor 'datamunge:b-spline-regression 2021 nil)
 (defun datamunge:make-b-spline-regression (&rest args)
   "Fixed-width basis: `n_basis` B-splines of the given `degree` (cubic by default)
 whose knots are equally spaced over the range of `x`.
@@ -9253,7 +9259,7 @@ interior knots. Gives (number of interior knots) + degree + 1 basis functions.
     degree  integer"
   (make-instance 'datamunge:b-spline-regression :args args))
 
-(register-constructor 'datamunge:p-spline-regression 2018 nil)
+(register-constructor 'datamunge:p-spline-regression 2036 nil)
 (defun datamunge:make-p-spline-regression (&rest args)
   "`n_basis` cubic B-splines with equally spaced knots over the range of `x`; λ chosen
 by GCV.
@@ -13757,65 +13763,65 @@ Also a function of other arguments (its method on T)."))
 
   (add expr other) → expr
     other  expr"
-  (call 230 (cons self args)))
+  (call 248 (cons self args)))
 
 (defmethod datamunge:subtract ((self datamunge:expr) &rest args)
   "C++ datamunge::algebra::Expr::subtract.
 
   (subtract expr other) → expr
     other  expr"
-  (call 231 (cons self args)))
+  (call 249 (cons self args)))
 
 (defmethod datamunge:multiply ((self datamunge:expr) &rest args)
   "C++ datamunge::algebra::Expr::multiply.
 
   (multiply expr other) → expr
     other  expr"
-  (call 232 (cons self args)))
+  (call 250 (cons self args)))
 
 (defmethod datamunge:divide ((self datamunge:expr) &rest args)
   "C++ datamunge::algebra::Expr::divide.
 
   (divide expr other) → expr
     other  expr"
-  (call 233 (cons self args)))
+  (call 251 (cons self args)))
 
 (defmethod datamunge:power ((self datamunge:expr) &rest args)
   "C++ datamunge::algebra::Expr::power.
 
   (power expr exponent) → expr
     exponent  expr"
-  (call 234 (cons self args)))
+  (call 252 (cons self args)))
 
 (defmethod datamunge:negate ((self datamunge:expr) &rest args)
   "C++ datamunge::algebra::Expr::negate.
 
   (negate expr) → expr"
-  (call 235 (cons self args)))
+  (call 253 (cons self args)))
 
 (defmethod datamunge:sin ((self datamunge:expr) &rest args)
   "C++ datamunge::algebra::Expr::sin.
 
   (sin expr) → expr"
-  (call 236 (cons self args)))
+  (call 254 (cons self args)))
 
 (defmethod datamunge:cos ((self datamunge:expr) &rest args)
   "C++ datamunge::algebra::Expr::cos.
 
   (cos expr) → expr"
-  (call 237 (cons self args)))
+  (call 255 (cons self args)))
 
 (defmethod datamunge:exp ((self datamunge:expr) &rest args)
   "C++ datamunge::algebra::Expr::exp.
 
   (exp expr) → expr"
-  (call 238 (cons self args)))
+  (call 256 (cons self args)))
 
 (defmethod datamunge:log ((self datamunge:expr) &rest args)
   "C++ datamunge::algebra::Expr::log.
 
   (log expr) → expr"
-  (call 239 (cons self args)))
+  (call 257 (cons self args)))
 
 (defmethod datamunge:differentiate ((self datamunge:expr) &rest args)
   "The symbolic derivative with respect to `var` (any other variable name is
@@ -13826,7 +13832,7 @@ Errors (signalled as datamunge:native-error):
 
   (differentiate expr var) → expr
     var  string"
-  (call 240 (cons self args)))
+  (call 258 (cons self args)))
 
 (defmethod datamunge:integrate ((self datamunge:expr) &rest args)
   "The symbolic antiderivative with respect to `var` (any other variable name is
@@ -13849,7 +13855,7 @@ Errors (signalled as datamunge:native-error):
 
   (integrate expr var) → expr
     var  string"
-  (call 241 (cons self args)))
+  (call 259 (cons self args)))
 
 (defmethod datamunge:simplify ((self datamunge:expr) &rest args)
   "Basic algebraic simplification: constant folding, plus identities like x+0, x*1,
@@ -13857,7 +13863,7 @@ x*0, x/1, x^0, x^1. Not a full computer-algebra simplifier (no factoring,
 collecting like terms, or trig identities).
 
   (simplify expr) → expr"
-  (call 242 (cons self args)))
+  (call 260 (cons self args)))
 
 (defmethod datamunge:evaluate ((self datamunge:expr) &rest args)
   "Evaluates the expression, binding each entry of `names` to the corresponding
@@ -13869,20 +13875,20 @@ Errors (signalled as datamunge:native-error):
   (evaluate expr names values) → double-float
     names  (vector string)
     values  (vector double-float)"
-  (call 243 (cons self args)))
+  (call 261 (cons self args)))
 
 (defmethod datamunge:to-string ((self datamunge:expr) &rest args)
   "C++ datamunge::algebra::Expr::to_string.
 
   (to-string expr) → string"
-  (call 244 (cons self args)))
+  (call 262 (cons self args)))
 
 (defmethod datamunge:to-tex ((self datamunge:expr) &rest args)
   "Render the expression using native grouping and precision; return raw TeX without math delimiters.
 
   (to-tex expr &optional (precision 7)) → string
     precision  integer"
-  (call 245 (cons self args)))
+  (call 263 (cons self args)))
 
 (defmethod datamunge:degree ((self datamunge:polynomial) &rest args)
   "Degree of the polynomial; the zero polynomial has degree 0 (there is no
@@ -13890,86 +13896,86 @@ universally-agreed convention for its \"true\" degree of -infinity, and 0 keeps
 every coefficient()/loop bound in this module well-defined).
 
   (degree polynomial) → integer"
-  (call 247 (cons self args)))
+  (call 265 (cons self args)))
 
 (defmethod datamunge:is-zero ((self datamunge:polynomial) &rest args)
   "C++ datamunge::algebra::Polynomial::is_zero.
 
   (is-zero polynomial) → boolean"
-  (call 248 (cons self args)))
+  (call 266 (cons self args)))
 
 (defmethod datamunge:coefficient ((self datamunge:polynomial) &rest args)
   "Coefficient of x^i; 0.0 for any i outside [0, degree()] (including negative i).
 
   (coefficient polynomial i) → double-float
     i  integer"
-  (call 249 (cons self args)))
+  (call 267 (cons self args)))
 
 (defmethod datamunge:coefficients ((self datamunge:polynomial) &rest args)
   "C++ datamunge::algebra::Polynomial::coefficients.
 
   (coefficients polynomial) → (vector double-float)"
-  (call 250 (cons self args)))
+  (call 268 (cons self args)))
 
 (defmethod datamunge:evaluate ((self datamunge:polynomial) &rest args)
   "Evaluates the polynomial at x via Horner's method.
 
   (evaluate polynomial x) → double-float
     x  double-float"
-  (call 251 (cons self args)))
+  (call 269 (cons self args)))
 
 (defmethod datamunge:derivative ((self datamunge:polynomial) &rest args)
   "C++ datamunge::algebra::Polynomial::derivative.
 
   (derivative polynomial) → polynomial"
-  (call 252 (cons self args)))
+  (call 270 (cons self args)))
 
 (defmethod datamunge:antiderivative ((self datamunge:polynomial) &rest args)
   "The antiderivative with zero constant term (i.e. integral from 0 to x, as a
 polynomial in x).
 
   (antiderivative polynomial) → polynomial"
-  (call 253 (cons self args)))
+  (call 271 (cons self args)))
 
 (defmethod datamunge:add ((self datamunge:polynomial) &rest args)
   "C++ datamunge::algebra::Polynomial::add.
 
   (add polynomial other) → polynomial
     other  polynomial"
-  (call 254 (cons self args)))
+  (call 272 (cons self args)))
 
 (defmethod datamunge:subtract ((self datamunge:polynomial) &rest args)
   "C++ datamunge::algebra::Polynomial::subtract.
 
   (subtract polynomial other) → polynomial
     other  polynomial"
-  (call 255 (cons self args)))
+  (call 273 (cons self args)))
 
 (defmethod datamunge:multiply ((self datamunge:polynomial) &rest args)
   "C++ datamunge::algebra::Polynomial::multiply.
 
   (multiply polynomial other) → polynomial
     other  polynomial"
-  (call 256 (cons self args)))
+  (call 274 (cons self args)))
 
 (defmethod datamunge:scale ((self datamunge:polynomial) &rest args)
   "C++ datamunge::algebra::Polynomial::scale.
 
   (scale polynomial factor) → polynomial
     factor  double-float"
-  (call 257 (cons self args)))
+  (call 275 (cons self args)))
 
 (defmethod datamunge:negate ((self datamunge:polynomial) &rest args)
   "C++ datamunge::algebra::Polynomial::negate.
 
   (negate polynomial) → polynomial"
-  (call 258 (cons self args)))
+  (call 276 (cons self args)))
 
 (defmethod datamunge:to-string ((self datamunge:polynomial) &rest args)
   "C++ datamunge::algebra::Polynomial::to_string.
 
   (to-string polynomial) → string"
-  (call 259 (cons self args)))
+  (call 277 (cons self args)))
 
 (defmethod datamunge:to-tex ((self datamunge:polynomial) &rest args)
   "Render descending powers using a raw TeX symbol and 1-17 significant digits; return raw TeX.
@@ -13977,7 +13983,7 @@ polynomial in x).
   (to-tex polynomial &optional (variable \"x\") (precision 7)) → string
     variable  string
     precision  integer"
-  (call 260 (cons self args)))
+  (call 278 (cons self args)))
 
 (defmethod datamunge:= ((self datamunge:polynomial) &rest args)
   "Member (not free-function) equality, matching Point2D's convention -- SWIG maps
@@ -13987,16 +13993,16 @@ a member operator becomes a per-class `__eq__` with no such collision.
 
   (= polynomial other) → boolean
     other  polynomial"
-  (call 261 (cons self args)))
+  (call 279 (cons self args)))
 
 (defmethod datamunge:gcd ((self datamunge:poly-extended-gcd-result) &rest args)
   "Field gcd of poly-extended-gcd-result.
 
   (gcd poly-extended-gcd-result) → polynomial
   (setf (gcd poly-extended-gcd-result) polynomial)"
-  (call 263 (cons self args)))
+  (call 281 (cons self args)))
 (defmethod (setf datamunge:gcd) (value (self datamunge:poly-extended-gcd-result) &rest args)
-  (call 264 (list* self value args))
+  (call 282 (list* self value args))
   value)
 
 (defmethod datamunge:s ((self datamunge:poly-extended-gcd-result) &rest args)
@@ -14004,9 +14010,9 @@ a member operator becomes a per-class `__eq__` with no such collision.
 
   (s poly-extended-gcd-result) → polynomial
   (setf (s poly-extended-gcd-result) polynomial)"
-  (call 265 (cons self args)))
+  (call 283 (cons self args)))
 (defmethod (setf datamunge:s) (value (self datamunge:poly-extended-gcd-result) &rest args)
-  (call 266 (list* self value args))
+  (call 284 (list* self value args))
   value)
 
 (defmethod datamunge:t ((self datamunge:poly-extended-gcd-result) &rest args)
@@ -14014,9 +14020,9 @@ a member operator becomes a per-class `__eq__` with no such collision.
 
   (t poly-extended-gcd-result) → polynomial
   (setf (t poly-extended-gcd-result) polynomial)"
-  (call 267 (cons self args)))
+  (call 285 (cons self args)))
 (defmethod (setf datamunge:t) (value (self datamunge:poly-extended-gcd-result) &rest args)
-  (call 268 (list* self value args))
+  (call 286 (list* self value args))
   value)
 
 (defmethod datamunge:lower ((self datamunge:real-root-intervals) &rest args)
@@ -14024,9 +14030,9 @@ a member operator becomes a per-class `__eq__` with no such collision.
 
   (lower real-root-intervals) → (vector double-float)
   (setf (lower real-root-intervals) (vector double-float))"
-  (call 270 (cons self args)))
+  (call 288 (cons self args)))
 (defmethod (setf datamunge:lower) (value (self datamunge:real-root-intervals) &rest args)
-  (call 271 (list* self value args))
+  (call 289 (list* self value args))
   value)
 
 (defmethod datamunge:upper ((self datamunge:real-root-intervals) &rest args)
@@ -14034,32 +14040,32 @@ a member operator becomes a per-class `__eq__` with no such collision.
 
   (upper real-root-intervals) → (vector double-float)
   (setf (upper real-root-intervals) (vector double-float))"
-  (call 272 (cons self args)))
+  (call 290 (cons self args)))
 (defmethod (setf datamunge:upper) (value (self datamunge:real-root-intervals) &rest args)
-  (call 273 (list* self value args))
+  (call 291 (list* self value args))
   value)
 
 (defmethod datamunge:modulus ((self datamunge:complex) &rest args)
   "C++ datamunge::algebra::Complex::modulus.
 
   (modulus complex) → double-float"
-  (call 275 (cons self args)))
+  (call 293 (cons self args)))
 
 (defmethod datamunge:= ((self datamunge:complex) &rest args)
   "C++ datamunge::algebra::Complex::operator==.
 
   (= complex other) → boolean
     other  complex"
-  (call 276 (cons self args)))
+  (call 294 (cons self args)))
 
 (defmethod datamunge:re ((self datamunge:complex) &rest args)
   "Field re of complex.
 
   (re complex) → double-float
   (setf (re complex) double-float)"
-  (call 277 (cons self args)))
+  (call 295 (cons self args)))
 (defmethod (setf datamunge:re) (value (self datamunge:complex) &rest args)
-  (call 278 (list* self value args))
+  (call 296 (list* self value args))
   value)
 
 (defmethod datamunge:im ((self datamunge:complex) &rest args)
@@ -14067,9 +14073,9 @@ a member operator becomes a per-class `__eq__` with no such collision.
 
   (im complex) → double-float
   (setf (im complex) double-float)"
-  (call 279 (cons self args)))
+  (call 297 (cons self args)))
 (defmethod (setf datamunge:im) (value (self datamunge:complex) &rest args)
-  (call 280 (list* self value args))
+  (call 298 (list* self value args))
   value)
 
 (defmethod datamunge:re ((self datamunge:cplx) &rest args)
@@ -14077,9 +14083,9 @@ a member operator becomes a per-class `__eq__` with no such collision.
 
   (re cplx) → double-float
   (setf (re cplx) double-float)"
-  (call 282 (cons self args)))
+  (call 300 (cons self args)))
 (defmethod (setf datamunge:re) (value (self datamunge:cplx) &rest args)
-  (call 283 (list* self value args))
+  (call 301 (list* self value args))
   value)
 
 (defmethod datamunge:im ((self datamunge:cplx) &rest args)
@@ -14087,9 +14093,9 @@ a member operator becomes a per-class `__eq__` with no such collision.
 
   (im cplx) → double-float
   (setf (im cplx) double-float)"
-  (call 284 (cons self args)))
+  (call 302 (cons self args)))
 (defmethod (setf datamunge:im) (value (self datamunge:cplx) &rest args)
-  (call 285 (list* self value args))
+  (call 303 (list* self value args))
   value)
 
 (defmethod datamunge:factor ((self datamunge:square-free-factor) &rest args)
@@ -14097,9 +14103,9 @@ a member operator becomes a per-class `__eq__` with no such collision.
 
   (factor square-free-factor) → polynomial
   (setf (factor square-free-factor) polynomial)"
-  (call 287 (cons self args)))
+  (call 305 (cons self args)))
 (defmethod (setf datamunge:factor) (value (self datamunge:square-free-factor) &rest args)
-  (call 288 (list* self value args))
+  (call 306 (list* self value args))
   value)
 
 (defmethod datamunge:multiplicity ((self datamunge:square-free-factor) &rest args)
@@ -14107,9 +14113,9 @@ a member operator becomes a per-class `__eq__` with no such collision.
 
   (multiplicity square-free-factor) → integer
   (setf (multiplicity square-free-factor) integer)"
-  (call 289 (cons self args)))
+  (call 307 (cons self args)))
 (defmethod (setf datamunge:multiplicity) (value (self datamunge:square-free-factor) &rest args)
-  (call 290 (list* self value args))
+  (call 308 (list* self value args))
   value)
 
 (defmethod datamunge:factor ((self datamunge:real-factor) &rest args)
@@ -14117,9 +14123,9 @@ a member operator becomes a per-class `__eq__` with no such collision.
 
   (factor real-factor) → polynomial
   (setf (factor real-factor) polynomial)"
-  (call 292 (cons self args)))
+  (call 310 (cons self args)))
 (defmethod (setf datamunge:factor) (value (self datamunge:real-factor) &rest args)
-  (call 293 (list* self value args))
+  (call 311 (list* self value args))
   value)
 
 (defmethod datamunge:multiplicity ((self datamunge:real-factor) &rest args)
@@ -14127,98 +14133,98 @@ a member operator becomes a per-class `__eq__` with no such collision.
 
   (multiplicity real-factor) → integer
   (setf (multiplicity real-factor) integer)"
-  (call 294 (cons self args)))
+  (call 312 (cons self args)))
 (defmethod (setf datamunge:multiplicity) (value (self datamunge:real-factor) &rest args)
-  (call 295 (list* self value args))
+  (call 313 (list* self value args))
   value)
 
 (defmethod datamunge:num-factors ((self datamunge:real-factorization) &rest args)
   "C++ datamunge::algebra::RealFactorization::num_factors.
 
   (num-factors real-factorization) → integer"
-  (call 297 (cons self args)))
+  (call 315 (cons self args)))
 
 (defmethod datamunge:factor-at ((self datamunge:real-factorization) &rest args)
   "C++ datamunge::algebra::RealFactorization::factor_at.
 
   (factor-at real-factorization index) → real-factor
     index  integer"
-  (call 298 (cons self args)))
+  (call 316 (cons self args)))
 
 (defmethod datamunge:leading-coefficient ((self datamunge:real-factorization) &rest args)
   "Field leading-coefficient of real-factorization.
 
   (leading-coefficient real-factorization) → double-float
   (setf (leading-coefficient real-factorization) double-float)"
-  (call 299 (cons self args)))
+  (call 317 (cons self args)))
 (defmethod (setf datamunge:leading-coefficient) (value (self datamunge:real-factorization) &rest args)
-  (call 300 (list* self value args))
+  (call 318 (list* self value args))
   value)
 
 (defmethod datamunge:num-variables ((self datamunge:multivariate-polynomial) &rest args)
   "C++ datamunge::algebra::MultivariatePolynomial::num_variables.
 
   (num-variables multivariate-polynomial) → integer"
-  (call 302 (cons self args)))
+  (call 320 (cons self args)))
 
 (defmethod datamunge:num-terms ((self datamunge:multivariate-polynomial) &rest args)
   "C++ datamunge::algebra::MultivariatePolynomial::num_terms.
 
   (num-terms multivariate-polynomial) → integer"
-  (call 303 (cons self args)))
+  (call 321 (cons self args)))
 
 (defmethod datamunge:is-zero ((self datamunge:multivariate-polynomial) &rest args)
   "C++ datamunge::algebra::MultivariatePolynomial::is_zero.
 
   (is-zero multivariate-polynomial) → boolean"
-  (call 304 (cons self args)))
+  (call 322 (cons self args)))
 
 (defmethod datamunge:exponents ((self datamunge:multivariate-polynomial) &rest args)
   "C++ datamunge::algebra::MultivariatePolynomial::exponents.
 
   (exponents multivariate-polynomial) → (vector (vector integer))"
-  (call 305 (cons self args)))
+  (call 323 (cons self args)))
 
 (defmethod datamunge:coefficients ((self datamunge:multivariate-polynomial) &rest args)
   "C++ datamunge::algebra::MultivariatePolynomial::coefficients.
 
   (coefficients multivariate-polynomial) → (vector double-float)"
-  (call 306 (cons self args)))
+  (call 324 (cons self args)))
 
 (defmethod datamunge:evaluate ((self datamunge:multivariate-polynomial) &rest args)
   "C++ datamunge::algebra::MultivariatePolynomial::evaluate.
 
   (evaluate multivariate-polynomial point) → double-float
     point  (vector double-float)"
-  (call 307 (cons self args)))
+  (call 325 (cons self args)))
 
 (defmethod datamunge:add ((self datamunge:multivariate-polynomial) &rest args)
   "C++ datamunge::algebra::MultivariatePolynomial::add.
 
   (add multivariate-polynomial other) → multivariate-polynomial
     other  multivariate-polynomial"
-  (call 308 (cons self args)))
+  (call 326 (cons self args)))
 
 (defmethod datamunge:subtract ((self datamunge:multivariate-polynomial) &rest args)
   "C++ datamunge::algebra::MultivariatePolynomial::subtract.
 
   (subtract multivariate-polynomial other) → multivariate-polynomial
     other  multivariate-polynomial"
-  (call 309 (cons self args)))
+  (call 327 (cons self args)))
 
 (defmethod datamunge:multiply ((self datamunge:multivariate-polynomial) &rest args)
   "C++ datamunge::algebra::MultivariatePolynomial::multiply.
 
   (multiply multivariate-polynomial other) → multivariate-polynomial
     other  multivariate-polynomial"
-  (call 310 (cons self args)))
+  (call 328 (cons self args)))
 
 (defmethod datamunge:scale ((self datamunge:multivariate-polynomial) &rest args)
   "C++ datamunge::algebra::MultivariatePolynomial::scale.
 
   (scale multivariate-polynomial factor) → multivariate-polynomial
     factor  double-float"
-  (call 311 (cons self args)))
+  (call 329 (cons self args)))
 
 (defmethod datamunge:leading-exponent ((self datamunge:multivariate-polynomial) &rest args)
   "Errors (signalled as datamunge:native-error):
@@ -14226,29 +14232,29 @@ a member operator becomes a per-class `__eq__` with no such collision.
 
   (leading-exponent multivariate-polynomial order) → (vector integer)
     order  monomial-order"
-  (call 312 (cons self args)))
+  (call 330 (cons self args)))
 
 (defmethod datamunge:leading-coefficient ((self datamunge:multivariate-polynomial) &rest args)
   "C++ datamunge::algebra::MultivariatePolynomial::leading_coefficient.
 
   (leading-coefficient multivariate-polynomial order) → double-float
     order  monomial-order"
-  (call 313 (cons self args)))
+  (call 331 (cons self args)))
 
 (defmethod datamunge:to-string ((self datamunge:multivariate-polynomial) &rest args)
   "C++ datamunge::algebra::MultivariatePolynomial::to_string.
 
   (to-string multivariate-polynomial) → string"
-  (call 314 (cons self args)))
+  (call 332 (cons self args)))
 
 (defmethod datamunge:leading ((self datamunge:gf-factorization) &rest args)
   "Leading coefficient, in [1, p).
 
   (leading gf-factorization) → integer
   (setf (leading gf-factorization) integer)"
-  (call 316 (cons self args)))
+  (call 334 (cons self args)))
 (defmethod (setf datamunge:leading) (value (self datamunge:gf-factorization) &rest args)
-  (call 317 (list* self value args))
+  (call 335 (list* self value args))
   value)
 
 (defmethod datamunge:factors ((self datamunge:gf-factorization) &rest args)
@@ -14256,9 +14262,9 @@ a member operator becomes a per-class `__eq__` with no such collision.
 
   (factors gf-factorization) → (vector (vector integer))
   (setf (factors gf-factorization) (vector (vector integer)))"
-  (call 318 (cons self args)))
+  (call 336 (cons self args)))
 (defmethod (setf datamunge:factors) (value (self datamunge:gf-factorization) &rest args)
-  (call 319 (list* self value args))
+  (call 337 (list* self value args))
   value)
 
 (defmethod datamunge:multiplicities ((self datamunge:gf-factorization) &rest args)
@@ -14266,22 +14272,22 @@ a member operator becomes a per-class `__eq__` with no such collision.
 
   (multiplicities gf-factorization) → (vector integer)
   (setf (multiplicities gf-factorization) (vector integer))"
-  (call 320 (cons self args)))
+  (call 338 (cons self args)))
 (defmethod (setf datamunge:multiplicities) (value (self datamunge:gf-factorization) &rest args)
-  (call 321 (list* self value args))
+  (call 339 (list* self value args))
   value)
 
 (defmethod datamunge:numerator ((self datamunge:rational-function) &rest args)
   "C++ datamunge::algebra::RationalFunction::numerator.
 
   (numerator rational-function) → polynomial"
-  (call 323 (cons self args)))
+  (call 341 (cons self args)))
 
 (defmethod datamunge:denominator ((self datamunge:rational-function) &rest args)
   "C++ datamunge::algebra::RationalFunction::denominator.
 
   (denominator rational-function) → polynomial"
-  (call 324 (cons self args)))
+  (call 342 (cons self args)))
 
 (defmethod datamunge:evaluate ((self datamunge:rational-function) &rest args)
   "Errors (signalled as datamunge:native-error):
@@ -14289,28 +14295,28 @@ a member operator becomes a per-class `__eq__` with no such collision.
 
   (evaluate rational-function x) → double-float
     x  double-float"
-  (call 325 (cons self args)))
+  (call 343 (cons self args)))
 
 (defmethod datamunge:add ((self datamunge:rational-function) &rest args)
   "C++ datamunge::algebra::RationalFunction::add.
 
   (add rational-function other) → rational-function
     other  rational-function"
-  (call 326 (cons self args)))
+  (call 344 (cons self args)))
 
 (defmethod datamunge:subtract ((self datamunge:rational-function) &rest args)
   "C++ datamunge::algebra::RationalFunction::subtract.
 
   (subtract rational-function other) → rational-function
     other  rational-function"
-  (call 327 (cons self args)))
+  (call 345 (cons self args)))
 
 (defmethod datamunge:multiply ((self datamunge:rational-function) &rest args)
   "C++ datamunge::algebra::RationalFunction::multiply.
 
   (multiply rational-function other) → rational-function
     other  rational-function"
-  (call 328 (cons self args)))
+  (call 346 (cons self args)))
 
 (defmethod datamunge:divide ((self datamunge:rational-function) &rest args)
   "Errors (signalled as datamunge:native-error):
@@ -14318,13 +14324,13 @@ a member operator becomes a per-class `__eq__` with no such collision.
 
   (divide rational-function other) → rational-function
     other  rational-function"
-  (call 329 (cons self args)))
+  (call 347 (cons self args)))
 
 (defmethod datamunge:to-string ((self datamunge:rational-function) &rest args)
   "C++ datamunge::algebra::RationalFunction::to_string.
 
   (to-string rational-function) → string"
-  (call 330 (cons self args)))
+  (call 348 (cons self args)))
 
 (defmethod datamunge:to-tex ((self datamunge:rational-function) &rest args)
   "Render the native reduced rational function as raw TeX, omitting a unit denominator.
@@ -14332,27 +14338,27 @@ a member operator becomes a per-class `__eq__` with no such collision.
   (to-tex rational-function &optional (variable \"x\") (precision 7)) → string
     variable  string
     precision  integer"
-  (call 331 (cons self args)))
+  (call 349 (cons self args)))
 
 (defmethod datamunge:evaluate ((self datamunge:arbitrary-function) &rest args)
   "Evaluates the objective at `coordinates`.
 
   (evaluate arbitrary-function coordinates) → double-float
     coordinates  (vector double-float)"
-  (call 333 (cons self args)))
+  (call 351 (cons self args)))
 
 (defmethod datamunge:gradient ((self datamunge:differentiable-function) &rest args)
   "Returns the gradient of the objective at `coordinates`.
 
   (gradient differentiable-function coordinates) → (vector double-float)
     coordinates  (vector double-float)"
-  (call 335 (cons self args)))
+  (call 353 (cons self args)))
 
 (defmethod datamunge:num-functions ((self datamunge:separable-function) &rest args)
   "The number of additive terms the objective decomposes into.
 
   (num-functions separable-function) → integer"
-  (call 337 (cons self args)))
+  (call 355 (cons self args)))
 
 (defmethod datamunge:evaluate-term ((self datamunge:separable-function) &rest args)
   "Evaluates just term `i` of the objective at `coordinates`.
@@ -14360,20 +14366,20 @@ a member operator becomes a per-class `__eq__` with no such collision.
   (evaluate-term separable-function coordinates i) → double-float
     coordinates  (vector double-float)
     i  integer"
-  (call 338 (cons self args)))
+  (call 356 (cons self args)))
 
 (defmethod datamunge:evaluate ((self datamunge:separable-function) &rest args)
   "C++ datamunge::optim::SeparableFunction::evaluate.
 
   (evaluate separable-function coordinates) → double-float
     coordinates  (vector double-float)"
-  (call 339 (cons self args)))
+  (call 357 (cons self args)))
 
 (defmethod datamunge:num-functions ((self datamunge:differentiable-separable-function) &rest args)
   "The number of additive terms the objective decomposes into.
 
   (num-functions differentiable-separable-function) → integer"
-  (call 341 (cons self args)))
+  (call 359 (cons self args)))
 
 (defmethod datamunge:evaluate-term ((self datamunge:differentiable-separable-function) &rest args)
   "Evaluates just term `i` of the objective at `coordinates`.
@@ -14381,7 +14387,7 @@ a member operator becomes a per-class `__eq__` with no such collision.
   (evaluate-term differentiable-separable-function coordinates i) → double-float
     coordinates  (vector double-float)
     i  integer"
-  (call 342 (cons self args)))
+  (call 360 (cons self args)))
 
 (defmethod datamunge:gradient-term ((self datamunge:differentiable-separable-function) &rest args)
   "Returns the gradient of just term `i` of the objective at `coordinates`.
@@ -14389,21 +14395,21 @@ a member operator becomes a per-class `__eq__` with no such collision.
   (gradient-term differentiable-separable-function coordinates i) → (vector double-float)
     coordinates  (vector double-float)
     i  integer"
-  (call 343 (cons self args)))
+  (call 361 (cons self args)))
 
 (defmethod datamunge:evaluate ((self datamunge:differentiable-separable-function) &rest args)
   "C++ datamunge::optim::DifferentiableSeparableFunction::evaluate.
 
   (evaluate differentiable-separable-function coordinates) → double-float
     coordinates  (vector double-float)"
-  (call 344 (cons self args)))
+  (call 362 (cons self args)))
 
 (defmethod datamunge:gradient ((self datamunge:differentiable-separable-function) &rest args)
   "C++ datamunge::optim::DifferentiableSeparableFunction::gradient.
 
   (gradient differentiable-separable-function coordinates) → (vector double-float)
     coordinates  (vector double-float)"
-  (call 345 (cons self args)))
+  (call 363 (cons self args)))
 
 (defmethod datamunge:proximal ((self datamunge:proximal-function) &rest args)
   "C++ datamunge::optim::ProximalFunction::proximal.
@@ -14411,65 +14417,65 @@ a member operator becomes a per-class `__eq__` with no such collision.
   (proximal proximal-function point step) → (vector double-float)
     point  (vector double-float)
     step  double-float"
-  (call 347 (cons self args)))
+  (call 365 (cons self args)))
 
 (defmethod datamunge:hessian ((self datamunge:hessian-function) &rest args)
   "C++ datamunge::optim::HessianFunction::hessian.
 
   (hessian hessian-function coordinates) → (vector (vector double-float))
     coordinates  (vector double-float)"
-  (call 349 (cons self args)))
+  (call 367 (cons self args)))
 
 (defmethod datamunge:constraints ((self datamunge:equality-constrained-function) &rest args)
   "C++ datamunge::optim::EqualityConstrainedFunction::constraints.
 
   (constraints equality-constrained-function coordinates) → (vector double-float)
     coordinates  (vector double-float)"
-  (call 351 (cons self args)))
+  (call 369 (cons self args)))
 
 (defmethod datamunge:constraint-jacobian ((self datamunge:equality-constrained-function) &rest args)
   "C++ datamunge::optim::EqualityConstrainedFunction::constraint_jacobian.
 
   (constraint-jacobian equality-constrained-function coordinates) → (vector (vector double-float))
     coordinates  (vector double-float)"
-  (call 352 (cons self args)))
+  (call 370 (cons self args)))
 
 (defmethod datamunge:inequalities ((self datamunge:inequality-constrained-function) &rest args)
   "C++ datamunge::optim::InequalityConstrainedFunction::inequalities.
 
   (inequalities inequality-constrained-function coordinates) → (vector double-float)
     coordinates  (vector double-float)"
-  (call 354 (cons self args)))
+  (call 372 (cons self args)))
 
 (defmethod datamunge:inequality-jacobian ((self datamunge:inequality-constrained-function) &rest args)
   "C++ datamunge::optim::InequalityConstrainedFunction::inequality_jacobian.
 
   (inequality-jacobian inequality-constrained-function coordinates) → (vector (vector double-float))
     coordinates  (vector double-float)"
-  (call 355 (cons self args)))
+  (call 373 (cons self args)))
 
 (defmethod datamunge:residuals ((self datamunge:residual-function) &rest args)
   "C++ datamunge::optim::ResidualFunction::residuals.
 
   (residuals residual-function coordinates) → (vector double-float)
     coordinates  (vector double-float)"
-  (call 357 (cons self args)))
+  (call 375 (cons self args)))
 
 (defmethod datamunge:jacobian ((self datamunge:residual-function) &rest args)
   "C++ datamunge::optim::ResidualFunction::jacobian.
 
   (jacobian residual-function coordinates) → (vector (vector double-float))
     coordinates  (vector double-float)"
-  (call 358 (cons self args)))
+  (call 376 (cons self args)))
 
 (defmethod datamunge:num-samples ((self datamunge:gibbs-options) &rest args)
   "Number of post-warmup sweeps kept.
 
   (num-samples gibbs-options) → integer
   (setf (num-samples gibbs-options) integer)"
-  (call 360 (cons self args)))
+  (call 378 (cons self args)))
 (defmethod (setf datamunge:num-samples) (value (self datamunge:gibbs-options) &rest args)
-  (call 361 (list* self value args))
+  (call 379 (list* self value args))
   value)
 
 (defmethod datamunge:num-warmup ((self datamunge:gibbs-options) &rest args)
@@ -14477,9 +14483,9 @@ a member operator becomes a per-class `__eq__` with no such collision.
 
   (num-warmup gibbs-options) → integer
   (setf (num-warmup gibbs-options) integer)"
-  (call 362 (cons self args)))
+  (call 380 (cons self args)))
 (defmethod (setf datamunge:num-warmup) (value (self datamunge:gibbs-options) &rest args)
-  (call 363 (list* self value args))
+  (call 381 (list* self value args))
   value)
 
 (defmethod datamunge:initial-step-sizes ((self datamunge:gibbs-options) &rest args)
@@ -14489,9 +14495,9 @@ coordinate is adapted independently via dual averaging during warmup.
 
   (initial-step-sizes gibbs-options) → (vector double-float)
   (setf (initial-step-sizes gibbs-options) (vector double-float))"
-  (call 364 (cons self args)))
+  (call 382 (cons self args)))
 (defmethod (setf datamunge:initial-step-sizes) (value (self datamunge:gibbs-options) &rest args)
-  (call 365 (list* self value args))
+  (call 383 (list* self value args))
   value)
 
 (defmethod datamunge:target-accept-rate ((self datamunge:gibbs-options) &rest args)
@@ -14501,9 +14507,9 @@ RandomWalkMetropolis's 0.234 (the multivariate-proposal optimum).
 
   (target-accept-rate gibbs-options) → double-float
   (setf (target-accept-rate gibbs-options) double-float)"
-  (call 366 (cons self args)))
+  (call 384 (cons self args)))
 (defmethod (setf datamunge:target-accept-rate) (value (self datamunge:gibbs-options) &rest args)
-  (call 367 (list* self value args))
+  (call 385 (list* self value args))
   value)
 
 (defmethod datamunge:seed ((self datamunge:gibbs-options) &rest args)
@@ -14511,9 +14517,9 @@ RandomWalkMetropolis's 0.234 (the multivariate-proposal optimum).
 
   (seed gibbs-options) → integer
   (setf (seed gibbs-options) integer)"
-  (call 368 (cons self args)))
+  (call 386 (cons self args)))
 (defmethod (setf datamunge:seed) (value (self datamunge:gibbs-options) &rest args)
-  (call 369 (list* self value args))
+  (call 387 (list* self value args))
   value)
 
 (defmethod datamunge:samples ((self datamunge:gibbs-result) &rest args)
@@ -14521,9 +14527,9 @@ RandomWalkMetropolis's 0.234 (the multivariate-proposal optimum).
 
   (samples gibbs-result) → (vector (vector double-float))
   (setf (samples gibbs-result) (vector (vector double-float)))"
-  (call 371 (cons self args)))
+  (call 389 (cons self args)))
 (defmethod (setf datamunge:samples) (value (self datamunge:gibbs-result) &rest args)
-  (call 372 (list* self value args))
+  (call 390 (list* self value args))
   value)
 
 (defmethod datamunge:accept-rates ((self datamunge:gibbs-result) &rest args)
@@ -14531,9 +14537,9 @@ RandomWalkMetropolis's 0.234 (the multivariate-proposal optimum).
 
   (accept-rates gibbs-result) → (vector double-float)
   (setf (accept-rates gibbs-result) (vector double-float))"
-  (call 373 (cons self args)))
+  (call 391 (cons self args)))
 (defmethod (setf datamunge:accept-rates) (value (self datamunge:gibbs-result) &rest args)
-  (call 374 (list* self value args))
+  (call 392 (list* self value args))
   value)
 
 (defmethod datamunge:final-step-sizes ((self datamunge:gibbs-result) &rest args)
@@ -14541,9 +14547,9 @@ RandomWalkMetropolis's 0.234 (the multivariate-proposal optimum).
 
   (final-step-sizes gibbs-result) → (vector double-float)
   (setf (final-step-sizes gibbs-result) (vector double-float))"
-  (call 375 (cons self args)))
+  (call 393 (cons self args)))
 (defmethod (setf datamunge:final-step-sizes) (value (self datamunge:gibbs-result) &rest args)
-  (call 376 (list* self value args))
+  (call 394 (list* self value args))
   value)
 
 (defmethod datamunge:sample ((self datamunge:gibbs-sampler) &rest args)
@@ -14553,23 +14559,23 @@ RandomWalkMetropolis's 0.234 (the multivariate-proposal optimum).
     log-posterior  arbitrary-function  Log density up to a constant; only evaluate() is used.
     initial-params  (vector double-float)  Starting point.
     → Draws, per-coordinate acceptance rates and step sizes."
-  (call 378 (cons self args)))
+  (call 396 (cons self args)))
 
 (defmethod datamunge:options ((self datamunge:gibbs-sampler) &rest args)
   "The options this GibbsSampler was configured with.
 
   (options gibbs-sampler) → gibbs-options
     → The stored options."
-  (call 379 (cons self args)))
+  (call 397 (cons self args)))
 
 (defmethod datamunge:num-samples ((self datamunge:hmc-options) &rest args)
   "Number of post-warmup draws.
 
   (num-samples hmc-options) → integer
   (setf (num-samples hmc-options) integer)"
-  (call 381 (cons self args)))
+  (call 399 (cons self args)))
 (defmethod (setf datamunge:num-samples) (value (self datamunge:hmc-options) &rest args)
-  (call 382 (list* self value args))
+  (call 400 (list* self value args))
   value)
 
 (defmethod datamunge:num-warmup ((self datamunge:hmc-options) &rest args)
@@ -14577,9 +14583,9 @@ RandomWalkMetropolis's 0.234 (the multivariate-proposal optimum).
 
   (num-warmup hmc-options) → integer
   (setf (num-warmup hmc-options) integer)"
-  (call 383 (cons self args)))
+  (call 401 (cons self args)))
 (defmethod (setf datamunge:num-warmup) (value (self datamunge:hmc-options) &rest args)
-  (call 384 (list* self value args))
+  (call 402 (list* self value args))
   value)
 
 (defmethod datamunge:num-leapfrog-steps ((self datamunge:hmc-options) &rest args)
@@ -14587,9 +14593,9 @@ RandomWalkMetropolis's 0.234 (the multivariate-proposal optimum).
 
   (num-leapfrog-steps hmc-options) → integer
   (setf (num-leapfrog-steps hmc-options) integer)"
-  (call 385 (cons self args)))
+  (call 403 (cons self args)))
 (defmethod (setf datamunge:num-leapfrog-steps) (value (self datamunge:hmc-options) &rest args)
-  (call 386 (list* self value args))
+  (call 404 (list* self value args))
   value)
 
 (defmethod datamunge:initial-step-size ((self datamunge:hmc-options) &rest args)
@@ -14597,9 +14603,9 @@ RandomWalkMetropolis's 0.234 (the multivariate-proposal optimum).
 
   (initial-step-size hmc-options) → double-float
   (setf (initial-step-size hmc-options) double-float)"
-  (call 387 (cons self args)))
+  (call 405 (cons self args)))
 (defmethod (setf datamunge:initial-step-size) (value (self datamunge:hmc-options) &rest args)
-  (call 388 (list* self value args))
+  (call 406 (list* self value args))
   value)
 
 (defmethod datamunge:target-accept-rate ((self datamunge:hmc-options) &rest args)
@@ -14607,9 +14613,9 @@ RandomWalkMetropolis's 0.234 (the multivariate-proposal optimum).
 
   (target-accept-rate hmc-options) → double-float
   (setf (target-accept-rate hmc-options) double-float)"
-  (call 389 (cons self args)))
+  (call 407 (cons self args)))
 (defmethod (setf datamunge:target-accept-rate) (value (self datamunge:hmc-options) &rest args)
-  (call 390 (list* self value args))
+  (call 408 (list* self value args))
   value)
 
 (defmethod datamunge:seed ((self datamunge:hmc-options) &rest args)
@@ -14617,9 +14623,9 @@ RandomWalkMetropolis's 0.234 (the multivariate-proposal optimum).
 
   (seed hmc-options) → integer
   (setf (seed hmc-options) integer)"
-  (call 391 (cons self args)))
+  (call 409 (cons self args)))
 (defmethod (setf datamunge:seed) (value (self datamunge:hmc-options) &rest args)
-  (call 392 (list* self value args))
+  (call 410 (list* self value args))
   value)
 
 (defmethod datamunge:samples ((self datamunge:hmc-result) &rest args)
@@ -14627,9 +14633,9 @@ RandomWalkMetropolis's 0.234 (the multivariate-proposal optimum).
 
   (samples hmc-result) → (vector (vector double-float))
   (setf (samples hmc-result) (vector (vector double-float)))"
-  (call 394 (cons self args)))
+  (call 412 (cons self args)))
 (defmethod (setf datamunge:samples) (value (self datamunge:hmc-result) &rest args)
-  (call 395 (list* self value args))
+  (call 413 (list* self value args))
   value)
 
 (defmethod datamunge:accept-rate ((self datamunge:hmc-result) &rest args)
@@ -14637,9 +14643,9 @@ RandomWalkMetropolis's 0.234 (the multivariate-proposal optimum).
 
   (accept-rate hmc-result) → double-float
   (setf (accept-rate hmc-result) double-float)"
-  (call 396 (cons self args)))
+  (call 414 (cons self args)))
 (defmethod (setf datamunge:accept-rate) (value (self datamunge:hmc-result) &rest args)
-  (call 397 (list* self value args))
+  (call 415 (list* self value args))
   value)
 
 (defmethod datamunge:final-step-size ((self datamunge:hmc-result) &rest args)
@@ -14647,9 +14653,9 @@ RandomWalkMetropolis's 0.234 (the multivariate-proposal optimum).
 
   (final-step-size hmc-result) → double-float
   (setf (final-step-size hmc-result) double-float)"
-  (call 398 (cons self args)))
+  (call 416 (cons self args)))
 (defmethod (setf datamunge:final-step-size) (value (self datamunge:hmc-result) &rest args)
-  (call 399 (list* self value args))
+  (call 417 (list* self value args))
   value)
 
 (defmethod datamunge:sample ((self datamunge:hmc) &rest args)
@@ -14659,23 +14665,23 @@ RandomWalkMetropolis's 0.234 (the multivariate-proposal optimum).
     log-posterior  differentiable-function  Log density (up to a constant) and its gradient.
     initial-params  (vector double-float)  Starting point on the unconstrained scale.
     → Draws, acceptance rate and final step size."
-  (call 401 (cons self args)))
+  (call 419 (cons self args)))
 
 (defmethod datamunge:options ((self datamunge:hmc) &rest args)
   "The options this HMC was configured with.
 
   (options hmc) → hmc-options
     → The stored options."
-  (call 402 (cons self args)))
+  (call 420 (cons self args)))
 
 (defmethod datamunge:num-samples ((self datamunge:importance-sampling-options) &rest args)
   "Number of proposal draws.
 
   (num-samples importance-sampling-options) → integer
   (setf (num-samples importance-sampling-options) integer)"
-  (call 404 (cons self args)))
+  (call 422 (cons self args)))
 (defmethod (setf datamunge:num-samples) (value (self datamunge:importance-sampling-options) &rest args)
-  (call 405 (list* self value args))
+  (call 423 (list* self value args))
   value)
 
 (defmethod datamunge:seed ((self datamunge:importance-sampling-options) &rest args)
@@ -14683,9 +14689,9 @@ RandomWalkMetropolis's 0.234 (the multivariate-proposal optimum).
 
   (seed importance-sampling-options) → integer
   (setf (seed importance-sampling-options) integer)"
-  (call 406 (cons self args)))
+  (call 424 (cons self args)))
 (defmethod (setf datamunge:seed) (value (self datamunge:importance-sampling-options) &rest args)
-  (call 407 (list* self value args))
+  (call 425 (list* self value args))
   value)
 
 (defmethod datamunge:samples ((self datamunge:importance-sampling-result) &rest args)
@@ -14693,9 +14699,9 @@ RandomWalkMetropolis's 0.234 (the multivariate-proposal optimum).
 
   (samples importance-sampling-result) → (vector (vector double-float))
   (setf (samples importance-sampling-result) (vector (vector double-float)))"
-  (call 409 (cons self args)))
+  (call 427 (cons self args)))
 (defmethod (setf datamunge:samples) (value (self datamunge:importance-sampling-result) &rest args)
-  (call 410 (list* self value args))
+  (call 428 (list* self value args))
   value)
 
 (defmethod datamunge:normalized-weights ((self datamunge:importance-sampling-result) &rest args)
@@ -14703,9 +14709,9 @@ RandomWalkMetropolis's 0.234 (the multivariate-proposal optimum).
 
   (normalized-weights importance-sampling-result) → (vector double-float)
   (setf (normalized-weights importance-sampling-result) (vector double-float))"
-  (call 411 (cons self args)))
+  (call 429 (cons self args)))
 (defmethod (setf datamunge:normalized-weights) (value (self datamunge:importance-sampling-result) &rest args)
-  (call 412 (list* self value args))
+  (call 430 (list* self value args))
   value)
 
 (defmethod datamunge:effective-sample-size ((self datamunge:importance-sampling-result) &rest args)
@@ -14715,9 +14721,9 @@ weighted sample is worth. Low relative to num_samples signals a poor proposal
 
   (effective-sample-size importance-sampling-result) → double-float
   (setf (effective-sample-size importance-sampling-result) double-float)"
-  (call 413 (cons self args)))
+  (call 431 (cons self args)))
 (defmethod (setf datamunge:effective-sample-size) (value (self datamunge:importance-sampling-result) &rest args)
-  (call 414 (list* self value args))
+  (call 432 (list* self value args))
   value)
 
 (defmethod datamunge:log-evidence ((self datamunge:importance-sampling-result) &rest args)
@@ -14727,9 +14733,9 @@ comparable to e.g. INLAMixedModel::log_marginal_likelihood().
 
   (log-evidence importance-sampling-result) → double-float
   (setf (log-evidence importance-sampling-result) double-float)"
-  (call 415 (cons self args)))
+  (call 433 (cons self args)))
 (defmethod (setf datamunge:log-evidence) (value (self datamunge:importance-sampling-result) &rest args)
-  (call 416 (list* self value args))
+  (call 434 (list* self value args))
   value)
 
 (defmethod datamunge:sample ((self datamunge:importance-sampling) &rest args)
@@ -14743,23 +14749,23 @@ definite.
     log-target  arbitrary-function
     proposal-mean  (vector double-float)
     proposal-covariance  (vector (vector double-float))"
-  (call 418 (cons self args)))
+  (call 436 (cons self args)))
 
 (defmethod datamunge:options ((self datamunge:importance-sampling) &rest args)
   "The options this ImportanceSampling was configured with.
 
   (options importance-sampling) → importance-sampling-options
     → The stored options."
-  (call 419 (cons self args)))
+  (call 437 (cons self args)))
 
 (defmethod datamunge:max-iterations ((self datamunge:map-options) &rest args)
   "Field max-iterations of map-options.
 
   (max-iterations map-options) → integer
   (setf (max-iterations map-options) integer)"
-  (call 421 (cons self args)))
+  (call 439 (cons self args)))
 (defmethod (setf datamunge:max-iterations) (value (self datamunge:map-options) &rest args)
-  (call 422 (list* self value args))
+  (call 440 (list* self value args))
   value)
 
 (defmethod datamunge:tolerance ((self datamunge:map-options) &rest args)
@@ -14767,9 +14773,9 @@ definite.
 
   (tolerance map-options) → double-float
   (setf (tolerance map-options) double-float)"
-  (call 423 (cons self args)))
+  (call 441 (cons self args)))
 (defmethod (setf datamunge:tolerance) (value (self datamunge:map-options) &rest args)
-  (call 424 (list* self value args))
+  (call 442 (list* self value args))
   value)
 
 (defmethod datamunge:history-size ((self datamunge:map-options) &rest args)
@@ -14777,9 +14783,9 @@ definite.
 
   (history-size map-options) → integer
   (setf (history-size map-options) integer)"
-  (call 425 (cons self args)))
+  (call 443 (cons self args)))
 (defmethod (setf datamunge:history-size) (value (self datamunge:map-options) &rest args)
-  (call 426 (list* self value args))
+  (call 444 (list* self value args))
   value)
 
 (defmethod datamunge:optimize ((self datamunge:map) &rest args)
@@ -14789,23 +14795,23 @@ to the mode found, and returns the log-posterior density there.
   (optimize map log-posterior coordinates) → double-float
     log-posterior  differentiable-function
     coordinates  (vector double-float)"
-  (call 428 (cons self args)))
+  (call 446 (cons self args)))
 
 (defmethod datamunge:options ((self datamunge:map) &rest args)
   "The options this MAP was configured with.
 
   (options map) → map-options
     → The stored options."
-  (call 429 (cons self args)))
+  (call 447 (cons self args)))
 
 (defmethod datamunge:num-samples ((self datamunge:nuts-options) &rest args)
   "Number of post-warmup draws.
 
   (num-samples nuts-options) → integer
   (setf (num-samples nuts-options) integer)"
-  (call 431 (cons self args)))
+  (call 449 (cons self args)))
 (defmethod (setf datamunge:num-samples) (value (self datamunge:nuts-options) &rest args)
-  (call 432 (list* self value args))
+  (call 450 (list* self value args))
   value)
 
 (defmethod datamunge:num-warmup ((self datamunge:nuts-options) &rest args)
@@ -14813,9 +14819,9 @@ to the mode found, and returns the log-posterior density there.
 
   (num-warmup nuts-options) → integer
   (setf (num-warmup nuts-options) integer)"
-  (call 433 (cons self args)))
+  (call 451 (cons self args)))
 (defmethod (setf datamunge:num-warmup) (value (self datamunge:nuts-options) &rest args)
-  (call 434 (list* self value args))
+  (call 452 (list* self value args))
   value)
 
 (defmethod datamunge:max-tree-depth ((self datamunge:nuts-options) &rest args)
@@ -14823,9 +14829,9 @@ to the mode found, and returns the log-posterior density there.
 
   (max-tree-depth nuts-options) → integer
   (setf (max-tree-depth nuts-options) integer)"
-  (call 435 (cons self args)))
+  (call 453 (cons self args)))
 (defmethod (setf datamunge:max-tree-depth) (value (self datamunge:nuts-options) &rest args)
-  (call 436 (list* self value args))
+  (call 454 (list* self value args))
   value)
 
 (defmethod datamunge:initial-step-size ((self datamunge:nuts-options) &rest args)
@@ -14833,9 +14839,9 @@ to the mode found, and returns the log-posterior density there.
 
   (initial-step-size nuts-options) → double-float
   (setf (initial-step-size nuts-options) double-float)"
-  (call 437 (cons self args)))
+  (call 455 (cons self args)))
 (defmethod (setf datamunge:initial-step-size) (value (self datamunge:nuts-options) &rest args)
-  (call 438 (list* self value args))
+  (call 456 (list* self value args))
   value)
 
 (defmethod datamunge:target-accept-rate ((self datamunge:nuts-options) &rest args)
@@ -14843,9 +14849,9 @@ to the mode found, and returns the log-posterior density there.
 
   (target-accept-rate nuts-options) → double-float
   (setf (target-accept-rate nuts-options) double-float)"
-  (call 439 (cons self args)))
+  (call 457 (cons self args)))
 (defmethod (setf datamunge:target-accept-rate) (value (self datamunge:nuts-options) &rest args)
-  (call 440 (list* self value args))
+  (call 458 (list* self value args))
   value)
 
 (defmethod datamunge:max-delta-error ((self datamunge:nuts-options) &rest args)
@@ -14854,9 +14860,9 @@ this from its initial value (Stan's default of 1000).
 
   (max-delta-error nuts-options) → double-float
   (setf (max-delta-error nuts-options) double-float)"
-  (call 441 (cons self args)))
+  (call 459 (cons self args)))
 (defmethod (setf datamunge:max-delta-error) (value (self datamunge:nuts-options) &rest args)
-  (call 442 (list* self value args))
+  (call 460 (list* self value args))
   value)
 
 (defmethod datamunge:seed ((self datamunge:nuts-options) &rest args)
@@ -14864,9 +14870,9 @@ this from its initial value (Stan's default of 1000).
 
   (seed nuts-options) → integer
   (setf (seed nuts-options) integer)"
-  (call 443 (cons self args)))
+  (call 461 (cons self args)))
 (defmethod (setf datamunge:seed) (value (self datamunge:nuts-options) &rest args)
-  (call 444 (list* self value args))
+  (call 462 (list* self value args))
   value)
 
 (defmethod datamunge:samples ((self datamunge:nuts-result) &rest args)
@@ -14874,9 +14880,9 @@ this from its initial value (Stan's default of 1000).
 
   (samples nuts-result) → (vector (vector double-float))
   (setf (samples nuts-result) (vector (vector double-float)))"
-  (call 446 (cons self args)))
+  (call 464 (cons self args)))
 (defmethod (setf datamunge:samples) (value (self datamunge:nuts-result) &rest args)
-  (call 447 (list* self value args))
+  (call 465 (list* self value args))
   value)
 
 (defmethod datamunge:accept-rate ((self datamunge:nuts-result) &rest args)
@@ -14885,9 +14891,9 @@ the step-size adaptation targets).
 
   (accept-rate nuts-result) → double-float
   (setf (accept-rate nuts-result) double-float)"
-  (call 448 (cons self args)))
+  (call 466 (cons self args)))
 (defmethod (setf datamunge:accept-rate) (value (self datamunge:nuts-result) &rest args)
-  (call 449 (list* self value args))
+  (call 467 (list* self value args))
   value)
 
 (defmethod datamunge:final-step-size ((self datamunge:nuts-result) &rest args)
@@ -14895,9 +14901,9 @@ the step-size adaptation targets).
 
   (final-step-size nuts-result) → double-float
   (setf (final-step-size nuts-result) double-float)"
-  (call 450 (cons self args)))
+  (call 468 (cons self args)))
 (defmethod (setf datamunge:final-step-size) (value (self datamunge:nuts-result) &rest args)
-  (call 451 (list* self value args))
+  (call 469 (list* self value args))
   value)
 
 (defmethod datamunge:num-divergences ((self datamunge:nuts-result) &rest args)
@@ -14905,9 +14911,9 @@ the step-size adaptation targets).
 
   (num-divergences nuts-result) → integer
   (setf (num-divergences nuts-result) integer)"
-  (call 452 (cons self args)))
+  (call 470 (cons self args)))
 (defmethod (setf datamunge:num-divergences) (value (self datamunge:nuts-result) &rest args)
-  (call 453 (list* self value args))
+  (call 471 (list* self value args))
   value)
 
 (defmethod datamunge:divergent ((self datamunge:nuts-result) &rest args)
@@ -14915,9 +14921,9 @@ the step-size adaptation targets).
 
   (divergent nuts-result) → (vector integer)
   (setf (divergent nuts-result) (vector integer))"
-  (call 454 (cons self args)))
+  (call 472 (cons self args)))
 (defmethod (setf datamunge:divergent) (value (self datamunge:nuts-result) &rest args)
-  (call 455 (list* self value args))
+  (call 473 (list* self value args))
   value)
 
 (defmethod datamunge:tree-depth ((self datamunge:nuts-result) &rest args)
@@ -14925,9 +14931,9 @@ the step-size adaptation targets).
 
   (tree-depth nuts-result) → (vector integer)
   (setf (tree-depth nuts-result) (vector integer))"
-  (call 456 (cons self args)))
+  (call 474 (cons self args)))
 (defmethod (setf datamunge:tree-depth) (value (self datamunge:nuts-result) &rest args)
-  (call 457 (list* self value args))
+  (call 475 (list* self value args))
   value)
 
 (defmethod datamunge:n-leapfrog ((self datamunge:nuts-result) &rest args)
@@ -14935,9 +14941,9 @@ the step-size adaptation targets).
 
   (n-leapfrog nuts-result) → (vector integer)
   (setf (n-leapfrog nuts-result) (vector integer))"
-  (call 458 (cons self args)))
+  (call 476 (cons self args)))
 (defmethod (setf datamunge:n-leapfrog) (value (self datamunge:nuts-result) &rest args)
-  (call 459 (list* self value args))
+  (call 477 (list* self value args))
   value)
 
 (defmethod datamunge:energy ((self datamunge:nuts-result) &rest args)
@@ -14948,9 +14954,9 @@ start of the iteration, after momentum resampling (input to energy_bfmi()).
 
   (energy nuts-result) → (vector double-float)
   (setf (energy nuts-result) (vector double-float))"
-  (call 460 (cons self args)))
+  (call 478 (cons self args)))
 (defmethod (setf datamunge:energy) (value (self datamunge:nuts-result) &rest args)
-  (call 461 (list* self value args))
+  (call 479 (list* self value args))
   value)
 
 (defmethod datamunge:sample ((self datamunge:nuts) &rest args)
@@ -14960,23 +14966,23 @@ start of the iteration, after momentum resampling (input to energy_bfmi()).
     log-posterior  differentiable-function  Log density (up to a constant) and its gradient.
     initial-params  (vector double-float)  Starting point on the unconstrained scale.
     → Draws plus acceptance, step size and per-draw diagnostics."
-  (call 463 (cons self args)))
+  (call 481 (cons self args)))
 
 (defmethod datamunge:options ((self datamunge:nuts) &rest args)
   "The options this NUTS was configured with.
 
   (options nuts) → nuts-options
     → The stored options."
-  (call 464 (cons self args)))
+  (call 482 (cons self args)))
 
 (defmethod datamunge:num-samples ((self datamunge:rwm-options) &rest args)
   "Number of post-warmup draws.
 
   (num-samples rwm-options) → integer
   (setf (num-samples rwm-options) integer)"
-  (call 466 (cons self args)))
+  (call 484 (cons self args)))
 (defmethod (setf datamunge:num-samples) (value (self datamunge:rwm-options) &rest args)
-  (call 467 (list* self value args))
+  (call 485 (list* self value args))
   value)
 
 (defmethod datamunge:num-warmup ((self datamunge:rwm-options) &rest args)
@@ -14984,9 +14990,9 @@ start of the iteration, after momentum resampling (input to energy_bfmi()).
 
   (num-warmup rwm-options) → integer
   (setf (num-warmup rwm-options) integer)"
-  (call 468 (cons self args)))
+  (call 486 (cons self args)))
 (defmethod (setf datamunge:num-warmup) (value (self datamunge:rwm-options) &rest args)
-  (call 469 (list* self value args))
+  (call 487 (list* self value args))
   value)
 
 (defmethod datamunge:initial-step-size ((self datamunge:rwm-options) &rest args)
@@ -14995,9 +15001,9 @@ start of the iteration, after momentum resampling (input to energy_bfmi()).
 
   (initial-step-size rwm-options) → double-float
   (setf (initial-step-size rwm-options) double-float)"
-  (call 470 (cons self args)))
+  (call 488 (cons self args)))
 (defmethod (setf datamunge:initial-step-size) (value (self datamunge:rwm-options) &rest args)
-  (call 471 (list* self value args))
+  (call 489 (list* self value args))
   value)
 
 (defmethod datamunge:target-accept-rate ((self datamunge:rwm-options) &rest args)
@@ -15009,9 +15015,9 @@ per-coordinate proposal).
 
   (target-accept-rate rwm-options) → double-float
   (setf (target-accept-rate rwm-options) double-float)"
-  (call 472 (cons self args)))
+  (call 490 (cons self args)))
 (defmethod (setf datamunge:target-accept-rate) (value (self datamunge:rwm-options) &rest args)
-  (call 473 (list* self value args))
+  (call 491 (list* self value args))
   value)
 
 (defmethod datamunge:seed ((self datamunge:rwm-options) &rest args)
@@ -15019,9 +15025,9 @@ per-coordinate proposal).
 
   (seed rwm-options) → integer
   (setf (seed rwm-options) integer)"
-  (call 474 (cons self args)))
+  (call 492 (cons self args)))
 (defmethod (setf datamunge:seed) (value (self datamunge:rwm-options) &rest args)
-  (call 475 (list* self value args))
+  (call 493 (list* self value args))
   value)
 
 (defmethod datamunge:adapt-covariance ((self datamunge:rwm-options) &rest args)
@@ -15035,9 +15041,9 @@ per-coordinate proposal).
 
   (adapt-covariance rwm-options) → boolean
   (setf (adapt-covariance rwm-options) boolean)"
-  (call 476 (cons self args)))
+  (call 494 (cons self args)))
 (defmethod (setf datamunge:adapt-covariance) (value (self datamunge:rwm-options) &rest args)
-  (call 477 (list* self value args))
+  (call 495 (list* self value args))
   value)
 
 (defmethod datamunge:samples ((self datamunge:rwm-result) &rest args)
@@ -15045,9 +15051,9 @@ per-coordinate proposal).
 
   (samples rwm-result) → (vector (vector double-float))
   (setf (samples rwm-result) (vector (vector double-float)))"
-  (call 479 (cons self args)))
+  (call 497 (cons self args)))
 (defmethod (setf datamunge:samples) (value (self datamunge:rwm-result) &rest args)
-  (call 480 (list* self value args))
+  (call 498 (list* self value args))
   value)
 
 (defmethod datamunge:accept-rate ((self datamunge:rwm-result) &rest args)
@@ -15056,9 +15062,9 @@ the step-size adaptation targets).
 
   (accept-rate rwm-result) → double-float
   (setf (accept-rate rwm-result) double-float)"
-  (call 481 (cons self args)))
+  (call 499 (cons self args)))
 (defmethod (setf datamunge:accept-rate) (value (self datamunge:rwm-result) &rest args)
-  (call 482 (list* self value args))
+  (call 500 (list* self value args))
   value)
 
 (defmethod datamunge:final-step-size ((self datamunge:rwm-result) &rest args)
@@ -15066,9 +15072,9 @@ the step-size adaptation targets).
 
   (final-step-size rwm-result) → double-float
   (setf (final-step-size rwm-result) double-float)"
-  (call 483 (cons self args)))
+  (call 501 (cons self args)))
 (defmethod (setf datamunge:final-step-size) (value (self datamunge:rwm-result) &rest args)
-  (call 484 (list* self value args))
+  (call 502 (list* self value args))
   value)
 
 (defmethod datamunge:proposal-covariance ((self datamunge:rwm-result) &rest args)
@@ -15079,9 +15085,9 @@ empty unless RWMOptions::adapt_covariance was set and warmup had at least 8 iter
 
   (proposal-covariance rwm-result) → (vector (vector double-float))
   (setf (proposal-covariance rwm-result) (vector (vector double-float)))"
-  (call 485 (cons self args)))
+  (call 503 (cons self args)))
 (defmethod (setf datamunge:proposal-covariance) (value (self datamunge:rwm-result) &rest args)
-  (call 486 (list* self value args))
+  (call 504 (list* self value args))
   value)
 
 (defmethod datamunge:sample ((self datamunge:random-walk-metropolis) &rest args)
@@ -15092,23 +15098,23 @@ then num_samples draws.
     log-posterior  arbitrary-function  Log density up to a constant; only evaluate() is used.
     initial-params  (vector double-float)  Starting point.
     → Draws, acceptance rate, final step size and learned covariance."
-  (call 488 (cons self args)))
+  (call 506 (cons self args)))
 
 (defmethod datamunge:options ((self datamunge:random-walk-metropolis) &rest args)
   "The options this RandomWalkMetropolis was configured with.
 
   (options random-walk-metropolis) → rwm-options
     → The stored options."
-  (call 489 (cons self args)))
+  (call 507 (cons self args)))
 
 (defmethod datamunge:r ((self datamunge:pixel) &rest args)
   "Field r of pixel.
 
   (r pixel) → integer
   (setf (r pixel) integer)"
-  (call 491 (cons self args)))
+  (call 509 (cons self args)))
 (defmethod (setf datamunge:r) (value (self datamunge:pixel) &rest args)
-  (call 492 (list* self value args))
+  (call 510 (list* self value args))
   value)
 
 (defmethod datamunge:g ((self datamunge:pixel) &rest args)
@@ -15116,9 +15122,9 @@ then num_samples draws.
 
   (g pixel) → integer
   (setf (g pixel) integer)"
-  (call 493 (cons self args)))
+  (call 511 (cons self args)))
 (defmethod (setf datamunge:g) (value (self datamunge:pixel) &rest args)
-  (call 494 (list* self value args))
+  (call 512 (list* self value args))
   value)
 
 (defmethod datamunge:b ((self datamunge:pixel) &rest args)
@@ -15126,9 +15132,9 @@ then num_samples draws.
 
   (b pixel) → integer
   (setf (b pixel) integer)"
-  (call 495 (cons self args)))
+  (call 513 (cons self args)))
 (defmethod (setf datamunge:b) (value (self datamunge:pixel) &rest args)
-  (call 496 (list* self value args))
+  (call 514 (list* self value args))
   value)
 
 (defmethod datamunge:a ((self datamunge:pixel) &rest args)
@@ -15136,40 +15142,40 @@ then num_samples draws.
 
   (a pixel) → integer
   (setf (a pixel) integer)"
-  (call 497 (cons self args)))
+  (call 515 (cons self args)))
 (defmethod (setf datamunge:a) (value (self datamunge:pixel) &rest args)
-  (call 498 (list* self value args))
+  (call 516 (list* self value args))
   value)
 
 (defmethod datamunge:width ((self datamunge:image) &rest args)
   "C++ datamunge::image::Image::width.
 
   (width image) → integer"
-  (call 500 (cons self args)))
+  (call 518 (cons self args)))
 
 (defmethod datamunge:height ((self datamunge:image) &rest args)
   "C++ datamunge::image::Image::height.
 
   (height image) → integer"
-  (call 501 (cons self args)))
+  (call 519 (cons self args)))
 
 (defmethod datamunge:mode ((self datamunge:image) &rest args)
   "C++ datamunge::image::Image::mode.
 
   (mode image) → image-mode"
-  (call 502 (cons self args)))
+  (call 520 (cons self args)))
 
 (defmethod datamunge:channels ((self datamunge:image) &rest args)
   "C++ datamunge::image::Image::channels.
 
   (channels image) → integer"
-  (call 503 (cons self args)))
+  (call 521 (cons self args)))
 
 (defmethod datamunge:data ((self datamunge:image) &rest args)
   "C++ datamunge::image::Image::data.
 
   (data image) → (vector integer)"
-  (call 504 (cons self args)))
+  (call 522 (cons self args)))
 
 (defmethod datamunge:get-pixel ((self datamunge:image) &rest args)
   "C++ datamunge::image::Image::get_pixel.
@@ -15177,7 +15183,7 @@ then num_samples draws.
   (get-pixel image x y) → pixel
     x  integer
     y  integer"
-  (call 505 (cons self args)))
+  (call 523 (cons self args)))
 
 (defmethod datamunge:set-pixel ((self datamunge:image) &rest args)
   "C++ datamunge::image::Image::set_pixel.
@@ -15186,23 +15192,23 @@ then num_samples draws.
     x  integer
     y  integer
     p  pixel"
-  (call 506 (cons self args)))
+  (call 524 (cons self args)))
 
 (defmethod datamunge:fill ((self datamunge:image) &rest args)
   "C++ datamunge::image::Image::fill.
 
   (fill image p)
     p  pixel"
-  (call 507 (cons self args)))
+  (call 525 (cons self args)))
 
 (defmethod datamunge:h ((self datamunge:hsv) &rest args)
   "Field h of hsv.
 
   (h hsv) → double-float
   (setf (h hsv) double-float)"
-  (call 510 (cons self args)))
+  (call 528 (cons self args)))
 (defmethod (setf datamunge:h) (value (self datamunge:hsv) &rest args)
-  (call 511 (list* self value args))
+  (call 529 (list* self value args))
   value)
 
 (defmethod datamunge:s ((self datamunge:hsv) &rest args)
@@ -15210,9 +15216,9 @@ then num_samples draws.
 
   (s hsv) → double-float
   (setf (s hsv) double-float)"
-  (call 512 (cons self args)))
+  (call 530 (cons self args)))
 (defmethod (setf datamunge:s) (value (self datamunge:hsv) &rest args)
-  (call 513 (list* self value args))
+  (call 531 (list* self value args))
   value)
 
 (defmethod datamunge:v ((self datamunge:hsv) &rest args)
@@ -15220,9 +15226,9 @@ then num_samples draws.
 
   (v hsv) → double-float
   (setf (v hsv) double-float)"
-  (call 514 (cons self args)))
+  (call 532 (cons self args)))
 (defmethod (setf datamunge:v) (value (self datamunge:hsv) &rest args)
-  (call 515 (list* self value args))
+  (call 533 (list* self value args))
   value)
 
 (defmethod datamunge:x ((self datamunge:key-point) &rest args)
@@ -15230,9 +15236,9 @@ then num_samples draws.
 
   (x key-point) → integer
   (setf (x key-point) integer)"
-  (call 517 (cons self args)))
+  (call 535 (cons self args)))
 (defmethod (setf datamunge:x) (value (self datamunge:key-point) &rest args)
-  (call 518 (list* self value args))
+  (call 536 (list* self value args))
   value)
 
 (defmethod datamunge:y ((self datamunge:key-point) &rest args)
@@ -15240,9 +15246,9 @@ then num_samples draws.
 
   (y key-point) → integer
   (setf (y key-point) integer)"
-  (call 519 (cons self args)))
+  (call 537 (cons self args)))
 (defmethod (setf datamunge:y) (value (self datamunge:key-point) &rest args)
-  (call 520 (list* self value args))
+  (call 538 (list* self value args))
   value)
 
 (defmethod datamunge:scale ((self datamunge:key-point) &rest args)
@@ -15250,9 +15256,9 @@ then num_samples draws.
 
   (scale key-point) → double-float
   (setf (scale key-point) double-float)"
-  (call 521 (cons self args)))
+  (call 539 (cons self args)))
 (defmethod (setf datamunge:scale) (value (self datamunge:key-point) &rest args)
-  (call 522 (list* self value args))
+  (call 540 (list* self value args))
   value)
 
 (defmethod datamunge:response ((self datamunge:key-point) &rest args)
@@ -15260,9 +15266,9 @@ then num_samples draws.
 
   (response key-point) → double-float
   (setf (response key-point) double-float)"
-  (call 523 (cons self args)))
+  (call 541 (cons self args)))
 (defmethod (setf datamunge:response) (value (self datamunge:key-point) &rest args)
-  (call 524 (list* self value args))
+  (call 542 (list* self value args))
   value)
 
 (defmethod datamunge:x ((self datamunge:corner) &rest args)
@@ -15270,9 +15276,9 @@ then num_samples draws.
 
   (x corner) → integer
   (setf (x corner) integer)"
-  (call 526 (cons self args)))
+  (call 544 (cons self args)))
 (defmethod (setf datamunge:x) (value (self datamunge:corner) &rest args)
-  (call 527 (list* self value args))
+  (call 545 (list* self value args))
   value)
 
 (defmethod datamunge:y ((self datamunge:corner) &rest args)
@@ -15280,9 +15286,9 @@ then num_samples draws.
 
   (y corner) → integer
   (setf (y corner) integer)"
-  (call 528 (cons self args)))
+  (call 546 (cons self args)))
 (defmethod (setf datamunge:y) (value (self datamunge:corner) &rest args)
-  (call 529 (list* self value args))
+  (call 547 (list* self value args))
   value)
 
 (defmethod datamunge:response ((self datamunge:corner) &rest args)
@@ -15290,9 +15296,9 @@ then num_samples draws.
 
   (response corner) → double-float
   (setf (response corner) double-float)"
-  (call 530 (cons self args)))
+  (call 548 (cons self args)))
 (defmethod (setf datamunge:response) (value (self datamunge:corner) &rest args)
-  (call 531 (list* self value args))
+  (call 549 (list* self value args))
   value)
 
 (defmethod datamunge:sxx ((self datamunge:structure-tensor-field) &rest args)
@@ -15300,9 +15306,9 @@ then num_samples draws.
 
   (sxx structure-tensor-field) → (vector double-float)
   (setf (sxx structure-tensor-field) (vector double-float))"
-  (call 533 (cons self args)))
+  (call 551 (cons self args)))
 (defmethod (setf datamunge:sxx) (value (self datamunge:structure-tensor-field) &rest args)
-  (call 534 (list* self value args))
+  (call 552 (list* self value args))
   value)
 
 (defmethod datamunge:syy ((self datamunge:structure-tensor-field) &rest args)
@@ -15310,9 +15316,9 @@ then num_samples draws.
 
   (syy structure-tensor-field) → (vector double-float)
   (setf (syy structure-tensor-field) (vector double-float))"
-  (call 535 (cons self args)))
+  (call 553 (cons self args)))
 (defmethod (setf datamunge:syy) (value (self datamunge:structure-tensor-field) &rest args)
-  (call 536 (list* self value args))
+  (call 554 (list* self value args))
   value)
 
 (defmethod datamunge:sxy ((self datamunge:structure-tensor-field) &rest args)
@@ -15320,9 +15326,9 @@ then num_samples draws.
 
   (sxy structure-tensor-field) → (vector double-float)
   (setf (sxy structure-tensor-field) (vector double-float))"
-  (call 537 (cons self args)))
+  (call 555 (cons self args)))
 (defmethod (setf datamunge:sxy) (value (self datamunge:structure-tensor-field) &rest args)
-  (call 538 (list* self value args))
+  (call 556 (list* self value args))
   value)
 
 (defmethod datamunge:rho ((self datamunge:hough-line) &rest args)
@@ -15330,9 +15336,9 @@ then num_samples draws.
 
   (rho hough-line) → double-float
   (setf (rho hough-line) double-float)"
-  (call 540 (cons self args)))
+  (call 558 (cons self args)))
 (defmethod (setf datamunge:rho) (value (self datamunge:hough-line) &rest args)
-  (call 541 (list* self value args))
+  (call 559 (list* self value args))
   value)
 
 (defmethod datamunge:theta ((self datamunge:hough-line) &rest args)
@@ -15340,9 +15346,9 @@ then num_samples draws.
 
   (theta hough-line) → double-float
   (setf (theta hough-line) double-float)"
-  (call 542 (cons self args)))
+  (call 560 (cons self args)))
 (defmethod (setf datamunge:theta) (value (self datamunge:hough-line) &rest args)
-  (call 543 (list* self value args))
+  (call 561 (list* self value args))
   value)
 
 (defmethod datamunge:votes ((self datamunge:hough-line) &rest args)
@@ -15350,9 +15356,9 @@ then num_samples draws.
 
   (votes hough-line) → integer
   (setf (votes hough-line) integer)"
-  (call 544 (cons self args)))
+  (call 562 (cons self args)))
 (defmethod (setf datamunge:votes) (value (self datamunge:hough-line) &rest args)
-  (call 545 (list* self value args))
+  (call 563 (list* self value args))
   value)
 
 (defmethod datamunge:cx ((self datamunge:hough-circle) &rest args)
@@ -15360,9 +15366,9 @@ then num_samples draws.
 
   (cx hough-circle) → integer
   (setf (cx hough-circle) integer)"
-  (call 547 (cons self args)))
+  (call 565 (cons self args)))
 (defmethod (setf datamunge:cx) (value (self datamunge:hough-circle) &rest args)
-  (call 548 (list* self value args))
+  (call 566 (list* self value args))
   value)
 
 (defmethod datamunge:cy ((self datamunge:hough-circle) &rest args)
@@ -15370,9 +15376,9 @@ then num_samples draws.
 
   (cy hough-circle) → integer
   (setf (cy hough-circle) integer)"
-  (call 549 (cons self args)))
+  (call 567 (cons self args)))
 (defmethod (setf datamunge:cy) (value (self datamunge:hough-circle) &rest args)
-  (call 550 (list* self value args))
+  (call 568 (list* self value args))
   value)
 
 (defmethod datamunge:radius ((self datamunge:hough-circle) &rest args)
@@ -15380,9 +15386,9 @@ then num_samples draws.
 
   (radius hough-circle) → integer
   (setf (radius hough-circle) integer)"
-  (call 551 (cons self args)))
+  (call 569 (cons self args)))
 (defmethod (setf datamunge:radius) (value (self datamunge:hough-circle) &rest args)
-  (call 552 (list* self value args))
+  (call 570 (list* self value args))
   value)
 
 (defmethod datamunge:votes ((self datamunge:hough-circle) &rest args)
@@ -15390,9 +15396,9 @@ then num_samples draws.
 
   (votes hough-circle) → integer
   (setf (votes hough-circle) integer)"
-  (call 553 (cons self args)))
+  (call 571 (cons self args)))
 (defmethod (setf datamunge:votes) (value (self datamunge:hough-circle) &rest args)
-  (call 554 (list* self value args))
+  (call 572 (list* self value args))
   value)
 
 (defmethod datamunge:dx ((self datamunge:flow-vector) &rest args)
@@ -15400,9 +15406,9 @@ then num_samples draws.
 
   (dx flow-vector) → double-float
   (setf (dx flow-vector) double-float)"
-  (call 556 (cons self args)))
+  (call 574 (cons self args)))
 (defmethod (setf datamunge:dx) (value (self datamunge:flow-vector) &rest args)
-  (call 557 (list* self value args))
+  (call 575 (list* self value args))
   value)
 
 (defmethod datamunge:dy ((self datamunge:flow-vector) &rest args)
@@ -15410,9 +15416,9 @@ then num_samples draws.
 
   (dy flow-vector) → double-float
   (setf (dy flow-vector) double-float)"
-  (call 558 (cons self args)))
+  (call 576 (cons self args)))
 (defmethod (setf datamunge:dy) (value (self datamunge:flow-vector) &rest args)
-  (call 559 (list* self value args))
+  (call 577 (list* self value args))
   value)
 
 (defmethod datamunge:valid ((self datamunge:flow-vector) &rest args)
@@ -15420,9 +15426,9 @@ then num_samples draws.
 
   (valid flow-vector) → boolean
   (setf (valid flow-vector) boolean)"
-  (call 560 (cons self args)))
+  (call 578 (cons self args)))
 (defmethod (setf datamunge:valid) (value (self datamunge:flow-vector) &rest args)
-  (call 561 (list* self value args))
+  (call 579 (list* self value args))
   value)
 
 (defmethod datamunge:labels ((self datamunge:label-map) &rest args)
@@ -15430,9 +15436,9 @@ then num_samples draws.
 
   (labels label-map) → (vector integer)
   (setf (labels label-map) (vector integer))"
-  (call 563 (cons self args)))
+  (call 581 (cons self args)))
 (defmethod (setf datamunge:labels) (value (self datamunge:label-map) &rest args)
-  (call 564 (list* self value args))
+  (call 582 (list* self value args))
   value)
 
 (defmethod datamunge:width ((self datamunge:label-map) &rest args)
@@ -15440,9 +15446,9 @@ then num_samples draws.
 
   (width label-map) → integer
   (setf (width label-map) integer)"
-  (call 565 (cons self args)))
+  (call 583 (cons self args)))
 (defmethod (setf datamunge:width) (value (self datamunge:label-map) &rest args)
-  (call 566 (list* self value args))
+  (call 584 (list* self value args))
   value)
 
 (defmethod datamunge:height ((self datamunge:label-map) &rest args)
@@ -15450,9 +15456,9 @@ then num_samples draws.
 
   (height label-map) → integer
   (setf (height label-map) integer)"
-  (call 567 (cons self args)))
+  (call 585 (cons self args)))
 (defmethod (setf datamunge:height) (value (self datamunge:label-map) &rest args)
-  (call 568 (list* self value args))
+  (call 586 (list* self value args))
   value)
 
 (defmethod datamunge:count ((self datamunge:label-map) &rest args)
@@ -15460,22 +15466,22 @@ then num_samples draws.
 
   (count label-map) → integer
   (setf (count label-map) integer)"
-  (call 569 (cons self args)))
+  (call 587 (cons self args)))
 (defmethod (setf datamunge:count) (value (self datamunge:label-map) &rest args)
-  (call 570 (list* self value args))
+  (call 588 (list* self value args))
   value)
 
 (defmethod datamunge:size ((self datamunge:image-batch) &rest args)
   "Number of images in the batch.
 
   (size image-batch) → integer"
-  (call 572 (cons self args)))
+  (call 590 (cons self args)))
 
 (defmethod datamunge:features ((self datamunge:image-batch) &rest args)
   "Values per image (height * width * channels).
 
   (features image-batch) → integer"
-  (call 573 (cons self args)))
+  (call 591 (cons self args)))
 
 (defmethod datamunge:image ((self datamunge:image-batch) &rest args)
   "A copy of image `i's` features() values.
@@ -15485,16 +15491,16 @@ Errors (signalled as datamunge:native-error):
 
   (image image-batch i) → (vector double-float)
     i  integer"
-  (call 574 (cons self args)))
+  (call 592 (cons self args)))
 
 (defmethod datamunge:pixels ((self datamunge:image-batch) &rest args)
   "Image values, row-major per `shape`.
 
   (pixels image-batch) → (vector double-float)
   (setf (pixels image-batch) (vector double-float))"
-  (call 575 (cons self args)))
+  (call 593 (cons self args)))
 (defmethod (setf datamunge:pixels) (value (self datamunge:image-batch) &rest args)
-  (call 576 (list* self value args))
+  (call 594 (list* self value args))
   value)
 
 (defmethod datamunge:labels ((self datamunge:image-batch) &rest args)
@@ -15502,9 +15508,9 @@ Errors (signalled as datamunge:native-error):
 
   (labels image-batch) → (vector integer)
   (setf (labels image-batch) (vector integer))"
-  (call 577 (cons self args)))
+  (call 595 (cons self args)))
 (defmethod (setf datamunge:labels) (value (self datamunge:image-batch) &rest args)
-  (call 578 (list* self value args))
+  (call 596 (list* self value args))
   value)
 
 (defmethod datamunge:indices ((self datamunge:image-batch) &rest args)
@@ -15512,9 +15518,9 @@ Errors (signalled as datamunge:native-error):
 
   (indices image-batch) → (vector integer)
   (setf (indices image-batch) (vector integer))"
-  (call 579 (cons self args)))
+  (call 597 (cons self args)))
 (defmethod (setf datamunge:indices) (value (self datamunge:image-batch) &rest args)
-  (call 580 (list* self value args))
+  (call 598 (list* self value args))
   value)
 
 (defmethod datamunge:shape ((self datamunge:image-batch) &rest args)
@@ -15522,9 +15528,9 @@ Errors (signalled as datamunge:native-error):
 
   (shape image-batch) → (vector integer)
   (setf (shape image-batch) (vector integer))"
-  (call 581 (cons self args)))
+  (call 599 (cons self args)))
 (defmethod (setf datamunge:shape) (value (self datamunge:image-batch) &rest args)
-  (call 582 (list* self value args))
+  (call 600 (list* self value args))
   value)
 
 (defmethod datamunge:set-batch-size ((self datamunge:image-loader) &rest args)
@@ -15535,7 +15541,7 @@ Errors (signalled as datamunge:native-error):
 
   (set-batch-size image-loader size) → image-loader
     size  integer"
-  (call 584 (cons self args)))
+  (call 602 (cons self args)))
 
 (defmethod datamunge:set-shuffle ((self datamunge:image-loader) &rest args)
   "Turns shuffling on or off (default off). Epoch e's order is a permutation drawn
@@ -15543,28 +15549,28 @@ from (seed(), e), so the same seed always gives the same sequence of epochs.
 
   (set-shuffle image-loader shuffle) → image-loader
     shuffle  boolean"
-  (call 585 (cons self args)))
+  (call 603 (cons self args)))
 
 (defmethod datamunge:set-seed ((self datamunge:image-loader) &rest args)
   "Sets the shuffle seed (default 0); see set_shuffle().
 
   (set-seed image-loader seed) → image-loader
     seed  integer"
-  (call 586 (cons self args)))
+  (call 604 (cons self args)))
 
 (defmethod datamunge:set-drop-last ((self datamunge:image-loader) &rest args)
   "When true, a final batch smaller than batch_size() is skipped (default false).
 
   (set-drop-last image-loader drop-last) → image-loader
     drop-last  boolean"
-  (call 587 (cons self args)))
+  (call 605 (cons self args)))
 
 (defmethod datamunge:set-normalize ((self datamunge:image-loader) &rest args)
   "true scales pixels to [0, 1] (default); false keeps the raw 0..255 values.
 
   (set-normalize image-loader normalize) → image-loader
     normalize  boolean"
-  (call 588 (cons self args)))
+  (call 606 (cons self args)))
 
 (defmethod datamunge:set-layout ((self datamunge:image-loader) &rest args)
   "Memory layout of ImageBatch::pixels: \"nhwc\" (default), \"nchw\" or \"flat\".
@@ -15574,7 +15580,7 @@ Errors (signalled as datamunge:native-error):
 
   (set-layout image-loader layout) → image-loader
     layout  string"
-  (call 589 (cons self args)))
+  (call 607 (cons self args)))
 
 (defmethod datamunge:set-limit ((self datamunge:image-loader) &rest args)
   "Uses only the first `count` examples of the split (0, the default, means all).
@@ -15585,7 +15591,7 @@ Errors (signalled as datamunge:native-error):
 
   (set-limit image-loader count) → image-loader
     count  integer"
-  (call 590 (cons self args)))
+  (call 608 (cons self args)))
 
 (defmethod datamunge:set-coarse-labels ((self datamunge:image-loader) &rest args)
   "CIFAR-100 only: true labels images with the 20 superclasses, false (default)
@@ -15593,133 +15599,133 @@ with the 100 fine classes. Ignored by the other datasets.
 
   (set-coarse-labels image-loader coarse) → image-loader
     coarse  boolean"
-  (call 591 (cons self args)))
+  (call 609 (cons self args)))
 
 (defmethod datamunge:dataset ((self datamunge:image-loader) &rest args)
   "The dataset name given to the constructor.
 
   (dataset image-loader) → string"
-  (call 592 (cons self args)))
+  (call 610 (cons self args)))
 
 (defmethod datamunge:split ((self datamunge:image-loader) &rest args)
   "\"train\" or \"test\".
 
   (split image-loader) → string"
-  (call 593 (cons self args)))
+  (call 611 (cons self args)))
 
 (defmethod datamunge:directory ((self datamunge:image-loader) &rest args)
   "The directory the files are read from.
 
   (directory image-loader) → string"
-  (call 594 (cons self args)))
+  (call 612 (cons self args)))
 
 (defmethod datamunge:batch-size ((self datamunge:image-loader) &rest args)
   "Images per batch.
 
   (batch-size image-loader) → integer"
-  (call 595 (cons self args)))
+  (call 613 (cons self args)))
 
 (defmethod datamunge:shuffle ((self datamunge:image-loader) &rest args)
   "Whether each epoch is shuffled.
 
   (shuffle image-loader) → boolean"
-  (call 596 (cons self args)))
+  (call 614 (cons self args)))
 
 (defmethod datamunge:seed ((self datamunge:image-loader) &rest args)
   "The shuffle seed.
 
   (seed image-loader) → integer"
-  (call 597 (cons self args)))
+  (call 615 (cons self args)))
 
 (defmethod datamunge:drop-last ((self datamunge:image-loader) &rest args)
   "Whether a short final batch is skipped.
 
   (drop-last image-loader) → boolean"
-  (call 598 (cons self args)))
+  (call 616 (cons self args)))
 
 (defmethod datamunge:normalize ((self datamunge:image-loader) &rest args)
   "Whether pixels are scaled to [0, 1].
 
   (normalize image-loader) → boolean"
-  (call 599 (cons self args)))
+  (call 617 (cons self args)))
 
 (defmethod datamunge:layout ((self datamunge:image-loader) &rest args)
   "\"nhwc\", \"nchw\" or \"flat\".
 
   (layout image-loader) → string"
-  (call 600 (cons self args)))
+  (call 618 (cons self args)))
 
 (defmethod datamunge:coarse-labels ((self datamunge:image-loader) &rest args)
   "Whether CIFAR-100 uses coarse labels.
 
   (coarse-labels image-loader) → boolean"
-  (call 601 (cons self args)))
+  (call 619 (cons self args)))
 
 (defmethod datamunge:size ((self datamunge:image-loader) &rest args)
   "Examples per epoch: the split size, or the limit if one is set and smaller.
 
   (size image-loader) → integer"
-  (call 602 (cons self args)))
+  (call 620 (cons self args)))
 
 (defmethod datamunge:split-size ((self datamunge:image-loader) &rest args)
   "Examples in the split on disk, ignoring any limit.
 
   (split-size image-loader) → integer"
-  (call 603 (cons self args)))
+  (call 621 (cons self args)))
 
 (defmethod datamunge:num-batches ((self datamunge:image-loader) &rest args)
   "Batches per epoch, honoring drop_last().
 
   (num-batches image-loader) → integer"
-  (call 604 (cons self args)))
+  (call 622 (cons self args)))
 
 (defmethod datamunge:height ((self datamunge:image-loader) &rest args)
   "Image height in pixels.
 
   (height image-loader) → integer"
-  (call 605 (cons self args)))
+  (call 623 (cons self args)))
 
 (defmethod datamunge:width ((self datamunge:image-loader) &rest args)
   "Image width in pixels.
 
   (width image-loader) → integer"
-  (call 606 (cons self args)))
+  (call 624 (cons self args)))
 
 (defmethod datamunge:channels ((self datamunge:image-loader) &rest args)
   "Channels per pixel: 1 for MNIST-style, 3 (RGB) for CIFAR.
 
   (channels image-loader) → integer"
-  (call 607 (cons self args)))
+  (call 625 (cons self args)))
 
 (defmethod datamunge:num-classes ((self datamunge:image-loader) &rest args)
   "Number of label classes (CIFAR-100: 100, or 20 with coarse labels).
 
   (num-classes image-loader) → integer"
-  (call 608 (cons self args)))
+  (call 626 (cons self args)))
 
 (defmethod datamunge:class-names ((self datamunge:image-loader) &rest args)
   "Label names, indexed by label (e.g. \"airplane\" for CIFAR-10 label 0).
 
   (class-names image-loader) → (vector string)"
-  (call 609 (cons self args)))
+  (call 627 (cons self args)))
 
 (defmethod datamunge:epoch ((self datamunge:image-loader) &rest args)
   "The current epoch number, starting at 0 and advanced by reset().
 
   (epoch image-loader) → integer"
-  (call 610 (cons self args)))
+  (call 628 (cons self args)))
 
 (defmethod datamunge:position ((self datamunge:image-loader) &rest args)
   "Index of the batch next() will return in this epoch.
 
   (position image-loader) → integer"
-  (call 611 (cons self args)))
+  (call 629 (cons self args)))
 
 (defmethod datamunge:has-next ((self datamunge:image-loader) &rest args)
   "true while the current epoch has batches left.
 
   (has-next image-loader) → boolean"
-  (call 612 (cons self args)))
+  (call 630 (cons self args)))
 
 (defmethod datamunge:next ((self datamunge:image-loader) &rest args)
   "Reads the next batch of the current epoch.
@@ -15728,14 +15734,14 @@ Errors (signalled as datamunge:native-error):
   std::out_of_range: when the epoch is finished (call reset() for the next one).
 
   (next image-loader) → image-batch"
-  (call 613 (cons self args)))
+  (call 631 (cons self args)))
 
 (defmethod datamunge:reset ((self datamunge:image-loader) &rest args)
   "Starts the next epoch: the position returns to 0 and, if shuffling, a new
 order is drawn.
 
   (reset image-loader)"
-  (call 614 (cons self args)))
+  (call 632 (cons self args)))
 
 (defmethod datamunge:batch ((self datamunge:image-loader) &rest args)
   "Reads batch `index` of the current epoch without moving the position.
@@ -15745,7 +15751,7 @@ Errors (signalled as datamunge:native-error):
 
   (batch image-loader index) → image-batch
     index  integer"
-  (call 615 (cons self args)))
+  (call 633 (cons self args)))
 
 (defmethod datamunge:take ((self datamunge:image-loader) &rest args)
   "Reads the listed examples (split positions), in the order given.
@@ -15755,47 +15761,47 @@ Errors (signalled as datamunge:native-error):
 
   (take image-loader indices) → image-batch
     indices  (vector integer)"
-  (call 616 (cons self args)))
+  (call 634 (cons self args)))
 
 (defmethod datamunge:load-all ((self datamunge:image-loader) &rest args)
   "Reads every example of the epoch (all of size()) into one batch, in split order.
 Mind memory: all 60000 MNIST images take ~376 MB as doubles; see set_limit().
 
   (load-all image-loader) → image-batch"
-  (call 617 (cons self args)))
+  (call 635 (cons self args)))
 
 (defmethod datamunge:num-nodes ((self datamunge:mesh1-d) &rest args)
   "C++ datamunge::fem::Mesh1D::num_nodes.
 
   (num-nodes mesh1-d) → integer"
-  (call 619 (cons self args)))
+  (call 637 (cons self args)))
 
 (defmethod datamunge:num-elements ((self datamunge:mesh1-d) &rest args)
   "C++ datamunge::fem::Mesh1D::num_elements.
 
   (num-elements mesh1-d) → integer"
-  (call 620 (cons self args)))
+  (call 638 (cons self args)))
 
 (defmethod datamunge:node-at ((self datamunge:mesh1-d) &rest args)
   "C++ datamunge::fem::Mesh1D::node_at.
 
   (node-at mesh1-d index) → double-float
     index  integer"
-  (call 621 (cons self args)))
+  (call 639 (cons self args)))
 
 (defmethod datamunge:element-length ((self datamunge:mesh1-d) &rest args)
   "C++ datamunge::fem::Mesh1D::element_length.
 
   (element-length mesh1-d element-index) → double-float
     element-index  integer"
-  (call 622 (cons self args)))
+  (call 640 (cons self args)))
 
 (defmethod datamunge:evaluate ((self datamunge:scalar-field1-d) &rest args)
   "C++ datamunge::fem::ScalarField1D::evaluate.
 
   (evaluate scalar-field1-d x) → double-float
     x  double-float"
-  (call 624 (cons self args)))
+  (call 642 (cons self args)))
 
 (defmethod datamunge:evaluate ((self datamunge:scalar-field2-d) &rest args)
   "C++ datamunge::fem::ScalarField2D::evaluate.
@@ -15803,16 +15809,16 @@ Mind memory: all 60000 MNIST images take ~376 MB as doubles; see set_limit().
   (evaluate scalar-field2-d x y) → double-float
     x  double-float
     y  double-float"
-  (call 626 (cons self args)))
+  (call 644 (cons self args)))
 
 (defmethod datamunge:type ((self datamunge:boundary-condition1-d) &rest args)
   "Supported condition kind; defaults to Dirichlet.
 
   (type boundary-condition1-d) → bc-type
   (setf (type boundary-condition1-d) bc-type)"
-  (call 628 (cons self args)))
+  (call 646 (cons self args)))
 (defmethod (setf datamunge:type) (value (self datamunge:boundary-condition1-d) &rest args)
-  (call 629 (list* self value args))
+  (call 647 (list* self value args))
   value)
 
 (defmethod datamunge:value ((self datamunge:boundary-condition1-d) &rest args)
@@ -15820,9 +15826,9 @@ Mind memory: all 60000 MNIST images take ~376 MB as doubles; see set_limit().
 
   (value boundary-condition1-d) → double-float
   (setf (value boundary-condition1-d) double-float)"
-  (call 630 (cons self args)))
+  (call 648 (cons self args)))
 (defmethod (setf datamunge:value) (value (self datamunge:boundary-condition1-d) &rest args)
-  (call 631 (list* self value args))
+  (call 649 (list* self value args))
   value)
 
 (defmethod datamunge:robin-coefficient ((self datamunge:boundary-condition1-d) &rest args)
@@ -15830,9 +15836,9 @@ Mind memory: all 60000 MNIST images take ~376 MB as doubles; see set_limit().
 
   (robin-coefficient boundary-condition1-d) → double-float
   (setf (robin-coefficient boundary-condition1-d) double-float)"
-  (call 632 (cons self args)))
+  (call 650 (cons self args)))
 (defmethod (setf datamunge:robin-coefficient) (value (self datamunge:boundary-condition1-d) &rest args)
-  (call 633 (list* self value args))
+  (call 651 (list* self value args))
   value)
 
 (defmethod datamunge:size ((self datamunge:fem1-d-result) &rest args)
@@ -15840,7 +15846,7 @@ Mind memory: all 60000 MNIST images take ~376 MB as doubles; see set_limit().
 
   (size fem1-d-result) → integer
     → Actual u.size(); no allocation or shared mutation."
-  (call 635 (cons self args)))
+  (call 653 (cons self args)))
 
 (defmethod datamunge:node-at ((self datamunge:fem1-d-result) &rest args)
   "Read an owned spatial coordinate with vector bounds checking.
@@ -15851,7 +15857,7 @@ Errors (signalled as datamunge:native-error):
   (node-at fem1-d-result index) → double-float
     index  integer  Zero-based coordinate index.
     → Stored coordinate by value."
-  (call 636 (cons self args)))
+  (call 654 (cons self args)))
 
 (defmethod datamunge:value-at ((self datamunge:fem1-d-result) &rest args)
   "Read an owned nodal value with vector bounds checking.
@@ -15862,21 +15868,21 @@ Errors (signalled as datamunge:native-error):
   (value-at fem1-d-result index) → double-float
     index  integer  Zero-based value index.
     → Stored solution value by value."
-  (call 637 (cons self args)))
+  (call 655 (cons self args)))
 
 (defmethod datamunge:num-steps ((self datamunge:fem1-d-time-series) &rest args)
   "Count stored time levels, including the initial state.
 
   (num-steps fem1-d-time-series) → integer
     → Actual times.size(), rather than the number of time advances."
-  (call 639 (cons self args)))
+  (call 657 (cons self args)))
 
 (defmethod datamunge:num-nodes ((self datamunge:fem1-d-time-series) &rest args)
   "Count stored spatial coordinates.
 
   (num-nodes fem1-d-time-series) → integer
     → Actual nodes.size(); no allocation or shared mutation."
-  (call 640 (cons self args)))
+  (call 658 (cons self args)))
 
 (defmethod datamunge:node-at ((self datamunge:fem1-d-time-series) &rest args)
   "Read a spatial coordinate with vector bounds checking.
@@ -15887,7 +15893,7 @@ Errors (signalled as datamunge:native-error):
   (node-at fem1-d-time-series index) → double-float
     index  integer  Zero-based coordinate index.
     → Owned coordinate by value."
-  (call 641 (cons self args)))
+  (call 659 (cons self args)))
 
 (defmethod datamunge:time-at ((self datamunge:fem1-d-time-series) &rest args)
   "Read an actual stored time level with bounds checking.
@@ -15898,7 +15904,7 @@ Errors (signalled as datamunge:native-error):
   (time-at fem1-d-time-series step) → double-float
     step  integer  Zero-based frame index, including initial frame zero.
     → Actual stored time by value."
-  (call 642 (cons self args)))
+  (call 660 (cons self args)))
 
 (defmethod datamunge:value-at ((self datamunge:fem1-d-time-series) &rest args)
   "Read a stored nodal time-slice value with both vector bounds checked.
@@ -15910,7 +15916,7 @@ Errors (signalled as datamunge:native-error):
     step  integer  Zero-based time-frame index in u.
     node-index  integer  Zero-based spatial index within that row.
     → Stored nodal value by value."
-  (call 643 (cons self args)))
+  (call 661 (cons self args)))
 
 (defmethod datamunge:= ((self datamunge:point2-d) &rest args)
   "Compare both coordinates with ordinary double equality.
@@ -15926,16 +15932,16 @@ See also: operator!=()
   (= point2-d other) → boolean
     other  point2-d  Point to compare without mutation.
     → Both coordinate comparisons are true; signed zeros compare equal."
-  (call 650 (cons self args)))
+  (call 668 (cons self args)))
 
 (defmethod datamunge:x ((self datamunge:point2-d) &rest args)
   "Horizontal coordinate, default zero.
 
   (x point2-d) → double-float
   (setf (x point2-d) double-float)"
-  (call 651 (cons self args)))
+  (call 669 (cons self args)))
 (defmethod (setf datamunge:x) (value (self datamunge:point2-d) &rest args)
-  (call 652 (list* self value args))
+  (call 670 (list* self value args))
   value)
 
 (defmethod datamunge:y ((self datamunge:point2-d) &rest args)
@@ -15943,9 +15949,9 @@ See also: operator!=()
 
   (y point2-d) → double-float
   (setf (y point2-d) double-float)"
-  (call 653 (cons self args)))
+  (call 671 (cons self args)))
 (defmethod (setf datamunge:y) (value (self datamunge:point2-d) &rest args)
-  (call 654 (list* self value args))
+  (call 672 (list* self value args))
   value)
 
 (defmethod datamunge:a ((self datamunge:triangle) &rest args)
@@ -15953,9 +15959,9 @@ See also: operator!=()
 
   (a triangle) → integer
   (setf (a triangle) integer)"
-  (call 656 (cons self args)))
+  (call 674 (cons self args)))
 (defmethod (setf datamunge:a) (value (self datamunge:triangle) &rest args)
-  (call 657 (list* self value args))
+  (call 675 (list* self value args))
   value)
 
 (defmethod datamunge:b ((self datamunge:triangle) &rest args)
@@ -15963,9 +15969,9 @@ See also: operator!=()
 
   (b triangle) → integer
   (setf (b triangle) integer)"
-  (call 658 (cons self args)))
+  (call 676 (cons self args)))
 (defmethod (setf datamunge:b) (value (self datamunge:triangle) &rest args)
-  (call 659 (list* self value args))
+  (call 677 (list* self value args))
   value)
 
 (defmethod datamunge:c ((self datamunge:triangle) &rest args)
@@ -15973,9 +15979,9 @@ See also: operator!=()
 
   (c triangle) → integer
   (setf (c triangle) integer)"
-  (call 660 (cons self args)))
+  (call 678 (cons self args)))
 (defmethod (setf datamunge:c) (value (self datamunge:triangle) &rest args)
-  (call 661 (list* self value args))
+  (call 679 (list* self value args))
   value)
 
 (defmethod datamunge:seed-orientation-tests ((self datamunge:delaunay-work) &rest args)
@@ -15983,9 +15989,9 @@ See also: operator!=()
 
   (seed-orientation-tests delaunay-work) → integer
   (setf (seed-orientation-tests delaunay-work) integer)"
-  (call 663 (cons self args)))
+  (call 681 (cons self args)))
 (defmethod (setf datamunge:seed-orientation-tests) (value (self datamunge:delaunay-work) &rest args)
-  (call 664 (list* self value args))
+  (call 682 (list* self value args))
   value)
 
 (defmethod datamunge:insertions ((self datamunge:delaunay-work) &rest args)
@@ -15993,9 +15999,9 @@ See also: operator!=()
 
   (insertions delaunay-work) → integer
   (setf (insertions delaunay-work) integer)"
-  (call 665 (cons self args)))
+  (call 683 (cons self args)))
 (defmethod (setf datamunge:insertions) (value (self datamunge:delaunay-work) &rest args)
-  (call 666 (list* self value args))
+  (call 684 (list* self value args))
   value)
 
 (defmethod datamunge:incircle-tests ((self datamunge:delaunay-work) &rest args)
@@ -16003,9 +16009,9 @@ See also: operator!=()
 
   (incircle-tests delaunay-work) → integer
   (setf (incircle-tests delaunay-work) integer)"
-  (call 667 (cons self args)))
+  (call 685 (cons self args)))
 (defmethod (setf datamunge:incircle-tests) (value (self datamunge:delaunay-work) &rest args)
-  (call 668 (list* self value args))
+  (call 686 (list* self value args))
   value)
 
 (defmethod datamunge:hull-side-tests ((self datamunge:delaunay-work) &rest args)
@@ -16013,9 +16019,9 @@ See also: operator!=()
 
   (hull-side-tests delaunay-work) → integer
   (setf (hull-side-tests delaunay-work) integer)"
-  (call 669 (cons self args)))
+  (call 687 (cons self args)))
 (defmethod (setf datamunge:hull-side-tests) (value (self datamunge:delaunay-work) &rest args)
-  (call 670 (list* self value args))
+  (call 688 (list* self value args))
   value)
 
 (defmethod datamunge:removed-faces ((self datamunge:delaunay-work) &rest args)
@@ -16023,9 +16029,9 @@ See also: operator!=()
 
   (removed-faces delaunay-work) → integer
   (setf (removed-faces delaunay-work) integer)"
-  (call 671 (cons self args)))
+  (call 689 (cons self args)))
 (defmethod (setf datamunge:removed-faces) (value (self datamunge:delaunay-work) &rest args)
-  (call 672 (list* self value args))
+  (call 690 (list* self value args))
   value)
 
 (defmethod datamunge:boundary-edges ((self datamunge:delaunay-work) &rest args)
@@ -16033,9 +16039,9 @@ See also: operator!=()
 
   (boundary-edges delaunay-work) → integer
   (setf (boundary-edges delaunay-work) integer)"
-  (call 673 (cons self args)))
+  (call 691 (cons self args)))
 (defmethod (setf datamunge:boundary-edges) (value (self datamunge:delaunay-work) &rest args)
-  (call 674 (list* self value args))
+  (call 692 (list* self value args))
   value)
 
 (defmethod datamunge:created-faces ((self datamunge:delaunay-work) &rest args)
@@ -16043,9 +16049,9 @@ See also: operator!=()
 
   (created-faces delaunay-work) → integer
   (setf (created-faces delaunay-work) integer)"
-  (call 675 (cons self args)))
+  (call 693 (cons self args)))
 (defmethod (setf datamunge:created-faces) (value (self datamunge:delaunay-work) &rest args)
-  (call 676 (list* self value args))
+  (call 694 (list* self value args))
   value)
 
 (defmethod datamunge:input-index ((self datamunge:delaunay-insertion) &rest args)
@@ -16053,9 +16059,9 @@ See also: operator!=()
 
   (input-index delaunay-insertion) → integer
   (setf (input-index delaunay-insertion) integer)"
-  (call 678 (cons self args)))
+  (call 696 (cons self args)))
 (defmethod (setf datamunge:input-index) (value (self datamunge:delaunay-insertion) &rest args)
-  (call 679 (list* self value args))
+  (call 697 (list* self value args))
   value)
 
 (defmethod datamunge:faces-before ((self datamunge:delaunay-insertion) &rest args)
@@ -16063,9 +16069,9 @@ See also: operator!=()
 
   (faces-before delaunay-insertion) → integer
   (setf (faces-before delaunay-insertion) integer)"
-  (call 680 (cons self args)))
+  (call 698 (cons self args)))
 (defmethod (setf datamunge:faces-before) (value (self datamunge:delaunay-insertion) &rest args)
-  (call 681 (list* self value args))
+  (call 699 (list* self value args))
   value)
 
 (defmethod datamunge:faces-after ((self datamunge:delaunay-insertion) &rest args)
@@ -16073,9 +16079,9 @@ See also: operator!=()
 
   (faces-after delaunay-insertion) → integer
   (setf (faces-after delaunay-insertion) integer)"
-  (call 682 (cons self args)))
+  (call 700 (cons self args)))
 (defmethod (setf datamunge:faces-after) (value (self datamunge:delaunay-insertion) &rest args)
-  (call 683 (list* self value args))
+  (call 701 (list* self value args))
   value)
 
 (defmethod datamunge:removed ((self datamunge:delaunay-insertion) &rest args)
@@ -16083,9 +16089,9 @@ See also: operator!=()
 
   (removed delaunay-insertion) → (vector triangle)
   (setf (removed delaunay-insertion) (vector triangle))"
-  (call 684 (cons self args)))
+  (call 702 (cons self args)))
 (defmethod (setf datamunge:removed) (value (self datamunge:delaunay-insertion) &rest args)
-  (call 685 (list* self value args))
+  (call 703 (list* self value args))
   value)
 
 (defmethod datamunge:boundary ((self datamunge:delaunay-insertion) &rest args)
@@ -16093,9 +16099,9 @@ See also: operator!=()
 
   (boundary delaunay-insertion) → (vector (list integer integer))
   (setf (boundary delaunay-insertion) (vector (list integer integer)))"
-  (call 686 (cons self args)))
+  (call 704 (cons self args)))
 (defmethod (setf datamunge:boundary) (value (self datamunge:delaunay-insertion) &rest args)
-  (call 687 (list* self value args))
+  (call 705 (list* self value args))
   value)
 
 (defmethod datamunge:added ((self datamunge:delaunay-insertion) &rest args)
@@ -16103,9 +16109,9 @@ See also: operator!=()
 
   (added delaunay-insertion) → (vector triangle)
   (setf (added delaunay-insertion) (vector triangle))"
-  (call 688 (cons self args)))
+  (call 706 (cons self args)))
 (defmethod (setf datamunge:added) (value (self datamunge:delaunay-insertion) &rest args)
-  (call 689 (list* self value args))
+  (call 707 (list* self value args))
   value)
 
 (defmethod datamunge:points ((self datamunge:delaunay-trace) &rest args)
@@ -16113,9 +16119,9 @@ See also: operator!=()
 
   (points delaunay-trace) → (vector point2-d)
   (setf (points delaunay-trace) (vector point2-d))"
-  (call 691 (cons self args)))
+  (call 709 (cons self args)))
 (defmethod (setf datamunge:points) (value (self datamunge:delaunay-trace) &rest args)
-  (call 692 (list* self value args))
+  (call 710 (list* self value args))
   value)
 
 (defmethod datamunge:representatives ((self datamunge:delaunay-trace) &rest args)
@@ -16123,9 +16129,9 @@ See also: operator!=()
 
   (representatives delaunay-trace) → (vector integer)
   (setf (representatives delaunay-trace) (vector integer))"
-  (call 693 (cons self args)))
+  (call 711 (cons self args)))
 (defmethod (setf datamunge:representatives) (value (self datamunge:delaunay-trace) &rest args)
-  (call 694 (list* self value args))
+  (call 712 (list* self value args))
   value)
 
 (defmethod datamunge:representative-for-input ((self datamunge:delaunay-trace) &rest args)
@@ -16133,9 +16139,9 @@ See also: operator!=()
 
   (representative-for-input delaunay-trace) → (vector integer)
   (setf (representative-for-input delaunay-trace) (vector integer))"
-  (call 695 (cons self args)))
+  (call 713 (cons self args)))
 (defmethod (setf datamunge:representative-for-input) (value (self datamunge:delaunay-trace) &rest args)
-  (call 696 (list* self value args))
+  (call 714 (list* self value args))
   value)
 
 (defmethod datamunge:has-seed ((self datamunge:delaunay-trace) &rest args)
@@ -16143,9 +16149,9 @@ See also: operator!=()
 
   (has-seed delaunay-trace) → boolean
   (setf (has-seed delaunay-trace) boolean)"
-  (call 697 (cons self args)))
+  (call 715 (cons self args)))
 (defmethod (setf datamunge:has-seed) (value (self datamunge:delaunay-trace) &rest args)
-  (call 698 (list* self value args))
+  (call 716 (list* self value args))
   value)
 
 (defmethod datamunge:seed ((self datamunge:delaunay-trace) &rest args)
@@ -16153,9 +16159,9 @@ See also: operator!=()
 
   (seed delaunay-trace) → triangle
   (setf (seed delaunay-trace) triangle)"
-  (call 699 (cons self args)))
+  (call 717 (cons self args)))
 (defmethod (setf datamunge:seed) (value (self datamunge:delaunay-trace) &rest args)
-  (call 700 (list* self value args))
+  (call 718 (list* self value args))
   value)
 
 (defmethod datamunge:triangles ((self datamunge:delaunay-trace) &rest args)
@@ -16163,9 +16169,9 @@ See also: operator!=()
 
   (triangles delaunay-trace) → (vector triangle)
   (setf (triangles delaunay-trace) (vector triangle))"
-  (call 701 (cons self args)))
+  (call 719 (cons self args)))
 (defmethod (setf datamunge:triangles) (value (self datamunge:delaunay-trace) &rest args)
-  (call 702 (list* self value args))
+  (call 720 (list* self value args))
   value)
 
 (defmethod datamunge:steps ((self datamunge:delaunay-trace) &rest args)
@@ -16173,9 +16179,9 @@ See also: operator!=()
 
   (steps delaunay-trace) → (vector delaunay-insertion)
   (setf (steps delaunay-trace) (vector delaunay-insertion))"
-  (call 703 (cons self args)))
+  (call 721 (cons self args)))
 (defmethod (setf datamunge:steps) (value (self datamunge:delaunay-trace) &rest args)
-  (call 704 (list* self value args))
+  (call 722 (list* self value args))
   value)
 
 (defmethod datamunge:work ((self datamunge:delaunay-trace) &rest args)
@@ -16183,9 +16189,9 @@ See also: operator!=()
 
   (work delaunay-trace) → delaunay-work
   (setf (work delaunay-trace) delaunay-work)"
-  (call 705 (cons self args)))
+  (call 723 (cons self args)))
 (defmethod (setf datamunge:work) (value (self datamunge:delaunay-trace) &rest args)
-  (call 706 (list* self value args))
+  (call 724 (list* self value args))
   value)
 
 (defmethod datamunge:distinct-points ((self datamunge:delaunay-analysis) &rest args)
@@ -16193,9 +16199,9 @@ See also: operator!=()
 
   (distinct-points delaunay-analysis) → integer
   (setf (distinct-points delaunay-analysis) integer)"
-  (call 708 (cons self args)))
+  (call 726 (cons self args)))
 (defmethod (setf datamunge:distinct-points) (value (self datamunge:delaunay-analysis) &rest args)
-  (call 709 (list* self value args))
+  (call 727 (list* self value args))
   value)
 
 (defmethod datamunge:used-points ((self datamunge:delaunay-analysis) &rest args)
@@ -16203,9 +16209,9 @@ See also: operator!=()
 
   (used-points delaunay-analysis) → integer
   (setf (used-points delaunay-analysis) integer)"
-  (call 710 (cons self args)))
+  (call 728 (cons self args)))
 (defmethod (setf datamunge:used-points) (value (self datamunge:delaunay-analysis) &rest args)
-  (call 711 (list* self value args))
+  (call 729 (list* self value args))
   value)
 
 (defmethod datamunge:triangles ((self datamunge:delaunay-analysis) &rest args)
@@ -16213,9 +16219,9 @@ See also: operator!=()
 
   (triangles delaunay-analysis) → integer
   (setf (triangles delaunay-analysis) integer)"
-  (call 712 (cons self args)))
+  (call 730 (cons self args)))
 (defmethod (setf datamunge:triangles) (value (self datamunge:delaunay-analysis) &rest args)
-  (call 713 (list* self value args))
+  (call 731 (list* self value args))
   value)
 
 (defmethod datamunge:edges ((self datamunge:delaunay-analysis) &rest args)
@@ -16223,9 +16229,9 @@ See also: operator!=()
 
   (edges delaunay-analysis) → integer
   (setf (edges delaunay-analysis) integer)"
-  (call 714 (cons self args)))
+  (call 732 (cons self args)))
 (defmethod (setf datamunge:edges) (value (self datamunge:delaunay-analysis) &rest args)
-  (call 715 (list* self value args))
+  (call 733 (list* self value args))
   value)
 
 (defmethod datamunge:boundary-edges ((self datamunge:delaunay-analysis) &rest args)
@@ -16233,9 +16239,9 @@ See also: operator!=()
 
   (boundary-edges delaunay-analysis) → integer
   (setf (boundary-edges delaunay-analysis) integer)"
-  (call 716 (cons self args)))
+  (call 734 (cons self args)))
 (defmethod (setf datamunge:boundary-edges) (value (self datamunge:delaunay-analysis) &rest args)
-  (call 717 (list* self value args))
+  (call 735 (list* self value args))
   value)
 
 (defmethod datamunge:circle-tests ((self datamunge:delaunay-analysis) &rest args)
@@ -16243,9 +16249,9 @@ See also: operator!=()
 
   (circle-tests delaunay-analysis) → integer
   (setf (circle-tests delaunay-analysis) integer)"
-  (call 718 (cons self args)))
+  (call 736 (cons self args)))
 (defmethod (setf datamunge:circle-tests) (value (self datamunge:delaunay-analysis) &rest args)
-  (call 719 (list* self value args))
+  (call 737 (list* self value args))
   value)
 
 (defmethod datamunge:interior-violations ((self datamunge:delaunay-analysis) &rest args)
@@ -16253,9 +16259,9 @@ See also: operator!=()
 
   (interior-violations delaunay-analysis) → integer
   (setf (interior-violations delaunay-analysis) integer)"
-  (call 720 (cons self args)))
+  (call 738 (cons self args)))
 (defmethod (setf datamunge:interior-violations) (value (self datamunge:delaunay-analysis) &rest args)
-  (call 721 (list* self value args))
+  (call 739 (list* self value args))
   value)
 
 (defmethod datamunge:minimum-angle-degrees ((self datamunge:delaunay-analysis) &rest args)
@@ -16263,65 +16269,65 @@ See also: operator!=()
 
   (minimum-angle-degrees delaunay-analysis) → double-float
   (setf (minimum-angle-degrees delaunay-analysis) double-float)"
-  (call 722 (cons self args)))
+  (call 740 (cons self args)))
 (defmethod (setf datamunge:minimum-angle-degrees) (value (self datamunge:delaunay-analysis) &rest args)
-  (call 723 (list* self value args))
+  (call 741 (list* self value args))
   value)
 
 (defmethod datamunge:num-nodes ((self datamunge:mesh2-d) &rest args)
   "C++ datamunge::fem::Mesh2D::num_nodes.
 
   (num-nodes mesh2-d) → integer"
-  (call 725 (cons self args)))
+  (call 743 (cons self args)))
 
 (defmethod datamunge:num-triangles ((self datamunge:mesh2-d) &rest args)
   "C++ datamunge::fem::Mesh2D::num_triangles.
 
   (num-triangles mesh2-d) → integer"
-  (call 726 (cons self args)))
+  (call 744 (cons self args)))
 
 (defmethod datamunge:node-at ((self datamunge:mesh2-d) &rest args)
   "C++ datamunge::fem::Mesh2D::node_at.
 
   (node-at mesh2-d index) → point2-d
     index  integer"
-  (call 727 (cons self args)))
+  (call 745 (cons self args)))
 
 (defmethod datamunge:triangle-at ((self datamunge:mesh2-d) &rest args)
   "C++ datamunge::fem::Mesh2D::triangle_at.
 
   (triangle-at mesh2-d index) → triangle
     index  integer"
-  (call 728 (cons self args)))
+  (call 746 (cons self args)))
 
 (defmethod datamunge:size ((self datamunge:fem2-d-result) &rest args)
   "C++ datamunge::fem::FEM2DResult::size.
 
   (size fem2-d-result) → integer"
-  (call 730 (cons self args)))
+  (call 748 (cons self args)))
 
 (defmethod datamunge:node-at ((self datamunge:fem2-d-result) &rest args)
   "C++ datamunge::fem::FEM2DResult::node_at.
 
   (node-at fem2-d-result index) → point2-d
     index  integer"
-  (call 731 (cons self args)))
+  (call 749 (cons self args)))
 
 (defmethod datamunge:value-at ((self datamunge:fem2-d-result) &rest args)
   "C++ datamunge::fem::FEM2DResult::value_at.
 
   (value-at fem2-d-result index) → double-float
     index  integer"
-  (call 732 (cons self args)))
+  (call 750 (cons self args)))
 
 (defmethod datamunge:position ((self datamunge:alpha-beta-state) &rest args)
   "Field position of alpha-beta-state.
 
   (position alpha-beta-state) → double-float
   (setf (position alpha-beta-state) double-float)"
-  (call 737 (cons self args)))
+  (call 755 (cons self args)))
 (defmethod (setf datamunge:position) (value (self datamunge:alpha-beta-state) &rest args)
-  (call 738 (list* self value args))
+  (call 756 (list* self value args))
   value)
 
 (defmethod datamunge:velocity ((self datamunge:alpha-beta-state) &rest args)
@@ -16329,9 +16335,9 @@ See also: operator!=()
 
   (velocity alpha-beta-state) → double-float
   (setf (velocity alpha-beta-state) double-float)"
-  (call 739 (cons self args)))
+  (call 757 (cons self args)))
 (defmethod (setf datamunge:velocity) (value (self datamunge:alpha-beta-state) &rest args)
-  (call 740 (list* self value args))
+  (call 758 (list* self value args))
   value)
 
 (defmethod datamunge:update ((self datamunge:alpha-beta-filter) &rest args)
@@ -16340,56 +16346,56 @@ v*dt; residual = z - x_pred; x = x_pred + alpha*residual; v += (beta/dt)*residua
 
   (update alpha-beta-filter z)
     z  double-float"
-  (call 742 (cons self args)))
+  (call 760 (cons self args)))
 
 (defmethod datamunge:position ((self datamunge:alpha-beta-filter) &rest args)
   "C++ datamunge::filter::AlphaBetaFilter::position.
 
   (position alpha-beta-filter) → double-float"
-  (call 743 (cons self args)))
+  (call 761 (cons self args)))
 
 (defmethod datamunge:velocity ((self datamunge:alpha-beta-filter) &rest args)
   "C++ datamunge::filter::AlphaBetaFilter::velocity.
 
   (velocity alpha-beta-filter) → double-float"
-  (call 744 (cons self args)))
+  (call 762 (cons self args)))
 
 (defmethod datamunge:alpha ((self datamunge:alpha-beta-filter) &rest args)
   "The position-correction gain alpha.
 
   (alpha alpha-beta-filter) → double-float
     → The value passed to the constructor."
-  (call 745 (cons self args)))
+  (call 763 (cons self args)))
 
 (defmethod datamunge:beta ((self datamunge:alpha-beta-filter) &rest args)
   "The velocity-correction gain beta.
 
   (beta alpha-beta-filter) → double-float
     → The value passed to the constructor."
-  (call 746 (cons self args)))
+  (call 764 (cons self args)))
 
 (defmethod datamunge:dt ((self datamunge:alpha-beta-filter) &rest args)
   "The time step between measurements.
 
   (dt alpha-beta-filter) → double-float
     → The value passed to the constructor."
-  (call 747 (cons self args)))
+  (call 765 (cons self args)))
 
 (defmethod datamunge:filter ((self datamunge:alpha-beta-filter) &rest args)
   "C++ datamunge::filter::AlphaBetaFilter::filter.
 
   (filter alpha-beta-filter measurements) → (vector alpha-beta-state)
     measurements  (vector double-float)"
-  (call 748 (cons self args)))
+  (call 766 (cons self args)))
 
 (defmethod datamunge:position ((self datamunge:alpha-beta-gamma-state) &rest args)
   "Field position of alpha-beta-gamma-state.
 
   (position alpha-beta-gamma-state) → double-float
   (setf (position alpha-beta-gamma-state) double-float)"
-  (call 750 (cons self args)))
+  (call 768 (cons self args)))
 (defmethod (setf datamunge:position) (value (self datamunge:alpha-beta-gamma-state) &rest args)
-  (call 751 (list* self value args))
+  (call 769 (list* self value args))
   value)
 
 (defmethod datamunge:velocity ((self datamunge:alpha-beta-gamma-state) &rest args)
@@ -16397,9 +16403,9 @@ v*dt; residual = z - x_pred; x = x_pred + alpha*residual; v += (beta/dt)*residua
 
   (velocity alpha-beta-gamma-state) → double-float
   (setf (velocity alpha-beta-gamma-state) double-float)"
-  (call 752 (cons self args)))
+  (call 770 (cons self args)))
 (defmethod (setf datamunge:velocity) (value (self datamunge:alpha-beta-gamma-state) &rest args)
-  (call 753 (list* self value args))
+  (call 771 (list* self value args))
   value)
 
 (defmethod datamunge:acceleration ((self datamunge:alpha-beta-gamma-state) &rest args)
@@ -16407,9 +16413,9 @@ v*dt; residual = z - x_pred; x = x_pred + alpha*residual; v += (beta/dt)*residua
 
   (acceleration alpha-beta-gamma-state) → double-float
   (setf (acceleration alpha-beta-gamma-state) double-float)"
-  (call 754 (cons self args)))
+  (call 772 (cons self args)))
 (defmethod (setf datamunge:acceleration) (value (self datamunge:alpha-beta-gamma-state) &rest args)
-  (call 755 (list* self value args))
+  (call 773 (list* self value args))
   value)
 
 (defmethod datamunge:update ((self datamunge:alpha-beta-gamma-filter) &rest args)
@@ -16417,69 +16423,69 @@ v*dt; residual = z - x_pred; x = x_pred + alpha*residual; v += (beta/dt)*residua
 
   (update alpha-beta-gamma-filter z)
     z  double-float"
-  (call 757 (cons self args)))
+  (call 775 (cons self args)))
 
 (defmethod datamunge:position ((self datamunge:alpha-beta-gamma-filter) &rest args)
   "C++ datamunge::filter::AlphaBetaGammaFilter::position.
 
   (position alpha-beta-gamma-filter) → double-float"
-  (call 758 (cons self args)))
+  (call 776 (cons self args)))
 
 (defmethod datamunge:velocity ((self datamunge:alpha-beta-gamma-filter) &rest args)
   "C++ datamunge::filter::AlphaBetaGammaFilter::velocity.
 
   (velocity alpha-beta-gamma-filter) → double-float"
-  (call 759 (cons self args)))
+  (call 777 (cons self args)))
 
 (defmethod datamunge:acceleration ((self datamunge:alpha-beta-gamma-filter) &rest args)
   "C++ datamunge::filter::AlphaBetaGammaFilter::acceleration.
 
   (acceleration alpha-beta-gamma-filter) → double-float"
-  (call 760 (cons self args)))
+  (call 778 (cons self args)))
 
 (defmethod datamunge:alpha ((self datamunge:alpha-beta-gamma-filter) &rest args)
   "The position-correction gain alpha.
 
   (alpha alpha-beta-gamma-filter) → double-float
     → The value passed to the constructor."
-  (call 761 (cons self args)))
+  (call 779 (cons self args)))
 
 (defmethod datamunge:beta ((self datamunge:alpha-beta-gamma-filter) &rest args)
   "The velocity-correction gain beta.
 
   (beta alpha-beta-gamma-filter) → double-float
     → The value passed to the constructor."
-  (call 762 (cons self args)))
+  (call 780 (cons self args)))
 
 (defmethod datamunge:gamma ((self datamunge:alpha-beta-gamma-filter) &rest args)
   "The acceleration-correction gain gamma.
 
   (gamma alpha-beta-gamma-filter) → double-float
     → The value passed to the constructor."
-  (call 763 (cons self args)))
+  (call 781 (cons self args)))
 
 (defmethod datamunge:dt ((self datamunge:alpha-beta-gamma-filter) &rest args)
   "The time step between measurements.
 
   (dt alpha-beta-gamma-filter) → double-float
     → The value passed to the constructor."
-  (call 764 (cons self args)))
+  (call 782 (cons self args)))
 
 (defmethod datamunge:filter ((self datamunge:alpha-beta-gamma-filter) &rest args)
   "C++ datamunge::filter::AlphaBetaGammaFilter::filter.
 
   (filter alpha-beta-gamma-filter measurements) → (vector alpha-beta-gamma-state)
     measurements  (vector double-float)"
-  (call 765 (cons self args)))
+  (call 783 (cons self args)))
 
 (defmethod datamunge:x ((self datamunge:kalman-state) &rest args)
   "Field x of kalman-state.
 
   (x kalman-state) → (vector double-float)
   (setf (x kalman-state) (vector double-float))"
-  (call 767 (cons self args)))
+  (call 785 (cons self args)))
 (defmethod (setf datamunge:x) (value (self datamunge:kalman-state) &rest args)
-  (call 768 (list* self value args))
+  (call 786 (list* self value args))
   value)
 
 (defmethod datamunge:p ((self datamunge:kalman-state) &rest args)
@@ -16487,9 +16493,9 @@ v*dt; residual = z - x_pred; x = x_pred + alpha*residual; v += (beta/dt)*residua
 
   (p kalman-state) → (vector (vector double-float))
   (setf (p kalman-state) (vector (vector double-float)))"
-  (call 769 (cons self args)))
+  (call 787 (cons self args)))
 (defmethod (setf datamunge:p) (value (self datamunge:kalman-state) &rest args)
-  (call 770 (list* self value args))
+  (call 788 (list* self value args))
   value)
 
 (defmethod datamunge:filtered ((self datamunge:smooth-result) &rest args)
@@ -16497,9 +16503,9 @@ v*dt; residual = z - x_pred; x = x_pred + alpha*residual; v += (beta/dt)*residua
 
   (filtered smooth-result) → (vector kalman-state)
   (setf (filtered smooth-result) (vector kalman-state))"
-  (call 772 (cons self args)))
+  (call 790 (cons self args)))
 (defmethod (setf datamunge:filtered) (value (self datamunge:smooth-result) &rest args)
-  (call 773 (list* self value args))
+  (call 791 (list* self value args))
   value)
 
 (defmethod datamunge:smoothed ((self datamunge:smooth-result) &rest args)
@@ -16507,16 +16513,16 @@ v*dt; residual = z - x_pred; x = x_pred + alpha*residual; v += (beta/dt)*residua
 
   (smoothed smooth-result) → (vector kalman-state)
   (setf (smoothed smooth-result) (vector kalman-state))"
-  (call 774 (cons self args)))
+  (call 792 (cons self args)))
 (defmethod (setf datamunge:smoothed) (value (self datamunge:smooth-result) &rest args)
-  (call 775 (list* self value args))
+  (call 793 (list* self value args))
   value)
 
 (defmethod datamunge:predict ((self datamunge:kalman-filter) &rest args)
   "The time-update (prediction) step: x = F x, P = F P F^T + Q.
 
   (predict kalman-filter)"
-  (call 777 (cons self args)))
+  (call 795 (cons self args)))
 
 (defmethod datamunge:update ((self datamunge:kalman-filter) &rest args)
   "The measurement-update (correction) step given observation `z`: the standard
@@ -16527,19 +16533,19 @@ but more complex alternative.
 
   (update kalman-filter z)
     z  (vector double-float)"
-  (call 778 (cons self args)))
+  (call 796 (cons self args)))
 
 (defmethod datamunge:state ((self datamunge:kalman-filter) &rest args)
   "C++ datamunge::filter::KalmanFilter::state.
 
   (state kalman-filter) → (vector double-float)"
-  (call 779 (cons self args)))
+  (call 797 (cons self args)))
 
 (defmethod datamunge:covariance ((self datamunge:kalman-filter) &rest args)
   "C++ datamunge::filter::KalmanFilter::covariance.
 
   (covariance kalman-filter) → (vector (vector double-float))"
-  (call 780 (cons self args)))
+  (call 798 (cons self args)))
 
 (defmethod datamunge:filter ((self datamunge:kalman-filter) &rest args)
   "Runs predict() then update(z) for every z in `measurements`, in order, mutating
@@ -16548,7 +16554,7 @@ every timestep.
 
   (filter kalman-filter measurements) → (vector kalman-state)
     measurements  (vector (vector double-float))"
-  (call 781 (cons self args)))
+  (call 799 (cons self args)))
 
 (defmethod datamunge:smooth ((self datamunge:kalman-filter) &rest args)
   "filter() followed by an RTS (Rauch-Tung-Striebel) backward smoothing pass, which
@@ -16559,21 +16565,21 @@ running (x, P) at its post-filter state, same as filter() would.
 
   (smooth kalman-filter measurements) → smooth-result
     measurements  (vector (vector double-float))"
-  (call 782 (cons self args)))
+  (call 800 (cons self args)))
 
 (defmethod datamunge:evaluate ((self datamunge:vector-function) &rest args)
   "Evaluates the function at `x`.
 
   (evaluate vector-function x) → (vector double-float)
     x  (vector double-float)"
-  (call 784 (cons self args)))
+  (call 802 (cons self args)))
 
 (defmethod datamunge:predict ((self datamunge:ensemble-kalman-filter) &rest args)
   "Propagates every ensemble member through the nonlinear f, each perturbed by an
 independently-sampled draw from N(0, Q).
 
   (predict ensemble-kalman-filter)"
-  (call 786 (cons self args)))
+  (call 804 (cons self args)))
 
 (defmethod datamunge:update ((self datamunge:ensemble-kalman-filter) &rest args)
   "The stochastic EnKF update (Evensen/Burgers): estimates the state-observation
@@ -16586,90 +16592,90 @@ update instead of collapsing it.
 
   (update ensemble-kalman-filter z)
     z  (vector double-float)"
-  (call 787 (cons self args)))
+  (call 805 (cons self args)))
 
 (defmethod datamunge:state ((self datamunge:ensemble-kalman-filter) &rest args)
   "C++ datamunge::filter::EnsembleKalmanFilter::state.
 
   (state ensemble-kalman-filter) → (vector double-float)"
-  (call 788 (cons self args)))
+  (call 806 (cons self args)))
 
 (defmethod datamunge:covariance ((self datamunge:ensemble-kalman-filter) &rest args)
   "C++ datamunge::filter::EnsembleKalmanFilter::covariance.
 
   (covariance ensemble-kalman-filter) → (vector (vector double-float))"
-  (call 789 (cons self args)))
+  (call 807 (cons self args)))
 
 (defmethod datamunge:filter ((self datamunge:ensemble-kalman-filter) &rest args)
   "C++ datamunge::filter::EnsembleKalmanFilter::filter.
 
   (filter ensemble-kalman-filter measurements) → (vector kalman-state)
     measurements  (vector (vector double-float))"
-  (call 790 (cons self args)))
+  (call 808 (cons self args)))
 
 (defmethod datamunge:predict ((self datamunge:extended-kalman-filter) &rest args)
   "C++ datamunge::filter::ExtendedKalmanFilter::predict.
 
   (predict extended-kalman-filter)"
-  (call 792 (cons self args)))
+  (call 810 (cons self args)))
 
 (defmethod datamunge:update ((self datamunge:extended-kalman-filter) &rest args)
   "C++ datamunge::filter::ExtendedKalmanFilter::update.
 
   (update extended-kalman-filter z)
     z  (vector double-float)"
-  (call 793 (cons self args)))
+  (call 811 (cons self args)))
 
 (defmethod datamunge:state ((self datamunge:extended-kalman-filter) &rest args)
   "C++ datamunge::filter::ExtendedKalmanFilter::state.
 
   (state extended-kalman-filter) → (vector double-float)"
-  (call 794 (cons self args)))
+  (call 812 (cons self args)))
 
 (defmethod datamunge:covariance ((self datamunge:extended-kalman-filter) &rest args)
   "C++ datamunge::filter::ExtendedKalmanFilter::covariance.
 
   (covariance extended-kalman-filter) → (vector (vector double-float))"
-  (call 795 (cons self args)))
+  (call 813 (cons self args)))
 
 (defmethod datamunge:filter ((self datamunge:extended-kalman-filter) &rest args)
   "C++ datamunge::filter::ExtendedKalmanFilter::filter.
 
   (filter extended-kalman-filter measurements) → (vector kalman-state)
     measurements  (vector (vector double-float))"
-  (call 796 (cons self args)))
+  (call 814 (cons self args)))
 
 (defmethod datamunge:predict ((self datamunge:information-filter) &rest args)
   "C++ datamunge::filter::InformationFilter::predict.
 
   (predict information-filter)"
-  (call 798 (cons self args)))
+  (call 816 (cons self args)))
 
 (defmethod datamunge:update ((self datamunge:information-filter) &rest args)
   "The additive information-form update: Y += H^T R^-1 H, y += H^T R^-1 z.
 
   (update information-filter z)
     z  (vector double-float)"
-  (call 799 (cons self args)))
+  (call 817 (cons self args)))
 
 (defmethod datamunge:state ((self datamunge:information-filter) &rest args)
   "C++ datamunge::filter::InformationFilter::state.
 
   (state information-filter) → (vector double-float)"
-  (call 800 (cons self args)))
+  (call 818 (cons self args)))
 
 (defmethod datamunge:covariance ((self datamunge:information-filter) &rest args)
   "C++ datamunge::filter::InformationFilter::covariance.
 
   (covariance information-filter) → (vector (vector double-float))"
-  (call 801 (cons self args)))
+  (call 819 (cons self args)))
 
 (defmethod datamunge:filter ((self datamunge:information-filter) &rest args)
   "C++ datamunge::filter::InformationFilter::filter.
 
   (filter information-filter measurements) → (vector kalman-state)
     measurements  (vector (vector double-float))"
-  (call 802 (cons self args)))
+  (call 820 (cons self args)))
 
 (defmethod datamunge:predict ((self datamunge:particle-filter) &rest args)
   "Propagates every particle through the nonlinear f, each perturbed by an
@@ -16678,7 +16684,7 @@ density cancels out of the importance weight for this proposal, the standard
 bootstrap-filter simplification).
 
   (predict particle-filter)"
-  (call 804 (cons self args)))
+  (call 822 (cons self args)))
 
 (defmethod datamunge:update ((self datamunge:particle-filter) &rest args)
   "Reweights every particle by its Gaussian (N(h(x), R)) observation likelihood
@@ -16690,67 +16696,67 @@ noise from resampling more often than strictly necessary).
 
   (update particle-filter z)
     z  (vector double-float)"
-  (call 805 (cons self args)))
+  (call 823 (cons self args)))
 
 (defmethod datamunge:state ((self datamunge:particle-filter) &rest args)
   "C++ datamunge::filter::ParticleFilter::state.
 
   (state particle-filter) → (vector double-float)"
-  (call 806 (cons self args)))
+  (call 824 (cons self args)))
 
 (defmethod datamunge:covariance ((self datamunge:particle-filter) &rest args)
   "C++ datamunge::filter::ParticleFilter::covariance.
 
   (covariance particle-filter) → (vector (vector double-float))"
-  (call 807 (cons self args)))
+  (call 825 (cons self args)))
 
 (defmethod datamunge:filter ((self datamunge:particle-filter) &rest args)
   "C++ datamunge::filter::ParticleFilter::filter.
 
   (filter particle-filter measurements) → (vector kalman-state)
     measurements  (vector (vector double-float))"
-  (call 808 (cons self args)))
+  (call 826 (cons self args)))
 
 (defmethod datamunge:predict ((self datamunge:unscented-kalman-filter) &rest args)
   "C++ datamunge::filter::UnscentedKalmanFilter::predict.
 
   (predict unscented-kalman-filter)"
-  (call 810 (cons self args)))
+  (call 828 (cons self args)))
 
 (defmethod datamunge:update ((self datamunge:unscented-kalman-filter) &rest args)
   "C++ datamunge::filter::UnscentedKalmanFilter::update.
 
   (update unscented-kalman-filter z)
     z  (vector double-float)"
-  (call 811 (cons self args)))
+  (call 829 (cons self args)))
 
 (defmethod datamunge:state ((self datamunge:unscented-kalman-filter) &rest args)
   "C++ datamunge::filter::UnscentedKalmanFilter::state.
 
   (state unscented-kalman-filter) → (vector double-float)"
-  (call 812 (cons self args)))
+  (call 830 (cons self args)))
 
 (defmethod datamunge:covariance ((self datamunge:unscented-kalman-filter) &rest args)
   "C++ datamunge::filter::UnscentedKalmanFilter::covariance.
 
   (covariance unscented-kalman-filter) → (vector (vector double-float))"
-  (call 813 (cons self args)))
+  (call 831 (cons self args)))
 
 (defmethod datamunge:filter ((self datamunge:unscented-kalman-filter) &rest args)
   "C++ datamunge::filter::UnscentedKalmanFilter::filter.
 
   (filter unscented-kalman-filter measurements) → (vector kalman-state)
     measurements  (vector (vector double-float))"
-  (call 814 (cons self args)))
+  (call 832 (cons self args)))
 
 (defmethod datamunge:min ((self datamunge:bounding-box) &rest args)
   "Field min of bounding-box.
 
   (min bounding-box) → point2-d
   (setf (min bounding-box) point2-d)"
-  (call 816 (cons self args)))
+  (call 834 (cons self args)))
 (defmethod (setf datamunge:min) (value (self datamunge:bounding-box) &rest args)
-  (call 817 (list* self value args))
+  (call 835 (list* self value args))
   value)
 
 (defmethod datamunge:max ((self datamunge:bounding-box) &rest args)
@@ -16758,9 +16764,9 @@ noise from resampling more often than strictly necessary).
 
   (max bounding-box) → point2-d
   (setf (max bounding-box) point2-d)"
-  (call 818 (cons self args)))
+  (call 836 (cons self args)))
 (defmethod (setf datamunge:max) (value (self datamunge:bounding-box) &rest args)
-  (call 819 (list* self value args))
+  (call 837 (list* self value args))
   value)
 
 (defmethod datamunge:a ((self datamunge:closest-pair-result) &rest args)
@@ -16768,9 +16774,9 @@ noise from resampling more often than strictly necessary).
 
   (a closest-pair-result) → point2-d
   (setf (a closest-pair-result) point2-d)"
-  (call 821 (cons self args)))
+  (call 839 (cons self args)))
 (defmethod (setf datamunge:a) (value (self datamunge:closest-pair-result) &rest args)
-  (call 822 (list* self value args))
+  (call 840 (list* self value args))
   value)
 
 (defmethod datamunge:b ((self datamunge:closest-pair-result) &rest args)
@@ -16778,9 +16784,9 @@ noise from resampling more often than strictly necessary).
 
   (b closest-pair-result) → point2-d
   (setf (b closest-pair-result) point2-d)"
-  (call 823 (cons self args)))
+  (call 841 (cons self args)))
 (defmethod (setf datamunge:b) (value (self datamunge:closest-pair-result) &rest args)
-  (call 824 (list* self value args))
+  (call 842 (list* self value args))
   value)
 
 (defmethod datamunge:distance ((self datamunge:closest-pair-result) &rest args)
@@ -16788,9 +16794,9 @@ noise from resampling more often than strictly necessary).
 
   (distance closest-pair-result) → double-float
   (setf (distance closest-pair-result) double-float)"
-  (call 825 (cons self args)))
+  (call 843 (cons self args)))
 (defmethod (setf datamunge:distance) (value (self datamunge:closest-pair-result) &rest args)
-  (call 826 (list* self value args))
+  (call 844 (list* self value args))
   value)
 
 (defmethod datamunge:max-points ((self datamunge:convex-hull-options) &rest args)
@@ -16798,9 +16804,9 @@ noise from resampling more often than strictly necessary).
 
   (max-points convex-hull-options) → integer
   (setf (max-points convex-hull-options) integer)"
-  (call 828 (cons self args)))
+  (call 846 (cons self args)))
 (defmethod (setf datamunge:max-points) (value (self datamunge:convex-hull-options) &rest args)
-  (call 829 (list* self value args))
+  (call 847 (list* self value args))
   value)
 
 (defmethod datamunge:max-events ((self datamunge:convex-hull-options) &rest args)
@@ -16808,9 +16814,9 @@ noise from resampling more often than strictly necessary).
 
   (max-events convex-hull-options) → integer
   (setf (max-events convex-hull-options) integer)"
-  (call 830 (cons self args)))
+  (call 848 (cons self args)))
 (defmethod (setf datamunge:max-events) (value (self datamunge:convex-hull-options) &rest args)
-  (call 831 (list* self value args))
+  (call 849 (list* self value args))
   value)
 
 (defmethod datamunge:point ((self datamunge:hull-indexed-point) &rest args)
@@ -16818,9 +16824,9 @@ noise from resampling more often than strictly necessary).
 
   (point hull-indexed-point) → point2-d
   (setf (point hull-indexed-point) point2-d)"
-  (call 833 (cons self args)))
+  (call 851 (cons self args)))
 (defmethod (setf datamunge:point) (value (self datamunge:hull-indexed-point) &rest args)
-  (call 834 (list* self value args))
+  (call 852 (list* self value args))
   value)
 
 (defmethod datamunge:input-index ((self datamunge:hull-indexed-point) &rest args)
@@ -16828,9 +16834,9 @@ noise from resampling more often than strictly necessary).
 
   (input-index hull-indexed-point) → integer
   (setf (input-index hull-indexed-point) integer)"
-  (call 835 (cons self args)))
+  (call 853 (cons self args)))
 (defmethod (setf datamunge:input-index) (value (self datamunge:hull-indexed-point) &rest args)
-  (call 836 (list* self value args))
+  (call 854 (list* self value args))
   value)
 
 (defmethod datamunge:input-points ((self datamunge:convex-hull-work) &rest args)
@@ -16838,9 +16844,9 @@ noise from resampling more often than strictly necessary).
 
   (input-points convex-hull-work) → integer
   (setf (input-points convex-hull-work) integer)"
-  (call 838 (cons self args)))
+  (call 856 (cons self args)))
 (defmethod (setf datamunge:input-points) (value (self datamunge:convex-hull-work) &rest args)
-  (call 839 (list* self value args))
+  (call 857 (list* self value args))
   value)
 
 (defmethod datamunge:distinct-points ((self datamunge:convex-hull-work) &rest args)
@@ -16848,9 +16854,9 @@ noise from resampling more often than strictly necessary).
 
   (distinct-points convex-hull-work) → integer
   (setf (distinct-points convex-hull-work) integer)"
-  (call 840 (cons self args)))
+  (call 858 (cons self args)))
 (defmethod (setf datamunge:distinct-points) (value (self datamunge:convex-hull-work) &rest args)
-  (call 841 (list* self value args))
+  (call 859 (list* self value args))
   value)
 
 (defmethod datamunge:sort-comparisons ((self datamunge:convex-hull-work) &rest args)
@@ -16858,9 +16864,9 @@ noise from resampling more often than strictly necessary).
 
   (sort-comparisons convex-hull-work) → integer
   (setf (sort-comparisons convex-hull-work) integer)"
-  (call 842 (cons self args)))
+  (call 860 (cons self args)))
 (defmethod (setf datamunge:sort-comparisons) (value (self datamunge:convex-hull-work) &rest args)
-  (call 843 (list* self value args))
+  (call 861 (list* self value args))
   value)
 
 (defmethod datamunge:duplicate-comparisons ((self datamunge:convex-hull-work) &rest args)
@@ -16868,9 +16874,9 @@ noise from resampling more often than strictly necessary).
 
   (duplicate-comparisons convex-hull-work) → integer
   (setf (duplicate-comparisons convex-hull-work) integer)"
-  (call 844 (cons self args)))
+  (call 862 (cons self args)))
 (defmethod (setf datamunge:duplicate-comparisons) (value (self datamunge:convex-hull-work) &rest args)
-  (call 845 (list* self value args))
+  (call 863 (list* self value args))
   value)
 
 (defmethod datamunge:orientation-tests ((self datamunge:convex-hull-work) &rest args)
@@ -16878,9 +16884,9 @@ noise from resampling more often than strictly necessary).
 
   (orientation-tests convex-hull-work) → integer
   (setf (orientation-tests convex-hull-work) integer)"
-  (call 846 (cons self args)))
+  (call 864 (cons self args)))
 (defmethod (setf datamunge:orientation-tests) (value (self datamunge:convex-hull-work) &rest args)
-  (call 847 (list* self value args))
+  (call 865 (list* self value args))
   value)
 
 (defmethod datamunge:pushes ((self datamunge:convex-hull-work) &rest args)
@@ -16888,9 +16894,9 @@ noise from resampling more often than strictly necessary).
 
   (pushes convex-hull-work) → integer
   (setf (pushes convex-hull-work) integer)"
-  (call 848 (cons self args)))
+  (call 866 (cons self args)))
 (defmethod (setf datamunge:pushes) (value (self datamunge:convex-hull-work) &rest args)
-  (call 849 (list* self value args))
+  (call 867 (list* self value args))
   value)
 
 (defmethod datamunge:pops ((self datamunge:convex-hull-work) &rest args)
@@ -16898,9 +16904,9 @@ noise from resampling more often than strictly necessary).
 
   (pops convex-hull-work) → integer
   (setf (pops convex-hull-work) integer)"
-  (call 850 (cons self args)))
+  (call 868 (cons self args)))
 (defmethod (setf datamunge:pops) (value (self datamunge:convex-hull-work) &rest args)
-  (call 851 (list* self value args))
+  (call 869 (list* self value args))
   value)
 
 (defmethod datamunge:max-stack ((self datamunge:convex-hull-work) &rest args)
@@ -16908,9 +16914,9 @@ noise from resampling more often than strictly necessary).
 
   (max-stack convex-hull-work) → integer
   (setf (max-stack convex-hull-work) integer)"
-  (call 852 (cons self args)))
+  (call 870 (cons self args)))
 (defmethod (setf datamunge:max-stack) (value (self datamunge:convex-hull-work) &rest args)
-  (call 853 (list* self value args))
+  (call 871 (list* self value args))
   value)
 
 (defmethod datamunge:pass ((self datamunge:hull-event) &rest args)
@@ -16918,9 +16924,9 @@ noise from resampling more often than strictly necessary).
 
   (pass hull-event) → hull-pass
   (setf (pass hull-event) hull-pass)"
-  (call 855 (cons self args)))
+  (call 873 (cons self args)))
 (defmethod (setf datamunge:pass) (value (self datamunge:hull-event) &rest args)
-  (call 856 (list* self value args))
+  (call 874 (list* self value args))
   value)
 
 (defmethod datamunge:action ((self datamunge:hull-event) &rest args)
@@ -16928,9 +16934,9 @@ noise from resampling more often than strictly necessary).
 
   (action hull-event) → hull-action
   (setf (action hull-event) hull-action)"
-  (call 857 (cons self args)))
+  (call 875 (cons self args)))
 (defmethod (setf datamunge:action) (value (self datamunge:hull-event) &rest args)
-  (call 858 (list* self value args))
+  (call 876 (list* self value args))
   value)
 
 (defmethod datamunge:candidate ((self datamunge:hull-event) &rest args)
@@ -16938,9 +16944,9 @@ noise from resampling more often than strictly necessary).
 
   (candidate hull-event) → integer
   (setf (candidate hull-event) integer)"
-  (call 859 (cons self args)))
+  (call 877 (cons self args)))
 (defmethod (setf datamunge:candidate) (value (self datamunge:hull-event) &rest args)
-  (call 860 (list* self value args))
+  (call 878 (list* self value args))
   value)
 
 (defmethod datamunge:point ((self datamunge:hull-event) &rest args)
@@ -16948,9 +16954,9 @@ noise from resampling more often than strictly necessary).
 
   (point hull-event) → integer
   (setf (point hull-event) integer)"
-  (call 861 (cons self args)))
+  (call 879 (cons self args)))
 (defmethod (setf datamunge:point) (value (self datamunge:hull-event) &rest args)
-  (call 862 (list* self value args))
+  (call 880 (list* self value args))
   value)
 
 (defmethod datamunge:a ((self datamunge:hull-event) &rest args)
@@ -16958,9 +16964,9 @@ noise from resampling more often than strictly necessary).
 
   (a hull-event) → integer
   (setf (a hull-event) integer)"
-  (call 863 (cons self args)))
+  (call 881 (cons self args)))
 (defmethod (setf datamunge:a) (value (self datamunge:hull-event) &rest args)
-  (call 864 (list* self value args))
+  (call 882 (list* self value args))
   value)
 
 (defmethod datamunge:b ((self datamunge:hull-event) &rest args)
@@ -16968,9 +16974,9 @@ noise from resampling more often than strictly necessary).
 
   (b hull-event) → integer
   (setf (b hull-event) integer)"
-  (call 865 (cons self args)))
+  (call 883 (cons self args)))
 (defmethod (setf datamunge:b) (value (self datamunge:hull-event) &rest args)
-  (call 866 (list* self value args))
+  (call 884 (list* self value args))
   value)
 
 (defmethod datamunge:turn ((self datamunge:hull-event) &rest args)
@@ -16978,9 +16984,9 @@ noise from resampling more often than strictly necessary).
 
   (turn hull-event) → integer
   (setf (turn hull-event) integer)"
-  (call 867 (cons self args)))
+  (call 885 (cons self args)))
 (defmethod (setf datamunge:turn) (value (self datamunge:hull-event) &rest args)
-  (call 868 (list* self value args))
+  (call 886 (list* self value args))
   value)
 
 (defmethod datamunge:stack-size ((self datamunge:hull-event) &rest args)
@@ -16988,9 +16994,9 @@ noise from resampling more often than strictly necessary).
 
   (stack-size hull-event) → integer
   (setf (stack-size hull-event) integer)"
-  (call 869 (cons self args)))
+  (call 887 (cons self args)))
 (defmethod (setf datamunge:stack-size) (value (self datamunge:hull-event) &rest args)
-  (call 870 (list* self value args))
+  (call 888 (list* self value args))
   value)
 
 (defmethod datamunge:hull ((self datamunge:convex-hull-analysis) &rest args)
@@ -16998,9 +17004,9 @@ noise from resampling more often than strictly necessary).
 
   (hull convex-hull-analysis) → (vector point2-d)
   (setf (hull convex-hull-analysis) (vector point2-d))"
-  (call 872 (cons self args)))
+  (call 890 (cons self args)))
 (defmethod (setf datamunge:hull) (value (self datamunge:convex-hull-analysis) &rest args)
-  (call 873 (list* self value args))
+  (call 891 (list* self value args))
   value)
 
 (defmethod datamunge:input-indices ((self datamunge:convex-hull-analysis) &rest args)
@@ -17008,9 +17014,9 @@ noise from resampling more often than strictly necessary).
 
   (input-indices convex-hull-analysis) → (vector integer)
   (setf (input-indices convex-hull-analysis) (vector integer))"
-  (call 874 (cons self args)))
+  (call 892 (cons self args)))
 (defmethod (setf datamunge:input-indices) (value (self datamunge:convex-hull-analysis) &rest args)
-  (call 875 (list* self value args))
+  (call 893 (list* self value args))
   value)
 
 (defmethod datamunge:work ((self datamunge:convex-hull-analysis) &rest args)
@@ -17018,9 +17024,9 @@ noise from resampling more often than strictly necessary).
 
   (work convex-hull-analysis) → convex-hull-work
   (setf (work convex-hull-analysis) convex-hull-work)"
-  (call 876 (cons self args)))
+  (call 894 (cons self args)))
 (defmethod (setf datamunge:work) (value (self datamunge:convex-hull-analysis) &rest args)
-  (call 877 (list* self value args))
+  (call 895 (list* self value args))
   value)
 
 (defmethod datamunge:analysis ((self datamunge:convex-hull-trace) &rest args)
@@ -17028,9 +17034,9 @@ noise from resampling more often than strictly necessary).
 
   (analysis convex-hull-trace) → convex-hull-analysis
   (setf (analysis convex-hull-trace) convex-hull-analysis)"
-  (call 879 (cons self args)))
+  (call 897 (cons self args)))
 (defmethod (setf datamunge:analysis) (value (self datamunge:convex-hull-trace) &rest args)
-  (call 880 (list* self value args))
+  (call 898 (list* self value args))
   value)
 
 (defmethod datamunge:sorted ((self datamunge:convex-hull-trace) &rest args)
@@ -17038,9 +17044,9 @@ noise from resampling more often than strictly necessary).
 
   (sorted convex-hull-trace) → (vector hull-indexed-point)
   (setf (sorted convex-hull-trace) (vector hull-indexed-point))"
-  (call 881 (cons self args)))
+  (call 899 (cons self args)))
 (defmethod (setf datamunge:sorted) (value (self datamunge:convex-hull-trace) &rest args)
-  (call 882 (list* self value args))
+  (call 900 (list* self value args))
   value)
 
 (defmethod datamunge:events ((self datamunge:convex-hull-trace) &rest args)
@@ -17048,9 +17054,9 @@ noise from resampling more often than strictly necessary).
 
   (events convex-hull-trace) → (vector hull-event)
   (setf (events convex-hull-trace) (vector hull-event))"
-  (call 883 (cons self args)))
+  (call 901 (cons self args)))
 (defmethod (setf datamunge:events) (value (self datamunge:convex-hull-trace) &rest args)
-  (call 884 (list* self value args))
+  (call 902 (list* self value args))
   value)
 
 (defmethod datamunge:lower ((self datamunge:convex-hull-trace) &rest args)
@@ -17058,9 +17064,9 @@ noise from resampling more often than strictly necessary).
 
   (lower convex-hull-trace) → (vector integer)
   (setf (lower convex-hull-trace) (vector integer))"
-  (call 885 (cons self args)))
+  (call 903 (cons self args)))
 (defmethod (setf datamunge:lower) (value (self datamunge:convex-hull-trace) &rest args)
-  (call 886 (list* self value args))
+  (call 904 (list* self value args))
   value)
 
 (defmethod datamunge:upper ((self datamunge:convex-hull-trace) &rest args)
@@ -17068,9 +17074,9 @@ noise from resampling more often than strictly necessary).
 
   (upper convex-hull-trace) → (vector integer)
   (setf (upper convex-hull-trace) (vector integer))"
-  (call 887 (cons self args)))
+  (call 905 (cons self args)))
 (defmethod (setf datamunge:upper) (value (self datamunge:convex-hull-trace) &rest args)
-  (call 888 (list* self value args))
+  (call 906 (list* self value args))
   value)
 
 (defmethod datamunge:call ((self datamunge:callback) &rest args)
@@ -17079,16 +17085,16 @@ noise from resampling more often than strictly necessary).
   (call callback x) → double-float
     x  double-float  Input value.
     → Transformed value; the default implementation returns `x` unchanged."
-  (call 890 (cons self args)))
+  (call 908 (cons self args)))
 
 (defmethod datamunge:r ((self datamunge:rgb) &rest args)
   "Red channel, 0-255 (default 31).
 
   (r rgb) → integer
   (setf (r rgb) integer)"
-  (call 892 (cons self args)))
+  (call 910 (cons self args)))
 (defmethod (setf datamunge:r) (value (self datamunge:rgb) &rest args)
-  (call 893 (list* self value args))
+  (call 911 (list* self value args))
   value)
 
 (defmethod datamunge:g ((self datamunge:rgb) &rest args)
@@ -17096,9 +17102,9 @@ noise from resampling more often than strictly necessary).
 
   (g rgb) → integer
   (setf (g rgb) integer)"
-  (call 894 (cons self args)))
+  (call 912 (cons self args)))
 (defmethod (setf datamunge:g) (value (self datamunge:rgb) &rest args)
-  (call 895 (list* self value args))
+  (call 913 (list* self value args))
   value)
 
 (defmethod datamunge:b ((self datamunge:rgb) &rest args)
@@ -17106,9 +17112,9 @@ noise from resampling more often than strictly necessary).
 
   (b rgb) → integer
   (setf (b rgb) integer)"
-  (call 896 (cons self args)))
+  (call 914 (cons self args)))
 (defmethod (setf datamunge:b) (value (self datamunge:rgb) &rest args)
-  (call 897 (list* self value args))
+  (call 915 (list* self value args))
   value)
 
 (defmethod datamunge:alpha ((self datamunge:rgb) &rest args)
@@ -17116,9 +17122,9 @@ noise from resampling more often than strictly necessary).
 
   (alpha rgb) → double-float
   (setf (alpha rgb) double-float)"
-  (call 898 (cons self args)))
+  (call 916 (cons self args)))
 (defmethod (setf datamunge:alpha) (value (self datamunge:rgb) &rest args)
-  (call 899 (list* self value args))
+  (call 917 (list* self value args))
   value)
 
 (defmethod datamunge:kind ((self datamunge:data-series) &rest args)
@@ -17126,9 +17132,9 @@ noise from resampling more often than strictly necessary).
 
   (kind data-series) → data-series-kind
   (setf (kind data-series) data-series-kind)"
-  (call 901 (cons self args)))
+  (call 919 (cons self args)))
 (defmethod (setf datamunge:kind) (value (self datamunge:data-series) &rest args)
-  (call 902 (list* self value args))
+  (call 920 (list* self value args))
   value)
 
 (defmethod datamunge:x ((self datamunge:data-series) &rest args)
@@ -17136,9 +17142,9 @@ noise from resampling more often than strictly necessary).
 
   (x data-series) → (vector double-float)
   (setf (x data-series) (vector double-float))"
-  (call 903 (cons self args)))
+  (call 921 (cons self args)))
 (defmethod (setf datamunge:x) (value (self datamunge:data-series) &rest args)
-  (call 904 (list* self value args))
+  (call 922 (list* self value args))
   value)
 
 (defmethod datamunge:y ((self datamunge:data-series) &rest args)
@@ -17146,9 +17152,9 @@ noise from resampling more often than strictly necessary).
 
   (y data-series) → (vector double-float)
   (setf (y data-series) (vector double-float))"
-  (call 905 (cons self args)))
+  (call 923 (cons self args)))
 (defmethod (setf datamunge:y) (value (self datamunge:data-series) &rest args)
-  (call 906 (list* self value args))
+  (call 924 (list* self value args))
   value)
 
 (defmethod datamunge:label ((self datamunge:data-series) &rest args)
@@ -17156,9 +17162,9 @@ noise from resampling more often than strictly necessary).
 
   (label data-series) → string
   (setf (label data-series) string)"
-  (call 907 (cons self args)))
+  (call 925 (cons self args)))
 (defmethod (setf datamunge:label) (value (self datamunge:data-series) &rest args)
-  (call 908 (list* self value args))
+  (call 926 (list* self value args))
   value)
 
 (defmethod datamunge:color ((self datamunge:data-series) &rest args)
@@ -17166,9 +17172,9 @@ noise from resampling more often than strictly necessary).
 
   (color data-series) → rgb
   (setf (color data-series) rgb)"
-  (call 909 (cons self args)))
+  (call 927 (cons self args)))
 (defmethod (setf datamunge:color) (value (self datamunge:data-series) &rest args)
-  (call 910 (list* self value args))
+  (call 928 (list* self value args))
   value)
 
 (defmethod datamunge:stroke-width ((self datamunge:data-series) &rest args)
@@ -17176,9 +17182,9 @@ noise from resampling more often than strictly necessary).
 
   (stroke-width data-series) → double-float
   (setf (stroke-width data-series) double-float)"
-  (call 911 (cons self args)))
+  (call 929 (cons self args)))
 (defmethod (setf datamunge:stroke-width) (value (self datamunge:data-series) &rest args)
-  (call 912 (list* self value args))
+  (call 930 (list* self value args))
   value)
 
 (defmethod datamunge:marker-size ((self datamunge:data-series) &rest args)
@@ -17186,9 +17192,9 @@ noise from resampling more often than strictly necessary).
 
   (marker-size data-series) → double-float
   (setf (marker-size data-series) double-float)"
-  (call 913 (cons self args)))
+  (call 931 (cons self args)))
 (defmethod (setf datamunge:marker-size) (value (self datamunge:data-series) &rest args)
-  (call 914 (list* self value args))
+  (call 932 (list* self value args))
   value)
 
 (defmethod datamunge:bar-width ((self datamunge:data-series) &rest args)
@@ -17196,9 +17202,9 @@ noise from resampling more often than strictly necessary).
 
   (bar-width data-series) → double-float
   (setf (bar-width data-series) double-float)"
-  (call 915 (cons self args)))
+  (call 933 (cons self args)))
 (defmethod (setf datamunge:bar-width) (value (self datamunge:data-series) &rest args)
-  (call 916 (list* self value args))
+  (call 934 (list* self value args))
   value)
 
 (defmethod datamunge:filled ((self datamunge:data-series) &rest args)
@@ -17206,9 +17212,9 @@ noise from resampling more often than strictly necessary).
 
   (filled data-series) → boolean
   (setf (filled data-series) boolean)"
-  (call 917 (cons self args)))
+  (call 935 (cons self args)))
 (defmethod (setf datamunge:filled) (value (self datamunge:data-series) &rest args)
-  (call 918 (list* self value args))
+  (call 936 (list* self value args))
   value)
 
 (defmethod datamunge:point-colors ((self datamunge:data-series) &rest args)
@@ -17216,9 +17222,9 @@ noise from resampling more often than strictly necessary).
 
   (point-colors data-series) → (vector rgb)
   (setf (point-colors data-series) (vector rgb))"
-  (call 919 (cons self args)))
+  (call 937 (cons self args)))
 (defmethod (setf datamunge:point-colors) (value (self datamunge:data-series) &rest args)
-  (call 920 (list* self value args))
+  (call 938 (list* self value args))
   value)
 
 (defmethod datamunge:vertical ((self datamunge:ab-line) &rest args)
@@ -17226,9 +17232,9 @@ noise from resampling more often than strictly necessary).
 
   (vertical ab-line) → boolean
   (setf (vertical ab-line) boolean)"
-  (call 922 (cons self args)))
+  (call 940 (cons self args)))
 (defmethod (setf datamunge:vertical) (value (self datamunge:ab-line) &rest args)
-  (call 923 (list* self value args))
+  (call 941 (list* self value args))
   value)
 
 (defmethod datamunge:value ((self datamunge:ab-line) &rest args)
@@ -17236,9 +17242,9 @@ noise from resampling more often than strictly necessary).
 
   (value ab-line) → double-float
   (setf (value ab-line) double-float)"
-  (call 924 (cons self args)))
+  (call 942 (cons self args)))
 (defmethod (setf datamunge:value) (value (self datamunge:ab-line) &rest args)
-  (call 925 (list* self value args))
+  (call 943 (list* self value args))
   value)
 
 (defmethod datamunge:slope ((self datamunge:ab-line) &rest args)
@@ -17246,9 +17252,9 @@ noise from resampling more often than strictly necessary).
 
   (slope ab-line) → double-float
   (setf (slope ab-line) double-float)"
-  (call 926 (cons self args)))
+  (call 944 (cons self args)))
 (defmethod (setf datamunge:slope) (value (self datamunge:ab-line) &rest args)
-  (call 927 (list* self value args))
+  (call 945 (list* self value args))
   value)
 
 (defmethod datamunge:color ((self datamunge:ab-line) &rest args)
@@ -17256,9 +17262,9 @@ noise from resampling more often than strictly necessary).
 
   (color ab-line) → rgb
   (setf (color ab-line) rgb)"
-  (call 928 (cons self args)))
+  (call 946 (cons self args)))
 (defmethod (setf datamunge:color) (value (self datamunge:ab-line) &rest args)
-  (call 929 (list* self value args))
+  (call 947 (list* self value args))
   value)
 
 (defmethod datamunge:stroke-width ((self datamunge:ab-line) &rest args)
@@ -17266,9 +17272,9 @@ noise from resampling more often than strictly necessary).
 
   (stroke-width ab-line) → double-float
   (setf (stroke-width ab-line) double-float)"
-  (call 930 (cons self args)))
+  (call 948 (cons self args)))
 (defmethod (setf datamunge:stroke-width) (value (self datamunge:ab-line) &rest args)
-  (call 931 (list* self value args))
+  (call 949 (list* self value args))
   value)
 
 (defmethod datamunge:label ((self datamunge:legend-entry) &rest args)
@@ -17276,9 +17282,9 @@ noise from resampling more often than strictly necessary).
 
   (label legend-entry) → string
   (setf (label legend-entry) string)"
-  (call 933 (cons self args)))
+  (call 951 (cons self args)))
 (defmethod (setf datamunge:label) (value (self datamunge:legend-entry) &rest args)
-  (call 934 (list* self value args))
+  (call 952 (list* self value args))
   value)
 
 (defmethod datamunge:color ((self datamunge:legend-entry) &rest args)
@@ -17286,9 +17292,9 @@ noise from resampling more often than strictly necessary).
 
   (color legend-entry) → rgb
   (setf (color legend-entry) rgb)"
-  (call 935 (cons self args)))
+  (call 953 (cons self args)))
 (defmethod (setf datamunge:color) (value (self datamunge:legend-entry) &rest args)
-  (call 936 (list* self value args))
+  (call 954 (list* self value args))
   value)
 
 (defmethod datamunge:size ((self datamunge:plot) &rest args)
@@ -17300,7 +17306,7 @@ See also: RPlot::size()
     width  integer  Canvas width in pixels.
     height  integer  Canvas height in pixels.
     → This plot, for chaining."
-  (call 938 (cons self args)))
+  (call 956 (cons self args)))
 
 (defmethod datamunge:title ((self datamunge:plot) &rest args)
   "Base-class form of RPlot::title(): sets the main heading; empty removes it.
@@ -17310,7 +17316,7 @@ See also: RPlot::set_title()
   (title plot value*) → plot
     value*  string  Heading text (moved into the plot).
     → This plot, for chaining."
-  (call 939 (cons self args)))
+  (call 957 (cons self args)))
 
 (defmethod datamunge:subtitle ((self datamunge:plot) &rest args)
   "Sets an optional subtitle displayed beneath the title; owns the supplied text.
@@ -17320,7 +17326,7 @@ See also: RPlot::set_subtitle()
   (subtitle plot value*) → plot
     value*  string  Subtitle text; empty removes it.
     → This plot, for chaining."
-  (call 940 (cons self args)))
+  (call 958 (cons self args)))
 
 (defmethod datamunge:x-label ((self datamunge:plot) &rest args)
   "Base-class form of RPlot::x_label(): sets the horizontal-axis label.
@@ -17330,7 +17336,7 @@ See also: RPlot::set_xlab()
   (x-label plot value*) → plot
     value*  string  Label text (moved into the plot).
     → This plot, for chaining."
-  (call 941 (cons self args)))
+  (call 959 (cons self args)))
 
 (defmethod datamunge:y-label ((self datamunge:plot) &rest args)
   "Base-class form of RPlot::y_label(): sets the vertical-axis label.
@@ -17340,7 +17346,7 @@ See also: RPlot::set_ylab()
   (y-label plot value*) → plot
     value*  string  Label text (moved into the plot).
     → This plot, for chaining."
-  (call 942 (cons self args)))
+  (call 960 (cons self args)))
 
 (defmethod datamunge:background ((self datamunge:plot) &rest args)
   "Base-class form of RPlot::background(): sets the canvas fill color.
@@ -17350,7 +17356,7 @@ See also: RPlot::background()
   (background plot color) → plot
     color  rgb  Fill for the whole canvas (default white).
     → This plot, for chaining."
-  (call 943 (cons self args)))
+  (call 961 (cons self args)))
 
 (defmethod datamunge:axis-color ((self datamunge:plot) &rest args)
   "Base-class form of RPlot::axis_color(): sets the axis-line and text color.
@@ -17360,7 +17366,7 @@ See also: RPlot::axis_color()
   (axis-color plot color) → plot
     color  rgb  Color for axis lines, ticks, axis labels, title, and subtitle.
     → This plot, for chaining."
-  (call 944 (cons self args)))
+  (call 962 (cons self args)))
 
 (defmethod datamunge:grid-color ((self datamunge:plot) &rest args)
   "Base-class form of RPlot::grid_color(): sets the grid-line color.
@@ -17370,7 +17376,7 @@ See also: RPlot::grid_color()
   (grid-color plot color) → plot
     color  rgb  Grid-line color (default light gray `{229, 231, 235}`).
     → This plot, for chaining."
-  (call 945 (cons self args)))
+  (call 963 (cons self args)))
 
 (defmethod datamunge:show-grid ((self datamunge:plot) &rest args)
   "Base-class form of RPlot::show_grid(): turns the background grid on or off.
@@ -17380,7 +17386,7 @@ See also: RPlot::show_grid()
   (show-grid plot &optional (enabled t)) → plot
     enabled  boolean  True (the default) draws the grid.
     → This plot, for chaining."
-  (call 946 (cons self args)))
+  (call 964 (cons self args)))
 
 (defmethod datamunge:x-limits ((self datamunge:plot) &rest args)
   "Base-class form of RPlot::x_limits(): fixes the visible x range.
@@ -17394,7 +17400,7 @@ See also: RPlot::x_limits()
     min-x  double-float  Left edge of the plotting area, in data units.
     max-x  double-float  Right edge; must be greater than `min_x`.
     → This plot, for chaining."
-  (call 947 (cons self args)))
+  (call 965 (cons self args)))
 
 (defmethod datamunge:y-limits ((self datamunge:plot) &rest args)
   "Base-class form of RPlot::y_limits(): fixes the visible y range.
@@ -17408,7 +17414,7 @@ See also: RPlot::y_limits()
     min-y  double-float  Bottom edge of the plotting area, in data units.
     max-y  double-float  Top edge; must be greater than `min_y`.
     → This plot, for chaining."
-  (call 948 (cons self args)))
+  (call 966 (cons self args)))
 
 (defmethod datamunge:hide-axes ((self datamunge:plot) &rest args)
   "Base-class form of RPlot::hide_axes(): hides or restores axes, ticks, grid, and axis labels.
@@ -17418,7 +17424,7 @@ See also: RPlot::hide_axes()
   (hide-axes plot &optional (enabled t)) → plot
     enabled  boolean  True (the default) hides them.
     → This plot, for chaining."
-  (call 949 (cons self args)))
+  (call 967 (cons self args)))
 
 (defmethod datamunge:x-tick-labels ((self datamunge:plot) &rest args)
   "Base-class form of RPlot::x_tick_labels(): labels the x axis at 0, 1, 2, ...
@@ -17428,7 +17434,7 @@ See also: RPlot::x_tick_labels()
   (x-tick-labels plot labels) → plot
     labels  (vector string)  Tick texts; empty restores the numeric ticks.
     → This plot, for chaining."
-  (call 950 (cons self args)))
+  (call 968 (cons self args)))
 
 (defmethod datamunge:x-ticks ((self datamunge:plot) &rest args)
   "Replaces the numeric x ticks with `labels` drawn at data positions `positions`.
@@ -17442,7 +17448,7 @@ See also: RPlot::x_ticks()
     positions  (vector double-float)  x data coordinates of the ticks.
     labels  (vector string)  Tick texts, one per position.
     → This plot, for chaining."
-  (call 951 (cons self args)))
+  (call 969 (cons self args)))
 
 (defmethod datamunge:y-tick-labels ((self datamunge:plot) &rest args)
   "Replaces the numeric y ticks with `labels` drawn at y = 0, 1, 2, ...
@@ -17452,7 +17458,7 @@ See also: RPlot::y_tick_labels()
   (y-tick-labels plot labels) → plot
     labels  (vector string)  Tick texts; empty restores the numeric ticks.
     → This plot, for chaining."
-  (call 952 (cons self args)))
+  (call 970 (cons self args)))
 
 (defmethod datamunge:y-ticks ((self datamunge:plot) &rest args)
   "Replaces the numeric y ticks with `labels` drawn at data positions `positions`.
@@ -17466,7 +17472,7 @@ See also: RPlot::y_ticks()
     positions  (vector double-float)  y data coordinates of the ticks.
     labels  (vector string)  Tick texts, one per position.
     → This plot, for chaining."
-  (call 953 (cons self args)))
+  (call 971 (cons self args)))
 
 (defmethod datamunge:margins ((self datamunge:plot) &rest args)
   "Overrides the automatic outer margins (in pixels) around the plotting area, e.g. for
@@ -17484,7 +17490,7 @@ See also: RPlot::margins()
     top  double-float  Top margin in pixels (default 72, plus 24 when a subtitle is set).
     bottom  double-float  Bottom margin in pixels (default 84).
     → This plot, for chaining."
-  (call 954 (cons self args)))
+  (call 972 (cons self args)))
 
 (defmethod datamunge:tick-font-size ((self datamunge:plot) &rest args)
   "Sets the tick-label font size in pixels (default 12); the raster viewer draws ticks
@@ -17498,7 +17504,7 @@ See also: RPlot::tick_font_size()
   (tick-font-size plot pixels) → plot
     pixels  double-float  Font size in pixels.
     → This plot, for chaining."
-  (call 955 (cons self args)))
+  (call 973 (cons self args)))
 
 (defmethod datamunge:pretty-ticks ((self datamunge:plot) &rest args)
   "Places numeric ticks at round values (steps of 1, 2 or 5 times a power of ten, like
@@ -17509,224 +17515,224 @@ See also: RPlot::pretty_ticks()
   (pretty-ticks plot &optional (enabled t)) → plot
     enabled  boolean  True turns round ticks on; false restores six even ticks.
     → This plot, for chaining."
-  (call 956 (cons self args)))
+  (call 974 (cons self args)))
 
 (defmethod datamunge:width ((self datamunge:plot) &rest args)
   "Returns the canvas width in pixels (default 960).
 
   (width plot) → integer
     → Width set by size()."
-  (call 957 (cons self args)))
+  (call 975 (cons self args)))
 
 (defmethod datamunge:height ((self datamunge:plot) &rest args)
   "Returns the canvas height in pixels (default 640).
 
   (height plot) → integer
     → Height set by size()."
-  (call 958 (cons self args)))
+  (call 976 (cons self args)))
 
 (defmethod datamunge:title-text ((self datamunge:plot) &rest args)
   "Borrows the main heading (\"datamunge plot\" until set) for the lifetime of this plot.
 
   (title-text plot) → string
     → The current title; empty when the heading was cleared."
-  (call 959 (cons self args)))
+  (call 977 (cons self args)))
 
 (defmethod datamunge:subtitle-text ((self datamunge:plot) &rest args)
   "Borrows the subtitle for the lifetime of this plot.
 
   (subtitle-text plot) → string
     → The current subtitle; empty (the default) when none is drawn."
-  (call 960 (cons self args)))
+  (call 978 (cons self args)))
 
 (defmethod datamunge:x-label-text ((self datamunge:plot) &rest args)
   "Borrows the horizontal-axis label (\"x\" until set) for the lifetime of this plot.
 
   (x-label-text plot) → string
     → The current x-axis label."
-  (call 961 (cons self args)))
+  (call 979 (cons self args)))
 
 (defmethod datamunge:y-label-text ((self datamunge:plot) &rest args)
   "Borrows the vertical-axis label (\"y\" until set) for the lifetime of this plot.
 
   (y-label-text plot) → string
     → The current y-axis label."
-  (call 962 (cons self args)))
+  (call 980 (cons self args)))
 
 (defmethod datamunge:series ((self datamunge:plot) &rest args)
   "Borrows the drawn layers (points, lines, bars, ...) in the order they were added.
 
   (series plot) → (vector data-series)
     → The series list; references are invalidated by adding another layer."
-  (call 963 (cons self args)))
+  (call 981 (cons self args)))
 
 (defmethod datamunge:background-color ((self datamunge:plot) &rest args)
   "Returns the canvas fill color set by background().
 
   (background-color plot) → rgb
     → The background color (default white `{255, 255, 255}`)."
-  (call 964 (cons self args)))
+  (call 982 (cons self args)))
 
 (defmethod datamunge:axes-color ((self datamunge:plot) &rest args)
   "Returns the axis and text color set by axis_color().
 
   (axes-color plot) → rgb
     → The axis color (default gray `{55, 65, 81}`)."
-  (call 965 (cons self args)))
+  (call 983 (cons self args)))
 
 (defmethod datamunge:major-grid-color ((self datamunge:plot) &rest args)
   "Returns the grid-line color set by grid_color().
 
   (major-grid-color plot) → rgb
     → The grid color (default light gray `{229, 231, 235}`)."
-  (call 966 (cons self args)))
+  (call 984 (cons self args)))
 
 (defmethod datamunge:grid-visible ((self datamunge:plot) &rest args)
   "Reports whether the background grid is drawn (see show_grid()).
 
   (grid-visible plot) → boolean
     → True (the default) when the grid is drawn."
-  (call 967 (cons self args)))
+  (call 985 (cons self args)))
 
 (defmethod datamunge:has-x-limits ((self datamunge:plot) &rest args)
   "Reports whether x_limits() fixed the x range.
 
   (has-x-limits plot) → boolean
     → False (the default) while the x range is fitted to the data."
-  (call 968 (cons self args)))
+  (call 986 (cons self args)))
 
 (defmethod datamunge:has-y-limits ((self datamunge:plot) &rest args)
   "Reports whether y_limits() fixed the y range.
 
   (has-y-limits plot) → boolean
     → False (the default) while the y range is fitted to the data."
-  (call 969 (cons self args)))
+  (call 987 (cons self args)))
 
 (defmethod datamunge:x-min ((self datamunge:plot) &rest args)
   "Returns the fixed left x limit; meaningful only when has_x_limits() is true.
 
   (x-min plot) → double-float
     → The stored lower x limit (0 until x_limits() is called)."
-  (call 970 (cons self args)))
+  (call 988 (cons self args)))
 
 (defmethod datamunge:x-max ((self datamunge:plot) &rest args)
   "Returns the fixed right x limit; meaningful only when has_x_limits() is true.
 
   (x-max plot) → double-float
     → The stored upper x limit (1 until x_limits() is called)."
-  (call 971 (cons self args)))
+  (call 989 (cons self args)))
 
 (defmethod datamunge:y-min ((self datamunge:plot) &rest args)
   "Returns the fixed bottom y limit; meaningful only when has_y_limits() is true.
 
   (y-min plot) → double-float
     → The stored lower y limit (0 until y_limits() is called)."
-  (call 972 (cons self args)))
+  (call 990 (cons self args)))
 
 (defmethod datamunge:y-max ((self datamunge:plot) &rest args)
   "Returns the fixed top y limit; meaningful only when has_y_limits() is true.
 
   (y-max plot) → double-float
     → The stored upper y limit (1 until y_limits() is called)."
-  (call 973 (cons self args)))
+  (call 991 (cons self args)))
 
 (defmethod datamunge:axes-hidden ((self datamunge:plot) &rest args)
   "Reports whether hide_axes() suppressed axes, ticks, grid, and axis labels.
 
   (axes-hidden plot) → boolean
     → False (the default) when axes are drawn."
-  (call 974 (cons self args)))
+  (call 992 (cons self args)))
 
 (defmethod datamunge:x-tick-label-list ((self datamunge:plot) &rest args)
   "Borrows the custom x tick texts; empty means numeric ticks.
 
   (x-tick-label-list plot) → (vector string)
     → Labels set by x_tick_labels() or x_ticks()."
-  (call 975 (cons self args)))
+  (call 993 (cons self args)))
 
 (defmethod datamunge:x-tick-position-list ((self datamunge:plot) &rest args)
   "Data positions of x_tick_label_list(); empty means 0, 1, 2, ...
 
   (x-tick-position-list plot) → (vector double-float)
     → Positions set by x_ticks(); cleared by x_tick_labels()."
-  (call 976 (cons self args)))
+  (call 994 (cons self args)))
 
 (defmethod datamunge:y-tick-label-list ((self datamunge:plot) &rest args)
   "Borrows the custom y tick texts; empty means numeric ticks.
 
   (y-tick-label-list plot) → (vector string)
     → Labels set by y_tick_labels() or y_ticks()."
-  (call 977 (cons self args)))
+  (call 995 (cons self args)))
 
 (defmethod datamunge:y-tick-position-list ((self datamunge:plot) &rest args)
   "Data positions of y_tick_label_list(); empty means 0, 1, 2, ...
 
   (y-tick-position-list plot) → (vector double-float)
     → Positions set by y_ticks(); cleared by y_tick_labels()."
-  (call 978 (cons self args)))
+  (call 996 (cons self args)))
 
 (defmethod datamunge:reference-lines ((self datamunge:plot) &rest args)
   "Borrows the reference lines added by abline(), abline_h(), abline_v(), and qqline().
 
   (reference-lines plot) → (vector ab-line)
     → Lines in insertion order; references are invalidated by adding another line."
-  (call 979 (cons self args)))
+  (call 997 (cons self args)))
 
 (defmethod datamunge:legend-entries ((self datamunge:plot) &rest args)
   "Borrows the manual legend rows added by legend(); empty means an automatic legend.
 
   (legend-entries plot) → (vector legend-entry)
     → Manual entries in insertion order."
-  (call 980 (cons self args)))
+  (call 998 (cons self args)))
 
 (defmethod datamunge:has-custom-margins ((self datamunge:plot) &rest args)
   "True once margins() has been called; the renderer then uses the explicit margins.
 
   (has-custom-margins plot) → boolean
     → False (the default) while the automatic margins apply."
-  (call 981 (cons self args)))
+  (call 999 (cons self args)))
 
 (defmethod datamunge:margin-left ((self datamunge:plot) &rest args)
   "Returns the left margin in pixels; used only when has_custom_margins() is true.
 
   (margin-left plot) → double-float
     → The stored left margin (default 90)."
-  (call 982 (cons self args)))
+  (call 1000 (cons self args)))
 
 (defmethod datamunge:margin-right ((self datamunge:plot) &rest args)
   "Returns the right margin in pixels; used only when has_custom_margins() is true.
 
   (margin-right plot) → double-float
     → The stored right margin (default 24)."
-  (call 983 (cons self args)))
+  (call 1001 (cons self args)))
 
 (defmethod datamunge:margin-top ((self datamunge:plot) &rest args)
   "Returns the top margin in pixels; used only when has_custom_margins() is true.
 
   (margin-top plot) → double-float
     → The stored top margin (default 72)."
-  (call 984 (cons self args)))
+  (call 1002 (cons self args)))
 
 (defmethod datamunge:margin-bottom ((self datamunge:plot) &rest args)
   "Returns the bottom margin in pixels; used only when has_custom_margins() is true.
 
   (margin-bottom plot) → double-float
     → The stored bottom margin (default 84)."
-  (call 985 (cons self args)))
+  (call 1003 (cons self args)))
 
 (defmethod datamunge:tick-font-px ((self datamunge:plot) &rest args)
   "Returns the tick-label font size set by tick_font_size().
 
   (tick-font-px plot) → double-float
     → Font size in pixels (default 12)."
-  (call 986 (cons self args)))
+  (call 1004 (cons self args)))
 
 (defmethod datamunge:pretty-ticks-enabled ((self datamunge:plot) &rest args)
   "Reports whether pretty_ticks() is on.
 
   (pretty-ticks-enabled plot) → boolean
     → False (the default) for six evenly spaced numeric ticks."
-  (call 987 (cons self args)))
+  (call 1005 (cons self args)))
 
 (defmethod datamunge:to-svg ((self datamunge:plot) &rest args)
   "Renders the plot as a standalone SVG document and returns it as a string.
@@ -17749,7 +17755,7 @@ See also: save(), show()
 
   (to-svg plot) → string
     → The complete SVG text."
-  (call 988 (cons self args)))
+  (call 1006 (cons self args)))
 
 (defmethod datamunge:save ((self datamunge:plot) &rest args)
   "Writes the plot to `path`, choosing the format from the file extension
@@ -17776,7 +17782,7 @@ See also: save_svg(), to_svg(), show()
 
   (save plot path)
     path  string  Destination file; relative paths resolve against the working directory."
-  (call 989 (cons self args)))
+  (call 1007 (cons self args)))
 
 (defmethod datamunge:save-svg ((self datamunge:plot) &rest args)
   "Writes to_svg() to `path` regardless of its extension.
@@ -17794,7 +17800,7 @@ See also: save()
 
   (save-svg plot path)
     path  string  Destination file; an existing file is overwritten."
-  (call 990 (cons self args)))
+  (call 1008 (cons self args)))
 
 (defmethod datamunge:to-png ((self datamunge:plot) &rest args)
   "Renders the plot as PNG image bytes (the same raster save() writes for `.png`).
@@ -17813,7 +17819,7 @@ See also: save_png(), to_pdf(), to_svg()
 
   (to-png plot) → (vector integer)
     → The complete PNG file contents."
-  (call 991 (cons self args)))
+  (call 1009 (cons self args)))
 
 (defmethod datamunge:to-pdf ((self datamunge:plot) &rest args)
   "Renders the plot as a one-page PDF holding the raster image.
@@ -17825,7 +17831,7 @@ See also: save_pdf(), to_png()
 
   (to-pdf plot) → (vector integer)
     → The complete PDF file contents."
-  (call 992 (cons self args)))
+  (call 1010 (cons self args)))
 
 (defmethod datamunge:save-png ((self datamunge:plot) &rest args)
   "Writes to_png() to `path` regardless of its extension.
@@ -17837,7 +17843,7 @@ See also: save(), to_png()
 
   (save-png plot path)
     path  string  Destination file; an existing file is overwritten."
-  (call 993 (cons self args)))
+  (call 1011 (cons self args)))
 
 (defmethod datamunge:save-pdf ((self datamunge:plot) &rest args)
   "Writes to_pdf() to `path` regardless of its extension.
@@ -17849,7 +17855,7 @@ See also: save(), to_pdf()
 
   (save-pdf plot path)
     path  string  Destination file; an existing file is overwritten."
-  (call 994 (cons self args)))
+  (call 1012 (cons self args)))
 
 (defmethod datamunge:view ((self datamunge:plot) &rest args)
   "Same as show(); kept as an alias for older code.
@@ -17861,7 +17867,7 @@ See also: show()
 
   (view plot &optional (title-hint \"\"))
     title-hint  string  Window title; empty uses the plot's title."
-  (call 995 (cons self args)))
+  (call 1013 (cons self args)))
 
 (defmethod datamunge:show ((self datamunge:plot) &rest args)
   "Opens the plot in an interactive X11 window and blocks until it is closed
@@ -17887,7 +17893,7 @@ See also: save(), to_svg()
 
   (show plot &optional (title-hint \"\"))
     title-hint  string  Window title; empty (the default) uses the plot's title."
-  (call 996 (cons self args)))
+  (call 1014 (cons self args)))
 
 (defmethod datamunge:size ((self datamunge:r-plot) &rest args)
   "Sets the canvas size in pixels (default 960 by 640), like the `width`/`height`
@@ -17909,7 +17915,7 @@ See also: margins()
     width  integer  Canvas width in pixels.
     height  integer  Canvas height in pixels.
     → This plot, for chaining."
-  (call 999 (cons self args)))
+  (call 1017 (cons self args)))
 
 (defmethod datamunge:title ((self datamunge:r-plot) &rest args)
   "Sets the main heading, like R's `main =`; an empty string removes it.
@@ -17919,7 +17925,7 @@ See also: set_title()
   (title r-plot value*) → r-plot
     value*  string  Heading text (copied).
     → This plot, for chaining."
-  (call 1000 (cons self args)))
+  (call 1018 (cons self args)))
 
 (defmethod datamunge:subtitle ((self datamunge:r-plot) &rest args)
   "Sets the subtitle and returns this plot for chaining RPlot verbs; same as set_subtitle().
@@ -17929,7 +17935,7 @@ See also: set_subtitle()
   (subtitle r-plot value*) → r-plot
     value*  string  Subtitle text drawn under the title; empty removes it.
     → This plot, for chaining."
-  (call 1001 (cons self args)))
+  (call 1019 (cons self args)))
 
 (defmethod datamunge:x-label ((self datamunge:r-plot) &rest args)
   "Sets the horizontal-axis label; same as xlab() and set_xlab().
@@ -17939,7 +17945,7 @@ See also: set_xlab()
   (x-label r-plot value*) → r-plot
     value*  string  Label text (copied).
     → This plot, for chaining."
-  (call 1002 (cons self args)))
+  (call 1020 (cons self args)))
 
 (defmethod datamunge:y-label ((self datamunge:r-plot) &rest args)
   "Sets the vertical-axis label; same as ylab() and set_ylab().
@@ -17949,7 +17955,7 @@ See also: set_ylab()
   (y-label r-plot value*) → r-plot
     value*  string  Label text (copied).
     → This plot, for chaining."
-  (call 1003 (cons self args)))
+  (call 1021 (cons self args)))
 
 (defmethod datamunge:xlab ((self datamunge:r-plot) &rest args)
   "R-style alias for x_label(), like R's `xlab =`.
@@ -17959,7 +17965,7 @@ See also: set_xlab()
   (xlab r-plot value*) → r-plot
     value*  string  Label text (copied).
     → This plot, for chaining."
-  (call 1004 (cons self args)))
+  (call 1022 (cons self args)))
 
 (defmethod datamunge:ylab ((self datamunge:r-plot) &rest args)
   "R-style alias for y_label(), like R's `ylab =`.
@@ -17969,7 +17975,7 @@ See also: set_ylab()
   (ylab r-plot value*) → r-plot
     value*  string  Label text (copied).
     → This plot, for chaining."
-  (call 1005 (cons self args)))
+  (call 1023 (cons self args)))
 
 (defmethod datamunge:set-title ((self datamunge:r-plot) &rest args)
   "Sets the main heading drawn above the plotting area (R's `main =`).
@@ -17994,7 +18000,7 @@ See also: set_subtitle(), set_xlab(), set_ylab(), dm::title()
   (set-title r-plot value*) → r-plot
     value*  string  Heading text.
     → This plot, for chaining."
-  (call 1006 (cons self args)))
+  (call 1024 (cons self args)))
 
 (defmethod datamunge:set-subtitle ((self datamunge:r-plot) &rest args)
   "Sets the smaller second heading drawn beneath the title (unlike R's `sub =`,
@@ -18015,7 +18021,7 @@ See also: set_title(), dm::subtitle()
   (set-subtitle r-plot value*) → r-plot
     value*  string  Subtitle text.
     → This plot, for chaining."
-  (call 1007 (cons self args)))
+  (call 1025 (cons self args)))
 
 (defmethod datamunge:set-xlab ((self datamunge:r-plot) &rest args)
   "Sets the horizontal-axis label (R's `xlab =`).
@@ -18035,7 +18041,7 @@ See also: set_ylab(), dm::xlab()
   (set-xlab r-plot value*) → r-plot
     value*  string  Axis label text.
     → This plot, for chaining."
-  (call 1008 (cons self args)))
+  (call 1026 (cons self args)))
 
 (defmethod datamunge:set-ylab ((self datamunge:r-plot) &rest args)
   "Sets the vertical-axis label (R's `ylab =`).
@@ -18055,7 +18061,7 @@ See also: set_xlab(), dm::ylab()
   (set-ylab r-plot value*) → r-plot
     value*  string  Axis label text.
     → This plot, for chaining."
-  (call 1009 (cons self args)))
+  (call 1027 (cons self args)))
 
 (defmethod datamunge:set-col ((self datamunge:r-plot) &rest args)
   "Recolors every data series already on the plot (R's `col =` applied after the fact).
@@ -18109,7 +18115,7 @@ Errors (signalled as datamunge:native-error):
   (set-col r-plot color) → r-plot
     color  rgb  New color, including its alpha.
     → This plot, for chaining."
-  (call 1010 (cons self args)))
+  (call 1028 (cons self args)))
 
 (defmethod datamunge:background ((self datamunge:r-plot) &rest args)
   "Sets the fill color of the whole canvas, like R's `par(bg =)`.
@@ -18136,7 +18142,7 @@ See also: axis_color(), grid_color()
   (background r-plot color) → r-plot
     color  rgb  Canvas fill color.
     → This plot, for chaining."
-  (call 1011 (cons self args)))
+  (call 1029 (cons self args)))
 
 (defmethod datamunge:axis-color ((self datamunge:r-plot) &rest args)
   "Sets the color of the axis lines and of all plot-level text: tick labels, axis
@@ -18158,7 +18164,7 @@ See also: background(), grid_color()
   (axis-color r-plot color) → r-plot
     color  rgb  Axis and text color.
     → This plot, for chaining."
-  (call 1012 (cons self args)))
+  (call 1030 (cons self args)))
 
 (defmethod datamunge:grid-color ((self datamunge:r-plot) &rest args)
   "Sets the color of the background grid lines (default light gray `{229, 231, 235}`).
@@ -18174,7 +18180,7 @@ See also: show_grid(), background()
   (grid-color r-plot color) → r-plot
     color  rgb  Grid-line color.
     → This plot, for chaining."
-  (call 1013 (cons self args)))
+  (call 1031 (cons self args)))
 
 (defmethod datamunge:show-grid ((self datamunge:r-plot) &rest args)
   "Turns the light background grid on or off (on by default), like adding or
@@ -18200,7 +18206,7 @@ See also: grid_color(), hide_axes()
   (show-grid r-plot &optional (enabled t)) → r-plot
     enabled  boolean  True (the default) draws the grid; false omits it.
     → This plot, for chaining."
-  (call 1014 (cons self args)))
+  (call 1032 (cons self args)))
 
 (defmethod datamunge:x-limits ((self datamunge:r-plot) &rest args)
   "Fixes the visible x range, like R's `xlim = c(min_x, max_x)`.
@@ -18232,7 +18238,7 @@ See also: y_limits()
     min-x  double-float  Left edge of the plotting area, in data units.
     max-x  double-float  Right edge; must be greater than `min_x`.
     → This plot, for chaining."
-  (call 1015 (cons self args)))
+  (call 1033 (cons self args)))
 
 (defmethod datamunge:y-limits ((self datamunge:r-plot) &rest args)
   "Fixes the visible y range, like R's `ylim = c(min_y, max_y)`.
@@ -18258,7 +18264,7 @@ See also: x_limits()
     min-y  double-float  Bottom edge of the plotting area, in data units.
     max-y  double-float  Top edge; must be greater than `min_y`.
     → This plot, for chaining."
-  (call 1016 (cons self args)))
+  (call 1034 (cons self args)))
 
 (defmethod datamunge:xlim ((self datamunge:r-plot) &rest args)
   "Short spelling of x_limits(), matching R's xlim plot argument.
@@ -18281,7 +18287,7 @@ See also: x_limits(), ylim()
     min-x  double-float  Left edge in data units.
     max-x  double-float  Right edge; must be greater than min_x.
     → This plot, for chaining."
-  (call 1017 (cons self args)))
+  (call 1035 (cons self args)))
 
 (defmethod datamunge:ylim ((self datamunge:r-plot) &rest args)
   "Short spelling of y_limits(), matching R's ylim plot argument.
@@ -18300,7 +18306,7 @@ See also: y_limits(), xlim()
     min-y  double-float  Bottom edge in data units.
     max-y  double-float  Top edge; must be greater than min_y.
     → This plot, for chaining."
-  (call 1018 (cons self args)))
+  (call 1036 (cons self args)))
 
 (defmethod datamunge:hide-axes ((self datamunge:r-plot) &rest args)
   "Hides the axis lines, tick labels, grid, and axis labels, like R's `axes = FALSE,
@@ -18325,7 +18331,7 @@ See also: show_grid(), margins()
   (hide-axes r-plot &optional (enabled t)) → r-plot
     enabled  boolean  True (the default) hides them; false shows them again.
     → This plot, for chaining."
-  (call 1019 (cons self args)))
+  (call 1037 (cons self args)))
 
 (defmethod datamunge:x-tick-labels ((self datamunge:r-plot) &rest args)
   "Replaces the numeric x ticks with `labels` at x = 0, 1, 2, ..., like R's
@@ -18351,7 +18357,7 @@ See also: x_ticks(), y_tick_labels()
   (x-tick-labels r-plot labels) → r-plot
     labels  (vector string)  Tick texts, in order.
     → This plot, for chaining."
-  (call 1020 (cons self args)))
+  (call 1038 (cons self args)))
 
 (defmethod datamunge:x-ticks ((self datamunge:r-plot) &rest args)
   "Replaces the numeric x ticks with `labels` drawn at data positions `positions`,
@@ -18383,7 +18389,7 @@ See also: x_tick_labels(), y_ticks()
     positions  (vector double-float)  x data coordinates of the ticks.
     labels  (vector string)  Tick texts, one per position.
     → This plot, for chaining."
-  (call 1021 (cons self args)))
+  (call 1039 (cons self args)))
 
 (defmethod datamunge:y-tick-labels ((self datamunge:r-plot) &rest args)
   "Replaces the numeric y ticks with `labels` at y = 0, 1, 2, ..., like R's
@@ -18407,7 +18413,7 @@ See also: y_ticks(), x_tick_labels()
   (y-tick-labels r-plot labels) → r-plot
     labels  (vector string)  Tick texts, in order.
     → This plot, for chaining."
-  (call 1022 (cons self args)))
+  (call 1040 (cons self args)))
 
 (defmethod datamunge:y-ticks ((self datamunge:r-plot) &rest args)
   "Replaces the numeric y ticks with `labels` drawn at data positions `positions`,
@@ -18432,7 +18438,7 @@ See also: y_tick_labels(), x_ticks()
     positions  (vector double-float)  y data coordinates of the ticks.
     labels  (vector string)  Tick texts, one per position.
     → This plot, for chaining."
-  (call 1023 (cons self args)))
+  (call 1041 (cons self args)))
 
 (defmethod datamunge:margins ((self datamunge:r-plot) &rest args)
   "Overrides the automatic outer margins around the plotting area, in pixels, like
@@ -18469,7 +18475,7 @@ See also: size(), tick_font_size(), RLayout
     top  double-float  Top margin in pixels.
     bottom  double-float  Bottom margin in pixels.
     → This plot, for chaining."
-  (call 1024 (cons self args)))
+  (call 1042 (cons self args)))
 
 (defmethod datamunge:tick-font-size ((self datamunge:r-plot) &rest args)
   "Sets the tick-label font size in pixels (default 12), like R's `cex.axis`.
@@ -18493,7 +18499,7 @@ See also: margins()
   (tick-font-size r-plot pixels) → r-plot
     pixels  double-float  Font size in pixels.
     → This plot, for chaining."
-  (call 1025 (cons self args)))
+  (call 1043 (cons self args)))
 
 (defmethod datamunge:pretty-ticks ((self datamunge:r-plot) &rest args)
   "Places numeric ticks at round values (default on) instead of six evenly spaced
@@ -18523,7 +18529,7 @@ See also: x_ticks(), show_grid()
   (pretty-ticks r-plot &optional (enabled t)) → r-plot
     enabled  boolean  True turns round ticks on; false restores six even ticks.
     → This plot, for chaining."
-  (call 1026 (cons self args)))
+  (call 1044 (cons self args)))
 
 (defmethod datamunge:points ((self datamunge:r-plot) &rest args)
   "Adds a scatter series to this plot, like R's `points(x, y, col = color)`.
@@ -18596,7 +18602,7 @@ Errors (signalled as datamunge:native-error):
     y  (vector double-float)  Vertical coordinates, paired with x.
     label  string  Legend label, including text that resembles a color; null means empty.
     → This plot, for chaining."
-  (call 1034 (cons self args)))
+  (call 1052 (cons self args)))
 
 (defmethod datamunge:points-colored ((self datamunge:r-plot) &rest args)
   "Appends scatter points with a recycled per-point RGB(A) palette.
@@ -18627,7 +18633,7 @@ See also: dm::points() and Points::set_col(), the pipe-friendly form of this cal
     colors  (vector rgb)  Palette; point i uses `colors[i % colors.size()]`.
     marker-size  double-float  Marker radius in pixels (default 4).
     → This plot, for chaining."
-  (call 1035 (cons self args)))
+  (call 1053 (cons self args)))
 
 (defmethod datamunge:line ((self datamunge:r-plot) &rest args)
   "Adds a line joining the points in input order, like R's `lines(x, y, col = color,
@@ -18657,7 +18663,7 @@ See also: lines(), plot()
     color  rgb  Line color (default red `{220, 38, 38}`).
     stroke-width  double-float  Line width in pixels (default 2).
     → This plot, for chaining."
-  (call 1036 (cons self args)))
+  (call 1054 (cons self args)))
 
 (defmethod datamunge:lines ((self datamunge:r-plot) &rest args)
   "Adds a line joining the points in input order, like R's `lines(x, y, col = color,
@@ -18729,7 +18735,7 @@ Errors (signalled as datamunge:native-error):
     y  (vector double-float)  Vertical coordinates, paired with x.
     label  string  Legend label, including text that resembles a color; null means empty.
     → This plot, for chaining."
-  (call 1037 (cons self args)))
+  (call 1055 (cons self args)))
 
 (defmethod datamunge:bars ((self datamunge:r-plot) &rest args)
   "Adds vertical bars centered at arbitrary x positions, the low-level form behind
@@ -18763,7 +18769,7 @@ See also: barplot(), hist()
     color  rgb  Bar color (default green `{22, 163, 74}`).
     bar-width  double-float  Bar width in data units (default 0.8).
     → This plot, for chaining."
-  (call 1038 (cons self args)))
+  (call 1056 (cons self args)))
 
 (defmethod datamunge:box ((self datamunge:r-plot) &rest args)
   "Adds one box-and-whisker from precomputed statistics at an arbitrary x position,
@@ -18798,7 +18804,7 @@ See also: boxplot()
     color  rgb  Box, whisker, and outlier color (default light blue `{96, 165, 250}`).
     width  double-float  Box width in data units (default 0.6).
     → This plot, for chaining."
-  (call 1039 (cons self args)))
+  (call 1057 (cons self args)))
 
 (defmethod datamunge:abline ((self datamunge:r-plot) &rest args)
   "Adds the reference line y = intercept + slope * x across the plotting area, like
@@ -18835,7 +18841,7 @@ See also: abline_h(), abline_v(), qqline(), ABLine
     color  rgb  Line color (default opaque black).
     stroke-width  double-float  Line width in pixels (default 1).
     → This plot, for chaining."
-  (call 1040 (cons self args)))
+  (call 1058 (cons self args)))
 
 (defmethod datamunge:abline-h ((self datamunge:r-plot) &rest args)
   "Adds a horizontal reference line at y = `y_value`, like R's `abline(h = y_value)`.
@@ -18861,7 +18867,7 @@ See also: abline(), abline_v()
     color  rgb  Line color (default opaque black).
     stroke-width  double-float  Line width in pixels (default 1).
     → This plot, for chaining."
-  (call 1041 (cons self args)))
+  (call 1059 (cons self args)))
 
 (defmethod datamunge:abline-v ((self datamunge:r-plot) &rest args)
   "Adds a vertical reference line at x = `x_value`, like R's `abline(v = x_value)`.
@@ -18887,7 +18893,7 @@ See also: abline(), abline_h()
     color  rgb  Line color (default opaque black).
     stroke-width  double-float  Line width in pixels (default 1).
     → This plot, for chaining."
-  (call 1042 (cons self args)))
+  (call 1060 (cons self args)))
 
 (defmethod datamunge:qqline ((self datamunge:r-plot) &rest args)
   "Adds the reference line of a normal Q-Q plot, like R's `qqline(y)`: the line
@@ -18927,7 +18933,7 @@ See also: qqnorm(), abline()
     color  rgb  Line color (default red `{220, 38, 38}`).
     stroke-width  double-float  Line width in pixels (default 1.5).
     → This plot, for chaining."
-  (call 1043 (cons self args)))
+  (call 1061 (cons self args)))
 
 (defmethod datamunge:legend ((self datamunge:r-plot) &rest args)
   "Adds manual legend rows, like R's `legend(legend = labels, col = colors)`.
@@ -18962,7 +18968,7 @@ See also: dm::legend() for the recycling, pipe-friendly layer.
     labels  (vector string)  Row texts, in display order.
     colors  (vector rgb)  Swatch colors, one per label.
     → This plot, for chaining."
-  (call 1044 (cons self args)))
+  (call 1062 (cons self args)))
 
 (defmethod datamunge:text ((self datamunge:r-plot) &rest args)
   "Draws `label` centered on the data point (`x`, `y`), like R's
@@ -18994,7 +19000,7 @@ See also: pie(), legend()
     color  rgb  Text color (default near-black `{17, 24, 39}`).
     font-size  double-float  Font size in pixels (default 14).
     → This plot, for chaining."
-  (call 1045 (cons self args)))
+  (call 1063 (cons self args)))
 
 (defmethod datamunge:polygon ((self datamunge:r-plot) &rest args)
   "Draws the closed polygon through the vertices (x[i], y[i]), like R's
@@ -19029,7 +19035,7 @@ See also: pie(), segments()
     color  rgb  Fill (and outline) color (default blue `{37, 99, 235}`).
     filled  boolean  True (the default) fills; false draws the outline only.
     → This plot, for chaining."
-  (call 1046 (cons self args)))
+  (call 1064 (cons self args)))
 
 (defmethod datamunge:image ((self datamunge:r-plot) &rest args)
   "Draws a grid of coloured rectangles, one per value of `z`, like R's `image(x, y, z)`.
@@ -19063,7 +19069,7 @@ See also: terrain_colors(), polygon()
     z-min  double-float  Value mapped to the first colour; NaN (the default) uses the smallest z.
     z-max  double-float  Value mapped to the last colour; NaN (the default) uses the largest z.
     → This plot, for chaining."
-  (call 1047 (cons self args)))
+  (call 1065 (cons self args)))
 
 (defmethod datamunge:segments ((self datamunge:r-plot) &rest args)
   "Draws one straight segment from (x0[i], y0[i]) to (x1[i], y1[i]) for each i, like
@@ -19099,7 +19105,7 @@ See also: abline(), polygon()
     color  rgb  Segment color (default opaque black).
     stroke-width  double-float  Segment width in pixels (default 1).
     → This plot, for chaining."
-  (call 1048 (cons self args)))
+  (call 1066 (cons self args)))
 
 (defmethod datamunge:add ((self datamunge:r-layout) &rest args)
   "Copies `panel` into the next free cell, filling rows left to right, top to bottom.
@@ -19127,7 +19133,7 @@ See also: panel(), panel_count()
   (add r-layout panel) → r-layout
     panel  plot  The plot to add; any RPlot (or other Plot) converts.
     → This layout, for chaining."
-  (call 1051 (cons self args)))
+  (call 1069 (cons self args)))
 
 (defmethod datamunge:size ((self datamunge:r-layout) &rest args)
   "Sets the size of the whole figure in pixels (default 960 by 640).
@@ -19145,7 +19151,7 @@ See also: title()
     width  integer  Figure width in pixels.
     height  integer  Figure height in pixels, including the title band.
     → This layout, for chaining."
-  (call 1052 (cons self args)))
+  (call 1070 (cons self args)))
 
 (defmethod datamunge:title ((self datamunge:r-layout) &rest args)
   "Sets an optional figure-level heading drawn in a band above the panels, like R's
@@ -19164,49 +19170,49 @@ See also: title_text()
   (title r-layout value*) → r-layout
     value*  string  Heading text; the band is title_band_px pixels tall.
     → This layout, for chaining."
-  (call 1053 (cons self args)))
+  (call 1071 (cons self args)))
 
 (defmethod datamunge:rows ((self datamunge:r-layout) &rest args)
   "Returns the number of panel rows given to create().
 
   (rows r-layout) → integer
     → Row count (at least 1)."
-  (call 1054 (cons self args)))
+  (call 1072 (cons self args)))
 
 (defmethod datamunge:cols ((self datamunge:r-layout) &rest args)
   "Returns the number of panel columns given to create().
 
   (cols r-layout) → integer
     → Column count (at least 1)."
-  (call 1055 (cons self args)))
+  (call 1073 (cons self args)))
 
 (defmethod datamunge:width ((self datamunge:r-layout) &rest args)
   "Returns the figure width in pixels.
 
   (width r-layout) → integer
     → Width set by size() (default 960)."
-  (call 1056 (cons self args)))
+  (call 1074 (cons self args)))
 
 (defmethod datamunge:height ((self datamunge:r-layout) &rest args)
   "Returns the figure height in pixels.
 
   (height r-layout) → integer
     → Height set by size() (default 640)."
-  (call 1057 (cons self args)))
+  (call 1075 (cons self args)))
 
 (defmethod datamunge:panel-count ((self datamunge:r-layout) &rest args)
   "Returns how many panels have been added.
 
   (panel-count r-layout) → integer
     → Panel count, at most rows() * cols()."
-  (call 1058 (cons self args)))
+  (call 1076 (cons self args)))
 
 (defmethod datamunge:title-text ((self datamunge:r-layout) &rest args)
   "Borrows the figure-level heading for the lifetime of this layout.
 
   (title-text r-layout) → string
     → The title; empty (the default) when none is drawn."
-  (call 1059 (cons self args)))
+  (call 1077 (cons self args)))
 
 (defmethod datamunge:panel ((self datamunge:r-layout) &rest args)
   "Borrows the copy of the `index-th` added panel.
@@ -19224,7 +19230,7 @@ Errors (signalled as datamunge:native-error):
   (panel r-layout index) → plot
     index  integer  Zero-based panel index, in the order panels were added.
     → The stored copy, valid until the next add() or the layout's destruction."
-  (call 1060 (cons self args)))
+  (call 1078 (cons self args)))
 
 (defmethod datamunge:to-svg ((self datamunge:r-layout) &rest args)
   "Renders the multi-panel figure as a standalone SVG document and returns it as a string.
@@ -19243,7 +19249,7 @@ See also: save()
 
   (to-svg r-layout) → string
     → The complete SVG text."
-  (call 1061 (cons self args)))
+  (call 1079 (cons self args)))
 
 (defmethod datamunge:save ((self datamunge:r-layout) &rest args)
   "Saves the figure, choosing the format from the extension: `.svg` (or none) writes
@@ -19264,7 +19270,7 @@ See also: save_svg(), to_svg(), show()
 
   (save r-layout path)
     path  string  Destination file."
-  (call 1062 (cons self args)))
+  (call 1080 (cons self args)))
 
 (defmethod datamunge:save-svg ((self datamunge:r-layout) &rest args)
   "Writes to_svg() to `path` regardless of its extension.
@@ -19276,7 +19282,7 @@ See also: save()
 
   (save-svg r-layout path)
     path  string  Destination file; an existing file is overwritten."
-  (call 1063 (cons self args)))
+  (call 1081 (cons self args)))
 
 (defmethod datamunge:to-png ((self datamunge:r-layout) &rest args)
   "Renders the tiled figure as PNG image bytes (the raster save() writes for `.png`).
@@ -19288,7 +19294,7 @@ See also: save_png(), to_svg()
 
   (to-png r-layout) → (vector integer)
     → The complete PNG file contents."
-  (call 1064 (cons self args)))
+  (call 1082 (cons self args)))
 
 (defmethod datamunge:to-pdf ((self datamunge:r-layout) &rest args)
   "Renders the tiled figure as a one-page PDF holding the raster image.
@@ -19300,7 +19306,7 @@ See also: save_pdf(), to_png()
 
   (to-pdf r-layout) → (vector integer)
     → The complete PDF file contents."
-  (call 1065 (cons self args)))
+  (call 1083 (cons self args)))
 
 (defmethod datamunge:save-png ((self datamunge:r-layout) &rest args)
   "Writes to_png() to `path` regardless of its extension.
@@ -19310,7 +19316,7 @@ Errors (signalled as datamunge:native-error):
 
   (save-png r-layout path)
     path  string  Destination file; an existing file is overwritten."
-  (call 1066 (cons self args)))
+  (call 1084 (cons self args)))
 
 (defmethod datamunge:save-pdf ((self datamunge:r-layout) &rest args)
   "Writes to_pdf() to `path` regardless of its extension.
@@ -19320,7 +19326,7 @@ Errors (signalled as datamunge:native-error):
 
   (save-pdf r-layout path)
     path  string  Destination file; an existing file is overwritten."
-  (call 1067 (cons self args)))
+  (call 1085 (cons self args)))
 
 (defmethod datamunge:fit-panels ((self datamunge:r-layout) &rest args)
   "Resizes every stored panel's canvas to its cell, so text keeps its pixel size
@@ -19346,7 +19352,7 @@ See also: size()
 
   (fit-panels r-layout) → r-layout
     → This layout, for chaining."
-  (call 1068 (cons self args)))
+  (call 1086 (cons self args)))
 
 (defmethod datamunge:show ((self datamunge:r-layout) &rest args)
   "Opens the tiled figure in the interactive X11 viewer; the toolbar zoom/pan buttons
@@ -19372,7 +19378,7 @@ See also: save(), Plot::show()
 
   (show r-layout &optional (title-hint \"\"))
     title-hint  string  Window title; empty (the default) uses title_text()."
-  (call 1069 (cons self args)))
+  (call 1087 (cons self args)))
 
 (defmethod datamunge:view ((self datamunge:r-layout) &rest args)
   "Same as show(); kept as an alias for older code.
@@ -19385,16 +19391,16 @@ See also: show()
 
   (view r-layout &optional (title-hint \"\"))
     title-hint  string  Window title; empty (the default) uses title_text()."
-  (call 1070 (cons self args)))
+  (call 1088 (cons self args)))
 
 (defmethod datamunge:distance ((self datamunge:dtw-result) &rest args)
   "Finite nonnegative summed absolute loss for a computed result.
 
   (distance dtw-result) → double-float
   (setf (distance dtw-result) double-float)"
-  (call 1074 (cons self args)))
+  (call 1092 (cons self args)))
 (defmethod (setf datamunge:distance) (value (self datamunge:dtw-result) &rest args)
-  (call 1075 (list* self value args))
+  (call 1093 (list* self value args))
   value)
 
 (defmethod datamunge:path-a ((self datamunge:dtw-result) &rest args)
@@ -19402,9 +19408,9 @@ See also: show()
 
   (path-a dtw-result) → (vector integer)
   (setf (path-a dtw-result) (vector integer))"
-  (call 1076 (cons self args)))
+  (call 1094 (cons self args)))
 (defmethod (setf datamunge:path-a) (value (self datamunge:dtw-result) &rest args)
-  (call 1077 (list* self value args))
+  (call 1095 (list* self value args))
   value)
 
 (defmethod datamunge:path-b ((self datamunge:dtw-result) &rest args)
@@ -19412,9 +19418,9 @@ See also: show()
 
   (path-b dtw-result) → (vector integer)
   (setf (path-b dtw-result) (vector integer))"
-  (call 1078 (cons self args)))
+  (call 1096 (cons self args)))
 (defmethod (setf datamunge:path-b) (value (self datamunge:dtw-result) &rest args)
-  (call 1079 (list* self value args))
+  (call 1097 (list* self value args))
   value)
 
 (defmethod datamunge:cells ((self datamunge:dtw-work) &rest args)
@@ -19422,9 +19428,9 @@ See also: show()
 
   (cells dtw-work) → integer
   (setf (cells dtw-work) integer)"
-  (call 1081 (cons self args)))
+  (call 1099 (cons self args)))
 (defmethod (setf datamunge:cells) (value (self datamunge:dtw-work) &rest args)
-  (call 1082 (list* self value args))
+  (call 1100 (list* self value args))
   value)
 
 (defmethod datamunge:predecessor-reads ((self datamunge:dtw-work) &rest args)
@@ -19432,9 +19438,9 @@ See also: show()
 
   (predecessor-reads dtw-work) → integer
   (setf (predecessor-reads dtw-work) integer)"
-  (call 1083 (cons self args)))
+  (call 1101 (cons self args)))
 (defmethod (setf datamunge:predecessor-reads) (value (self datamunge:dtw-work) &rest args)
-  (call 1084 (list* self value args))
+  (call 1102 (list* self value args))
   value)
 
 (defmethod datamunge:traceback-steps ((self datamunge:dtw-work) &rest args)
@@ -19442,9 +19448,9 @@ See also: show()
 
   (traceback-steps dtw-work) → integer
   (setf (traceback-steps dtw-work) integer)"
-  (call 1085 (cons self args)))
+  (call 1103 (cons self args)))
 (defmethod (setf datamunge:traceback-steps) (value (self datamunge:dtw-work) &rest args)
-  (call 1086 (list* self value args))
+  (call 1104 (list* self value args))
   value)
 
 (defmethod datamunge:result ((self datamunge:dtw-computation) &rest args)
@@ -19452,9 +19458,9 @@ See also: show()
 
   (result dtw-computation) → dtw-result
   (setf (result dtw-computation) dtw-result)"
-  (call 1088 (cons self args)))
+  (call 1106 (cons self args)))
 (defmethod (setf datamunge:result) (value (self datamunge:dtw-computation) &rest args)
-  (call 1089 (list* self value args))
+  (call 1107 (list* self value args))
   value)
 
 (defmethod datamunge:work ((self datamunge:dtw-computation) &rest args)
@@ -19462,9 +19468,9 @@ See also: show()
 
   (work dtw-computation) → dtw-work
   (setf (work dtw-computation) dtw-work)"
-  (call 1090 (cons self args)))
+  (call 1108 (cons self args)))
 (defmethod (setf datamunge:work) (value (self datamunge:dtw-computation) &rest args)
-  (call 1091 (list* self value args))
+  (call 1109 (list* self value args))
   value)
 
 (defmethod datamunge:a ((self datamunge:dtw-trace) &rest args)
@@ -19472,9 +19478,9 @@ See also: show()
 
   (a dtw-trace) → (vector double-float)
   (setf (a dtw-trace) (vector double-float))"
-  (call 1093 (cons self args)))
+  (call 1111 (cons self args)))
 (defmethod (setf datamunge:a) (value (self datamunge:dtw-trace) &rest args)
-  (call 1094 (list* self value args))
+  (call 1112 (list* self value args))
   value)
 
 (defmethod datamunge:b ((self datamunge:dtw-trace) &rest args)
@@ -19482,9 +19488,9 @@ See also: show()
 
   (b dtw-trace) → (vector double-float)
   (setf (b dtw-trace) (vector double-float))"
-  (call 1095 (cons self args)))
+  (call 1113 (cons self args)))
 (defmethod (setf datamunge:b) (value (self datamunge:dtw-trace) &rest args)
-  (call 1096 (list* self value args))
+  (call 1114 (list* self value args))
   value)
 
 (defmethod datamunge:cumulative ((self datamunge:dtw-trace) &rest args)
@@ -19492,9 +19498,9 @@ See also: show()
 
   (cumulative dtw-trace) → (vector double-float)
   (setf (cumulative dtw-trace) (vector double-float))"
-  (call 1097 (cons self args)))
+  (call 1115 (cons self args)))
 (defmethod (setf datamunge:cumulative) (value (self datamunge:dtw-trace) &rest args)
-  (call 1098 (list* self value args))
+  (call 1116 (list* self value args))
   value)
 
 (defmethod datamunge:predecessors ((self datamunge:dtw-trace) &rest args)
@@ -19502,9 +19508,9 @@ See also: show()
 
   (predecessors dtw-trace) → (vector dtw-predecessor)
   (setf (predecessors dtw-trace) (vector dtw-predecessor))"
-  (call 1099 (cons self args)))
+  (call 1117 (cons self args)))
 (defmethod (setf datamunge:predecessors) (value (self datamunge:dtw-trace) &rest args)
-  (call 1100 (list* self value args))
+  (call 1118 (list* self value args))
   value)
 
 (defmethod datamunge:result ((self datamunge:dtw-trace) &rest args)
@@ -19512,9 +19518,9 @@ See also: show()
 
   (result dtw-trace) → dtw-result
   (setf (result dtw-trace) dtw-result)"
-  (call 1101 (cons self args)))
+  (call 1119 (cons self args)))
 (defmethod (setf datamunge:result) (value (self datamunge:dtw-trace) &rest args)
-  (call 1102 (list* self value args))
+  (call 1120 (list* self value args))
   value)
 
 (defmethod datamunge:work ((self datamunge:dtw-trace) &rest args)
@@ -19522,9 +19528,9 @@ See also: show()
 
   (work dtw-trace) → dtw-work
   (setf (work dtw-trace) dtw-work)"
-  (call 1103 (cons self args)))
+  (call 1121 (cons self args)))
 (defmethod (setf datamunge:work) (value (self datamunge:dtw-trace) &rest args)
-  (call 1104 (list* self value args))
+  (call 1122 (list* self value args))
   value)
 
 (defmethod datamunge:captured-entries ((self datamunge:dtw-trace) &rest args)
@@ -19532,29 +19538,29 @@ See also: show()
 
   (captured-entries dtw-trace) → integer
   (setf (captured-entries dtw-trace) integer)"
-  (call 1105 (cons self args)))
+  (call 1123 (cons self args)))
 (defmethod (setf datamunge:captured-entries) (value (self datamunge:dtw-trace) &rest args)
-  (call 1106 (list* self value args))
+  (call 1124 (list* self value args))
   value)
 
 (defmethod datamunge:empty ((self datamunge:kd-tree2-d) &rest args)
   "C++ datamunge::geometry::KDTree2D::empty.
 
   (empty kd-tree2-d) → boolean"
-  (call 1108 (cons self args)))
+  (call 1126 (cons self args)))
 
 (defmethod datamunge:size ((self datamunge:kd-tree2-d) &rest args)
   "C++ datamunge::geometry::KDTree2D::size.
 
   (size kd-tree2-d) → integer"
-  (call 1109 (cons self args)))
+  (call 1127 (cons self args)))
 
 (defmethod datamunge:nearest ((self datamunge:kd-tree2-d) &rest args)
   "The closest point to `query`. Throws std::logic_error if the tree is empty.
 
   (nearest kd-tree2-d query) → point2-d
     query  point2-d"
-  (call 1110 (cons self args)))
+  (call 1128 (cons self args)))
 
 (defmethod datamunge:k-nearest ((self datamunge:kd-tree2-d) &rest args)
   "The `k` closest points to `query`, nearest first. Returns fewer than `k`
@@ -19563,7 +19569,7 @@ points if the tree itself has fewer than `k`.
   (k-nearest kd-tree2-d query k) → (vector point2-d)
     query  point2-d
     k  integer"
-  (call 1111 (cons self args)))
+  (call 1129 (cons self args)))
 
 (defmethod datamunge:points-in-radius ((self datamunge:kd-tree2-d) &rest args)
   "All points within `radius` (inclusive) of `query`, in no particular order.
@@ -19571,16 +19577,16 @@ points if the tree itself has fewer than `k`.
   (points-in-radius kd-tree2-d query radius) → (vector point2-d)
     query  point2-d
     radius  double-float"
-  (call 1112 (cons self args)))
+  (call 1130 (cons self args)))
 
 (defmethod datamunge:center ((self datamunge:circle) &rest args)
   "Field center of circle.
 
   (center circle) → point2-d
   (setf (center circle) point2-d)"
-  (call 1114 (cons self args)))
+  (call 1132 (cons self args)))
 (defmethod (setf datamunge:center) (value (self datamunge:circle) &rest args)
-  (call 1115 (list* self value args))
+  (call 1133 (list* self value args))
   value)
 
 (defmethod datamunge:radius ((self datamunge:circle) &rest args)
@@ -19588,9 +19594,9 @@ points if the tree itself has fewer than `k`.
 
   (radius circle) → double-float
   (setf (radius circle) double-float)"
-  (call 1116 (cons self args)))
+  (call 1134 (cons self args)))
 (defmethod (setf datamunge:radius) (value (self datamunge:circle) &rest args)
-  (call 1117 (list* self value args))
+  (call 1135 (list* self value args))
   value)
 
 (defmethod datamunge:a ((self datamunge:diameter-result) &rest args)
@@ -19598,9 +19604,9 @@ points if the tree itself has fewer than `k`.
 
   (a diameter-result) → point2-d
   (setf (a diameter-result) point2-d)"
-  (call 1119 (cons self args)))
+  (call 1137 (cons self args)))
 (defmethod (setf datamunge:a) (value (self datamunge:diameter-result) &rest args)
-  (call 1120 (list* self value args))
+  (call 1138 (list* self value args))
   value)
 
 (defmethod datamunge:b ((self datamunge:diameter-result) &rest args)
@@ -19608,9 +19614,9 @@ points if the tree itself has fewer than `k`.
 
   (b diameter-result) → point2-d
   (setf (b diameter-result) point2-d)"
-  (call 1121 (cons self args)))
+  (call 1139 (cons self args)))
 (defmethod (setf datamunge:b) (value (self datamunge:diameter-result) &rest args)
-  (call 1122 (list* self value args))
+  (call 1140 (list* self value args))
   value)
 
 (defmethod datamunge:distance ((self datamunge:diameter-result) &rest args)
@@ -19618,9 +19624,9 @@ points if the tree itself has fewer than `k`.
 
   (distance diameter-result) → double-float
   (setf (distance diameter-result) double-float)"
-  (call 1123 (cons self args)))
+  (call 1141 (cons self args)))
 (defmethod (setf datamunge:distance) (value (self datamunge:diameter-result) &rest args)
-  (call 1124 (list* self value args))
+  (call 1142 (list* self value args))
   value)
 
 (defmethod datamunge:corners ((self datamunge:minimum-bounding-rectangle) &rest args)
@@ -19629,9 +19635,9 @@ module's polygon convention elsewhere).
 
   (corners minimum-bounding-rectangle) → (vector point2-d)
   (setf (corners minimum-bounding-rectangle) (vector point2-d))"
-  (call 1126 (cons self args)))
+  (call 1144 (cons self args)))
 (defmethod (setf datamunge:corners) (value (self datamunge:minimum-bounding-rectangle) &rest args)
-  (call 1127 (list* self value args))
+  (call 1145 (list* self value args))
   value)
 
 (defmethod datamunge:width ((self datamunge:minimum-bounding-rectangle) &rest args)
@@ -19639,9 +19645,9 @@ module's polygon convention elsewhere).
 
   (width minimum-bounding-rectangle) → double-float
   (setf (width minimum-bounding-rectangle) double-float)"
-  (call 1128 (cons self args)))
+  (call 1146 (cons self args)))
 (defmethod (setf datamunge:width) (value (self datamunge:minimum-bounding-rectangle) &rest args)
-  (call 1129 (list* self value args))
+  (call 1147 (list* self value args))
   value)
 
 (defmethod datamunge:height ((self datamunge:minimum-bounding-rectangle) &rest args)
@@ -19649,9 +19655,9 @@ module's polygon convention elsewhere).
 
   (height minimum-bounding-rectangle) → double-float
   (setf (height minimum-bounding-rectangle) double-float)"
-  (call 1130 (cons self args)))
+  (call 1148 (cons self args)))
 (defmethod (setf datamunge:height) (value (self datamunge:minimum-bounding-rectangle) &rest args)
-  (call 1131 (list* self value args))
+  (call 1149 (list* self value args))
   value)
 
 (defmethod datamunge:area ((self datamunge:minimum-bounding-rectangle) &rest args)
@@ -19659,9 +19665,9 @@ module's polygon convention elsewhere).
 
   (area minimum-bounding-rectangle) → double-float
   (setf (area minimum-bounding-rectangle) double-float)"
-  (call 1132 (cons self args)))
+  (call 1150 (cons self args)))
 (defmethod (setf datamunge:area) (value (self datamunge:minimum-bounding-rectangle) &rest args)
-  (call 1133 (list* self value args))
+  (call 1151 (list* self value args))
   value)
 
 (defmethod datamunge:vertices ((self datamunge:voronoi-diagram) &rest args)
@@ -19672,9 +19678,9 @@ binding-friendly shape).
 
   (vertices voronoi-diagram) → (vector point2-d)
   (setf (vertices voronoi-diagram) (vector point2-d))"
-  (call 1135 (cons self args)))
+  (call 1153 (cons self args)))
 (defmethod (setf datamunge:vertices) (value (self datamunge:voronoi-diagram) &rest args)
-  (call 1136 (list* self value args))
+  (call 1154 (list* self value args))
   value)
 
 (defmethod datamunge:cells ((self datamunge:voronoi-diagram) &rest args)
@@ -19689,9 +19695,9 @@ exactly-duplicated input point).
 
   (cells voronoi-diagram) → (vector (vector point2-d))
   (setf (cells voronoi-diagram) (vector (vector point2-d)))"
-  (call 1137 (cons self args)))
+  (call 1155 (cons self args)))
 (defmethod (setf datamunge:cells) (value (self datamunge:voronoi-diagram) &rest args)
-  (call 1138 (list* self value args))
+  (call 1156 (list* self value args))
   value)
 
 (defmethod datamunge:rows ((self datamunge:linalg-matrix) &rest args)
@@ -19699,21 +19705,21 @@ exactly-duplicated input point).
 
   (rows linalg-matrix) → integer
     → Number of rows."
-  (call 1140 (cons self args)))
+  (call 1158 (cons self args)))
 
 (defmethod datamunge:cols ((self datamunge:linalg-matrix) &rest args)
   "Read the deferred result's column count without evaluating.
 
   (cols linalg-matrix) → integer
     → Number of columns."
-  (call 1141 (cons self args)))
+  (call 1159 (cons self args)))
 
 (defmethod datamunge:is-sparse ((self datamunge:linalg-matrix) &rest args)
   "Inspect the deferred result's storage policy without evaluating.
 
   (is-sparse linalg-matrix) → boolean
     → True for CSR results; inverse actions and solves return dense results."
-  (call 1142 (cons self args)))
+  (call 1160 (cons self args)))
 
 (defmethod datamunge:transpose ((self datamunge:linalg-matrix) &rest args)
   "Form a lazy transpose, retaining shared ownership of this operand.
@@ -19727,7 +19733,7 @@ std::print(\"{}\\n\", A.transpose().rows()); // 2
 
   (transpose linalg-matrix) → linalg-matrix
     → Deferred transpose handle."
-  (call 1143 (cons self args)))
+  (call 1161 (cons self args)))
 
 (defmethod datamunge:multiply ((self datamunge:linalg-matrix) &rest args)
   "Form a lazy matrix product, fusing preceding inverse actions into a solve.
@@ -19746,7 +19752,7 @@ Errors (signalled as datamunge:native-error):
   (multiply linalg-matrix other) → linalg-matrix
     other  linalg-matrix  Right operand, retained by shared ownership.
     → Deferred product or solve handle."
-  (call 1144 (cons self args)))
+  (call 1162 (cons self args)))
 
 (defmethod datamunge:inverse-action ((self datamunge:linalg-matrix) &rest args)
   "Form a deferred square inverse action, without factorisation or inversion.
@@ -19764,7 +19770,7 @@ Errors (signalled as datamunge:native-error):
 
   (inverse-action linalg-matrix) → linalg-matrix
     → Deferred inverse-action handle."
-  (call 1145 (cons self args)))
+  (call 1163 (cons self args)))
 
 (defmethod datamunge:solve ((self datamunge:linalg-matrix) &rest args)
   "Evaluate a square system with LU or a tall least-squares system with QR.
@@ -19783,7 +19789,7 @@ Errors (signalled as datamunge:native-error):
   (solve linalg-matrix rhs) → linalg-matrix
     rhs  linalg-matrix  Matrix of right-hand sides with rows() rows.
     → Owned dense solution snapshot."
-  (call 1146 (cons self args)))
+  (call 1164 (cons self args)))
 
 (defmethod datamunge:eval ((self datamunge:linalg-matrix) &rest args)
   "Evaluate once into an owned snapshot with no deferred operands.
@@ -19802,7 +19808,7 @@ Errors (signalled as datamunge:native-error):
 
   (eval linalg-matrix) → linalg-matrix
     → Materialised matrix handle, sharing immutable storage when already concrete."
-  (call 1147 (cons self args)))
+  (call 1165 (cons self args)))
 
 (defmethod datamunge:values ((self datamunge:linalg-matrix) &rest args)
   "Evaluate and copy all coefficients in row-major order.
@@ -19820,7 +19826,7 @@ Errors (signalled as datamunge:native-error):
 
   (values linalg-matrix) → (vector double-float)
     → Dense vector, including sparse zeros."
-  (call 1148 (cons self args)))
+  (call 1166 (cons self args)))
 
 (defmethod datamunge:text ((self datamunge:linalg-matrix) &rest args)
   "Evaluate once and produce the native capped Mat/SpMat preview.
@@ -19841,7 +19847,7 @@ Errors (signalled as datamunge:native-error):
 
   (text linalg-matrix) → string
     → Shape, storage information and at most ten rows/eight columns."
-  (call 1149 (cons self args)))
+  (call 1167 (cons self args)))
 
 (defmethod datamunge:evaluate ((self datamunge:rhs) &rest args)
   "C++ datamunge::ode::RHS::evaluate.
@@ -19849,16 +19855,16 @@ Errors (signalled as datamunge:native-error):
   (evaluate rhs t-arg y) → (vector double-float)
     t-arg  double-float
     y  (vector double-float)"
-  (call 1151 (cons self args)))
+  (call 1169 (cons self args)))
 
 (defmethod datamunge:method ((self datamunge:ode-options) &rest args)
   "Field method of ode-options.
 
   (method ode-options) → step-method
   (setf (method ode-options) step-method)"
-  (call 1153 (cons self args)))
+  (call 1171 (cons self args)))
 (defmethod (setf datamunge:method) (value (self datamunge:ode-options) &rest args)
-  (call 1154 (list* self value args))
+  (call 1172 (list* self value args))
   value)
 
 (defmethod datamunge:multistep-order ((self datamunge:ode-options) &rest args)
@@ -19866,9 +19872,9 @@ Errors (signalled as datamunge:native-error):
 
   (multistep-order ode-options) → integer
   (setf (multistep-order ode-options) integer)"
-  (call 1155 (cons self args)))
+  (call 1173 (cons self args)))
 (defmethod (setf datamunge:multistep-order) (value (self datamunge:ode-options) &rest args)
-  (call 1156 (list* self value args))
+  (call 1174 (list* self value args))
   value)
 
 (defmethod datamunge:step-size ((self datamunge:ode-options) &rest args)
@@ -19877,9 +19883,9 @@ Errors (signalled as datamunge:native-error):
 
   (step-size ode-options) → double-float
   (setf (step-size ode-options) double-float)"
-  (call 1157 (cons self args)))
+  (call 1175 (cons self args)))
 (defmethod (setf datamunge:step-size) (value (self datamunge:ode-options) &rest args)
-  (call 1158 (list* self value args))
+  (call 1176 (list* self value args))
   value)
 
 (defmethod datamunge:abs-tol ((self datamunge:ode-options) &rest args)
@@ -19887,9 +19893,9 @@ Errors (signalled as datamunge:native-error):
 
   (abs-tol ode-options) → double-float
   (setf (abs-tol ode-options) double-float)"
-  (call 1159 (cons self args)))
+  (call 1177 (cons self args)))
 (defmethod (setf datamunge:abs-tol) (value (self datamunge:ode-options) &rest args)
-  (call 1160 (list* self value args))
+  (call 1178 (list* self value args))
   value)
 
 (defmethod datamunge:rel-tol ((self datamunge:ode-options) &rest args)
@@ -19897,9 +19903,9 @@ Errors (signalled as datamunge:native-error):
 
   (rel-tol ode-options) → double-float
   (setf (rel-tol ode-options) double-float)"
-  (call 1161 (cons self args)))
+  (call 1179 (cons self args)))
 (defmethod (setf datamunge:rel-tol) (value (self datamunge:ode-options) &rest args)
-  (call 1162 (list* self value args))
+  (call 1180 (list* self value args))
   value)
 
 (defmethod datamunge:max-step ((self datamunge:ode-options) &rest args)
@@ -19907,39 +19913,39 @@ Errors (signalled as datamunge:native-error):
 
   (max-step ode-options) → double-float
   (setf (max-step ode-options) double-float)"
-  (call 1163 (cons self args)))
+  (call 1181 (cons self args)))
 (defmethod (setf datamunge:max-step) (value (self datamunge:ode-options) &rest args)
-  (call 1164 (list* self value args))
+  (call 1182 (list* self value args))
   value)
 
 (defmethod datamunge:size ((self datamunge:ode-solution) &rest args)
   "C++ datamunge::ode::ODESolution::size.
 
   (size ode-solution) → integer"
-  (call 1166 (cons self args)))
+  (call 1184 (cons self args)))
 
 (defmethod datamunge:time-at ((self datamunge:ode-solution) &rest args)
   "C++ datamunge::ode::ODESolution::time_at.
 
   (time-at ode-solution index) → double-float
     index  integer"
-  (call 1167 (cons self args)))
+  (call 1185 (cons self args)))
 
 (defmethod datamunge:state-at ((self datamunge:ode-solution) &rest args)
   "The full state vector at t[index].
 
   (state-at ode-solution index) → (vector double-float)
     index  integer"
-  (call 1168 (cons self args)))
+  (call 1186 (cons self args)))
 
 (defmethod datamunge:steps-taken ((self datamunge:ode-solution) &rest args)
   "Field steps-taken of ode-solution.
 
   (steps-taken ode-solution) → integer
   (setf (steps-taken ode-solution) integer)"
-  (call 1169 (cons self args)))
+  (call 1187 (cons self args)))
 (defmethod (setf datamunge:steps-taken) (value (self datamunge:ode-solution) &rest args)
-  (call 1170 (list* self value args))
+  (call 1188 (list* self value args))
   value)
 
 (defmethod datamunge:function-evaluations ((self datamunge:ode-solution) &rest args)
@@ -19947,9 +19953,9 @@ Errors (signalled as datamunge:native-error):
 
   (function-evaluations ode-solution) → integer
   (setf (function-evaluations ode-solution) integer)"
-  (call 1171 (cons self args)))
+  (call 1189 (cons self args)))
 (defmethod (setf datamunge:function-evaluations) (value (self datamunge:ode-solution) &rest args)
-  (call 1172 (list* self value args))
+  (call 1190 (list* self value args))
   value)
 
 (defmethod datamunge:solve ((self datamunge:ode-solver) &rest args)
@@ -19960,7 +19966,7 @@ Errors (signalled as datamunge:native-error):
     y0  (vector double-float)
     t-start  double-float
     t-end  double-float"
-  (call 1174 (cons self args)))
+  (call 1192 (cons self args)))
 
 (defmethod datamunge:solve-builtin ((self datamunge:ode-solver) &rest args)
   "Same as solve(), but the RHS is one of a fixed set of named systems instead of a
@@ -19980,23 +19986,23 @@ positionally per system (missing entries fall back to the defaults below):
     y0  (vector double-float)
     t-start  double-float
     t-end  double-float"
-  (call 1175 (cons self args)))
+  (call 1193 (cons self args)))
 
 (defmethod datamunge:options ((self datamunge:ode-solver) &rest args)
   "The options this ODESolver was configured with.
 
   (options ode-solver) → ode-options
     → The stored options."
-  (call 1176 (cons self args)))
+  (call 1194 (cons self args)))
 
 (defmethod datamunge:archive-size ((self datamunge:acor-options) &rest args)
   "k: number of solutions kept in the archive.
 
   (archive-size acor-options) → integer
   (setf (archive-size acor-options) integer)"
-  (call 1178 (cons self args)))
+  (call 1196 (cons self args)))
 (defmethod (setf datamunge:archive-size) (value (self datamunge:acor-options) &rest args)
-  (call 1179 (list* self value args))
+  (call 1197 (list* self value args))
   value)
 
 (defmethod datamunge:samples-per-iteration ((self datamunge:acor-options) &rest args)
@@ -20004,9 +20010,9 @@ positionally per system (missing entries fall back to the defaults below):
 
   (samples-per-iteration acor-options) → integer
   (setf (samples-per-iteration acor-options) integer)"
-  (call 1180 (cons self args)))
+  (call 1198 (cons self args)))
 (defmethod (setf datamunge:samples-per-iteration) (value (self datamunge:acor-options) &rest args)
-  (call 1181 (list* self value args))
+  (call 1199 (list* self value args))
   value)
 
 (defmethod datamunge:locality ((self datamunge:acor-options) &rest args)
@@ -20015,9 +20021,9 @@ around the best-ranked archive solutions.
 
   (locality acor-options) → double-float
   (setf (locality acor-options) double-float)"
-  (call 1182 (cons self args)))
+  (call 1200 (cons self args)))
 (defmethod (setf datamunge:locality) (value (self datamunge:acor-options) &rest args)
-  (call 1183 (list* self value args))
+  (call 1201 (list* self value args))
   value)
 
 (defmethod datamunge:convergence-speed ((self datamunge:acor-options) &rest args)
@@ -20026,9 +20032,9 @@ solution, slowing convergence.
 
   (convergence-speed acor-options) → double-float
   (setf (convergence-speed acor-options) double-float)"
-  (call 1184 (cons self args)))
+  (call 1202 (cons self args)))
 (defmethod (setf datamunge:convergence-speed) (value (self datamunge:acor-options) &rest args)
-  (call 1185 (list* self value args))
+  (call 1203 (list* self value args))
   value)
 
 (defmethod datamunge:max-iterations ((self datamunge:acor-options) &rest args)
@@ -20036,9 +20042,9 @@ solution, slowing convergence.
 
   (max-iterations acor-options) → integer
   (setf (max-iterations acor-options) integer)"
-  (call 1186 (cons self args)))
+  (call 1204 (cons self args)))
 (defmethod (setf datamunge:max-iterations) (value (self datamunge:acor-options) &rest args)
-  (call 1187 (list* self value args))
+  (call 1205 (list* self value args))
   value)
 
 (defmethod datamunge:tolerance ((self datamunge:acor-options) &rest args)
@@ -20047,9 +20053,9 @@ iterations.
 
   (tolerance acor-options) → double-float
   (setf (tolerance acor-options) double-float)"
-  (call 1188 (cons self args)))
+  (call 1206 (cons self args)))
 (defmethod (setf datamunge:tolerance) (value (self datamunge:acor-options) &rest args)
-  (call 1189 (list* self value args))
+  (call 1207 (list* self value args))
   value)
 
 (defmethod datamunge:seed ((self datamunge:acor-options) &rest args)
@@ -20057,9 +20063,9 @@ iterations.
 
   (seed acor-options) → integer
   (setf (seed acor-options) integer)"
-  (call 1190 (cons self args)))
+  (call 1208 (cons self args)))
 (defmethod (setf datamunge:seed) (value (self datamunge:acor-options) &rest args)
-  (call 1191 (list* self value args))
+  (call 1209 (list* self value args))
   value)
 
 (defmethod datamunge:optimize ((self datamunge:acor) &rest args)
@@ -20072,23 +20078,23 @@ initial `coordinates` (clamped into bounds) seed one member of the archive.
     coordinates  (vector double-float)
     lower-bound  (vector double-float)
     upper-bound  (vector double-float)"
-  (call 1193 (cons self args)))
+  (call 1211 (cons self args)))
 
 (defmethod datamunge:options ((self datamunge:acor) &rest args)
   "The options this ACOR was configured with.
 
   (options acor) → acor-options
     → The stored options."
-  (call 1194 (cons self args)))
+  (call 1212 (cons self args)))
 
 (defmethod datamunge:step-size ((self datamunge:adam-options) &rest args)
   "Fixed learning-rate/initial search step; use the objective scaling stated by optimize(). Default 0.001.
 
   (step-size adam-options) → double-float
   (setf (step-size adam-options) double-float)"
-  (call 1196 (cons self args)))
+  (call 1214 (cons self args)))
 (defmethod (setf datamunge:step-size) (value (self datamunge:adam-options) &rest args)
-  (call 1197 (list* self value args))
+  (call 1215 (list* self value args))
   value)
 
 (defmethod datamunge:beta1 ((self datamunge:adam-options) &rest args)
@@ -20096,9 +20102,9 @@ initial `coordinates` (clamped into bounds) seed one member of the archive.
 
   (beta1 adam-options) → double-float
   (setf (beta1 adam-options) double-float)"
-  (call 1198 (cons self args)))
+  (call 1216 (cons self args)))
 (defmethod (setf datamunge:beta1) (value (self datamunge:adam-options) &rest args)
-  (call 1199 (list* self value args))
+  (call 1217 (list* self value args))
   value)
 
 (defmethod datamunge:beta2 ((self datamunge:adam-options) &rest args)
@@ -20106,9 +20112,9 @@ initial `coordinates` (clamped into bounds) seed one member of the archive.
 
   (beta2 adam-options) → double-float
   (setf (beta2 adam-options) double-float)"
-  (call 1200 (cons self args)))
+  (call 1218 (cons self args)))
 (defmethod (setf datamunge:beta2) (value (self datamunge:adam-options) &rest args)
-  (call 1201 (list* self value args))
+  (call 1219 (list* self value args))
   value)
 
 (defmethod datamunge:epsilon ((self datamunge:adam-options) &rest args)
@@ -20116,9 +20122,9 @@ initial `coordinates` (clamped into bounds) seed one member of the archive.
 
   (epsilon adam-options) → double-float
   (setf (epsilon adam-options) double-float)"
-  (call 1202 (cons self args)))
+  (call 1220 (cons self args)))
 (defmethod (setf datamunge:epsilon) (value (self datamunge:adam-options) &rest args)
-  (call 1203 (list* self value args))
+  (call 1221 (list* self value args))
   value)
 
 (defmethod datamunge:max-iterations ((self datamunge:adam-options) &rest args)
@@ -20126,9 +20132,9 @@ initial `coordinates` (clamped into bounds) seed one member of the archive.
 
   (max-iterations adam-options) → integer
   (setf (max-iterations adam-options) integer)"
-  (call 1204 (cons self args)))
+  (call 1222 (cons self args)))
 (defmethod (setf datamunge:max-iterations) (value (self datamunge:adam-options) &rest args)
-  (call 1205 (list* self value args))
+  (call 1223 (list* self value args))
   value)
 
 (defmethod datamunge:tolerance ((self datamunge:adam-options) &rest args)
@@ -20136,9 +20142,9 @@ initial `coordinates` (clamped into bounds) seed one member of the archive.
 
   (tolerance adam-options) → double-float
   (setf (tolerance adam-options) double-float)"
-  (call 1206 (cons self args)))
+  (call 1224 (cons self args)))
 (defmethod (setf datamunge:tolerance) (value (self datamunge:adam-options) &rest args)
-  (call 1207 (list* self value args))
+  (call 1225 (list* self value args))
   value)
 
 (defmethod datamunge:optimize ((self datamunge:adam) &rest args)
@@ -20164,23 +20170,23 @@ See also: trace_optimize(), AdamOptions
     function  differentiable-function  Borrowed DifferentiableFunction with matching finite output shapes.
     coordinates  (vector double-float)  Owned-by-caller finite start; overwritten with the native returned point.
     → Objective at the native returned coordinates; not a stop-status code."
-  (call 1209 (cons self args)))
+  (call 1227 (cons self args)))
 
 (defmethod datamunge:options ((self datamunge:adam) &rest args)
   "Borrow this optimizer's stored configuration.
 
   (options adam) → adam-options
     → Const option reference, valid during this object's lifetime; no mutation."
-  (call 1210 (cons self args)))
+  (call 1228 (cons self args)))
 
 (defmethod datamunge:step-size ((self datamunge:ada-grad-options) &rest args)
   "Fixed learning-rate/initial search step; use the objective scaling stated by optimize(). Default 0.01.
 
   (step-size ada-grad-options) → double-float
   (setf (step-size ada-grad-options) double-float)"
-  (call 1212 (cons self args)))
+  (call 1230 (cons self args)))
 (defmethod (setf datamunge:step-size) (value (self datamunge:ada-grad-options) &rest args)
-  (call 1213 (list* self value args))
+  (call 1231 (list* self value args))
   value)
 
 (defmethod datamunge:epsilon ((self datamunge:ada-grad-options) &rest args)
@@ -20188,9 +20194,9 @@ See also: trace_optimize(), AdamOptions
 
   (epsilon ada-grad-options) → double-float
   (setf (epsilon ada-grad-options) double-float)"
-  (call 1214 (cons self args)))
+  (call 1232 (cons self args)))
 (defmethod (setf datamunge:epsilon) (value (self datamunge:ada-grad-options) &rest args)
-  (call 1215 (list* self value args))
+  (call 1233 (list* self value args))
   value)
 
 (defmethod datamunge:max-iterations ((self datamunge:ada-grad-options) &rest args)
@@ -20198,9 +20204,9 @@ See also: trace_optimize(), AdamOptions
 
   (max-iterations ada-grad-options) → integer
   (setf (max-iterations ada-grad-options) integer)"
-  (call 1216 (cons self args)))
+  (call 1234 (cons self args)))
 (defmethod (setf datamunge:max-iterations) (value (self datamunge:ada-grad-options) &rest args)
-  (call 1217 (list* self value args))
+  (call 1235 (list* self value args))
   value)
 
 (defmethod datamunge:tolerance ((self datamunge:ada-grad-options) &rest args)
@@ -20208,9 +20214,9 @@ See also: trace_optimize(), AdamOptions
 
   (tolerance ada-grad-options) → double-float
   (setf (tolerance ada-grad-options) double-float)"
-  (call 1218 (cons self args)))
+  (call 1236 (cons self args)))
 (defmethod (setf datamunge:tolerance) (value (self datamunge:ada-grad-options) &rest args)
-  (call 1219 (list* self value args))
+  (call 1237 (list* self value args))
   value)
 
 (defmethod datamunge:optimize ((self datamunge:ada-grad) &rest args)
@@ -20237,23 +20243,23 @@ See also: trace_optimize(), AdaGradOptions
     function  differentiable-function  Borrowed DifferentiableFunction with matching finite output shapes.
     coordinates  (vector double-float)  Owned-by-caller finite start; overwritten with the native returned point.
     → Objective at the native returned coordinates; not a stop-status code."
-  (call 1221 (cons self args)))
+  (call 1239 (cons self args)))
 
 (defmethod datamunge:options ((self datamunge:ada-grad) &rest args)
   "Borrow this optimizer's stored configuration.
 
   (options ada-grad) → ada-grad-options
     → Const option reference, valid during this object's lifetime; no mutation."
-  (call 1222 (cons self args)))
+  (call 1240 (cons self args)))
 
 (defmethod datamunge:decay-rate ((self datamunge:ada-delta-options) &rest args)
   "Squared-history exponential decay in [0,1). Default 0.95.
 
   (decay-rate ada-delta-options) → double-float
   (setf (decay-rate ada-delta-options) double-float)"
-  (call 1224 (cons self args)))
+  (call 1242 (cons self args)))
 (defmethod (setf datamunge:decay-rate) (value (self datamunge:ada-delta-options) &rest args)
-  (call 1225 (list* self value args))
+  (call 1243 (list* self value args))
   value)
 
 (defmethod datamunge:epsilon ((self datamunge:ada-delta-options) &rest args)
@@ -20261,9 +20267,9 @@ See also: trace_optimize(), AdaGradOptions
 
   (epsilon ada-delta-options) → double-float
   (setf (epsilon ada-delta-options) double-float)"
-  (call 1226 (cons self args)))
+  (call 1244 (cons self args)))
 (defmethod (setf datamunge:epsilon) (value (self datamunge:ada-delta-options) &rest args)
-  (call 1227 (list* self value args))
+  (call 1245 (list* self value args))
   value)
 
 (defmethod datamunge:max-iterations ((self datamunge:ada-delta-options) &rest args)
@@ -20271,9 +20277,9 @@ See also: trace_optimize(), AdaGradOptions
 
   (max-iterations ada-delta-options) → integer
   (setf (max-iterations ada-delta-options) integer)"
-  (call 1228 (cons self args)))
+  (call 1246 (cons self args)))
 (defmethod (setf datamunge:max-iterations) (value (self datamunge:ada-delta-options) &rest args)
-  (call 1229 (list* self value args))
+  (call 1247 (list* self value args))
   value)
 
 (defmethod datamunge:tolerance ((self datamunge:ada-delta-options) &rest args)
@@ -20281,9 +20287,9 @@ See also: trace_optimize(), AdaGradOptions
 
   (tolerance ada-delta-options) → double-float
   (setf (tolerance ada-delta-options) double-float)"
-  (call 1230 (cons self args)))
+  (call 1248 (cons self args)))
 (defmethod (setf datamunge:tolerance) (value (self datamunge:ada-delta-options) &rest args)
-  (call 1231 (list* self value args))
+  (call 1249 (list* self value args))
   value)
 
 (defmethod datamunge:optimize ((self datamunge:ada-delta) &rest args)
@@ -20310,23 +20316,23 @@ See also: trace_optimize(), AdaDeltaOptions
     function  differentiable-function  Borrowed DifferentiableFunction with matching finite output shapes.
     coordinates  (vector double-float)  Owned-by-caller finite start; overwritten with the native returned point.
     → Objective at the native returned coordinates; not a stop-status code."
-  (call 1233 (cons self args)))
+  (call 1251 (cons self args)))
 
 (defmethod datamunge:options ((self datamunge:ada-delta) &rest args)
   "Borrow this optimizer's stored configuration.
 
   (options ada-delta) → ada-delta-options
     → Const option reference, valid during this object's lifetime; no mutation."
-  (call 1234 (cons self args)))
+  (call 1252 (cons self args)))
 
 (defmethod datamunge:step-size ((self datamunge:ams-grad-options) &rest args)
   "Fixed learning-rate/initial search step; use the objective scaling stated by optimize(). Default 0.001.
 
   (step-size ams-grad-options) → double-float
   (setf (step-size ams-grad-options) double-float)"
-  (call 1236 (cons self args)))
+  (call 1254 (cons self args)))
 (defmethod (setf datamunge:step-size) (value (self datamunge:ams-grad-options) &rest args)
-  (call 1237 (list* self value args))
+  (call 1255 (list* self value args))
   value)
 
 (defmethod datamunge:beta1 ((self datamunge:ams-grad-options) &rest args)
@@ -20334,9 +20340,9 @@ See also: trace_optimize(), AdaDeltaOptions
 
   (beta1 ams-grad-options) → double-float
   (setf (beta1 ams-grad-options) double-float)"
-  (call 1238 (cons self args)))
+  (call 1256 (cons self args)))
 (defmethod (setf datamunge:beta1) (value (self datamunge:ams-grad-options) &rest args)
-  (call 1239 (list* self value args))
+  (call 1257 (list* self value args))
   value)
 
 (defmethod datamunge:beta2 ((self datamunge:ams-grad-options) &rest args)
@@ -20344,9 +20350,9 @@ See also: trace_optimize(), AdaDeltaOptions
 
   (beta2 ams-grad-options) → double-float
   (setf (beta2 ams-grad-options) double-float)"
-  (call 1240 (cons self args)))
+  (call 1258 (cons self args)))
 (defmethod (setf datamunge:beta2) (value (self datamunge:ams-grad-options) &rest args)
-  (call 1241 (list* self value args))
+  (call 1259 (list* self value args))
   value)
 
 (defmethod datamunge:epsilon ((self datamunge:ams-grad-options) &rest args)
@@ -20354,9 +20360,9 @@ See also: trace_optimize(), AdaDeltaOptions
 
   (epsilon ams-grad-options) → double-float
   (setf (epsilon ams-grad-options) double-float)"
-  (call 1242 (cons self args)))
+  (call 1260 (cons self args)))
 (defmethod (setf datamunge:epsilon) (value (self datamunge:ams-grad-options) &rest args)
-  (call 1243 (list* self value args))
+  (call 1261 (list* self value args))
   value)
 
 (defmethod datamunge:max-iterations ((self datamunge:ams-grad-options) &rest args)
@@ -20364,9 +20370,9 @@ See also: trace_optimize(), AdaDeltaOptions
 
   (max-iterations ams-grad-options) → integer
   (setf (max-iterations ams-grad-options) integer)"
-  (call 1244 (cons self args)))
+  (call 1262 (cons self args)))
 (defmethod (setf datamunge:max-iterations) (value (self datamunge:ams-grad-options) &rest args)
-  (call 1245 (list* self value args))
+  (call 1263 (list* self value args))
   value)
 
 (defmethod datamunge:tolerance ((self datamunge:ams-grad-options) &rest args)
@@ -20374,9 +20380,9 @@ See also: trace_optimize(), AdaDeltaOptions
 
   (tolerance ams-grad-options) → double-float
   (setf (tolerance ams-grad-options) double-float)"
-  (call 1246 (cons self args)))
+  (call 1264 (cons self args)))
 (defmethod (setf datamunge:tolerance) (value (self datamunge:ams-grad-options) &rest args)
-  (call 1247 (list* self value args))
+  (call 1265 (list* self value args))
   value)
 
 (defmethod datamunge:optimize ((self datamunge:ams-grad) &rest args)
@@ -20403,14 +20409,14 @@ See also: trace_optimize(), AMSGradOptions
     function  differentiable-function  Borrowed DifferentiableFunction with matching finite output shapes.
     coordinates  (vector double-float)  Owned-by-caller finite start; overwritten with the native returned point.
     → Objective at the native returned coordinates; not a stop-status code."
-  (call 1249 (cons self args)))
+  (call 1267 (cons self args)))
 
 (defmethod datamunge:options ((self datamunge:ams-grad) &rest args)
   "Borrow this optimizer's stored configuration.
 
   (options ams-grad) → ams-grad-options
     → Const option reference, valid during this object's lifetime; no mutation."
-  (call 1250 (cons self args)))
+  (call 1268 (cons self args)))
 
 (defmethod datamunge:population-size ((self datamunge:artificial-bee-colony-options) &rest args)
   "Number of food sources; also the number of employed bees and the number of
@@ -20418,9 +20424,9 @@ onlooker bees.
 
   (population-size artificial-bee-colony-options) → integer
   (setf (population-size artificial-bee-colony-options) integer)"
-  (call 1252 (cons self args)))
+  (call 1270 (cons self args)))
 (defmethod (setf datamunge:population-size) (value (self datamunge:artificial-bee-colony-options) &rest args)
-  (call 1253 (list* self value args))
+  (call 1271 (list* self value args))
   value)
 
 (defmethod datamunge:abandonment-limit ((self datamunge:artificial-bee-colony-options) &rest args)
@@ -20430,9 +20436,9 @@ heuristic default of population_size * dimension.
 
   (abandonment-limit artificial-bee-colony-options) → integer
   (setf (abandonment-limit artificial-bee-colony-options) integer)"
-  (call 1254 (cons self args)))
+  (call 1272 (cons self args)))
 (defmethod (setf datamunge:abandonment-limit) (value (self datamunge:artificial-bee-colony-options) &rest args)
-  (call 1255 (list* self value args))
+  (call 1273 (list* self value args))
   value)
 
 (defmethod datamunge:max-generations ((self datamunge:artificial-bee-colony-options) &rest args)
@@ -20440,9 +20446,9 @@ heuristic default of population_size * dimension.
 
   (max-generations artificial-bee-colony-options) → integer
   (setf (max-generations artificial-bee-colony-options) integer)"
-  (call 1256 (cons self args)))
+  (call 1274 (cons self args)))
 (defmethod (setf datamunge:max-generations) (value (self datamunge:artificial-bee-colony-options) &rest args)
-  (call 1257 (list* self value args))
+  (call 1275 (list* self value args))
   value)
 
 (defmethod datamunge:tolerance ((self datamunge:artificial-bee-colony-options) &rest args)
@@ -20451,9 +20457,9 @@ consecutive generations.
 
   (tolerance artificial-bee-colony-options) → double-float
   (setf (tolerance artificial-bee-colony-options) double-float)"
-  (call 1258 (cons self args)))
+  (call 1276 (cons self args)))
 (defmethod (setf datamunge:tolerance) (value (self datamunge:artificial-bee-colony-options) &rest args)
-  (call 1259 (list* self value args))
+  (call 1277 (list* self value args))
   value)
 
 (defmethod datamunge:seed ((self datamunge:artificial-bee-colony-options) &rest args)
@@ -20461,9 +20467,9 @@ consecutive generations.
 
   (seed artificial-bee-colony-options) → integer
   (setf (seed artificial-bee-colony-options) integer)"
-  (call 1260 (cons self args)))
+  (call 1278 (cons self args)))
 (defmethod (setf datamunge:seed) (value (self datamunge:artificial-bee-colony-options) &rest args)
-  (call 1261 (list* self value args))
+  (call 1279 (list* self value args))
   value)
 
 (defmethod datamunge:optimize ((self datamunge:artificial-bee-colony) &rest args)
@@ -20476,23 +20482,23 @@ initial `coordinates` (clamped into bounds) seed one food source.
     coordinates  (vector double-float)
     lower-bound  (vector double-float)
     upper-bound  (vector double-float)"
-  (call 1263 (cons self args)))
+  (call 1281 (cons self args)))
 
 (defmethod datamunge:options ((self datamunge:artificial-bee-colony) &rest args)
   "The options this ArtificialBeeColony was configured with.
 
   (options artificial-bee-colony) → artificial-bee-colony-options
     → The stored options."
-  (call 1264 (cons self args)))
+  (call 1282 (cons self args)))
 
 (defmethod datamunge:step-size ((self datamunge:augmented-lagrangian-options) &rest args)
   "Fixed learning-rate/initial search step; use the objective scaling stated by optimize(). Default 0.01.
 
   (step-size augmented-lagrangian-options) → double-float
   (setf (step-size augmented-lagrangian-options) double-float)"
-  (call 1266 (cons self args)))
+  (call 1284 (cons self args)))
 (defmethod (setf datamunge:step-size) (value (self datamunge:augmented-lagrangian-options) &rest args)
-  (call 1267 (list* self value args))
+  (call 1285 (list* self value args))
   value)
 
 (defmethod datamunge:initial-penalty ((self datamunge:augmented-lagrangian-options) &rest args)
@@ -20500,9 +20506,9 @@ initial `coordinates` (clamped into bounds) seed one food source.
 
   (initial-penalty augmented-lagrangian-options) → double-float
   (setf (initial-penalty augmented-lagrangian-options) double-float)"
-  (call 1268 (cons self args)))
+  (call 1286 (cons self args)))
 (defmethod (setf datamunge:initial-penalty) (value (self datamunge:augmented-lagrangian-options) &rest args)
-  (call 1269 (list* self value args))
+  (call 1287 (list* self value args))
   value)
 
 (defmethod datamunge:max-outer-iterations ((self datamunge:augmented-lagrangian-options) &rest args)
@@ -20510,9 +20516,9 @@ initial `coordinates` (clamped into bounds) seed one food source.
 
   (max-outer-iterations augmented-lagrangian-options) → integer
   (setf (max-outer-iterations augmented-lagrangian-options) integer)"
-  (call 1270 (cons self args)))
+  (call 1288 (cons self args)))
 (defmethod (setf datamunge:max-outer-iterations) (value (self datamunge:augmented-lagrangian-options) &rest args)
-  (call 1271 (list* self value args))
+  (call 1289 (list* self value args))
   value)
 
 (defmethod datamunge:inner-iterations ((self datamunge:augmented-lagrangian-options) &rest args)
@@ -20520,9 +20526,9 @@ initial `coordinates` (clamped into bounds) seed one food source.
 
   (inner-iterations augmented-lagrangian-options) → integer
   (setf (inner-iterations augmented-lagrangian-options) integer)"
-  (call 1272 (cons self args)))
+  (call 1290 (cons self args)))
 (defmethod (setf datamunge:inner-iterations) (value (self datamunge:augmented-lagrangian-options) &rest args)
-  (call 1273 (list* self value args))
+  (call 1291 (list* self value args))
   value)
 
 (defmethod datamunge:tolerance ((self datamunge:augmented-lagrangian-options) &rest args)
@@ -20530,9 +20536,9 @@ initial `coordinates` (clamped into bounds) seed one food source.
 
   (tolerance augmented-lagrangian-options) → double-float
   (setf (tolerance augmented-lagrangian-options) double-float)"
-  (call 1274 (cons self args)))
+  (call 1292 (cons self args)))
 (defmethod (setf datamunge:tolerance) (value (self datamunge:augmented-lagrangian-options) &rest args)
-  (call 1275 (list* self value args))
+  (call 1293 (list* self value args))
   value)
 
 (defmethod datamunge:optimize ((self datamunge:augmented-lagrangian) &rest args)
@@ -20559,14 +20565,14 @@ See also: trace_optimize(), AugmentedLagrangianOptions
     function  equality-constrained-function  Borrowed EqualityConstrainedFunction with matching finite output shapes.
     coordinates  (vector double-float)  Owned-by-caller finite start; overwritten with the native returned point.
     → Objective at the native returned coordinates; not a stop-status code."
-  (call 1277 (cons self args)))
+  (call 1295 (cons self args)))
 
 (defmethod datamunge:options ((self datamunge:augmented-lagrangian) &rest args)
   "Borrow this optimizer's stored configuration.
 
   (options augmented-lagrangian) → augmented-lagrangian-options
     → Const option reference, valid during this object's lifetime; no mutation."
-  (call 1278 (cons self args)))
+  (call 1296 (cons self args)))
 
 (defmethod datamunge:fit ((self datamunge:bayesian-surrogate) &rest args)
   "Fits the surrogate to the observations so far.
@@ -20574,7 +20580,7 @@ See also: trace_optimize(), AugmentedLagrangianOptions
   (fit bayesian-surrogate points values)
     points  (vector (vector double-float))  Evaluated points, one per observation.
     values  (vector double-float)  Objective values at `points`."
-  (call 1280 (cons self args)))
+  (call 1298 (cons self args)))
 
 (defmethod datamunge:acquisition ((self datamunge:bayesian-surrogate) &rest args)
   "Scores a candidate; larger means more worth evaluating.
@@ -20583,16 +20589,16 @@ See also: trace_optimize(), AugmentedLagrangianOptions
     point  (vector double-float)  Candidate point.
     incumbent  double-float  Smallest objective value observed so far.
     → The acquisition value."
-  (call 1281 (cons self args)))
+  (call 1299 (cons self args)))
 
 (defmethod datamunge:initial-samples ((self datamunge:bayesian-optimization-options) &rest args)
   "Uniform random points evaluated before the surrogate is first fitted (at least 1).
 
   (initial-samples bayesian-optimization-options) → integer
   (setf (initial-samples bayesian-optimization-options) integer)"
-  (call 1283 (cons self args)))
+  (call 1301 (cons self args)))
 (defmethod (setf datamunge:initial-samples) (value (self datamunge:bayesian-optimization-options) &rest args)
-  (call 1284 (list* self value args))
+  (call 1302 (list* self value args))
   value)
 
 (defmethod datamunge:max-iterations ((self datamunge:bayesian-optimization-options) &rest args)
@@ -20600,9 +20606,9 @@ See also: trace_optimize(), AugmentedLagrangianOptions
 
   (max-iterations bayesian-optimization-options) → integer
   (setf (max-iterations bayesian-optimization-options) integer)"
-  (call 1285 (cons self args)))
+  (call 1303 (cons self args)))
 (defmethod (setf datamunge:max-iterations) (value (self datamunge:bayesian-optimization-options) &rest args)
-  (call 1286 (list* self value args))
+  (call 1304 (list* self value args))
   value)
 
 (defmethod datamunge:seed ((self datamunge:bayesian-optimization-options) &rest args)
@@ -20610,9 +20616,9 @@ See also: trace_optimize(), AugmentedLagrangianOptions
 
   (seed bayesian-optimization-options) → integer
   (setf (seed bayesian-optimization-options) integer)"
-  (call 1287 (cons self args)))
+  (call 1305 (cons self args)))
 (defmethod (setf datamunge:seed) (value (self datamunge:bayesian-optimization-options) &rest args)
-  (call 1288 (list* self value args))
+  (call 1306 (list* self value args))
   value)
 
 (defmethod datamunge:candidates ((self datamunge:bayesian-optimization-options) &rest args)
@@ -20620,9 +20626,9 @@ See also: trace_optimize(), AugmentedLagrangianOptions
 
   (candidates bayesian-optimization-options) → integer
   (setf (candidates bayesian-optimization-options) integer)"
-  (call 1289 (cons self args)))
+  (call 1307 (cons self args)))
 (defmethod (setf datamunge:candidates) (value (self datamunge:bayesian-optimization-options) &rest args)
-  (call 1290 (list* self value args))
+  (call 1308 (list* self value args))
   value)
 
 (defmethod datamunge:refine-iterations ((self datamunge:bayesian-optimization-options) &rest args)
@@ -20631,9 +20637,9 @@ surface; 0 keeps the best random candidate as it is.
 
   (refine-iterations bayesian-optimization-options) → integer
   (setf (refine-iterations bayesian-optimization-options) integer)"
-  (call 1291 (cons self args)))
+  (call 1309 (cons self args)))
 (defmethod (setf datamunge:refine-iterations) (value (self datamunge:bayesian-optimization-options) &rest args)
-  (call 1292 (list* self value args))
+  (call 1310 (list* self value args))
   value)
 
 (defmethod datamunge:best-point ((self datamunge:bayesian-optimization-result) &rest args)
@@ -20641,9 +20647,9 @@ surface; 0 keeps the best random candidate as it is.
 
   (best-point bayesian-optimization-result) → (vector double-float)
   (setf (best-point bayesian-optimization-result) (vector double-float))"
-  (call 1294 (cons self args)))
+  (call 1312 (cons self args)))
 (defmethod (setf datamunge:best-point) (value (self datamunge:bayesian-optimization-result) &rest args)
-  (call 1295 (list* self value args))
+  (call 1313 (list* self value args))
   value)
 
 (defmethod datamunge:best-value ((self datamunge:bayesian-optimization-result) &rest args)
@@ -20651,9 +20657,9 @@ surface; 0 keeps the best random candidate as it is.
 
   (best-value bayesian-optimization-result) → double-float
   (setf (best-value bayesian-optimization-result) double-float)"
-  (call 1296 (cons self args)))
+  (call 1314 (cons self args)))
 (defmethod (setf datamunge:best-value) (value (self datamunge:bayesian-optimization-result) &rest args)
-  (call 1297 (list* self value args))
+  (call 1315 (list* self value args))
   value)
 
 (defmethod datamunge:points ((self datamunge:bayesian-optimization-result) &rest args)
@@ -20661,9 +20667,9 @@ surface; 0 keeps the best random candidate as it is.
 
   (points bayesian-optimization-result) → (vector (vector double-float))
   (setf (points bayesian-optimization-result) (vector (vector double-float)))"
-  (call 1298 (cons self args)))
+  (call 1316 (cons self args)))
 (defmethod (setf datamunge:points) (value (self datamunge:bayesian-optimization-result) &rest args)
-  (call 1299 (list* self value args))
+  (call 1317 (list* self value args))
   value)
 
 (defmethod datamunge:values ((self datamunge:bayesian-optimization-result) &rest args)
@@ -20671,9 +20677,9 @@ surface; 0 keeps the best random candidate as it is.
 
   (values bayesian-optimization-result) → (vector double-float)
   (setf (values bayesian-optimization-result) (vector double-float))"
-  (call 1300 (cons self args)))
+  (call 1318 (cons self args)))
 (defmethod (setf datamunge:values) (value (self datamunge:bayesian-optimization-result) &rest args)
-  (call 1301 (list* self value args))
+  (call 1319 (list* self value args))
   value)
 
 (defmethod datamunge:best-values ((self datamunge:bayesian-optimization-result) &rest args)
@@ -20681,9 +20687,9 @@ surface; 0 keeps the best random candidate as it is.
 
   (best-values bayesian-optimization-result) → (vector double-float)
   (setf (best-values bayesian-optimization-result) (vector double-float))"
-  (call 1302 (cons self args)))
+  (call 1320 (cons self args)))
 (defmethod (setf datamunge:best-values) (value (self datamunge:bayesian-optimization-result) &rest args)
-  (call 1303 (list* self value args))
+  (call 1321 (list* self value args))
   value)
 
 (defmethod datamunge:acquisition-values ((self datamunge:bayesian-optimization-result) &rest args)
@@ -20691,9 +20697,9 @@ surface; 0 keeps the best random candidate as it is.
 
   (acquisition-values bayesian-optimization-result) → (vector double-float)
   (setf (acquisition-values bayesian-optimization-result) (vector double-float))"
-  (call 1304 (cons self args)))
+  (call 1322 (cons self args)))
 (defmethod (setf datamunge:acquisition-values) (value (self datamunge:bayesian-optimization-result) &rest args)
-  (call 1305 (list* self value args))
+  (call 1323 (list* self value args))
   value)
 
 (defmethod datamunge:run ((self datamunge:bayesian-optimization) &rest args)
@@ -20708,7 +20714,7 @@ Errors (signalled as datamunge:native-error):
     upper  (vector double-float)  Upper corner of the box (each entry larger than in `lower`).
     surrogate  bayesian-surrogate  Surrogate refitted before every proposal.
     → The evaluations and the best point."
-  (call 1307 (cons self args)))
+  (call 1325 (cons self args)))
 
 (defmethod datamunge:optimize ((self datamunge:bayesian-optimization) &rest args)
   "Runs the loop and returns only the best value.
@@ -20723,23 +20729,23 @@ Errors (signalled as datamunge:native-error):
     upper  (vector double-float)  Upper corner of the box.
     surrogate  bayesian-surrogate  Surrogate refitted before every proposal.
     → The smallest observed value."
-  (call 1308 (cons self args)))
+  (call 1326 (cons self args)))
 
 (defmethod datamunge:options ((self datamunge:bayesian-optimization) &rest args)
   "The options this BayesianOptimization was configured with.
 
   (options bayesian-optimization) → bayesian-optimization-options
     → The stored options."
-  (call 1309 (cons self args)))
+  (call 1327 (cons self args)))
 
 (defmethod datamunge:max-iterations ((self datamunge:conjugate-gradient-options) &rest args)
   "Maximum native iterations/epochs as described by optimize(); zero performs no updates. Default 1000.
 
   (max-iterations conjugate-gradient-options) → integer
   (setf (max-iterations conjugate-gradient-options) integer)"
-  (call 1311 (cons self args)))
+  (call 1329 (cons self args)))
 (defmethod (setf datamunge:max-iterations) (value (self datamunge:conjugate-gradient-options) &rest args)
-  (call 1312 (list* self value args))
+  (call 1330 (list* self value args))
   value)
 
 (defmethod datamunge:tolerance ((self datamunge:conjugate-gradient-options) &rest args)
@@ -20747,9 +20753,9 @@ Errors (signalled as datamunge:native-error):
 
   (tolerance conjugate-gradient-options) → double-float
   (setf (tolerance conjugate-gradient-options) double-float)"
-  (call 1313 (cons self args)))
+  (call 1331 (cons self args)))
 (defmethod (setf datamunge:tolerance) (value (self datamunge:conjugate-gradient-options) &rest args)
-  (call 1314 (list* self value args))
+  (call 1332 (list* self value args))
   value)
 
 (defmethod datamunge:armijo-c1 ((self datamunge:conjugate-gradient-options) &rest args)
@@ -20757,9 +20763,9 @@ Errors (signalled as datamunge:native-error):
 
   (armijo-c1 conjugate-gradient-options) → double-float
   (setf (armijo-c1 conjugate-gradient-options) double-float)"
-  (call 1315 (cons self args)))
+  (call 1333 (cons self args)))
 (defmethod (setf datamunge:armijo-c1) (value (self datamunge:conjugate-gradient-options) &rest args)
-  (call 1316 (list* self value args))
+  (call 1334 (list* self value args))
   value)
 
 (defmethod datamunge:backtracking-factor ((self datamunge:conjugate-gradient-options) &rest args)
@@ -20767,9 +20773,9 @@ Errors (signalled as datamunge:native-error):
 
   (backtracking-factor conjugate-gradient-options) → double-float
   (setf (backtracking-factor conjugate-gradient-options) double-float)"
-  (call 1317 (cons self args)))
+  (call 1335 (cons self args)))
 (defmethod (setf datamunge:backtracking-factor) (value (self datamunge:conjugate-gradient-options) &rest args)
-  (call 1318 (list* self value args))
+  (call 1336 (list* self value args))
   value)
 
 (defmethod datamunge:max-line-search-trials ((self datamunge:conjugate-gradient-options) &rest args)
@@ -20777,9 +20783,9 @@ Errors (signalled as datamunge:native-error):
 
   (max-line-search-trials conjugate-gradient-options) → integer
   (setf (max-line-search-trials conjugate-gradient-options) integer)"
-  (call 1319 (cons self args)))
+  (call 1337 (cons self args)))
 (defmethod (setf datamunge:max-line-search-trials) (value (self datamunge:conjugate-gradient-options) &rest args)
-  (call 1320 (list* self value args))
+  (call 1338 (list* self value args))
   value)
 
 (defmethod datamunge:optimize ((self datamunge:conjugate-gradient) &rest args)
@@ -20806,23 +20812,23 @@ See also: trace_optimize(), ConjugateGradientOptions
     function  differentiable-function  Borrowed DifferentiableFunction with matching finite output shapes.
     coordinates  (vector double-float)  Owned-by-caller finite start; overwritten with the native returned point.
     → Objective at the native returned coordinates; not a stop-status code."
-  (call 1322 (cons self args)))
+  (call 1340 (cons self args)))
 
 (defmethod datamunge:options ((self datamunge:conjugate-gradient) &rest args)
   "Borrow this optimizer's stored configuration.
 
   (options conjugate-gradient) → conjugate-gradient-options
     → Const option reference, valid during this object's lifetime; no mutation."
-  (call 1323 (cons self args)))
+  (call 1341 (cons self args)))
 
 (defmethod datamunge:population-size ((self datamunge:cmaes-options) &rest args)
   "Population size; CMA-ES zero selects its dimension-based default. Default 0.
 
   (population-size cmaes-options) → integer
   (setf (population-size cmaes-options) integer)"
-  (call 1325 (cons self args)))
+  (call 1343 (cons self args)))
 (defmethod (setf datamunge:population-size) (value (self datamunge:cmaes-options) &rest args)
-  (call 1326 (list* self value args))
+  (call 1344 (list* self value args))
   value)
 
 (defmethod datamunge:initial-step-size ((self datamunge:cmaes-options) &rest args)
@@ -20830,9 +20836,9 @@ See also: trace_optimize(), ConjugateGradientOptions
 
   (initial-step-size cmaes-options) → double-float
   (setf (initial-step-size cmaes-options) double-float)"
-  (call 1327 (cons self args)))
+  (call 1345 (cons self args)))
 (defmethod (setf datamunge:initial-step-size) (value (self datamunge:cmaes-options) &rest args)
-  (call 1328 (list* self value args))
+  (call 1346 (list* self value args))
   value)
 
 (defmethod datamunge:max-generations ((self datamunge:cmaes-options) &rest args)
@@ -20840,9 +20846,9 @@ See also: trace_optimize(), ConjugateGradientOptions
 
   (max-generations cmaes-options) → integer
   (setf (max-generations cmaes-options) integer)"
-  (call 1329 (cons self args)))
+  (call 1347 (cons self args)))
 (defmethod (setf datamunge:max-generations) (value (self datamunge:cmaes-options) &rest args)
-  (call 1330 (list* self value args))
+  (call 1348 (list* self value args))
   value)
 
 (defmethod datamunge:tolerance ((self datamunge:cmaes-options) &rest args)
@@ -20850,9 +20856,9 @@ See also: trace_optimize(), ConjugateGradientOptions
 
   (tolerance cmaes-options) → double-float
   (setf (tolerance cmaes-options) double-float)"
-  (call 1331 (cons self args)))
+  (call 1349 (cons self args)))
 (defmethod (setf datamunge:tolerance) (value (self datamunge:cmaes-options) &rest args)
-  (call 1332 (list* self value args))
+  (call 1350 (list* self value args))
   value)
 
 (defmethod datamunge:seed ((self datamunge:cmaes-options) &rest args)
@@ -20860,9 +20866,9 @@ See also: trace_optimize(), ConjugateGradientOptions
 
   (seed cmaes-options) → integer
   (setf (seed cmaes-options) integer)"
-  (call 1333 (cons self args)))
+  (call 1351 (cons self args)))
 (defmethod (setf datamunge:seed) (value (self datamunge:cmaes-options) &rest args)
-  (call 1334 (list* self value args))
+  (call 1352 (list* self value args))
   value)
 
 (defmethod datamunge:optimize ((self datamunge:cmaes) &rest args)
@@ -20889,23 +20895,23 @@ See also: trace_optimize(), CMAESOptions
     function  arbitrary-function  Borrowed ArbitraryFunction with matching finite output shapes.
     coordinates  (vector double-float)  Owned-by-caller finite start; overwritten with the native returned point.
     → Objective at the native returned coordinates; not a stop-status code."
-  (call 1336 (cons self args)))
+  (call 1354 (cons self args)))
 
 (defmethod datamunge:options ((self datamunge:cmaes) &rest args)
   "Borrow this optimizer's stored configuration.
 
   (options cmaes) → cmaes-options
     → Const option reference, valid during this object's lifetime; no mutation."
-  (call 1337 (cons self args)))
+  (call 1355 (cons self args)))
 
 (defmethod datamunge:step-size ((self datamunge:coordinate-descent-options) &rest args)
   "Fixed learning-rate/initial search step; use the objective scaling stated by optimize(). Default 1.0.
 
   (step-size coordinate-descent-options) → double-float
   (setf (step-size coordinate-descent-options) double-float)"
-  (call 1339 (cons self args)))
+  (call 1357 (cons self args)))
 (defmethod (setf datamunge:step-size) (value (self datamunge:coordinate-descent-options) &rest args)
-  (call 1340 (list* self value args))
+  (call 1358 (list* self value args))
   value)
 
 (defmethod datamunge:max-iterations ((self datamunge:coordinate-descent-options) &rest args)
@@ -20913,9 +20919,9 @@ See also: trace_optimize(), CMAESOptions
 
   (max-iterations coordinate-descent-options) → integer
   (setf (max-iterations coordinate-descent-options) integer)"
-  (call 1341 (cons self args)))
+  (call 1359 (cons self args)))
 (defmethod (setf datamunge:max-iterations) (value (self datamunge:coordinate-descent-options) &rest args)
-  (call 1342 (list* self value args))
+  (call 1360 (list* self value args))
   value)
 
 (defmethod datamunge:tolerance ((self datamunge:coordinate-descent-options) &rest args)
@@ -20923,9 +20929,9 @@ See also: trace_optimize(), CMAESOptions
 
   (tolerance coordinate-descent-options) → double-float
   (setf (tolerance coordinate-descent-options) double-float)"
-  (call 1343 (cons self args)))
+  (call 1361 (cons self args)))
 (defmethod (setf datamunge:tolerance) (value (self datamunge:coordinate-descent-options) &rest args)
-  (call 1344 (list* self value args))
+  (call 1362 (list* self value args))
   value)
 
 (defmethod datamunge:armijo-c1 ((self datamunge:coordinate-descent-options) &rest args)
@@ -20933,9 +20939,9 @@ See also: trace_optimize(), CMAESOptions
 
   (armijo-c1 coordinate-descent-options) → double-float
   (setf (armijo-c1 coordinate-descent-options) double-float)"
-  (call 1345 (cons self args)))
+  (call 1363 (cons self args)))
 (defmethod (setf datamunge:armijo-c1) (value (self datamunge:coordinate-descent-options) &rest args)
-  (call 1346 (list* self value args))
+  (call 1364 (list* self value args))
   value)
 
 (defmethod datamunge:backtracking-factor ((self datamunge:coordinate-descent-options) &rest args)
@@ -20943,9 +20949,9 @@ See also: trace_optimize(), CMAESOptions
 
   (backtracking-factor coordinate-descent-options) → double-float
   (setf (backtracking-factor coordinate-descent-options) double-float)"
-  (call 1347 (cons self args)))
+  (call 1365 (cons self args)))
 (defmethod (setf datamunge:backtracking-factor) (value (self datamunge:coordinate-descent-options) &rest args)
-  (call 1348 (list* self value args))
+  (call 1366 (list* self value args))
   value)
 
 (defmethod datamunge:max-line-search-trials ((self datamunge:coordinate-descent-options) &rest args)
@@ -20953,9 +20959,9 @@ See also: trace_optimize(), CMAESOptions
 
   (max-line-search-trials coordinate-descent-options) → integer
   (setf (max-line-search-trials coordinate-descent-options) integer)"
-  (call 1349 (cons self args)))
+  (call 1367 (cons self args)))
 (defmethod (setf datamunge:max-line-search-trials) (value (self datamunge:coordinate-descent-options) &rest args)
-  (call 1350 (list* self value args))
+  (call 1368 (list* self value args))
   value)
 
 (defmethod datamunge:optimize ((self datamunge:coordinate-descent) &rest args)
@@ -20982,23 +20988,23 @@ See also: trace_optimize(), CoordinateDescentOptions
     function  differentiable-function  Borrowed DifferentiableFunction with matching finite output shapes.
     coordinates  (vector double-float)  Owned-by-caller finite start; overwritten with the native returned point.
     → Objective at the native returned coordinates; not a stop-status code."
-  (call 1352 (cons self args)))
+  (call 1370 (cons self args)))
 
 (defmethod datamunge:options ((self datamunge:coordinate-descent) &rest args)
   "Borrow this optimizer's stored configuration.
 
   (options coordinate-descent) → coordinate-descent-options
     → Const option reference, valid during this object's lifetime; no mutation."
-  (call 1353 (cons self args)))
+  (call 1371 (cons self args)))
 
 (defmethod datamunge:population-size ((self datamunge:cross-entropy-method-options) &rest args)
   "Candidates sampled from the search distribution each iteration.
 
   (population-size cross-entropy-method-options) → integer
   (setf (population-size cross-entropy-method-options) integer)"
-  (call 1355 (cons self args)))
+  (call 1373 (cons self args)))
 (defmethod (setf datamunge:population-size) (value (self datamunge:cross-entropy-method-options) &rest args)
-  (call 1356 (list* self value args))
+  (call 1374 (list* self value args))
   value)
 
 (defmethod datamunge:elite-ratio ((self datamunge:cross-entropy-method-options) &rest args)
@@ -21007,9 +21013,9 @@ elite_count = max(2, ceil(population_size * elite_ratio)).
 
   (elite-ratio cross-entropy-method-options) → double-float
   (setf (elite-ratio cross-entropy-method-options) double-float)"
-  (call 1357 (cons self args)))
+  (call 1375 (cons self args)))
 (defmethod (setf datamunge:elite-ratio) (value (self datamunge:cross-entropy-method-options) &rest args)
-  (call 1358 (list* self value args))
+  (call 1376 (list* self value args))
   value)
 
 (defmethod datamunge:initial-std-dev ((self datamunge:cross-entropy-method-options) &rest args)
@@ -21017,9 +21023,9 @@ elite_count = max(2, ceil(population_size * elite_ratio)).
 
   (initial-std-dev cross-entropy-method-options) → double-float
   (setf (initial-std-dev cross-entropy-method-options) double-float)"
-  (call 1359 (cons self args)))
+  (call 1377 (cons self args)))
 (defmethod (setf datamunge:initial-std-dev) (value (self datamunge:cross-entropy-method-options) &rest args)
-  (call 1360 (list* self value args))
+  (call 1378 (list* self value args))
   value)
 
 (defmethod datamunge:smoothing ((self datamunge:cross-entropy-method-options) &rest args)
@@ -21029,9 +21035,9 @@ smoothing == 1 means full replacement each iteration (no smoothing at all).
 
   (smoothing cross-entropy-method-options) → double-float
   (setf (smoothing cross-entropy-method-options) double-float)"
-  (call 1361 (cons self args)))
+  (call 1379 (cons self args)))
 (defmethod (setf datamunge:smoothing) (value (self datamunge:cross-entropy-method-options) &rest args)
-  (call 1362 (list* self value args))
+  (call 1380 (list* self value args))
   value)
 
 (defmethod datamunge:max-iterations ((self datamunge:cross-entropy-method-options) &rest args)
@@ -21039,9 +21045,9 @@ smoothing == 1 means full replacement each iteration (no smoothing at all).
 
   (max-iterations cross-entropy-method-options) → integer
   (setf (max-iterations cross-entropy-method-options) integer)"
-  (call 1363 (cons self args)))
+  (call 1381 (cons self args)))
 (defmethod (setf datamunge:max-iterations) (value (self datamunge:cross-entropy-method-options) &rest args)
-  (call 1364 (list* self value args))
+  (call 1382 (list* self value args))
   value)
 
 (defmethod datamunge:tolerance ((self datamunge:cross-entropy-method-options) &rest args)
@@ -21050,9 +21056,9 @@ iterations, or once every per-dimension standard deviation has collapsed below i
 
   (tolerance cross-entropy-method-options) → double-float
   (setf (tolerance cross-entropy-method-options) double-float)"
-  (call 1365 (cons self args)))
+  (call 1383 (cons self args)))
 (defmethod (setf datamunge:tolerance) (value (self datamunge:cross-entropy-method-options) &rest args)
-  (call 1366 (list* self value args))
+  (call 1384 (list* self value args))
   value)
 
 (defmethod datamunge:seed ((self datamunge:cross-entropy-method-options) &rest args)
@@ -21060,9 +21066,9 @@ iterations, or once every per-dimension standard deviation has collapsed below i
 
   (seed cross-entropy-method-options) → integer
   (setf (seed cross-entropy-method-options) integer)"
-  (call 1367 (cons self args)))
+  (call 1385 (cons self args)))
 (defmethod (setf datamunge:seed) (value (self datamunge:cross-entropy-method-options) &rest args)
-  (call 1368 (list* self value args))
+  (call 1386 (list* self value args))
   value)
 
 (defmethod datamunge:optimize ((self datamunge:cross-entropy-method) &rest args)
@@ -21075,23 +21081,23 @@ initial `coordinates` (clamped into bounds) seed the initial distribution mean.
     coordinates  (vector double-float)
     lower-bound  (vector double-float)
     upper-bound  (vector double-float)"
-  (call 1370 (cons self args)))
+  (call 1388 (cons self args)))
 
 (defmethod datamunge:options ((self datamunge:cross-entropy-method) &rest args)
   "The options this CrossEntropyMethod was configured with.
 
   (options cross-entropy-method) → cross-entropy-method-options
     → The stored options."
-  (call 1371 (cons self args)))
+  (call 1389 (cons self args)))
 
 (defmethod datamunge:population-size ((self datamunge:cuckoo-search-options) &rest args)
   "Number of nests (candidate solutions) in the population.
 
   (population-size cuckoo-search-options) → integer
   (setf (population-size cuckoo-search-options) integer)"
-  (call 1373 (cons self args)))
+  (call 1391 (cons self args)))
 (defmethod (setf datamunge:population-size) (value (self datamunge:cuckoo-search-options) &rest args)
-  (call 1374 (list* self value args))
+  (call 1392 (list* self value args))
   value)
 
 (defmethod datamunge:discovery-rate ((self datamunge:cuckoo-search-options) &rest args)
@@ -21106,9 +21112,9 @@ fix this at the default population size (verified: 30/30 seeds).
 
   (discovery-rate cuckoo-search-options) → double-float
   (setf (discovery-rate cuckoo-search-options) double-float)"
-  (call 1375 (cons self args)))
+  (call 1393 (cons self args)))
 (defmethod (setf datamunge:discovery-rate) (value (self datamunge:cuckoo-search-options) &rest args)
-  (call 1376 (list* self value args))
+  (call 1394 (list* self value args))
   value)
 
 (defmethod datamunge:levy-beta ((self datamunge:cuckoo-search-options) &rest args)
@@ -21117,9 +21123,9 @@ original paper.
 
   (levy-beta cuckoo-search-options) → double-float
   (setf (levy-beta cuckoo-search-options) double-float)"
-  (call 1377 (cons self args)))
+  (call 1395 (cons self args)))
 (defmethod (setf datamunge:levy-beta) (value (self datamunge:cuckoo-search-options) &rest args)
-  (call 1378 (list* self value args))
+  (call 1396 (list* self value args))
   value)
 
 (defmethod datamunge:step-scale ((self datamunge:cuckoo-search-options) &rest args)
@@ -21127,9 +21133,9 @@ original paper.
 
   (step-scale cuckoo-search-options) → double-float
   (setf (step-scale cuckoo-search-options) double-float)"
-  (call 1379 (cons self args)))
+  (call 1397 (cons self args)))
 (defmethod (setf datamunge:step-scale) (value (self datamunge:cuckoo-search-options) &rest args)
-  (call 1380 (list* self value args))
+  (call 1398 (list* self value args))
   value)
 
 (defmethod datamunge:max-iterations ((self datamunge:cuckoo-search-options) &rest args)
@@ -21137,9 +21143,9 @@ original paper.
 
   (max-iterations cuckoo-search-options) → integer
   (setf (max-iterations cuckoo-search-options) integer)"
-  (call 1381 (cons self args)))
+  (call 1399 (cons self args)))
 (defmethod (setf datamunge:max-iterations) (value (self datamunge:cuckoo-search-options) &rest args)
-  (call 1382 (list* self value args))
+  (call 1400 (list* self value args))
   value)
 
 (defmethod datamunge:tolerance ((self datamunge:cuckoo-search-options) &rest args)
@@ -21148,9 +21154,9 @@ consecutive iterations.
 
   (tolerance cuckoo-search-options) → double-float
   (setf (tolerance cuckoo-search-options) double-float)"
-  (call 1383 (cons self args)))
+  (call 1401 (cons self args)))
 (defmethod (setf datamunge:tolerance) (value (self datamunge:cuckoo-search-options) &rest args)
-  (call 1384 (list* self value args))
+  (call 1402 (list* self value args))
   value)
 
 (defmethod datamunge:seed ((self datamunge:cuckoo-search-options) &rest args)
@@ -21158,9 +21164,9 @@ consecutive iterations.
 
   (seed cuckoo-search-options) → integer
   (setf (seed cuckoo-search-options) integer)"
-  (call 1385 (cons self args)))
+  (call 1403 (cons self args)))
 (defmethod (setf datamunge:seed) (value (self datamunge:cuckoo-search-options) &rest args)
-  (call 1386 (list* self value args))
+  (call 1404 (list* self value args))
   value)
 
 (defmethod datamunge:optimize ((self datamunge:cuckoo-search) &rest args)
@@ -21173,23 +21179,23 @@ initial `coordinates` (clamped into bounds) seed one nest of the population.
     coordinates  (vector double-float)
     lower-bound  (vector double-float)
     upper-bound  (vector double-float)"
-  (call 1388 (cons self args)))
+  (call 1406 (cons self args)))
 
 (defmethod datamunge:options ((self datamunge:cuckoo-search) &rest args)
   "The options this CuckooSearch was configured with.
 
   (options cuckoo-search) → cuckoo-search-options
     → The stored options."
-  (call 1389 (cons self args)))
+  (call 1407 (cons self args)))
 
 (defmethod datamunge:population-size ((self datamunge:de-options) &rest args)
   "Population size; CMA-ES zero selects its dimension-based default. Default 50.
 
   (population-size de-options) → integer
   (setf (population-size de-options) integer)"
-  (call 1391 (cons self args)))
+  (call 1409 (cons self args)))
 (defmethod (setf datamunge:population-size) (value (self datamunge:de-options) &rest args)
-  (call 1392 (list* self value args))
+  (call 1410 (list* self value args))
   value)
 
 (defmethod datamunge:max-generations ((self datamunge:de-options) &rest args)
@@ -21197,9 +21203,9 @@ initial `coordinates` (clamped into bounds) seed one nest of the population.
 
   (max-generations de-options) → integer
   (setf (max-generations de-options) integer)"
-  (call 1393 (cons self args)))
+  (call 1411 (cons self args)))
 (defmethod (setf datamunge:max-generations) (value (self datamunge:de-options) &rest args)
-  (call 1394 (list* self value args))
+  (call 1412 (list* self value args))
   value)
 
 (defmethod datamunge:differential-weight ((self datamunge:de-options) &rest args)
@@ -21207,9 +21213,9 @@ initial `coordinates` (clamped into bounds) seed one nest of the population.
 
   (differential-weight de-options) → double-float
   (setf (differential-weight de-options) double-float)"
-  (call 1395 (cons self args)))
+  (call 1413 (cons self args)))
 (defmethod (setf datamunge:differential-weight) (value (self datamunge:de-options) &rest args)
-  (call 1396 (list* self value args))
+  (call 1414 (list* self value args))
   value)
 
 (defmethod datamunge:crossover-rate ((self datamunge:de-options) &rest args)
@@ -21217,9 +21223,9 @@ initial `coordinates` (clamped into bounds) seed one nest of the population.
 
   (crossover-rate de-options) → double-float
   (setf (crossover-rate de-options) double-float)"
-  (call 1397 (cons self args)))
+  (call 1415 (cons self args)))
 (defmethod (setf datamunge:crossover-rate) (value (self datamunge:de-options) &rest args)
-  (call 1398 (list* self value args))
+  (call 1416 (list* self value args))
   value)
 
 (defmethod datamunge:mutation-strategy ((self datamunge:de-options) &rest args)
@@ -21227,9 +21233,9 @@ initial `coordinates` (clamped into bounds) seed one nest of the population.
 
   (mutation-strategy de-options) → string
   (setf (mutation-strategy de-options) string)"
-  (call 1399 (cons self args)))
+  (call 1417 (cons self args)))
 (defmethod (setf datamunge:mutation-strategy) (value (self datamunge:de-options) &rest args)
-  (call 1400 (list* self value args))
+  (call 1418 (list* self value args))
   value)
 
 (defmethod datamunge:crossover-strategy ((self datamunge:de-options) &rest args)
@@ -21237,9 +21243,9 @@ initial `coordinates` (clamped into bounds) seed one nest of the population.
 
   (crossover-strategy de-options) → string
   (setf (crossover-strategy de-options) string)"
-  (call 1401 (cons self args)))
+  (call 1419 (cons self args)))
 (defmethod (setf datamunge:crossover-strategy) (value (self datamunge:de-options) &rest args)
-  (call 1402 (list* self value args))
+  (call 1420 (list* self value args))
   value)
 
 (defmethod datamunge:tolerance ((self datamunge:de-options) &rest args)
@@ -21247,9 +21253,9 @@ initial `coordinates` (clamped into bounds) seed one nest of the population.
 
   (tolerance de-options) → double-float
   (setf (tolerance de-options) double-float)"
-  (call 1403 (cons self args)))
+  (call 1421 (cons self args)))
 (defmethod (setf datamunge:tolerance) (value (self datamunge:de-options) &rest args)
-  (call 1404 (list* self value args))
+  (call 1422 (list* self value args))
   value)
 
 (defmethod datamunge:seed ((self datamunge:de-options) &rest args)
@@ -21257,9 +21263,9 @@ initial `coordinates` (clamped into bounds) seed one nest of the population.
 
   (seed de-options) → integer
   (setf (seed de-options) integer)"
-  (call 1405 (cons self args)))
+  (call 1423 (cons self args)))
 (defmethod (setf datamunge:seed) (value (self datamunge:de-options) &rest args)
-  (call 1406 (list* self value args))
+  (call 1424 (list* self value args))
   value)
 
 (defmethod datamunge:optimize ((self datamunge:differential-evolution) &rest args)
@@ -21288,23 +21294,23 @@ See also: trace_optimize(), DEOptions
     lower-bound  (vector double-float)  Matching finite inclusive lower box limits.
     upper-bound  (vector double-float)  Matching finite inclusive upper limits, greater than lower limits.
     → Objective at the native returned coordinates; not a stop-status code."
-  (call 1408 (cons self args)))
+  (call 1426 (cons self args)))
 
 (defmethod datamunge:options ((self datamunge:differential-evolution) &rest args)
   "Borrow this optimizer's stored configuration.
 
   (options differential-evolution) → de-options
     → Const option reference, valid during this object's lifetime; no mutation."
-  (call 1409 (cons self args)))
+  (call 1427 (cons self args)))
 
 (defmethod datamunge:population-size ((self datamunge:estimation-of-distribution-options) &rest args)
   "Lambda: candidates sampled from the Gaussian model each generation.
 
   (population-size estimation-of-distribution-options) → integer
   (setf (population-size estimation-of-distribution-options) integer)"
-  (call 1411 (cons self args)))
+  (call 1429 (cons self args)))
 (defmethod (setf datamunge:population-size) (value (self datamunge:estimation-of-distribution-options) &rest args)
-  (call 1412 (list* self value args))
+  (call 1430 (list* self value args))
   value)
 
 (defmethod datamunge:selection-ratio ((self datamunge:estimation-of-distribution-options) &rest args)
@@ -21313,9 +21319,9 @@ Gaussian from; mu = max(2, ceil(population_size * selection_ratio)).
 
   (selection-ratio estimation-of-distribution-options) → double-float
   (setf (selection-ratio estimation-of-distribution-options) double-float)"
-  (call 1413 (cons self args)))
+  (call 1431 (cons self args)))
 (defmethod (setf datamunge:selection-ratio) (value (self datamunge:estimation-of-distribution-options) &rest args)
-  (call 1414 (list* self value args))
+  (call 1432 (list* self value args))
   value)
 
 (defmethod datamunge:initial-std-dev ((self datamunge:estimation-of-distribution-options) &rest args)
@@ -21323,9 +21329,9 @@ Gaussian from; mu = max(2, ceil(population_size * selection_ratio)).
 
   (initial-std-dev estimation-of-distribution-options) → double-float
   (setf (initial-std-dev estimation-of-distribution-options) double-float)"
-  (call 1415 (cons self args)))
+  (call 1433 (cons self args)))
 (defmethod (setf datamunge:initial-std-dev) (value (self datamunge:estimation-of-distribution-options) &rest args)
-  (call 1416 (list* self value args))
+  (call 1434 (list* self value args))
   value)
 
 (defmethod datamunge:covariance-regularization ((self datamunge:estimation-of-distribution-options) &rest args)
@@ -21335,9 +21341,9 @@ the elite set happens to be nearly coplanar).
 
   (covariance-regularization estimation-of-distribution-options) → double-float
   (setf (covariance-regularization estimation-of-distribution-options) double-float)"
-  (call 1417 (cons self args)))
+  (call 1435 (cons self args)))
 (defmethod (setf datamunge:covariance-regularization) (value (self datamunge:estimation-of-distribution-options) &rest args)
-  (call 1418 (list* self value args))
+  (call 1436 (list* self value args))
   value)
 
 (defmethod datamunge:max-generations ((self datamunge:estimation-of-distribution-options) &rest args)
@@ -21345,9 +21351,9 @@ the elite set happens to be nearly coplanar).
 
   (max-generations estimation-of-distribution-options) → integer
   (setf (max-generations estimation-of-distribution-options) integer)"
-  (call 1419 (cons self args)))
+  (call 1437 (cons self args)))
 (defmethod (setf datamunge:max-generations) (value (self datamunge:estimation-of-distribution-options) &rest args)
-  (call 1420 (list* self value args))
+  (call 1438 (list* self value args))
   value)
 
 (defmethod datamunge:tolerance ((self datamunge:estimation-of-distribution-options) &rest args)
@@ -21356,9 +21362,9 @@ generations, or once the covariance has collapsed to near-zero.
 
   (tolerance estimation-of-distribution-options) → double-float
   (setf (tolerance estimation-of-distribution-options) double-float)"
-  (call 1421 (cons self args)))
+  (call 1439 (cons self args)))
 (defmethod (setf datamunge:tolerance) (value (self datamunge:estimation-of-distribution-options) &rest args)
-  (call 1422 (list* self value args))
+  (call 1440 (list* self value args))
   value)
 
 (defmethod datamunge:seed ((self datamunge:estimation-of-distribution-options) &rest args)
@@ -21366,9 +21372,9 @@ generations, or once the covariance has collapsed to near-zero.
 
   (seed estimation-of-distribution-options) → integer
   (setf (seed estimation-of-distribution-options) integer)"
-  (call 1423 (cons self args)))
+  (call 1441 (cons self args)))
 (defmethod (setf datamunge:seed) (value (self datamunge:estimation-of-distribution-options) &rest args)
-  (call 1424 (list* self value args))
+  (call 1442 (list* self value args))
   value)
 
 (defmethod datamunge:optimize ((self datamunge:estimation-of-distribution) &rest args)
@@ -21381,23 +21387,23 @@ initial `coordinates` (clamped into bounds) seed the initial Gaussian mean.
     coordinates  (vector double-float)
     lower-bound  (vector double-float)
     upper-bound  (vector double-float)"
-  (call 1426 (cons self args)))
+  (call 1444 (cons self args)))
 
 (defmethod datamunge:options ((self datamunge:estimation-of-distribution) &rest args)
   "The options this EstimationOfDistribution was configured with.
 
   (options estimation-of-distribution) → estimation-of-distribution-options
     → The stored options."
-  (call 1427 (cons self args)))
+  (call 1445 (cons self args)))
 
 (defmethod datamunge:mu ((self datamunge:evolution-strategy-options) &rest args)
   "mu: number of parents.
 
   (mu evolution-strategy-options) → integer
   (setf (mu evolution-strategy-options) integer)"
-  (call 1429 (cons self args)))
+  (call 1447 (cons self args)))
 (defmethod (setf datamunge:mu) (value (self datamunge:evolution-strategy-options) &rest args)
-  (call 1430 (list* self value args))
+  (call 1448 (list* self value args))
   value)
 
 (defmethod datamunge:offspring-size ((self datamunge:evolution-strategy-options) &rest args)
@@ -21405,9 +21411,9 @@ initial `coordinates` (clamped into bounds) seed the initial Gaussian mean.
 
   (offspring-size evolution-strategy-options) → integer
   (setf (offspring-size evolution-strategy-options) integer)"
-  (call 1431 (cons self args)))
+  (call 1449 (cons self args)))
 (defmethod (setf datamunge:offspring-size) (value (self datamunge:evolution-strategy-options) &rest args)
-  (call 1432 (list* self value args))
+  (call 1450 (list* self value args))
   value)
 
 (defmethod datamunge:strategy ((self datamunge:evolution-strategy-options) &rest args)
@@ -21418,9 +21424,9 @@ mu of parents union offspring).
 
   (strategy evolution-strategy-options) → string
   (setf (strategy evolution-strategy-options) string)"
-  (call 1433 (cons self args)))
+  (call 1451 (cons self args)))
 (defmethod (setf datamunge:strategy) (value (self datamunge:evolution-strategy-options) &rest args)
-  (call 1434 (list* self value args))
+  (call 1452 (list* self value args))
   value)
 
 (defmethod datamunge:initial-step-size ((self datamunge:evolution-strategy-options) &rest args)
@@ -21428,9 +21434,9 @@ mu of parents union offspring).
 
   (initial-step-size evolution-strategy-options) → double-float
   (setf (initial-step-size evolution-strategy-options) double-float)"
-  (call 1435 (cons self args)))
+  (call 1453 (cons self args)))
 (defmethod (setf datamunge:initial-step-size) (value (self datamunge:evolution-strategy-options) &rest args)
-  (call 1436 (list* self value args))
+  (call 1454 (list* self value args))
   value)
 
 (defmethod datamunge:max-generations ((self datamunge:evolution-strategy-options) &rest args)
@@ -21438,9 +21444,9 @@ mu of parents union offspring).
 
   (max-generations evolution-strategy-options) → integer
   (setf (max-generations evolution-strategy-options) integer)"
-  (call 1437 (cons self args)))
+  (call 1455 (cons self args)))
 (defmethod (setf datamunge:max-generations) (value (self datamunge:evolution-strategy-options) &rest args)
-  (call 1438 (list* self value args))
+  (call 1456 (list* self value args))
   value)
 
 (defmethod datamunge:tolerance ((self datamunge:evolution-strategy-options) &rest args)
@@ -21448,9 +21454,9 @@ mu of parents union offspring).
 
   (tolerance evolution-strategy-options) → double-float
   (setf (tolerance evolution-strategy-options) double-float)"
-  (call 1439 (cons self args)))
+  (call 1457 (cons self args)))
 (defmethod (setf datamunge:tolerance) (value (self datamunge:evolution-strategy-options) &rest args)
-  (call 1440 (list* self value args))
+  (call 1458 (list* self value args))
   value)
 
 (defmethod datamunge:seed ((self datamunge:evolution-strategy-options) &rest args)
@@ -21458,9 +21464,9 @@ mu of parents union offspring).
 
   (seed evolution-strategy-options) → integer
   (setf (seed evolution-strategy-options) integer)"
-  (call 1441 (cons self args)))
+  (call 1459 (cons self args)))
 (defmethod (setf datamunge:seed) (value (self datamunge:evolution-strategy-options) &rest args)
-  (call 1442 (list* self value args))
+  (call 1460 (list* self value args))
   value)
 
 (defmethod datamunge:optimize ((self datamunge:evolution-strategy) &rest args)
@@ -21473,23 +21479,23 @@ initial `coordinates` (clamped into bounds) seed one parent of the population.
     coordinates  (vector double-float)
     lower-bound  (vector double-float)
     upper-bound  (vector double-float)"
-  (call 1444 (cons self args)))
+  (call 1462 (cons self args)))
 
 (defmethod datamunge:options ((self datamunge:evolution-strategy) &rest args)
   "The options this EvolutionStrategy was configured with.
 
   (options evolution-strategy) → evolution-strategy-options
     → The stored options."
-  (call 1445 (cons self args)))
+  (call 1463 (cons self args)))
 
 (defmethod datamunge:population-size ((self datamunge:firefly-algorithm-options) &rest args)
   "Field population-size of firefly-algorithm-options.
 
   (population-size firefly-algorithm-options) → integer
   (setf (population-size firefly-algorithm-options) integer)"
-  (call 1447 (cons self args)))
+  (call 1465 (cons self args)))
 (defmethod (setf datamunge:population-size) (value (self datamunge:firefly-algorithm-options) &rest args)
-  (call 1448 (list* self value args))
+  (call 1466 (list* self value args))
   value)
 
 (defmethod datamunge:attractiveness-at-zero ((self datamunge:firefly-algorithm-options) &rest args)
@@ -21497,9 +21503,9 @@ initial `coordinates` (clamped into bounds) seed one parent of the population.
 
   (attractiveness-at-zero firefly-algorithm-options) → double-float
   (setf (attractiveness-at-zero firefly-algorithm-options) double-float)"
-  (call 1449 (cons self args)))
+  (call 1467 (cons self args)))
 (defmethod (setf datamunge:attractiveness-at-zero) (value (self datamunge:firefly-algorithm-options) &rest args)
-  (call 1450 (list* self value args))
+  (call 1468 (list* self value args))
   value)
 
 (defmethod datamunge:light-absorption ((self datamunge:firefly-algorithm-options) &rest args)
@@ -21507,9 +21513,9 @@ initial `coordinates` (clamped into bounds) seed one parent of the population.
 
   (light-absorption firefly-algorithm-options) → double-float
   (setf (light-absorption firefly-algorithm-options) double-float)"
-  (call 1451 (cons self args)))
+  (call 1469 (cons self args)))
 (defmethod (setf datamunge:light-absorption) (value (self datamunge:firefly-algorithm-options) &rest args)
-  (call 1452 (list* self value args))
+  (call 1470 (list* self value args))
   value)
 
 (defmethod datamunge:randomization-step ((self datamunge:firefly-algorithm-options) &rest args)
@@ -21517,9 +21523,9 @@ initial `coordinates` (clamped into bounds) seed one parent of the population.
 
   (randomization-step firefly-algorithm-options) → double-float
   (setf (randomization-step firefly-algorithm-options) double-float)"
-  (call 1453 (cons self args)))
+  (call 1471 (cons self args)))
 (defmethod (setf datamunge:randomization-step) (value (self datamunge:firefly-algorithm-options) &rest args)
-  (call 1454 (list* self value args))
+  (call 1472 (list* self value args))
   value)
 
 (defmethod datamunge:randomization-decay ((self datamunge:firefly-algorithm-options) &rest args)
@@ -21528,9 +21534,9 @@ shrinks over time).
 
   (randomization-decay firefly-algorithm-options) → double-float
   (setf (randomization-decay firefly-algorithm-options) double-float)"
-  (call 1455 (cons self args)))
+  (call 1473 (cons self args)))
 (defmethod (setf datamunge:randomization-decay) (value (self datamunge:firefly-algorithm-options) &rest args)
-  (call 1456 (list* self value args))
+  (call 1474 (list* self value args))
   value)
 
 (defmethod datamunge:max-iterations ((self datamunge:firefly-algorithm-options) &rest args)
@@ -21538,9 +21544,9 @@ shrinks over time).
 
   (max-iterations firefly-algorithm-options) → integer
   (setf (max-iterations firefly-algorithm-options) integer)"
-  (call 1457 (cons self args)))
+  (call 1475 (cons self args)))
 (defmethod (setf datamunge:max-iterations) (value (self datamunge:firefly-algorithm-options) &rest args)
-  (call 1458 (list* self value args))
+  (call 1476 (list* self value args))
   value)
 
 (defmethod datamunge:tolerance ((self datamunge:firefly-algorithm-options) &rest args)
@@ -21549,9 +21555,9 @@ consecutive iterations.
 
   (tolerance firefly-algorithm-options) → double-float
   (setf (tolerance firefly-algorithm-options) double-float)"
-  (call 1459 (cons self args)))
+  (call 1477 (cons self args)))
 (defmethod (setf datamunge:tolerance) (value (self datamunge:firefly-algorithm-options) &rest args)
-  (call 1460 (list* self value args))
+  (call 1478 (list* self value args))
   value)
 
 (defmethod datamunge:seed ((self datamunge:firefly-algorithm-options) &rest args)
@@ -21559,9 +21565,9 @@ consecutive iterations.
 
   (seed firefly-algorithm-options) → integer
   (setf (seed firefly-algorithm-options) integer)"
-  (call 1461 (cons self args)))
+  (call 1479 (cons self args)))
 (defmethod (setf datamunge:seed) (value (self datamunge:firefly-algorithm-options) &rest args)
-  (call 1462 (list* self value args))
+  (call 1480 (list* self value args))
   value)
 
 (defmethod datamunge:optimize ((self datamunge:firefly-algorithm) &rest args)
@@ -21574,23 +21580,23 @@ initial `coordinates` (clamped into bounds) seed one member of the population.
     coordinates  (vector double-float)
     lower-bound  (vector double-float)
     upper-bound  (vector double-float)"
-  (call 1464 (cons self args)))
+  (call 1482 (cons self args)))
 
 (defmethod datamunge:options ((self datamunge:firefly-algorithm) &rest args)
   "The options this FireflyAlgorithm was configured with.
 
   (options firefly-algorithm) → firefly-algorithm-options
     → The stored options."
-  (call 1465 (cons self args)))
+  (call 1483 (cons self args)))
 
 (defmethod datamunge:step-size ((self datamunge:fista-options) &rest args)
   "Fixed learning-rate/initial search step; use the objective scaling stated by optimize(). Default 0.01.
 
   (step-size fista-options) → double-float
   (setf (step-size fista-options) double-float)"
-  (call 1467 (cons self args)))
+  (call 1485 (cons self args)))
 (defmethod (setf datamunge:step-size) (value (self datamunge:fista-options) &rest args)
-  (call 1468 (list* self value args))
+  (call 1486 (list* self value args))
   value)
 
 (defmethod datamunge:max-iterations ((self datamunge:fista-options) &rest args)
@@ -21598,9 +21604,9 @@ initial `coordinates` (clamped into bounds) seed one member of the population.
 
   (max-iterations fista-options) → integer
   (setf (max-iterations fista-options) integer)"
-  (call 1469 (cons self args)))
+  (call 1487 (cons self args)))
 (defmethod (setf datamunge:max-iterations) (value (self datamunge:fista-options) &rest args)
-  (call 1470 (list* self value args))
+  (call 1488 (list* self value args))
   value)
 
 (defmethod datamunge:tolerance ((self datamunge:fista-options) &rest args)
@@ -21608,9 +21614,9 @@ initial `coordinates` (clamped into bounds) seed one member of the population.
 
   (tolerance fista-options) → double-float
   (setf (tolerance fista-options) double-float)"
-  (call 1471 (cons self args)))
+  (call 1489 (cons self args)))
 (defmethod (setf datamunge:tolerance) (value (self datamunge:fista-options) &rest args)
-  (call 1472 (list* self value args))
+  (call 1490 (list* self value args))
   value)
 
 (defmethod datamunge:optimize ((self datamunge:fista) &rest args)
@@ -21637,23 +21643,23 @@ See also: trace_optimize(), FISTAOptions
     function  proximal-function  Borrowed ProximalFunction with matching finite output shapes.
     coordinates  (vector double-float)  Owned-by-caller finite start; overwritten with the native returned point.
     → Objective at the native returned coordinates; not a stop-status code."
-  (call 1474 (cons self args)))
+  (call 1492 (cons self args)))
 
 (defmethod datamunge:options ((self datamunge:fista) &rest args)
   "Borrow this optimizer's stored configuration.
 
   (options fista) → fista-options
     → Const option reference, valid during this object's lifetime; no mutation."
-  (call 1475 (cons self args)))
+  (call 1493 (cons self args)))
 
 (defmethod datamunge:population-size ((self datamunge:ga-options) &rest args)
   "Population size; CMA-ES zero selects its dimension-based default. Default 100.
 
   (population-size ga-options) → integer
   (setf (population-size ga-options) integer)"
-  (call 1477 (cons self args)))
+  (call 1495 (cons self args)))
 (defmethod (setf datamunge:population-size) (value (self datamunge:ga-options) &rest args)
-  (call 1478 (list* self value args))
+  (call 1496 (list* self value args))
   value)
 
 (defmethod datamunge:max-generations ((self datamunge:ga-options) &rest args)
@@ -21661,9 +21667,9 @@ See also: trace_optimize(), FISTAOptions
 
   (max-generations ga-options) → integer
   (setf (max-generations ga-options) integer)"
-  (call 1479 (cons self args)))
+  (call 1497 (cons self args)))
 (defmethod (setf datamunge:max-generations) (value (self datamunge:ga-options) &rest args)
-  (call 1480 (list* self value args))
+  (call 1498 (list* self value args))
   value)
 
 (defmethod datamunge:crossover-rate ((self datamunge:ga-options) &rest args)
@@ -21671,9 +21677,9 @@ See also: trace_optimize(), FISTAOptions
 
   (crossover-rate ga-options) → double-float
   (setf (crossover-rate ga-options) double-float)"
-  (call 1481 (cons self args)))
+  (call 1499 (cons self args)))
 (defmethod (setf datamunge:crossover-rate) (value (self datamunge:ga-options) &rest args)
-  (call 1482 (list* self value args))
+  (call 1500 (list* self value args))
   value)
 
 (defmethod datamunge:mutation-rate ((self datamunge:ga-options) &rest args)
@@ -21681,9 +21687,9 @@ See also: trace_optimize(), FISTAOptions
 
   (mutation-rate ga-options) → double-float
   (setf (mutation-rate ga-options) double-float)"
-  (call 1483 (cons self args)))
+  (call 1501 (cons self args)))
 (defmethod (setf datamunge:mutation-rate) (value (self datamunge:ga-options) &rest args)
-  (call 1484 (list* self value args))
+  (call 1502 (list* self value args))
   value)
 
 (defmethod datamunge:mutation-std-dev ((self datamunge:ga-options) &rest args)
@@ -21691,9 +21697,9 @@ See also: trace_optimize(), FISTAOptions
 
   (mutation-std-dev ga-options) → double-float
   (setf (mutation-std-dev ga-options) double-float)"
-  (call 1485 (cons self args)))
+  (call 1503 (cons self args)))
 (defmethod (setf datamunge:mutation-std-dev) (value (self datamunge:ga-options) &rest args)
-  (call 1486 (list* self value args))
+  (call 1504 (list* self value args))
   value)
 
 (defmethod datamunge:selection-strategy ((self datamunge:ga-options) &rest args)
@@ -21701,9 +21707,9 @@ See also: trace_optimize(), FISTAOptions
 
   (selection-strategy ga-options) → string
   (setf (selection-strategy ga-options) string)"
-  (call 1487 (cons self args)))
+  (call 1505 (cons self args)))
 (defmethod (setf datamunge:selection-strategy) (value (self datamunge:ga-options) &rest args)
-  (call 1488 (list* self value args))
+  (call 1506 (list* self value args))
   value)
 
 (defmethod datamunge:tournament-size ((self datamunge:ga-options) &rest args)
@@ -21711,9 +21717,9 @@ See also: trace_optimize(), FISTAOptions
 
   (tournament-size ga-options) → integer
   (setf (tournament-size ga-options) integer)"
-  (call 1489 (cons self args)))
+  (call 1507 (cons self args)))
 (defmethod (setf datamunge:tournament-size) (value (self datamunge:ga-options) &rest args)
-  (call 1490 (list* self value args))
+  (call 1508 (list* self value args))
   value)
 
 (defmethod datamunge:crossover-strategy ((self datamunge:ga-options) &rest args)
@@ -21721,9 +21727,9 @@ See also: trace_optimize(), FISTAOptions
 
   (crossover-strategy ga-options) → string
   (setf (crossover-strategy ga-options) string)"
-  (call 1491 (cons self args)))
+  (call 1509 (cons self args)))
 (defmethod (setf datamunge:crossover-strategy) (value (self datamunge:ga-options) &rest args)
-  (call 1492 (list* self value args))
+  (call 1510 (list* self value args))
   value)
 
 (defmethod datamunge:blend-alpha ((self datamunge:ga-options) &rest args)
@@ -21731,9 +21737,9 @@ See also: trace_optimize(), FISTAOptions
 
   (blend-alpha ga-options) → double-float
   (setf (blend-alpha ga-options) double-float)"
-  (call 1493 (cons self args)))
+  (call 1511 (cons self args)))
 (defmethod (setf datamunge:blend-alpha) (value (self datamunge:ga-options) &rest args)
-  (call 1494 (list* self value args))
+  (call 1512 (list* self value args))
   value)
 
 (defmethod datamunge:elitism ((self datamunge:ga-options) &rest args)
@@ -21741,9 +21747,9 @@ See also: trace_optimize(), FISTAOptions
 
   (elitism ga-options) → boolean
   (setf (elitism ga-options) boolean)"
-  (call 1495 (cons self args)))
+  (call 1513 (cons self args)))
 (defmethod (setf datamunge:elitism) (value (self datamunge:ga-options) &rest args)
-  (call 1496 (list* self value args))
+  (call 1514 (list* self value args))
   value)
 
 (defmethod datamunge:elite-count ((self datamunge:ga-options) &rest args)
@@ -21751,9 +21757,9 @@ See also: trace_optimize(), FISTAOptions
 
   (elite-count ga-options) → integer
   (setf (elite-count ga-options) integer)"
-  (call 1497 (cons self args)))
+  (call 1515 (cons self args)))
 (defmethod (setf datamunge:elite-count) (value (self datamunge:ga-options) &rest args)
-  (call 1498 (list* self value args))
+  (call 1516 (list* self value args))
   value)
 
 (defmethod datamunge:tolerance ((self datamunge:ga-options) &rest args)
@@ -21761,9 +21767,9 @@ See also: trace_optimize(), FISTAOptions
 
   (tolerance ga-options) → double-float
   (setf (tolerance ga-options) double-float)"
-  (call 1499 (cons self args)))
+  (call 1517 (cons self args)))
 (defmethod (setf datamunge:tolerance) (value (self datamunge:ga-options) &rest args)
-  (call 1500 (list* self value args))
+  (call 1518 (list* self value args))
   value)
 
 (defmethod datamunge:seed ((self datamunge:ga-options) &rest args)
@@ -21771,9 +21777,9 @@ See also: trace_optimize(), FISTAOptions
 
   (seed ga-options) → integer
   (setf (seed ga-options) integer)"
-  (call 1501 (cons self args)))
+  (call 1519 (cons self args)))
 (defmethod (setf datamunge:seed) (value (self datamunge:ga-options) &rest args)
-  (call 1502 (list* self value args))
+  (call 1520 (list* self value args))
   value)
 
 (defmethod datamunge:optimize ((self datamunge:genetic-algorithm) &rest args)
@@ -21802,23 +21808,23 @@ See also: trace_optimize(), GAOptions
     lower-bound  (vector double-float)  Matching finite inclusive lower box limits.
     upper-bound  (vector double-float)  Matching finite inclusive upper limits, greater than lower limits.
     → Objective at the native returned coordinates; not a stop-status code."
-  (call 1504 (cons self args)))
+  (call 1522 (cons self args)))
 
 (defmethod datamunge:options ((self datamunge:genetic-algorithm) &rest args)
   "Borrow this optimizer's stored configuration.
 
   (options genetic-algorithm) → ga-options
     → Const option reference, valid during this object's lifetime; no mutation."
-  (call 1505 (cons self args)))
+  (call 1523 (cons self args)))
 
 (defmethod datamunge:step-size ((self datamunge:gradient-descent-options) &rest args)
   "Fixed learning-rate/initial search step; use the objective scaling stated by optimize(). Default 0.01.
 
   (step-size gradient-descent-options) → double-float
   (setf (step-size gradient-descent-options) double-float)"
-  (call 1507 (cons self args)))
+  (call 1525 (cons self args)))
 (defmethod (setf datamunge:step-size) (value (self datamunge:gradient-descent-options) &rest args)
-  (call 1508 (list* self value args))
+  (call 1526 (list* self value args))
   value)
 
 (defmethod datamunge:momentum ((self datamunge:gradient-descent-options) &rest args)
@@ -21826,9 +21832,9 @@ See also: trace_optimize(), GAOptions
 
   (momentum gradient-descent-options) → double-float
   (setf (momentum gradient-descent-options) double-float)"
-  (call 1509 (cons self args)))
+  (call 1527 (cons self args)))
 (defmethod (setf datamunge:momentum) (value (self datamunge:gradient-descent-options) &rest args)
-  (call 1510 (list* self value args))
+  (call 1528 (list* self value args))
   value)
 
 (defmethod datamunge:max-iterations ((self datamunge:gradient-descent-options) &rest args)
@@ -21836,9 +21842,9 @@ See also: trace_optimize(), GAOptions
 
   (max-iterations gradient-descent-options) → integer
   (setf (max-iterations gradient-descent-options) integer)"
-  (call 1511 (cons self args)))
+  (call 1529 (cons self args)))
 (defmethod (setf datamunge:max-iterations) (value (self datamunge:gradient-descent-options) &rest args)
-  (call 1512 (list* self value args))
+  (call 1530 (list* self value args))
   value)
 
 (defmethod datamunge:tolerance ((self datamunge:gradient-descent-options) &rest args)
@@ -21846,9 +21852,9 @@ See also: trace_optimize(), GAOptions
 
   (tolerance gradient-descent-options) → double-float
   (setf (tolerance gradient-descent-options) double-float)"
-  (call 1513 (cons self args)))
+  (call 1531 (cons self args)))
 (defmethod (setf datamunge:tolerance) (value (self datamunge:gradient-descent-options) &rest args)
-  (call 1514 (list* self value args))
+  (call 1532 (list* self value args))
   value)
 
 (defmethod datamunge:optimize ((self datamunge:gradient-descent) &rest args)
@@ -21874,23 +21880,23 @@ See also: trace_optimize(), GradientDescentOptions
     function  differentiable-function  Borrowed DifferentiableFunction with matching finite output shapes.
     coordinates  (vector double-float)  Owned-by-caller finite start; overwritten with the native returned point.
     → Objective at the native returned coordinates; not a stop-status code."
-  (call 1516 (cons self args)))
+  (call 1534 (cons self args)))
 
 (defmethod datamunge:options ((self datamunge:gradient-descent) &rest args)
   "Borrow this optimizer's stored configuration.
 
   (options gradient-descent) → gradient-descent-options
     → Const option reference, valid during this object's lifetime; no mutation."
-  (call 1517 (cons self args)))
+  (call 1535 (cons self args)))
 
 (defmethod datamunge:population-size ((self datamunge:grey-wolf-optimizer-options) &rest args)
   "Field population-size of grey-wolf-optimizer-options.
 
   (population-size grey-wolf-optimizer-options) → integer
   (setf (population-size grey-wolf-optimizer-options) integer)"
-  (call 1519 (cons self args)))
+  (call 1537 (cons self args)))
 (defmethod (setf datamunge:population-size) (value (self datamunge:grey-wolf-optimizer-options) &rest args)
-  (call 1520 (list* self value args))
+  (call 1538 (list* self value args))
   value)
 
 (defmethod datamunge:max-iterations ((self datamunge:grey-wolf-optimizer-options) &rest args)
@@ -21898,9 +21904,9 @@ See also: trace_optimize(), GradientDescentOptions
 
   (max-iterations grey-wolf-optimizer-options) → integer
   (setf (max-iterations grey-wolf-optimizer-options) integer)"
-  (call 1521 (cons self args)))
+  (call 1539 (cons self args)))
 (defmethod (setf datamunge:max-iterations) (value (self datamunge:grey-wolf-optimizer-options) &rest args)
-  (call 1522 (list* self value args))
+  (call 1540 (list* self value args))
   value)
 
 (defmethod datamunge:tolerance ((self datamunge:grey-wolf-optimizer-options) &rest args)
@@ -21908,9 +21914,9 @@ See also: trace_optimize(), GradientDescentOptions
 
   (tolerance grey-wolf-optimizer-options) → double-float
   (setf (tolerance grey-wolf-optimizer-options) double-float)"
-  (call 1523 (cons self args)))
+  (call 1541 (cons self args)))
 (defmethod (setf datamunge:tolerance) (value (self datamunge:grey-wolf-optimizer-options) &rest args)
-  (call 1524 (list* self value args))
+  (call 1542 (list* self value args))
   value)
 
 (defmethod datamunge:seed ((self datamunge:grey-wolf-optimizer-options) &rest args)
@@ -21918,9 +21924,9 @@ See also: trace_optimize(), GradientDescentOptions
 
   (seed grey-wolf-optimizer-options) → integer
   (setf (seed grey-wolf-optimizer-options) integer)"
-  (call 1525 (cons self args)))
+  (call 1543 (cons self args)))
 (defmethod (setf datamunge:seed) (value (self datamunge:grey-wolf-optimizer-options) &rest args)
-  (call 1526 (list* self value args))
+  (call 1544 (list* self value args))
   value)
 
 (defmethod datamunge:optimize ((self datamunge:grey-wolf-optimizer) &rest args)
@@ -21933,23 +21939,23 @@ initial `coordinates` (clamped into bounds) seed one wolf of the population.
     coordinates  (vector double-float)
     lower-bound  (vector double-float)
     upper-bound  (vector double-float)"
-  (call 1528 (cons self args)))
+  (call 1546 (cons self args)))
 
 (defmethod datamunge:options ((self datamunge:grey-wolf-optimizer) &rest args)
   "The options this GreyWolfOptimizer was configured with.
 
   (options grey-wolf-optimizer) → grey-wolf-optimizer-options
     → The stored options."
-  (call 1529 (cons self args)))
+  (call 1547 (cons self args)))
 
 (defmethod datamunge:population-size ((self datamunge:harmony-search-options) &rest args)
   "HMS: harmony memory size.
 
   (population-size harmony-search-options) → integer
   (setf (population-size harmony-search-options) integer)"
-  (call 1531 (cons self args)))
+  (call 1549 (cons self args)))
 (defmethod (setf datamunge:population-size) (value (self datamunge:harmony-search-options) &rest args)
-  (call 1532 (list* self value args))
+  (call 1550 (list* self value args))
   value)
 
 (defmethod datamunge:memory-consideration-rate ((self datamunge:harmony-search-options) &rest args)
@@ -21958,9 +21964,9 @@ uniformly at random, in (0, 1).
 
   (memory-consideration-rate harmony-search-options) → double-float
   (setf (memory-consideration-rate harmony-search-options) double-float)"
-  (call 1533 (cons self args)))
+  (call 1551 (cons self args)))
 (defmethod (setf datamunge:memory-consideration-rate) (value (self datamunge:harmony-search-options) &rest args)
-  (call 1534 (list* self value args))
+  (call 1552 (list* self value args))
   value)
 
 (defmethod datamunge:pitch-adjustment-rate ((self datamunge:harmony-search-options) &rest args)
@@ -21968,9 +21974,9 @@ uniformly at random, in (0, 1).
 
   (pitch-adjustment-rate harmony-search-options) → double-float
   (setf (pitch-adjustment-rate harmony-search-options) double-float)"
-  (call 1535 (cons self args)))
+  (call 1553 (cons self args)))
 (defmethod (setf datamunge:pitch-adjustment-rate) (value (self datamunge:harmony-search-options) &rest args)
-  (call 1536 (list* self value args))
+  (call 1554 (list* self value args))
   value)
 
 (defmethod datamunge:bandwidth-fraction ((self datamunge:harmony-search-options) &rest args)
@@ -21978,9 +21984,9 @@ uniformly at random, in (0, 1).
 
   (bandwidth-fraction harmony-search-options) → double-float
   (setf (bandwidth-fraction harmony-search-options) double-float)"
-  (call 1537 (cons self args)))
+  (call 1555 (cons self args)))
 (defmethod (setf datamunge:bandwidth-fraction) (value (self datamunge:harmony-search-options) &rest args)
-  (call 1538 (list* self value args))
+  (call 1556 (list* self value args))
   value)
 
 (defmethod datamunge:max-iterations ((self datamunge:harmony-search-options) &rest args)
@@ -21990,9 +21996,9 @@ much larger iteration budget for a comparable total evaluation count.
 
   (max-iterations harmony-search-options) → integer
   (setf (max-iterations harmony-search-options) integer)"
-  (call 1539 (cons self args)))
+  (call 1557 (cons self args)))
 (defmethod (setf datamunge:max-iterations) (value (self datamunge:harmony-search-options) &rest args)
-  (call 1540 (list* self value args))
+  (call 1558 (list* self value args))
   value)
 
 (defmethod datamunge:tolerance ((self datamunge:harmony-search-options) &rest args)
@@ -22001,9 +22007,9 @@ much larger iteration budget for a comparable total evaluation count.
 
   (tolerance harmony-search-options) → double-float
   (setf (tolerance harmony-search-options) double-float)"
-  (call 1541 (cons self args)))
+  (call 1559 (cons self args)))
 (defmethod (setf datamunge:tolerance) (value (self datamunge:harmony-search-options) &rest args)
-  (call 1542 (list* self value args))
+  (call 1560 (list* self value args))
   value)
 
 (defmethod datamunge:seed ((self datamunge:harmony-search-options) &rest args)
@@ -22011,9 +22017,9 @@ much larger iteration budget for a comparable total evaluation count.
 
   (seed harmony-search-options) → integer
   (setf (seed harmony-search-options) integer)"
-  (call 1543 (cons self args)))
+  (call 1561 (cons self args)))
 (defmethod (setf datamunge:seed) (value (self datamunge:harmony-search-options) &rest args)
-  (call 1544 (list* self value args))
+  (call 1562 (list* self value args))
   value)
 
 (defmethod datamunge:optimize ((self datamunge:harmony-search) &rest args)
@@ -22026,23 +22032,23 @@ initial `coordinates` (clamped into bounds) seed one member of the harmony memor
     coordinates  (vector double-float)
     lower-bound  (vector double-float)
     upper-bound  (vector double-float)"
-  (call 1546 (cons self args)))
+  (call 1564 (cons self args)))
 
 (defmethod datamunge:options ((self datamunge:harmony-search) &rest args)
   "The options this HarmonySearch was configured with.
 
   (options harmony-search) → harmony-search-options
     → The stored options."
-  (call 1547 (cons self args)))
+  (call 1565 (cons self args)))
 
 (defmethod datamunge:step-size ((self datamunge:interior-point-options) &rest args)
   "Fixed learning-rate/initial search step; use the objective scaling stated by optimize(). Default 0.01.
 
   (step-size interior-point-options) → double-float
   (setf (step-size interior-point-options) double-float)"
-  (call 1549 (cons self args)))
+  (call 1567 (cons self args)))
 (defmethod (setf datamunge:step-size) (value (self datamunge:interior-point-options) &rest args)
-  (call 1550 (list* self value args))
+  (call 1568 (list* self value args))
   value)
 
 (defmethod datamunge:initial-barrier ((self datamunge:interior-point-options) &rest args)
@@ -22050,9 +22056,9 @@ initial `coordinates` (clamped into bounds) seed one member of the harmony memor
 
   (initial-barrier interior-point-options) → double-float
   (setf (initial-barrier interior-point-options) double-float)"
-  (call 1551 (cons self args)))
+  (call 1569 (cons self args)))
 (defmethod (setf datamunge:initial-barrier) (value (self datamunge:interior-point-options) &rest args)
-  (call 1552 (list* self value args))
+  (call 1570 (list* self value args))
   value)
 
 (defmethod datamunge:barrier-decay ((self datamunge:interior-point-options) &rest args)
@@ -22060,9 +22066,9 @@ initial `coordinates` (clamped into bounds) seed one member of the harmony memor
 
   (barrier-decay interior-point-options) → double-float
   (setf (barrier-decay interior-point-options) double-float)"
-  (call 1553 (cons self args)))
+  (call 1571 (cons self args)))
 (defmethod (setf datamunge:barrier-decay) (value (self datamunge:interior-point-options) &rest args)
-  (call 1554 (list* self value args))
+  (call 1572 (list* self value args))
   value)
 
 (defmethod datamunge:max-outer-iterations ((self datamunge:interior-point-options) &rest args)
@@ -22070,9 +22076,9 @@ initial `coordinates` (clamped into bounds) seed one member of the harmony memor
 
   (max-outer-iterations interior-point-options) → integer
   (setf (max-outer-iterations interior-point-options) integer)"
-  (call 1555 (cons self args)))
+  (call 1573 (cons self args)))
 (defmethod (setf datamunge:max-outer-iterations) (value (self datamunge:interior-point-options) &rest args)
-  (call 1556 (list* self value args))
+  (call 1574 (list* self value args))
   value)
 
 (defmethod datamunge:inner-iterations ((self datamunge:interior-point-options) &rest args)
@@ -22080,9 +22086,9 @@ initial `coordinates` (clamped into bounds) seed one member of the harmony memor
 
   (inner-iterations interior-point-options) → integer
   (setf (inner-iterations interior-point-options) integer)"
-  (call 1557 (cons self args)))
+  (call 1575 (cons self args)))
 (defmethod (setf datamunge:inner-iterations) (value (self datamunge:interior-point-options) &rest args)
-  (call 1558 (list* self value args))
+  (call 1576 (list* self value args))
   value)
 
 (defmethod datamunge:optimize ((self datamunge:interior-point) &rest args)
@@ -22110,23 +22116,23 @@ See also: trace_optimize(), InteriorPointOptions
     function  inequality-constrained-function  Borrowed InequalityConstrainedFunction with matching finite output shapes.
     coordinates  (vector double-float)  Owned-by-caller finite start; overwritten with the native returned point.
     → Objective at the native returned coordinates; not a stop-status code."
-  (call 1560 (cons self args)))
+  (call 1578 (cons self args)))
 
 (defmethod datamunge:options ((self datamunge:interior-point) &rest args)
   "Borrow this optimizer's stored configuration.
 
   (options interior-point) → interior-point-options
     → Const option reference, valid during this object's lifetime; no mutation."
-  (call 1561 (cons self args)))
+  (call 1579 (cons self args)))
 
 (defmethod datamunge:max-iterations ((self datamunge:lbfgs-options) &rest args)
   "Maximum native iterations/epochs as described by optimize(); zero performs no updates. Default 500.
 
   (max-iterations lbfgs-options) → integer
   (setf (max-iterations lbfgs-options) integer)"
-  (call 1563 (cons self args)))
+  (call 1581 (cons self args)))
 (defmethod (setf datamunge:max-iterations) (value (self datamunge:lbfgs-options) &rest args)
-  (call 1564 (list* self value args))
+  (call 1582 (list* self value args))
   value)
 
 (defmethod datamunge:tolerance ((self datamunge:lbfgs-options) &rest args)
@@ -22134,9 +22140,9 @@ See also: trace_optimize(), InteriorPointOptions
 
   (tolerance lbfgs-options) → double-float
   (setf (tolerance lbfgs-options) double-float)"
-  (call 1565 (cons self args)))
+  (call 1583 (cons self args)))
 (defmethod (setf datamunge:tolerance) (value (self datamunge:lbfgs-options) &rest args)
-  (call 1566 (list* self value args))
+  (call 1584 (list* self value args))
   value)
 
 (defmethod datamunge:history-size ((self datamunge:lbfgs-options) &rest args)
@@ -22144,9 +22150,9 @@ See also: trace_optimize(), InteriorPointOptions
 
   (history-size lbfgs-options) → integer
   (setf (history-size lbfgs-options) integer)"
-  (call 1567 (cons self args)))
+  (call 1585 (cons self args)))
 (defmethod (setf datamunge:history-size) (value (self datamunge:lbfgs-options) &rest args)
-  (call 1568 (list* self value args))
+  (call 1586 (list* self value args))
   value)
 
 (defmethod datamunge:armijo-c1 ((self datamunge:lbfgs-options) &rest args)
@@ -22154,9 +22160,9 @@ See also: trace_optimize(), InteriorPointOptions
 
   (armijo-c1 lbfgs-options) → double-float
   (setf (armijo-c1 lbfgs-options) double-float)"
-  (call 1569 (cons self args)))
+  (call 1587 (cons self args)))
 (defmethod (setf datamunge:armijo-c1) (value (self datamunge:lbfgs-options) &rest args)
-  (call 1570 (list* self value args))
+  (call 1588 (list* self value args))
   value)
 
 (defmethod datamunge:wolfe-c2 ((self datamunge:lbfgs-options) &rest args)
@@ -22164,9 +22170,9 @@ See also: trace_optimize(), InteriorPointOptions
 
   (wolfe-c2 lbfgs-options) → double-float
   (setf (wolfe-c2 lbfgs-options) double-float)"
-  (call 1571 (cons self args)))
+  (call 1589 (cons self args)))
 (defmethod (setf datamunge:wolfe-c2) (value (self datamunge:lbfgs-options) &rest args)
-  (call 1572 (list* self value args))
+  (call 1590 (list* self value args))
   value)
 
 (defmethod datamunge:max-line-search-trials ((self datamunge:lbfgs-options) &rest args)
@@ -22174,9 +22180,9 @@ See also: trace_optimize(), InteriorPointOptions
 
   (max-line-search-trials lbfgs-options) → integer
   (setf (max-line-search-trials lbfgs-options) integer)"
-  (call 1573 (cons self args)))
+  (call 1591 (cons self args)))
 (defmethod (setf datamunge:max-line-search-trials) (value (self datamunge:lbfgs-options) &rest args)
-  (call 1574 (list* self value args))
+  (call 1592 (list* self value args))
   value)
 
 (defmethod datamunge:optimize ((self datamunge:lbfgs) &rest args)
@@ -22202,23 +22208,23 @@ See also: trace_optimize(), LBFGSOptions
     function  differentiable-function  Borrowed DifferentiableFunction with matching finite output shapes.
     coordinates  (vector double-float)  Owned-by-caller finite start; overwritten with the native returned point.
     → Objective at the native returned coordinates; not a stop-status code."
-  (call 1576 (cons self args)))
+  (call 1594 (cons self args)))
 
 (defmethod datamunge:options ((self datamunge:lbfgs) &rest args)
   "Borrow this optimizer's stored configuration.
 
   (options lbfgs) → lbfgs-options
     → Const option reference, valid during this object's lifetime; no mutation."
-  (call 1577 (cons self args)))
+  (call 1595 (cons self args)))
 
 (defmethod datamunge:initial-damping ((self datamunge:levenberg-marquardt-options) &rest args)
   "Positive initial LM diagonal shift. Default 1e-3.
 
   (initial-damping levenberg-marquardt-options) → double-float
   (setf (initial-damping levenberg-marquardt-options) double-float)"
-  (call 1579 (cons self args)))
+  (call 1597 (cons self args)))
 (defmethod (setf datamunge:initial-damping) (value (self datamunge:levenberg-marquardt-options) &rest args)
-  (call 1580 (list* self value args))
+  (call 1598 (list* self value args))
   value)
 
 (defmethod datamunge:max-iterations ((self datamunge:levenberg-marquardt-options) &rest args)
@@ -22226,9 +22232,9 @@ See also: trace_optimize(), LBFGSOptions
 
   (max-iterations levenberg-marquardt-options) → integer
   (setf (max-iterations levenberg-marquardt-options) integer)"
-  (call 1581 (cons self args)))
+  (call 1599 (cons self args)))
 (defmethod (setf datamunge:max-iterations) (value (self datamunge:levenberg-marquardt-options) &rest args)
-  (call 1582 (list* self value args))
+  (call 1600 (list* self value args))
   value)
 
 (defmethod datamunge:tolerance ((self datamunge:levenberg-marquardt-options) &rest args)
@@ -22236,9 +22242,9 @@ See also: trace_optimize(), LBFGSOptions
 
   (tolerance levenberg-marquardt-options) → double-float
   (setf (tolerance levenberg-marquardt-options) double-float)"
-  (call 1583 (cons self args)))
+  (call 1601 (cons self args)))
 (defmethod (setf datamunge:tolerance) (value (self datamunge:levenberg-marquardt-options) &rest args)
-  (call 1584 (list* self value args))
+  (call 1602 (list* self value args))
   value)
 
 (defmethod datamunge:optimize ((self datamunge:levenberg-marquardt) &rest args)
@@ -22265,23 +22271,23 @@ See also: trace_optimize(), LevenbergMarquardtOptions
     function  residual-function  Borrowed ResidualFunction with matching finite output shapes.
     coordinates  (vector double-float)  Owned-by-caller finite start; overwritten with the native returned point.
     → Objective at the native returned coordinates (half residual SSE); not a stop-status code."
-  (call 1586 (cons self args)))
+  (call 1604 (cons self args)))
 
 (defmethod datamunge:options ((self datamunge:levenberg-marquardt) &rest args)
   "Borrow this optimizer's stored configuration.
 
   (options levenberg-marquardt) → levenberg-marquardt-options
     → Const option reference, valid during this object's lifetime; no mutation."
-  (call 1587 (cons self args)))
+  (call 1605 (cons self args)))
 
 (defmethod datamunge:initial-simplex-scale ((self datamunge:nelder-mead-options) &rest args)
   "Per-coordinate displacement forming the initial simplex. Default 0.05.
 
   (initial-simplex-scale nelder-mead-options) → double-float
   (setf (initial-simplex-scale nelder-mead-options) double-float)"
-  (call 1589 (cons self args)))
+  (call 1607 (cons self args)))
 (defmethod (setf datamunge:initial-simplex-scale) (value (self datamunge:nelder-mead-options) &rest args)
-  (call 1590 (list* self value args))
+  (call 1608 (list* self value args))
   value)
 
 (defmethod datamunge:reflection ((self datamunge:nelder-mead-options) &rest args)
@@ -22289,9 +22295,9 @@ See also: trace_optimize(), LevenbergMarquardtOptions
 
   (reflection nelder-mead-options) → double-float
   (setf (reflection nelder-mead-options) double-float)"
-  (call 1591 (cons self args)))
+  (call 1609 (cons self args)))
 (defmethod (setf datamunge:reflection) (value (self datamunge:nelder-mead-options) &rest args)
-  (call 1592 (list* self value args))
+  (call 1610 (list* self value args))
   value)
 
 (defmethod datamunge:expansion ((self datamunge:nelder-mead-options) &rest args)
@@ -22299,9 +22305,9 @@ See also: trace_optimize(), LevenbergMarquardtOptions
 
   (expansion nelder-mead-options) → double-float
   (setf (expansion nelder-mead-options) double-float)"
-  (call 1593 (cons self args)))
+  (call 1611 (cons self args)))
 (defmethod (setf datamunge:expansion) (value (self datamunge:nelder-mead-options) &rest args)
-  (call 1594 (list* self value args))
+  (call 1612 (list* self value args))
   value)
 
 (defmethod datamunge:contraction ((self datamunge:nelder-mead-options) &rest args)
@@ -22309,9 +22315,9 @@ See also: trace_optimize(), LevenbergMarquardtOptions
 
   (contraction nelder-mead-options) → double-float
   (setf (contraction nelder-mead-options) double-float)"
-  (call 1595 (cons self args)))
+  (call 1613 (cons self args)))
 (defmethod (setf datamunge:contraction) (value (self datamunge:nelder-mead-options) &rest args)
-  (call 1596 (list* self value args))
+  (call 1614 (list* self value args))
   value)
 
 (defmethod datamunge:shrink ((self datamunge:nelder-mead-options) &rest args)
@@ -22319,9 +22325,9 @@ See also: trace_optimize(), LevenbergMarquardtOptions
 
   (shrink nelder-mead-options) → double-float
   (setf (shrink nelder-mead-options) double-float)"
-  (call 1597 (cons self args)))
+  (call 1615 (cons self args)))
 (defmethod (setf datamunge:shrink) (value (self datamunge:nelder-mead-options) &rest args)
-  (call 1598 (list* self value args))
+  (call 1616 (list* self value args))
   value)
 
 (defmethod datamunge:max-iterations ((self datamunge:nelder-mead-options) &rest args)
@@ -22329,9 +22335,9 @@ See also: trace_optimize(), LevenbergMarquardtOptions
 
   (max-iterations nelder-mead-options) → integer
   (setf (max-iterations nelder-mead-options) integer)"
-  (call 1599 (cons self args)))
+  (call 1617 (cons self args)))
 (defmethod (setf datamunge:max-iterations) (value (self datamunge:nelder-mead-options) &rest args)
-  (call 1600 (list* self value args))
+  (call 1618 (list* self value args))
   value)
 
 (defmethod datamunge:tolerance ((self datamunge:nelder-mead-options) &rest args)
@@ -22339,9 +22345,9 @@ See also: trace_optimize(), LevenbergMarquardtOptions
 
   (tolerance nelder-mead-options) → double-float
   (setf (tolerance nelder-mead-options) double-float)"
-  (call 1601 (cons self args)))
+  (call 1619 (cons self args)))
 (defmethod (setf datamunge:tolerance) (value (self datamunge:nelder-mead-options) &rest args)
-  (call 1602 (list* self value args))
+  (call 1620 (list* self value args))
   value)
 
 (defmethod datamunge:optimize ((self datamunge:nelder-mead) &rest args)
@@ -22368,23 +22374,23 @@ See also: trace_optimize(), NelderMeadOptions
     function  arbitrary-function  Borrowed ArbitraryFunction with matching finite output shapes.
     coordinates  (vector double-float)  Owned-by-caller finite start; overwritten with the native returned point.
     → Objective at the native returned coordinates; not a stop-status code."
-  (call 1604 (cons self args)))
+  (call 1622 (cons self args)))
 
 (defmethod datamunge:options ((self datamunge:nelder-mead) &rest args)
   "Borrow this optimizer's stored configuration.
 
   (options nelder-mead) → nelder-mead-options
     → Const option reference, valid during this object's lifetime; no mutation."
-  (call 1605 (cons self args)))
+  (call 1623 (cons self args)))
 
 (defmethod datamunge:step-size ((self datamunge:nesterov-accelerated-gradient-options) &rest args)
   "Fixed learning-rate/initial search step; use the objective scaling stated by optimize(). Default 0.01.
 
   (step-size nesterov-accelerated-gradient-options) → double-float
   (setf (step-size nesterov-accelerated-gradient-options) double-float)"
-  (call 1607 (cons self args)))
+  (call 1625 (cons self args)))
 (defmethod (setf datamunge:step-size) (value (self datamunge:nesterov-accelerated-gradient-options) &rest args)
-  (call 1608 (list* self value args))
+  (call 1626 (list* self value args))
   value)
 
 (defmethod datamunge:momentum ((self datamunge:nesterov-accelerated-gradient-options) &rest args)
@@ -22392,9 +22398,9 @@ See also: trace_optimize(), NelderMeadOptions
 
   (momentum nesterov-accelerated-gradient-options) → double-float
   (setf (momentum nesterov-accelerated-gradient-options) double-float)"
-  (call 1609 (cons self args)))
+  (call 1627 (cons self args)))
 (defmethod (setf datamunge:momentum) (value (self datamunge:nesterov-accelerated-gradient-options) &rest args)
-  (call 1610 (list* self value args))
+  (call 1628 (list* self value args))
   value)
 
 (defmethod datamunge:max-iterations ((self datamunge:nesterov-accelerated-gradient-options) &rest args)
@@ -22402,9 +22408,9 @@ See also: trace_optimize(), NelderMeadOptions
 
   (max-iterations nesterov-accelerated-gradient-options) → integer
   (setf (max-iterations nesterov-accelerated-gradient-options) integer)"
-  (call 1611 (cons self args)))
+  (call 1629 (cons self args)))
 (defmethod (setf datamunge:max-iterations) (value (self datamunge:nesterov-accelerated-gradient-options) &rest args)
-  (call 1612 (list* self value args))
+  (call 1630 (list* self value args))
   value)
 
 (defmethod datamunge:tolerance ((self datamunge:nesterov-accelerated-gradient-options) &rest args)
@@ -22412,9 +22418,9 @@ See also: trace_optimize(), NelderMeadOptions
 
   (tolerance nesterov-accelerated-gradient-options) → double-float
   (setf (tolerance nesterov-accelerated-gradient-options) double-float)"
-  (call 1613 (cons self args)))
+  (call 1631 (cons self args)))
 (defmethod (setf datamunge:tolerance) (value (self datamunge:nesterov-accelerated-gradient-options) &rest args)
-  (call 1614 (list* self value args))
+  (call 1632 (list* self value args))
   value)
 
 (defmethod datamunge:optimize ((self datamunge:nesterov-accelerated-gradient) &rest args)
@@ -22441,23 +22447,23 @@ See also: trace_optimize(), NesterovAcceleratedGradientOptions
     function  differentiable-function  Borrowed DifferentiableFunction with matching finite output shapes.
     coordinates  (vector double-float)  Owned-by-caller finite start; overwritten with the native returned point.
     → Objective at the native returned coordinates; not a stop-status code."
-  (call 1616 (cons self args)))
+  (call 1634 (cons self args)))
 
 (defmethod datamunge:options ((self datamunge:nesterov-accelerated-gradient) &rest args)
   "Borrow this optimizer's stored configuration.
 
   (options nesterov-accelerated-gradient) → nesterov-accelerated-gradient-options
     → Const option reference, valid during this object's lifetime; no mutation."
-  (call 1617 (cons self args)))
+  (call 1635 (cons self args)))
 
 (defmethod datamunge:step-size ((self datamunge:nadam-options) &rest args)
   "Fixed learning-rate/initial search step; use the objective scaling stated by optimize(). Default 0.001.
 
   (step-size nadam-options) → double-float
   (setf (step-size nadam-options) double-float)"
-  (call 1619 (cons self args)))
+  (call 1637 (cons self args)))
 (defmethod (setf datamunge:step-size) (value (self datamunge:nadam-options) &rest args)
-  (call 1620 (list* self value args))
+  (call 1638 (list* self value args))
   value)
 
 (defmethod datamunge:beta1 ((self datamunge:nadam-options) &rest args)
@@ -22465,9 +22471,9 @@ See also: trace_optimize(), NesterovAcceleratedGradientOptions
 
   (beta1 nadam-options) → double-float
   (setf (beta1 nadam-options) double-float)"
-  (call 1621 (cons self args)))
+  (call 1639 (cons self args)))
 (defmethod (setf datamunge:beta1) (value (self datamunge:nadam-options) &rest args)
-  (call 1622 (list* self value args))
+  (call 1640 (list* self value args))
   value)
 
 (defmethod datamunge:beta2 ((self datamunge:nadam-options) &rest args)
@@ -22475,9 +22481,9 @@ See also: trace_optimize(), NesterovAcceleratedGradientOptions
 
   (beta2 nadam-options) → double-float
   (setf (beta2 nadam-options) double-float)"
-  (call 1623 (cons self args)))
+  (call 1641 (cons self args)))
 (defmethod (setf datamunge:beta2) (value (self datamunge:nadam-options) &rest args)
-  (call 1624 (list* self value args))
+  (call 1642 (list* self value args))
   value)
 
 (defmethod datamunge:epsilon ((self datamunge:nadam-options) &rest args)
@@ -22485,9 +22491,9 @@ See also: trace_optimize(), NesterovAcceleratedGradientOptions
 
   (epsilon nadam-options) → double-float
   (setf (epsilon nadam-options) double-float)"
-  (call 1625 (cons self args)))
+  (call 1643 (cons self args)))
 (defmethod (setf datamunge:epsilon) (value (self datamunge:nadam-options) &rest args)
-  (call 1626 (list* self value args))
+  (call 1644 (list* self value args))
   value)
 
 (defmethod datamunge:max-iterations ((self datamunge:nadam-options) &rest args)
@@ -22495,9 +22501,9 @@ See also: trace_optimize(), NesterovAcceleratedGradientOptions
 
   (max-iterations nadam-options) → integer
   (setf (max-iterations nadam-options) integer)"
-  (call 1627 (cons self args)))
+  (call 1645 (cons self args)))
 (defmethod (setf datamunge:max-iterations) (value (self datamunge:nadam-options) &rest args)
-  (call 1628 (list* self value args))
+  (call 1646 (list* self value args))
   value)
 
 (defmethod datamunge:tolerance ((self datamunge:nadam-options) &rest args)
@@ -22505,9 +22511,9 @@ See also: trace_optimize(), NesterovAcceleratedGradientOptions
 
   (tolerance nadam-options) → double-float
   (setf (tolerance nadam-options) double-float)"
-  (call 1629 (cons self args)))
+  (call 1647 (cons self args)))
 (defmethod (setf datamunge:tolerance) (value (self datamunge:nadam-options) &rest args)
-  (call 1630 (list* self value args))
+  (call 1648 (list* self value args))
   value)
 
 (defmethod datamunge:optimize ((self datamunge:nadam) &rest args)
@@ -22534,23 +22540,23 @@ See also: trace_optimize(), NadamOptions
     function  differentiable-function  Borrowed DifferentiableFunction with matching finite output shapes.
     coordinates  (vector double-float)  Owned-by-caller finite start; overwritten with the native returned point.
     → Objective at the native returned coordinates; not a stop-status code."
-  (call 1632 (cons self args)))
+  (call 1650 (cons self args)))
 
 (defmethod datamunge:options ((self datamunge:nadam) &rest args)
   "Borrow this optimizer's stored configuration.
 
   (options nadam) → nadam-options
     → Const option reference, valid during this object's lifetime; no mutation."
-  (call 1633 (cons self args)))
+  (call 1651 (cons self args)))
 
 (defmethod datamunge:max-iterations ((self datamunge:newton-options) &rest args)
   "Maximum native iterations/epochs as described by optimize(); zero performs no updates. Default 100.
 
   (max-iterations newton-options) → integer
   (setf (max-iterations newton-options) integer)"
-  (call 1635 (cons self args)))
+  (call 1653 (cons self args)))
 (defmethod (setf datamunge:max-iterations) (value (self datamunge:newton-options) &rest args)
-  (call 1636 (list* self value args))
+  (call 1654 (list* self value args))
   value)
 
 (defmethod datamunge:tolerance ((self datamunge:newton-options) &rest args)
@@ -22558,9 +22564,9 @@ See also: trace_optimize(), NadamOptions
 
   (tolerance newton-options) → double-float
   (setf (tolerance newton-options) double-float)"
-  (call 1637 (cons self args)))
+  (call 1655 (cons self args)))
 (defmethod (setf datamunge:tolerance) (value (self datamunge:newton-options) &rest args)
-  (call 1638 (list* self value args))
+  (call 1656 (list* self value args))
   value)
 
 (defmethod datamunge:damping ((self datamunge:newton-options) &rest args)
@@ -22568,9 +22574,9 @@ See also: trace_optimize(), NadamOptions
 
   (damping newton-options) → double-float
   (setf (damping newton-options) double-float)"
-  (call 1639 (cons self args)))
+  (call 1657 (cons self args)))
 (defmethod (setf datamunge:damping) (value (self datamunge:newton-options) &rest args)
-  (call 1640 (list* self value args))
+  (call 1658 (list* self value args))
   value)
 
 (defmethod datamunge:optimize ((self datamunge:newton) &rest args)
@@ -22597,23 +22603,23 @@ See also: trace_optimize(), NewtonOptions
     function  hessian-function  Borrowed HessianFunction with matching finite output shapes.
     coordinates  (vector double-float)  Owned-by-caller finite start; overwritten with the native returned point.
     → Objective at the native returned coordinates; not a stop-status code."
-  (call 1642 (cons self args)))
+  (call 1660 (cons self args)))
 
 (defmethod datamunge:options ((self datamunge:newton) &rest args)
   "Borrow this optimizer's stored configuration.
 
   (options newton) → newton-options
     → Const option reference, valid during this object's lifetime; no mutation."
-  (call 1643 (cons self args)))
+  (call 1661 (cons self args)))
 
 (defmethod datamunge:num-replicas ((self datamunge:parallel-tempering-options) &rest args)
   "Field num-replicas of parallel-tempering-options.
 
   (num-replicas parallel-tempering-options) → integer
   (setf (num-replicas parallel-tempering-options) integer)"
-  (call 1645 (cons self args)))
+  (call 1663 (cons self args)))
 (defmethod (setf datamunge:num-replicas) (value (self datamunge:parallel-tempering-options) &rest args)
-  (call 1646 (list* self value args))
+  (call 1664 (list* self value args))
   value)
 
 (defmethod datamunge:initial-temperature ((self datamunge:parallel-tempering-options) &rest args)
@@ -22621,9 +22627,9 @@ See also: trace_optimize(), NewtonOptions
 
   (initial-temperature parallel-tempering-options) → double-float
   (setf (initial-temperature parallel-tempering-options) double-float)"
-  (call 1647 (cons self args)))
+  (call 1665 (cons self args)))
 (defmethod (setf datamunge:initial-temperature) (value (self datamunge:parallel-tempering-options) &rest args)
-  (call 1648 (list* self value args))
+  (call 1666 (list* self value args))
   value)
 
 (defmethod datamunge:final-temperature ((self datamunge:parallel-tempering-options) &rest args)
@@ -22631,9 +22637,9 @@ See also: trace_optimize(), NewtonOptions
 
   (final-temperature parallel-tempering-options) → double-float
   (setf (final-temperature parallel-tempering-options) double-float)"
-  (call 1649 (cons self args)))
+  (call 1667 (cons self args)))
 (defmethod (setf datamunge:final-temperature) (value (self datamunge:parallel-tempering-options) &rest args)
-  (call 1650 (list* self value args))
+  (call 1668 (list* self value args))
   value)
 
 (defmethod datamunge:step-std-dev ((self datamunge:parallel-tempering-options) &rest args)
@@ -22642,9 +22648,9 @@ sqrt(T_i / T_min) so hotter replicas take proportionally larger exploratory step
 
   (step-std-dev parallel-tempering-options) → double-float
   (setf (step-std-dev parallel-tempering-options) double-float)"
-  (call 1651 (cons self args)))
+  (call 1669 (cons self args)))
 (defmethod (setf datamunge:step-std-dev) (value (self datamunge:parallel-tempering-options) &rest args)
-  (call 1652 (list* self value args))
+  (call 1670 (list* self value args))
   value)
 
 (defmethod datamunge:swap-interval ((self datamunge:parallel-tempering-options) &rest args)
@@ -22652,9 +22658,9 @@ sqrt(T_i / T_min) so hotter replicas take proportionally larger exploratory step
 
   (swap-interval parallel-tempering-options) → integer
   (setf (swap-interval parallel-tempering-options) integer)"
-  (call 1653 (cons self args)))
+  (call 1671 (cons self args)))
 (defmethod (setf datamunge:swap-interval) (value (self datamunge:parallel-tempering-options) &rest args)
-  (call 1654 (list* self value args))
+  (call 1672 (list* self value args))
   value)
 
 (defmethod datamunge:max-sweeps ((self datamunge:parallel-tempering-options) &rest args)
@@ -22662,9 +22668,9 @@ sqrt(T_i / T_min) so hotter replicas take proportionally larger exploratory step
 
   (max-sweeps parallel-tempering-options) → integer
   (setf (max-sweeps parallel-tempering-options) integer)"
-  (call 1655 (cons self args)))
+  (call 1673 (cons self args)))
 (defmethod (setf datamunge:max-sweeps) (value (self datamunge:parallel-tempering-options) &rest args)
-  (call 1656 (list* self value args))
+  (call 1674 (list* self value args))
   value)
 
 (defmethod datamunge:seed ((self datamunge:parallel-tempering-options) &rest args)
@@ -22672,9 +22678,9 @@ sqrt(T_i / T_min) so hotter replicas take proportionally larger exploratory step
 
   (seed parallel-tempering-options) → integer
   (setf (seed parallel-tempering-options) integer)"
-  (call 1657 (cons self args)))
+  (call 1675 (cons self args)))
 (defmethod (setf datamunge:seed) (value (self datamunge:parallel-tempering-options) &rest args)
-  (call 1658 (list* self value args))
+  (call 1676 (list* self value args))
   value)
 
 (defmethod datamunge:optimize ((self datamunge:parallel-tempering) &rest args)
@@ -22683,23 +22689,23 @@ sqrt(T_i / T_min) so hotter replicas take proportionally larger exploratory step
   (optimize parallel-tempering function coordinates) → double-float
     function  arbitrary-function
     coordinates  (vector double-float)"
-  (call 1660 (cons self args)))
+  (call 1678 (cons self args)))
 
 (defmethod datamunge:options ((self datamunge:parallel-tempering) &rest args)
   "The options this ParallelTempering was configured with.
 
   (options parallel-tempering) → parallel-tempering-options
     → The stored options."
-  (call 1661 (cons self args)))
+  (call 1679 (cons self args)))
 
 (defmethod datamunge:population-size ((self datamunge:pso-options) &rest args)
   "Population size; CMA-ES zero selects its dimension-based default. Default 40.
 
   (population-size pso-options) → integer
   (setf (population-size pso-options) integer)"
-  (call 1663 (cons self args)))
+  (call 1681 (cons self args)))
 (defmethod (setf datamunge:population-size) (value (self datamunge:pso-options) &rest args)
-  (call 1664 (list* self value args))
+  (call 1682 (list* self value args))
   value)
 
 (defmethod datamunge:max-iterations ((self datamunge:pso-options) &rest args)
@@ -22707,9 +22713,9 @@ sqrt(T_i / T_min) so hotter replicas take proportionally larger exploratory step
 
   (max-iterations pso-options) → integer
   (setf (max-iterations pso-options) integer)"
-  (call 1665 (cons self args)))
+  (call 1683 (cons self args)))
 (defmethod (setf datamunge:max-iterations) (value (self datamunge:pso-options) &rest args)
-  (call 1666 (list* self value args))
+  (call 1684 (list* self value args))
   value)
 
 (defmethod datamunge:inertia-weight ((self datamunge:pso-options) &rest args)
@@ -22717,9 +22723,9 @@ sqrt(T_i / T_min) so hotter replicas take proportionally larger exploratory step
 
   (inertia-weight pso-options) → double-float
   (setf (inertia-weight pso-options) double-float)"
-  (call 1667 (cons self args)))
+  (call 1685 (cons self args)))
 (defmethod (setf datamunge:inertia-weight) (value (self datamunge:pso-options) &rest args)
-  (call 1668 (list* self value args))
+  (call 1686 (list* self value args))
   value)
 
 (defmethod datamunge:cognitive-coefficient ((self datamunge:pso-options) &rest args)
@@ -22727,9 +22733,9 @@ sqrt(T_i / T_min) so hotter replicas take proportionally larger exploratory step
 
   (cognitive-coefficient pso-options) → double-float
   (setf (cognitive-coefficient pso-options) double-float)"
-  (call 1669 (cons self args)))
+  (call 1687 (cons self args)))
 (defmethod (setf datamunge:cognitive-coefficient) (value (self datamunge:pso-options) &rest args)
-  (call 1670 (list* self value args))
+  (call 1688 (list* self value args))
   value)
 
 (defmethod datamunge:social-coefficient ((self datamunge:pso-options) &rest args)
@@ -22737,9 +22743,9 @@ sqrt(T_i / T_min) so hotter replicas take proportionally larger exploratory step
 
   (social-coefficient pso-options) → double-float
   (setf (social-coefficient pso-options) double-float)"
-  (call 1671 (cons self args)))
+  (call 1689 (cons self args)))
 (defmethod (setf datamunge:social-coefficient) (value (self datamunge:pso-options) &rest args)
-  (call 1672 (list* self value args))
+  (call 1690 (list* self value args))
   value)
 
 (defmethod datamunge:topology ((self datamunge:pso-options) &rest args)
@@ -22747,9 +22753,9 @@ sqrt(T_i / T_min) so hotter replicas take proportionally larger exploratory step
 
   (topology pso-options) → string
   (setf (topology pso-options) string)"
-  (call 1673 (cons self args)))
+  (call 1691 (cons self args)))
 (defmethod (setf datamunge:topology) (value (self datamunge:pso-options) &rest args)
-  (call 1674 (list* self value args))
+  (call 1692 (list* self value args))
   value)
 
 (defmethod datamunge:ring-neighbors ((self datamunge:pso-options) &rest args)
@@ -22757,9 +22763,9 @@ sqrt(T_i / T_min) so hotter replicas take proportionally larger exploratory step
 
   (ring-neighbors pso-options) → integer
   (setf (ring-neighbors pso-options) integer)"
-  (call 1675 (cons self args)))
+  (call 1693 (cons self args)))
 (defmethod (setf datamunge:ring-neighbors) (value (self datamunge:pso-options) &rest args)
-  (call 1676 (list* self value args))
+  (call 1694 (list* self value args))
   value)
 
 (defmethod datamunge:inertia-strategy ((self datamunge:pso-options) &rest args)
@@ -22767,9 +22773,9 @@ sqrt(T_i / T_min) so hotter replicas take proportionally larger exploratory step
 
   (inertia-strategy pso-options) → string
   (setf (inertia-strategy pso-options) string)"
-  (call 1677 (cons self args)))
+  (call 1695 (cons self args)))
 (defmethod (setf datamunge:inertia-strategy) (value (self datamunge:pso-options) &rest args)
-  (call 1678 (list* self value args))
+  (call 1696 (list* self value args))
   value)
 
 (defmethod datamunge:final-inertia-weight ((self datamunge:pso-options) &rest args)
@@ -22777,9 +22783,9 @@ sqrt(T_i / T_min) so hotter replicas take proportionally larger exploratory step
 
   (final-inertia-weight pso-options) → double-float
   (setf (final-inertia-weight pso-options) double-float)"
-  (call 1679 (cons self args)))
+  (call 1697 (cons self args)))
 (defmethod (setf datamunge:final-inertia-weight) (value (self datamunge:pso-options) &rest args)
-  (call 1680 (list* self value args))
+  (call 1698 (list* self value args))
   value)
 
 (defmethod datamunge:tolerance ((self datamunge:pso-options) &rest args)
@@ -22787,9 +22793,9 @@ sqrt(T_i / T_min) so hotter replicas take proportionally larger exploratory step
 
   (tolerance pso-options) → double-float
   (setf (tolerance pso-options) double-float)"
-  (call 1681 (cons self args)))
+  (call 1699 (cons self args)))
 (defmethod (setf datamunge:tolerance) (value (self datamunge:pso-options) &rest args)
-  (call 1682 (list* self value args))
+  (call 1700 (list* self value args))
   value)
 
 (defmethod datamunge:seed ((self datamunge:pso-options) &rest args)
@@ -22797,9 +22803,9 @@ sqrt(T_i / T_min) so hotter replicas take proportionally larger exploratory step
 
   (seed pso-options) → integer
   (setf (seed pso-options) integer)"
-  (call 1683 (cons self args)))
+  (call 1701 (cons self args)))
 (defmethod (setf datamunge:seed) (value (self datamunge:pso-options) &rest args)
-  (call 1684 (list* self value args))
+  (call 1702 (list* self value args))
   value)
 
 (defmethod datamunge:optimize ((self datamunge:pso) &rest args)
@@ -22828,23 +22834,23 @@ See also: trace_optimize(), PSOOptions
     lower-bound  (vector double-float)  Matching finite inclusive lower box limits.
     upper-bound  (vector double-float)  Matching finite inclusive upper limits, greater than lower limits.
     → Objective at the native returned coordinates; not a stop-status code."
-  (call 1686 (cons self args)))
+  (call 1704 (cons self args)))
 
 (defmethod datamunge:options ((self datamunge:pso) &rest args)
   "Borrow this optimizer's stored configuration.
 
   (options pso) → pso-options
     → Const option reference, valid during this object's lifetime; no mutation."
-  (call 1687 (cons self args)))
+  (call 1705 (cons self args)))
 
 (defmethod datamunge:step-size ((self datamunge:proximal-gradient-options) &rest args)
   "Fixed learning-rate/initial search step; use the objective scaling stated by optimize(). Default 0.01.
 
   (step-size proximal-gradient-options) → double-float
   (setf (step-size proximal-gradient-options) double-float)"
-  (call 1689 (cons self args)))
+  (call 1707 (cons self args)))
 (defmethod (setf datamunge:step-size) (value (self datamunge:proximal-gradient-options) &rest args)
-  (call 1690 (list* self value args))
+  (call 1708 (list* self value args))
   value)
 
 (defmethod datamunge:max-iterations ((self datamunge:proximal-gradient-options) &rest args)
@@ -22852,9 +22858,9 @@ See also: trace_optimize(), PSOOptions
 
   (max-iterations proximal-gradient-options) → integer
   (setf (max-iterations proximal-gradient-options) integer)"
-  (call 1691 (cons self args)))
+  (call 1709 (cons self args)))
 (defmethod (setf datamunge:max-iterations) (value (self datamunge:proximal-gradient-options) &rest args)
-  (call 1692 (list* self value args))
+  (call 1710 (list* self value args))
   value)
 
 (defmethod datamunge:tolerance ((self datamunge:proximal-gradient-options) &rest args)
@@ -22862,9 +22868,9 @@ See also: trace_optimize(), PSOOptions
 
   (tolerance proximal-gradient-options) → double-float
   (setf (tolerance proximal-gradient-options) double-float)"
-  (call 1693 (cons self args)))
+  (call 1711 (cons self args)))
 (defmethod (setf datamunge:tolerance) (value (self datamunge:proximal-gradient-options) &rest args)
-  (call 1694 (list* self value args))
+  (call 1712 (list* self value args))
   value)
 
 (defmethod datamunge:optimize ((self datamunge:proximal-gradient) &rest args)
@@ -22891,23 +22897,23 @@ See also: trace_optimize(), ProximalGradientOptions
     function  proximal-function  Borrowed ProximalFunction with matching finite output shapes.
     coordinates  (vector double-float)  Owned-by-caller finite start; overwritten with the native returned point.
     → Objective at the native returned coordinates; not a stop-status code."
-  (call 1696 (cons self args)))
+  (call 1714 (cons self args)))
 
 (defmethod datamunge:options ((self datamunge:proximal-gradient) &rest args)
   "Borrow this optimizer's stored configuration.
 
   (options proximal-gradient) → proximal-gradient-options
     → Const option reference, valid during this object's lifetime; no mutation."
-  (call 1697 (cons self args)))
+  (call 1715 (cons self args)))
 
 (defmethod datamunge:block-size ((self datamunge:randomized-block-coordinate-descent-options) &rest args)
   "Positive number of coordinates updated together. Default 1.
 
   (block-size randomized-block-coordinate-descent-options) → integer
   (setf (block-size randomized-block-coordinate-descent-options) integer)"
-  (call 1699 (cons self args)))
+  (call 1717 (cons self args)))
 (defmethod (setf datamunge:block-size) (value (self datamunge:randomized-block-coordinate-descent-options) &rest args)
-  (call 1700 (list* self value args))
+  (call 1718 (list* self value args))
   value)
 
 (defmethod datamunge:step-size ((self datamunge:randomized-block-coordinate-descent-options) &rest args)
@@ -22915,9 +22921,9 @@ See also: trace_optimize(), ProximalGradientOptions
 
   (step-size randomized-block-coordinate-descent-options) → double-float
   (setf (step-size randomized-block-coordinate-descent-options) double-float)"
-  (call 1701 (cons self args)))
+  (call 1719 (cons self args)))
 (defmethod (setf datamunge:step-size) (value (self datamunge:randomized-block-coordinate-descent-options) &rest args)
-  (call 1702 (list* self value args))
+  (call 1720 (list* self value args))
   value)
 
 (defmethod datamunge:max-iterations ((self datamunge:randomized-block-coordinate-descent-options) &rest args)
@@ -22925,9 +22931,9 @@ See also: trace_optimize(), ProximalGradientOptions
 
   (max-iterations randomized-block-coordinate-descent-options) → integer
   (setf (max-iterations randomized-block-coordinate-descent-options) integer)"
-  (call 1703 (cons self args)))
+  (call 1721 (cons self args)))
 (defmethod (setf datamunge:max-iterations) (value (self datamunge:randomized-block-coordinate-descent-options) &rest args)
-  (call 1704 (list* self value args))
+  (call 1722 (list* self value args))
   value)
 
 (defmethod datamunge:tolerance ((self datamunge:randomized-block-coordinate-descent-options) &rest args)
@@ -22935,9 +22941,9 @@ See also: trace_optimize(), ProximalGradientOptions
 
   (tolerance randomized-block-coordinate-descent-options) → double-float
   (setf (tolerance randomized-block-coordinate-descent-options) double-float)"
-  (call 1705 (cons self args)))
+  (call 1723 (cons self args)))
 (defmethod (setf datamunge:tolerance) (value (self datamunge:randomized-block-coordinate-descent-options) &rest args)
-  (call 1706 (list* self value args))
+  (call 1724 (list* self value args))
   value)
 
 (defmethod datamunge:armijo-c1 ((self datamunge:randomized-block-coordinate-descent-options) &rest args)
@@ -22945,9 +22951,9 @@ See also: trace_optimize(), ProximalGradientOptions
 
   (armijo-c1 randomized-block-coordinate-descent-options) → double-float
   (setf (armijo-c1 randomized-block-coordinate-descent-options) double-float)"
-  (call 1707 (cons self args)))
+  (call 1725 (cons self args)))
 (defmethod (setf datamunge:armijo-c1) (value (self datamunge:randomized-block-coordinate-descent-options) &rest args)
-  (call 1708 (list* self value args))
+  (call 1726 (list* self value args))
   value)
 
 (defmethod datamunge:backtracking-factor ((self datamunge:randomized-block-coordinate-descent-options) &rest args)
@@ -22955,9 +22961,9 @@ See also: trace_optimize(), ProximalGradientOptions
 
   (backtracking-factor randomized-block-coordinate-descent-options) → double-float
   (setf (backtracking-factor randomized-block-coordinate-descent-options) double-float)"
-  (call 1709 (cons self args)))
+  (call 1727 (cons self args)))
 (defmethod (setf datamunge:backtracking-factor) (value (self datamunge:randomized-block-coordinate-descent-options) &rest args)
-  (call 1710 (list* self value args))
+  (call 1728 (list* self value args))
   value)
 
 (defmethod datamunge:max-line-search-trials ((self datamunge:randomized-block-coordinate-descent-options) &rest args)
@@ -22965,9 +22971,9 @@ See also: trace_optimize(), ProximalGradientOptions
 
   (max-line-search-trials randomized-block-coordinate-descent-options) → integer
   (setf (max-line-search-trials randomized-block-coordinate-descent-options) integer)"
-  (call 1711 (cons self args)))
+  (call 1729 (cons self args)))
 (defmethod (setf datamunge:max-line-search-trials) (value (self datamunge:randomized-block-coordinate-descent-options) &rest args)
-  (call 1712 (list* self value args))
+  (call 1730 (list* self value args))
   value)
 
 (defmethod datamunge:seed ((self datamunge:randomized-block-coordinate-descent-options) &rest args)
@@ -22975,9 +22981,9 @@ See also: trace_optimize(), ProximalGradientOptions
 
   (seed randomized-block-coordinate-descent-options) → integer
   (setf (seed randomized-block-coordinate-descent-options) integer)"
-  (call 1713 (cons self args)))
+  (call 1731 (cons self args)))
 (defmethod (setf datamunge:seed) (value (self datamunge:randomized-block-coordinate-descent-options) &rest args)
-  (call 1714 (list* self value args))
+  (call 1732 (list* self value args))
   value)
 
 (defmethod datamunge:optimize ((self datamunge:randomized-block-coordinate-descent) &rest args)
@@ -23004,23 +23010,23 @@ See also: trace_optimize(), RandomizedBlockCoordinateDescentOptions
     function  differentiable-function  Borrowed DifferentiableFunction with matching finite output shapes.
     coordinates  (vector double-float)  Owned-by-caller finite start; overwritten with the native returned point.
     → Objective at the native returned coordinates; not a stop-status code."
-  (call 1716 (cons self args)))
+  (call 1734 (cons self args)))
 
 (defmethod datamunge:options ((self datamunge:randomized-block-coordinate-descent) &rest args)
   "Borrow this optimizer's stored configuration.
 
   (options randomized-block-coordinate-descent) → randomized-block-coordinate-descent-options
     → Const option reference, valid during this object's lifetime; no mutation."
-  (call 1717 (cons self args)))
+  (call 1735 (cons self args)))
 
 (defmethod datamunge:step-size ((self datamunge:rms-prop-options) &rest args)
   "Fixed learning-rate/initial search step; use the objective scaling stated by optimize(). Default 0.001.
 
   (step-size rms-prop-options) → double-float
   (setf (step-size rms-prop-options) double-float)"
-  (call 1719 (cons self args)))
+  (call 1737 (cons self args)))
 (defmethod (setf datamunge:step-size) (value (self datamunge:rms-prop-options) &rest args)
-  (call 1720 (list* self value args))
+  (call 1738 (list* self value args))
   value)
 
 (defmethod datamunge:decay-rate ((self datamunge:rms-prop-options) &rest args)
@@ -23028,9 +23034,9 @@ See also: trace_optimize(), RandomizedBlockCoordinateDescentOptions
 
   (decay-rate rms-prop-options) → double-float
   (setf (decay-rate rms-prop-options) double-float)"
-  (call 1721 (cons self args)))
+  (call 1739 (cons self args)))
 (defmethod (setf datamunge:decay-rate) (value (self datamunge:rms-prop-options) &rest args)
-  (call 1722 (list* self value args))
+  (call 1740 (list* self value args))
   value)
 
 (defmethod datamunge:epsilon ((self datamunge:rms-prop-options) &rest args)
@@ -23038,9 +23044,9 @@ See also: trace_optimize(), RandomizedBlockCoordinateDescentOptions
 
   (epsilon rms-prop-options) → double-float
   (setf (epsilon rms-prop-options) double-float)"
-  (call 1723 (cons self args)))
+  (call 1741 (cons self args)))
 (defmethod (setf datamunge:epsilon) (value (self datamunge:rms-prop-options) &rest args)
-  (call 1724 (list* self value args))
+  (call 1742 (list* self value args))
   value)
 
 (defmethod datamunge:max-iterations ((self datamunge:rms-prop-options) &rest args)
@@ -23048,9 +23054,9 @@ See also: trace_optimize(), RandomizedBlockCoordinateDescentOptions
 
   (max-iterations rms-prop-options) → integer
   (setf (max-iterations rms-prop-options) integer)"
-  (call 1725 (cons self args)))
+  (call 1743 (cons self args)))
 (defmethod (setf datamunge:max-iterations) (value (self datamunge:rms-prop-options) &rest args)
-  (call 1726 (list* self value args))
+  (call 1744 (list* self value args))
   value)
 
 (defmethod datamunge:tolerance ((self datamunge:rms-prop-options) &rest args)
@@ -23058,9 +23064,9 @@ See also: trace_optimize(), RandomizedBlockCoordinateDescentOptions
 
   (tolerance rms-prop-options) → double-float
   (setf (tolerance rms-prop-options) double-float)"
-  (call 1727 (cons self args)))
+  (call 1745 (cons self args)))
 (defmethod (setf datamunge:tolerance) (value (self datamunge:rms-prop-options) &rest args)
-  (call 1728 (list* self value args))
+  (call 1746 (list* self value args))
   value)
 
 (defmethod datamunge:optimize ((self datamunge:rms-prop) &rest args)
@@ -23087,23 +23093,23 @@ See also: trace_optimize(), RMSPropOptions
     function  differentiable-function  Borrowed DifferentiableFunction with matching finite output shapes.
     coordinates  (vector double-float)  Owned-by-caller finite start; overwritten with the native returned point.
     → Objective at the native returned coordinates; not a stop-status code."
-  (call 1730 (cons self args)))
+  (call 1748 (cons self args)))
 
 (defmethod datamunge:options ((self datamunge:rms-prop) &rest args)
   "Borrow this optimizer's stored configuration.
 
   (options rms-prop) → rms-prop-options
     → Const option reference, valid during this object's lifetime; no mutation."
-  (call 1731 (cons self args)))
+  (call 1749 (cons self args)))
 
 (defmethod datamunge:mean ((self datamunge:surrogate-prediction) &rest args)
   "Posterior mean, in the units of the objective.
 
   (mean surrogate-prediction) → double-float
   (setf (mean surrogate-prediction) double-float)"
-  (call 1733 (cons self args)))
+  (call 1751 (cons self args)))
 (defmethod (setf datamunge:mean) (value (self datamunge:surrogate-prediction) &rest args)
-  (call 1734 (list* self value args))
+  (call 1752 (list* self value args))
   value)
 
 (defmethod datamunge:sd ((self datamunge:surrogate-prediction) &rest args)
@@ -23111,9 +23117,9 @@ See also: trace_optimize(), RMSPropOptions
 
   (sd surrogate-prediction) → double-float
   (setf (sd surrogate-prediction) double-float)"
-  (call 1735 (cons self args)))
+  (call 1753 (cons self args)))
 (defmethod (setf datamunge:sd) (value (self datamunge:surrogate-prediction) &rest args)
-  (call 1736 (list* self value args))
+  (call 1754 (list* self value args))
   value)
 
 (defmethod datamunge:length-scale ((self datamunge:gaussian-process-surrogate-options) &rest args)
@@ -23123,9 +23129,9 @@ See also: trace_optimize(), RMSPropOptions
 
   (length-scale gaussian-process-surrogate-options) → double-float
   (setf (length-scale gaussian-process-surrogate-options) double-float)"
-  (call 1738 (cons self args)))
+  (call 1756 (cons self args)))
 (defmethod (setf datamunge:length-scale) (value (self datamunge:gaussian-process-surrogate-options) &rest args)
-  (call 1739 (list* self value args))
+  (call 1757 (list* self value args))
   value)
 
 (defmethod datamunge:signal-variance ((self datamunge:gaussian-process-surrogate-options) &rest args)
@@ -23135,9 +23141,9 @@ See also: trace_optimize(), RMSPropOptions
 
   (signal-variance gaussian-process-surrogate-options) → double-float
   (setf (signal-variance gaussian-process-surrogate-options) double-float)"
-  (call 1740 (cons self args)))
+  (call 1758 (cons self args)))
 (defmethod (setf datamunge:signal-variance) (value (self datamunge:gaussian-process-surrogate-options) &rest args)
-  (call 1741 (list* self value args))
+  (call 1759 (list* self value args))
   value)
 
 (defmethod datamunge:noise ((self datamunge:gaussian-process-surrogate-options) &rest args)
@@ -23146,9 +23152,9 @@ noise / signal_variance (the nugget) is what stays fixed.
 
   (noise gaussian-process-surrogate-options) → double-float
   (setf (noise gaussian-process-surrogate-options) double-float)"
-  (call 1742 (cons self args)))
+  (call 1760 (cons self args)))
 (defmethod (setf datamunge:noise) (value (self datamunge:gaussian-process-surrogate-options) &rest args)
-  (call 1743 (list* self value args))
+  (call 1761 (list* self value args))
   value)
 
 (defmethod datamunge:normalize-values ((self datamunge:gaussian-process-surrogate-options) &rest args)
@@ -23156,9 +23162,9 @@ noise / signal_variance (the nugget) is what stays fixed.
 
   (normalize-values gaussian-process-surrogate-options) → boolean
   (setf (normalize-values gaussian-process-surrogate-options) boolean)"
-  (call 1744 (cons self args)))
+  (call 1762 (cons self args)))
 (defmethod (setf datamunge:normalize-values) (value (self datamunge:gaussian-process-surrogate-options) &rest args)
-  (call 1745 (list* self value args))
+  (call 1763 (list* self value args))
   value)
 
 (defmethod datamunge:fit-hyperparameters ((self datamunge:gaussian-process-surrogate-options) &rest args)
@@ -23168,9 +23174,9 @@ noise / signal_variance (the nugget) is what stays fixed.
 
   (fit-hyperparameters gaussian-process-surrogate-options) → boolean
   (setf (fit-hyperparameters gaussian-process-surrogate-options) boolean)"
-  (call 1746 (cons self args)))
+  (call 1764 (cons self args)))
 (defmethod (setf datamunge:fit-hyperparameters) (value (self datamunge:gaussian-process-surrogate-options) &rest args)
-  (call 1747 (list* self value args))
+  (call 1765 (list* self value args))
   value)
 
 (defmethod datamunge:fit-noise ((self datamunge:gaussian-process-surrogate-options) &rest args)
@@ -23180,9 +23186,9 @@ noise / signal_variance (the nugget) is what stays fixed.
 
   (fit-noise gaussian-process-surrogate-options) → boolean
   (setf (fit-noise gaussian-process-surrogate-options) boolean)"
-  (call 1748 (cons self args)))
+  (call 1766 (cons self args)))
 (defmethod (setf datamunge:fit-noise) (value (self datamunge:gaussian-process-surrogate-options) &rest args)
-  (call 1749 (list* self value args))
+  (call 1767 (list* self value args))
   value)
 
 (defmethod datamunge:min-length-scale ((self datamunge:gaussian-process-surrogate-options) &rest args)
@@ -23190,9 +23196,9 @@ noise / signal_variance (the nugget) is what stays fixed.
 
   (min-length-scale gaussian-process-surrogate-options) → double-float
   (setf (min-length-scale gaussian-process-surrogate-options) double-float)"
-  (call 1750 (cons self args)))
+  (call 1768 (cons self args)))
 (defmethod (setf datamunge:min-length-scale) (value (self datamunge:gaussian-process-surrogate-options) &rest args)
-  (call 1751 (list* self value args))
+  (call 1769 (list* self value args))
   value)
 
 (defmethod datamunge:max-length-scale ((self datamunge:gaussian-process-surrogate-options) &rest args)
@@ -23200,9 +23206,9 @@ noise / signal_variance (the nugget) is what stays fixed.
 
   (max-length-scale gaussian-process-surrogate-options) → double-float
   (setf (max-length-scale gaussian-process-surrogate-options) double-float)"
-  (call 1752 (cons self args)))
+  (call 1770 (cons self args)))
 (defmethod (setf datamunge:max-length-scale) (value (self datamunge:gaussian-process-surrogate-options) &rest args)
-  (call 1753 (list* self value args))
+  (call 1771 (list* self value args))
   value)
 
 (defmethod datamunge:acquisition ((self datamunge:gaussian-process-surrogate-options) &rest args)
@@ -23210,9 +23216,9 @@ noise / signal_variance (the nugget) is what stays fixed.
 
   (acquisition gaussian-process-surrogate-options) → acquisition
   (setf (acquisition gaussian-process-surrogate-options) acquisition)"
-  (call 1754 (cons self args)))
+  (call 1772 (cons self args)))
 (defmethod (setf datamunge:acquisition) (value (self datamunge:gaussian-process-surrogate-options) &rest args)
-  (call 1755 (list* self value args))
+  (call 1773 (list* self value args))
   value)
 
 (defmethod datamunge:exploration ((self datamunge:gaussian-process-surrogate-options) &rest args)
@@ -23222,9 +23228,9 @@ noise / signal_variance (the nugget) is what stays fixed.
 
   (exploration gaussian-process-surrogate-options) → double-float
   (setf (exploration gaussian-process-surrogate-options) double-float)"
-  (call 1756 (cons self args)))
+  (call 1774 (cons self args)))
 (defmethod (setf datamunge:exploration) (value (self datamunge:gaussian-process-surrogate-options) &rest args)
-  (call 1757 (list* self value args))
+  (call 1775 (list* self value args))
   value)
 
 (defmethod datamunge:kappa ((self datamunge:gaussian-process-surrogate-options) &rest args)
@@ -23234,9 +23240,9 @@ noise / signal_variance (the nugget) is what stays fixed.
 
   (kappa gaussian-process-surrogate-options) → double-float
   (setf (kappa gaussian-process-surrogate-options) double-float)"
-  (call 1758 (cons self args)))
+  (call 1776 (cons self args)))
 (defmethod (setf datamunge:kappa) (value (self datamunge:gaussian-process-surrogate-options) &rest args)
-  (call 1759 (list* self value args))
+  (call 1777 (list* self value args))
   value)
 
 (defmethod datamunge:options ((self datamunge:rbf-gaussian-process-surrogate) &rest args)
@@ -23244,7 +23250,7 @@ noise / signal_variance (the nugget) is what stays fixed.
 
   (options rbf-gaussian-process-surrogate) → gaussian-process-surrogate-options
     → The stored options."
-  (call 1761 (cons self args)))
+  (call 1779 (cons self args)))
 
 (defmethod datamunge:fit ((self datamunge:rbf-gaussian-process-surrogate) &rest args)
   "Fits the GP to the observations (refitting hyperparameters when configured).
@@ -23255,7 +23261,7 @@ Errors (signalled as datamunge:native-error):
   (fit rbf-gaussian-process-surrogate points values)
     points  (vector (vector double-float))  Training points, all of one dimension.
     values  (vector double-float)  Objective values."
-  (call 1762 (cons self args)))
+  (call 1780 (cons self args)))
 
 (defmethod datamunge:acquisition ((self datamunge:rbf-gaussian-process-surrogate) &rest args)
   "The configured acquisition at `point`.
@@ -23267,7 +23273,7 @@ Errors (signalled as datamunge:native-error):
     point  (vector double-float)  Candidate point.
     incumbent  double-float  Smallest observed value.
     → The acquisition value (0 before fitting)."
-  (call 1763 (cons self args)))
+  (call 1781 (cons self args)))
 
 (defmethod datamunge:predict ((self datamunge:rbf-gaussian-process-surrogate) &rest args)
   "Posterior mean and standard deviation at `point`.
@@ -23279,7 +23285,7 @@ Errors (signalled as datamunge:native-error):
   (predict rbf-gaussian-process-surrogate point) → surrogate-prediction
     point  (vector double-float)  Query point.
     → The prediction, in the objective's units."
-  (call 1764 (cons self args)))
+  (call 1782 (cons self args)))
 
 (defmethod datamunge:log-marginal-likelihood ((self datamunge:rbf-gaussian-process-surrogate) &rest args)
   "Log marginal likelihood of the values at the hyperparameters in use.
@@ -23290,7 +23296,7 @@ normalising) treated as known, so it includes the `-n\\log(\\text{scale})` Jacob
 `\\log p(y)`; 0 before fit().
 
   (log-marginal-likelihood rbf-gaussian-process-surrogate) → double-float"
-  (call 1765 (cons self args)))
+  (call 1783 (cons self args)))
 
 (defmethod datamunge:length-scale ((self datamunge:rbf-gaussian-process-surrogate) &rest args)
   "The length scale in use (fitted, after fit(), when fitting is on).
@@ -23298,7 +23304,7 @@ normalising) treated as known, so it includes the `-n\\log(\\text{scale})` Jacob
 `\\ell`.
 
   (length-scale rbf-gaussian-process-surrogate) → double-float"
-  (call 1766 (cons self args)))
+  (call 1784 (cons self args)))
 
 (defmethod datamunge:noise ((self datamunge:rbf-gaussian-process-surrogate) &rest args)
   "The noise variance in use, in normalised units when normalising.
@@ -23306,7 +23312,7 @@ normalising) treated as known, so it includes the `-n\\log(\\text{scale})` Jacob
 `\\sigma_n^2`.
 
   (noise rbf-gaussian-process-surrogate) → double-float"
-  (call 1767 (cons self args)))
+  (call 1785 (cons self args)))
 
 (defmethod datamunge:signal-variance ((self datamunge:rbf-gaussian-process-surrogate) &rest args)
   "The signal variance in use, in normalised units when normalising.
@@ -23314,7 +23320,7 @@ normalising) treated as known, so it includes the `-n\\log(\\text{scale})` Jacob
 `s`.
 
   (signal-variance rbf-gaussian-process-surrogate) → double-float"
-  (call 1768 (cons self args)))
+  (call 1786 (cons self args)))
 
 (defmethod datamunge:prior-mean ((self datamunge:rbf-gaussian-process-surrogate) &rest args)
   "The prior mean: the mean of the values when normalising, else 0.
@@ -23322,37 +23328,37 @@ normalising) treated as known, so it includes the `-n\\log(\\text{scale})` Jacob
 `m`.
 
   (prior-mean rbf-gaussian-process-surrogate) → double-float"
-  (call 1769 (cons self args)))
+  (call 1787 (cons self args)))
 
 (defmethod datamunge:value-scale ((self datamunge:rbf-gaussian-process-surrogate) &rest args)
   "The value scale: the standard deviation of the values when normalising, else 1.
 
   (value-scale rbf-gaussian-process-surrogate) → double-float
     → The scale."
-  (call 1770 (cons self args)))
+  (call 1788 (cons self args)))
 
 (defmethod datamunge:points ((self datamunge:rbf-gaussian-process-surrogate) &rest args)
   "The training points from the last fit() (empty before fitting).
 
   (points rbf-gaussian-process-surrogate) → (vector (vector double-float))
     → The stored training points."
-  (call 1771 (cons self args)))
+  (call 1789 (cons self args)))
 
 (defmethod datamunge:values ((self datamunge:rbf-gaussian-process-surrogate) &rest args)
   "The training values from the last fit() (empty before fitting).
 
   (values rbf-gaussian-process-surrogate) → (vector double-float)
     → The stored training values."
-  (call 1772 (cons self args)))
+  (call 1790 (cons self args)))
 
 (defmethod datamunge:step-size ((self datamunge:sgd-options) &rest args)
   "Fixed learning-rate/initial search step; use the objective scaling stated by optimize(). Default 0.01.
 
   (step-size sgd-options) → double-float
   (setf (step-size sgd-options) double-float)"
-  (call 1774 (cons self args)))
+  (call 1792 (cons self args)))
 (defmethod (setf datamunge:step-size) (value (self datamunge:sgd-options) &rest args)
-  (call 1775 (list* self value args))
+  (call 1793 (list* self value args))
   value)
 
 (defmethod datamunge:max-epochs ((self datamunge:sgd-options) &rest args)
@@ -23360,9 +23366,9 @@ normalising) treated as known, so it includes the `-n\\log(\\text{scale})` Jacob
 
   (max-epochs sgd-options) → integer
   (setf (max-epochs sgd-options) integer)"
-  (call 1776 (cons self args)))
+  (call 1794 (cons self args)))
 (defmethod (setf datamunge:max-epochs) (value (self datamunge:sgd-options) &rest args)
-  (call 1777 (list* self value args))
+  (call 1795 (list* self value args))
   value)
 
 (defmethod datamunge:batch-size ((self datamunge:sgd-options) &rest args)
@@ -23370,9 +23376,9 @@ normalising) treated as known, so it includes the `-n\\log(\\text{scale})` Jacob
 
   (batch-size sgd-options) → integer
   (setf (batch-size sgd-options) integer)"
-  (call 1778 (cons self args)))
+  (call 1796 (cons self args)))
 (defmethod (setf datamunge:batch-size) (value (self datamunge:sgd-options) &rest args)
-  (call 1779 (list* self value args))
+  (call 1797 (list* self value args))
   value)
 
 (defmethod datamunge:tolerance ((self datamunge:sgd-options) &rest args)
@@ -23380,9 +23386,9 @@ normalising) treated as known, so it includes the `-n\\log(\\text{scale})` Jacob
 
   (tolerance sgd-options) → double-float
   (setf (tolerance sgd-options) double-float)"
-  (call 1780 (cons self args)))
+  (call 1798 (cons self args)))
 (defmethod (setf datamunge:tolerance) (value (self datamunge:sgd-options) &rest args)
-  (call 1781 (list* self value args))
+  (call 1799 (list* self value args))
   value)
 
 (defmethod datamunge:shuffle ((self datamunge:sgd-options) &rest args)
@@ -23390,9 +23396,9 @@ normalising) treated as known, so it includes the `-n\\log(\\text{scale})` Jacob
 
   (shuffle sgd-options) → boolean
   (setf (shuffle sgd-options) boolean)"
-  (call 1782 (cons self args)))
+  (call 1800 (cons self args)))
 (defmethod (setf datamunge:shuffle) (value (self datamunge:sgd-options) &rest args)
-  (call 1783 (list* self value args))
+  (call 1801 (list* self value args))
   value)
 
 (defmethod datamunge:seed ((self datamunge:sgd-options) &rest args)
@@ -23400,9 +23406,9 @@ normalising) treated as known, so it includes the `-n\\log(\\text{scale})` Jacob
 
   (seed sgd-options) → integer
   (setf (seed sgd-options) integer)"
-  (call 1784 (cons self args)))
+  (call 1802 (cons self args)))
 (defmethod (setf datamunge:seed) (value (self datamunge:sgd-options) &rest args)
-  (call 1785 (list* self value args))
+  (call 1803 (list* self value args))
   value)
 
 (defmethod datamunge:optimize ((self datamunge:sgd) &rest args)
@@ -23429,23 +23435,23 @@ See also: trace_optimize(), SGDOptions
     function  differentiable-separable-function  Borrowed DifferentiableSeparableFunction with matching finite output shapes.
     coordinates  (vector double-float)  Owned-by-caller finite start; overwritten with the native returned point.
     → Objective at the native returned coordinates; not a stop-status code."
-  (call 1787 (cons self args)))
+  (call 1805 (cons self args)))
 
 (defmethod datamunge:options ((self datamunge:sgd) &rest args)
   "Borrow this optimizer's stored configuration.
 
   (options sgd) → sgd-options
     → Const option reference, valid during this object's lifetime; no mutation."
-  (call 1788 (cons self args)))
+  (call 1806 (cons self args)))
 
 (defmethod datamunge:initial-temperature ((self datamunge:simulated-annealing-options) &rest args)
   "Positive starting Metropolis temperature. Default 10.0.
 
   (initial-temperature simulated-annealing-options) → double-float
   (setf (initial-temperature simulated-annealing-options) double-float)"
-  (call 1790 (cons self args)))
+  (call 1808 (cons self args)))
 (defmethod (setf datamunge:initial-temperature) (value (self datamunge:simulated-annealing-options) &rest args)
-  (call 1791 (list* self value args))
+  (call 1809 (list* self value args))
   value)
 
 (defmethod datamunge:cooling-rate ((self datamunge:simulated-annealing-options) &rest args)
@@ -23453,9 +23459,9 @@ See also: trace_optimize(), SGDOptions
 
   (cooling-rate simulated-annealing-options) → double-float
   (setf (cooling-rate simulated-annealing-options) double-float)"
-  (call 1792 (cons self args)))
+  (call 1810 (cons self args)))
 (defmethod (setf datamunge:cooling-rate) (value (self datamunge:simulated-annealing-options) &rest args)
-  (call 1793 (list* self value args))
+  (call 1811 (list* self value args))
   value)
 
 (defmethod datamunge:max-iterations ((self datamunge:simulated-annealing-options) &rest args)
@@ -23463,9 +23469,9 @@ See also: trace_optimize(), SGDOptions
 
   (max-iterations simulated-annealing-options) → integer
   (setf (max-iterations simulated-annealing-options) integer)"
-  (call 1794 (cons self args)))
+  (call 1812 (cons self args)))
 (defmethod (setf datamunge:max-iterations) (value (self datamunge:simulated-annealing-options) &rest args)
-  (call 1795 (list* self value args))
+  (call 1813 (list* self value args))
   value)
 
 (defmethod datamunge:step-std-dev ((self datamunge:simulated-annealing-options) &rest args)
@@ -23473,9 +23479,9 @@ See also: trace_optimize(), SGDOptions
 
   (step-std-dev simulated-annealing-options) → double-float
   (setf (step-std-dev simulated-annealing-options) double-float)"
-  (call 1796 (cons self args)))
+  (call 1814 (cons self args)))
 (defmethod (setf datamunge:step-std-dev) (value (self datamunge:simulated-annealing-options) &rest args)
-  (call 1797 (list* self value args))
+  (call 1815 (list* self value args))
   value)
 
 (defmethod datamunge:seed ((self datamunge:simulated-annealing-options) &rest args)
@@ -23483,9 +23489,9 @@ See also: trace_optimize(), SGDOptions
 
   (seed simulated-annealing-options) → integer
   (setf (seed simulated-annealing-options) integer)"
-  (call 1798 (cons self args)))
+  (call 1816 (cons self args)))
 (defmethod (setf datamunge:seed) (value (self datamunge:simulated-annealing-options) &rest args)
-  (call 1799 (list* self value args))
+  (call 1817 (list* self value args))
   value)
 
 (defmethod datamunge:optimize ((self datamunge:simulated-annealing) &rest args)
@@ -23511,23 +23517,23 @@ See also: trace_optimize(), SimulatedAnnealingOptions
     function  arbitrary-function  Borrowed ArbitraryFunction with matching finite output shapes.
     coordinates  (vector double-float)  Owned-by-caller finite start; overwritten with the native returned point.
     → Objective at the native returned coordinates; not a stop-status code."
-  (call 1801 (cons self args)))
+  (call 1819 (cons self args)))
 
 (defmethod datamunge:options ((self datamunge:simulated-annealing) &rest args)
   "Borrow this optimizer's stored configuration.
 
   (options simulated-annealing) → simulated-annealing-options
     → Const option reference, valid during this object's lifetime; no mutation."
-  (call 1802 (cons self args)))
+  (call 1820 (cons self args)))
 
 (defmethod datamunge:step-size ((self datamunge:saga-options) &rest args)
   "Fixed learning-rate/initial search step; use the objective scaling stated by optimize(). Default 0.01.
 
   (step-size saga-options) → double-float
   (setf (step-size saga-options) double-float)"
-  (call 1804 (cons self args)))
+  (call 1822 (cons self args)))
 (defmethod (setf datamunge:step-size) (value (self datamunge:saga-options) &rest args)
-  (call 1805 (list* self value args))
+  (call 1823 (list* self value args))
   value)
 
 (defmethod datamunge:max-iterations ((self datamunge:saga-options) &rest args)
@@ -23535,9 +23541,9 @@ See also: trace_optimize(), SimulatedAnnealingOptions
 
   (max-iterations saga-options) → integer
   (setf (max-iterations saga-options) integer)"
-  (call 1806 (cons self args)))
+  (call 1824 (cons self args)))
 (defmethod (setf datamunge:max-iterations) (value (self datamunge:saga-options) &rest args)
-  (call 1807 (list* self value args))
+  (call 1825 (list* self value args))
   value)
 
 (defmethod datamunge:tolerance ((self datamunge:saga-options) &rest args)
@@ -23545,9 +23551,9 @@ See also: trace_optimize(), SimulatedAnnealingOptions
 
   (tolerance saga-options) → double-float
   (setf (tolerance saga-options) double-float)"
-  (call 1808 (cons self args)))
+  (call 1826 (cons self args)))
 (defmethod (setf datamunge:tolerance) (value (self datamunge:saga-options) &rest args)
-  (call 1809 (list* self value args))
+  (call 1827 (list* self value args))
   value)
 
 (defmethod datamunge:seed ((self datamunge:saga-options) &rest args)
@@ -23555,9 +23561,9 @@ See also: trace_optimize(), SimulatedAnnealingOptions
 
   (seed saga-options) → integer
   (setf (seed saga-options) integer)"
-  (call 1810 (cons self args)))
+  (call 1828 (cons self args)))
 (defmethod (setf datamunge:seed) (value (self datamunge:saga-options) &rest args)
-  (call 1811 (list* self value args))
+  (call 1829 (list* self value args))
   value)
 
 (defmethod datamunge:optimize ((self datamunge:saga) &rest args)
@@ -23584,23 +23590,23 @@ See also: trace_optimize(), SAGAOptions
     function  differentiable-separable-function  Borrowed DifferentiableSeparableFunction with matching finite output shapes.
     coordinates  (vector double-float)  Owned-by-caller finite start; overwritten with the native returned point.
     → Objective at the native returned coordinates; not a stop-status code."
-  (call 1813 (cons self args)))
+  (call 1831 (cons self args)))
 
 (defmethod datamunge:options ((self datamunge:saga) &rest args)
   "Borrow this optimizer's stored configuration.
 
   (options saga) → saga-options
     → Const option reference, valid during this object's lifetime; no mutation."
-  (call 1814 (cons self args)))
+  (call 1832 (cons self args)))
 
 (defmethod datamunge:step-size ((self datamunge:svrg-options) &rest args)
   "Fixed learning-rate/initial search step; use the objective scaling stated by optimize(). Default 0.01.
 
   (step-size svrg-options) → double-float
   (setf (step-size svrg-options) double-float)"
-  (call 1816 (cons self args)))
+  (call 1834 (cons self args)))
 (defmethod (setf datamunge:step-size) (value (self datamunge:svrg-options) &rest args)
-  (call 1817 (list* self value args))
+  (call 1835 (list* self value args))
   value)
 
 (defmethod datamunge:max-epochs ((self datamunge:svrg-options) &rest args)
@@ -23608,9 +23614,9 @@ See also: trace_optimize(), SAGAOptions
 
   (max-epochs svrg-options) → integer
   (setf (max-epochs svrg-options) integer)"
-  (call 1818 (cons self args)))
+  (call 1836 (cons self args)))
 (defmethod (setf datamunge:max-epochs) (value (self datamunge:svrg-options) &rest args)
-  (call 1819 (list* self value args))
+  (call 1837 (list* self value args))
   value)
 
 (defmethod datamunge:inner-iterations ((self datamunge:svrg-options) &rest args)
@@ -23618,9 +23624,9 @@ See also: trace_optimize(), SAGAOptions
 
   (inner-iterations svrg-options) → integer
   (setf (inner-iterations svrg-options) integer)"
-  (call 1820 (cons self args)))
+  (call 1838 (cons self args)))
 (defmethod (setf datamunge:inner-iterations) (value (self datamunge:svrg-options) &rest args)
-  (call 1821 (list* self value args))
+  (call 1839 (list* self value args))
   value)
 
 (defmethod datamunge:tolerance ((self datamunge:svrg-options) &rest args)
@@ -23628,9 +23634,9 @@ See also: trace_optimize(), SAGAOptions
 
   (tolerance svrg-options) → double-float
   (setf (tolerance svrg-options) double-float)"
-  (call 1822 (cons self args)))
+  (call 1840 (cons self args)))
 (defmethod (setf datamunge:tolerance) (value (self datamunge:svrg-options) &rest args)
-  (call 1823 (list* self value args))
+  (call 1841 (list* self value args))
   value)
 
 (defmethod datamunge:seed ((self datamunge:svrg-options) &rest args)
@@ -23638,9 +23644,9 @@ See also: trace_optimize(), SAGAOptions
 
   (seed svrg-options) → integer
   (setf (seed svrg-options) integer)"
-  (call 1824 (cons self args)))
+  (call 1842 (cons self args)))
 (defmethod (setf datamunge:seed) (value (self datamunge:svrg-options) &rest args)
-  (call 1825 (list* self value args))
+  (call 1843 (list* self value args))
   value)
 
 (defmethod datamunge:optimize ((self datamunge:svrg) &rest args)
@@ -23667,23 +23673,23 @@ See also: trace_optimize(), SVRGOptions
     function  differentiable-separable-function  Borrowed DifferentiableSeparableFunction with matching finite output shapes.
     coordinates  (vector double-float)  Owned-by-caller finite start; overwritten with the native returned point.
     → Objective at the native returned coordinates; not a stop-status code."
-  (call 1827 (cons self args)))
+  (call 1845 (cons self args)))
 
 (defmethod datamunge:options ((self datamunge:svrg) &rest args)
   "Borrow this optimizer's stored configuration.
 
   (options svrg) → svrg-options
     → Const option reference, valid during this object's lifetime; no mutation."
-  (call 1828 (cons self args)))
+  (call 1846 (cons self args)))
 
 (defmethod datamunge:step-size ((self datamunge:sqp-options) &rest args)
   "Fixed learning-rate/initial search step; use the objective scaling stated by optimize(). Default 1.0.
 
   (step-size sqp-options) → double-float
   (setf (step-size sqp-options) double-float)"
-  (call 1830 (cons self args)))
+  (call 1848 (cons self args)))
 (defmethod (setf datamunge:step-size) (value (self datamunge:sqp-options) &rest args)
-  (call 1831 (list* self value args))
+  (call 1849 (list* self value args))
   value)
 
 (defmethod datamunge:regularization ((self datamunge:sqp-options) &rest args)
@@ -23691,9 +23697,9 @@ See also: trace_optimize(), SVRGOptions
 
   (regularization sqp-options) → double-float
   (setf (regularization sqp-options) double-float)"
-  (call 1832 (cons self args)))
+  (call 1850 (cons self args)))
 (defmethod (setf datamunge:regularization) (value (self datamunge:sqp-options) &rest args)
-  (call 1833 (list* self value args))
+  (call 1851 (list* self value args))
   value)
 
 (defmethod datamunge:max-iterations ((self datamunge:sqp-options) &rest args)
@@ -23701,9 +23707,9 @@ See also: trace_optimize(), SVRGOptions
 
   (max-iterations sqp-options) → integer
   (setf (max-iterations sqp-options) integer)"
-  (call 1834 (cons self args)))
+  (call 1852 (cons self args)))
 (defmethod (setf datamunge:max-iterations) (value (self datamunge:sqp-options) &rest args)
-  (call 1835 (list* self value args))
+  (call 1853 (list* self value args))
   value)
 
 (defmethod datamunge:tolerance ((self datamunge:sqp-options) &rest args)
@@ -23711,9 +23717,9 @@ See also: trace_optimize(), SVRGOptions
 
   (tolerance sqp-options) → double-float
   (setf (tolerance sqp-options) double-float)"
-  (call 1836 (cons self args)))
+  (call 1854 (cons self args)))
 (defmethod (setf datamunge:tolerance) (value (self datamunge:sqp-options) &rest args)
-  (call 1837 (list* self value args))
+  (call 1855 (list* self value args))
   value)
 
 (defmethod datamunge:optimize ((self datamunge:sqp) &rest args)
@@ -23739,23 +23745,23 @@ See also: trace_optimize(), SQPOptions
     function  equality-constrained-function  Borrowed EqualityConstrainedFunction with matching finite output shapes.
     coordinates  (vector double-float)  Owned-by-caller finite start; overwritten with the native returned point.
     → Objective at the native returned coordinates; not a stop-status code."
-  (call 1839 (cons self args)))
+  (call 1857 (cons self args)))
 
 (defmethod datamunge:options ((self datamunge:sqp) &rest args)
   "Borrow this optimizer's stored configuration.
 
   (options sqp) → sqp-options
     → Const option reference, valid during this object's lifetime; no mutation."
-  (call 1840 (cons self args)))
+  (call 1858 (cons self args)))
 
 (defmethod datamunge:initial-radius ((self datamunge:trust-region-newton-options) &rest args)
   "Positive starting Cauchy-step radius. Default 1.0.
 
   (initial-radius trust-region-newton-options) → double-float
   (setf (initial-radius trust-region-newton-options) double-float)"
-  (call 1842 (cons self args)))
+  (call 1860 (cons self args)))
 (defmethod (setf datamunge:initial-radius) (value (self datamunge:trust-region-newton-options) &rest args)
-  (call 1843 (list* self value args))
+  (call 1861 (list* self value args))
   value)
 
 (defmethod datamunge:max-radius ((self datamunge:trust-region-newton-options) &rest args)
@@ -23763,9 +23769,9 @@ See also: trace_optimize(), SQPOptions
 
   (max-radius trust-region-newton-options) → double-float
   (setf (max-radius trust-region-newton-options) double-float)"
-  (call 1844 (cons self args)))
+  (call 1862 (cons self args)))
 (defmethod (setf datamunge:max-radius) (value (self datamunge:trust-region-newton-options) &rest args)
-  (call 1845 (list* self value args))
+  (call 1863 (list* self value args))
   value)
 
 (defmethod datamunge:max-iterations ((self datamunge:trust-region-newton-options) &rest args)
@@ -23773,9 +23779,9 @@ See also: trace_optimize(), SQPOptions
 
   (max-iterations trust-region-newton-options) → integer
   (setf (max-iterations trust-region-newton-options) integer)"
-  (call 1846 (cons self args)))
+  (call 1864 (cons self args)))
 (defmethod (setf datamunge:max-iterations) (value (self datamunge:trust-region-newton-options) &rest args)
-  (call 1847 (list* self value args))
+  (call 1865 (list* self value args))
   value)
 
 (defmethod datamunge:tolerance ((self datamunge:trust-region-newton-options) &rest args)
@@ -23783,9 +23789,9 @@ See also: trace_optimize(), SQPOptions
 
   (tolerance trust-region-newton-options) → double-float
   (setf (tolerance trust-region-newton-options) double-float)"
-  (call 1848 (cons self args)))
+  (call 1866 (cons self args)))
 (defmethod (setf datamunge:tolerance) (value (self datamunge:trust-region-newton-options) &rest args)
-  (call 1849 (list* self value args))
+  (call 1867 (list* self value args))
   value)
 
 (defmethod datamunge:optimize ((self datamunge:trust-region-newton) &rest args)
@@ -23812,23 +23818,23 @@ See also: trace_optimize(), TrustRegionNewtonOptions
     function  hessian-function  Borrowed HessianFunction with matching finite output shapes.
     coordinates  (vector double-float)  Owned-by-caller finite start; overwritten with the native returned point.
     → Objective at the native returned coordinates; not a stop-status code."
-  (call 1851 (cons self args)))
+  (call 1869 (cons self args)))
 
 (defmethod datamunge:options ((self datamunge:trust-region-newton) &rest args)
   "Borrow this optimizer's stored configuration.
 
   (options trust-region-newton) → trust-region-newton-options
     → Const option reference, valid during this object's lifetime; no mutation."
-  (call 1852 (cons self args)))
+  (call 1870 (cons self args)))
 
 (defmethod datamunge:population-size ((self datamunge:whale-optimization-options) &rest args)
   "Field population-size of whale-optimization-options.
 
   (population-size whale-optimization-options) → integer
   (setf (population-size whale-optimization-options) integer)"
-  (call 1854 (cons self args)))
+  (call 1872 (cons self args)))
 (defmethod (setf datamunge:population-size) (value (self datamunge:whale-optimization-options) &rest args)
-  (call 1855 (list* self value args))
+  (call 1873 (list* self value args))
   value)
 
 (defmethod datamunge:spiral-constant ((self datamunge:whale-optimization-options) &rest args)
@@ -23836,9 +23842,9 @@ See also: trace_optimize(), TrustRegionNewtonOptions
 
   (spiral-constant whale-optimization-options) → double-float
   (setf (spiral-constant whale-optimization-options) double-float)"
-  (call 1856 (cons self args)))
+  (call 1874 (cons self args)))
 (defmethod (setf datamunge:spiral-constant) (value (self datamunge:whale-optimization-options) &rest args)
-  (call 1857 (list* self value args))
+  (call 1875 (list* self value args))
   value)
 
 (defmethod datamunge:max-iterations ((self datamunge:whale-optimization-options) &rest args)
@@ -23846,9 +23852,9 @@ See also: trace_optimize(), TrustRegionNewtonOptions
 
   (max-iterations whale-optimization-options) → integer
   (setf (max-iterations whale-optimization-options) integer)"
-  (call 1858 (cons self args)))
+  (call 1876 (cons self args)))
 (defmethod (setf datamunge:max-iterations) (value (self datamunge:whale-optimization-options) &rest args)
-  (call 1859 (list* self value args))
+  (call 1877 (list* self value args))
   value)
 
 (defmethod datamunge:tolerance ((self datamunge:whale-optimization-options) &rest args)
@@ -23856,9 +23862,9 @@ See also: trace_optimize(), TrustRegionNewtonOptions
 
   (tolerance whale-optimization-options) → double-float
   (setf (tolerance whale-optimization-options) double-float)"
-  (call 1860 (cons self args)))
+  (call 1878 (cons self args)))
 (defmethod (setf datamunge:tolerance) (value (self datamunge:whale-optimization-options) &rest args)
-  (call 1861 (list* self value args))
+  (call 1879 (list* self value args))
   value)
 
 (defmethod datamunge:seed ((self datamunge:whale-optimization-options) &rest args)
@@ -23866,9 +23872,9 @@ See also: trace_optimize(), TrustRegionNewtonOptions
 
   (seed whale-optimization-options) → integer
   (setf (seed whale-optimization-options) integer)"
-  (call 1862 (cons self args)))
+  (call 1880 (cons self args)))
 (defmethod (setf datamunge:seed) (value (self datamunge:whale-optimization-options) &rest args)
-  (call 1863 (list* self value args))
+  (call 1881 (list* self value args))
   value)
 
 (defmethod datamunge:optimize ((self datamunge:whale-optimization) &rest args)
@@ -23881,47 +23887,47 @@ initial `coordinates` (clamped into bounds) seed one whale of the population.
     coordinates  (vector double-float)
     lower-bound  (vector double-float)
     upper-bound  (vector double-float)"
-  (call 1865 (cons self args)))
+  (call 1883 (cons self args)))
 
 (defmethod datamunge:options ((self datamunge:whale-optimization) &rest args)
   "The options this WhaleOptimization was configured with.
 
   (options whale-optimization) → whale-optimization-options
     → The stored options."
-  (call 1866 (cons self args)))
+  (call 1884 (cons self args)))
 
 (defmethod datamunge:degree ((self datamunge:b-spline-basis) &rest args)
   "C++ datamunge::fda::BSplineBasis::degree.
 
   (degree b-spline-basis) → integer"
-  (call 1869 (cons self args)))
+  (call 1887 (cons self args)))
 
 (defmethod datamunge:basis-size ((self datamunge:b-spline-basis) &rest args)
   "C++ datamunge::fda::BSplineBasis::basis_size.
 
   (basis-size b-spline-basis) → integer"
-  (call 1870 (cons self args)))
+  (call 1888 (cons self args)))
 
 (defmethod datamunge:knots ((self datamunge:b-spline-basis) &rest args)
   "C++ datamunge::fda::BSplineBasis::knots.
 
   (knots b-spline-basis) → (vector double-float)"
-  (call 1871 (cons self args)))
+  (call 1889 (cons self args)))
 
 (defmethod datamunge:domain ((self datamunge:b-spline-basis) &rest args)
   "C++ datamunge::fda::BSplineBasis::domain.
 
   (domain b-spline-basis) → (list double-float double-float)"
-  (call 1872 (cons self args)))
+  (call 1890 (cons self args)))
 
 (defmethod datamunge:statistic ((self datamunge:hypothesis-test-result) &rest args)
   "Test-specific statistic (t, U, D, F, H, count or chi-square).
 
   (statistic hypothesis-test-result) → double-float
   (setf (statistic hypothesis-test-result) double-float)"
-  (call 1874 (cons self args)))
+  (call 1892 (cons self args)))
 (defmethod (setf datamunge:statistic) (value (self datamunge:hypothesis-test-result) &rest args)
-  (call 1875 (list* self value args))
+  (call 1893 (list* self value args))
   value)
 
 (defmethod datamunge:parameter1 ((self datamunge:hypothesis-test-result) &rest args)
@@ -23929,9 +23935,9 @@ initial `coordinates` (clamped into bounds) seed one whale of the population.
 
   (parameter1 hypothesis-test-result) → double-float
   (setf (parameter1 hypothesis-test-result) double-float)"
-  (call 1876 (cons self args)))
+  (call 1894 (cons self args)))
 (defmethod (setf datamunge:parameter1) (value (self datamunge:hypothesis-test-result) &rest args)
-  (call 1877 (list* self value args))
+  (call 1895 (list* self value args))
   value)
 
 (defmethod datamunge:parameter2 ((self datamunge:hypothesis-test-result) &rest args)
@@ -23939,9 +23945,9 @@ initial `coordinates` (clamped into bounds) seed one whale of the population.
 
   (parameter2 hypothesis-test-result) → double-float
   (setf (parameter2 hypothesis-test-result) double-float)"
-  (call 1878 (cons self args)))
+  (call 1896 (cons self args)))
 (defmethod (setf datamunge:parameter2) (value (self datamunge:hypothesis-test-result) &rest args)
-  (call 1879 (list* self value args))
+  (call 1897 (list* self value args))
   value)
 
 (defmethod datamunge:p-value ((self datamunge:hypothesis-test-result) &rest args)
@@ -23949,9 +23955,9 @@ initial `coordinates` (clamped into bounds) seed one whale of the population.
 
   (p-value hypothesis-test-result) → double-float
   (setf (p-value hypothesis-test-result) double-float)"
-  (call 1880 (cons self args)))
+  (call 1898 (cons self args)))
 (defmethod (setf datamunge:p-value) (value (self datamunge:hypothesis-test-result) &rest args)
-  (call 1881 (list* self value args))
+  (call 1899 (list* self value args))
   value)
 
 (defmethod datamunge:estimate1 ((self datamunge:hypothesis-test-result) &rest args)
@@ -23959,9 +23965,9 @@ initial `coordinates` (clamped into bounds) seed one whale of the population.
 
   (estimate1 hypothesis-test-result) → double-float
   (setf (estimate1 hypothesis-test-result) double-float)"
-  (call 1882 (cons self args)))
+  (call 1900 (cons self args)))
 (defmethod (setf datamunge:estimate1) (value (self datamunge:hypothesis-test-result) &rest args)
-  (call 1883 (list* self value args))
+  (call 1901 (list* self value args))
   value)
 
 (defmethod datamunge:estimate2 ((self datamunge:hypothesis-test-result) &rest args)
@@ -23969,9 +23975,9 @@ initial `coordinates` (clamped into bounds) seed one whale of the population.
 
   (estimate2 hypothesis-test-result) → double-float
   (setf (estimate2 hypothesis-test-result) double-float)"
-  (call 1884 (cons self args)))
+  (call 1902 (cons self args)))
 (defmethod (setf datamunge:estimate2) (value (self datamunge:hypothesis-test-result) &rest args)
-  (call 1885 (list* self value args))
+  (call 1903 (list* self value args))
   value)
 
 (defmethod datamunge:conf-int-lower ((self datamunge:hypothesis-test-result) &rest args)
@@ -23979,9 +23985,9 @@ initial `coordinates` (clamped into bounds) seed one whale of the population.
 
   (conf-int-lower hypothesis-test-result) → double-float
   (setf (conf-int-lower hypothesis-test-result) double-float)"
-  (call 1886 (cons self args)))
+  (call 1904 (cons self args)))
 (defmethod (setf datamunge:conf-int-lower) (value (self datamunge:hypothesis-test-result) &rest args)
-  (call 1887 (list* self value args))
+  (call 1905 (list* self value args))
   value)
 
 (defmethod datamunge:conf-int-upper ((self datamunge:hypothesis-test-result) &rest args)
@@ -23989,9 +23995,9 @@ initial `coordinates` (clamped into bounds) seed one whale of the population.
 
   (conf-int-upper hypothesis-test-result) → double-float
   (setf (conf-int-upper hypothesis-test-result) double-float)"
-  (call 1888 (cons self args)))
+  (call 1906 (cons self args)))
 (defmethod (setf datamunge:conf-int-upper) (value (self datamunge:hypothesis-test-result) &rest args)
-  (call 1889 (list* self value args))
+  (call 1907 (list* self value args))
   value)
 
 (defmethod datamunge:has-conf-int ((self datamunge:hypothesis-test-result) &rest args)
@@ -23999,9 +24005,9 @@ initial `coordinates` (clamped into bounds) seed one whale of the population.
 
   (has-conf-int hypothesis-test-result) → boolean
   (setf (has-conf-int hypothesis-test-result) boolean)"
-  (call 1890 (cons self args)))
+  (call 1908 (cons self args)))
 (defmethod (setf datamunge:has-conf-int) (value (self datamunge:hypothesis-test-result) &rest args)
-  (call 1891 (list* self value args))
+  (call 1909 (list* self value args))
   value)
 
 (defmethod datamunge:alternative ((self datamunge:hypothesis-test-result) &rest args)
@@ -24009,9 +24015,9 @@ initial `coordinates` (clamped into bounds) seed one whale of the population.
 
   (alternative hypothesis-test-result) → alternative
   (setf (alternative hypothesis-test-result) alternative)"
-  (call 1892 (cons self args)))
+  (call 1910 (cons self args)))
 (defmethod (setf datamunge:alternative) (value (self datamunge:hypothesis-test-result) &rest args)
-  (call 1893 (list* self value args))
+  (call 1911 (list* self value args))
   value)
 
 (defmethod datamunge:method ((self datamunge:hypothesis-test-result) &rest args)
@@ -24019,9 +24025,9 @@ initial `coordinates` (clamped into bounds) seed one whale of the population.
 
   (method hypothesis-test-result) → string
   (setf (method hypothesis-test-result) string)"
-  (call 1894 (cons self args)))
+  (call 1912 (cons self args)))
 (defmethod (setf datamunge:method) (value (self datamunge:hypothesis-test-result) &rest args)
-  (call 1895 (list* self value args))
+  (call 1913 (list* self value args))
   value)
 
 (defmethod datamunge:p ((self datamunge:arima-options) &rest args)
@@ -24029,9 +24035,9 @@ initial `coordinates` (clamped into bounds) seed one whale of the population.
 
   (p arima-options) → integer
   (setf (p arima-options) integer)"
-  (call 1897 (cons self args)))
+  (call 1915 (cons self args)))
 (defmethod (setf datamunge:p) (value (self datamunge:arima-options) &rest args)
-  (call 1898 (list* self value args))
+  (call 1916 (list* self value args))
   value)
 
 (defmethod datamunge:d ((self datamunge:arima-options) &rest args)
@@ -24039,9 +24045,9 @@ initial `coordinates` (clamped into bounds) seed one whale of the population.
 
   (d arima-options) → integer
   (setf (d arima-options) integer)"
-  (call 1899 (cons self args)))
+  (call 1917 (cons self args)))
 (defmethod (setf datamunge:d) (value (self datamunge:arima-options) &rest args)
-  (call 1900 (list* self value args))
+  (call 1918 (list* self value args))
   value)
 
 (defmethod datamunge:q ((self datamunge:arima-options) &rest args)
@@ -24049,9 +24055,9 @@ initial `coordinates` (clamped into bounds) seed one whale of the population.
 
   (q arima-options) → integer
   (setf (q arima-options) integer)"
-  (call 1901 (cons self args)))
+  (call 1919 (cons self args)))
 (defmethod (setf datamunge:q) (value (self datamunge:arima-options) &rest args)
-  (call 1902 (list* self value args))
+  (call 1920 (list* self value args))
   value)
 
 (defmethod datamunge:seasonal-p ((self datamunge:arima-options) &rest args)
@@ -24059,9 +24065,9 @@ initial `coordinates` (clamped into bounds) seed one whale of the population.
 
   (seasonal-p arima-options) → integer
   (setf (seasonal-p arima-options) integer)"
-  (call 1903 (cons self args)))
+  (call 1921 (cons self args)))
 (defmethod (setf datamunge:seasonal-p) (value (self datamunge:arima-options) &rest args)
-  (call 1904 (list* self value args))
+  (call 1922 (list* self value args))
   value)
 
 (defmethod datamunge:seasonal-d ((self datamunge:arima-options) &rest args)
@@ -24069,9 +24075,9 @@ initial `coordinates` (clamped into bounds) seed one whale of the population.
 
   (seasonal-d arima-options) → integer
   (setf (seasonal-d arima-options) integer)"
-  (call 1905 (cons self args)))
+  (call 1923 (cons self args)))
 (defmethod (setf datamunge:seasonal-d) (value (self datamunge:arima-options) &rest args)
-  (call 1906 (list* self value args))
+  (call 1924 (list* self value args))
   value)
 
 (defmethod datamunge:seasonal-q ((self datamunge:arima-options) &rest args)
@@ -24079,9 +24085,9 @@ initial `coordinates` (clamped into bounds) seed one whale of the population.
 
   (seasonal-q arima-options) → integer
   (setf (seasonal-q arima-options) integer)"
-  (call 1907 (cons self args)))
+  (call 1925 (cons self args)))
 (defmethod (setf datamunge:seasonal-q) (value (self datamunge:arima-options) &rest args)
-  (call 1908 (list* self value args))
+  (call 1926 (list* self value args))
   value)
 
 (defmethod datamunge:seasonal-period ((self datamunge:arima-options) &rest args)
@@ -24089,9 +24095,9 @@ initial `coordinates` (clamped into bounds) seed one whale of the population.
 
   (seasonal-period arima-options) → integer
   (setf (seasonal-period arima-options) integer)"
-  (call 1909 (cons self args)))
+  (call 1927 (cons self args)))
 (defmethod (setf datamunge:seasonal-period) (value (self datamunge:arima-options) &rest args)
-  (call 1910 (list* self value args))
+  (call 1928 (list* self value args))
   value)
 
 (defmethod datamunge:include-mean ((self datamunge:arima-options) &rest args)
@@ -24101,9 +24107,9 @@ series that has already been differenced to stationarity.
 
   (include-mean arima-options) → boolean
   (setf (include-mean arima-options) boolean)"
-  (call 1911 (cons self args)))
+  (call 1929 (cons self args)))
 (defmethod (setf datamunge:include-mean) (value (self datamunge:arima-options) &rest args)
-  (call 1912 (list* self value args))
+  (call 1930 (list* self value args))
   value)
 
 (defmethod datamunge:de-population-size ((self datamunge:arima-options) &rest args)
@@ -24111,9 +24117,9 @@ series that has already been differenced to stationarity.
 
   (de-population-size arima-options) → integer
   (setf (de-population-size arima-options) integer)"
-  (call 1913 (cons self args)))
+  (call 1931 (cons self args)))
 (defmethod (setf datamunge:de-population-size) (value (self datamunge:arima-options) &rest args)
-  (call 1914 (list* self value args))
+  (call 1932 (list* self value args))
   value)
 
 (defmethod datamunge:de-max-generations ((self datamunge:arima-options) &rest args)
@@ -24121,9 +24127,9 @@ series that has already been differenced to stationarity.
 
   (de-max-generations arima-options) → integer
   (setf (de-max-generations arima-options) integer)"
-  (call 1915 (cons self args)))
+  (call 1933 (cons self args)))
 (defmethod (setf datamunge:de-max-generations) (value (self datamunge:arima-options) &rest args)
-  (call 1916 (list* self value args))
+  (call 1934 (list* self value args))
   value)
 
 (defmethod datamunge:coefficient-bound ((self datamunge:arima-options) &rest args)
@@ -24131,9 +24137,9 @@ series that has already been differenced to stationarity.
 
   (coefficient-bound arima-options) → double-float
   (setf (coefficient-bound arima-options) double-float)"
-  (call 1917 (cons self args)))
+  (call 1935 (cons self args)))
 (defmethod (setf datamunge:coefficient-bound) (value (self datamunge:arima-options) &rest args)
-  (call 1918 (list* self value args))
+  (call 1936 (list* self value args))
   value)
 
 (defmethod datamunge:seed ((self datamunge:arima-options) &rest args)
@@ -24141,9 +24147,9 @@ series that has already been differenced to stationarity.
 
   (seed arima-options) → integer
   (setf (seed arima-options) integer)"
-  (call 1919 (cons self args)))
+  (call 1937 (cons self args)))
 (defmethod (setf datamunge:seed) (value (self datamunge:arima-options) &rest args)
-  (call 1920 (list* self value args))
+  (call 1938 (list* self value args))
   value)
 
 (defmethod datamunge:options ((self datamunge:arima) &rest args)
@@ -24151,7 +24157,7 @@ series that has already been differenced to stationarity.
 
   (options arima) → arima-options
     → The stored ARIMAOptions."
-  (call 1922 (cons self args)))
+  (call 1940 (cons self args)))
 
 (defmethod datamunge:ar-coefficients ((self datamunge:arima) &rest args)
   "Fitted non-seasonal AR coefficients
@@ -24162,7 +24168,7 @@ series that has already been differenced to stationarity.
 
   (ar-coefficients arima) → (vector double-float)
     → A vector of length p; the AR polynomial is"
-  (call 1923 (cons self args)))
+  (call 1941 (cons self args)))
 
 (defmethod datamunge:ma-coefficients ((self datamunge:arima) &rest args)
   "Fitted non-seasonal MA coefficients
@@ -24173,7 +24179,7 @@ series that has already been differenced to stationarity.
 
   (ma-coefficients arima) → (vector double-float)
     → A vector of length q; the MA polynomial is"
-  (call 1924 (cons self args)))
+  (call 1942 (cons self args)))
 
 (defmethod datamunge:seasonal-ar-coefficients ((self datamunge:arima) &rest args)
   "Fitted seasonal AR coefficients
@@ -24184,7 +24190,7 @@ series that has already been differenced to stationarity.
 
   (seasonal-ar-coefficients arima) → (vector double-float)
     → A vector of length P; the polynomial is"
-  (call 1925 (cons self args)))
+  (call 1943 (cons self args)))
 
 (defmethod datamunge:seasonal-ma-coefficients ((self datamunge:arima) &rest args)
   "Fitted seasonal MA coefficients
@@ -24195,21 +24201,21 @@ series that has already been differenced to stationarity.
 
   (seasonal-ma-coefficients arima) → (vector double-float)
     → A vector of length Q; the polynomial is"
-  (call 1926 (cons self args)))
+  (call 1944 (cons self args)))
 
 (defmethod datamunge:mean ((self datamunge:arima) &rest args)
   "Fitted mean of the differenced series.
 
   (mean arima) → double-float
     → The mean, or 0 when no mean term was fit (include_mean is false, or d or D is nonzero)."
-  (call 1927 (cons self args)))
+  (call 1945 (cons self args)))
 
 (defmethod datamunge:observations ((self datamunge:arima) &rest args)
   "Length of the input series.
 
   (observations arima) → integer
     → The number of observations passed to the constructor."
-  (call 1928 (cons self args)))
+  (call 1946 (cons self args)))
 
 (defmethod datamunge:n-used ((self datamunge:arima) &rest args)
   "Number of residuals that enter the sum of squares.
@@ -24218,14 +24224,14 @@ series that has already been differenced to stationarity.
 
   (n-used arima) → integer
     → The differenced series length minus"
-  (call 1929 (cons self args)))
+  (call 1947 (cons self args)))
 
 (defmethod datamunge:sigma2 ((self datamunge:arima) &rest args)
   "Innovation variance estimate.
 
   (sigma2 arima) → double-float
     → The CSS residual sum of squares divided by n_used()."
-  (call 1930 (cons self args)))
+  (call 1948 (cons self args)))
 
 (defmethod datamunge:log-likelihood ((self datamunge:arima) &rest args)
   "Gaussian log-likelihood at the CSS estimate, over n_used() residuals.
@@ -24233,7 +24239,7 @@ series that has already been differenced to stationarity.
 `-\\tfrac{n}{2}(\\log 2\\pi + \\log\\sigma^2 + 1)` with `n` = n_used().
 
   (log-likelihood arima) → double-float"
-  (call 1931 (cons self args)))
+  (call 1949 (cons self args)))
 
 (defmethod datamunge:aic ((self datamunge:arima) &rest args)
   "Akaike information criterion.
@@ -24241,7 +24247,7 @@ series that has already been differenced to stationarity.
 `-2\\ell + 2k`, where `k` counts the coefficients, the mean (if fit) and `\\sigma^2`.
 
   (aic arima) → double-float"
-  (call 1932 (cons self args)))
+  (call 1950 (cons self args)))
 
 (defmethod datamunge:bic ((self datamunge:arima) &rest args)
   "Bayesian information criterion.
@@ -24249,7 +24255,7 @@ series that has already been differenced to stationarity.
 `-2\\ell + k\\log n`, with `k` as in aic() and `n` = n_used().
 
   (bic arima) → double-float"
-  (call 1933 (cons self args)))
+  (call 1951 (cons self args)))
 
 (defmethod datamunge:fitted-values ((self datamunge:arima) &rest args)
   "One-step-ahead fitted values on the original scale, aligned to the input
@@ -24258,13 +24264,13 @@ conditioned on by CSS -- are copies of the observed value, matching a
 residual of exactly zero there rather than an undefined value).
 
   (fitted-values arima) → (vector double-float)"
-  (call 1934 (cons self args)))
+  (call 1952 (cons self args)))
 
 (defmethod datamunge:residuals ((self datamunge:arima) &rest args)
   "One-step-ahead residuals on the original scale (zero for the presample points).
 
   (residuals arima) → (vector double-float)"
-  (call 1935 (cons self args)))
+  (call 1953 (cons self args)))
 
 (defmethod datamunge:forecast ((self datamunge:arima) &rest args)
   "Point forecasts for the next `horizon` periods, on the original scale.
@@ -24272,7 +24278,7 @@ residual of exactly zero there rather than an undefined value).
   (forecast arima horizon) → (vector double-float)
     horizon  integer  Number of steps ahead to forecast.
     → A vector of length `horizon` (empty when `horizon` is 0)."
-  (call 1936 (cons self args)))
+  (call 1954 (cons self args)))
 
 (defmethod datamunge:expanded-ar-coefficients ((self datamunge:arima) &rest args)
   "AR coefficients of the stationary (differenced) model after multiplying the regular
@@ -24284,7 +24290,7 @@ and seasonal polynomials,
 
   (expanded-ar-coefficients arima) → (vector double-float)
     → The"
-  (call 1937 (cons self args)))
+  (call 1955 (cons self args)))
 
 (defmethod datamunge:expanded-ma-coefficients ((self datamunge:arima) &rest args)
   "MA coefficients
@@ -24296,7 +24302,7 @@ seasonal MA polynomials; for the airline model `(\\theta,0,\\dots,0,\\Theta,\\th
 
   (expanded-ma-coefficients arima) → (vector double-float)
     → The"
-  (call 1938 (cons self args)))
+  (call 1956 (cons self args)))
 
 (defmethod datamunge:psi-weights ((self datamunge:arima) &rest args)
   "The first `count`
@@ -24311,7 +24317,7 @@ The h-step forecast error is `\\sum_{j<h}\\psi_j\\varepsilon_{t+h-j}`, so its va
 
   (psi-weights arima count) → (vector double-float)
     count  integer  Number of weights."
-  (call 1939 (cons self args)))
+  (call 1957 (cons self args)))
 
 (defmethod datamunge:forecast-with-intervals ((self datamunge:arima) &rest args)
   "Point forecasts and their standard errors (from the psi-weight / MA(infinity)
@@ -24321,16 +24327,16 @@ original scale.
   (forecast-with-intervals arima horizon) → (list (vector double-float) (vector double-float))
     horizon  integer  Number of steps ahead to forecast.
     → A pair (point forecasts, standard errors), each of length `horizon`."
-  (call 1940 (cons self args)))
+  (call 1958 (cons self args)))
 
 (defmethod datamunge:concordant ((self datamunge:kendall-tau) &rest args)
   "Pairs ordered the same way by x and y.
 
   (concordant kendall-tau) → integer
   (setf (concordant kendall-tau) integer)"
-  (call 1942 (cons self args)))
+  (call 1960 (cons self args)))
 (defmethod (setf datamunge:concordant) (value (self datamunge:kendall-tau) &rest args)
-  (call 1943 (list* self value args))
+  (call 1961 (list* self value args))
   value)
 
 (defmethod datamunge:discordant ((self datamunge:kendall-tau) &rest args)
@@ -24338,9 +24344,9 @@ original scale.
 
   (discordant kendall-tau) → integer
   (setf (discordant kendall-tau) integer)"
-  (call 1944 (cons self args)))
+  (call 1962 (cons self args)))
 (defmethod (setf datamunge:discordant) (value (self datamunge:kendall-tau) &rest args)
-  (call 1945 (list* self value args))
+  (call 1963 (list* self value args))
   value)
 
 (defmethod datamunge:ties-x ((self datamunge:kendall-tau) &rest args)
@@ -24348,9 +24354,9 @@ original scale.
 
   (ties-x kendall-tau) → integer
   (setf (ties-x kendall-tau) integer)"
-  (call 1946 (cons self args)))
+  (call 1964 (cons self args)))
 (defmethod (setf datamunge:ties-x) (value (self datamunge:kendall-tau) &rest args)
-  (call 1947 (list* self value args))
+  (call 1965 (list* self value args))
   value)
 
 (defmethod datamunge:ties-y ((self datamunge:kendall-tau) &rest args)
@@ -24358,9 +24364,9 @@ original scale.
 
   (ties-y kendall-tau) → integer
   (setf (ties-y kendall-tau) integer)"
-  (call 1948 (cons self args)))
+  (call 1966 (cons self args)))
 (defmethod (setf datamunge:ties-y) (value (self datamunge:kendall-tau) &rest args)
-  (call 1949 (list* self value args))
+  (call 1967 (list* self value args))
   value)
 
 (defmethod datamunge:ties-xy ((self datamunge:kendall-tau) &rest args)
@@ -24368,9 +24374,9 @@ original scale.
 
   (ties-xy kendall-tau) → integer
   (setf (ties-xy kendall-tau) integer)"
-  (call 1950 (cons self args)))
+  (call 1968 (cons self args)))
 (defmethod (setf datamunge:ties-xy) (value (self datamunge:kendall-tau) &rest args)
-  (call 1951 (list* self value args))
+  (call 1969 (list* self value args))
   value)
 
 (defmethod datamunge:tau-a ((self datamunge:kendall-tau) &rest args)
@@ -24380,9 +24386,9 @@ original scale.
 
   (tau-a kendall-tau) → double-float
   (setf (tau-a kendall-tau) double-float)"
-  (call 1952 (cons self args)))
+  (call 1970 (cons self args)))
 (defmethod (setf datamunge:tau-a) (value (self datamunge:kendall-tau) &rest args)
-  (call 1953 (list* self value args))
+  (call 1971 (list* self value args))
   value)
 
 (defmethod datamunge:tau-b ((self datamunge:kendall-tau) &rest args)
@@ -24390,9 +24396,9 @@ original scale.
 
   (tau-b kendall-tau) → double-float
   (setf (tau-b kendall-tau) double-float)"
-  (call 1954 (cons self args)))
+  (call 1972 (cons self args)))
 (defmethod (setf datamunge:tau-b) (value (self datamunge:kendall-tau) &rest args)
-  (call 1955 (list* self value args))
+  (call 1973 (list* self value args))
   value)
 
 (defmethod datamunge:trend ((self datamunge:exponential-smoothing-options) &rest args)
@@ -24400,9 +24406,9 @@ original scale.
 
   (trend exponential-smoothing-options) → trend-type
   (setf (trend exponential-smoothing-options) trend-type)"
-  (call 1957 (cons self args)))
+  (call 1975 (cons self args)))
 (defmethod (setf datamunge:trend) (value (self datamunge:exponential-smoothing-options) &rest args)
-  (call 1958 (list* self value args))
+  (call 1976 (list* self value args))
   value)
 
 (defmethod datamunge:seasonal ((self datamunge:exponential-smoothing-options) &rest args)
@@ -24410,9 +24416,9 @@ original scale.
 
   (seasonal exponential-smoothing-options) → seasonal-type
   (setf (seasonal exponential-smoothing-options) seasonal-type)"
-  (call 1959 (cons self args)))
+  (call 1977 (cons self args)))
 (defmethod (setf datamunge:seasonal) (value (self datamunge:exponential-smoothing-options) &rest args)
-  (call 1960 (list* self value args))
+  (call 1978 (list* self value args))
   value)
 
 (defmethod datamunge:seasonal-period ((self datamunge:exponential-smoothing-options) &rest args)
@@ -24420,9 +24426,9 @@ original scale.
 
   (seasonal-period exponential-smoothing-options) → integer
   (setf (seasonal-period exponential-smoothing-options) integer)"
-  (call 1961 (cons self args)))
+  (call 1979 (cons self args)))
 (defmethod (setf datamunge:seasonal-period) (value (self datamunge:exponential-smoothing-options) &rest args)
-  (call 1962 (list* self value args))
+  (call 1980 (list* self value args))
   value)
 
 (defmethod datamunge:alpha ((self datamunge:exponential-smoothing-options) &rest args)
@@ -24430,9 +24436,9 @@ original scale.
 
   (alpha exponential-smoothing-options) → double-float
   (setf (alpha exponential-smoothing-options) double-float)"
-  (call 1963 (cons self args)))
+  (call 1981 (cons self args)))
 (defmethod (setf datamunge:alpha) (value (self datamunge:exponential-smoothing-options) &rest args)
-  (call 1964 (list* self value args))
+  (call 1982 (list* self value args))
   value)
 
 (defmethod datamunge:beta ((self datamunge:exponential-smoothing-options) &rest args)
@@ -24440,9 +24446,9 @@ original scale.
 
   (beta exponential-smoothing-options) → double-float
   (setf (beta exponential-smoothing-options) double-float)"
-  (call 1965 (cons self args)))
+  (call 1983 (cons self args)))
 (defmethod (setf datamunge:beta) (value (self datamunge:exponential-smoothing-options) &rest args)
-  (call 1966 (list* self value args))
+  (call 1984 (list* self value args))
   value)
 
 (defmethod datamunge:gamma ((self datamunge:exponential-smoothing-options) &rest args)
@@ -24450,9 +24456,9 @@ original scale.
 
   (gamma exponential-smoothing-options) → double-float
   (setf (gamma exponential-smoothing-options) double-float)"
-  (call 1967 (cons self args)))
+  (call 1985 (cons self args)))
 (defmethod (setf datamunge:gamma) (value (self datamunge:exponential-smoothing-options) &rest args)
-  (call 1968 (list* self value args))
+  (call 1986 (list* self value args))
   value)
 
 (defmethod datamunge:phi ((self datamunge:exponential-smoothing-options) &rest args)
@@ -24460,9 +24466,9 @@ original scale.
 
   (phi exponential-smoothing-options) → double-float
   (setf (phi exponential-smoothing-options) double-float)"
-  (call 1969 (cons self args)))
+  (call 1987 (cons self args)))
 (defmethod (setf datamunge:phi) (value (self datamunge:exponential-smoothing-options) &rest args)
-  (call 1970 (list* self value args))
+  (call 1988 (list* self value args))
   value)
 
 (defmethod datamunge:de-population-size ((self datamunge:exponential-smoothing-options) &rest args)
@@ -24470,9 +24476,9 @@ original scale.
 
   (de-population-size exponential-smoothing-options) → integer
   (setf (de-population-size exponential-smoothing-options) integer)"
-  (call 1971 (cons self args)))
+  (call 1989 (cons self args)))
 (defmethod (setf datamunge:de-population-size) (value (self datamunge:exponential-smoothing-options) &rest args)
-  (call 1972 (list* self value args))
+  (call 1990 (list* self value args))
   value)
 
 (defmethod datamunge:de-max-generations ((self datamunge:exponential-smoothing-options) &rest args)
@@ -24480,9 +24486,9 @@ original scale.
 
   (de-max-generations exponential-smoothing-options) → integer
   (setf (de-max-generations exponential-smoothing-options) integer)"
-  (call 1973 (cons self args)))
+  (call 1991 (cons self args)))
 (defmethod (setf datamunge:de-max-generations) (value (self datamunge:exponential-smoothing-options) &rest args)
-  (call 1974 (list* self value args))
+  (call 1992 (list* self value args))
   value)
 
 (defmethod datamunge:seed ((self datamunge:exponential-smoothing-options) &rest args)
@@ -24490,76 +24496,76 @@ original scale.
 
   (seed exponential-smoothing-options) → integer
   (setf (seed exponential-smoothing-options) integer)"
-  (call 1975 (cons self args)))
+  (call 1993 (cons self args)))
 (defmethod (setf datamunge:seed) (value (self datamunge:exponential-smoothing-options) &rest args)
-  (call 1976 (list* self value args))
+  (call 1994 (list* self value args))
   value)
 
 (defmethod datamunge:options ((self datamunge:exponential-smoothing) &rest args)
   "C++ datamunge::stats::ExponentialSmoothing::options.
 
   (options exponential-smoothing) → exponential-smoothing-options"
-  (call 1978 (cons self args)))
+  (call 1996 (cons self args)))
 
 (defmethod datamunge:alpha ((self datamunge:exponential-smoothing) &rest args)
   "C++ datamunge::stats::ExponentialSmoothing::alpha.
 
   (alpha exponential-smoothing) → double-float"
-  (call 1979 (cons self args)))
+  (call 1997 (cons self args)))
 
 (defmethod datamunge:beta ((self datamunge:exponential-smoothing) &rest args)
   "C++ datamunge::stats::ExponentialSmoothing::beta.
 
   (beta exponential-smoothing) → double-float"
-  (call 1980 (cons self args)))
+  (call 1998 (cons self args)))
 
 (defmethod datamunge:gamma ((self datamunge:exponential-smoothing) &rest args)
   "C++ datamunge::stats::ExponentialSmoothing::gamma.
 
   (gamma exponential-smoothing) → double-float"
-  (call 1981 (cons self args)))
+  (call 1999 (cons self args)))
 
 (defmethod datamunge:phi ((self datamunge:exponential-smoothing) &rest args)
   "C++ datamunge::stats::ExponentialSmoothing::phi.
 
   (phi exponential-smoothing) → double-float"
-  (call 1982 (cons self args)))
+  (call 2000 (cons self args)))
 
 (defmethod datamunge:observations ((self datamunge:exponential-smoothing) &rest args)
   "C++ datamunge::stats::ExponentialSmoothing::observations.
 
   (observations exponential-smoothing) → integer"
-  (call 1983 (cons self args)))
+  (call 2001 (cons self args)))
 
 (defmethod datamunge:sse ((self datamunge:exponential-smoothing) &rest args)
   "C++ datamunge::stats::ExponentialSmoothing::sse.
 
   (sse exponential-smoothing) → double-float"
-  (call 1984 (cons self args)))
+  (call 2002 (cons self args)))
 
 (defmethod datamunge:sigma2 ((self datamunge:exponential-smoothing) &rest args)
   "C++ datamunge::stats::ExponentialSmoothing::sigma2.
 
   (sigma2 exponential-smoothing) → double-float"
-  (call 1985 (cons self args)))
+  (call 2003 (cons self args)))
 
 (defmethod datamunge:log-likelihood ((self datamunge:exponential-smoothing) &rest args)
   "C++ datamunge::stats::ExponentialSmoothing::log_likelihood.
 
   (log-likelihood exponential-smoothing) → double-float"
-  (call 1986 (cons self args)))
+  (call 2004 (cons self args)))
 
 (defmethod datamunge:aic ((self datamunge:exponential-smoothing) &rest args)
   "C++ datamunge::stats::ExponentialSmoothing::aic.
 
   (aic exponential-smoothing) → double-float"
-  (call 1987 (cons self args)))
+  (call 2005 (cons self args)))
 
 (defmethod datamunge:bic ((self datamunge:exponential-smoothing) &rest args)
   "C++ datamunge::stats::ExponentialSmoothing::bic.
 
   (bic exponential-smoothing) → double-float"
-  (call 1988 (cons self args)))
+  (call 2006 (cons self args)))
 
 (defmethod datamunge:fitted-values ((self datamunge:exponential-smoothing) &rest args)
   "In-sample one-step-ahead fitted values, aligned to the input series. The
@@ -24567,20 +24573,20 @@ warm-up prefix used to set initial states (see class docs) is copied from the
 observed values (residual exactly zero there).
 
   (fitted-values exponential-smoothing) → (vector double-float)"
-  (call 1989 (cons self args)))
+  (call 2007 (cons self args)))
 
 (defmethod datamunge:residuals ((self datamunge:exponential-smoothing) &rest args)
   "C++ datamunge::stats::ExponentialSmoothing::residuals.
 
   (residuals exponential-smoothing) → (vector double-float)"
-  (call 1990 (cons self args)))
+  (call 2008 (cons self args)))
 
 (defmethod datamunge:forecast ((self datamunge:exponential-smoothing) &rest args)
   "Point forecasts for the next `horizon` periods.
 
   (forecast exponential-smoothing horizon) → (vector double-float)
     horizon  integer"
-  (call 1991 (cons self args)))
+  (call 2009 (cons self args)))
 
 (defmethod datamunge:predict ((self datamunge:b-spline-regression) &rest args)
   "Evaluates the fitted curve at `x`. Points outside the fitted domain take the value
@@ -24588,55 +24594,55 @@ at the nearest boundary, i.e. constant extrapolation.
 
   (predict b-spline-regression x) → t
     x  t"
-  (call 1994 (cons self args)))
+  (call 2012 (cons self args)))
 
 (defmethod datamunge:coefficients ((self datamunge:b-spline-regression) &rest args)
   "C++ datamunge::BSplineRegression::coefficients.
 
   (coefficients b-spline-regression) → t"
-  (call 1995 (cons self args)))
+  (call 2013 (cons self args)))
 
 (defmethod datamunge:fitted ((self datamunge:b-spline-regression) &rest args)
   "C++ datamunge::BSplineRegression::fitted.
 
   (fitted b-spline-regression) → t"
-  (call 1996 (cons self args)))
+  (call 2014 (cons self args)))
 
 (defmethod datamunge:residuals ((self datamunge:b-spline-regression) &rest args)
   "C++ datamunge::BSplineRegression::residuals.
 
   (residuals b-spline-regression) → t"
-  (call 1997 (cons self args)))
+  (call 2015 (cons self args)))
 
 (defmethod datamunge:r-squared ((self datamunge:b-spline-regression) &rest args)
   "C++ datamunge::BSplineRegression::r_squared.
 
   (r-squared b-spline-regression) → double-float"
-  (call 1998 (cons self args)))
+  (call 2016 (cons self args)))
 
 (defmethod datamunge:basis-size ((self datamunge:b-spline-regression) &rest args)
   "C++ datamunge::BSplineRegression::basis_size.
 
   (basis-size b-spline-regression) → integer"
-  (call 1999 (cons self args)))
+  (call 2017 (cons self args)))
 
 (defmethod datamunge:degree ((self datamunge:b-spline-regression) &rest args)
   "C++ datamunge::BSplineRegression::degree.
 
   (degree b-spline-regression) → integer"
-  (call 2000 (cons self args)))
+  (call 2018 (cons self args)))
 
 (defmethod datamunge:knots ((self datamunge:b-spline-regression) &rest args)
   "The full knot sequence (boundary knots repeated degree + 1 times).
 
   (knots b-spline-regression) → t"
-  (call 2001 (cons self args)))
+  (call 2019 (cons self args)))
 
 (defmethod datamunge:domain ((self datamunge:b-spline-regression) &rest args)
   "The [min, max] interval the basis covers.
 
   (domain b-spline-regression) → (list double-float double-float)"
-  (call 2002 (cons self args)))
+  (call 2020 (cons self args)))
 
 (defmethod datamunge:predict ((self datamunge:p-spline-regression) &rest args)
   "Evaluates the fitted curve at `x`. Points outside the fitted domain take the value
@@ -24657,56 +24663,56 @@ See also: basis_matrix(), domain()
   (predict p-spline-regression x) → t
     x  t  Finite evaluation coordinates; empty is accepted.
     → Owned predictions in input order, after clamping x to domain()."
-  (call 2004 (cons self args)))
+  (call 2022 (cons self args)))
 
 (defmethod datamunge:coefficients ((self datamunge:p-spline-regression) &rest args)
   "Fitted coefficients in basis order.
 
   (coefficients p-spline-regression) → t
     → Owned K-vector."
-  (call 2005 (cons self args)))
+  (call 2023 (cons self args)))
 
 (defmethod datamunge:fitted ((self datamunge:p-spline-regression) &rest args)
   "Predictions at the training coordinates.
 
   (fitted p-spline-regression) → t
     → Owned n-vector in training order."
-  (call 2006 (cons self args)))
+  (call 2024 (cons self args)))
 
 (defmethod datamunge:residuals ((self datamunge:p-spline-regression) &rest args)
   "Observed minus fitted training responses.
 
   (residuals p-spline-regression) → t
     → Owned n-vector in training order."
-  (call 2007 (cons self args)))
+  (call 2025 (cons self args)))
 
 (defmethod datamunge:r-squared ((self datamunge:p-spline-regression) &rest args)
   "In-sample 1-RSS/TSS, with the constant-response convention of PSplineFitResult.
 
   (r-squared p-spline-regression) → double-float
     → Scalar R squared."
-  (call 2008 (cons self args)))
+  (call 2026 (cons self args)))
 
 (defmethod datamunge:lambda ((self datamunge:p-spline-regression) &rest args)
   "The smoothing parameter λ used for the fit (the GCV minimizer when not given).
 
   (lambda p-spline-regression) → double-float
     → Finite nonnegative multiplier used in the fit."
-  (call 2009 (cons self args)))
+  (call 2027 (cons self args)))
 
 (defmethod datamunge:penalty-order ((self datamunge:p-spline-regression) &rest args)
   "Order of adjacent coefficient differences.
 
   (penalty-order p-spline-regression) → integer
     → Positive difference order, independent of spline degree."
-  (call 2010 (cons self args)))
+  (call 2028 (cons self args)))
 
 (defmethod datamunge:effective-df ((self datamunge:p-spline-regression) &rest args)
   "Effective degrees of freedom, trace of the hat matrix.
 
   (effective-df p-spline-regression) → double-float
     → Fixed-lambda smoother trace, the sum of training leverages."
-  (call 2011 (cons self args)))
+  (call 2029 (cons self args)))
 
 (defmethod datamunge:gcv ((self datamunge:p-spline-regression) &rest args)
   "Generalized cross-validation score n·RSS / (n − edf)² of the fit.
@@ -24715,35 +24721,35 @@ See also: fda::PSplineFitResult::gcv(), PSplineRegression
 
   (gcv p-spline-regression) → double-float
     → Fixed-lambda score in response-squared units; infinity when n-edf is numerically zero."
-  (call 2012 (cons self args)))
+  (call 2030 (cons self args)))
 
 (defmethod datamunge:basis-size ((self datamunge:p-spline-regression) &rest args)
   "Number of basis functions, including boundary functions.
 
   (basis-size p-spline-regression) → integer
     → Basis dimension K."
-  (call 2013 (cons self args)))
+  (call 2031 (cons self args)))
 
 (defmethod datamunge:degree ((self datamunge:p-spline-regression) &rest args)
   "Polynomial degree of each spline segment.
 
   (degree p-spline-regression) → integer
     → Degree p, independent of penalty order."
-  (call 2014 (cons self args)))
+  (call 2032 (cons self args)))
 
 (defmethod datamunge:knots ((self datamunge:p-spline-regression) &rest args)
   "The full knot sequence, including the `degree` extra knots past each end of the data.
 
   (knots p-spline-regression) → t
     → Owned sequence of K+degree+1 knots."
-  (call 2015 (cons self args)))
+  (call 2033 (cons self args)))
 
 (defmethod datamunge:domain ((self datamunge:p-spline-regression) &rest args)
   "The [min, max] interval the basis covers.
 
   (domain p-spline-regression) → (list double-float double-float)
     → Closed interval endpoints (minimum,maximum)."
-  (call 2016 (cons self args)))
+  (call 2034 (cons self args)))
 
 (defmethod datamunge:coefficient-differences ((self datamunge:p-spline-regression) &rest args)
   "Fitted order-d coefficient differences, whose squared norm is roughness.
@@ -24759,31 +24765,31 @@ See also: summary(), fda::pspline_difference_matrix()
 
   (coefficient-differences p-spline-regression) → t
     → Owned K-d vector in left-to-right difference order."
-  (call 2017 (cons self args)))
+  (call 2035 (cons self args)))
 
 (defmethod datamunge:nrows ((self datamunge:data-frame) &rest args)
   "C++ datamunge::DataFrame::nrows.
 
   (nrows data-frame) → integer"
-  (call 2020 (cons self args)))
+  (call 2038 (cons self args)))
 
 (defmethod datamunge:ncols ((self datamunge:data-frame) &rest args)
   "C++ datamunge::DataFrame::ncols.
 
   (ncols data-frame) → integer"
-  (call 2021 (cons self args)))
+  (call 2039 (cons self args)))
 
 (defmethod datamunge:shape ((self datamunge:data-frame) &rest args)
   "C++ datamunge::DataFrame::shape.
 
   (shape data-frame) → (vector integer)"
-  (call 2022 (cons self args)))
+  (call 2040 (cons self args)))
 
 (defmethod datamunge:columns ((self datamunge:data-frame) &rest args)
   "C++ datamunge::DataFrame::columns.
 
   (columns data-frame) → (vector string)"
-  (call 2023 (cons self args)))
+  (call 2041 (cons self args)))
 
 (defmethod datamunge:add-numeric-column ((self datamunge:data-frame) &rest args)
   "C++ datamunge::DataFrame::add_numeric_column.
@@ -24792,7 +24798,7 @@ See also: summary(), fda::pspline_difference_matrix()
     column-name  string
     values  (vector double-float)
     valid-mask  (vector integer)"
-  (call 2024 (cons self args)))
+  (call 2042 (cons self args)))
 
 (defmethod datamunge:add-string-column ((self datamunge:data-frame) &rest args)
   "C++ datamunge::DataFrame::add_string_column.
@@ -24801,7 +24807,7 @@ See also: summary(), fda::pspline_difference_matrix()
     column-name  string
     values  (vector string)
     valid-mask  (vector integer)"
-  (call 2025 (cons self args)))
+  (call 2043 (cons self args)))
 
 (defmethod datamunge:add-string-column-encoded ((self datamunge:data-frame) &rest args)
   "C++ datamunge::DataFrame::add_string_column_encoded.
@@ -24810,7 +24816,7 @@ See also: summary(), fda::pspline_difference_matrix()
     column-name  string
     encoded-values  string
     valid-mask  (vector integer)"
-  (call 2026 (cons self args)))
+  (call 2044 (cons self args)))
 
 (defmethod datamunge:fill-null-numeric ((self datamunge:data-frame) &rest args)
   "C++ datamunge::DataFrame::fill_null_numeric.
@@ -24818,7 +24824,7 @@ See also: summary(), fda::pspline_difference_matrix()
   (fill-null-numeric data-frame column-name value*)
     column-name  string
     value*  double-float"
-  (call 2027 (cons self args)))
+  (call 2045 (cons self args)))
 
 (defmethod datamunge:fill-null-string ((self datamunge:data-frame) &rest args)
   "C++ datamunge::DataFrame::fill_null_string.
@@ -24826,7 +24832,7 @@ See also: summary(), fda::pspline_difference_matrix()
   (fill-null-string data-frame column-name value*)
     column-name  string
     value*  string"
-  (call 2028 (cons self args)))
+  (call 2046 (cons self args)))
 
 (defmethod datamunge:mutate-numeric ((self datamunge:data-frame) &rest args)
   "dplyr::mutate()-style upsert: adds column_name if absent, replaces it (same type) if
@@ -24836,7 +24842,7 @@ present. Always returns a new DataFrame, so it composes into a pipe.
     column-name  string
     values  (vector double-float)
     valid-mask  (vector integer)"
-  (call 2029 (cons self args)))
+  (call 2047 (cons self args)))
 
 (defmethod datamunge:mutate-string ((self datamunge:data-frame) &rest args)
   "C++ datamunge::DataFrame::mutate_string.
@@ -24845,7 +24851,7 @@ present. Always returns a new DataFrame, so it composes into a pipe.
     column-name  string
     values  (vector string)
     valid-mask  (vector integer)"
-  (call 2030 (cons self args)))
+  (call 2048 (cons self args)))
 
 (defmethod datamunge:mutate-string-encoded ((self datamunge:data-frame) &rest args)
   "C++ datamunge::DataFrame::mutate_string_encoded.
@@ -24854,7 +24860,7 @@ present. Always returns a new DataFrame, so it composes into a pipe.
     column-name  string
     encoded-values  string
     valid-mask  (vector integer)"
-  (call 2031 (cons self args)))
+  (call 2049 (cons self args)))
 
 (defmethod datamunge:rename ((self datamunge:data-frame) &rest args)
   "Non-mutating, chainable single-pair rename.
@@ -24862,21 +24868,21 @@ present. Always returns a new DataFrame, so it composes into a pipe.
   (rename data-frame old-name new-name) → (or null data-frame)
     old-name  string
     new-name  string"
-  (call 2032 (cons self args)))
+  (call 2050 (cons self args)))
 
 (defmethod datamunge:select ((self datamunge:data-frame) &rest args)
   "C++ datamunge::DataFrame::select.
 
   (select data-frame selected-columns) → (or null data-frame)
     selected-columns  (vector string)"
-  (call 2033 (cons self args)))
+  (call 2051 (cons self args)))
 
 (defmethod datamunge:select-encoded ((self datamunge:data-frame) &rest args)
   "C++ datamunge::DataFrame::select_encoded.
 
   (select-encoded data-frame encoded-columns) → (or null data-frame)
     encoded-columns  string"
-  (call 2034 (cons self args)))
+  (call 2052 (cons self args)))
 
 (defmethod datamunge:relocate ((self datamunge:data-frame) &rest args)
   "dplyr::relocate()-style column reorder: moves `columns` to the front (default) or
@@ -24885,7 +24891,7 @@ immediately after the column named `after`.
   (relocate data-frame columns &optional (after \"\")) → (or null data-frame)
     columns  (vector string)
     after  string"
-  (call 2035 (cons self args)))
+  (call 2053 (cons self args)))
 
 (defmethod datamunge:relocate-encoded ((self datamunge:data-frame) &rest args)
   "C++ datamunge::DataFrame::relocate_encoded.
@@ -24893,7 +24899,7 @@ immediately after the column named `after`.
   (relocate-encoded data-frame encoded-columns &optional (after \"\")) → (or null data-frame)
     encoded-columns  string
     after  string"
-  (call 2036 (cons self args)))
+  (call 2054 (cons self args)))
 
 (defmethod datamunge:sort-by ((self datamunge:data-frame) &rest args)
   "C++ datamunge::DataFrame::sort_by.
@@ -24901,7 +24907,7 @@ immediately after the column named `after`.
   (sort-by data-frame column-name &optional (ascending t)) → (or null data-frame)
     column-name  string
     ascending  boolean"
-  (call 2037 (cons self args)))
+  (call 2055 (cons self args)))
 
 (defmethod datamunge:arrange ((self datamunge:data-frame) &rest args)
   "dplyr::arrange()-style multi-key sort. `ascending` defaults to all-true; when
@@ -24910,7 +24916,7 @@ provided it must have the same length as `columns`.
   (arrange data-frame columns &optional (ascending #())) → (or null data-frame)
     columns  (vector string)
     ascending  (vector integer)"
-  (call 2038 (cons self args)))
+  (call 2056 (cons self args)))
 
 (defmethod datamunge:arrange-encoded ((self datamunge:data-frame) &rest args)
   "C++ datamunge::DataFrame::arrange_encoded.
@@ -24918,35 +24924,35 @@ provided it must have the same length as `columns`.
   (arrange-encoded data-frame encoded-columns &optional (ascending #())) → (or null data-frame)
     encoded-columns  string
     ascending  (vector integer)"
-  (call 2039 (cons self args)))
+  (call 2057 (cons self args)))
 
 (defmethod datamunge:drop-duplicates ((self datamunge:data-frame) &rest args)
   "C++ datamunge::DataFrame::drop_duplicates.
 
   (drop-duplicates data-frame &optional (subset #())) → (or null data-frame)
     subset  (vector string)"
-  (call 2040 (cons self args)))
+  (call 2058 (cons self args)))
 
 (defmethod datamunge:drop-duplicates-encoded ((self datamunge:data-frame) &rest args)
   "C++ datamunge::DataFrame::drop_duplicates_encoded.
 
   (drop-duplicates-encoded data-frame encoded-subset) → (or null data-frame)
     encoded-subset  string"
-  (call 2041 (cons self args)))
+  (call 2059 (cons self args)))
 
 (defmethod datamunge:distinct ((self datamunge:data-frame) &rest args)
   "dplyr::distinct() alias for drop_duplicates().
 
   (distinct data-frame &optional (subset #())) → (or null data-frame)
     subset  (vector string)"
-  (call 2042 (cons self args)))
+  (call 2060 (cons self args)))
 
 (defmethod datamunge:distinct-encoded ((self datamunge:data-frame) &rest args)
   "C++ datamunge::DataFrame::distinct_encoded.
 
   (distinct-encoded data-frame encoded-subset) → (or null data-frame)
     encoded-subset  string"
-  (call 2043 (cons self args)))
+  (call 2061 (cons self args)))
 
 (defmethod datamunge:pull-numeric ((self datamunge:data-frame) &rest args)
   "dplyr::pull()-style column extraction. Nulls come back as NaN (numeric) / \"\" (string)
@@ -24955,28 +24961,28 @@ null, same convention as add_numeric_column's valid_mask) if nulls matter.
 
   (pull-numeric data-frame column-name) → (vector double-float)
     column-name  string"
-  (call 2044 (cons self args)))
+  (call 2062 (cons self args)))
 
 (defmethod datamunge:pull-numeric-valid ((self datamunge:data-frame) &rest args)
   "C++ datamunge::DataFrame::pull_numeric_valid.
 
   (pull-numeric-valid data-frame column-name) → (vector integer)
     column-name  string"
-  (call 2045 (cons self args)))
+  (call 2063 (cons self args)))
 
 (defmethod datamunge:pull-string ((self datamunge:data-frame) &rest args)
   "C++ datamunge::DataFrame::pull_string.
 
   (pull-string data-frame column-name) → (vector string)
     column-name  string"
-  (call 2046 (cons self args)))
+  (call 2064 (cons self args)))
 
 (defmethod datamunge:pull-string-valid ((self datamunge:data-frame) &rest args)
   "C++ datamunge::DataFrame::pull_string_valid.
 
   (pull-string-valid data-frame column-name) → (vector integer)
     column-name  string"
-  (call 2047 (cons self args)))
+  (call 2065 (cons self args)))
 
 (defmethod datamunge:n-distinct ((self datamunge:data-frame) &rest args)
   "Number of distinct values in column_name; a null counts as one additional distinct
@@ -24984,7 +24990,7 @@ value if present.
 
   (n-distinct data-frame column-name) → integer
     column-name  string"
-  (call 2048 (cons self args)))
+  (call 2066 (cons self args)))
 
 (defmethod datamunge:group-by-sum ((self datamunge:data-frame) &rest args)
   "C++ datamunge::DataFrame::group_by_sum.
@@ -24992,7 +24998,7 @@ value if present.
   (group-by-sum data-frame key-columns value-columns) → (or null data-frame)
     key-columns  (vector string)
     value-columns  (vector string)"
-  (call 2049 (cons self args)))
+  (call 2067 (cons self args)))
 
 (defmethod datamunge:group-by-sum-encoded ((self datamunge:data-frame) &rest args)
   "C++ datamunge::DataFrame::group_by_sum_encoded.
@@ -25000,7 +25006,7 @@ value if present.
   (group-by-sum-encoded data-frame encoded-key-columns encoded-value-columns) → (or null data-frame)
     encoded-key-columns  string
     encoded-value-columns  string"
-  (call 2050 (cons self args)))
+  (call 2068 (cons self args)))
 
 (defmethod datamunge:count ((self datamunge:data-frame) &rest args)
   "dplyr::count()-style grouped row counts, default result column name \"n\".
@@ -25008,7 +25014,7 @@ value if present.
   (count data-frame key-columns &optional (count-column-name \"n\")) → (or null data-frame)
     key-columns  (vector string)
     count-column-name  string"
-  (call 2051 (cons self args)))
+  (call 2069 (cons self args)))
 
 (defmethod datamunge:count-encoded ((self datamunge:data-frame) &rest args)
   "C++ datamunge::DataFrame::count_encoded.
@@ -25016,7 +25022,7 @@ value if present.
   (count-encoded data-frame encoded-key-columns &optional (count-column-name \"n\")) → (or null data-frame)
     encoded-key-columns  string
     count-column-name  string"
-  (call 2052 (cons self args)))
+  (call 2070 (cons self args)))
 
 (defmethod datamunge:summarise ((self datamunge:data-frame) &rest args)
   "General dplyr::summarise()-style aggregation: one output row per distinct
@@ -25031,7 +25037,7 @@ be \"\"); a \"\" result_names entry defaults to the agg_columns entry (or \"n\" 
     agg-columns  (vector string)
     agg-funcs  (vector string)
     result-names  (vector string)"
-  (call 2053 (cons self args)))
+  (call 2071 (cons self args)))
 
 (defmethod datamunge:summarise-encoded ((self datamunge:data-frame) &rest args)
   "C++ datamunge::DataFrame::summarise_encoded.
@@ -25041,7 +25047,7 @@ be \"\"); a \"\" result_names entry defaults to the agg_columns entry (or \"n\" 
     encoded-agg-columns  string
     encoded-agg-funcs  string
     encoded-result-names  string"
-  (call 2054 (cons self args)))
+  (call 2072 (cons self args)))
 
 (defmethod datamunge:pivot-longer ((self datamunge:data-frame) &rest args)
   "dplyr::pivot_longer()-style reshape: stacks `value_columns` into two new columns
@@ -25051,7 +25057,7 @@ be \"\"); a \"\" result_names entry defaults to the agg_columns entry (or \"n\" 
     value-columns  (vector string)
     names-to  string
     values-to  string"
-  (call 2055 (cons self args)))
+  (call 2073 (cons self args)))
 
 (defmethod datamunge:pivot-longer-encoded ((self datamunge:data-frame) &rest args)
   "C++ datamunge::DataFrame::pivot_longer_encoded.
@@ -25060,7 +25066,7 @@ be \"\"); a \"\" result_names entry defaults to the agg_columns entry (or \"n\" 
     encoded-value-columns  string
     names-to  string
     values-to  string"
-  (call 2056 (cons self args)))
+  (call 2074 (cons self args)))
 
 (defmethod datamunge:pivot-wider ((self datamunge:data-frame) &rest args)
   "dplyr::pivot_wider()-style reshape: `names_from` (a string column) supplies new
@@ -25071,7 +25077,7 @@ other column.
     names-from  string
     values-from  string
     id-columns  (vector string)"
-  (call 2057 (cons self args)))
+  (call 2075 (cons self args)))
 
 (defmethod datamunge:pivot-wider-encoded ((self datamunge:data-frame) &rest args)
   "C++ datamunge::DataFrame::pivot_wider_encoded.
@@ -25080,7 +25086,7 @@ other column.
     names-from  string
     values-from  string
     encoded-id-columns  string"
-  (call 2058 (cons self args)))
+  (call 2076 (cons self args)))
 
 (defmethod datamunge:bind-rows ((self datamunge:data-frame) &rest args)
   "dplyr::bind_rows()-style row union: aligns columns by name (unlike concat_rows,
@@ -25088,7 +25094,7 @@ which isn't exposed here), null-filling any column present in only one frame.
 
   (bind-rows data-frame other) → (or null data-frame)
     other  data-frame"
-  (call 2059 (cons self args)))
+  (call 2077 (cons self args)))
 
 (defmethod datamunge:bind-cols ((self datamunge:data-frame) &rest args)
   "dplyr::bind_cols()-style column union: both frames must have the same row count and
@@ -25096,7 +25102,7 @@ disjoint column names.
 
   (bind-cols data-frame other) → (or null data-frame)
     other  data-frame"
-  (call 2060 (cons self args)))
+  (call 2078 (cons self args)))
 
 (defmethod datamunge:join ((self datamunge:data-frame) &rest args)
   "C++ datamunge::DataFrame::join.
@@ -25108,56 +25114,56 @@ disjoint column names.
     join-type  string  One of \"inner\" (default), \"left\", \"right\", \"full\", \"semi\", \"anti\". Any column name present in both frames (other than the key column when left_key == right_key) is suffixed on both sides so the result never has duplicate names.
     left-suffix  string
     right-suffix  string"
-  (call 2061 (cons self args)))
+  (call 2079 (cons self args)))
 
 (defmethod datamunge:numeric-count ((self datamunge:data-frame) &rest args)
   "C++ datamunge::DataFrame::numeric_count.
 
   (numeric-count data-frame column-name) → integer
     column-name  string"
-  (call 2062 (cons self args)))
+  (call 2080 (cons self args)))
 
 (defmethod datamunge:numeric-null-count ((self datamunge:data-frame) &rest args)
   "C++ datamunge::DataFrame::numeric_null_count.
 
   (numeric-null-count data-frame column-name) → integer
     column-name  string"
-  (call 2063 (cons self args)))
+  (call 2081 (cons self args)))
 
 (defmethod datamunge:numeric-sum ((self datamunge:data-frame) &rest args)
   "C++ datamunge::DataFrame::numeric_sum.
 
   (numeric-sum data-frame column-name) → double-float
     column-name  string"
-  (call 2064 (cons self args)))
+  (call 2082 (cons self args)))
 
 (defmethod datamunge:numeric-mean ((self datamunge:data-frame) &rest args)
   "C++ datamunge::DataFrame::numeric_mean.
 
   (numeric-mean data-frame column-name) → double-float
     column-name  string"
-  (call 2065 (cons self args)))
+  (call 2083 (cons self args)))
 
 (defmethod datamunge:numeric-min ((self datamunge:data-frame) &rest args)
   "C++ datamunge::DataFrame::numeric_min.
 
   (numeric-min data-frame column-name) → double-float
     column-name  string"
-  (call 2066 (cons self args)))
+  (call 2084 (cons self args)))
 
 (defmethod datamunge:numeric-max ((self datamunge:data-frame) &rest args)
   "C++ datamunge::DataFrame::numeric_max.
 
   (numeric-max data-frame column-name) → double-float
     column-name  string"
-  (call 2067 (cons self args)))
+  (call 2085 (cons self args)))
 
 (defmethod datamunge:to-string ((self datamunge:data-frame) &rest args)
   "C++ datamunge::DataFrame::to_string.
 
   (to-string data-frame &optional (max-rows 10)) → string
     max-rows  integer"
-  (call 2068 (cons self args)))
+  (call 2086 (cons self args)))
 
 (defmethod datamunge:to-md ((self datamunge:data-frame) &rest args)
   "The frame as a Markdown table (numeric columns right-aligned, at most `digits`
@@ -25165,14 +25171,14 @@ decimals each), like knitr::kable(); see dstruct::DataFrame::to_md().
 
   (to-md data-frame &optional (digits 3)) → string
     digits  integer"
-  (call 2069 (cons self args)))
+  (call 2087 (cons self args)))
 
 (defmethod datamunge:is-numeric-column ((self datamunge:data-frame) &rest args)
   "true if column_name holds numeric values, false if it holds strings.
 
   (is-numeric-column data-frame column-name) → boolean
     column-name  string"
-  (call 2070 (cons self args)))
+  (call 2088 (cons self args)))
 
 (defmethod datamunge:is-null ((self datamunge:data-frame) &rest args)
   "C++ datamunge::DataFrame::is_null.
@@ -25180,7 +25186,7 @@ decimals each), like knitr::kable(); see dstruct::DataFrame::to_md().
   (is-null data-frame column-name row-index) → boolean
     column-name  string
     row-index  integer"
-  (call 2071 (cons self args)))
+  (call 2089 (cons self args)))
 
 (defmethod datamunge:numeric-at ((self datamunge:data-frame) &rest args)
   "The value at (column_name, row_index); throws if the cell is null or the column isn't numeric.
@@ -25188,7 +25194,7 @@ decimals each), like knitr::kable(); see dstruct::DataFrame::to_md().
   (numeric-at data-frame column-name row-index) → double-float
     column-name  string
     row-index  integer"
-  (call 2072 (cons self args)))
+  (call 2090 (cons self args)))
 
 (defmethod datamunge:string-at ((self datamunge:data-frame) &rest args)
   "The value at (column_name, row_index); throws if the cell is null or the column isn't string-typed.
@@ -25196,7 +25202,7 @@ decimals each), like knitr::kable(); see dstruct::DataFrame::to_md().
   (string-at data-frame column-name row-index) → string
     column-name  string
     row-index  integer"
-  (call 2073 (cons self args)))
+  (call 2091 (cons self args)))
 
 (defmethod datamunge:has-next ((self datamunge:csv-reader) &rest args)
   "true while rows remain.
@@ -33241,7 +33247,7 @@ graph, two distinct paths between some pair of vertices.
     value*  double-float
 
 (Static method of expr.)"
-  (call 228 (list value*)))
+  (call 246 (list value*)))
 
 (defun datamunge:expr-variable (name)
   "C++ datamunge::algebra::Expr::variable.
@@ -33250,7 +33256,7 @@ graph, two distinct paths between some pair of vertices.
     name  string
 
 (Static method of expr.)"
-  (call 229 (list name)))
+  (call 247 (list name)))
 
 (defun datamunge:image-channel-count (mode)
   "C++ datamunge::image::Image::channel_count.
@@ -33259,7 +33265,7 @@ graph, two distinct paths between some pair of vertices.
     mode  image-mode
 
 (Static method of image.)"
-  (call 508 (list mode)))
+  (call 526 (list mode)))
 
 (defun datamunge:fem1-d-solve (mesh p q f left right)
   "Solve the steady P1 system for -(p*u')'+q*u=f with endpoint boundary data.
@@ -33297,7 +33303,7 @@ See also: solve_builtin(), solve_transient()
     → Owned original nodes and computed nodal values.
 
 (Static method of fem1-d.)"
-  (call 645 (list mesh p q f left right)))
+  (call 663 (list mesh p q f left right)))
 
 (defun datamunge:fem1-d-solve-builtin (mesh p q source source-params left right)
   "Solve the steady system using an owned named spatial source, without a director callback.
@@ -33335,7 +33341,7 @@ See also: solve(), solve_transient_builtin()
     → Owned computed nodal result, retaining no source or input reference.
 
 (Static method of fem1-d.)"
-  (call 646 (list mesh p q source source-params left right)))
+  (call 664 (list mesh p q source source-params left right)))
 
 (defun datamunge:fem1-d-solve-transient (mesh p q f left right u0 t-end dt)
   "Integrate u_t-(p*u')'+q*u=f with P1 space and actual backward-Euler time intervals.
@@ -33387,7 +33393,7 @@ See also: solve_transient_builtin(), FEM1DTimeSeries
     → Owned nodes, initial state and strictly advancing slices ending at t_end.
 
 (Static method of fem1-d.)"
-  (call 647 (list mesh p q f left right u0 t-end dt)))
+  (call 665 (list mesh p q f left right u0 t-end dt)))
 
 (defun datamunge:fem1-d-solve-transient-builtin (mesh p q source source-params left right u0 t-end dt)
   "Integrate the same backward-Euler model with a named source and no callback subclass.
@@ -33433,7 +33439,7 @@ See also: solve_builtin(), solve_transient()
     → Owned initial state and actual strictly advancing backward-Euler slices.
 
 (Static method of fem1-d.)"
-  (call 648 (list mesh p q source source-params left right u0 t-end dt)))
+  (call 666 (list mesh p q source source-params left right u0 t-end dt)))
 
 (defun datamunge:fem2-d-solve (mesh k f dirichlet-nodes dirichlet-values)
   "Solves -k * Laplacian(u) = f with Dirichlet data u = dirichlet_values[i] at node
@@ -33451,7 +33457,7 @@ solve for).
     dirichlet-values  (vector double-float)
 
 (Static method of fem2-d.)"
-  (call 734 (list mesh k f dirichlet-nodes dirichlet-values)))
+  (call 752 (list mesh k f dirichlet-nodes dirichlet-values)))
 
 (defun datamunge:fem2-d-solve-builtin (mesh k source source-params dirichlet-nodes dirichlet-values)
   "Same as solve(), but f is one of a fixed set of named source terms instead of a
@@ -33471,7 +33477,7 @@ listed defaults used for any parameter past the end of source_params:
     dirichlet-values  (vector double-float)
 
 (Static method of fem2-d.)"
-  (call 735 (list mesh k source source-params dirichlet-nodes dirichlet-values)))
+  (call 753 (list mesh k source source-params dirichlet-nodes dirichlet-values)))
 
 (defun datamunge:r-plot-create ()
   "Returns a fresh empty plot; same as the default constructor `dm::Plot()`.
@@ -33491,7 +33497,7 @@ See also: RPlot()
     → An empty plot with default labels and styling.
 
 (Static method of r-plot.)"
-  (call 998 (list)))
+  (call 1016 (list)))
 
 (defun datamunge:r-plot-plot (x y &optional (type nil type-p) (label nil label-p) (color nil color-p))
   "Builds a scatter, line, or line-plus-points plot of `y` against `x`, like R's
@@ -33528,7 +33534,7 @@ See also: RPlot(std::vector<double>, std::vector<double>), points(), lines()
     → A new plot holding the series.
 
 (Static method of r-plot.)"
-  (call 1027 (cond (color-p (list x y type label color)) (label-p (list x y type label)) (type-p (list x y type)) (t (list x y)))))
+  (call 1045 (cond (color-p (list x y type label color)) (label-p (list x y type label)) (type-p (list x y type)) (t (list x y)))))
 
 (defun datamunge:r-plot-hist (data &optional (bins nil bins-p) (label nil label-p) (color nil color-p))
   "Builds a frequency histogram of `data` with `bins` equal-width bins, like R's
@@ -33567,7 +33573,7 @@ See also: dm::Histogram, bars()
     → A new plot holding one Bar series.
 
 (Static method of r-plot.)"
-  (call 1028 (cond (color-p (list data bins label color)) (label-p (list data bins label)) (bins-p (list data bins)) (t (list data)))))
+  (call 1046 (cond (color-p (list data bins label color)) (label-p (list data bins label)) (bins-p (list data bins)) (t (list data)))))
 
 (defun datamunge:r-plot-barplot (heights &optional (names nil names-p) (label nil label-p) (color nil color-p))
   "Builds a bar chart with one bar per height, like R's
@@ -33602,7 +33608,7 @@ See also: bars(), x_tick_labels()
     → A new plot holding one Bar series.
 
 (Static method of r-plot.)"
-  (call 1029 (cond (color-p (list heights names label color)) (label-p (list heights names label)) (names-p (list heights names)) (t (list heights)))))
+  (call 1047 (cond (color-p (list heights names label color)) (label-p (list heights names label)) (names-p (list heights names)) (t (list heights)))))
 
 (defun datamunge:r-plot-boxplot (&rest args)
   "Builds side-by-side box-and-whisker plots, one per group, like R's
@@ -33667,7 +33673,7 @@ See also: boxplot(std::vector<std::vector<double>>, std::vector<std::string>, RG
     → A new plot holding one Box series per group.
 
 (Static method of r-plot.)"
-  (call 1030 args))
+  (call 1048 args))
 
 (defun datamunge:r-plot-pie (values &optional (names nil names-p) (colors nil colors-p))
   "Builds a pie chart with one wedge per value, like R's
@@ -33707,7 +33713,7 @@ See also: polygon(), text()
     → A new plot holding one Polygon series per wedge plus one Text series per name.
 
 (Static method of r-plot.)"
-  (call 1031 (cond (colors-p (list values names colors)) (names-p (list values names)) (t (list values)))))
+  (call 1049 (cond (colors-p (list values names colors)) (names-p (list values names)) (t (list values)))))
 
 (defun datamunge:r-plot-curve (f from to &optional (n nil n-p) (label nil label-p) (color nil color-p))
   "Plots a function over [`from`, `to`] as a line, like R's `curve(expr, from, to, n)`.
@@ -33746,7 +33752,7 @@ See also: lines()
     → A new plot holding one Line series.
 
 (Static method of r-plot.)"
-  (call 1032 (cond (color-p (list f from to n label color)) (label-p (list f from to n label)) (n-p (list f from to n)) (t (list f from to)))))
+  (call 1050 (cond (color-p (list f from to n label color)) (label-p (list f from to n label)) (n-p (list f from to n)) (t (list f from to)))))
 
 (defun datamunge:r-plot-qqnorm (data &optional (label nil label-p) (color nil color-p))
   "Builds a normal Q-Q plot: the sorted `data` against standard-normal quantiles,
@@ -33786,7 +33792,7 @@ See also: qqline()
     → A new plot holding one Scatter series.
 
 (Static method of r-plot.)"
-  (call 1033 (cond (color-p (list data label color)) (label-p (list data label)) (t (list data)))))
+  (call 1051 (cond (color-p (list data label color)) (label-p (list data label)) (t (list data)))))
 
 (defun datamunge:r-layout-create (rows cols)
   "Creates an empty layout with `rows` by `cols` cells, like R's
@@ -33813,7 +33819,7 @@ See also: add()
     → The empty layout.
 
 (Static method of r-layout.)"
-  (call 1050 (list rows cols)))
+  (call 1068 (list rows cols)))
 
 (defun datamunge:b-spline-basis-open-uniform (degree basis-size &optional (min-x nil min-x-p) (max-x nil max-x-p))
   "C++ datamunge::fda::BSplineBasis::open_uniform.
@@ -33825,167 +33831,17 @@ See also: add()
     max-x  double-float
 
 (Static method of b-spline-basis.)"
-  (call 1868 (cond (max-x-p (list degree basis-size min-x max-x)) (min-x-p (list degree basis-size min-x)) (t (list degree basis-size)))))
+  (call 1886 (cond (max-x-p (list degree basis-size min-x max-x)) (min-x-p (list degree basis-size min-x)) (t (list degree basis-size)))))
 
 (defun datamunge:data-frame-empty ()
-  "Equivalent to the default constructor, exposed as a static factory (like iris()/
-penguins()) as a workaround for a SWIG R-backend bug where the plain no-argument
+  "Equivalent to the default constructor, exposed as a static factory (like read_csv())
+as a workaround for a SWIG R-backend bug where the plain no-argument
 constructor's ownership-flagged pointer breaks method dispatch on the result.
 
   (data-frame-empty) → (or null data-frame)
 
 (Static method of data-frame.)"
-  (call 2019 (list)))
-
-(defun datamunge:data-frame-iris ()
-  "C++ datamunge::DataFrame::iris.
-
-  (data-frame-iris) → (or null data-frame)
-
-(Static method of data-frame.)"
-  (call 2074 (list)))
-
-(defun datamunge:data-frame-penguins ()
-  "C++ datamunge::DataFrame::penguins.
-
-  (data-frame-penguins) → (or null data-frame)
-
-(Static method of data-frame.)"
-  (call 2075 (list)))
-
-(defun datamunge:data-frame-tooth-growth ()
-  "C++ datamunge::DataFrame::tooth_growth.
-
-  (data-frame-tooth-growth) → (or null data-frame)
-
-(Static method of data-frame.)"
-  (call 2076 (list)))
-
-(defun datamunge:data-frame-wine ()
-  "UCI wine recognition data, 178 x 14; see datasets::wine().
-
-  (data-frame-wine) → (or null data-frame)
-
-(Static method of data-frame.)"
-  (call 2077 (list)))
-
-(defun datamunge:data-frame-titanic ()
-  "Kaggle Titanic training set, 891 x 12 with missing values; see datasets::titanic().
-
-  (data-frame-titanic) → (or null data-frame)
-
-(Static method of data-frame.)"
-  (call 2078 (list)))
-
-(defun datamunge:data-frame-eight-schools ()
-  "Rubin's eight schools coaching experiment, 8 x 3; see datasets::eight_schools().
-
-  (data-frame-eight-schools) → (or null data-frame)
-
-(Static method of data-frame.)"
-  (call 2079 (list)))
-
-(defun datamunge:data-frame-air-passengers ()
-  "Monthly airline passengers 1949-1960, 144 x 3; see datasets::air_passengers().
-
-  (data-frame-air-passengers) → (or null data-frame)
-
-(Static method of data-frame.)"
-  (call 2080 (list)))
-
-(defun datamunge:data-frame-volcano ()
-  "Maunga Whau (Mt Eden) elevations on a 10 m grid, 5307 x 3; see datasets::volcano().
-
-  (data-frame-volcano) → (or null data-frame)
-
-(Static method of data-frame.)"
-  (call 2081 (list)))
-
-(defun datamunge:data-frame-faithful ()
-  "Old Faithful eruptions, 272 x 2; see datasets::faithful().
-
-  (data-frame-faithful) → (or null data-frame)
-
-(Static method of data-frame.)"
-  (call 2082 (list)))
-
-(defun datamunge:data-frame-mtcars ()
-  "Motor Trend cars, 32 x 12 (row names as `model`); see datasets::mtcars().
-
-  (data-frame-mtcars) → (or null data-frame)
-
-(Static method of data-frame.)"
-  (call 2083 (list)))
-
-(defun datamunge:data-frame-airquality ()
-  "New York air quality 1973, 153 x 6 with missing values; see datasets::airquality().
-
-  (data-frame-airquality) → (or null data-frame)
-
-(Static method of data-frame.)"
-  (call 2084 (list)))
-
-(defun datamunge:data-frame-breast-cancer ()
-  "Wisconsin diagnostic breast cancer, 569 x 31; see datasets::breast_cancer().
-
-  (data-frame-breast-cancer) → (or null data-frame)
-
-(Static method of data-frame.)"
-  (call 2085 (list)))
-
-(defun datamunge:data-frame-diabetes ()
-  "Efron et al.'s diabetes progression data, 442 x 11; see datasets::diabetes().
-
-  (data-frame-diabetes) → (or null data-frame)
-
-(Static method of data-frame.)"
-  (call 2086 (list)))
-
-(defun datamunge:data-frame-digits ()
-  "8x8 handwritten digits, 1797 x 65; see datasets::digits().
-
-  (data-frame-digits) → (or null data-frame)
-
-(Static method of data-frame.)"
-  (call 2087 (list)))
-
-(defun datamunge:data-frame-diamonds ()
-  "ggplot2's diamonds, 53940 x 10, downloaded once and cached; see datasets::diamonds().
-
-  (data-frame-diamonds) → (or null data-frame)
-
-(Static method of data-frame.)"
-  (call 2088 (list)))
-
-(defun datamunge:data-frame-california-housing ()
-  "California housing, 20640 x 10, downloaded once and cached; see
-datasets::california_housing().
-
-  (data-frame-california-housing) → (or null data-frame)
-
-(Static method of data-frame.)"
-  (call 2089 (list)))
-
-(defun datamunge:data-frame-dataset (name)
-  "Any table-shaped dataset by name, e.g. \"wine\"; see datasets::load().
-
-Errors (signalled as datamunge:native-error):
-  std::invalid_argument: for an unknown or image dataset name.
-
-  (data-frame-dataset name) → (or null data-frame)
-    name  string
-
-(Static method of data-frame.)"
-  (call 2090 (list name)))
-
-(defun datamunge:data-frame-dataset-catalog ()
-  "One row per available dataset (name, rows, columns, storage, size_mb,
-description); see datasets::catalog().
-
-  (data-frame-dataset-catalog) → (or null data-frame)
-
-(Static method of data-frame.)"
-  (call 2091 (list)))
+  (call 2037 (list)))
 
 (defun datamunge:data-frame-read-csv (path &optional (delimiter nil delimiter-p))
   "Reads a whole CSV file, typing columns automatically; see datasets::read_csv().
@@ -37730,6 +37586,358 @@ See also: std::filesystem::create_directories()
     → `values.first` + values.second."
   (call 215 (list values)))
 
+(defun datamunge.data:iris ()
+  "Edgar Anderson's iris measurements, 150 x 5, as R's `datasets::iris`.
+
+Bundled with the library, so it needs no file or network access. Columns are documented at
+datasets::iris().
+
+**Example**
+
+```cpp
+const std::unique_ptr<dm::DataFrame> frame(dm::data::iris());
+std::print(\"{} x {}\\n\", frame->nrows(), frame->ncols());   // 150 x 5
+```
+
+See also: datasets::iris()
+
+  (iris) → (or null data-frame)
+    → A new 150 x 5 DataFrame owned by the caller."
+  (call 216 (list)))
+
+(defun datamunge.data:penguins ()
+  "The Palmer penguins, 344 x 8 with missing values, as `palmerpenguins::penguins`.
+
+Bundled with the library, so it needs no file or network access. Columns are documented at
+datasets::penguins().
+
+**Example**
+
+```cpp
+const std::unique_ptr<dm::DataFrame> frame(dm::data::penguins());
+std::print(\"{} x {}\\n\", frame->nrows(), frame->ncols());   // 344 x 8
+```
+
+See also: datasets::penguins()
+
+  (penguins) → (or null data-frame)
+    → A new 344 x 8 DataFrame owned by the caller."
+  (call 217 (list)))
+
+(defun datamunge.data:tooth-growth ()
+  "Crampton's guinea pig tooth growth data, 60 x 3, as R's `datasets::ToothGrowth`.
+
+Bundled with the library, so it needs no file or network access. Columns are documented at
+datasets::tooth_growth().
+
+**Example**
+
+```cpp
+const std::unique_ptr<dm::DataFrame> frame(dm::data::tooth_growth());
+std::print(\"{} x {}\\n\", frame->nrows(), frame->ncols());   // 60 x 3
+```
+
+See also: datasets::tooth_growth()
+
+  (tooth-growth) → (or null data-frame)
+    → A new 60 x 3 DataFrame owned by the caller."
+  (call 218 (list)))
+
+(defun datamunge.data:wine ()
+  "The UCI wine recognition data, 178 x 14, as scikit-learn's `load_wine()`.
+
+Bundled with the library, so it needs no file or network access. Columns are documented at
+datasets::wine().
+
+**Example**
+
+```cpp
+const std::unique_ptr<dm::DataFrame> frame(dm::data::wine());
+std::print(\"{} x {}\\n\", frame->nrows(), frame->ncols());   // 178 x 14
+```
+
+See also: datasets::wine()
+
+  (wine) → (or null data-frame)
+    → A new 178 x 14 DataFrame owned by the caller."
+  (call 219 (list)))
+
+(defun datamunge.data:titanic ()
+  "The Kaggle Titanic training set, 891 x 12 with missing values.
+
+Bundled with the library, so it needs no file or network access. Columns are documented at
+datasets::titanic().
+
+**Example**
+
+```cpp
+const std::unique_ptr<dm::DataFrame> frame(dm::data::titanic());
+std::print(\"{} x {}\\n\", frame->nrows(), frame->ncols());   // 891 x 12
+```
+
+See also: datasets::titanic()
+
+  (titanic) → (or null data-frame)
+    → A new 891 x 12 DataFrame owned by the caller."
+  (call 220 (list)))
+
+(defun datamunge.data:eight-schools ()
+  "Rubin's eight schools coaching experiment, 8 x 3.
+
+Bundled with the library, so it needs no file or network access. Columns are documented at
+datasets::eight_schools().
+
+**Example**
+
+```cpp
+const std::unique_ptr<dm::DataFrame> frame(dm::data::eight_schools());
+std::print(\"{} x {}\\n\", frame->nrows(), frame->ncols());   // 8 x 3
+```
+
+See also: datasets::eight_schools()
+
+  (eight-schools) → (or null data-frame)
+    → A new 8 x 3 DataFrame owned by the caller."
+  (call 221 (list)))
+
+(defun datamunge.data:air-passengers ()
+  "Monthly airline passengers 1949-1960, 144 x 3, as R's `datasets::AirPassengers`.
+
+Bundled with the library, so it needs no file or network access. Columns are documented at
+datasets::air_passengers().
+
+**Example**
+
+```cpp
+const std::unique_ptr<dm::DataFrame> frame(dm::data::air_passengers());
+std::print(\"{} x {}\\n\", frame->nrows(), frame->ncols());   // 144 x 3
+```
+
+See also: datasets::air_passengers()
+
+  (air-passengers) → (or null data-frame)
+    → A new 144 x 3 DataFrame owned by the caller."
+  (call 222 (list)))
+
+(defun datamunge.data:volcano ()
+  "Maunga Whau (Mt Eden) elevations on a 10 m grid, 5307 x 3, as R's `datasets::volcano` in long form.
+
+Bundled with the library, so it needs no file or network access. Columns are documented at
+datasets::volcano().
+
+**Example**
+
+```cpp
+const std::unique_ptr<dm::DataFrame> frame(dm::data::volcano());
+std::print(\"{} x {}\\n\", frame->nrows(), frame->ncols());   // 5307 x 3
+```
+
+See also: datasets::volcano()
+
+  (volcano) → (or null data-frame)
+    → A new 5307 x 3 DataFrame owned by the caller."
+  (call 223 (list)))
+
+(defun datamunge.data:faithful ()
+  "Old Faithful geyser eruptions, 272 x 2, as R's `datasets::faithful`.
+
+Bundled with the library, so it needs no file or network access. Columns are documented at
+datasets::faithful().
+
+**Example**
+
+```cpp
+const std::unique_ptr<dm::DataFrame> frame(dm::data::faithful());
+std::print(\"{} x {}\\n\", frame->nrows(), frame->ncols());   // 272 x 2
+```
+
+See also: datasets::faithful()
+
+  (faithful) → (or null data-frame)
+    → A new 272 x 2 DataFrame owned by the caller."
+  (call 224 (list)))
+
+(defun datamunge.data:mtcars ()
+  "Motor Trend cars, 32 x 12 with the row names as column `model`, as R's `datasets::mtcars`.
+
+Bundled with the library, so it needs no file or network access. Columns are documented at
+datasets::mtcars().
+
+**Example**
+
+```cpp
+const std::unique_ptr<dm::DataFrame> frame(dm::data::mtcars());
+std::print(\"{} x {}\\n\", frame->nrows(), frame->ncols());   // 32 x 12
+```
+
+See also: datasets::mtcars()
+
+  (mtcars) → (or null data-frame)
+    → A new 32 x 12 DataFrame owned by the caller."
+  (call 225 (list)))
+
+(defun datamunge.data:airquality ()
+  "New York air quality measurements in 1973, 153 x 6 with missing values, as R's `datasets::airquality`.
+
+Bundled with the library, so it needs no file or network access. Columns are documented at
+datasets::airquality().
+
+**Example**
+
+```cpp
+const std::unique_ptr<dm::DataFrame> frame(dm::data::airquality());
+std::print(\"{} x {}\\n\", frame->nrows(), frame->ncols());   // 153 x 6
+```
+
+See also: datasets::airquality()
+
+  (airquality) → (or null data-frame)
+    → A new 153 x 6 DataFrame owned by the caller."
+  (call 226 (list)))
+
+(defun datamunge.data:breast-cancer ()
+  "Wisconsin diagnostic breast cancer data, 569 x 31, as scikit-learn's `load_breast_cancer()`.
+
+Bundled with the library, so it needs no file or network access. Columns are documented at
+datasets::breast_cancer().
+
+**Example**
+
+```cpp
+const std::unique_ptr<dm::DataFrame> frame(dm::data::breast_cancer());
+std::print(\"{} x {}\\n\", frame->nrows(), frame->ncols());   // 569 x 31
+```
+
+See also: datasets::breast_cancer()
+
+  (breast-cancer) → (or null data-frame)
+    → A new 569 x 31 DataFrame owned by the caller."
+  (call 227 (list)))
+
+(defun datamunge.data:diabetes ()
+  "Efron et al.'s diabetes progression data, 442 x 11, as scikit-learn's `load_diabetes()`.
+
+Bundled with the library, so it needs no file or network access. Columns are documented at
+datasets::diabetes().
+
+**Example**
+
+```cpp
+const std::unique_ptr<dm::DataFrame> frame(dm::data::diabetes());
+std::print(\"{} x {}\\n\", frame->nrows(), frame->ncols());   // 442 x 11
+```
+
+See also: datasets::diabetes()
+
+  (diabetes) → (or null data-frame)
+    → A new 442 x 11 DataFrame owned by the caller."
+  (call 228 (list)))
+
+(defun datamunge.data:digits ()
+  "8x8 handwritten digits, 1797 x 65, as scikit-learn's `load_digits()`.
+
+Bundled with the library, so it needs no file or network access. Columns are documented at
+datasets::digits().
+
+**Example**
+
+```cpp
+const std::unique_ptr<dm::DataFrame> frame(dm::data::digits());
+std::print(\"{} x {}\\n\", frame->nrows(), frame->ncols());   // 1797 x 65
+```
+
+See also: datasets::digits()
+
+  (digits) → (or null data-frame)
+    → A new 1797 x 65 DataFrame owned by the caller."
+  (call 229 (list)))
+
+(defun datamunge.data:diamonds ()
+  "ggplot2's diamonds, 53940 x 10, downloaded on first use and cached.
+
+The first call downloads the file into the dataset cache (see datasets::fetch()); later
+calls read the cached copy. Columns are documented at datasets::diamonds().
+
+**Example**
+
+```cpp
+const std::unique_ptr<dm::DataFrame> frame(dm::data::diamonds());
+std::print(\"{} x {}\\n\", frame->nrows(), frame->ncols());   // 53940 x 10
+```
+
+Errors (signalled as datamunge:native-error):
+  std::runtime_error: if the file is not cached and cannot be downloaded or read.
+
+See also: datasets::diamonds()
+
+  (diamonds) → (or null data-frame)
+    → A new 53940 x 10 DataFrame owned by the caller."
+  (call 230 (list)))
+
+(defun datamunge.data:california-housing ()
+  "California housing, 20640 x 10, downloaded on first use and cached, as scikit-learn's `fetch_california_housing()`.
+
+The first call downloads the file into the dataset cache (see datasets::fetch()); later
+calls read the cached copy. Columns are documented at datasets::california_housing().
+
+**Example**
+
+```cpp
+const std::unique_ptr<dm::DataFrame> frame(dm::data::california_housing());
+std::print(\"{} x {}\\n\", frame->nrows(), frame->ncols());   // 20640 x 10
+```
+
+Errors (signalled as datamunge:native-error):
+  std::runtime_error: if the file is not cached and cannot be downloaded or read.
+
+See also: datasets::california_housing()
+
+  (california-housing) → (or null data-frame)
+    → A new 20640 x 10 DataFrame owned by the caller."
+  (call 231 (list)))
+
+(defun datamunge.data:load (name)
+  "Any table-shaped dataset by name, e.g. \"wine\", like scikit-learn's `fetch_openml()`
+lookup by name.
+
+Accepts every name listed by catalog() whose storage is a table, bundled or downloaded
+(a downloaded dataset is cached as described at datasets::load()).
+
+**Example**
+
+```cpp
+const std::unique_ptr<dm::DataFrame> wine(dm::data::load(\"wine\"));
+std::print(\"{} x {}\\n\", wine->nrows(), wine->ncols());   // 178 x 14
+```
+
+Errors (signalled as datamunge:native-error):
+  std::invalid_argument: for an unknown name, an image dataset's name or karate_club.
+  std::runtime_error: if a downloaded dataset is not cached and cannot be fetched.
+
+See also: catalog(), datasets::load()
+
+  (load name) → (or null data-frame)
+    name  string  A dataset name from catalog(), e.g. \"iris\" or \"diamonds\".
+    → A new DataFrame owned by the caller."
+  (call 232 (list name)))
+
+(defun datamunge.data:catalog ()
+  "One row per available dataset: `name`, `rows`, `columns`, `storage`, `size_mb` and
+`description`, like R's `data()` listing.
+
+**Example**
+
+```cpp
+const std::unique_ptr<dm::DataFrame> all(dm::data::catalog());
+std::print(\"{}\\n\", all->columns());   // [\"name\", \"rows\", \"columns\", \"storage\", \"size_mb\", \"description\"]
+```
+
+See also: load(), datasets::catalog()
+
+  (catalog) → (or null data-frame)
+    → A new DataFrame owned by the caller."
+  (call 233 (list)))
+
 (defun datamunge:refine-basis (basis inserted-knots)
   "Inserts knots into a clamped B-spline basis (Oslo algorithm).
 
@@ -37762,7 +37970,7 @@ See also: dyadic_refine()
     basis  b-spline-basis  Basis to refine; its knot vector must be clamped (first and last knots repeated degree + 1 times, as produced by BSplineBasis::open_uniform()).
     inserted-knots  (vector double-float)  Knots to add, strictly inside the domain, in any order. Repeats are allowed while every knot multiplicity stays <= degree + 1.
     → The refined basis and its refinement operator."
-  (call 216 (list basis inserted-knots)))
+  (call 234 (list basis inserted-knots)))
 
 (defmethod datamunge:dyadic-refine ((self t) &rest args)
   "Halves every knot span of a clamped basis (inserts each positive span's midpoint).
@@ -37791,7 +37999,7 @@ See also: refine_basis(), TensorBSpline::dyadic_refine()
   (dyadic-refine basis) → b-spline-refinement
     basis  b-spline-basis  Clamped basis to refine.
     → The refined basis and its refinement operator."
-  (call 217 (cons self args)))
+  (call 235 (cons self args)))
 
 (defun datamunge:fit-tensor-bspline (bases points values &optional (options nil options-p))
   "Fits a tensor-product B-spline to scattered data by ordinary least squares.
@@ -37823,7 +38031,7 @@ See also: fit_tensor_pspline()
     values  (vector double-float)  One response per point.
     options  spline-solve-options  Solver settings (default: automatic).
     → The fitted spline."
-  (call 218 (cond (options-p (list bases points values options)) (t (list bases points values)))))
+  (call 236 (cond (options-p (list bases points values options)) (t (list bases points values)))))
 
 (defun datamunge:fit-tensor-pspline (bases points values lambdas &optional (order nil order-p) (options nil options-p))
   "Fits a tensor-product P-spline: least squares plus an anisotropic difference
@@ -37862,33 +38070,33 @@ See also: fit_tensor_bspline(), fit_pspline()
     order  integer  Difference order (default 2, the conventional curvature penalty).
     options  spline-solve-options  Solver settings (default: automatic).
     → The fitted spline."
-  (call 219 (cond (options-p (list bases points values lambdas order options)) (order-p (list bases points values lambdas order)) (t (list bases points values lambdas)))))
+  (call 237 (cond (options-p (list bases points values lambdas order options)) (order-p (list bases points values lambdas order)) (t (list bases points values lambdas)))))
 
 (defun datamunge:nn-gemm-backend ()
   "The GEMM backend nn uses: \"inhouse-<isa>\" (e.g. \"inhouse-avx512\"), or \"accelerate\", \"openblas\" or \"cblas\" in DATAMUNGE_USE_BLAS builds.
 
   (nn-gemm-backend) → string"
-  (call 220 (list)))
+  (call 238 (list)))
 
 (defun datamunge:nn-get-num-threads ()
   "Threads used by nn kernels.
 
   (nn-get-num-threads) → integer"
-  (call 221 (list)))
+  (call 239 (list)))
 
 (defun datamunge:nn-set-num-threads (threads)
   "C++ datamunge::nn::nn_set_num_threads.
 
   (nn-set-num-threads threads)
     threads  integer"
-  (call 222 (list threads)))
+  (call 240 (list threads)))
 
 (defmethod datamunge:set-seed ((self t) &rest args)
   "Reseeds the generator shared by unif() and rnorm(), like R's set.seed().
 
   (set-seed seed)
     seed  integer"
-  (call 223 (cons self args)))
+  (call 241 (cons self args)))
 
 (defun datamunge:unif (lower upper n)
   "n draws from Uniform[lower, upper).
@@ -37897,7 +38105,7 @@ See also: fit_tensor_bspline(), fit_pspline()
     lower  double-float
     upper  double-float
     n  integer"
-  (call 224 (list lower upper n)))
+  (call 242 (list lower upper n)))
 
 (defun datamunge:runif (lower upper n)
   "Alias for unif(lower, upper, n), sharing its generator and validation.
@@ -37906,7 +38114,7 @@ See also: fit_tensor_bspline(), fit_pspline()
     lower  double-float
     upper  double-float
     n  integer"
-  (call 225 (list lower upper n)))
+  (call 243 (list lower upper n)))
 
 (defun datamunge:rnorm (mean sd n)
   "n draws from Normal(mean, sd).
@@ -37915,7 +38123,7 @@ See also: fit_tensor_bspline(), fit_pspline()
     mean  double-float
     sd  double-float
     n  integer"
-  (call 226 (list mean sd n)))
+  (call 244 (list mean sd n)))
 
 (defun datamunge:seql (from to n)
   "n evenly spaced values from `from` to `to` inclusive.
@@ -37924,16 +38132,16 @@ See also: fit_tensor_bspline(), fit_pspline()
     from  double-float
     to  double-float
     n  integer"
-  (call 227 (list from to n)))
+  (call 245 (list from to n)))
 
 ;;; ------------------------------------------------------------------ constants and aliases
 
-(defparameter datamunge:|+R-LAYOUT-TITLE-BAND-PX+| (call 1071 nil)
+(defparameter datamunge:|+R-LAYOUT-TITLE-BAND-PX+| (call 1089 nil)
   "Height in pixels of the heading band reserved above the panels when a title is set.
 
 Type: integer")
 
-(defparameter datamunge:|+R-LAYOUT-MIN-PANEL-PX+| (call 1072 nil)
+(defparameter datamunge:|+R-LAYOUT-MIN-PANEL-PX+| (call 1090 nil)
   "Smallest canvas side fit_panels() gives a panel; smaller cells get a larger canvas
 with the cell's aspect ratio, scaled down when drawn, so the margins still fit.
 

@@ -9,6 +9,14 @@
 //------------------------------------------------------------------------------
 
 
+/// <summary>Configuration for CoordinateDescent; fields retain their documented native defaults. Supply finite values in the supported ranges. Controls are copied at construction; validation, stopping and loss scaling belong to optimize().</summary>
+/// Title: Example
+/// <code>      dm::optim::CoordinateDescentOptions o;
+///      std::print("{}\n",o.max_iterations); // 1000</code>
+///
+///
+///
+/// <seealso cref="CoordinateDescent"/>
 public class CoordinateDescentOptions : global::System.IDisposable {
   private global::System.Runtime.InteropServices.HandleRef swigCPtr;
   protected bool swigCMemOwn;
@@ -56,7 +64,6 @@ public class CoordinateDescentOptions : global::System.IDisposable {
     }
   }
 
-  /// <summary>Initial step considered for each one-dimensional update.</summary>
   public double step_size {
     set {
       datamungePINVOKE.CoordinateDescentOptions_step_size_set(swigCPtr, value);
@@ -87,7 +94,6 @@ public class CoordinateDescentOptions : global::System.IDisposable {
     } 
   }
 
-  /// <summary>Armijo sufficient-decrease constant used by the per-coordinate line search.</summary>
   public double armijo_c1 {
     set {
       datamungePINVOKE.CoordinateDescentOptions_armijo_c1_set(swigCPtr, value);

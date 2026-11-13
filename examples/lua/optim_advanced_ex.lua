@@ -1,3 +1,5 @@
+-- CMD: just TARGET=optim_advanced_ex run-lua
+
 -- Exercises the 10 new datamunge::optim classes (ProximalGradient, FISTA,
 -- LevenbergMarquardt, Newton, TrustRegionNewton, AugmentedLagrangian, SQP,
 -- InteriorPoint, BayesianOptimization, RBFGaussianProcessSurrogate) from Lua.

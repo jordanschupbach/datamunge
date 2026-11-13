@@ -8,6 +8,17 @@
 
 package js.datamunge.jdatamunge;
 
+/**
+ *  Configuration for SGD; fields retain their documented native defaults.<br>
+ *  Supply finite values in the supported ranges. Controls are copied at construction;<br>
+ *  validation, stopping and loss scaling belong to optimize().<br>
+ *  <p alt="Example"><br>
+ *  {@code 
+ dm::optim::SGDOptions o;
+ std::print("{}\n",o.max_epochs); // 100
+ }</p><br>
+ *  @see SGD
+ */
 public class SGDOptions {
   private transient long swigCPtr;
   protected transient boolean swigCMemOwn;
@@ -72,16 +83,10 @@ public class SGDOptions {
     return datamungeJNI.SGDOptions_batch_size_get(swigCPtr, this);
   }
 
-  /**
-   *  Stops when the full-objective change between epochs drops below this.
-   */
   public void setTolerance(double value) {
     datamungeJNI.SGDOptions_tolerance_set(swigCPtr, this, value);
   }
 
-  /**
-   *  Stops when the full-objective change between epochs drops below this.
-   */
   public double getTolerance() {
     return datamungeJNI.SGDOptions_tolerance_get(swigCPtr, this);
   }

@@ -1,3 +1,5 @@
+% CMD: just TARGET=autodiff_ex run-octave
+
 1;
 
 datamunge;

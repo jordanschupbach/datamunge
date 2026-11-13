@@ -5,7 +5,7 @@
 *> leaves abstract. COBOL implements them through the -EXTEND records: each PROGRAM-POINTER names
 *> a program after END PROGRAM OPTIM-ADVANCED-EX that overrides one virtual method. The
 *> coordinates are a VECTOR-DOUBLE that the optimizer overwrites with the solution.
-*> Run with `just run-cobol TARGET=optim_advanced_ex`.
+*> CMD: just TARGET=optim_advanced_ex run-cobol
 IDENTIFICATION DIVISION.
 PROGRAM-ID. OPTIM-ADVANCED-EX.
 DATA DIVISION.

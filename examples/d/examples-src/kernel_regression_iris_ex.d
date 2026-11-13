@@ -1,3 +1,5 @@
+// CMD: just TARGET=kernel_regression_iris_ex run-d
+
 module app;
 
 import std.stdio : writeln;
@@ -6,7 +8,7 @@ import datamunge;
 void main() {
   string FORMULA = "Petal.Length ~ Petal.Width";
 
-  auto iris = DataFrame.iris();
+  auto iris = data_iris();
   writeln("iris: ", iris.nrows(), " rows x ", iris.ncols(), " cols");
   writeln("formula: ", FORMULA, "\n");
 

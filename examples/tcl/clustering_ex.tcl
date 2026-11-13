@@ -1,3 +1,5 @@
+# CMD: just TARGET=clustering_ex run-tcl
+
 package require Datamunge 0.0.1
 
 # Tcl's overload dispatch can't distinguish a vector<string> argument from a std::string
@@ -43,7 +45,7 @@ proc report_purity {cluster_labels species n_clusters} {
   }
 }
 
-set iris [datamunge::DataFrame_iris]
+set iris [datamunge::data_iris]
 set n [datamunge::DataFrame_nrows $iris]
 set species {}
 for {set i 0} {$i < $n} {incr i} {

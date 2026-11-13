@@ -1,5 +1,5 @@
-# CMD: nix develop .#r --command Rscript examples/r/ode_ex.r
-# REPL: nix develop .#r --command R --no-save --quiet
+# CMD: nix develop .#r --command env R_LIBS_USER=build/r/library Rscript examples/r/ode_ex.r
+# REPL: nix develop .#r --command env R_LIBS_USER=build/r/library R --no-save --quiet
 # solve_builtin() integrates a fixed set of named systems; solve() takes a custom right-hand
 # side, written as an R6 subclass of RHS.
 library(datamunger)

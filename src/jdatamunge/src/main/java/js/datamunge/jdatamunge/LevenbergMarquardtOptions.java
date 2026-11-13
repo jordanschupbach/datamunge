@@ -8,6 +8,17 @@
 
 package js.datamunge.jdatamunge;
 
+/**
+ *  Configuration for LevenbergMarquardt; fields retain their documented native defaults.<br>
+ *  Supply finite values in the supported ranges. Controls are copied at construction;<br>
+ *  validation, stopping and loss scaling belong to optimize().<br>
+ *  <p alt="Example"><br>
+ *  {@code 
+ dm::optim::LevenbergMarquardtOptions o;
+ std::print("{}\n",o.max_iterations); // 200
+ }</p><br>
+ *  @see LevenbergMarquardt
+ */
 public class LevenbergMarquardtOptions {
   private transient long swigCPtr;
   protected transient boolean swigCMemOwn;

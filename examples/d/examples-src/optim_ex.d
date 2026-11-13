@@ -1,3 +1,5 @@
+// CMD: just TARGET=optim_ex run-d
+
 module app;
 
 import std.stdio : writeln;
@@ -116,7 +118,7 @@ void main() {
   writeln("f=", value, " x=[", rx[0], ",", rx[1], "] (true minimum: f=0 at [1, 1])");
 
   writeln("\n=================== DifferentiableSeparableFunction: SGD vs. closed-form LM ===================");
-  auto iris = DataFrame.iris();
+  auto iris = data_iris();
   double[] sepal_length;
   double[] sepal_width;
   double[] petal_length;

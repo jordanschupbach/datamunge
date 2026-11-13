@@ -200,8 +200,8 @@ public class GGPlot {
     return new GGPlot(datamungeJNI.GGPlot_theme_classic(swigCPtr, this), false);
   }
 
-  public GGPlot scale_color_manual(SWIGTYPE_p_std__vectorT_datamunge__plot__RGB_t values) {
-    return new GGPlot(datamungeJNI.GGPlot_scale_color_manual(swigCPtr, this, SWIGTYPE_p_std__vectorT_datamunge__plot__RGB_t.getCPtr(values)), false);
+  public GGPlot scale_color_manual(SWIGTYPE_p_std__vectorT_datamunge__graphics__RGB_t values) {
+    return new GGPlot(datamungeJNI.GGPlot_scale_color_manual(swigCPtr, this, SWIGTYPE_p_std__vectorT_datamunge__graphics__RGB_t.getCPtr(values)), false);
   }
 
   public GGPlot labs(String title, String x, String y) {
@@ -241,6 +241,94 @@ public class GGPlot {
 
   public void show() {
     datamungeJNI.GGPlot_show__SWIG_1(swigCPtr, this);
+  }
+
+  /**
+   *  Number of data rows being plotted.<br>
+   *  @return The row count of the frame passed to the constructor.
+   */
+  public int rows() {
+    return datamungeJNI.GGPlot_rows(swigCPtr, this);
+  }
+
+  /**
+   *  The column mapped to x.<br>
+   *  @return The x column name.
+   */
+  public String x_column() {
+    return datamungeJNI.GGPlot_x_column(swigCPtr, this);
+  }
+
+  /**
+   *  The column mapped to y.<br>
+   *  @return The y column name; empty when unmapped.
+   */
+  public String y_column() {
+    return datamungeJNI.GGPlot_y_column(swigCPtr, this);
+  }
+
+  /**
+   *  The discrete color grouping column.<br>
+   *  @return The color column name; empty when unmapped.
+   */
+  public String color_column() {
+    return datamungeJNI.GGPlot_color_column(swigCPtr, this);
+  }
+
+  /**
+   *  Number of geom layers added so far.<br>
+   *  @return The layer count.
+   */
+  public int layer_count() {
+    return datamungeJNI.GGPlot_layer_count(swigCPtr, this);
+  }
+
+  /**
+   *  The geom of each layer in drawing order ("point", "line", "smooth", ...).<br>
+   *  @return One name per layer.
+   */
+  public SVector layer_kinds() {
+    return new SVector(datamungeJNI.GGPlot_layer_kinds(swigCPtr, this), true);
+  }
+
+  /**
+   *  The selected theme's name.<br>
+   *  @return "gray" (the default), "minimal", "bw" or "classic".
+   */
+  public String theme_name() {
+    return datamungeJNI.GGPlot_theme_name(swigCPtr, this);
+  }
+
+  /**
+   *  The facet_wrap() column.<br>
+   *  @return The column name; empty when not faceted.
+   */
+  public String facet_column() {
+    return datamungeJNI.GGPlot_facet_column(swigCPtr, this);
+  }
+
+  /**
+   *  The title set by labs().<br>
+   *  @return The title; empty when unset.
+   */
+  public String title_text() {
+    return datamungeJNI.GGPlot_title_text(swigCPtr, this);
+  }
+
+  /**
+   *  The x-axis label set by labs().<br>
+   *  @return The label; empty when unset.
+   */
+  public String x_label() {
+    return datamungeJNI.GGPlot_x_label(swigCPtr, this);
+  }
+
+  /**
+   *  The y-axis label set by labs().<br>
+   *  @return The label; empty when unset.
+   */
+  public String y_label() {
+    return datamungeJNI.GGPlot_y_label(swigCPtr, this);
   }
 
 }

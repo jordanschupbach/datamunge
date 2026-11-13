@@ -1,3 +1,5 @@
+;; CMD: just TARGET=dataframe_ex run-lisp
+
 ;;;; DataFrame basics: nulls, drop_duplicates, fill_null, select/sort, group-by, join and summaries.
 (require "asdf")
 (asdf:load-system "datamunge")

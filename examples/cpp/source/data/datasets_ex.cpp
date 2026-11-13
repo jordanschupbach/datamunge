@@ -1,3 +1,5 @@
+// CMD: just TARGET=datasets_ex run-cpp
+
 // Tour of the example datasets: built-in tables, cached downloads, and streaming loaders.
 // The built-in part runs offline; the download/stream parts fetch data once into
 // dm::datasets::data_home() (set DATAMUNGE_DATA_OFFLINE=1 to skip them).

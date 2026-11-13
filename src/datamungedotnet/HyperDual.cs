@@ -57,122 +57,203 @@ public class HyperDual : global::System.IDisposable {
     }
   }
 
+  /// <summary>A hyper-dual number value + eps1·ε₁ + eps2·ε₂ + eps1eps2·ε₁ε₂ (ε₁² = ε₂² = 0).</summary>
+  ///  Seed input i with eps1 = 1 and input j with eps2 = 1 (both on the same input for a
+  ///  diagonal entry); the result's eps1eps2() is then the exact ∂²f/∂xᵢ∂xⱼ.
+  /// <param name="value"> Real part, the function value.</param> 
+  /// <param name="eps1"> First derivative along the first seed direction (default 0).</param> 
+  /// <param name="eps2"> First derivative along the second seed direction (default 0).</param> 
+  /// <param name="eps1eps2"> Mixed second derivative part (default 0; leave 0 for inputs).</param> 
+  /// Title: Example
+  /// <code>      const dm::HyperDual x(3.0, 1.0, 1.0);
+  ///      std::print("{}\n", x.multiply(x).eps1eps2());  // d²(x²)/dx² = 2</code>
   public HyperDual(double value, double eps1, double eps2, double eps1eps2) : this(datamungePINVOKE.new_HyperDual__SWIG_0(value, eps1, eps2, eps1eps2), true) {
   }
 
+  /// <summary>A hyper-dual number value + eps1·ε₁ + eps2·ε₂ + eps1eps2·ε₁ε₂ (ε₁² = ε₂² = 0).</summary>
+  ///  Seed input i with eps1 = 1 and input j with eps2 = 1 (both on the same input for a
+  ///  diagonal entry); the result's eps1eps2() is then the exact ∂²f/∂xᵢ∂xⱼ.
+  /// <param name="value"> Real part, the function value.</param> 
+  /// <param name="eps1"> First derivative along the first seed direction (default 0).</param> 
+  /// <param name="eps2"> First derivative along the second seed direction (default 0).</param> 
+  /// Title: Example
+  /// <code>      const dm::HyperDual x(3.0, 1.0, 1.0);
+  ///      std::print("{}\n", x.multiply(x).eps1eps2());  // d²(x²)/dx² = 2</code>
   public HyperDual(double value, double eps1, double eps2) : this(datamungePINVOKE.new_HyperDual__SWIG_1(value, eps1, eps2), true) {
   }
 
+  /// <summary>A hyper-dual number value + eps1·ε₁ + eps2·ε₂ + eps1eps2·ε₁ε₂ (ε₁² = ε₂² = 0).</summary>
+  ///  Seed input i with eps1 = 1 and input j with eps2 = 1 (both on the same input for a
+  ///  diagonal entry); the result's eps1eps2() is then the exact ∂²f/∂xᵢ∂xⱼ.
+  /// <param name="value"> Real part, the function value.</param> 
+  /// <param name="eps1"> First derivative along the first seed direction (default 0).</param> 
+  /// Title: Example
+  /// <code>      const dm::HyperDual x(3.0, 1.0, 1.0);
+  ///      std::print("{}\n", x.multiply(x).eps1eps2());  // d²(x²)/dx² = 2</code>
   public HyperDual(double value, double eps1) : this(datamungePINVOKE.new_HyperDual__SWIG_2(value, eps1), true) {
   }
 
+  /// <summary>A hyper-dual number value + eps1·ε₁ + eps2·ε₂ + eps1eps2·ε₁ε₂ (ε₁² = ε₂² = 0).</summary>
+  ///  Seed input i with eps1 = 1 and input j with eps2 = 1 (both on the same input for a
+  ///  diagonal entry); the result's eps1eps2() is then the exact ∂²f/∂xᵢ∂xⱼ.
+  /// <param name="value"> Real part, the function value.</param> 
+  /// Title: Example
+  /// <code>      const dm::HyperDual x(3.0, 1.0, 1.0);
+  ///      std::print("{}\n", x.multiply(x).eps1eps2());  // d²(x²)/dx² = 2</code>
   public HyperDual(double value) : this(datamungePINVOKE.new_HyperDual__SWIG_3(value), true) {
   }
 
+  /// <summary>The real part: the function value.</summary>
   public double value() {
     double ret = datamungePINVOKE.HyperDual_value(swigCPtr);
     return ret;
   }
 
+  /// <summary>Derivative along the first seed direction (ε₁ part).</summary>
   public double eps1() {
     double ret = datamungePINVOKE.HyperDual_eps1(swigCPtr);
     return ret;
   }
 
+  /// <summary>Derivative along the second seed direction (ε₂ part).</summary>
   public double eps2() {
     double ret = datamungePINVOKE.HyperDual_eps2(swigCPtr);
     return ret;
   }
 
+  /// <summary>The mixed second derivative along both seed directions (ε₁ε₂ part): a Hessian entry.</summary>
   public double eps1eps2() {
     double ret = datamungePINVOKE.HyperDual_eps1eps2(swigCPtr);
     return ret;
   }
 
+  /// <summary>Sum: this + ``other``, with first and mixed second derivatives.</summary>
+  /// <param name="other"> Right operand.</param> 
+  /// <returns>A new HyperDual; neither operand changes.</returns>
   public HyperDual add(HyperDual other) {
     HyperDual ret = new HyperDual(datamungePINVOKE.HyperDual_add(swigCPtr, HyperDual.getCPtr(other)), true);
     if (datamungePINVOKE.SWIGPendingException.Pending) throw datamungePINVOKE.SWIGPendingException.Retrieve();
     return ret;
   }
 
+  /// <summary>Difference: this - ``other``, with first and mixed second derivatives.</summary>
+  /// <param name="other"> Right operand.</param> 
+  /// <returns>A new HyperDual; neither operand changes.</returns>
   public HyperDual subtract(HyperDual other) {
     HyperDual ret = new HyperDual(datamungePINVOKE.HyperDual_subtract(swigCPtr, HyperDual.getCPtr(other)), true);
     if (datamungePINVOKE.SWIGPendingException.Pending) throw datamungePINVOKE.SWIGPendingException.Retrieve();
     return ret;
   }
 
+  /// <summary>Product: this * ``other``, with first and mixed second derivatives.</summary>
+  /// <param name="other"> Right operand.</param> 
+  /// <returns>A new HyperDual; neither operand changes.</returns>
   public HyperDual multiply(HyperDual other) {
     HyperDual ret = new HyperDual(datamungePINVOKE.HyperDual_multiply(swigCPtr, HyperDual.getCPtr(other)), true);
     if (datamungePINVOKE.SWIGPendingException.Pending) throw datamungePINVOKE.SWIGPendingException.Retrieve();
     return ret;
   }
 
+  /// <summary>Quotient: this / ``other``, with first and mixed second derivatives (IEEE inf/NaN when other is 0).</summary>
+  /// <param name="other"> Right operand.</param> 
+  /// <returns>A new HyperDual; neither operand changes.</returns>
   public HyperDual divide(HyperDual other) {
     HyperDual ret = new HyperDual(datamungePINVOKE.HyperDual_divide(swigCPtr, HyperDual.getCPtr(other)), true);
     if (datamungePINVOKE.SWIGPendingException.Pending) throw datamungePINVOKE.SWIGPendingException.Retrieve();
     return ret;
   }
 
+  /// <summary>Negation -x, with its exact chain-rule derivative.</summary>
+  /// <returns>A new HyperDual.</returns>
   public HyperDual negate() {
     HyperDual ret = new HyperDual(datamungePINVOKE.HyperDual_negate(swigCPtr), true);
     return ret;
   }
 
+  /// <summary>Adds a constant ``scalar``, derivative parts unchanged.</summary>
+  /// <param name="scalar"> Constant right operand.</param> 
+  /// <returns>A new HyperDual.</returns>
   public HyperDual add_scalar(double scalar) {
     HyperDual ret = new HyperDual(datamungePINVOKE.HyperDual_add_scalar(swigCPtr, scalar), true);
     return ret;
   }
 
+  /// <summary>Subtracts a constant ``scalar``, derivative parts unchanged.</summary>
+  /// <param name="scalar"> Constant right operand.</param> 
+  /// <returns>A new HyperDual.</returns>
   public HyperDual subtract_scalar(double scalar) {
     HyperDual ret = new HyperDual(datamungePINVOKE.HyperDual_subtract_scalar(swigCPtr, scalar), true);
     return ret;
   }
 
+  /// <summary>Multiplies by a constant ``scalar``, derivative parts scaled accordingly.</summary>
+  /// <param name="scalar"> Constant right operand.</param> 
+  /// <returns>A new HyperDual.</returns>
   public HyperDual multiply_scalar(double scalar) {
     HyperDual ret = new HyperDual(datamungePINVOKE.HyperDual_multiply_scalar(swigCPtr, scalar), true);
     return ret;
   }
 
+  /// <summary>Divides by a constant ``scalar``, derivative parts scaled accordingly.</summary>
+  /// <param name="scalar"> Constant right operand.</param> 
+  /// <returns>A new HyperDual.</returns>
   public HyperDual divide_scalar(double scalar) {
     HyperDual ret = new HyperDual(datamungePINVOKE.HyperDual_divide_scalar(swigCPtr, scalar), true);
     return ret;
   }
 
+  /// <summary>Power x^p for a constant exponent, with derivative p·x^(p-1).</summary>
+  /// <param name="exponent"> Constant exponent p; non-integer p needs x ≥ 0 (NaN otherwise).</param> 
+  /// <returns>A new HyperDual.</returns>
   public HyperDual pow(double exponent) {
     HyperDual ret = new HyperDual(datamungePINVOKE.HyperDual_pow(swigCPtr, exponent), true);
     return ret;
   }
 
+  /// <summary>Exponential e^x, with its exact chain-rule derivative.</summary>
+  /// <returns>A new HyperDual.</returns>
   public HyperDual exp() {
     HyperDual ret = new HyperDual(datamungePINVOKE.HyperDual_exp(swigCPtr), true);
     return ret;
   }
 
+  /// <summary>Natural logarithm ln x (NaN for x &lt; 0, -inf at 0), with its exact chain-rule derivative.</summary>
+  /// <returns>A new HyperDual.</returns>
   public HyperDual log() {
     HyperDual ret = new HyperDual(datamungePINVOKE.HyperDual_log(swigCPtr), true);
     return ret;
   }
 
+  /// <summary>Square root √x (NaN for x &lt; 0; infinite derivative at 0), with its exact chain-rule derivative.</summary>
+  /// <returns>A new HyperDual.</returns>
   public HyperDual sqrt() {
     HyperDual ret = new HyperDual(datamungePINVOKE.HyperDual_sqrt(swigCPtr), true);
     return ret;
   }
 
+  /// <summary>Sine (radians), with its exact chain-rule derivative.</summary>
+  /// <returns>A new HyperDual.</returns>
   public HyperDual sin() {
     HyperDual ret = new HyperDual(datamungePINVOKE.HyperDual_sin(swigCPtr), true);
     return ret;
   }
 
+  /// <summary>Cosine (radians), with its exact chain-rule derivative.</summary>
+  /// <returns>A new HyperDual.</returns>
   public HyperDual cos() {
     HyperDual ret = new HyperDual(datamungePINVOKE.HyperDual_cos(swigCPtr), true);
     return ret;
   }
 
+  /// <summary>Tangent (radians), with its exact chain-rule derivative.</summary>
+  /// <returns>A new HyperDual.</returns>
   public HyperDual tan() {
     HyperDual ret = new HyperDual(datamungePINVOKE.HyperDual_tan(swigCPtr), true);
     return ret;
   }
 
+  /// <summary>Hyperbolic tangent, with its exact chain-rule derivative.</summary>
+  /// <returns>A new HyperDual.</returns>
   public HyperDual tanh() {
     HyperDual ret = new HyperDual(datamungePINVOKE.HyperDual_tanh(swigCPtr), true);
     return ret;

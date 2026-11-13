@@ -1,8 +1,10 @@
+// CMD: just TARGET=lda_iris_ex run-csharp
+
 using System;
 
 class Program {
   static void Main() {
-    var iris = DataFrame.iris();
+    var iris = datamunge.data_iris();
     Console.WriteLine($"iris: {iris.nrows()} rows x {iris.ncols()} cols\n");
 
     var model = new LDA(iris, "Species ~ Sepal.Length + Sepal.Width + Petal.Length + Petal.Width");

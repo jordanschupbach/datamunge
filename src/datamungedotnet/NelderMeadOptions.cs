@@ -9,6 +9,14 @@
 //------------------------------------------------------------------------------
 
 
+/// <summary>Configuration for NelderMead; fields retain their documented native defaults. Supply finite values in the supported ranges. Controls are copied at construction; validation, stopping and loss scaling belong to optimize().</summary>
+/// Title: Example
+/// <code>      dm::optim::NelderMeadOptions o;
+///      std::print("{}\n",o.max_iterations); // 2000</code>
+///
+///
+///
+/// <seealso cref="NelderMead"/>
 public class NelderMeadOptions : global::System.IDisposable {
   private global::System.Runtime.InteropServices.HandleRef swigCPtr;
   protected bool swigCMemOwn;
@@ -56,7 +64,6 @@ public class NelderMeadOptions : global::System.IDisposable {
     }
   }
 
-  /// <summary>Per-coordinate displacement used to construct the initial simplex.</summary>
   public double initial_simplex_scale {
     set {
       datamungePINVOKE.NelderMeadOptions_initial_simplex_scale_set(swigCPtr, value);
@@ -117,7 +124,6 @@ public class NelderMeadOptions : global::System.IDisposable {
     } 
   }
 
-  /// <summary>Stops when both the simplex diameter and its objective spread are below this.</summary>
   public double tolerance {
     set {
       datamungePINVOKE.NelderMeadOptions_tolerance_set(swigCPtr, value);

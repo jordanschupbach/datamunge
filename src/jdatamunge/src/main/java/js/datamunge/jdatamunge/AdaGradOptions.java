@@ -8,6 +8,17 @@
 
 package js.datamunge.jdatamunge;
 
+/**
+ *  Configuration for AdaGrad; fields retain their documented native defaults.<br>
+ *  Supply finite values in the supported ranges. Controls are copied at construction;<br>
+ *  validation, stopping and loss scaling belong to optimize().<br>
+ *  <p alt="Example"><br>
+ *  {@code 
+ dm::optim::AdaGradOptions o;
+ std::print("{}\n",o.max_iterations); // 10000
+ }</p><br>
+ *  @see AdaGrad
+ */
 public class AdaGradOptions {
   private transient long swigCPtr;
   protected transient boolean swigCMemOwn;
@@ -56,16 +67,10 @@ public class AdaGradOptions {
     return datamungeJNI.AdaGradOptions_step_size_get(swigCPtr, this);
   }
 
-  /**
-   *  Added inside the square root to keep early and zero-gradient updates finite.
-   */
   public void setEpsilon(double value) {
     datamungeJNI.AdaGradOptions_epsilon_set(swigCPtr, this, value);
   }
 
-  /**
-   *  Added inside the square root to keep early and zero-gradient updates finite.
-   */
   public double getEpsilon() {
     return datamungeJNI.AdaGradOptions_epsilon_get(swigCPtr, this);
   }

@@ -1,3 +1,5 @@
+# CMD: just TARGET=tensor_ex run-tcl
+
 package require Datamunge 0.0.1
 
 # Tcl's specialize_std_vector scalar fast-path covers double/string/int both ways, so plain
@@ -57,7 +59,7 @@ puts "r >= 6 -> [datamunge::Tensor_to_string $mask]"
 puts "count(r >= 6) = [datamunge::Tensor_sum $mask]"
 
 puts "\n=================== A real dataset as a Tensor ==================="
-set iris [datamunge::DataFrame_iris]
+set iris [datamunge::data_iris]
 set n [datamunge::DataFrame_nrows $iris]
 set flat {}
 for {set i 0} {$i < $n} {incr i} {

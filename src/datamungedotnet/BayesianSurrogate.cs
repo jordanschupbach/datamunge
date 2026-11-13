@@ -9,7 +9,10 @@
 //------------------------------------------------------------------------------
 
 
-/// <summary>Surrogate/acquisition extension point for bounded Bayesian optimization.</summary>
+/// <summary>Surrogate/acquisition extension point for BayesianOptimization.</summary>
+///  A surrogate is refitted to all observations before every proposal. acquisition() scores a
+///  candidate point; the optimizer evaluates the objective where the score is largest.
+///  RBFGaussianProcessSurrogate is the built-in implementation.
 public class BayesianSurrogate : global::System.IDisposable {
   private global::System.Runtime.InteropServices.HandleRef swigCPtr;
   protected bool swigCMemOwn;
@@ -57,11 +60,18 @@ public class BayesianSurrogate : global::System.IDisposable {
     }
   }
 
+  /// <summary>Fits the surrogate to the observations so far.</summary>
+  /// <param name="points">  Evaluated points, one per observation.</param> 
+  /// <param name="values">  Objective values at ``points``.</param>
   public virtual void fit(DVectorVector points, DVector values) {
     datamungePINVOKE.BayesianSurrogate_fit(swigCPtr, DVectorVector.getCPtr(points), DVector.getCPtr(values));
     if (datamungePINVOKE.SWIGPendingException.Pending) throw datamungePINVOKE.SWIGPendingException.Retrieve();
   }
 
+  /// <summary>Scores a candidate; larger means more worth evaluating.</summary>
+  /// <param name="point">      Candidate point.</param> 
+  /// <param name="incumbent">  Smallest objective value observed so far.</param> 
+  /// <returns>The acquisition value.</returns>
   public virtual double acquisition(DVector point, double incumbent) {
     double ret = datamungePINVOKE.BayesianSurrogate_acquisition(swigCPtr, DVector.getCPtr(point), incumbent);
     if (datamungePINVOKE.SWIGPendingException.Pending) throw datamungePINVOKE.SWIGPendingException.Retrieve();

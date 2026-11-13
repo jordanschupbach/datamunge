@@ -1,6 +1,8 @@
+# CMD: just TARGET=mds_ex run-ruby
+
 require "octruby"
 
-iris = Datamunge::DataFrame.iris
+iris = Datamunge.data_iris
 features = ["Sepal.Length", "Sepal.Width", "Petal.Length", "Petal.Width"]
 species = (0...iris.nrows).map { |i| iris.string_at("Species", i) }
 

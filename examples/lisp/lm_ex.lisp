@@ -1,3 +1,5 @@
+;; CMD: just TARGET=lm_ex run-lisp
+
 ;;;; Linear model: mpg ~ hp + wt + transmission, its ANOVA table and predictions.
 (require "asdf")
 (asdf:load-system "datamunge")

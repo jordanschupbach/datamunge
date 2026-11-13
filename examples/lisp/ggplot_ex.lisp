@@ -1,3 +1,5 @@
+;; CMD: just TARGET=ggplot_ex run-lisp
+
 ;;;; Demonstrates dm:gg-plot -- the ggplot2-style grammar-of-graphics library.
 (require "asdf")
 (asdf:load-system "datamunge")
@@ -7,7 +9,7 @@
     (setf (dm:r c) r (dm:g c) g (dm:b c) b)
     c))
 
-(defparameter *iris* (dm:data-frame-iris))
+(defparameter *iris* (dm.data:iris))
 
 ;; ggplot(iris, aes(x = Sepal.Length, y = Sepal.Width, color = Species)) + geom_point()
 (let ((scatter (dm:make-gg-plot *iris* "Sepal.Length" "Sepal.Width" "Species")))

@@ -1,10 +1,12 @@
+-- CMD: just TARGET=naive_bayes_penguins_ex run-lua
+
 local dm = require("datamunge")
 
 -- Note: unlike the C++ example, this doesn't call drop_nulls() first (that method isn't
 -- exposed on the SWIG-bound DataFrame facade) -- NaiveBayesClassifier drops incomplete rows
 -- for its own formula columns internally when fitting, matching every other formula-based
 -- model in this library.
-local penguins = dm.DataFrame.penguins()
+local penguins = dm.data.penguins()
 print("penguins: " .. penguins:nrows() .. " rows x " .. penguins:ncols() .. " cols\n")
 
 -- A mix of numeric (Gaussian likelihood) and categorical (frequency-table likelihood)

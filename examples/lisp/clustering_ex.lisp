@@ -1,3 +1,5 @@
+;; CMD: just TARGET=clustering_ex run-lisp
+
 ;;;; Clustering iris: k-means, agglomerative (several linkages, dendrogram re-cut) and DBSCAN.
 (require "asdf")
 (asdf:load-system "datamunge")
@@ -20,7 +22,7 @@
           (format t "  cluster ~a: ~a points, majority ~a (~a/~a)~%"
                   c total best-species best total))))))
 
-(defparameter *iris* (dm:data-frame-iris))
+(defparameter *iris* (dm.data:iris))
 (defparameter *species*
   (coerce (loop for i below (dm:nrows *iris*) collect (dm:string-at *iris* "Species" i)) 'vector))
 (defparameter *feature-columns* #("Sepal.Length" "Sepal.Width" "Petal.Length" "Petal.Width"))

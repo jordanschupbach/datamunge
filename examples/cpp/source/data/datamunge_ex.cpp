@@ -1,3 +1,5 @@
+// CMD: just TARGET=datamunge_ex run-cpp
+
 #include <datamunge/dstruct/dstruct.hpp>
 
 #include <iostream>

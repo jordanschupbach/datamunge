@@ -8,6 +8,17 @@
 
 package js.datamunge.jdatamunge;
 
+/**
+ *  Configuration for AugmentedLagrangian; fields retain their documented native defaults.<br>
+ *  Supply finite values in the supported ranges. Controls are copied at construction;<br>
+ *  validation, stopping and loss scaling belong to optimize().<br>
+ *  <p alt="Example"><br>
+ *  {@code 
+ dm::optim::AugmentedLagrangianOptions o;
+ std::print("{}\n",o.max_outer_iterations); // 50
+ }</p><br>
+ *  @see AugmentedLagrangian
+ */
 public class AugmentedLagrangianOptions {
   private transient long swigCPtr;
   protected transient boolean swigCMemOwn;
