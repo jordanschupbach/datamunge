@@ -1,69 +1,47 @@
 (* CMD: just TARGET=dataframe_ex run-ocaml *)
-
-(* See lm_ex.ml for notes on this binding's conventions: invoke obj "method" args for
-   methods, invoke obj "[field]" args for struct fields, invoke v "[]" (C_int i) for
-   container indexing, and C_int64 (not C_int) for any std::size_t-typed argument. *)
-open Swig
+(* DataFrame basics: nulls, drop_duplicates, fill_null, select/sort, group-by, join and summaries. *)
 open Datamunge
 
-let dv values =
-  let v = new_DVector C_void in
-  List.iter (fun x -> ignore (invoke v "push_back" (C_double x))) values;
-  v
-
-let sv values =
-  let v = new_SVector C_void in
-  List.iter (fun x -> ignore (invoke v "push_back" (C_string x))) values;
-  v
-
-let iv values =
-  let v = new_IVector C_void in
-  List.iter (fun x -> ignore (invoke v "push_back" (C_int x))) values;
-  v
-
 let () =
-  let sales = new_DataFrame C_void in
-  ignore (invoke sales "add_string_column" (C_list [C_string "region"; sv ["west"; "west"; "east"; "south"; "south"; "south"]]));
-  ignore (invoke sales "add_string_column" (C_list [C_string "product"; sv ["widget"; "widget"; "widget"; "gizmo"; "gizmo"; "gizmo"]]));
-  ignore (invoke sales "add_numeric_column" (C_list [C_string "sales"; dv [10.; 10.; 14.; 8.; 0.; 11.]; iv [1; 1; 1; 1; 0; 1]]));
-  ignore (invoke sales "add_string_column" (C_list [C_string "quarter"; sv ["Q1"; "Q1"; "Q1"; "Q2"; "Q2"; ""]; iv [1; 1; 1; 1; 1; 0]]));
+  let sales = DataFrame.create () in
+  DataFrame.add_string_column sales "region" [ "west"; "west"; "east"; "south"; "south"; "south" ];
+  DataFrame.add_string_column sales "product"
+    [ "widget"; "widget"; "widget"; "gizmo"; "gizmo"; "gizmo" ];
+  DataFrame.add_numeric_column sales "sales" [| 10.0; 10.0; 14.0; 8.0; 0.0; 11.0 |]
+    ~valid_mask:[ 1; 1; 1; 1; 0; 1 ];
+  DataFrame.add_string_column sales "quarter" [ "Q1"; "Q1"; "Q1"; "Q2"; "Q2"; "" ]
+    ~valid_mask:[ 1; 1; 1; 1; 1; 0 ];
 
-  print_endline "raw data";
-  print_endline (get_string (invoke sales "to_string" C_void));
-  print_newline ();
+  Printf.printf "raw data\n%s\n\n" (DataFrame.to_string sales);
 
-  let cleaned = invoke sales "drop_duplicates" (sv ["region"; "product"; "sales"; "quarter"]) in
-  ignore (invoke cleaned "fill_null_string" (C_list [C_string "quarter"; C_string "unknown"]));
-  ignore (invoke cleaned "fill_null_numeric" (C_list [C_string "sales"; C_double 0.0]));
-  print_endline "after drop_duplicates + fill_null";
-  print_endline (get_string (invoke cleaned "to_string" C_void));
-  print_newline ();
+  let cleaned = DataFrame.drop_duplicates sales ~subset:[ "region"; "product"; "sales"; "quarter" ] in
+  DataFrame.fill_null_string cleaned "quarter" "unknown";
+  DataFrame.fill_null_numeric cleaned "sales" 0.0;
+  Printf.printf "after drop_duplicates + fill_null\n%s\n\n" (DataFrame.to_string cleaned);
 
-  let selected_pre = invoke cleaned "select" (sv ["region"; "sales"; "quarter"]) in
-  let selected = invoke selected_pre "sort_by" (C_list [C_string "sales"; C_bool false]) in
-  print_endline "selected + sorted";
-  print_endline (get_string (invoke selected "to_string" C_void));
-  print_newline ();
+  (* The object is each function's first positional argument: pipe into a function of it. *)
+  let selected =
+    DataFrame.select cleaned [ "region"; "sales"; "quarter" ]
+    |> fun df -> DataFrame.sort_by ~ascending:false df "sales"
+  in
+  Printf.printf "selected + sorted\n%s\n\n" (DataFrame.to_string selected);
 
-  let grouped_pre = invoke cleaned "group_by_sum" (C_list [sv ["region"]; sv ["sales"]]) in
-  let grouped = invoke grouped_pre "sort_by" (C_list [C_string "sales"; C_bool false]) in
-  print_endline "group_by_sum(region)";
-  print_endline (get_string (invoke grouped "to_string" C_void));
-  print_newline ();
+  let grouped =
+    DataFrame.group_by_sum cleaned [ "region" ] [ "sales" ]
+    |> fun df -> DataFrame.sort_by ~ascending:false df "sales"
+  in
+  Printf.printf "group_by_sum(region)\n%s\n\n" (DataFrame.to_string grouped);
 
-  let targets = new_DataFrame C_void in
-  ignore (invoke targets "add_string_column" (C_list [C_string "region"; sv ["west"; "east"; "south"]]));
-  ignore (invoke targets "add_numeric_column" (C_list [C_string "target"; dv [18.; 12.; 25.]]));
-  let joined = invoke grouped "join" (C_list [targets; C_string "region"; C_string "region"; C_string "left"]) in
-  print_endline "joined with targets";
-  print_endline (get_string (invoke joined "to_string" C_void));
-  print_newline ();
+  let targets = DataFrame.create () in
+  DataFrame.add_string_column targets "region" [ "west"; "east"; "south" ];
+  DataFrame.add_numeric_column targets "target" [| 18.0; 12.0; 25.0 |];
+  let joined = DataFrame.join ~join_type:"left" grouped targets "region" "region" in
+  Printf.printf "joined with targets\n%s\n\n" (DataFrame.to_string joined);
 
-  let shape = invoke cleaned "shape" C_void in
-  Printf.printf "shape = (%d, %d)\n"
-    (get_int (invoke shape "[]" (C_int 0)))
-    (get_int (invoke shape "[]" (C_int 1)));
-  Printf.printf "sales count = %g\n" (get_float (invoke cleaned "numeric_count" (C_string "sales")));
-  Printf.printf "sales nulls = %g\n" (get_float (invoke cleaned "numeric_null_count" (C_string "sales")));
-  Printf.printf "sales sum = %g\n" (get_float (invoke cleaned "numeric_sum" (C_string "sales")));
-  Printf.printf "sales mean = %g\n" (get_float (invoke cleaned "numeric_mean" (C_string "sales")))
+  (match DataFrame.shape cleaned with
+  | [ rows; cols ] -> Printf.printf "shape = (%d, %d)\n" rows cols
+  | _ -> ());
+  Printf.printf "sales count = %d\n" (DataFrame.numeric_count cleaned "sales");
+  Printf.printf "sales nulls = %d\n" (DataFrame.numeric_null_count cleaned "sales");
+  Printf.printf "sales sum = %g\n" (DataFrame.numeric_sum cleaned "sales");
+  Printf.printf "sales mean = %g\n" (DataFrame.numeric_mean cleaned "sales")

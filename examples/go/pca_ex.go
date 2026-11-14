@@ -1,60 +1,58 @@
 // CMD: just TARGET=pca_ex run-go
 
+//go:build ignore
+
+// PCA on iris: summary, PC1 loadings, scores frame, score/scree plots, scaled vs unscaled.
 package main
 
 import (
 	"datamunge"
+	"datamunge/data"
 	"fmt"
 )
 
-func svector(values []string) datamunge.SVector {
-	out := datamunge.NewSVector(int64(len(values)))
-	for i, v := range values {
-		out.Set(i, v)
+func check(err error) {
+	if err != nil {
+		panic(err)
 	}
-	return out
 }
 
 func main() {
-	iris := datamunge.DataIris()
-	features := svector([]string{"Sepal.Length", "Sepal.Width", "Petal.Length", "Petal.Width"})
+	iris := datamunge.Must(data.Iris())
+	defer iris.Close()
+	featureColumns := []string{"Sepal.Length", "Sepal.Width", "Petal.Length", "Petal.Width"}
 
-	// species labels as an SVector, for the grouped (colored-by-species) scores plot
-	n := iris.Nrows()
-	speciesT := make([]string, 0, n)
-	for i := int64(0); i < n; i++ {
-		speciesT = append(speciesT, iris.String_at("Species", i))
+	// species labels, for the grouped (colored-by-species) scores plot
+	var species []string
+	for i := 0; i < datamunge.Must(iris.Nrows()); i++ {
+		species = append(species, datamunge.Must(iris.StringAt("Species", i)))
 	}
-	species := svector(speciesT)
 
 	fmt.Println("=================== PCA on iris (scaled) ===================")
-	pca := datamunge.NewPCA(iris, features, true, true)
-	pca.Print_summary()
+	pca := datamunge.Must(datamunge.NewPCAWithScale(iris, featureColumns, true, true))
+	defer pca.Close()
+	check(pca.PrintSummary())
 
 	fmt.Println("\nPC1 loadings (which original features drive it):")
-	names := pca.Feature_names()
-	loadings := pca.Component_loadings(int64(0))
-	for i := 0; i < int(names.Size()); i++ {
-		fmt.Printf("  %s: %.4f\n", names.Get(i), loadings.Get(i))
+	names := datamunge.Must(pca.FeatureNames())
+	loadings := datamunge.Must(pca.ComponentLoadings(0))
+	for i, name := range names {
+		fmt.Printf("  %s: %.4f\n", name, loadings[i])
 	}
 
-	fmt.Println("\nTraining scores as a DataFrame:")
-	fmt.Println(pca.Scores_frame().To_string())
+	fmt.Println("\nTraining scores as a DataFrame:\n" + datamunge.Must(pca.ScoresFrame()).String())
 
-	scatter := pca.Plot_scores_grouped(species)
-	scatter.Save_svg("pca_iris_scores.svg")
+	check(datamunge.Must(pca.PlotScoresGrouped(species)).SaveSvg("pca_iris_scores.svg"))
 	fmt.Println("\nScores scatter (colored by species) saved as pca_iris_scores.svg")
 
-	scree := pca.Plot_scree()
-	scree.Save_svg("pca_iris_scree.svg")
+	check(datamunge.Must(pca.PlotScree()).SaveSvg("pca_iris_scree.svg"))
 	fmt.Println("Scree plot saved as pca_iris_scree.svg")
 
 	fmt.Println("\n=================== PCA on iris (unscaled) ===================")
-	unscaled := datamunge.NewPCA(iris, features, true, false)
-	scaledRatio := pca.Explained_variance_ratio()
-	unscaledRatio := unscaled.Explained_variance_ratio()
-	fmt.Printf(
-		"PC1 explains %.2f%% of variance (vs. %.2f%% scaled) -- Sepal.Length's larger raw variance "+
-			"dominates the unscaled covariance matrix.\n",
-		unscaledRatio.Get(0)*100, scaledRatio.Get(0)*100)
+	unscaled := datamunge.Must(datamunge.NewPCAWithScale(iris, featureColumns, true, false))
+	defer unscaled.Close()
+	fmt.Printf("PC1 explains %.2f%% of variance (vs. %.2f%% scaled) -- Sepal.Length's larger raw"+
+		" variance dominates the unscaled covariance matrix.\n",
+		100*datamunge.Must(unscaled.ExplainedVarianceRatio())[0],
+		100*datamunge.Must(pca.ExplainedVarianceRatio())[0])
 }

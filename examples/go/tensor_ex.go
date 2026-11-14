@@ -1,112 +1,85 @@
 // CMD: just TARGET=tensor_ex run-go
 
+//go:build ignore
+
+// Tensors: construction, shape ops, broadcasting, reductions, linear algebra, masks, iris.
 package main
 
 import (
 	"datamunge"
+	"datamunge/data"
 	"fmt"
 	"strings"
 )
 
-func dvector(values []float64) datamunge.DVector {
-	out := datamunge.NewDVector(int64(len(values)))
-	for i, v := range values {
-		out.Set(i, v)
+func shapeString(tensor *datamunge.Tensor) string {
+	parts := []string{}
+	for _, d := range datamunge.Must(tensor.Shape()) {
+		parts = append(parts, fmt.Sprint(d))
 	}
-	return out
-}
-
-func svector(values []string) datamunge.SVector {
-	out := datamunge.NewSVector(int64(len(values)))
-	for i, v := range values {
-		out.Set(i, v)
-	}
-	return out
-}
-
-func szvector(values []int) datamunge.SizeVector {
-	out := datamunge.NewSizeVector(int64(len(values)))
-	for i, v := range values {
-		out.Set(i, int64(v))
-	}
-	return out
-}
-
-func shapeStr(shp datamunge.SizeVector) string {
-	parts := make([]string, shp.Size())
-	for i := 0; i < int(shp.Size()); i++ {
-		parts[i] = fmt.Sprintf("%d", shp.Get(i))
-	}
-	return strings.Join(parts, ", ")
+	return "[" + strings.Join(parts, ", ") + "]"
 }
 
 func main() {
 	fmt.Println("=================== Construction ===================")
-	z := datamunge.TensorZeros(szvector([]int{2, 3}))
-	fmt.Printf("zeros([2,3]): %s\n", z.To_string())
+	fmt.Println("zeros([2,3]):", datamunge.Must(datamunge.TensorZeros([]int{2, 3})))
+	fmt.Println("eye(3):", datamunge.Must(datamunge.TensorEye(3)))
 
-	eyet := datamunge.TensorEye(int64(3))
-	fmt.Printf("eye(3): %s\n", eyet.To_string())
-
-	r := datamunge.TensorArange(0.0, 12.0).Reshape(szvector([]int{3, 4}))
-	fmt.Printf("arange(0,12).reshape([3,4]): %s\n", r.To_string())
+	r := datamunge.Must(datamunge.Must(datamunge.TensorArangeWithStep(0.0, 12.0, 1.0)).Reshape([]int{3, 4}))
+	fmt.Println("arange(0,12).reshape([3,4]):", r)
 
 	fmt.Println("\n=================== Shape ops ===================")
-	rt := r.Transpose()
-	fmt.Printf("transpose -> shape [%s]\n", shapeStr(rt.Shape()))
-	sliced := r.Slice(int64(1), int64(1), int64(3))
-	fmt.Printf("slice(axis=1, start=1, stop=3): %s\n", sliced.To_string())
+	fmt.Println("transpose -> shape " + shapeString(datamunge.Must(r.Transpose())))
+	fmt.Println("slice(axis=1, start=1, stop=3):", datamunge.Must(r.Slice(1, 1, 3)))
 
 	fmt.Println("\n=================== Broadcasting arithmetic ===================")
-	col := datamunge.TensorFrom_values(szvector([]int{3, 1}), dvector([]float64{1, 2, 3}))
-	row := datamunge.TensorFrom_values(szvector([]int{1, 4}), dvector([]float64{10, 20, 30, 40}))
-	broadcastSum := col.Add(row)
-	fmt.Printf("(3,1) + (1,4) -> %s\n", broadcastSum.To_string())
+	col := datamunge.Must(datamunge.TensorFromValues([]int{3, 1}, []float64{1.0, 2.0, 3.0}))
+	row := datamunge.Must(datamunge.TensorFromValues([]int{1, 4}, []float64{10.0, 20.0, 30.0, 40.0}))
+	fmt.Println("(3,1) + (1,4) ->", datamunge.Must(col.Add(row)))
 
 	fmt.Println("\n=================== Reductions ===================")
-	fmt.Printf("r.sum() = %g, r.mean() = %g\n", r.Sum(), r.Mean())
-	colMeans := r.Mean_axis(int64(0))
-	fmt.Printf("column means (axis=0): %s\n", colMeans.To_string())
+	fmt.Printf("r.sum() = %v, r.mean() = %v\n", datamunge.Must(r.Sum()), datamunge.Must(r.Mean()))
+	fmt.Println("column means (axis=0):", datamunge.Must(r.MeanAxis(0)))
 
 	fmt.Println("\n=================== Linear algebra ===================")
-	a := datamunge.TensorFrom_values(szvector([]int{2, 3}), dvector([]float64{1, 2, 3, 4, 5, 6}))
-	b := datamunge.TensorFrom_values(szvector([]int{3, 2}), dvector([]float64{7, 8, 9, 10, 11, 12}))
-	fmt.Printf("matmul(2x3, 3x2) -> %s\n", a.Matmul(b).To_string())
-
-	v1 := datamunge.TensorFrom_values(szvector([]int{3}), dvector([]float64{1, 2, 3}))
-	v2 := datamunge.TensorFrom_values(szvector([]int{3}), dvector([]float64{4, 5, 6}))
-	fmt.Printf("dot([1,2,3], [4,5,6]) = %g\n", v1.Dot(v2))
-	fmt.Printf("outer(v1, v2) -> %s\n", v1.Outer(v2).To_string())
+	a := datamunge.Must(datamunge.TensorFromValues([]int{2, 3}, []float64{1.0, 2.0, 3.0, 4.0, 5.0, 6.0}))
+	b := datamunge.Must(datamunge.TensorFromValues([]int{3, 2}, []float64{7.0, 8.0, 9.0, 10.0, 11.0, 12.0}))
+	fmt.Println("matmul(2x3, 3x2) ->", datamunge.Must(a.Matmul(b)))
+	v1 := datamunge.Must(datamunge.TensorFromValues([]int{3}, []float64{1.0, 2.0, 3.0}))
+	v2 := datamunge.Must(datamunge.TensorFromValues([]int{3}, []float64{4.0, 5.0, 6.0}))
+	fmt.Println("dot([1,2,3], [4,5,6]) =", datamunge.Must(v1.Dot(v2)))
+	fmt.Println("outer(v1, v2) ->", datamunge.Must(v1.Outer(v2)))
 
 	fmt.Println("\n=================== Comparisons & masks ===================")
-	mask := r.Greater_equal(datamunge.TensorFull(szvector([]int{3, 4}), 6.0))
-	fmt.Printf("r >= 6 -> %s\n", mask.To_string())
-	fmt.Printf("count(r >= 6) = %g\n", mask.Sum())
+	mask := datamunge.Must(r.GreaterEqual(datamunge.Must(datamunge.TensorFull([]int{3, 4}, 6.0))))
+	fmt.Println("r >= 6 ->", mask)
+	fmt.Println("count(r >= 6) =", datamunge.Must(mask.Sum()))
 
 	fmt.Println("\n=================== A real dataset as a Tensor ===================")
-	iris := datamunge.DataIris()
-	n := iris.Nrows()
-	flat := make([]float64, 0, n*4)
-	for i := int64(0); i < n; i++ {
-		flat = append(flat, iris.Numeric_at("Sepal.Length", i))
-		flat = append(flat, iris.Numeric_at("Sepal.Width", i))
-		flat = append(flat, iris.Numeric_at("Petal.Length", i))
-		flat = append(flat, iris.Numeric_at("Petal.Width", i))
+	iris := datamunge.Must(data.Iris())
+	defer iris.Close()
+	n := datamunge.Must(iris.Nrows())
+	columns := []string{"Sepal.Length", "Sepal.Width", "Petal.Length", "Petal.Width"}
+	flat := make([]float64, 0, n*len(columns))
+	for i := 0; i < n; i++ {
+		for _, column := range columns {
+			flat = append(flat, datamunge.Must(iris.NumericAt(column, i)))
+		}
 	}
-	x := datamunge.TensorFrom_values(szvector([]int{int(n), 4}), dvector(flat))
-	fmt.Printf("iris feature tensor shape: [%s]\n", shapeStr(x.Shape()))
+	x := datamunge.Must(datamunge.TensorFromValues([]int{n, 4}, flat))
+	fmt.Println("iris feature tensor shape: " + shapeString(x))
 
-	featureMeans := x.Mean_axis(int64(0))
-	centered := x.Subtract(featureMeans.Reshape(szvector([]int{1, 4})))
-	scatter := centered.Transpose().Matmul(centered)
-	fmt.Printf("feature means (Sepal.Length, Sepal.Width, Petal.Length, Petal.Width): %s\n", featureMeans.To_string())
-	fmt.Printf("(X-mean)^T (X-mean) [4x4 scatter matrix]: %s\n", scatter.To_string(int64(16)))
+	featureMeans := datamunge.Must(x.MeanAxis(0))
+	centered := datamunge.Must(x.Subtract(datamunge.Must(featureMeans.Reshape([]int{1, 4}))))
+	scatter := datamunge.Must(datamunge.Must(centered.Transpose()).Matmul(centered))
+	fmt.Println("feature means (Sepal.Length, Sepal.Width, Petal.Length, Petal.Width):", featureMeans)
+	fmt.Println("(X-mean)^T (X-mean) [4x4 scatter matrix]:", datamunge.Must(scatter.ToStringWithMaxElements(16)))
 
-	species := make([]string, 0, n)
-	for i := int64(0); i < n; i++ {
-		species = append(species, iris.String_at("Species", i))
+	species := make([]string, n)
+	for i := range species {
+		species[i] = datamunge.Must(iris.StringAt("Species", i))
 	}
-	speciesTensor := datamunge.TensorFrom_string_values(szvector([]int{int(n)}), svector(species))
-	setosaMask := speciesTensor.Equal(datamunge.TensorFrom_string_values(szvector([]int{1}), svector([]string{"setosa"})))
-	fmt.Printf("setosa count = %g (of %d rows)\n", setosaMask.Sum(), n)
+	speciesTensor := datamunge.Must(datamunge.TensorFromStringValues([]int{n}, species))
+	setosaMask := datamunge.Must(speciesTensor.Equal(datamunge.Must(datamunge.TensorFromStringValues([]int{1}, []string{"setosa"}))))
+	fmt.Printf("setosa count = %v (of %d rows)\n", datamunge.Must(setosaMask.Sum()), n)
 }

@@ -1,44 +1,56 @@
 (* CMD: just TARGET=forest_iris_ex run-ocaml *)
+(* Random forest classifier on iris: summary, confusion matrix, misclassifications, OOB accuracy. *)
 
-open Swig
 open Datamunge
 
-let () =
-  let iris = _data_iris C_void in
-  Printf.printf "iris: %d rows x %d cols\n\n"
-    (get_int (invoke iris "nrows" C_void)) (get_int (invoke iris "ncols" C_void));
+let formula = "Species ~ Petal.Length + Petal.Width"
 
-  let model = new_RandomForestClassifier (C_list [iris; C_string "Species ~ Petal.Length + Petal.Width"]) in
-  ignore (invoke model "print_summary" C_void);
+let () =
+  let iris = Data.iris () in
+  Printf.printf "iris: %d rows x %d cols\n\n" (DataFrame.nrows iris) (DataFrame.ncols iris);
+
+  let model = RandomForestClassifier.create iris formula in
+  RandomForestClassifier.print_summary model;
 
   print_endline "\nConfusion matrix (rows = actual, cols = predicted):";
-  print_endline (get_string (invoke (invoke model "confusion_matrix" C_void) "to_string" C_void));
+  print_endline (DataFrame.to_string (RandomForestClassifier.confusion_matrix model));
 
   print_endline "\nMisclassified rows:";
-  let predictions = invoke model "predict" iris in
-  let n = get_int (invoke iris "nrows" C_void) in
+  let predictions = RandomForestClassifier.predict model iris in
+  let n = DataFrame.nrows iris in
   let misclassified = ref 0 in
-  for i = 0 to n - 1 do
-    let actual = get_string (invoke iris "string_at" (C_list [C_string "Species"; C_int64 (Int64.of_int i)])) in
-    let pred = get_string (invoke predictions "[]" (C_int i)) in
-    if pred <> actual then begin
-      incr misclassified;
-      Printf.printf "  row %d: Petal.Length=%g Petal.Width=%g  actual=%s  predicted=%s\n" i
-        (get_float (invoke iris "numeric_at" (C_list [C_string "Petal.Length"; C_int64 (Int64.of_int i)])))
-        (get_float (invoke iris "numeric_at" (C_list [C_string "Petal.Width"; C_int64 (Int64.of_int i)])))
-        actual pred
-    end
-  done;
-  Printf.printf "%d of %d misclassified (%g%%)\n" !misclassified n (100.0 *. float_of_int !misclassified /. float_of_int n);
+  List.iteri
+    (fun i predicted ->
+      let actual = DataFrame.string_at iris "Species" i in
+      if predicted <> actual then begin
+        incr misclassified;
+        Printf.printf "  row %d: Petal.Length=%g Petal.Width=%g  actual=%s  predicted=%s\n" i
+          (DataFrame.numeric_at iris "Petal.Length" i)
+          (DataFrame.numeric_at iris "Petal.Width" i)
+          actual predicted
+      end)
+    predictions;
+  Printf.printf "%d of %d misclassified (%g%%)\n" !misclassified n
+    (100.0 *. float !misclassified /. float n);
 
-  ignore (invoke (invoke model "plot_classification" (C_list [iris; C_string "Petal.Length"; C_string "Petal.Width"])) "save" (C_string "forest_iris_classification.svg"));
-  ignore (invoke (invoke model "plot_decision_regions" (C_list [C_string "Petal.Length"; C_string "Petal.Width"])) "save" (C_string "forest_iris_decision_regions.svg"));
+  RPlot.save
+    (RandomForestClassifier.plot_classification model iris "Petal.Length" "Petal.Width")
+    "forest_iris_classification.svg";
+  RPlot.save
+    (RandomForestClassifier.plot_decision_regions model "Petal.Length" "Petal.Width")
+    "forest_iris_decision_regions.svg";
   print_endline "\nSaved forest_iris_classification.svg and forest_iris_decision_regions.svg";
 
-  let small_forest = new_RandomForestClassifier (C_list [iris; C_string "Species ~ Petal.Length + Petal.Width"; C_int64 5L]) in
+  (* A small forest, for comparison, showing how out-of-bag accuracy stabilizes as more trees are
+     added -- the defining random forest effect a single decision tree cannot demonstrate. *)
+  let small_forest = RandomForestClassifier.create ~n_trees:5 iris formula in
   Printf.printf "\n5-tree forest:   training accuracy=%g%%  OOB accuracy=%g%%\n"
-    (get_float (invoke small_forest "training_accuracy" C_void) *. 100.0) (get_float (invoke small_forest "oob_accuracy" C_void) *. 100.0);
+    (RandomForestClassifier.training_accuracy small_forest *. 100.0)
+    (RandomForestClassifier.oob_accuracy small_forest *. 100.0);
   Printf.printf "100-tree forest: training accuracy=%g%%  OOB accuracy=%g%%\n"
-    (get_float (invoke model "training_accuracy" C_void) *. 100.0) (get_float (invoke model "oob_accuracy" C_void) *. 100.0);
-  ignore (invoke (invoke small_forest "plot_decision_regions" (C_list [C_string "Petal.Length"; C_string "Petal.Width"])) "save" (C_string "forest_iris_decision_regions_5trees.svg"));
+    (RandomForestClassifier.training_accuracy model *. 100.0)
+    (RandomForestClassifier.oob_accuracy model *. 100.0);
+  RPlot.save
+    (RandomForestClassifier.plot_decision_regions small_forest "Petal.Length" "Petal.Width")
+    "forest_iris_decision_regions_5trees.svg";
   print_endline "Saved forest_iris_decision_regions_5trees.svg"

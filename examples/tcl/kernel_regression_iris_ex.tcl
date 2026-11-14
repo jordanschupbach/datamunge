@@ -1,27 +1,30 @@
 # CMD: just TARGET=kernel_regression_iris_ex run-tcl
+# Nadaraya-Watson kernel regression on iris: CV-selected bandwidth vs. too-small and too-large ones.
+package require datamunge
 
-package require Datamunge 0.0.1
+set formula "Petal.Length ~ Petal.Width"
 
-set FORMULA "Petal.Length ~ Petal.Width"
+set iris [datamunge::Data::iris]
+puts "iris: [$iris nrows] rows x [$iris ncols] cols"
+puts "formula: $formula\n"
 
-set iris [datamunge::data_iris]
-puts "iris: [datamunge::DataFrame_nrows $iris] rows x [datamunge::DataFrame_ncols $iris] cols"
-puts "formula: $FORMULA\n"
+# Bandwidth auto-selected via leave-one-out CV.
+set model [datamunge::KernelRegression new $iris $formula]
+$model print_summary
 
-set model [datamunge::new_KernelRegression $iris $FORMULA]
-datamunge::KernelRegression_print_summary $model
-
-datamunge::Plot_save [datamunge::KernelRegression_plot_fit $model $iris] "kernel_regression_iris_fit.svg"
-datamunge::Plot_save [datamunge::KernelRegression_plot_cv_curve $model] "kernel_regression_iris_cv.svg"
+[$model plot_fit $iris] save kernel_regression_iris_fit.svg
+[$model plot_cv_curve] save kernel_regression_iris_cv.svg
 puts "\nSaved kernel_regression_iris_fit.svg and kernel_regression_iris_cv.svg"
 
-set small [datamunge::new_KernelRegression $iris $FORMULA "gaussian" 0.05]
-puts "\nbandwidth=0.05 (too small): LOO R-squared=[datamunge::KernelRegression_r_squared $small]  LOO RMSE=[datamunge::KernelRegression_rmse $small]"
-datamunge::Plot_save [datamunge::KernelRegression_plot_fit $small $iris] "kernel_regression_iris_fit_small_bandwidth.svg"
+# A too-small and a too-large bandwidth, for comparison -- the classic kernel regression
+# bias-variance story. KernelRegression new data formula ?kernel? ?bandwidth? ...
+set small [datamunge::KernelRegression new $iris $formula gaussian 0.05]
+puts "\nbandwidth=0.05 (too small): LOO R-squared=[$small r_squared]  LOO RMSE=[$small rmse]"
+[$small plot_fit $iris] save kernel_regression_iris_fit_small_bandwidth.svg
 
-set large [datamunge::new_KernelRegression $iris $FORMULA "gaussian" 5.0]
-puts "bandwidth=5.0 (too large):  LOO R-squared=[datamunge::KernelRegression_r_squared $large]  LOO RMSE=[datamunge::KernelRegression_rmse $large]"
-datamunge::Plot_save [datamunge::KernelRegression_plot_fit $large $iris] "kernel_regression_iris_fit_large_bandwidth.svg"
+set large [datamunge::KernelRegression new $iris $formula gaussian 5.0]
+puts "bandwidth=5.0 (too large):  LOO R-squared=[$large r_squared]  LOO RMSE=[$large rmse]"
+[$large plot_fit $iris] save kernel_regression_iris_fit_large_bandwidth.svg
 
-puts "bandwidth=[datamunge::KernelRegression_bandwidth $model] (CV-selected): LOO R-squared=[datamunge::KernelRegression_r_squared $model]  LOO RMSE=[datamunge::KernelRegression_rmse $model]"
+puts "bandwidth=[$model bandwidth] (CV-selected): LOO R-squared=[$model r_squared]  LOO RMSE=[$model rmse]"
 puts "\nSaved kernel_regression_iris_fit_small_bandwidth.svg and kernel_regression_iris_fit_large_bandwidth.svg"

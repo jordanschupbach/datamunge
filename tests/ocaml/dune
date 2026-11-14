@@ -1,4 +1,0 @@
-(test
- (name test_datamunge)
- (modules test_datamunge)
- (libraries alcotest datamungeocaml))

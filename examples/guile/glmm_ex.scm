@@ -1,87 +1,81 @@
 ;; CMD: just TARGET=glmm_ex run-guile
+;; Generalized linear mixed models: a binomial GLMM on penguins and a Poisson GLMM on simulated store data.
+(use-modules (oop goops) (datamunge) ((datamunge data) #:select (penguins))
+             ((srfi srfi-1) #:select (any)) (ice-9 format))
 
-(use-modules (datamunge) (srfi srfi-1))
+(define pi (* 4 (atan 1)))
+(define rng (seed->random-state 4242))
+(define (uniform) (random:uniform rng))
+(define (gauss) ; 1 - u keeps log() away from 0
+  (* (sqrt (* -2 (log (- 1 (uniform))))) (cos (* 2 pi (uniform)))))
 
-(define (my-rand) (random 1.0))
-(define (my-randn)
-  (let ((u1 (my-rand)) (u2 (my-rand)))
-    (* (sqrt (* -2.0 (log u1))) (cos (* 2.0 3.14159265358979323846 u2)))))
+(display "=================== Binomial (logistic) mixed model on a real dataset (penguins) ===================\n")
+;; Predicting sex from body mass, grouped by island: unlike species (which is almost perfectly
+;; confounded with island in this dataset -- Gentoo penguins occur on Biscoe island only), sex
+;; is not tied to location, so this is a well-behaved fit.
+(define pg (penguins))
+(define rows
+  (filter (lambda (i)
+            (not (any (lambda (c) (null? pg c i)) '("sex" "body_mass_g" "island"))))
+          (iota (nrows pg))))
+(define sex-df (make <data-frame>))
+(add-numeric-column sex-df "is_male"
+                    (map (lambda (i) (if (string=? (string-at pg "sex" i) "male") 1.0 0.0)) rows))
+(add-numeric-column sex-df "body_mass_g" (map (lambda (i) (numeric-at pg "body_mass_g" i)) rows))
+(add-string-column sex-df "island" (map (lambda (i) (string-at pg "island" i)) rows))
+(print-summary (make <glmm> sex-df "is_male ~ body_mass_g + (1 | island)" "binomial"))
 
-(format #t "=================== Binomial (logistic) mixed model on a real dataset (penguins) ===================\n")
-(define penguins (data_penguins))
-(define is-male '())
-(define body-mass '())
-(define island '())
-(define n (DataFrame-nrows penguins))
-(do ((i 0 (+ i 1))) ((= i n))
-  (unless (or (DataFrame-is-null penguins "sex" i) (DataFrame-is-null penguins "body_mass_g" i) (DataFrame-is-null penguins "island" i))
-    (set! is-male (cons (if (string=? (DataFrame-string-at penguins "sex" i) "male") 1.0 0.0) is-male))
-    (set! body-mass (cons (DataFrame-numeric-at penguins "body_mass_g" i) body-mass))
-    (set! island (cons (DataFrame-string-at penguins "island" i) island))))
-(set! is-male (reverse is-male))
-(set! body-mass (reverse body-mass))
-(set! island (reverse island))
-
-(define sex-df (DataFrame-empty))
-(DataFrame-add-numeric-column sex-df "is_male" is-male)
-(DataFrame-add-numeric-column sex-df "body_mass_g" body-mass)
-(DataFrame-add-string-column sex-df "island" island)
-
-(define sex-model (new-GLMM sex-df "is_male ~ body_mass_g + (1 | island)" "binomial"))
-(GLMM-print-summary sex-model)
-
-(format #t "\n=================== Poisson mixed model on simulated multi-site count data ===================\n")
-(set! *random-state* (seed->random-state 4242))
+(display "\n=================== Poisson mixed model on simulated multi-site count data ===================\n")
+;; 25 stores, ~20 days each: daily visit counts depend on a promo intensity score, but both
+;; the baseline traffic and the promo's effectiveness vary by store.
 (define n-stores 25)
-(define store-effect (map (lambda (i) (* (my-randn) 0.4)) (iota n-stores)))
-
+(define store-effect (map (lambda (_) (* (gauss) 0.4)) (iota n-stores)))
 (define true-intercept 2.0)
 (define true-slope 0.3)
+
+;; Knuth's Poisson sampler.
+(define (poisson lam)
+  (let ((threshold (exp (- lam))))
+    (let loop ((k 1) (p (uniform)))
+      (if (> p threshold)
+          (loop (+ k 1) (* p (uniform)))
+          (- k 1)))))
+
 (define store '())
 (define promo '())
 (define visits '())
 (do ((s 0 (+ s 1))) ((= s n-stores))
-  (let ((n-days (+ 15 (inexact->exact (truncate (* (my-rand) 11))))))
-    (do ((d 0 (+ d 1))) ((= d n-days))
-      (let* ((promo-intensity (* (my-rand) 3.0))
-             (lam (exp (+ true-intercept (list-ref store-effect s) (* true-slope promo-intensity))))
-             (l-thresh (exp (- lam)))
-             (k 0)
-             (p 1.0))
-        (let loop ()
-          (set! k (+ k 1))
-          (set! p (* p (my-rand)))
-          (when (> p l-thresh) (loop)))
-        (set! store (cons s store))
-        (set! promo (cons promo-intensity promo))
-        (set! visits (cons (- k 1) visits))))))
-(set! store (reverse store))
-(set! promo (reverse promo))
-(set! visits (reverse visits))
+  (do ((day 0 (+ day 1)) (n-days (+ 15 (random 11 rng)))) ((= day n-days))
+    (let* ((promo-intensity (* (uniform) 3))
+           (lam (exp (+ true-intercept (list-ref store-effect s) (* true-slope promo-intensity)))))
+      (set! store (cons (exact->inexact s) store))
+      (set! promo (cons promo-intensity promo))
+      (set! visits (cons (exact->inexact (poisson lam)) visits)))))
+(define df (make <data-frame>))
+(add-numeric-column df "store" (reverse store))
+(add-numeric-column df "promo" (reverse promo))
+(add-numeric-column df "visits" (reverse visits))
+(define store-model (make <glmm> df "visits ~ promo + (1 | store)" "poisson"))
 
-(define df (DataFrame-empty))
-(DataFrame-add-numeric-column df "store" store)
-(DataFrame-add-numeric-column df "promo" promo)
-(DataFrame-add-numeric-column df "visits" visits)
+(print-summary store-model)
 
-(define store-model (new-GLMM df "visits ~ promo + (1 | store)" "poisson"))
-(GLMM-print-summary store-model)
+(format #t "\nTrue generating values: intercept=~a, slope=~a, random-intercept SD (log scale)=0.4\n"
+        true-intercept true-slope)
 
-(format #t "\nTrue generating values: intercept=~a, slope=~a, random-intercept SD (log scale)=0.4\n" true-intercept true-slope)
+(display "\n--- BLUPs for a few stores ---\n")
+(define labels (group-labels store-model))
+(for-each (lambda (idx)
+            (format #t "store ~a: intercept shift=~a\n"
+                    (list-ref labels idx) (car (random-effects-for-group store-model idx))))
+          (iota 3))
 
-(format #t "\n--- BLUPs for a few stores ---\n")
-(define group-labels (GLMM-group-labels store-model))
-(do ((idx 0 (+ idx 1))) ((= idx 3))
-  (let ((re (GLMM-random-effects-for-group store-model idx)))
-    (format #t "store ~a: intercept shift=~a\n" (vector-ref group-labels idx) (vector-ref re 0))))
-
-(format #t "\n--- Prediction: population-level vs. store-adjusted ---\n")
-(define newdata-population (DataFrame-empty))
-(DataFrame-add-numeric-column newdata-population "promo" (list 1.5))
-(define newdata-store0 (DataFrame-empty))
-(DataFrame-add-numeric-column newdata-store0 "promo" (list 1.5))
-(DataFrame-add-numeric-column newdata-store0 "store" (list 0.0))
-(define pred-pop (GLMM-predict store-model newdata-population))
-(define pred-s0 (GLMM-predict store-model newdata-store0))
-(format #t "promo=1.5, unseen store:   ~a expected visits (fixed effects only)\n" (vector-ref pred-pop 0))
-(format #t "promo=1.5, store 0 (known): ~a expected visits (fixed effects + store 0's BLUP)\n" (vector-ref pred-s0 0))
+(display "\n--- Prediction: population-level vs. store-adjusted ---\n")
+(define population (make <data-frame>))
+(define store0 (make <data-frame>))
+(add-numeric-column population "promo" '(1.5))
+(add-numeric-column store0 "promo" '(1.5))
+(add-numeric-column store0 "store" '(0.0))
+(format #t "promo=1.5, unseen store:   ~a expected visits (fixed effects only)\n"
+        (car (predict store-model population)))
+(format #t "promo=1.5, store 0 (known): ~a expected visits (fixed effects + store 0's BLUP)\n"
+        (car (predict store-model store0)))

@@ -1,37 +1,38 @@
 # CMD: just TARGET=tree_iris_ex run-tcl
+# Decision tree classifier on iris: summary, confusion matrix, misclassified rows and plots.
+package require datamunge
 
-package require Datamunge 0.0.1
+set iris [datamunge::Data::iris]
+puts "iris: [$iris nrows] rows x [$iris ncols] cols\n"
 
-set iris [datamunge::data_iris]
-puts "iris: [datamunge::DataFrame_nrows $iris] rows x [datamunge::DataFrame_ncols $iris] cols\n"
-
-set model [datamunge::new_DecisionTreeClassifier $iris "Species ~ Petal.Length + Petal.Width"]
-datamunge::DecisionTreeClassifier_print_summary $model
+set model [datamunge::DecisionTreeClassifier new $iris "Species ~ Petal.Length + Petal.Width"]
+$model print_summary
 
 puts "\nConfusion matrix (rows = actual, cols = predicted):"
-puts "[datamunge::DataFrame_to_string [datamunge::DecisionTreeClassifier_confusion_matrix $model]]"
+puts [[$model confusion_matrix] to_string]
 
 puts "\nMisclassified rows:"
-set predictions [datamunge::DecisionTreeClassifier_predict $model $iris]
+set predictions [$model predict $iris]
+set n [$iris nrows]
 set misclassified 0
-set n [datamunge::DataFrame_nrows $iris]
-for {set i 0} {$i < $n} {incr i} {
-  set actual [datamunge::DataFrame_string_at $iris "Species" $i]
-  set pred [lindex $predictions $i]
-  if {$pred ne $actual} {
+set i -1
+foreach predicted $predictions {
+    incr i
+    set actual [$iris string_at Species $i]
+    if {$predicted eq $actual} {
+        continue
+    }
     incr misclassified
-    set pl [datamunge::DataFrame_numeric_at $iris "Petal.Length" $i]
-    set pw [datamunge::DataFrame_numeric_at $iris "Petal.Width" $i]
-    puts "  row $i: Petal.Length=$pl Petal.Width=$pw  actual=$actual  predicted=$pred"
-  }
+    puts "  row $i: Petal.Length=[$iris numeric_at Petal.Length $i] Petal.Width=[$iris numeric_at Petal.Width $i]  actual=$actual  predicted=$predicted"
 }
 puts "$misclassified of $n misclassified ([expr {100.0 * $misclassified / $n}]%)"
 
-datamunge::Plot_save [datamunge::DecisionTreeClassifier_plot_classification $model $iris "Petal.Length" "Petal.Width"] "tree_iris_classification.svg"
-datamunge::Plot_save [datamunge::DecisionTreeClassifier_plot_decision_regions $model "Petal.Length" "Petal.Width"] "tree_iris_decision_regions.svg"
+[$model plot_classification $iris Petal.Length Petal.Width] save tree_iris_classification.svg
+[$model plot_decision_regions Petal.Length Petal.Width] save tree_iris_decision_regions.svg
 puts "\nSaved tree_iris_classification.svg and tree_iris_decision_regions.svg"
 
-set shallow [datamunge::new_DecisionTreeClassifier $iris "Species ~ Petal.Length + Petal.Width" 2]
-puts "\nDepth-2 tree training accuracy: [expr {[datamunge::DecisionTreeClassifier_training_accuracy $shallow] * 100.0}]% ([datamunge::DecisionTreeClassifier_leaf_count $shallow] leaves)"
-datamunge::Plot_save [datamunge::DecisionTreeClassifier_plot_decision_regions $shallow "Petal.Length" "Petal.Width"] "tree_iris_decision_regions_depth2.svg"
+# A shallower tree, for comparison, showing a coarser (but still fairly accurate) decision boundary.
+set shallow [datamunge::DecisionTreeClassifier new $iris "Species ~ Petal.Length + Petal.Width" 2]
+puts "\nDepth-2 tree training accuracy: [expr {[$shallow training_accuracy] * 100}]% ([$shallow leaf_count] leaves)"
+[$shallow plot_decision_regions Petal.Length Petal.Width] save tree_iris_decision_regions_depth2.svg
 puts "Saved tree_iris_decision_regions_depth2.svg"

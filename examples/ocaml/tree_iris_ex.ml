@@ -1,42 +1,51 @@
 (* CMD: just TARGET=tree_iris_ex run-ocaml *)
-
-open Swig
+(* Decision tree classifier on iris: summary, confusion matrix, misclassified rows and plots. *)
 open Datamunge
 
 let () =
-  let iris = _data_iris C_void in
-  Printf.printf "iris: %d rows x %d cols\n\n"
-    (get_int (invoke iris "nrows" C_void)) (get_int (invoke iris "ncols" C_void));
+  let iris = Data.iris () in
+  Printf.printf "iris: %d rows x %d cols\n\n" (DataFrame.nrows iris) (DataFrame.ncols iris);
 
-  let model = new_DecisionTreeClassifier (C_list [iris; C_string "Species ~ Petal.Length + Petal.Width"]) in
-  ignore (invoke model "print_summary" C_void);
+  let formula = "Species ~ Petal.Length + Petal.Width" in
+  let model = DecisionTreeClassifier.create iris formula in
+  DecisionTreeClassifier.print_summary model;
 
   print_endline "\nConfusion matrix (rows = actual, cols = predicted):";
-  print_endline (get_string (invoke (invoke model "confusion_matrix" C_void) "to_string" C_void));
+  print_endline (DataFrame.to_string (DecisionTreeClassifier.confusion_matrix model));
 
   print_endline "\nMisclassified rows:";
-  let predictions = invoke model "predict" iris in
-  let n = get_int (invoke iris "nrows" C_void) in
+  let predictions = DecisionTreeClassifier.predict model iris in
+  let n = DataFrame.nrows iris in
   let misclassified = ref 0 in
-  for i = 0 to n - 1 do
-    let actual = get_string (invoke iris "string_at" (C_list [C_string "Species"; C_int64 (Int64.of_int i)])) in
-    let pred = get_string (invoke predictions "[]" (C_int i)) in
-    if pred <> actual then begin
-      incr misclassified;
-      Printf.printf "  row %d: Petal.Length=%g Petal.Width=%g  actual=%s  predicted=%s\n" i
-        (get_float (invoke iris "numeric_at" (C_list [C_string "Petal.Length"; C_int64 (Int64.of_int i)])))
-        (get_float (invoke iris "numeric_at" (C_list [C_string "Petal.Width"; C_int64 (Int64.of_int i)])))
-        actual pred
-    end
-  done;
-  Printf.printf "%d of %d misclassified (%g%%)\n" !misclassified n (100.0 *. float_of_int !misclassified /. float_of_int n);
+  List.iteri
+    (fun i predicted ->
+      let actual = DataFrame.string_at iris "Species" i in
+      if predicted <> actual then begin
+        incr misclassified;
+        Printf.printf "  row %d: Petal.Length=%g Petal.Width=%g  actual=%s  predicted=%s\n" i
+          (DataFrame.numeric_at iris "Petal.Length" i)
+          (DataFrame.numeric_at iris "Petal.Width" i)
+          actual predicted
+      end)
+    predictions;
+  Printf.printf "%d of %d misclassified (%g%%)\n" !misclassified n
+    (100.0 *. float_of_int !misclassified /. float_of_int n);
 
-  ignore (invoke (invoke model "plot_classification" (C_list [iris; C_string "Petal.Length"; C_string "Petal.Width"])) "save" (C_string "tree_iris_classification.svg"));
-  ignore (invoke (invoke model "plot_decision_regions" (C_list [C_string "Petal.Length"; C_string "Petal.Width"])) "save" (C_string "tree_iris_decision_regions.svg"));
+  RPlot.save
+    (DecisionTreeClassifier.plot_classification model iris "Petal.Length" "Petal.Width")
+    "tree_iris_classification.svg";
+  RPlot.save
+    (DecisionTreeClassifier.plot_decision_regions model "Petal.Length" "Petal.Width")
+    "tree_iris_decision_regions.svg";
   print_endline "\nSaved tree_iris_classification.svg and tree_iris_decision_regions.svg";
 
-  let shallow = new_DecisionTreeClassifier (C_list [iris; C_string "Species ~ Petal.Length + Petal.Width"; C_int64 2L]) in
+  (* A shallower tree, for comparison, showing a coarser (but still fairly accurate) decision
+     boundary. *)
+  let shallow = DecisionTreeClassifier.create ~max_depth:2 iris formula in
   Printf.printf "\nDepth-2 tree training accuracy: %g%% (%d leaves)\n"
-    (get_float (invoke shallow "training_accuracy" C_void) *. 100.0) (get_int (invoke shallow "leaf_count" C_void));
-  ignore (invoke (invoke shallow "plot_decision_regions" (C_list [C_string "Petal.Length"; C_string "Petal.Width"])) "save" (C_string "tree_iris_decision_regions_depth2.svg"));
+    (DecisionTreeClassifier.training_accuracy shallow *. 100.)
+    (DecisionTreeClassifier.leaf_count shallow);
+  RPlot.save
+    (DecisionTreeClassifier.plot_decision_regions shallow "Petal.Length" "Petal.Width")
+    "tree_iris_decision_regions_depth2.svg";
   print_endline "Saved tree_iris_decision_regions_depth2.svg"

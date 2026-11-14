@@ -1,44 +1,59 @@
 (* CMD: just TARGET=naive_bayes_penguins_ex run-ocaml *)
-
-open Swig
+(* Naive Bayes on penguins: mixed numeric/categorical predictors, confusion matrix, misclassified rows, plots. *)
 open Datamunge
 
 let () =
-  let penguins = _data_penguins C_void in
-  Printf.printf "penguins: %d rows x %d cols\n\n"
-    (get_int (invoke penguins "nrows" C_void)) (get_int (invoke penguins "ncols" C_void));
+  (* Note: NaiveBayesClassifier drops incomplete rows for its own formula columns internally
+     when fitting, matching every other formula-based model in this library. *)
+  let penguins = Data.penguins () in
+  Printf.printf "penguins: %d rows x %d cols\n\n" (DataFrame.nrows penguins)
+    (DataFrame.ncols penguins);
 
-  let model = new_NaiveBayesClassifier (C_list [penguins; C_string "species ~ bill_length_mm + bill_depth_mm + island + sex"]) in
-  ignore (invoke model "print_summary" C_void);
+  (* A mix of numeric (Gaussian likelihood) and categorical (frequency-table likelihood)
+     predictors in one formula -- each modeled independently given the class, per the naive
+     Bayes assumption. *)
+  let model =
+    NaiveBayesClassifier.create penguins "species ~ bill_length_mm + bill_depth_mm + island + sex"
+  in
+  NaiveBayesClassifier.print_summary model;
 
-  print_endline "\nConfusion matrix (rows = actual, cols = predicted):";
-  print_endline (get_string (invoke (invoke model "confusion_matrix" C_void) "to_string" C_void));
+  Printf.printf "\nConfusion matrix (rows = actual, cols = predicted):\n%s\n"
+    (DataFrame.to_string (NaiveBayesClassifier.confusion_matrix model));
 
   print_endline "\nMisclassified rows:";
-  let predictions = invoke model "predict" penguins in
-  let n = get_int (invoke penguins "nrows" C_void) in
+  let predictions = Array.of_list (NaiveBayesClassifier.predict model penguins) in
+  let columns = [ "species"; "bill_length_mm"; "bill_depth_mm"; "island"; "sex" ] in
   let misclassified = ref 0 in
-  for i = 0 to n - 1 do
-    let i64 = C_int64 (Int64.of_int i) in
-    let is_null c = get_bool (invoke penguins "is_null" (C_list [C_string c; i64])) in
-    if not (is_null "species" || is_null "bill_length_mm" || is_null "bill_depth_mm" || is_null "island" || is_null "sex") then begin
-      let actual = get_string (invoke penguins "string_at" (C_list [C_string "species"; i64])) in
-      let pred = get_string (invoke predictions "[]" (C_int i)) in
-      if pred <> actual then begin
-        incr misclassified;
-        Printf.printf "  row %d: bill_length=%g bill_depth=%g island=%s sex=%s  actual=%s  predicted=%s\n" i
-          (get_float (invoke penguins "numeric_at" (C_list [C_string "bill_length_mm"; i64])))
-          (get_float (invoke penguins "numeric_at" (C_list [C_string "bill_depth_mm"; i64])))
-          (get_string (invoke penguins "string_at" (C_list [C_string "island"; i64])))
-          (get_string (invoke penguins "string_at" (C_list [C_string "sex"; i64])))
-          actual pred
-      end
+  for i = 0 to DataFrame.nrows penguins - 1 do
+    let complete = not (List.exists (fun column -> DataFrame.is_null penguins column i) columns) in
+    let actual = DataFrame.string_at penguins "species" i in
+    let predicted = predictions.(i) in
+    if complete && predicted <> actual then begin
+      incr misclassified;
+      Printf.printf
+        "  row %d: bill_length=%g bill_depth=%g island=%s sex=%s  actual=%s  predicted=%s\n" i
+        (DataFrame.numeric_at penguins "bill_length_mm" i)
+        (DataFrame.numeric_at penguins "bill_depth_mm" i)
+        (DataFrame.string_at penguins "island" i)
+        (DataFrame.string_at penguins "sex" i)
+        actual predicted
     end
   done;
-  Printf.printf "%d misclassified (of %d rows, some incomplete)\n" !misclassified n;
+  Printf.printf "%d misclassified (of %d rows, some incomplete)\n" !misclassified
+    (DataFrame.nrows penguins);
 
-  let bill_only = new_NaiveBayesClassifier (C_list [penguins; C_string "species ~ bill_length_mm + bill_depth_mm"]) in
-  Printf.printf "\nbill-measurements-only model training accuracy: %g%%\n" (get_float (invoke bill_only "training_accuracy" C_void) *. 100.0);
-  ignore (invoke (invoke bill_only "plot_classification" (C_list [penguins; C_string "bill_length_mm"; C_string "bill_depth_mm"])) "save" (C_string "naive_bayes_penguins_classification.svg"));
-  ignore (invoke (invoke bill_only "plot_decision_regions" (C_list [C_string "bill_length_mm"; C_string "bill_depth_mm"])) "save" (C_string "naive_bayes_penguins_decision_regions.svg"));
-  print_endline "Saved naive_bayes_penguins_classification.svg and naive_bayes_penguins_decision_regions.svg"
+  (* plot_decision_regions requires exactly two NUMERIC predictors, so build a separate
+     two-predictor model (bill measurements alone) just for visualization. *)
+  let bill_only =
+    NaiveBayesClassifier.create penguins "species ~ bill_length_mm + bill_depth_mm"
+  in
+  Printf.printf "\nbill-measurements-only model training accuracy: %g%%\n"
+    (100. *. NaiveBayesClassifier.training_accuracy bill_only);
+  RPlot.save
+    (NaiveBayesClassifier.plot_classification bill_only penguins "bill_length_mm" "bill_depth_mm")
+    "naive_bayes_penguins_classification.svg";
+  RPlot.save
+    (NaiveBayesClassifier.plot_decision_regions bill_only "bill_length_mm" "bill_depth_mm")
+    "naive_bayes_penguins_decision_regions.svg";
+  print_endline
+    "Saved naive_bayes_penguins_classification.svg and naive_bayes_penguins_decision_regions.svg"

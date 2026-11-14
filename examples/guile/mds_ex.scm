@@ -1,28 +1,22 @@
 ;; CMD: just TARGET=mds_ex run-guile
+;; Classical multidimensional scaling of iris: euclidean embedding, plot, and a manhattan comparison.
+(use-modules (oop goops) (datamunge) ((datamunge data) #:select (iris)) (ice-9 format))
 
-(use-modules (datamunge) (ice-9 format))
+(define iris-df (iris))
+(define feature-columns '("Sepal.Length" "Sepal.Width" "Petal.Length" "Petal.Width"))
+(define species
+  (map (lambda (i) (string-at iris-df "Species" i)) (iota (nrows iris-df))))
 
-(define iris (data_iris))
-(define features (list "Sepal.Length" "Sepal.Width" "Petal.Length" "Petal.Width"))
+(display "=================== Classical MDS on iris (euclidean) ===================\n")
+(define mds (make <mds> iris-df feature-columns 2 "euclidean"))
+(print-summary mds)
 
-(define n (DataFrame-nrows iris))
-(define species '())
-(do ((i 0 (+ i 1))) ((= i n))
-  (set! species (cons (DataFrame-string-at iris "Species" i) species)))
-(set! species (reverse species))
+(format #t "\nEmbedding as a DataFrame:\n~a\n" (to-string (embedding-frame mds)))
 
-(format #t "=================== Classical MDS on iris (euclidean) ===================\n")
-(define mds (new-MDS iris features 2 "euclidean"))
-(MDS-print-summary mds)
+(save-svg (plot-embedding-grouped mds species) "mds_iris_embedding.svg")
+(display "\nEmbedding scatter (colored by species) saved as mds_iris_embedding.svg\n")
 
-(format #t "\nEmbedding as a DataFrame:\n")
-(format #t "~a\n" (DataFrame-to-string (MDS-embedding-frame mds)))
-
-(define scatter (MDS-plot-embedding-grouped mds species))
-(Plot-save-svg scatter "mds_iris_embedding.svg")
-(format #t "\nEmbedding scatter (colored by species) saved as mds_iris_embedding.svg\n")
-
-(format #t "\n=================== Classical MDS on iris (manhattan) ===================\n")
-(define manhattan-mds (new-MDS iris features 2 "manhattan"))
+(display "\n=================== Classical MDS on iris (manhattan) ===================\n")
+(define manhattan-mds (make <mds> iris-df feature-columns 2 "manhattan"))
 (format #t "Goodness of fit: euclidean=~,4f, manhattan=~,4f\n"
-        (MDS-goodness-of-fit mds) (MDS-goodness-of-fit manhattan-mds))
+        (goodness-of-fit mds) (goodness-of-fit manhattan-mds))

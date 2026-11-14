@@ -1,37 +1,45 @@
 ;; CMD: just TARGET=naive_bayes_penguins_ex run-guile
+;; Naive Bayes on penguins: mixed numeric/categorical predictors, confusion matrix, misclassified rows, plots.
+(use-modules (oop goops) (datamunge) ((datamunge data) #:select (penguins)))
 
-(use-modules (datamunge))
+;; Note: <naive-bayes-classifier> drops incomplete rows for its own formula columns internally
+;; when fitting, matching every other formula-based model in this library.
+(define penguins-data (penguins))
+(format #t "penguins: ~a rows x ~a cols\n\n" (nrows penguins-data) (ncols penguins-data))
 
-(define penguins (data_penguins))
-(format #t "penguins: ~a rows x ~a cols\n\n" (DataFrame-nrows penguins) (DataFrame-ncols penguins))
+;; A mix of numeric (Gaussian likelihood) and categorical (frequency-table likelihood)
+;; predictors in one formula -- each modeled independently given the class, per the naive
+;; Bayes assumption.
+(define model (make <naive-bayes-classifier> penguins-data
+                "species ~ bill_length_mm + bill_depth_mm + island + sex"))
+(print-summary model)
 
-(define model (new-NaiveBayesClassifier penguins "species ~ bill_length_mm + bill_depth_mm + island + sex"))
-(NaiveBayesClassifier-print-summary model)
+(format #t "\nConfusion matrix (rows = actual, cols = predicted):\n~a\n" (to-string (confusion-matrix model)))
 
-(format #t "\nConfusion matrix (rows = actual, cols = predicted):\n")
-(format #t "~a\n" (DataFrame-to-string (NaiveBayesClassifier-confusion-matrix model)))
-
-(format #t "\nMisclassified rows:\n")
-(define predictions (NaiveBayesClassifier-predict model penguins))
+(display "\nMisclassified rows:\n")
+(define predictions (predict model penguins-data))
+(define columns '("species" "bill_length_mm" "bill_depth_mm" "island" "sex"))
 (define misclassified 0)
-(define n (DataFrame-nrows penguins))
-(do ((i 0 (+ i 1))) ((= i n))
-  (unless (or (DataFrame-is-null penguins "species" i)
-              (DataFrame-is-null penguins "bill_length_mm" i)
-              (DataFrame-is-null penguins "bill_depth_mm" i)
-              (DataFrame-is-null penguins "island" i)
-              (DataFrame-is-null penguins "sex" i))
-    (let* ((actual (DataFrame-string-at penguins "species" i))
-           (pred (vector-ref predictions i)))
-      (unless (string=? pred actual)
-        (set! misclassified (+ misclassified 1))
-        (format #t "  row ~a: bill_length=~a bill_depth=~a island=~a sex=~a  actual=~a  predicted=~a\n" i
-                (DataFrame-numeric-at penguins "bill_length_mm" i) (DataFrame-numeric-at penguins "bill_depth_mm" i)
-                (DataFrame-string-at penguins "island" i) (DataFrame-string-at penguins "sex" i) actual pred)))))
-(format #t "~a misclassified (of ~a rows, some incomplete)\n" misclassified n)
+(let loop ((i 0) (preds predictions))
+  (when (< i (nrows penguins-data))
+    (unless (or-map (lambda (c) (null? penguins-data c i)) columns)
+      (let ((actual (string-at penguins-data "species" i))
+            (predicted (car preds)))
+        (unless (string=? predicted actual)
+          (set! misclassified (+ misclassified 1))
+          (format #t "  row ~a: bill_length=~a bill_depth=~a island=~a sex=~a  actual=~a  predicted=~a\n"
+                  i (numeric-at penguins-data "bill_length_mm" i) (numeric-at penguins-data "bill_depth_mm" i)
+                  (string-at penguins-data "island" i) (string-at penguins-data "sex" i)
+                  actual predicted))))
+    (loop (+ i 1) (cdr preds))))
+(format #t "~a misclassified (of ~a rows, some incomplete)\n" misclassified (nrows penguins-data))
 
-(define bill-only (new-NaiveBayesClassifier penguins "species ~ bill_length_mm + bill_depth_mm"))
-(format #t "\nbill-measurements-only model training accuracy: ~a%\n" (* 100.0 (NaiveBayesClassifier-training-accuracy bill-only)))
-(Plot-save (NaiveBayesClassifier-plot-classification bill-only penguins "bill_length_mm" "bill_depth_mm") "naive_bayes_penguins_classification.svg")
-(Plot-save (NaiveBayesClassifier-plot-decision-regions bill-only "bill_length_mm" "bill_depth_mm") "naive_bayes_penguins_decision_regions.svg")
-(format #t "Saved naive_bayes_penguins_classification.svg and naive_bayes_penguins_decision_regions.svg\n")
+;; plot-decision-regions requires exactly two NUMERIC predictors, so build a separate
+;; two-predictor model (bill measurements alone) just for visualization.
+(define bill-only (make <naive-bayes-classifier> penguins-data "species ~ bill_length_mm + bill_depth_mm"))
+(format #t "\nbill-measurements-only model training accuracy: ~a%\n" (* 100 (training-accuracy bill-only)))
+(save (plot-classification bill-only penguins-data "bill_length_mm" "bill_depth_mm")
+      "naive_bayes_penguins_classification.svg")
+(save (plot-decision-regions bill-only "bill_length_mm" "bill_depth_mm")
+      "naive_bayes_penguins_decision_regions.svg")
+(display "Saved naive_bayes_penguins_classification.svg and naive_bayes_penguins_decision_regions.svg\n")

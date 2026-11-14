@@ -1,5 +1,8 @@
 // CMD: just TARGET=bspline_ex run-go
 
+//go:build ignore
+
+// Tensor-product B-spline regression: fit z ~ bs(x, y) to a smooth surface and predict.
 package main
 
 import (
@@ -8,12 +11,10 @@ import (
 	"math"
 )
 
-func dvector(values []float64) datamunge.DVector {
-	out := datamunge.NewDVector(int64(len(values)))
-	for i, v := range values {
-		out.Set(i, v)
+func check(err error) {
+	if err != nil {
+		panic(err)
 	}
-	return out
 }
 
 func main() {
@@ -27,19 +28,21 @@ func main() {
 			z = append(z, math.Sin(xv)+yv*yv)
 		}
 	}
+	data := datamunge.Must(datamunge.NewDataFrame())
+	defer data.Close()
+	check(data.AddNumericColumn("x", x))
+	check(data.AddNumericColumn("y", y))
+	check(data.AddNumericColumn("z", z))
 
-	data := datamunge.NewDataFrame()
-	data.Add_numeric_column("x", dvector(x))
-	data.Add_numeric_column("y", dvector(y))
-	data.Add_numeric_column("z", dvector(z))
-
-	surface := datamunge.NewLM(data, "z ~ bs(x, y)")
+	surface := datamunge.Must(datamunge.NewLM(data, "z ~ bs(x, y)"))
+	defer surface.Close()
 	fmt.Println("Fitted z ~ bs(x, y)")
-	surface.Print_summary()
+	check(surface.PrintSummary())
 
-	newPoints := datamunge.NewDataFrame()
-	newPoints.Add_numeric_column("x", dvector([]float64{0.25, 0.75}))
-	newPoints.Add_numeric_column("y", dvector([]float64{0.50, 0.25}))
-	pred := surface.Predict(newPoints)
-	fmt.Printf("Predictions: [%.6f, %.6f]\n", pred.Get(0), pred.Get(1))
+	newPoints := datamunge.Must(datamunge.NewDataFrame())
+	defer newPoints.Close()
+	check(newPoints.AddNumericColumn("x", []float64{0.25, 0.75}))
+	check(newPoints.AddNumericColumn("y", []float64{0.50, 0.25}))
+	pred := datamunge.Must(surface.Predict(newPoints))
+	fmt.Printf("Predictions: [%.6f, %.6f]\n", pred[0], pred[1])
 }

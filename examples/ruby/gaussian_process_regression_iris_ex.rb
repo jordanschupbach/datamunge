@@ -1,16 +1,16 @@
 # CMD: just TARGET=gaussian_process_regression_iris_ex run-ruby
+# Gaussian process regression of Petal.Length on Petal.Width (iris), with confidence intervals.
+require "datamunge"
 
-require "octruby"
+formula = "Petal.Length ~ Petal.Width"
 
-FORMULA = "Petal.Length ~ Petal.Width"
-
-iris = Datamunge.data_iris
+iris = Datamunge::Data.iris
 puts "iris: #{iris.nrows} rows x #{iris.ncols} cols"
-puts "formula: #{FORMULA}\n\n"
+puts "formula: #{formula}\n\n"
 
 # Both the length scale and the noise ratio are auto-selected by maximizing the exact log
 # marginal likelihood.
-model = Datamunge::GaussianProcessRegression.new(iris, FORMULA)
+model = Datamunge::GaussianProcessRegression.new(iris, formula)
 model.print_summary
 
 model.plot_fit(iris).save("gpr_iris_fit.svg")
@@ -24,6 +24,5 @@ query = Datamunge::DataFrame.new
 query.add_numeric_column("Petal.Width", [0.2, 1.3, 2.5, 10.0])
 detail = model.predict_frame(query, "confidence")
 puts "\nPredictions with 95% confidence intervals:"
-puts detail.to_string
-puts "(Petal.Width=10.0 is far outside the training range [0.1, 2.5] -- note how much wider its\n" \
-     " interval is than the in-range predictions.)"
+puts detail
+puts "(Petal.Width=10.0 is far outside the training range [0.1, 2.5] -- note how much wider its\n interval is than the in-range predictions.)"

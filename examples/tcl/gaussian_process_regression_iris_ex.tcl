@@ -1,23 +1,28 @@
 # CMD: just TARGET=gaussian_process_regression_iris_ex run-tcl
+# Gaussian process regression of Petal.Length on Petal.Width (iris), with confidence intervals.
+package require datamunge
 
-package require Datamunge 0.0.1
+set formula "Petal.Length ~ Petal.Width"
 
-set FORMULA "Petal.Length ~ Petal.Width"
+set iris [datamunge::Data::iris]
+puts "iris: [$iris nrows] rows x [$iris ncols] cols"
+puts "formula: $formula\n"
 
-set iris [datamunge::data_iris]
-puts "iris: [datamunge::DataFrame_nrows $iris] rows x [datamunge::DataFrame_ncols $iris] cols"
-puts "formula: $FORMULA\n"
+# Both the length scale and the noise ratio are auto-selected by maximizing the exact log
+# marginal likelihood.
+set model [datamunge::GaussianProcessRegression new $iris $formula]
+$model print_summary
 
-set model [datamunge::new_GaussianProcessRegression $iris $FORMULA]
-datamunge::GaussianProcessRegression_print_summary $model
-
-datamunge::Plot_save [datamunge::GaussianProcessRegression_plot_fit $model $iris] "gpr_iris_fit.svg"
-datamunge::Plot_save [datamunge::GaussianProcessRegression_plot_length_scale_profile $model] "gpr_iris_length_scale_profile.svg"
+[$model plot_fit $iris] save gpr_iris_fit.svg
+[$model plot_length_scale_profile] save gpr_iris_length_scale_profile.svg
 puts "\nSaved gpr_iris_fit.svg and gpr_iris_length_scale_profile.svg"
 
-set query [datamunge::DataFrame_empty]
-datamunge::DataFrame_add_numeric_column $query "Petal.Width" {0.2 1.3 2.5 10.0}
-set detail [datamunge::GaussianProcessRegression_predict_frame $model $query "confidence"]
+# Unlike every other regressor in this suite, a GP gives a genuine posterior confidence
+# interval at every point -- including far outside the training data, where it should widen
+# substantially as the model's uncertainty grows.
+set query [datamunge::DataFrame new]
+$query add_numeric_column Petal.Width {0.2 1.3 2.5 10.0}
+set detail [$model predict_frame $query confidence]
 puts "\nPredictions with 95% confidence intervals:"
-puts "[datamunge::DataFrame_to_string $detail]"
+puts [$detail to_string]
 puts "(Petal.Width=10.0 is far outside the training range \[0.1, 2.5\] -- note how much wider its\n interval is than the in-range predictions.)"

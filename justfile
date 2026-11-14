@@ -23,6 +23,51 @@ BINDINGS_DIR := "src"
 # Compiles a free-format COBOL program against build/cobol/prefix (just build-cobol): the
 # copybooks come from COBCPY (set by the dev shells) and the stubs from libdatamungecobol.
 COBC := 'cobc -x -free -fstatic-call -Wall -I "$(pwd)/build/cobol/prefix/share/cobol/copy" -L "$(pwd)/build/cobol/prefix/lib" -ldatamungecobol -Q -Wl,-rpath,"$(pwd)/build/cobol/prefix/lib"'
+# Compiles a Fortran program against build/fortran/prefix (just build-fortran): `use datamunge` finds
+# the .mod files through -I, and the program links the module library and the native library (rpath).
+# Append the source and `-o <exe>`; build/fortran/mod keeps the program's own .mod files out of the tree.
+FORTRAN_FC := 'mkdir -p build/fortran/bin build/fortran/mod && gfortran -std=f2018 -O1 -Wall -Wno-compare-reals -I "$(pwd)/build/fortran/prefix/include/datamunge/fortran" -J build/fortran/mod -L "$(pwd)/build/fortran/prefix/lib" -Wl,-rpath,"$(pwd)/build/fortran/prefix/lib"'
+FORTRAN_LIBS := '-ldatamunge_fortran_mod -ldatamunge_fortran'
+# Runs Ruby with build/ruby/prefix/lib (just build-ruby) first on the load path: `require 'datamunge'`
+# loads datamunge.rb there, which require_relative's the extension datamunge/datamunge.so.
+RUBY := 'ruby -I "$(pwd)/build/ruby/prefix/lib"'
+# Runs tclsh with build/tcl/prefix/lib (just build-tcl) on TCLLIBPATH (a Tcl list, so space-separated):
+# `package require datamunge` finds the package directory datamunge/ there (pkgIndex.tcl, datamunge.tcl
+# and the extension datamunge.so).
+TCLSH := 'TCLLIBPATH="$(pwd)/build/tcl/prefix/lib${TCLLIBPATH:+ $TCLLIBPATH}" tclsh'
+# octave-cli with build/octave/prefix/share/octave/site/m (just build-octave) on the load path: it holds
+# the oct-file __datamunge__.oct and the package +datamunge (datamunge.DataFrame (...)). The path is
+# added after silencing Octave:shadowed-function, which Octave raises (on every path refresh) for the
+# package functions datamunge.resize and datamunge.Data.load although they shadow nothing. Append
+# Octave code and a closing double quote, e.g. {{ OCTAVE }} source examples/octave/x.m".
+# guile with build/guile/prefix/share/guile/site/<version> (just build-guile) first on GUILE_LOAD_PATH:
+# (use-modules (datamunge)) loads datamunge.scm there, which loads the extension libdatamunge_guile.so
+# beside it. GUILE_LOAD_COMPILED_PATH has the datamunge.go that build-guile precompiles, so the module
+# loads compiled; auto-compilation stays off (a stale .go falls back to the source, never a 40 s compile).
+GUILE := 'GUILE_LOAD_PATH="$(pwd)/build/guile/prefix/share/guile/site/$(pkg-config --variable=effective-version guile-3.0)${GUILE_LOAD_PATH:+:$GUILE_LOAD_PATH}" GUILE_LOAD_COMPILED_PATH="$(pwd)/build/guile/prefix/lib/guile/$(pkg-config --variable=effective-version guile-3.0)/site-ccache${GUILE_LOAD_COMPILED_PATH:+:$GUILE_LOAD_COMPILED_PATH}" guile --no-auto-compile'
+# java with build/java/prefix (just build-java): datamunge.jar on the class path and the JNI library
+# libdatamunge_java named by DATAMUNGE_JAVA_LIBRARY. Append a source file (single-file launch) or a class.
+JAVA := 'DATAMUNGE_JAVA_LIBRARY="$(pwd)/build/java/prefix/lib/libdatamunge_java.so" java -cp "$(pwd)/build/java/prefix/share/java/datamunge.jar"'
+# examples/java/<PascalCase>.java for TARGET=snake_case_name (dataframe_ex -> DataframeEx.java).
+# go with build/go/prefix (just build-go): cgo links libdatamunge_go from there (with an rpath).
+# The workspace build/go/just.go.work (like the dev shells' GOWORK) holds the committed module
+# src/datamungego/go/datamunge and the modules examples/go and tests/go (whose go.mod files replace
+# datamunge with it, for mep's Go server), so `go run examples/go/x.go` works from the root. Offline.
+GO_ENV := 'mkdir -p build/go && printf "go 1.24\n\nuse (\n\t%s\n\t%s\n\t%s\n)\n" "$(pwd)/src/datamungego/go/datamunge" "$(pwd)/examples/go" "$(pwd)/tests/go" > build/go/just.go.work && export GOWORK="$(pwd)/build/go/just.go.work" GOTOOLCHAIN=local GOPROXY=off GOFLAGS= CGO_ENABLED=1 CGO_LDFLAGS="-L$(pwd)/build/go/prefix/lib -Wl,-rpath,$(pwd)/build/go/prefix/lib"'
+JAVA_EXAMPLE := 'java_example() { printf "examples/java/%s.java" "$(printf %s "$1" | sed -E "s/(^|_)([a-z0-9])/\\U\\2/g")"; }'
+# ocamlfind with build/ocaml/prefix/lib (just build-ocaml) on OCAMLPATH: `-package datamunge` finds the
+# findlib package datamunge/ there. ocaml_build SRC EXE compiles SRC natively (a copy under
+# build/ocaml/obj, so no .cmi/.cmx/.o land beside it) into EXE, linking libdatamunge_stubs.a and
+# libdatamunge (rpath) through datamunge.cmxa.
+OCAML_ENV := 'export OCAMLPATH="$(pwd)/build/ocaml/prefix/lib${OCAMLPATH:+:$OCAMLPATH}" CAML_LD_LIBRARY_PATH="$(pwd)/build/ocaml/prefix/lib/datamunge${CAML_LD_LIBRARY_PATH:+:$CAML_LD_LIBRARY_PATH}"'
+OCAML_BUILD := 'ocaml_build() { o="build/ocaml/obj/$(basename "$1" .ml)"; mkdir -p "$o" "$(dirname "$2")" && cp "$1" "$o/" && ocamlfind ocamlopt -package datamunge -linkpkg -o "$2" "$o/$(basename "$1")"; }'
+# GNU APL with build/apl/prefix (just build-apl): the script datamunge.apl (the dm∆ functions) loads the
+# native function library DATAMUNGE_APL_LIBRARY names. Append `-f program.apl`. GNU APL reports errors
+# and carries on (exit status 0), so apl_run FILE also fails when the output has an error's caret line
+# (`      ^   ^` under the failing statement); --OFF ends the session after the last file.
+APL := 'DATAMUNGE_APL_LIBRARY="$(pwd)/build/apl/prefix/lib/libdatamunge_gnu_apl.so" apl --script --noSV --noColor --silent --OFF -f "$(pwd)/build/apl/prefix/share/apl/datamunge.apl"'
+APL_RUN := 'apl_run() { mkdir -p build/apl/log && log="build/apl/log/$(basename "$1" .apl).log" && DATAMUNGE_APL_LIBRARY="$(pwd)/build/apl/prefix/lib/libdatamunge_gnu_apl.so" apl --script --noSV --noColor --silent --OFF -f "$(pwd)/build/apl/prefix/share/apl/datamunge.apl" -f "$1" 2>&1 | tee "$log" && ! grep -Eq "^ *\^( +\^)* *$" "$log"; }'
+OCTAVE := 'octave-cli --norc --no-history --quiet --eval "warning off Octave:shadowed-function; addpath (\"$(pwd)/build/octave/prefix/share/octave/site/m\");'
 
 # {{{ run commands
 
@@ -45,7 +90,7 @@ quality: format-check lint
 
 fmt: format
 
-run-all: run-cpp run-csharp run-java run-go run-rust run-d run-python run-php run-perl run-tcl run-lua run-ruby run-r run-guile run-javascript run-ocaml run-octave
+run-all: run-cpp run-csharp run-java run-go run-rust run-d run-python run-php run-perl run-tcl run-lua run-ruby run-r run-guile run-javascript run-ocaml run-octave run-apl
 
 # Each example is a .NET 10 file-based app: `#:project ../../src/datamungecsharp/Datamunge.csproj`
 # references the generated project, and the dev shells point DATAMUNGE_CSHARP_LIBRARY at the
@@ -53,11 +98,21 @@ run-all: run-cpp run-csharp run-java run-go run-rust run-d run-python run-php ru
 run-csharp: build-csharp
   {{ NIX_DEVELOP }} .#csharp --command bash -c 'dotnet run examples/csharp/{{ TARGET }}.cs'
 
+# Runs examples/java/<Target>.java (TARGET=dataframe_ex runs DataframeEx.java) as a single-file
+# source launch against build/java/prefix (Rosetta binding).
 run-java: build-java
-  {{ NIX_DEVELOP }} .#java --command bash -c "gradle run --no-configuration-cache --args='{{ TARGET }}'"
+  {{ NIX_DEVELOP }} .#java --command bash -c '{{ JAVA_EXAMPLE }}; {{ JAVA }} "$(java_example {{ TARGET }})"'
 
+# Runs examples/go/TARGET.go (a `//go:build ignore` main program in the module examples/go) with
+# `go run` from the repository root against build/go/prefix (Rosetta binding). Go has no REPL, so
+# there is no repl-go.
 run-go: build-go
-  {{ NIX_DEVELOP }} .#go --command bash -c 'cd {{ BINDINGS_DIR }}/godatamunge && LD_LIBRARY_PATH="$(pwd)/../../build:$LD_LIBRARY_PATH" DYLD_LIBRARY_PATH="$(pwd)/../../build:$DYLD_LIBRARY_PATH" CGO_CXXFLAGS="-std=c++23" CGO_CPPFLAGS="-I$(pwd)/../../include" CGO_LDFLAGS="-L$(pwd)/../../build -ldatamunge" go run ../../examples/go/{{ TARGET }}.go'
+  {{ NIX_DEVELOP }} .#go --command bash -c '{{ GO_ENV }} && go run examples/go/{{ TARGET }}.go'
+
+# Runs examples/apl/TARGET.apl (GNU APL) from the repository root against build/apl/prefix (Rosetta
+# binding); fails when GNU APL reports an error.
+run-apl: build-apl
+  {{ NIX_DEVELOP }} .#apl --command bash -c 'set -o pipefail; {{ APL_RUN }}; apl_run examples/apl/{{ TARGET }}.apl'
 
 run-rust: build-rust
   {{ NIX_DEVELOP }} .#rust --command bash -c 'export LD_LIBRARY_PATH="$(pkg-config --variable=libdir datamunge)${LD_LIBRARY_PATH:+:}$LD_LIBRARY_PATH" && cargo run --manifest-path {{ BINDINGS_DIR }}/rustdatamunge/Cargo.toml --example {{ TARGET }}'
@@ -82,8 +137,9 @@ run-php: build-php
 run-perl: build-perl
   {{ NIX_DEVELOP }} .#perl --command bash -c 'export PERL5LIB="$(pwd)/build/perl/lib/perl5:$PERL5LIB" && export LD_LIBRARY_PATH="$(pwd)/build:$LD_LIBRARY_PATH" && perl examples/perl/{{ TARGET }}.pl'
 
+# Runs examples/tcl/TARGET.tcl from the repository root against build/tcl/prefix (Rosetta binding).
 run-tcl: build-tcl
-  {{ NIX_DEVELOP }} .#tcl --command bash -c 'ext="$(tclsh <<< "puts [info sharedlibextension]")" && if [ -f build/datamungetcl/Datamunge.so ] && [ ! -e "build/datamungetcl/Datamunge$ext" ]; then cp -f build/datamungetcl/Datamunge.so "build/datamungetcl/Datamunge$ext"; fi && export TCLLIBPATH="$(pwd)/build/datamungetcl${TCLLIBPATH:+ $TCLLIBPATH}" && export DYLD_LIBRARY_PATH="$(pkg-config --variable=libdir datamunge)${DYLD_LIBRARY_PATH:+:}$DYLD_LIBRARY_PATH" && tclsh examples/tcl/{{ TARGET }}.tcl'
+  {{ NIX_DEVELOP }} .#tcl --command bash -c '{{ TCLSH }} examples/tcl/{{ TARGET }}.tcl'
 
 run-lua: build-lua
   {{ NIX_DEVELOP }} .#lua --command bash -c 'cmake --install build/datamungelua --prefix build/lua/prefix >/dev/null && export LUA_CPATH="$(pwd)/build/lua/prefix/lib/lua/?.so;$(pwd)/build/lua/prefix/lib64/lua/?.so;;" && export LUA_PATH="$(pwd)/build/lua/prefix/share/lua/?.lua;;" && export LD_LIBRARY_PATH="$(pkg-config --variable=libdir datamunge)${LD_LIBRARY_PATH:+:}$LD_LIBRARY_PATH" && export DYLD_LIBRARY_PATH="$(pkg-config --variable=libdir datamunge)${DYLD_LIBRARY_PATH:+:}$DYLD_LIBRARY_PATH" && lua examples/lua/{{ TARGET }}.lua'
@@ -94,26 +150,36 @@ run-lisp: build-lisp
 run-julia: build-julia
   {{ NIX_DEVELOP }} .#julia --command bash -c 'export JULIA_LOAD_PATH="$(pwd)/build/julia/prefix/share/julia:@:@v#.#:@stdlib" && julia --startup-file=no --threads=auto examples/julia/{{ TARGET }}.jl'
 
+# Compiles examples/fortran/TARGET.f90 against build/fortran/prefix into build/fortran/bin and runs it
+# from the repository root (Fortran has no REPL, so there is no repl-fortran).
+run-fortran: build-fortran
+  {{ NIX_DEVELOP }} .#fortran --command bash -c '{{ FORTRAN_FC }} examples/fortran/{{ TARGET }}.f90 {{ FORTRAN_LIBS }} -o build/fortran/bin/{{ TARGET }} && build/fortran/bin/{{ TARGET }}'
+
 run-cobol: build-cobol
   {{ NIX_DEVELOP }} .#cobol --command bash -c 'mkdir -p build/cobol/bin && {{ COBC }} -o build/cobol/bin/{{ TARGET }} examples/cobol/{{ TARGET }}.cob && build/cobol/bin/{{ TARGET }}'
 
+# Runs examples/ruby/TARGET.rb from the repository root against build/ruby/prefix (Rosetta binding).
 run-ruby: build-ruby
-  {{ NIX_DEVELOP }} .#ruby --command bash -c 'export LD_LIBRARY_PATH="$(pkg-config --variable=libdir datamunge)${LD_LIBRARY_PATH:+:}$LD_LIBRARY_PATH" && export DYLD_LIBRARY_PATH="$(pkg-config --variable=libdir datamunge)${DYLD_LIBRARY_PATH:+:}$DYLD_LIBRARY_PATH" && ruby -I {{ BINDINGS_DIR }}/octruby/lib examples/ruby/{{ TARGET }}.rb'
+  {{ NIX_DEVELOP }} .#ruby --command bash -c '{{ RUBY }} examples/ruby/{{ TARGET }}.rb'
 
 run-r: build-r
    {{ NIX_DEVELOP }} .#r --command bash -c 'R_LIBS_USER="$(pwd)/build/r/library${R_LIBS_USER:+:}$R_LIBS_USER" Rscript examples/r/{{ TARGET }}.r'
 
+# Runs examples/guile/TARGET.scm from the repository root against build/guile/prefix (Rosetta binding).
 run-guile: build-guile
-  {{ NIX_DEVELOP }} .#guile --command bash -c 'cmake --install build/datamungeguile --prefix build/guile/prefix >/dev/null && guile_effective="$(guile -c "(display (effective-version))" 2>/dev/null || echo 3.0)" && export GUILE_LOAD_PATH="$(pwd)/build/guile/prefix/share/guile/site/$guile_effective${GUILE_LOAD_PATH:+:}$GUILE_LOAD_PATH" && export LD_LIBRARY_PATH="$(pwd)/build/guile/prefix/lib/guile/$guile_effective/extensions:$(pwd)/build/guile/prefix/lib64/guile/$guile_effective/extensions:$(pwd)/build${LD_LIBRARY_PATH:+:}$LD_LIBRARY_PATH" && export DYLD_LIBRARY_PATH="$(pkg-config --variable=libdir datamunge)${DYLD_LIBRARY_PATH:+:}$DYLD_LIBRARY_PATH" && guile --no-auto-compile -s examples/guile/{{ TARGET }}.scm'
+  {{ NIX_DEVELOP }} .#guile --command bash -c '{{ GUILE }} -s examples/guile/{{ TARGET }}.scm'
 
 run-javascript: build-javascript
    {{ NIX_DEVELOP }} .#javascript --command bash -c 'node ./examples/javascript/{{ TARGET }}.js'
 
-run-ocaml:
-  {{ NIX_DEVELOP }} .#ocaml --command bash -c 'just install-ocaml && mkdir -p build/ocaml && export OCAMLPATH="$(pwd)/build/ocaml/prefix/lib${OCAMLPATH:+:}$OCAMLPATH" && ocamlfind ocamlopt -package datamungeocaml -linkpkg examples/ocaml/{{ TARGET }}.ml -o build/ocaml/{{ TARGET }} && ./build/ocaml/{{ TARGET }}'
+# Compiles examples/ocaml/TARGET.ml natively against build/ocaml/prefix (Rosetta binding) and runs it
+# from the repository root.
+run-ocaml: build-ocaml
+  {{ NIX_DEVELOP }} .#ocaml --command bash -c '{{ OCAML_ENV }} && {{ OCAML_BUILD }}; ocaml_build examples/ocaml/{{ TARGET }}.ml build/ocaml/bin/{{ TARGET }} && ./build/ocaml/bin/{{ TARGET }}'
 
+# Runs examples/octave/TARGET.m from the repository root against build/octave/prefix (Rosetta binding).
 run-octave: build-octave
-  {{ NIX_DEVELOP }} .#octave --command bash -c 'octave -qf --path "$(pwd)/build/datamungeoctave" examples/octave/{{ TARGET }}.m'
+  {{ NIX_DEVELOP }} .#octave --command bash -c '{{ OCTAVE }} source examples/octave/{{ TARGET }}.m"'
 
 # run-all-<lang>: build the binding once, then run EVERY example for that language,
 # printing a per-example header and a passed/failed summary (exits non-zero on any failure).
@@ -151,6 +217,13 @@ run-all-julia: build-julia
     printf "\n########## julia: %d passed, %d failed ##########\n" "$pass" "$fail"; \
     if [ -n "$failed" ]; then echo "FAILED:$failed"; fi; [ "$fail" -eq 0 ]'
 
+run-all-fortran: build-fortran
+  {{ NIX_DEVELOP }} .#fortran --command bash -c 'pass=0; fail=0; failed=""; \
+    for f in examples/fortran/*.f90; do n="$(basename "$f" .f90)"; printf "\n========== %s ==========\n" "$n"; \
+      if {{ FORTRAN_FC }} "$f" {{ FORTRAN_LIBS }} -o "build/fortran/bin/$n" && "build/fortran/bin/$n"; then pass=$((pass+1)); else fail=$((fail+1)); failed="$failed $n"; fi; done; \
+    printf "\n########## fortran: %d passed, %d failed ##########\n" "$pass" "$fail"; \
+    if [ -n "$failed" ]; then echo "FAILED:$failed"; fi; [ "$fail" -eq 0 ]'
+
 run-all-cobol: build-cobol
   {{ NIX_DEVELOP }} .#cobol --command bash -c 'mkdir -p build/cobol/bin; pass=0; fail=0; failed=""; \
     for f in examples/cobol/*.cob; do n="$(basename "$f" .cob)"; printf "\n========== %s ==========\n" "$n"; \
@@ -159,41 +232,37 @@ run-all-cobol: build-cobol
     if [ -n "$failed" ]; then echo "FAILED:$failed"; fi; [ "$fail" -eq 0 ]'
 
 run-all-guile: build-guile
-  {{ NIX_DEVELOP }} .#guile --command bash -c 'cmake --install build/datamungeguile --prefix build/guile/prefix >/dev/null && \
-    guile_effective="$(guile -c "(display (effective-version))" 2>/dev/null || echo 3.0)" && \
-    export GUILE_LOAD_PATH="$(pwd)/build/guile/prefix/share/guile/site/$guile_effective${GUILE_LOAD_PATH:+:}$GUILE_LOAD_PATH" && \
-    export LD_LIBRARY_PATH="$(pwd)/build/guile/prefix/lib/guile/$guile_effective/extensions:$(pwd)/build/guile/prefix/lib64/guile/$guile_effective/extensions:$(pwd)/build${LD_LIBRARY_PATH:+:}$LD_LIBRARY_PATH" && \
-    export DYLD_LIBRARY_PATH="$(pkg-config --variable=libdir datamunge)${DYLD_LIBRARY_PATH:+:}$DYLD_LIBRARY_PATH" && \
-    pass=0; fail=0; failed=""; \
-    for f in examples/guile/*.scm; do n="$(basename "$f")"; printf "\n========== %s ==========\n" "$n"; \
-      if guile --no-auto-compile -s "$f"; then pass=$((pass+1)); else fail=$((fail+1)); failed="$failed $n"; fi; done; \
+  {{ NIX_DEVELOP }} .#guile --command bash -c 'pass=0; fail=0; failed=""; \
+    for f in examples/guile/*.scm; do n="$(basename "$f" .scm)"; printf "\n========== %s ==========\n" "$n"; \
+      if {{ GUILE }} -s "$f"; then pass=$((pass+1)); else fail=$((fail+1)); failed="$failed $n"; fi; done; \
     printf "\n########## guile: %d passed, %d failed ##########\n" "$pass" "$fail"; \
     if [ -n "$failed" ]; then echo "FAILED:$failed"; fi; [ "$fail" -eq 0 ]'
 
 run-all-ruby: build-ruby
-  {{ NIX_DEVELOP }} .#ruby --command bash -c 'export LD_LIBRARY_PATH="$(pkg-config --variable=libdir datamunge)${LD_LIBRARY_PATH:+:}$LD_LIBRARY_PATH" && \
-    export DYLD_LIBRARY_PATH="$(pkg-config --variable=libdir datamunge)${DYLD_LIBRARY_PATH:+:}$DYLD_LIBRARY_PATH" && \
-    pass=0; fail=0; failed=""; \
-    for f in examples/ruby/*.rb; do n="$(basename "$f")"; printf "\n========== %s ==========\n" "$n"; \
-      if ruby -I {{ BINDINGS_DIR }}/octruby/lib "$f"; then pass=$((pass+1)); else fail=$((fail+1)); failed="$failed $n"; fi; done; \
+  {{ NIX_DEVELOP }} .#ruby --command bash -c 'pass=0; fail=0; failed=""; \
+    for f in examples/ruby/*.rb; do n="$(basename "$f" .rb)"; printf "\n========== %s ==========\n" "$n"; \
+      if {{ RUBY }} "$f"; then pass=$((pass+1)); else fail=$((fail+1)); failed="$failed $n"; fi; done; \
     printf "\n########## ruby: %d passed, %d failed ##########\n" "$pass" "$fail"; \
     if [ -n "$failed" ]; then echo "FAILED:$failed"; fi; [ "$fail" -eq 0 ]'
 
+run-all-ocaml: build-ocaml
+  {{ NIX_DEVELOP }} .#ocaml --command bash -c '{{ OCAML_ENV }} && {{ OCAML_BUILD }}; pass=0; fail=0; failed=""; \
+    for f in examples/ocaml/*.ml; do n="$(basename "$f" .ml)"; printf "\n========== %s ==========\n" "$n"; \
+      if ocaml_build "$f" "build/ocaml/bin/$n" && "./build/ocaml/bin/$n"; then pass=$((pass+1)); else fail=$((fail+1)); failed="$failed $n"; fi; done; \
+    printf "\n########## ocaml: %d passed, %d failed ##########\n" "$pass" "$fail"; \
+    if [ -n "$failed" ]; then echo "FAILED:$failed"; fi; [ "$fail" -eq 0 ]'
+
 run-all-tcl: build-tcl
-  {{ NIX_DEVELOP }} .#tcl --command bash -c 'ext="$(tclsh <<< "puts [info sharedlibextension]")" && \
-    if [ -f build/datamungetcl/Datamunge.so ] && [ ! -e "build/datamungetcl/Datamunge$ext" ]; then cp -f build/datamungetcl/Datamunge.so "build/datamungetcl/Datamunge$ext"; fi && \
-    export TCLLIBPATH="$(pwd)/build/datamungetcl${TCLLIBPATH:+ $TCLLIBPATH}" && \
-    export DYLD_LIBRARY_PATH="$(pkg-config --variable=libdir datamunge)${DYLD_LIBRARY_PATH:+:}$DYLD_LIBRARY_PATH" && \
-    pass=0; fail=0; failed=""; \
-    for f in examples/tcl/*.tcl; do n="$(basename "$f")"; printf "\n========== %s ==========\n" "$n"; \
-      if tclsh "$f"; then pass=$((pass+1)); else fail=$((fail+1)); failed="$failed $n"; fi; done; \
+  {{ NIX_DEVELOP }} .#tcl --command bash -c 'pass=0; fail=0; failed=""; \
+    for f in examples/tcl/*.tcl; do n="$(basename "$f" .tcl)"; printf "\n========== %s ==========\n" "$n"; \
+      if {{ TCLSH }} "$f"; then pass=$((pass+1)); else fail=$((fail+1)); failed="$failed $n"; fi; done; \
     printf "\n########## tcl: %d passed, %d failed ##########\n" "$pass" "$fail"; \
     if [ -n "$failed" ]; then echo "FAILED:$failed"; fi; [ "$fail" -eq 0 ]'
 
 run-all-octave: build-octave
   {{ NIX_DEVELOP }} .#octave --command bash -c 'pass=0; fail=0; failed=""; \
-    for f in examples/octave/*.m; do n="$(basename "$f")"; printf "\n========== %s ==========\n" "$n"; \
-      if octave -qf --path "$(pwd)/build/datamungeoctave" "$f"; then pass=$((pass+1)); else fail=$((fail+1)); failed="$failed $n"; fi; done; \
+    for f in examples/octave/*.m; do n="$(basename "$f" .m)"; printf "\n========== %s ==========\n" "$n"; \
+      if {{ OCTAVE }} source $f"; then pass=$((pass+1)); else fail=$((fail+1)); failed="$failed $n"; fi; done; \
     printf "\n########## octave: %d passed, %d failed ##########\n" "$pass" "$fail"; \
     if [ -n "$failed" ]; then echo "FAILED:$failed"; fi; [ "$fail" -eq 0 ]'
 
@@ -208,13 +277,17 @@ run-all-perl: build-perl
     if [ -n "$failed" ]; then echo "FAILED:$failed"; fi; [ "$fail" -eq 0 ]'
 
 run-all-go: build-go
-  {{ NIX_DEVELOP }} .#go --command bash -c 'root="$(pwd)"; cd {{ BINDINGS_DIR }}/godatamunge && \
-    export LD_LIBRARY_PATH="$root/build:$LD_LIBRARY_PATH" && export DYLD_LIBRARY_PATH="$root/build:$DYLD_LIBRARY_PATH" && \
-    export CGO_CXXFLAGS="-std=c++23" && export CGO_CPPFLAGS="-I$root/include" && export CGO_LDFLAGS="-L$root/build -ldatamunge" && \
-    pass=0; fail=0; failed=""; \
-    for f in "$root"/examples/go/*.go; do case "$f" in *_test.go) continue;; esac; n="$(basename "$f")"; printf "\n========== %s ==========\n" "$n"; \
+  {{ NIX_DEVELOP }} .#go --command bash -c '{{ GO_ENV }} && pass=0; fail=0; failed=""; \
+    for f in examples/go/*.go; do n="$(basename "$f" .go)"; printf "\n========== %s ==========\n" "$n"; \
       if go run "$f"; then pass=$((pass+1)); else fail=$((fail+1)); failed="$failed $n"; fi; done; \
     printf "\n########## go: %d passed, %d failed ##########\n" "$pass" "$fail"; \
+    if [ -n "$failed" ]; then echo "FAILED:$failed"; fi; [ "$fail" -eq 0 ]'
+
+run-all-apl: build-apl
+  {{ NIX_DEVELOP }} .#apl --command bash -c 'set -o pipefail; {{ APL_RUN }}; pass=0; fail=0; failed=""; \
+    for f in examples/apl/*.apl; do n="$(basename "$f" .apl)"; printf "\n========== %s ==========\n" "$n"; \
+      if apl_run "$f"; then pass=$((pass+1)); else fail=$((fail+1)); failed="$failed $n"; fi; done; \
+    printf "\n########## apl: %d passed, %d failed ##########\n" "$pass" "$fail"; \
     if [ -n "$failed" ]; then echo "FAILED:$failed"; fi; [ "$fail" -eq 0 ]'
 
 run-all-d: build-d
@@ -243,11 +316,10 @@ run-all-r: build-r
 
 run-all-java: build-java
   {{ NIX_DEVELOP }} .#java --command bash -c 'pass=0; fail=0; failed=""; \
-    for f in {{ BINDINGS_DIR }}/jdatamunge/src/main/java/js/datamunge/jdatamunge/examples/*.java; do \
-      cls="$(basename "$f" .java)"; [ "$cls" = "ExampleRunner" ] && continue; \
-      n="$(echo "$cls" | sed -E "s/([a-z0-9])([A-Z])/\1_\2/g" | tr "[:upper:]" "[:lower:]")"; \
+    for f in examples/java/*.java; do \
+      n="$(basename "$f" .java | sed -E "s/([a-z0-9])([A-Z])/\1_\2/g" | tr "[:upper:]" "[:lower:]")"; \
       printf "\n========== %s ==========\n" "$n"; \
-      if gradle run --no-configuration-cache --args="$n"; then pass=$((pass+1)); else fail=$((fail+1)); failed="$failed $n"; fi; done; \
+      if {{ JAVA }} "$f"; then pass=$((pass+1)); else fail=$((fail+1)); failed="$failed $n"; fi; done; \
     printf "\n########## java: %d passed, %d failed ##########\n" "$pass" "$fail"; \
     if [ -n "$failed" ]; then echo "FAILED:$failed"; fi; [ "$fail" -eq 0 ]'
 
@@ -302,7 +374,7 @@ embed-plot-font:
 update-swig:
   nix flake update swig
 
-prebuild-swig: prebuild-python prebuild-javascript prebuild-r prebuild-perl prebuild-ruby prebuild-tcl prebuild-lua prebuild-d prebuild-guile prebuild-octave prebuild-go prebuild-php prebuild-java prebuild-ocaml
+prebuild-swig: prebuild-python prebuild-javascript prebuild-r prebuild-perl prebuild-lua prebuild-d prebuild-octave prebuild-php
   @echo "SWIG wrappers regenerated (with Doxygen comments enabled)"
 
 prebuild-python:
@@ -318,19 +390,30 @@ prebuild-javascript:
 prebuild-csharp:
   {{ NIX_DEVELOP }} .#csharp --command python3 scripts/prebuild_bindings.py csharp
 
+# Fortran (Rosetta): src/datamunge_fortran_wrap*.cpp (the native library libdatamunge_fortran) and the
+# Fortran 2018 module source src/datamungefortran/datamunge.f90, whose FORD `!>` comments carry the
+# Doxygen documentation (mep's Fortran LSP reads them from this committed copy).
+prebuild-fortran:
+  {{ NIX_DEVELOP }} .#fortran --command python3 scripts/prebuild_bindings.py fortran
+
 prebuild-r:
   {{ NIX_DEVELOP }} .#r --command python3 scripts/prebuild_bindings.py r
 
 prebuild-perl:
   {{ NIX_DEVELOP }} .#cpp --command bash -c "mkdir -p {{ BINDINGS_DIR }}/perldatamunge/lib && swig -perl5 -c++ -Iinclude -o {{ BINDINGS_DIR }}/perldatamunge/Datamunge_wrap.cxx -oh {{ BINDINGS_DIR }}/perldatamunge/Datamunge_wrap.h -outdir {{ BINDINGS_DIR }}/perldatamunge/lib src/perldatamunge/swig/perldatamunge.i"
 
-# Ruby (SWIG)
+# Ruby (Rosetta): src/datamunge_ruby_wrap*.cpp (the MRI extension datamunge/datamunge.so) and
+# src/datamungeruby/lib/datamunge.rb, which loads it and whose YARD comments carry the Doxygen
+# documentation (yard, mep's Ruby LSP read this committed copy).
 prebuild-ruby:
-  {{ NIX_DEVELOP }} .#ruby --command bash -c "mkdir -p {{ BINDINGS_DIR }}/octruby/ext/octruby {{ BINDINGS_DIR }}/octruby/lib/octruby && swig -ruby -c++ -Iinclude -o {{ BINDINGS_DIR }}/octruby/ext/octruby/octruby_wrap.cxx -oh {{ BINDINGS_DIR }}/octruby/ext/octruby/octruby_wrap.h -outdir {{ BINDINGS_DIR }}/octruby/lib/octruby src/octruby/swig/octruby.i"
+  {{ NIX_DEVELOP }} .#ruby --command python3 scripts/prebuild_bindings.py ruby
 
-# Tcl (SWIG)
+# Tcl (Rosetta): src/datamunge_tcl_wrap*.cpp (the stubs extension datamunge.so, Datamunge_Init) and
+# the package files src/datamungetcl/pkg/datamunge/{datamunge.tcl,pkgIndex.tcl}; datamunge.tcl loads
+# the extension and its commented proc/oo::class stubs carry the Doxygen documentation (mep's Tcl
+# LSP reads this committed copy through MEP_TCL_PATH).
 prebuild-tcl:
-  {{ NIX_DEVELOP }} .#tcl --command bash -c "mkdir -p build/datamungetcl/swig && swig -tcl8 -c++ -Iinclude -o build/datamungetcl/swig/datamunge_tcl_wrap.cxx -oh build/datamungetcl/swig/datamunge_tcl_wrap.h src/datamungetcl/swig/datamungetcl.i"
+  {{ NIX_DEVELOP }} .#tcl --command python3 scripts/prebuild_bindings.py tcl
 
 # Lua (Rosetta): src/datamunge_lua_wrap*.cpp and the LuaCATS stub src/datamungelua/library/datamunge.lua,
 # which .luarc.json points editors (lua-language-server, mep) at for hover and completion.
@@ -362,27 +445,47 @@ prebuild-d:
     fi'
 
 # Guile (SWIG)
+# Guile (Rosetta): src/datamunge_guile_wrap*.cpp (the extension libdatamunge_guile) and the modules
+# src/datamungeguile/scheme/datamunge.scm and datamunge/*.scm, whose docstrings carry the Doxygen
+# documentation (procedure-documentation, mep's Scheme LSP through MEP_GUILE_PATH). Stale .scm
+# files are removed.
 prebuild-guile:
-  {{ NIX_DEVELOP }} .#guile --command bash -c "mkdir -p build/datamungeguile-swig && swig -guile -c++ -Iinclude -o build/datamungeguile-swig/datamunge_guile_wrap.cxx -oh build/datamungeguile-swig/datamunge_guile_wrap.h src/datamungeguile/swig/datamungeguile.i"
+  {{ NIX_DEVELOP }} .#guile --command python3 scripts/prebuild_bindings.py guile
 
+# Octave (Rosetta): src/datamunge_octave_wrap*.cpp (the oct-file __datamunge__.oct) and the package
+# src/datamungeoctave/inst/+datamunge, whose .m help text carries the Doxygen documentation (`help
+# datamunge.DataFrame`, mep's Octave LSP through MEP_OCTAVE_PATH). Stale .m files are removed.
 prebuild-octave:
-  {{ NIX_DEVELOP }} .#cpp --command bash -c "mkdir -p build/datamungeoctave-swig && swig -octave -c++ -Iinclude -o build/datamungeoctave-swig/datamunge_octave_wrap.cxx -oh build/datamungeoctave-swig/datamunge_octave_wrap.h src/datamungeoctave/swig/datamungeoctave.i"
+  {{ NIX_DEVELOP }} .#octave --command python3 scripts/prebuild_bindings.py octave
 
+# Go (Rosetta): src/datamunge_go_wrap*.cpp (the shared library libdatamunge_go that cgo links) and
+# the module datamunge under src/datamungego/go/datamunge (go.mod, datamunge.go, data/,
+# internal/rosetta); its godoc comments carry the C++ documentation (mep's Go server reads this
+# committed copy through the go.mod replace of examples/go and tests/go).
 prebuild-go:
-  {{ NIX_DEVELOP }} .#cpp --command bash -c "swig -go -c++ -intgosize 64 -Iinclude -o {{ BINDINGS_DIR }}/godatamunge/godatamunge_wrap.cxx -oh {{ BINDINGS_DIR }}/godatamunge/godatamunge_wrap.h -outdir {{ BINDINGS_DIR }}/godatamunge src/godatamunge/swig/godatamunge.i"
+  {{ NIX_DEVELOP }} .#go --command python3 scripts/prebuild_bindings.py go
 
 prebuild-php:
   {{ NIX_DEVELOP }} .#cpp --command bash -c "cd ./include && swig -c++ -php7 -o ../src/datamunge_php_wrap.cpp -oh ../src/datamunge_php_wrap.h ../src/datamungePHP/swig/datamungePHP.i"
 
+# Java (Rosetta): src/datamunge_java_wrap*.cpp (the JNI library libdatamunge_java) and the package
+# datamunge under src/datamungejava/java (one .java file per class); its Javadoc carries the C++
+# documentation (mep's Java server reads this committed copy through MEP_JAVA_SOURCEPATH).
 prebuild-java:
-    {{ NIX_DEVELOP }} .#java --command bash -c "find {{ BINDINGS_DIR }}/jdatamunge/src/main/java/js/datamunge/jdatamunge -type f -name '*.java' ! -name 'App.java' ! -path '{{ BINDINGS_DIR }}/jdatamunge/src/main/java/js/datamunge/jdatamunge/examples/*' -exec rm {} +"
-    {{ NIX_DEVELOP }} .#java --command bash -c "rm -rf {{ BINDINGS_DIR }}/jdatamunge-datamunge/build/cmake"
-    {{ NIX_DEVELOP }} .#java --command bash -c "cd ./include && swig -doxygen -c++ -java -o ../{{ BINDINGS_DIR }}/jdatamunge-datamunge/datamunge_java_wrap.cpp -oh ../{{ BINDINGS_DIR }}/jdatamunge-datamunge/datamunge_java_wrap.h -package js.datamunge.jdatamunge -outdir ../{{ BINDINGS_DIR }}/jdatamunge/src/main/java/js/datamunge/jdatamunge ../src/jdatamunge-datamunge/swig/jdatamunge.i"
-    {{ NIX_DEVELOP }} .#java --command bash -c "perl -pi -e 's/System\\.loadLibrary\\(\"datamunge\"\\)/System.loadLibrary(\"datamunge_jni\")/g' {{ BINDINGS_DIR }}/jdatamunge/src/main/java/js/datamunge/jdatamunge/App.java {{ BINDINGS_DIR }}/jdatamunge/src/main/java/js/datamunge/jdatamunge/examples/StlEx.java"
-    {{ NIX_DEVELOP }} .#java --command bash -c "perl -0777 -pi -e 's/public class datamunge \\{/public class datamunge {\\n  static { System.loadLibrary(\"datamunge_jni\"); }/s' {{ BINDINGS_DIR }}/jdatamunge/src/main/java/js/datamunge/jdatamunge/datamunge.java"
+  {{ NIX_DEVELOP }} .#java --command python3 scripts/prebuild_bindings.py java
 
+# OCaml (Rosetta): src/datamunge_ocaml_wrap*.cpp (the C ABI library with its OCaml C stubs) and the
+# findlib package src/datamungeocaml/ocaml/datamunge (datamunge.ml, META and datamunge.mli, whose odoc
+# comments carry the C++ documentation; mep's OCaml server reads this committed copy through
+# MEP_OCAML_PATH).
 prebuild-ocaml:
-  {{ NIX_DEVELOP }} .#ocaml --command bash -c "test -n \"${DATAMUNGE_PREFIX:-}\" || (echo 'DATAMUNGE_PREFIX is not set' >&2; exit 1) && mkdir -p {{ BINDINGS_DIR }}/datamungeocaml/src && swig -ocaml -c++ -Iinclude -o {{ BINDINGS_DIR }}/datamungeocaml/src/datamunge_ocaml_wrap.cxx -oh {{ BINDINGS_DIR }}/datamungeocaml/src/datamunge_ocaml_wrap.h -outdir {{ BINDINGS_DIR }}/datamungeocaml/src src/datamungeocaml/swig/datamungeocaml.i"
+  {{ NIX_DEVELOP }} .#ocaml --command python3 scripts/prebuild_bindings.py ocaml
+
+# GNU APL (Rosetta): src/datamunge_apl_wrap*.cpp (the native function library libdatamunge_gnu_apl) and
+# the script src/datamungeapl/apl/datamunge.apl (the dm∆ functions), whose ⍝ comments carry the C++
+# documentation (mep's APL server reads this committed copy through MEP_APL_PATH).
+prebuild-apl:
+  {{ NIX_DEVELOP }} .#apl --command python3 scripts/prebuild_bindings.py apl
 
 # }}} prebuild commands
 
@@ -434,6 +537,14 @@ build-csharp: prebuild-csharp
   {{ NIX_DEVELOP }} .#csharp --command bash -c 'dotnet build src/datamungecsharp/Datamunge.csproj -c Release -nologo -v q -o build/csharp/prefix/share/dotnet/Datamunge/bin'
 
 
+
+# Installs libdatamunge_fortran.so (the native library), libdatamunge_fortran_mod.a and the .mod files
+# into build/fortran/prefix: compile programs with FORTRAN_FC (run-fortran, test-fortran).
+build-fortran: prebuild-fortran
+  {{ NIX_DEVELOP }} .#fortran --command bash -c 'datamunge_prefix="$(pkg-config --variable=prefix datamunge)" && cmake -S src/datamungefortran -B build/datamungefortran -G Ninja -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_LIBDIR=lib -DCMAKE_INSTALL_RPATH_USE_LINK_PATH=ON -U datamunge_DIR -DCMAKE_PREFIX_PATH="$datamunge_prefix${CMAKE_PREFIX_PATH:+;$CMAKE_PREFIX_PATH}"'
+  {{ NIX_DEVELOP }} .#fortran --command bash -c 'cmake --build build/datamungefortran -j{{ JOBS }}'
+  {{ NIX_DEVELOP }} .#fortran --command bash -c 'rm -rf build/fortran/prefix && cmake --install build/datamungefortran --prefix build/fortran/prefix'
+
 # Links the shell's datamunge library rather than recompiling the core into the addon.
 build-javascript: prebuild-javascript
     {{ NIX_DEVELOP }} .#javascript --command bash -c 'export npm_config_nodedir="$(dirname "$(dirname "$(command -v node)")")" && DATAMUNGE_USE_SYSTEM_LIB=1 npm --prefix . run build'
@@ -449,14 +560,21 @@ build-python: prebuild-python
   {{ NIX_DEVELOP }} .#python --command bash -c 'if test -f build/nn-python/enabled; then export DATAMUNGE_BUILD_NN_EXAMPLES=${DATAMUNGE_BUILD_NN_EXAMPLES:-1}; fi; DATAMUNGE_USE_SYSTEM_LIB=1 CMAKE_BUILD_PARALLEL_LEVEL={{ JOBS }} build/venv/pydatamunge-run/bin/python -m pip install --force-reinstall . --no-deps --no-build-isolation'
 
 
+# Installs datamunge.jar (share/java) and the JNI library libdatamunge_java (lib) into
+# build/java/prefix: run with JAVA or the dev shells' DATAMUNGE_JAVA_LIBRARY and MEP_JAVA_CLASSPATH.
 build-java: prebuild-java
-  {{ NIX_DEVELOP }} .#java --command bash -c "gradle cmakeBuild"
-  {{ NIX_DEVELOP }} .#java --command bash -c "gradle build"
+  {{ NIX_DEVELOP }} .#java --command bash -c 'datamunge_prefix="$(pkg-config --variable=prefix datamunge)" && cmake -S src/datamungejava -B build/datamungejava -G Ninja -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_LIBDIR=lib -DCMAKE_INSTALL_RPATH_USE_LINK_PATH=ON -U datamunge_DIR -DCMAKE_PREFIX_PATH="$datamunge_prefix${CMAKE_PREFIX_PATH:+;$CMAKE_PREFIX_PATH}"'
+  {{ NIX_DEVELOP }} .#java --command bash -c 'cmake --build build/datamungejava -j{{ JOBS }}'
+  {{ NIX_DEVELOP }} .#java --command bash -c 'rm -rf build/java/prefix && cmake --install build/datamungejava --prefix build/java/prefix'
 
-build-go: prebuild-go build-cpp
-  # For Go bindings, we need to run go build on the generated files
-  # Note: This assumes the SWIG-generated files are already in place from prebuild-go
-  {{ NIX_DEVELOP }} .#go --command bash -c 'cd {{ BINDINGS_DIR }}/godatamunge && CGO_CXXFLAGS="-std=c++23" CGO_CPPFLAGS="-I$(pwd)/../../include" CGO_LDFLAGS="-L$(pwd)/../../build -ldatamunge" go build'
+# Installs the shared library libdatamunge_go (lib) and the module datamunge (share/go/datamunge)
+# into build/go/prefix, then compiles the packages datamunge and datamunge/data from the committed
+# module (as examples/go resolves them) into the Go build cache, so the first `go run` is quick.
+build-go: prebuild-go
+  {{ NIX_DEVELOP }} .#go --command bash -c 'datamunge_prefix="$(pkg-config --variable=prefix datamunge)" && cmake -S src/datamungego -B build/datamungego -G Ninja -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_LIBDIR=lib -DCMAKE_INSTALL_RPATH_USE_LINK_PATH=ON -U datamunge_DIR -DCMAKE_PREFIX_PATH="$datamunge_prefix${CMAKE_PREFIX_PATH:+;$CMAKE_PREFIX_PATH}"'
+  {{ NIX_DEVELOP }} .#go --command bash -c 'cmake --build build/datamungego -j{{ JOBS }}'
+  {{ NIX_DEVELOP }} .#go --command bash -c 'rm -rf build/go/prefix && cmake --install build/datamungego --prefix build/go/prefix'
+  {{ NIX_DEVELOP }} .#go --command bash -c '{{ GO_ENV }} && go build datamunge datamunge/data'
 
 build-d: prebuild-d
   # The native wrapper the generated module dlopens at startup (found via the dev shells' library path).
@@ -473,8 +591,12 @@ build-d: prebuild-d
 build-perl: prebuild-perl build-cpp
   {{ NIX_DEVELOP }} .#perl --command bash -c 'cd {{ BINDINGS_DIR }}/perldatamunge && rm -rf blib Makefile Makefile.old pm_to_blib MYMETA.* && perl Makefile.PL INSTALL_BASE="$(pwd)/../../build/perl" && make -j{{ JOBS }} && make install'
 
+# Installs datamunge.rb and the extension datamunge/datamunge.so into build/ruby/prefix/lib: run with
+# RUBY (`ruby -I build/ruby/prefix/lib`) or the dev shells' RUBYLIB.
 build-ruby: prebuild-ruby
-  {{ NIX_DEVELOP }} .#ruby --command bash -c "set -euo pipefail; cd {{ BINDINGS_DIR }}/octruby/ext/octruby && ruby extconf.rb && make -j1 && dlext=\"\$(ruby -e 'print RbConfig::CONFIG[\"DLEXT\"]')\" && so=\"\$(find . -type f \( -name 'octruby*.so' -o -name \"octruby*.\$dlext\" \) -print -quit)\" && test -n \"\$so\" && mkdir -p ../../lib/octruby && cp -f \"\$so\" \"../../lib/octruby/octruby.\$dlext\""
+  {{ NIX_DEVELOP }} .#ruby --command bash -c 'datamunge_prefix="$(pkg-config --variable=prefix datamunge)" && cmake -S src/datamungeruby -B build/datamungeruby -G Ninja -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_LIBDIR=lib -DCMAKE_INSTALL_RPATH_USE_LINK_PATH=ON -DRuby_EXECUTABLE="$(command -v ruby)" -U datamunge_DIR -DCMAKE_PREFIX_PATH="$datamunge_prefix${CMAKE_PREFIX_PATH:+;$CMAKE_PREFIX_PATH}"'
+  {{ NIX_DEVELOP }} .#ruby --command bash -c 'cmake --build build/datamungeruby -j{{ JOBS }}'
+  {{ NIX_DEVELOP }} .#ruby --command bash -c 'rm -rf build/ruby/prefix && cmake --install build/datamungeruby --prefix build/ruby/prefix'
 
 package-r: prebuild-r
   {{ NIX_DEVELOP }} .#r --command python3 scripts/build_r_source.py
@@ -484,13 +606,12 @@ build-r: prebuild-r
   # .Renviron lets R started here, and editors reading installed help (mep's K), find the package.
   if ! test -e .Renviron || head -1 .Renviron | grep -q '^# Written by just build-r'; then printf '# Written by just build-r\nR_LIBS_USER=%s/build/r/library\n' "$(pwd)" > .Renviron; fi
 
+# Installs the package directory datamunge/ (pkgIndex.tcl, datamunge.tcl and the stubs extension
+# datamunge.so) into build/tcl/prefix/lib: run with TCLSH or the dev shells' TCLLIBPATH.
 build-tcl: prebuild-tcl
-  rm -rf build/datamungetcl
-  {{ NIX_DEVELOP }} .#tcl --command bash -c 'cmake -S src/datamungetcl -B build/datamungetcl -DCMAKE_BUILD_TYPE=Release -DCMAKE_PREFIX_PATH="$(pkg-config --variable=prefix datamunge);$(pkg-config --variable=prefix arrow)"'
-  {{ NIX_DEVELOP }} .#tcl --command bash -c 'cmake --build build/datamungetcl -j{{ JOBS }} --verbose'
-  {{ NIX_DEVELOP }} .#tcl --command bash -c 'cp -v {{ BINDINGS_DIR }}/datamungetcl/pkgIndex.tcl build/datamungetcl/'
-  # pkgIndex.tcl loads Datamunge[info sharedlibextension] (.dylib on macOS); CMake names the module .so.
-  {{ NIX_DEVELOP }} .#tcl --command bash -c 'ext="$(tclsh <<< "puts [info sharedlibextension]")" && if [ "$ext" != ".so" ]; then cp -f build/datamungetcl/Datamunge.so "build/datamungetcl/Datamunge$ext"; fi'
+  {{ NIX_DEVELOP }} .#tcl --command bash -c 'datamunge_prefix="$(pkg-config --variable=prefix datamunge)" && cmake -S src/datamungetcl -B build/datamungetcl -G Ninja -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_LIBDIR=lib -DCMAKE_INSTALL_RPATH_USE_LINK_PATH=ON -DDATAMUNGE_TCLSH_EXECUTABLE="$(command -v tclsh)" -U datamunge_DIR -DCMAKE_PREFIX_PATH="$datamunge_prefix${CMAKE_PREFIX_PATH:+;$CMAKE_PREFIX_PATH}"'
+  {{ NIX_DEVELOP }} .#tcl --command bash -c 'cmake --build build/datamungetcl -j{{ JOBS }}'
+  {{ NIX_DEVELOP }} .#tcl --command bash -c 'rm -rf build/tcl/prefix && cmake --install build/datamungetcl --prefix build/tcl/prefix'
 
 build-lua: prebuild-lua
   {{ NIX_DEVELOP }} .#lua --command bash -c 'datamunge_prefix="$(pkg-config --variable=prefix datamunge)" && cmake -S src/datamungelua -B build/datamungelua -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_RPATH_USE_LINK_PATH=ON -U datamunge_DIR -DCMAKE_PREFIX_PATH="$datamunge_prefix${CMAKE_PREFIX_PATH:+;$CMAKE_PREFIX_PATH}"'
@@ -530,23 +651,36 @@ test-cobol: build-cobol
 build-rust:
   {{ NIX_DEVELOP }} .#rust --command bash -c 'cargo build --manifest-path {{ BINDINGS_DIR }}/rustdatamunge/Cargo.toml'
 
+# Installs datamunge.scm, datamunge/ and libdatamunge_guile.so into
+# build/guile/prefix/share/guile/site/<version>, which GUILE (run-guile, test-guile, repl-guile) and
+# the dev shells' GUILE_LOAD_PATH put on the load path.
 build-guile: prebuild-guile
-  rm -rf build/datamungeguile
-  {{ NIX_DEVELOP }} .#guile --command bash -c 'cmake -S src/datamungeguile -B build/datamungeguile -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_RPATH_USE_LINK_PATH=ON -DCMAKE_PREFIX_PATH="$(pkg-config --variable=prefix datamunge);$(pkg-config --variable=prefix arrow)"'
-  {{ NIX_DEVELOP }} .#guile --command bash -c 'cmake --build build/datamungeguile -j{{ JOBS }} --verbose'
-  {{ NIX_DEVELOP }} .#guile --command bash -c 'rm -rf build/guile/prefix && cmake --install build/datamungeguile --prefix build/guile/prefix'
+  {{ NIX_DEVELOP }} .#guile --command bash -c 'datamunge_prefix="$(pkg-config --variable=prefix datamunge)" && cmake -S src/datamungeguile -B build/datamungeguile -G Ninja -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_RPATH_USE_LINK_PATH=ON -U datamunge_DIR -DCMAKE_PREFIX_PATH="$datamunge_prefix${CMAKE_PREFIX_PATH:+;$CMAKE_PREFIX_PATH}"'
+  {{ NIX_DEVELOP }} .#guile --command bash -c 'cmake --build build/datamungeguile -j{{ JOBS }}'
+  {{ NIX_DEVELOP }} .#guile --command bash -c 'rm -rf build/guile/prefix && cmake --install build/datamungeguile --prefix build/guile/prefix >/dev/null'
 
+# Installs __datamunge__.oct and the package +datamunge into build/octave/prefix/share/octave/site/m,
+# which OCTAVE (run-octave, test-octave, repl-octave) and the dev shells' OCTAVE_PATH put on the path.
 build-octave: prebuild-octave
-  {{ NIX_DEVELOP }} .#octave --command bash -c 'cmake -S src/datamungeoctave -B build/datamungeoctave -DCMAKE_BUILD_TYPE=Release -DCMAKE_PREFIX_PATH="$(pkg-config --variable=prefix datamunge);$(pkg-config --variable=prefix arrow)"'
-  {{ NIX_DEVELOP }} .#octave --command bash -c 'cmake --build build/datamungeoctave -j{{ JOBS }} --verbose'
+  {{ NIX_DEVELOP }} .#octave --command bash -c 'datamunge_prefix="$(pkg-config --variable=prefix datamunge)" && cmake -S src/datamungeoctave -B build/datamungeoctave -G Ninja -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_RPATH_USE_LINK_PATH=ON -U datamunge_DIR -DCMAKE_PREFIX_PATH="$datamunge_prefix${CMAKE_PREFIX_PATH:+;$CMAKE_PREFIX_PATH}"'
+  {{ NIX_DEVELOP }} .#octave --command bash -c 'cmake --build build/datamungeoctave -j{{ JOBS }}'
+  {{ NIX_DEVELOP }} .#octave --command bash -c 'rm -rf build/octave/prefix && cmake --install build/datamungeoctave --prefix build/octave/prefix >/dev/null'
 
+# Installs the findlib package datamunge/ (META, datamunge.cma/.cmxa/.cmi/.mli, dlldatamunge_stubs.so and
+# libdatamunge_stubs.a) into build/ocaml/prefix/lib: use with OCAML_ENV or the dev shells' OCAMLPATH.
 build-ocaml: prebuild-ocaml
-  {{ NIX_DEVELOP }} .#ocaml --command bash -c 'test -n "${DATAMUNGE_PREFIX:-}" || (echo "DATAMUNGE_PREFIX is not set" >&2; exit 1) && cd {{ BINDINGS_DIR }}/datamungeocaml && dune build'
+  {{ NIX_DEVELOP }} .#ocaml --command bash -c 'datamunge_prefix="$(pkg-config --variable=prefix datamunge)" && cmake -S src/datamungeocaml -B build/datamungeocaml -G Ninja -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_LIBDIR=lib -DCMAKE_INSTALL_RPATH_USE_LINK_PATH=ON -U datamunge_DIR -DCMAKE_PREFIX_PATH="$datamunge_prefix${CMAKE_PREFIX_PATH:+;$CMAKE_PREFIX_PATH}"'
+  {{ NIX_DEVELOP }} .#ocaml --command bash -c 'cmake --build build/datamungeocaml -j{{ JOBS }}'
+  {{ NIX_DEVELOP }} .#ocaml --command bash -c 'rm -rf build/ocaml/prefix && cmake --install build/datamungeocaml --prefix build/ocaml/prefix >/dev/null'
 
-install-ocaml: build-ocaml
-  {{ NIX_DEVELOP }} .#ocaml --command bash -c 'test -n "${DATAMUNGE_PREFIX:-}" || (echo "DATAMUNGE_PREFIX is not set" >&2; exit 1) && mkdir -p build/ocaml/prefix && cd {{ BINDINGS_DIR }}/datamungeocaml && dune install --prefix "$(pwd)/../../build/ocaml/prefix"'
 
 
+# Installs libdatamunge_gnu_apl.so into build/apl/prefix/lib and the script datamunge.apl into
+# build/apl/prefix/share/apl: use with APL or the dev shells' DATAMUNGE_APL_LIBRARY.
+build-apl: prebuild-apl
+  {{ NIX_DEVELOP }} .#apl --command bash -c 'datamunge_prefix="$(pkg-config --variable=prefix datamunge)" && cmake -S src/datamungeapl -B build/datamungeapl -G Ninja -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_LIBDIR=lib -DCMAKE_INSTALL_RPATH_USE_LINK_PATH=ON -U datamunge_DIR -DROSETTA_GNU_APL_SOURCE_DIR="$ROSETTA_GNU_APL_SOURCE_DIR" -DCMAKE_PREFIX_PATH="$datamunge_prefix${CMAKE_PREFIX_PATH:+;$CMAKE_PREFIX_PATH}"'
+  {{ NIX_DEVELOP }} .#apl --command bash -c 'cmake --build build/datamungeapl -j{{ JOBS }}'
+  {{ NIX_DEVELOP }} .#apl --command bash -c 'rm -rf build/apl/prefix && cmake --install build/datamungeapl --prefix build/apl/prefix >/dev/null'
 
 
 # }}} build commands
@@ -572,8 +706,10 @@ repl-perl: build-perl
 repl-csharp: build-csharp
   {{ NIX_DEVELOP }} .#csharp --command bash -c 'printf "#r \"%s\"\nusing Datamunge;\n" "$(pwd)/build/csharp/prefix/share/dotnet/Datamunge/bin/Datamunge.dll" > build/csharp/repl.csx && dotnet-repl --run build/csharp/repl.csx'
 
-repl-java:
-  {{ NIX_DEVELOP }} .#java --command bash -c 'export LD_LIBRARY_PATH={{ BINDINGS_DIR }}/jdatamunge-datamunge/build/cmake:$LD_LIBRARY_PATH && jshell --class-path ./{{ BINDINGS_DIR }}/jdatamunge/build/libs/jdatamunge.jar'
+# jshell with datamunge.jar on the class path, DATAMUNGE_JAVA_LIBRARY set and `import datamunge.*;`
+# (src/datamungejava/repl.jsh): new DataFrame(), Datamunge.seql(0, 1, 5), ...
+repl-java: build-java
+  {{ NIX_DEVELOP }} .#java --command bash -c 'export DATAMUNGE_JAVA_LIBRARY="$(pwd)/build/java/prefix/lib/libdatamunge_java.so" && jshell --class-path "$(pwd)/build/java/prefix/share/java/datamunge.jar" DEFAULT src/datamungejava/repl.jsh'
 
 # C++ REPL on clang-repl, with the std headers and <datamunge/datamunge.hpp>
 # already included. Optional EXAMPLE preloads examples/cpp/source/<topic>/<EXAMPLE>.cpp
@@ -585,8 +721,9 @@ repl-cpp EXAMPLE="":
 repl-cling EXAMPLE="":
   {{ NIX_DEVELOP }} .#cpp --command bash -lc 'exec scripts/cpp_repl.sh --cling {{ EXAMPLE }}'
 
+# tclsh with the package loaded (src/datamungetcl/repl.tcl): datamunge::DataFrame new, datamunge::seql 0 1 5, ...
 repl-tcl: build-tcl
-  {{ NIX_DEVELOP }} .#tcl --command bash -c 'export TCLLIBPATH="$(pwd)/build/datamungetcl${TCLLIBPATH:+ $TCLLIBPATH}" && tclsh'
+  {{ NIX_DEVELOP }} .#tcl --command bash -c '{{ TCLSH }} src/datamungetcl/repl.tcl'
 
 repl-lua: build-lua
   {{ NIX_DEVELOP }} .#lua --command bash -c 'lua'
@@ -597,20 +734,31 @@ repl-lisp: build-lisp
 repl-julia: build-julia
   {{ NIX_DEVELOP }} .#julia --command bash -c 'export JULIA_LOAD_PATH="$(pwd)/build/julia/prefix/share/julia:@:@v#.#:@stdlib" && julia --threads=auto -i -e "using Datamunge"'
 
+# irb with the binding loaded: Datamunge::DataFrame, Datamunge.seql(0, 1, 5), ...
 repl-ruby: build-ruby
-  {{ NIX_DEVELOP }} .#ruby --command bash -c 'irb -r octruby'
+  {{ NIX_DEVELOP }} .#ruby --command bash -c 'irb -I "$(pwd)/build/ruby/prefix/lib" -r datamunge'
 
-repl-ocaml:
-  {{ NIX_DEVELOP }} .#ocaml --command bash -c 'utop'
+# utop with the binding loaded (src/datamungeocaml/repl.ml: topfind, `#require "datamunge"`, `open
+# Datamunge`): DataFrame.create (), seql 0. 1. 5, ... utop needs a terminal: with piped input the plain
+# ocaml toplevel reads it instead.
+repl-ocaml: build-ocaml
+  {{ NIX_DEVELOP }} .#ocaml --command bash -c '{{ OCAML_ENV }} && if [ -t 0 ]; then utop -init src/datamungeocaml/repl.ml; else ocaml -noprompt -init src/datamungeocaml/repl.ml; fi'
 
+# GNU APL with the binding loaded (src/datamungeapl/repl.apl prints a banner): dm∆seql 0 1 5,
+# df←dm∆DataFrame∆new ⍬, ⎕CR 'dm∆seql' for the documentation, )OFF to leave.
+repl-apl: build-apl
+  {{ NIX_DEVELOP }} .#apl --command bash -c 'export DATAMUNGE_APL_LIBRARY="$(pwd)/build/apl/prefix/lib/libdatamunge_gnu_apl.so" && apl --noSV --silent --noCONT -f "$(pwd)/build/apl/prefix/share/apl/datamunge.apl" -f src/datamungeapl/repl.apl'
+
+# guile's REPL with (datamunge) loaded: try `(make <data-frame>)` or `,describe seql`.
 repl-guile: build-guile
-  {{ NIX_DEVELOP }} .#guile --command bash -c 'guile'
+  {{ NIX_DEVELOP }} .#guile --command bash -c '{{ GUILE }} -l src/datamungeguile/repl.scm'
 
 repl-rust:
   {{ NIX_DEVELOP }} .#rust --command bash -c 'export LD_LIBRARY_PATH="$(pkg-config --variable=libdir datamunge)${LD_LIBRARY_PATH:+:}$LD_LIBRARY_PATH" && cd {{ BINDINGS_DIR }}/rustdatamunge && evcxr'
 
+# octave-cli with the binding on the path: try `df = datamunge.DataFrame ()` or `help datamunge.seql`.
 repl-octave: build-octave
-  {{ NIX_DEVELOP }} .#octave --command bash -c 'octave -qf'
+  {{ NIX_DEVELOP }} .#octave --command bash -c '{{ OCTAVE }}" --persist'
 
 repl-d:
   bash -c 'set -euo pipefail; \
@@ -642,8 +790,14 @@ test-r: build-r
 test-csharp: build-csharp
   {{ NIX_DEVELOP }} .#csharp --command bash -c 'dotnet run tests/csharp/test_datamunge.cs'
 
+# Compiles tests/fortran/test_datamunge.f90 against build/fortran/prefix and runs it.
+test-fortran: build-fortran
+  {{ NIX_DEVELOP }} .#fortran --command bash -c '{{ FORTRAN_FC }} tests/fortran/test_datamunge.f90 {{ FORTRAN_LIBS }} -o build/fortran/bin/test_datamunge && build/fortran/bin/test_datamunge'
+
+# tests/java/TestDatamunge.java (a single-file launch) against build/java/prefix; it reads the
+# committed sources src/datamungejava/java for the documentation checks.
 test-java: build-java
-  {{ NIX_DEVELOP }} .#java --command bash -c 'export LD_LIBRARY_PATH={{ BINDINGS_DIR }}/jdatamunge-datamunge/build/cmake:$LD_LIBRARY_PATH && gradle test'
+  {{ NIX_DEVELOP }} .#java --command bash -c '{{ JAVA }} tests/java/TestDatamunge.java src/datamungejava/java'
 
 test-rust:
   {{ NIX_DEVELOP }} .#rust --command bash -c 'export LD_LIBRARY_PATH="$(pkg-config --variable=libdir datamunge)${LD_LIBRARY_PATH:+:}$LD_LIBRARY_PATH" && cargo test --manifest-path tests/rust/Cargo.toml'
@@ -657,17 +811,24 @@ test-lua: build-lua
 test-perl: build-perl
   {{ NIX_DEVELOP }} .#perl --command bash -c 'export PERL5LIB="$(pwd)/build/perl/lib/perl5:$PERL5LIB" && export LD_LIBRARY_PATH="$(pwd)/build:$LD_LIBRARY_PATH" && prove -l tests/perl'
 
+# tests/tcl/test_datamunge.tcl against build/tcl/prefix; it reads the committed
+# src/datamungetcl/pkg/datamunge/datamunge.tcl for the documentation checks.
 test-tcl: build-tcl
-  {{ NIX_DEVELOP }} .#tcl --command bash -c 'export TCLLIBPATH="$(pwd)/build/datamungetcl${TCLLIBPATH:+ $TCLLIBPATH}" && tclsh tests/tcl/test_datamunge.tcl'
+  {{ NIX_DEVELOP }} .#tcl --command bash -c '{{ TCLSH }} tests/tcl/test_datamunge.tcl src/datamungetcl/pkg/datamunge/datamunge.tcl'
 
+# tests/ruby/test_datamunge.rb against build/ruby/prefix; it reads the committed
+# src/datamungeruby/lib/datamunge.rb for the YARD documentation checks.
 test-ruby: build-ruby
-  {{ NIX_DEVELOP }} .#ruby --command bash -c 'export LD_LIBRARY_PATH="$(pkg-config --variable=libdir datamunge)${LD_LIBRARY_PATH:+:}$LD_LIBRARY_PATH" && ruby -I tests/ruby -e "require \"test_datamunge\""'
+  {{ NIX_DEVELOP }} .#ruby --command bash -c '{{ RUBY }} tests/ruby/test_datamunge.rb src/datamungeruby/lib/datamunge.rb'
 
+# tests/guile/test_datamunge.scm against build/guile/prefix; it reads the committed
+# src/datamungeguile/scheme/datamunge.scm for the docstring checks.
 test-guile: build-guile
-  {{ NIX_DEVELOP }} .#guile --command bash -c 'guile --no-auto-compile -s tests/guile/test_datamunge.scm'
+  {{ NIX_DEVELOP }} .#guile --command bash -c '{{ GUILE }} -s tests/guile/test_datamunge.scm src/datamungeguile/scheme/datamunge.scm'
 
+# tests/octave/test_datamunge.m against build/octave/prefix (including the generated help text).
 test-octave: build-octave
-  {{ NIX_DEVELOP }} .#octave --command bash -c 'octave -qf --eval '"'"'test("tests/octave/test_datamunge.m")'"'"''
+  {{ NIX_DEVELOP }} .#octave --command bash -c '{{ OCTAVE }} source tests/octave/test_datamunge.m"'
 
 test-d: prebuild-d
   bash -c 'set -euo pipefail; \
@@ -680,16 +841,25 @@ test-d: prebuild-d
     fi'
 
 
+# tests/go (go test in the module tests/go) against build/go/prefix; it reads the committed module
+# src/datamungego/go/datamunge for the documentation checks.
+# tests/apl/test_datamunge.apl against build/apl/prefix; it reads the committed
+# src/datamungeapl/apl/datamunge.apl (DATAMUNGE_APL_DOCS) for the documentation checks.
+test-apl: build-apl
+  {{ NIX_DEVELOP }} .#apl --command bash -c 'set -o pipefail; export DATAMUNGE_APL_DOCS="$(pwd)/src/datamungeapl/apl/datamunge.apl"; {{ APL_RUN }}; apl_run tests/apl/test_datamunge.apl && grep -q "^DATAMUNGE APL PASS" build/apl/log/test_datamunge.log'
+
 test-go: build-go
-    {{ NIX_DEVELOP }} .#go --command bash -c 'cd {{ BINDINGS_DIR }}/godatamunge && LD_LIBRARY_PATH="$(pwd)/../../build:$LD_LIBRARY_PATH" CGO_CXXFLAGS="-std=c++23" CGO_CPPFLAGS="-I$(pwd)/../../include" CGO_LDFLAGS="-L$(pwd)/../../build -ldatamunge" go test ./...'
+  {{ NIX_DEVELOP }} .#go --command bash -c '{{ GO_ENV }} && cd tests/go && go test -count=1 -v .'
 
 
 test-javascript: build-javascript
     @echo "Running Javascript Tests"
     {{ NIX_DEVELOP }} .#javascript --command bash -c "npm run test"
 
-test-ocaml:
-  {{ NIX_DEVELOP }} .#ocaml --command bash -c 'just install-ocaml && export OCAMLPATH="$(pwd)/build/ocaml/prefix/lib${OCAMLPATH:+:}$OCAMLPATH" && cd tests/ocaml && dune runtest'
+# tests/ocaml/test_datamunge.ml, compiled natively against build/ocaml/prefix; it reads the committed
+# src/datamungeocaml/ocaml/datamunge/datamunge.mli for the documentation checks.
+test-ocaml: build-ocaml
+  {{ NIX_DEVELOP }} .#ocaml --command bash -c '{{ OCAML_ENV }} && {{ OCAML_BUILD }}; ocaml_build tests/ocaml/test_datamunge.ml build/ocaml/bin/test_datamunge && ./build/ocaml/bin/test_datamunge src/datamungeocaml/ocaml/datamunge/datamunge.mli'
 
 
 test-cpp:
@@ -1086,8 +1256,6 @@ clean:
     rm -rf build/
     rm -rf {{ BINDINGS_DIR }}/datamungecsharp/bin
     rm -rf {{ BINDINGS_DIR }}/datamungecsharp/obj
-    rm -rf {{ BINDINGS_DIR }}/jdatamunge-datamunge/build/
-    rm -rf {{ BINDINGS_DIR }}/jdatamunge/build/
 
 
 # }}} utilities
@@ -1392,9 +1560,6 @@ test-nix:
 
 build-nix PACKAGE="datamunge":
   nix build --accept-flake-config{{ SWIG_OVERRIDE }} ".#{{ PACKAGE }}"
-
-update-java-deps:
-  nix/update-jdatamunge-gradle-deps.sh
 
 all-test:
   bash ./scripts/test_all.sh

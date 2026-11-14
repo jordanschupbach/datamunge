@@ -131,20 +131,16 @@ best-effort (printing \`SKIP\` when the relevant runtime/binding is unavailable)
 
 ## Ruby
 
-    require "octruby"
+    require "datamunge"
     
     Datamunge.hello
     
-    dp = Datamunge::DPair.new(1.0, 2.0)
-    dp.first
-    dp.second
-    puts "DPair created: #{dp.inspect}"
-    dp.delete if dp.respond_to?(:delete)
+    pair = Datamunge.make_dpair(1.0, 2.0)  # std::pair<double, double> is a two-element Array
+    puts "make_dpair: #{pair.inspect}, sum_dpair = #{Datamunge.sum_dpair(pair)}"
     
+    # A Ruby subclass overrides the C++ Callback's virtual call().
     class TimesTwo < Datamunge::Callback
-      def call(x)
-        x * 2.0
-      end
+      def call(x) = x * 2.0
     end
     
     cb = TimesTwo.new
@@ -154,7 +150,7 @@ best-effort (printing \`SKIP\` when the relevant runtime/binding is unavailable)
     puts "sum_dvector(map_dvector_with_callback(1,2,3)) = #{Datamunge.sum_dvector(v2)}"
 
     Hello datamunge
-    DPair created: std::pair<double,double > (1.0,2.0)
+    make_dpair: [1.0, 2.0], sum_dpair = 3.0
     call_with_callback(3.0) = 6.0
     sum_dvector(map_dvector_with_callback(1,2,3)) = 12.0
 
@@ -252,94 +248,89 @@ best-effort (printing \`SKIP\` when the relevant runtime/binding is unavailable)
 
 ## Tcl
 
-    package require Datamunge 0.0.1
+    package require datamunge
     
     datamunge::hello
     
-    set v [datamunge::new_DVector]
-    datamunge::DVector_push_back $v 1.25
-    datamunge::DVector_push_back $v 2.5
-    puts "DVector size: [datamunge::DVector_size $v]"
-    puts [format {DVector[0]: %s} [datamunge::DVector_get $v 0]]
-    datamunge::delete_DVector $v
+    set v [datamunge::make_dvector 1.0 2.0 3.0]
+    puts "sum_dvector:\t[datamunge::sum_dvector $v]"
     
-    set p [datamunge::new_DPair 3.0 4.5]
-    puts "DPair: ([datamunge::DPair_first_get $p], [datamunge::DPair_second_get $p])"
-    datamunge::delete_DPair $p
+    set p [datamunge::make_dpair 1.25 2.75]
+    puts "sum_dpair:\t[datamunge::sum_dpair $p]"
     
-    puts "Datamunge Tcl example ran successfully."
+    set cb [datamunge::Callback new]
+    puts "call_with_callback(3.0):\t[datamunge::call_with_callback 3.0 $cb]"
+    set v2 [datamunge::map_dvector_with_callback [datamunge::make_dvector 1.0 2.0 3.0] $cb]
+    puts "sum_dvector(map_dvector_with_callback(1,2,3)):\t[datamunge::sum_dvector $v2]"
+    $cb destroy
 
-    Datamunge Tcl example ran successfully.
+    Hello datamunge
+    sum_dvector:	6.0
+    sum_dpair:	4.0
+    call_with_callback(3.0):	3.0
+    sum_dvector(map_dvector_with_callback(1,2,3)):	6.0
 
 
 ## Octave
 
-    1;
+    datamunge.hello ();
     
-    datamunge;
+    v = datamunge.make_dvector (1.0, 2.0, 3.0);
+    printf ('sum_dvector:\t%.1f\n', datamunge.sum_dvector (v));
     
-    hello ();
+    p = datamunge.make_dpair (1.25, 2.75);
+    printf ('sum_dpair:\t%.1f\n', datamunge.sum_dpair (p));
     
-    v = DVector ();
-    v.append (1.0);
-    v.append (2.0);
-    v.append (3.5);
-    printf ("vector size: %d\n", v.size ());
-    printf ("vector[0]=%f vector[1]=%f\n", v.__paren__ (0), v.__paren__ (1));
-    
-    p = DPair (10.0, 25.5);
-    printf ("pair sum: %f\n", p.first + p.second);
+    cb = datamunge.Callback ();
+    printf ('call_with_callback(3.0):\t%.1f\n', datamunge.call_with_callback (3.0, cb));
+    v2 = datamunge.map_dvector_with_callback (datamunge.make_dvector (1.0, 2.0, 3.0), cb);
+    printf ('sum_dvector(map_dvector_with_callback(1,2,3)):\t%.1f\n', datamunge.sum_dvector (v2));
 
     Hello datamunge
-    vector size: 3
-    vector[0]=1.000000 vector[1]=2.000000
-    pair sum: 35.500000
+    sum_dvector:	6.0
+    sum_dpair:	4.0
+    call_with_callback(3.0):	3.0
+    sum_dvector(map_dvector_with_callback(1,2,3)):	6.0
 
 
 ## Guile
 
-    (use-modules (datamunge))
+    (use-modules (oop goops) (datamunge))
     
-    (display "Hello from Guile + Datamunge\n")
     (hello)
-    
-    (let ((v (make_dvector 10.0 20.0 30.0)))
-      (format #t "sum_dvector = ~a\n" (sum_dvector v)))
-    
-    (let ((p (make_dpair 4.0 5.0)))
-      (format #t "sum_dpair = ~a\n" (sum_dpair p)))
+    (format #t "sum-dvector = ~a\n" (sum-dvector (make-dvector 10.0 20.0 30.0)))  ; vectors are lists
+    (format #t "sum-dpair = ~a\n" (sum-dpair (make-dpair 4.0 5.0)))               ; pairs are pairs
+    (define-class <twice> (<callback>))                                             ; override a C++ virtual
+    (define-method (call (self <twice>) x) (* 2 x))
+    (format #t "call-with-callback = ~a\n" (call-with-callback 3.0 (make <twice>)))
 
     Hello datamunge
-    Hello from Guile + Datamunge
-    sum_dvector = 60.0
-    sum_dpair = 9.0
+    sum-dvector = 60.0
+    sum-dpair = 9.0
+    call-with-callback = 6.0
 
 
 ## OCaml
 
+    open Datamunge
+    
     let () =
-      let open Swig in
-      ignore (Datamunge._hello C_void);
-      print_endline "datamunge: _hello() ok";
-    
-      let p = Datamunge.new_DPair (C_list [ C_double 1.25; C_double 2.5 ]) in
-      let p_first = get_float (invoke p "[first]" C_void) in
-      let p_second = get_float (invoke p "[second]" C_void) in
-      let p_sum = get_float (Datamunge._sum_dpair p) in
-      Printf.printf "DPair: first=%g second=%g sum=%g\n" p_first p_second p_sum;
-    
-      let v = Datamunge.new_DVector C_void in
-      ignore (invoke v "push_back" (C_double 3.0));
-      ignore (invoke v "push_back" (C_double 4.5));
-      let v0 = get_float (invoke v "[]" (C_int 0)) in
-      let v1 = get_float (invoke v "[]" (C_int 1)) in
-      let v_sum = get_float (Datamunge._sum_dvector v) in
-      Printf.printf "DVector: [0]=%g [1]=%g sum=%g\n" v0 v1 v_sum
+      hello ();
+      let v = make_dvector 1.0 2.0 3.0 in
+      Printf.printf "sum_dvector:\t%g\n" (sum_dvector v);
+      let p = make_dpair 1.25 2.75 in
+      Printf.printf "sum_dpair:\t%g\n" (sum_dpair p);
+      (* An OCaml subclass overrides the C++ Callback's virtual call(). *)
+      let cb = Callback.extend ~call:(fun _ x -> 2.0 *. x) () in
+      Printf.printf "call_with_callback(3.0):\t%g\n" (call_with_callback 3.0 cb);
+      let v2 = map_dvector_with_callback (make_dvector 1.0 2.0 3.0) cb in
+      Printf.printf "sum_dvector(map_dvector_with_callback(1,2,3)):\t%g\n" (sum_dvector v2)
 
     Hello datamunge
-    datamunge: _hello() ok
-    DPair: first=1.25 second=2.5 sum=3.75
-    DVector: [0]=3 [1]=4.5 sum=7.5
+    sum_dvector:	6
+    sum_dpair:	4
+    call_with_callback(3.0):	6
+    sum_dvector(map_dvector_with_callback(1,2,3)):	12
 
 
 ## Go
@@ -347,30 +338,30 @@ best-effort (printing \`SKIP\` when the relevant runtime/binding is unavailable)
     package main
     
     import (
-            "fmt"
             "datamunge"
+            "fmt"
     )
     
     func main() {
-            datamunge.Hello()
+            if err := datamunge.Hello(); err != nil {
+                    panic(err)
+            }
     
-            dp := datamunge.NewDPair(1.0, 2.0)
-            fmt.Printf("DPair: First=%v, Second=%v\n", dp.GetFirst(), dp.GetSecond())
+            v := datamunge.Must(datamunge.MakeDvector(1.0, 2.0, 3.0))
+            fmt.Printf("sum_dvector:\t%v\n", datamunge.Must(datamunge.SumDvector(v)))
     
-            s := datamunge.NewSVector(int64(3))
-            s.Set(0, "1")
-            s.Set(1, "2")
-            s.Set(2, "3")
-            fmt.Printf("SVector: [0]=%v, [1]=%v, [2]=%v\n", s.Get(0), s.Get(1), s.Get(2))
+            p := datamunge.Must(datamunge.MakeDpair(1.25, 2.75))
+            fmt.Printf("sum_dpair:\t%v\n", datamunge.Must(datamunge.SumDpair(p)))
     
-            // Clean up
-            datamunge.DeleteDPair(dp)
-            datamunge.DeleteSVector(s)
+            cb := datamunge.Must(datamunge.NewCallback())
+            defer cb.Close()
+            fmt.Printf("call_with_callback(3.0):\t%v\n", datamunge.Must(datamunge.CallWithCallback(3.0, cb)))
     }
 
     Hello datamunge
-    DPair: First=1, Second=2
-    SVector: [0]=1, [1]=2, [2]=3
+    sum_dvector:	6
+    sum_dpair:	4
+    call_with_callback(3.0):	3
 
 
 # Using Datamunge

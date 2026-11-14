@@ -1,26 +1,26 @@
 ;; CMD: just TARGET=svm_iris_ex run-guile
+;; Support vector machine on iris: RBF vs. linear kernels, confusion matrix and predictions.
+(use-modules (oop goops) (datamunge) ((datamunge data) #:select (iris)))
 
-(use-modules (datamunge))
+(define formula "Species ~ Sepal.Length + Sepal.Width + Petal.Length + Petal.Width")
+(define iris-df (iris))
+(format #t "iris: ~a rows x ~a cols\n\n" (nrows iris-df) (ncols iris-df))
 
-(define iris (data_iris))
-(format #t "iris: ~a rows x ~a cols\n\n" (DataFrame-nrows iris) (DataFrame-ncols iris))
+(display "=== RBF kernel (default) ===\n")
+(define rbf-model (make <svm> iris-df formula))
+(print-summary rbf-model)
+(format #t "\nConfusion matrix (rows = actual, cols = predicted):\n~a\n"
+        (to-string (confusion-matrix rbf-model)))
 
-(format #t "=== RBF kernel (default) ===\n")
-(define rbf-model (new-SVM iris "Species ~ Sepal.Length + Sepal.Width + Petal.Length + Petal.Width"))
-(SVM-print-summary rbf-model)
-(format #t "\nConfusion matrix (rows = actual, cols = predicted):\n")
-(format #t "~a\n" (DataFrame-to-string (SVM-confusion-matrix rbf-model)))
+(display "\n=== Linear kernel, for comparison ===\n")
+(define linear-model (make <svm> iris-df formula "linear"))
+(format #t "Training accuracy: ~a%\n" (* (training-accuracy linear-model) 100))
+(format #t "Support vectors: ~a\n" (num-support-vectors linear-model))
 
-(format #t "\n=== Linear kernel, for comparison ===\n")
-(define linear-model (new-SVM iris "Species ~ Sepal.Length + Sepal.Width + Petal.Length + Petal.Width" "linear"))
-(format #t "Training accuracy: ~a%\n" (* 100.0 (SVM-training-accuracy linear-model)))
-(format #t "Support vectors: ~a\n" (SVM-num-support-vectors linear-model))
-
-(define newdata (DataFrame-empty))
-(DataFrame-add-numeric-column newdata "Sepal.Length" (list 5.1 6.0 6.5 6.2))
-(DataFrame-add-numeric-column newdata "Sepal.Width" (list 3.5 2.7 3.0 2.8))
-(DataFrame-add-numeric-column newdata "Petal.Length" (list 1.4 4.5 5.5 4.8))
-(DataFrame-add-numeric-column newdata "Petal.Width" (list 0.2 1.5 2.0 1.8))
-
-(format #t "\nRBF predictions for new flowers (votes out of 3 one-vs-one pairs):\n")
-(format #t "~a\n" (DataFrame-to-string (SVM-predict-frame rbf-model newdata)))
+(define newdata (make <data-frame>))
+(add-numeric-column newdata "Sepal.Length" '(5.1 6.0 6.5 6.2))
+(add-numeric-column newdata "Sepal.Width" '(3.5 2.7 3.0 2.8))
+(add-numeric-column newdata "Petal.Length" '(1.4 4.5 5.5 4.8))
+(add-numeric-column newdata "Petal.Width" '(0.2 1.5 2.0 1.8))
+(format #t "\nRBF predictions for new flowers (votes out of 3 one-vs-one pairs):\n~a\n"
+        (to-string (predict-frame rbf-model newdata)))

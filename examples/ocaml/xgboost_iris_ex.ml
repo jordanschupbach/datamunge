@@ -1,48 +1,57 @@
 (* CMD: just TARGET=xgboost_iris_ex run-ocaml *)
-
-open Swig
+(* XGBoost classifier on iris: summary, confusion matrix, misclassified rows, L2-regularization comparison. *)
 open Datamunge
 
-let last_of v =
-  let n = get_int (invoke v "size" C_void) in
-  get_float (invoke v "[]" (C_int (n - 1)))
+let last values = values.(Array.length values - 1)
 
 let () =
-  let iris = _data_iris C_void in
-  Printf.printf "iris: %d rows x %d cols\n\n"
-    (get_int (invoke iris "nrows" C_void)) (get_int (invoke iris "ncols" C_void));
+  let iris = Data.iris () in
+  Printf.printf "iris: %d rows x %d cols\n\n" (DataFrame.nrows iris) (DataFrame.ncols iris);
 
-  let model = new_XGBoostClassifier (C_list [iris; C_string "Species ~ Petal.Length + Petal.Width"]) in
-  ignore (invoke model "print_summary" C_void);
+  let formula = "Species ~ Petal.Length + Petal.Width" in
+  let model = XGBoostClassifier.create iris formula in
+  XGBoostClassifier.print_summary model;
 
-  print_endline "\nConfusion matrix (rows = actual, cols = predicted):";
-  print_endline (get_string (invoke (invoke model "confusion_matrix" C_void) "to_string" C_void));
+  Printf.printf "\nConfusion matrix (rows = actual, cols = predicted):\n%s\n"
+    (DataFrame.to_string (XGBoostClassifier.confusion_matrix model));
 
   print_endline "\nMisclassified rows:";
-  let predictions = invoke model "predict" iris in
-  let n = get_int (invoke iris "nrows" C_void) in
+  let predictions = Array.of_list (XGBoostClassifier.predict model iris) in
+  let n = DataFrame.nrows iris in
   let misclassified = ref 0 in
   for i = 0 to n - 1 do
-    let actual = get_string (invoke iris "string_at" (C_list [C_string "Species"; C_int64 (Int64.of_int i)])) in
-    let pred = get_string (invoke predictions "[]" (C_int i)) in
-    if pred <> actual then begin
+    let actual = DataFrame.string_at iris "Species" i in
+    let predicted = predictions.(i) in
+    if predicted <> actual then begin
       incr misclassified;
       Printf.printf "  row %d: Petal.Length=%g Petal.Width=%g  actual=%s  predicted=%s\n" i
-        (get_float (invoke iris "numeric_at" (C_list [C_string "Petal.Length"; C_int64 (Int64.of_int i)])))
-        (get_float (invoke iris "numeric_at" (C_list [C_string "Petal.Width"; C_int64 (Int64.of_int i)])))
-        actual pred
+        (DataFrame.numeric_at iris "Petal.Length" i)
+        (DataFrame.numeric_at iris "Petal.Width" i)
+        actual predicted
     end
   done;
-  Printf.printf "%d of %d misclassified (%g%%)\n" !misclassified n (100.0 *. float_of_int !misclassified /. float_of_int n);
+  Printf.printf "%d of %d misclassified (%g%%)\n" !misclassified n
+    (100.0 *. float_of_int !misclassified /. float_of_int n);
 
-  ignore (invoke (invoke model "plot_training_deviance" C_void) "save" (C_string "xgboost_iris_training_deviance.svg"));
-  ignore (invoke (invoke model "plot_decision_regions" (C_list [C_string "Petal.Length"; C_string "Petal.Width"])) "save" (C_string "xgboost_iris_decision_regions.svg"));
+  RPlot.save (XGBoostClassifier.plot_training_deviance model) "xgboost_iris_training_deviance.svg";
+  RPlot.save
+    (XGBoostClassifier.plot_decision_regions model "Petal.Length" "Petal.Width")
+    "xgboost_iris_decision_regions.svg";
   print_endline "\nSaved xgboost_iris_training_deviance.svg and xgboost_iris_decision_regions.svg";
 
-  let heavy = new_XGBoostClassifier (C_list [iris; C_string "Species ~ Petal.Length + Petal.Width"; C_int64 100L; C_double 0.3; C_int64 6L; C_double 50.0]) in
+  (* XGBoost's defining lever is regularization: a heavily L2-regularized model (large lambda)
+     grows the same deep trees but keeps every leaf weight small, producing a much smoother
+     decision boundary than the lightly-regularized default. *)
+  let heavy =
+    XGBoostClassifier.create ~n_trees:100 ~learning_rate:0.3 ~max_depth:6 ~lambda:50.0 iris formula
+  in
   Printf.printf "\nlambda=1 (default):   training accuracy=%g%%  deviance=%g\n"
-    (get_float (invoke model "training_accuracy" C_void) *. 100.0) (last_of (invoke model "training_deviance" C_void));
+    (100. *. XGBoostClassifier.training_accuracy model)
+    (last (XGBoostClassifier.training_deviance model));
   Printf.printf "lambda=50 (heavy L2): training accuracy=%g%%  deviance=%g\n"
-    (get_float (invoke heavy "training_accuracy" C_void) *. 100.0) (last_of (invoke heavy "training_deviance" C_void));
-  ignore (invoke (invoke heavy "plot_decision_regions" (C_list [C_string "Petal.Length"; C_string "Petal.Width"])) "save" (C_string "xgboost_iris_decision_regions_heavy_lambda.svg"));
+    (100. *. XGBoostClassifier.training_accuracy heavy)
+    (last (XGBoostClassifier.training_deviance heavy));
+  RPlot.save
+    (XGBoostClassifier.plot_decision_regions heavy "Petal.Length" "Petal.Width")
+    "xgboost_iris_decision_regions_heavy_lambda.svg";
   print_endline "Saved xgboost_iris_decision_regions_heavy_lambda.svg"

@@ -1,44 +1,66 @@
 // CMD: just TARGET=forest_iris_ex run-go
 
+//go:build ignore
+
+// Random forest classifier on iris: summary, confusion matrix, misclassifications, OOB accuracy.
 package main
 
 import (
 	"datamunge"
+	"datamunge/data"
 	"fmt"
 )
 
-func main() {
-	iris := datamunge.DataIris()
-	fmt.Printf("iris: %d rows x %d cols\n\n", iris.Nrows(), iris.Ncols())
+func check(err error) {
+	if err != nil {
+		panic(err)
+	}
+}
 
-	model := datamunge.NewRandomForestClassifier(iris, "Species ~ Petal.Length + Petal.Width")
-	model.Print_summary()
+func main() {
+	iris := datamunge.Must(data.Iris())
+	defer iris.Close()
+	fmt.Printf("iris: %d rows x %d cols\n\n", datamunge.Must(iris.Nrows()), datamunge.Must(iris.Ncols()))
+
+	model := datamunge.Must(datamunge.NewRandomForestClassifier(iris, "Species ~ Petal.Length + Petal.Width"))
+	defer model.Close()
+	// PrintSummary writes to C++ std::cout; the binding flushes it, so it stays in order with fmt.
+	check(model.PrintSummary())
 
 	fmt.Println("\nConfusion matrix (rows = actual, cols = predicted):")
-	fmt.Println(model.Confusion_matrix().To_string())
+	fmt.Println(datamunge.Must(model.ConfusionMatrix()))
 
 	fmt.Println("\nMisclassified rows:")
-	predictions := model.Predict(iris)
+	predictions := datamunge.Must(model.Predict(iris))
+	n := datamunge.Must(iris.Nrows())
 	misclassified := 0
-	n := iris.Nrows()
-	for i := int64(0); i < n; i++ {
-		actual := iris.String_at("Species", i)
-		pred := predictions.Get(int(i))
-		if pred != actual {
-			misclassified++
-			fmt.Printf("  row %d: Petal.Length=%g Petal.Width=%g  actual=%s  predicted=%s\n", i,
-				iris.Numeric_at("Petal.Length", i), iris.Numeric_at("Petal.Width", i), actual, pred)
+	for i := 0; i < n; i++ {
+		actual := datamunge.Must(iris.StringAt("Species", i))
+		predicted := predictions[i]
+		if predicted == actual {
+			continue
 		}
+		misclassified++
+		fmt.Printf("  row %d: Petal.Length=%v Petal.Width=%v  actual=%s  predicted=%s\n",
+			i, datamunge.Must(iris.NumericAt("Petal.Length", i)),
+			datamunge.Must(iris.NumericAt("Petal.Width", i)), actual, predicted)
 	}
-	fmt.Printf("%d of %d misclassified (%g%%)\n", misclassified, n, 100.0*float64(misclassified)/float64(n))
+	fmt.Printf("%d of %d misclassified (%v%%)\n", misclassified, n, 100.0*float64(misclassified)/float64(n))
 
-	model.Plot_classification(iris, "Petal.Length", "Petal.Width").Save("forest_iris_classification.svg")
-	model.Plot_decision_regions("Petal.Length", "Petal.Width").Save("forest_iris_decision_regions.svg")
+	check(datamunge.Must(model.PlotClassification(iris, "Petal.Length", "Petal.Width")).Save("forest_iris_classification.svg"))
+	check(datamunge.Must(model.PlotDecisionRegions("Petal.Length", "Petal.Width")).Save("forest_iris_decision_regions.svg"))
 	fmt.Println("\nSaved forest_iris_classification.svg and forest_iris_decision_regions.svg")
 
-	smallForest := datamunge.NewRandomForestClassifier(iris, "Species ~ Petal.Length + Petal.Width", int64(5))
-	fmt.Printf("\n5-tree forest:   training accuracy=%g%%  OOB accuracy=%g%%\n", smallForest.Training_accuracy()*100.0, smallForest.Oob_accuracy()*100.0)
-	fmt.Printf("100-tree forest: training accuracy=%g%%  OOB accuracy=%g%%\n", model.Training_accuracy()*100.0, model.Oob_accuracy()*100.0)
-	smallForest.Plot_decision_regions("Petal.Length", "Petal.Width").Save("forest_iris_decision_regions_5trees.svg")
+	// A small forest, for comparison, showing how out-of-bag accuracy stabilizes as more trees
+	// are added -- the defining random forest effect a single decision tree cannot demonstrate.
+	// NewRandomForestClassifierWithSeed(data, formula, nTrees, maxDepth, minSamplesSplit,
+	// minSamplesLeaf, maxFeatures, criterion, bootstrap, sampleFraction, seed) takes every option.
+	smallForest := datamunge.Must(datamunge.NewRandomForestClassifierWithNTrees(iris, "Species ~ Petal.Length + Petal.Width", 5))
+	defer smallForest.Close()
+	fmt.Printf("\n5-tree forest:   training accuracy=%v%%  OOB accuracy=%v%%\n",
+		datamunge.Must(smallForest.TrainingAccuracy())*100, datamunge.Must(smallForest.OobAccuracy())*100)
+	fmt.Printf("100-tree forest: training accuracy=%v%%  OOB accuracy=%v%%\n",
+		datamunge.Must(model.TrainingAccuracy())*100, datamunge.Must(model.OobAccuracy())*100)
+	check(datamunge.Must(smallForest.PlotDecisionRegions("Petal.Length", "Petal.Width")).Save("forest_iris_decision_regions_5trees.svg"))
 	fmt.Println("Saved forest_iris_decision_regions_5trees.svg")
 }

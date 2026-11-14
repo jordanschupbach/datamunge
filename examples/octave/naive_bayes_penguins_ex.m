@@ -1,48 +1,65 @@
 % CMD: just TARGET=naive_bayes_penguins_ex run-octave
-
+% Naive Bayes on penguins: mixed numeric/categorical predictors, confusion matrix, misclassified rows, plots.
 1;
 
-datamunge;
+% Shortest round-trip decimal text for x (like C#/Julia default double printing).
+function s = num (x)
+  if x == fix (x) && abs (x) < 1e15
+    s = sprintf ('%d', x);
+    return;
+  end
+  for d = 1:17
+    s = sprintf ('%.*e', d - 1, x);
+    if str2double (s) == x
+      break;
+    end
+  end
+  epos = strfind (s, 'e');
+  e = str2double (s(epos+1:end));
+  if e >= -5 && e < 15
+    s = sprintf ('%.*f', max (1, d - 1 - e), x);
+  else
+    s = sprintf ('%se%d', s(1:epos-1), e);
+  end
+end
 
-% Note: unlike the C++ example, this doesn't call drop_nulls() first (that method isn't
-% exposed on the SWIG-bound DataFrame facade) -- NaiveBayesClassifier drops incomplete rows
-% for its own formula columns internally when fitting, matching every other formula-based
-% model in this library.
-penguins = data_penguins();
-printf("penguins: %d rows x %d cols\n\n", DataFrame_nrows(penguins), DataFrame_ncols(penguins));
+% Note: NaiveBayesClassifier drops incomplete rows for its own formula columns internally
+% when fitting, matching every other formula-based model in this library.
+penguins = datamunge.Data.penguins ();
+printf ('penguins: %d rows x %d cols\n\n', penguins.nrows (), penguins.ncols ());
 
 % A mix of numeric (Gaussian likelihood) and categorical (frequency-table likelihood)
 % predictors in one formula -- each modeled independently given the class, per the naive
 % Bayes assumption.
-model = NaiveBayesClassifier(penguins, "species ~ bill_length_mm + bill_depth_mm + island + sex");
-NaiveBayesClassifier_print_summary(model);
+model = datamunge.NaiveBayesClassifier (penguins, 'species ~ bill_length_mm + bill_depth_mm + island + sex');
+model.print_summary ();
 
-printf("\nConfusion matrix (rows = actual, cols = predicted):\n");
-printf("%s\n", DataFrame_to_string(NaiveBayesClassifier_confusion_matrix(model)));
+printf ('\nConfusion matrix (rows = actual, cols = predicted):\n%s\n', model.confusion_matrix ().to_string ());
 
-printf("\nMisclassified rows:\n");
-predictions = NaiveBayesClassifier_predict(model, penguins);
+printf ('\nMisclassified rows:\n');
+predictions = model.predict (penguins);
 misclassified = 0;
-n = DataFrame_nrows(penguins);
-for i = 0:(n - 1)
-  if !(DataFrame_is_null(penguins, "species", i) || DataFrame_is_null(penguins, "bill_length_mm", i) || ...
-       DataFrame_is_null(penguins, "bill_depth_mm", i) || DataFrame_is_null(penguins, "island", i) || DataFrame_is_null(penguins, "sex", i))
-    actual = DataFrame_string_at(penguins, "species", i);
-    pred = predictions{i + 1};
-    if !strcmp(pred, actual)
-      misclassified = misclassified + 1;
-      printf("  row %d: bill_length=%g bill_depth=%g island=%s sex=%s  actual=%s  predicted=%s\n", i, ...
-             DataFrame_numeric_at(penguins, "bill_length_mm", i), DataFrame_numeric_at(penguins, "bill_depth_mm", i), ...
-             DataFrame_string_at(penguins, "island", i), DataFrame_string_at(penguins, "sex", i), actual, pred);
-    end
+columns = {'species', 'bill_length_mm', 'bill_depth_mm', 'island', 'sex'};
+for i = 0:penguins.nrows ()-1
+  if any (cellfun (@(c) penguins.is_null (c, i), columns))
+    continue;
   end
+  actual = penguins.string_at ('species', i);
+  predicted = predictions{i+1};
+  if strcmp (predicted, actual)
+    continue;
+  end
+  misclassified++;
+  printf ('  row %d: bill_length=%s bill_depth=%s island=%s sex=%s  actual=%s  predicted=%s\n', i, ...
+          num (penguins.numeric_at ('bill_length_mm', i)), num (penguins.numeric_at ('bill_depth_mm', i)), ...
+          penguins.string_at ('island', i), penguins.string_at ('sex', i), actual, predicted);
 end
-printf("%d misclassified (of %d rows, some incomplete)\n", misclassified, n);
+printf ('%d misclassified (of %d rows, some incomplete)\n', misclassified, penguins.nrows ());
 
 % plot_decision_regions requires exactly two NUMERIC predictors, so build a separate
 % two-predictor model (bill measurements alone) just for visualization.
-bill_only = NaiveBayesClassifier(penguins, "species ~ bill_length_mm + bill_depth_mm");
-printf("\nbill-measurements-only model training accuracy: %g%%\n", NaiveBayesClassifier_training_accuracy(bill_only) * 100.0);
-Plot_save(NaiveBayesClassifier_plot_classification(bill_only, penguins, "bill_length_mm", "bill_depth_mm"), "naive_bayes_penguins_classification.svg");
-Plot_save(NaiveBayesClassifier_plot_decision_regions(bill_only, "bill_length_mm", "bill_depth_mm"), "naive_bayes_penguins_decision_regions.svg");
-printf("Saved naive_bayes_penguins_classification.svg and naive_bayes_penguins_decision_regions.svg\n");
+bill_only = datamunge.NaiveBayesClassifier (penguins, 'species ~ bill_length_mm + bill_depth_mm');
+printf ('\nbill-measurements-only model training accuracy: %s%%\n', num (100 * bill_only.training_accuracy ()));
+bill_only.plot_classification (penguins, 'bill_length_mm', 'bill_depth_mm').save ('naive_bayes_penguins_classification.svg');
+bill_only.plot_decision_regions ('bill_length_mm', 'bill_depth_mm').save ('naive_bayes_penguins_decision_regions.svg');
+printf ('Saved naive_bayes_penguins_classification.svg and naive_bayes_penguins_decision_regions.svg\n');

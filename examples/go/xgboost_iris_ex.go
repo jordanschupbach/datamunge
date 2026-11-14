@@ -1,46 +1,69 @@
 // CMD: just TARGET=xgboost_iris_ex run-go
 
+//go:build ignore
+
+// XGBoost classifier on iris: summary, confusion matrix, misclassified rows, L2-regularization comparison.
 package main
 
 import (
 	"datamunge"
+	"datamunge/data"
 	"fmt"
 )
 
+func check(err error) {
+	if err != nil {
+		panic(err)
+	}
+}
+
+func last(values []float64) float64 {
+	return values[len(values)-1]
+}
+
 func main() {
-	iris := datamunge.DataIris()
-	fmt.Printf("iris: %d rows x %d cols\n\n", iris.Nrows(), iris.Ncols())
+	iris := datamunge.Must(data.Iris())
+	defer iris.Close()
+	fmt.Printf("iris: %d rows x %d cols\n\n", datamunge.Must(iris.Nrows()), datamunge.Must(iris.Ncols()))
 
-	model := datamunge.NewXGBoostClassifier(iris, "Species ~ Petal.Length + Petal.Width")
-	model.Print_summary()
+	model := datamunge.Must(datamunge.NewXGBoostClassifier(iris, "Species ~ Petal.Length + Petal.Width"))
+	defer model.Close()
+	check(model.PrintSummary())
 
-	fmt.Println("\nConfusion matrix (rows = actual, cols = predicted):")
-	fmt.Println(model.Confusion_matrix().To_string())
+	fmt.Println("\nConfusion matrix (rows = actual, cols = predicted):\n" + datamunge.Must(model.ConfusionMatrix()).String())
 
 	fmt.Println("\nMisclassified rows:")
-	predictions := model.Predict(iris)
+	predictions := datamunge.Must(model.Predict(iris))
+	n := datamunge.Must(iris.Nrows())
 	misclassified := 0
-	n := iris.Nrows()
-	for i := int64(0); i < n; i++ {
-		actual := iris.String_at("Species", i)
-		pred := predictions.Get(int(i))
-		if pred != actual {
-			misclassified++
-			fmt.Printf("  row %d: Petal.Length=%g Petal.Width=%g  actual=%s  predicted=%s\n", i,
-				iris.Numeric_at("Petal.Length", i), iris.Numeric_at("Petal.Width", i), actual, pred)
+	for i := 0; i < n; i++ {
+		actual := datamunge.Must(iris.StringAt("Species", i))
+		predicted := predictions[i]
+		if predicted == actual {
+			continue
 		}
+		misclassified++
+		fmt.Printf("  row %d: Petal.Length=%v Petal.Width=%v  actual=%s  predicted=%s\n",
+			i, datamunge.Must(iris.NumericAt("Petal.Length", i)), datamunge.Must(iris.NumericAt("Petal.Width", i)),
+			actual, predicted)
 	}
-	fmt.Printf("%d of %d misclassified (%g%%)\n", misclassified, n, 100.0*float64(misclassified)/float64(n))
+	fmt.Printf("%d of %d misclassified (%v%%)\n", misclassified, n, 100.0*float64(misclassified)/float64(n))
 
-	model.Plot_training_deviance().Save("xgboost_iris_training_deviance.svg")
-	model.Plot_decision_regions("Petal.Length", "Petal.Width").Save("xgboost_iris_decision_regions.svg")
+	check(datamunge.Must(model.PlotTrainingDeviance()).Save("xgboost_iris_training_deviance.svg"))
+	check(datamunge.Must(model.PlotDecisionRegions("Petal.Length", "Petal.Width")).Save("xgboost_iris_decision_regions.svg"))
 	fmt.Println("\nSaved xgboost_iris_training_deviance.svg and xgboost_iris_decision_regions.svg")
 
-	heavy := datamunge.NewXGBoostClassifier(iris, "Species ~ Petal.Length + Petal.Width", int64(100), 0.3, int64(6), 50.0)
-	modelDev := model.Training_deviance()
-	heavyDev := heavy.Training_deviance()
-	fmt.Printf("\nlambda=1 (default):   training accuracy=%g%%  deviance=%g\n", model.Training_accuracy()*100.0, modelDev.Get(int(modelDev.Size())-1))
-	fmt.Printf("lambda=50 (heavy L2): training accuracy=%g%%  deviance=%g\n", heavy.Training_accuracy()*100.0, heavyDev.Get(int(heavyDev.Size())-1))
-	heavy.Plot_decision_regions("Petal.Length", "Petal.Width").Save("xgboost_iris_decision_regions_heavy_lambda.svg")
+	// XGBoost's defining lever is regularization: a heavily L2-regularized model (large lambda)
+	// grows the same deep trees but keeps every leaf weight small, producing a much smoother
+	// decision boundary than the lightly-regularized default.
+	// NewXGBoostClassifierWith<LastParam>(data, formula, nTrees, learningRate, maxDepth, lambda, alpha,
+	//     gamma, minChildWeight, minSamplesLeaf, subsample, colsampleBytree, seed)
+	heavy := datamunge.Must(datamunge.NewXGBoostClassifierWithLambda(iris, "Species ~ Petal.Length + Petal.Width", 100, 0.3, 6, 50.0))
+	defer heavy.Close()
+	fmt.Printf("\nlambda=1 (default):   training accuracy=%v%%  deviance=%v\n",
+		100*datamunge.Must(model.TrainingAccuracy()), last(datamunge.Must(model.TrainingDeviance())))
+	fmt.Printf("lambda=50 (heavy L2): training accuracy=%v%%  deviance=%v\n",
+		100*datamunge.Must(heavy.TrainingAccuracy()), last(datamunge.Must(heavy.TrainingDeviance())))
+	check(datamunge.Must(heavy.PlotDecisionRegions("Petal.Length", "Petal.Width")).Save("xgboost_iris_decision_regions_heavy_lambda.svg"))
 	fmt.Println("Saved xgboost_iris_decision_regions_heavy_lambda.svg")
 }

@@ -1,20 +1,21 @@
 (* CMD: just TARGET=stl_ex run-ocaml *)
-
-open Swig
+(* C++ std::vector and std::pair values in OCaml: vectors are arrays or lists, pairs are tuples. *)
 open Datamunge
 
 let () =
   let n = 100 in
-  let v = new_DVector C_void in
-  for i = 0 to n - 1 do ignore (invoke v "push_back" (C_double (float_of_int i *. 1.5))) done;
-  for i = 0 to n - 1 do Printf.printf "%g\n" (get_float (invoke v "[]" (C_int i))) done;
+  let v = Array.init n (fun i -> float_of_int i *. 1.5) in
+  Array.iter (Printf.printf "%g\n") v;
+  let v2 = List.init n (fun i -> int_of_float (Float.floor (float_of_int i *. 1.5))) in
+  List.iter (Printf.printf "%d\n") v2;
 
-  let v2 = new_IVector C_void in
-  for i = 0 to n - 1 do ignore (invoke v2 "push_back" (C_int (int_of_float (float_of_int i *. 1.5)))) done;
-  for i = 0 to n - 1 do Printf.printf "%d\n" (get_int (invoke v2 "[]" (C_int i))) done;
+  let p = (3, 4) in
+  Printf.printf "p: (%d, %d)\n" (fst p) (snd p);
 
-  let p = new_IPair (C_list [C_int 3; C_int 4]) in
-  Printf.printf "p: (%d, %d)\n" (get_int (invoke p "[first]" C_void)) (get_int (invoke p "[second]" C_void));
+  let p2 = (10, 20) in
+  Printf.printf "p2: (%d, %d)\n" (fst p2) (snd p2);
 
-  let p2 = new_DPair (C_list [C_double 10.0; C_double 20.0]) in
-  Printf.printf "p2: (%g, %g)\n" (get_float (invoke p2 "[first]" C_void)) (get_float (invoke p2 "[second]" C_void))
+  (* A C++ std::pair<double,double> comes back as a float * float tuple. *)
+  let p3 = make_dpair 1.25 2.75 in
+  let a, b = p3 in
+  Printf.printf "make_dpair(1.25, 2.75): (%g, %g), sum_dpair = %g\n" a b (sum_dpair p3)

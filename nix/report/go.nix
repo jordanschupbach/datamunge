@@ -1,29 +1,26 @@
 {
   pkgs,
   bindingPkgs,
-  datamunge,
   ...
 }:
 let
   # Built here rather than passed in from flake.nix: only this shell uses it.
-  datamungego = import ../datamungego.nix {
-    pkgs = bindingPkgs;
-    inherit datamunge;
-  };
+  datamungego = import ../datamungego.nix { pkgs = bindingPkgs; };
 in
 pkgs.mkShell {
   # The same go and stdenv cc as the package, so its prebuilt build cache entries are hits.
   packages = [
     bindingPkgs.go
-    pkgs.pkg-config
+    bindingPkgs.stdenv.cc
   ];
-  # `import "datamunge"` resolves through a workspace using the (read-only) store module, which
-  # already carries its link flags. GOCACHE is a writable copy seeded from the package's cache,
+  # `import "datamunge"` resolves through a workspace using the (read-only) store module, linked
+  # against the store's libdatamunge_go. GOCACHE is a writable copy seeded from the package's cache,
   # so the first `go run` doesn't spend minutes compiling the generated datamunge.go.
   shellHook = ''
-    # The module carries its own link flags. CGO_* inherited from an outer shell (the default
-    # dev shell exports them for its own datamunge build) would be linked first and win.
-    unset CGO_CPPFLAGS CGO_CFLAGS CGO_CXXFLAGS CGO_LDFLAGS
+    # The same CGO_LDFLAGS as the package's warm cache (part of the cache keys); CGO_* inherited
+    # from an outer shell (the dev shells point them at build/go/prefix) would miss it.
+    unset CGO_CPPFLAGS CGO_CFLAGS CGO_CXXFLAGS GOFLAGS
+    export CGO_ENABLED=1 CGO_LDFLAGS="${datamungego.cgoLdflags}"
     reportGoDir="''${XDG_CACHE_HOME:-$HOME/.cache}/datamunge-report-go"
     export GOCACHE="$reportGoDir/gocache"
     mkdir -p "$GOCACHE"
@@ -31,9 +28,9 @@ pkgs.mkShell {
     if [ ! -e "$seeded" ]; then
       cp -r --no-preserve=mode "${datamungego}/share/go-cache/." "$GOCACHE/" && touch "$seeded"
     fi
-    printf 'go 1.21\n\nuse %s\n' "${datamungego}/share/go/datamunge" > "$reportGoDir/go.work"
+    printf 'go 1.24\n\nuse %s\n' "${datamungego.module}" > "$reportGoDir/go.work"
     export GOWORK="$reportGoDir/go.work"
-    export GOTOOLCHAIN=local
-    export DATAMUNGE_GO_MODULE="${datamungego}/share/go/datamunge"
+    export GOTOOLCHAIN=local GOPROXY=off
+    export DATAMUNGE_GO_MODULE="${datamungego.module}"
   '';
 }

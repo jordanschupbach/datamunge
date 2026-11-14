@@ -24,7 +24,6 @@ build
 compile_commands.json
 .dub
 **/.dub
-./buildSrc/.gradle/
 .gradle
 dist
 src/pydatamunge.egg-info
@@ -42,8 +41,6 @@ src/datamungecsharp/bin
 src/datamungecsharp/obj
 tests/rust/target
 target
-src/octruby/ext/octruby/Makefile
-src/octruby/ext/octruby/mkmf.log
 
 # editor/OS noise
 *~
@@ -51,8 +48,9 @@ src/octruby/ext/octruby/mkmf.log
 .\#*
 .DS_Store
 
-examples/ocaml/datamunge_ex.cmi
-examples/ocaml/datamunge_ex.cmx
+examples/ocaml/*.cm[iotx]
+examples/ocaml/*.cmti
+examples/ocaml/*.o
 tmp/
 
 # figures mep copies into place for mepml blocks with file= (scripts/org_to_mepml.py)

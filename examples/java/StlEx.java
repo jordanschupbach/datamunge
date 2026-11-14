@@ -1,38 +1,35 @@
 // CMD: just TARGET=stl_ex run-java
-
-import js.datamunge.jdatamunge.DPair;
-import js.datamunge.jdatamunge.DVector;
-import js.datamunge.jdatamunge.IPair;
-import js.datamunge.jdatamunge.IVector;
+// C++ std::vector and std::pair values in Java: vectors are arrays, pairs are datamunge.Pair records.
+import datamunge.Datamunge;
+import datamunge.Pair;
+import java.util.stream.IntStream;
 
 public class StlEx {
-  static {
-    System.loadLibrary("datamunge_jni");
-  }
-
   public static void main(String[] args) {
-    run();
-  }
+    int n = 100;
+    double[] v = IntStream.range(0, n).mapToDouble(i -> i * 1.5).toArray();
+    for (double x : v) {
+      System.out.println(x);
+    }
+    int[] v2 = IntStream.range(0, n).map(i -> (int) Math.floor(i * 1.5)).toArray();
+    for (int x : v2) {
+      System.out.println(x);
+    }
 
-  public static void run() {
-    System.out.println("Stl Example:");
-    var v = new DVector(10, 0.0);
-    for (int i = 0; i < v.size(); i++) {
-      v.set(i, i * 1.1);
-    }
-    for (int i = 0; i < v.size(); i++) {
-      System.out.println(v.get(i));
-    }
-    var v2 = new IVector(10, 0);
-    for (int i = 0; i < v2.size(); i++) {
-      v2.set(i, i * 2);
-    }
-    for (int i = 0; i < v2.size(); i++) {
-      System.out.println(v2.get(i));
-    }
-    var p = new DPair(3.14, 2.71);
-    System.out.println("DPair: " + p.getFirst() + ", " + p.getSecond());
-    var p2 = new IPair(42, 7);
-    System.out.println("IPair: " + p2.getFirst() + ", " + p2.getSecond());
+    var p = new Pair<>(3, 4);
+    System.out.println("p: (" + p.first() + ", " + p.second() + ")");
+
+    var p2 = new Pair<>(10, 20);
+    System.out.println("p2: (" + p2.first() + ", " + p2.second() + ")");
+
+    // A C++ std::pair<double,double> comes back as a Pair<Double, Double>.
+    Pair<Double, Double> p3 = Datamunge.makeDpair(1.25, 2.75);
+    System.out.println(
+        "make_dpair(1.25, 2.75): ("
+            + p3.first()
+            + ", "
+            + p3.second()
+            + "), sum_dpair = "
+            + Datamunge.sumDpair(p3));
   }
 }

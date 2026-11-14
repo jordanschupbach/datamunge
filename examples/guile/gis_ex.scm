@@ -1,12 +1,11 @@
 ;; CMD: just TARGET=gis_ex run-guile
-
-;; Demonstrates ShapeLayer: reading a shapefile (.shp geometry + .dbf attributes) and drawing it
-;; as a map. Real .shp/.dbf files are large binary bundles that don't belong in this repo, so this
-;; example first writes a tiny synthetic shapefile by hand (two "counties": one plain square, one
-;; with a lake-shaped hole) using the same ESRI byte layout ShapeLayer.read() expects, then reads
-;; it back through the public API. Guile's (rnrs bytevectors) mirrors Python's struct.pack for the
-;; binary layout.
-(use-modules (datamunge)
+;; ShapeLayer: write a tiny synthetic shapefile (.shp + .dbf) by hand, read it back and draw it as a map.
+;; Real .shp/.dbf files are large binary bundles that don't belong in this repo, so this example
+;; writes two "counties" (one plain square, one with a lake-shaped hole) using the same ESRI byte
+;; layout (shape-layer-read) expects, then reads them back through the public API.
+;; Guile's (rnrs bytevectors) does the binary packing.
+(use-modules (oop goops)
+             (datamunge)
              (ice-9 format)
              (rnrs bytevectors)
              (rnrs io ports))
@@ -132,24 +131,20 @@
 (write-counties-shp (string-append base ".shp") (list with-lake plain))
 (write-counties-dbf (string-append base ".dbf") (list "Lakeside" "Plainview") (list "48231" "19876"))
 
-(define counties (ShapeLayer-read base))
+(define counties (shape-layer-read base))
 
-(format #t "shapes = ~a, shape_type = ~a\n"
-        (ShapeLayer-size counties) (ShapeLayer-shape-type counties))
-(define bounds (ShapeLayer-bounds counties))
-(format #t "bounds = [~a]\n"
-        (string-join (map number->string (vector->list bounds)) ", "))
-(newline)
+(format #t "shapes = ~a, shape_type = ~a\n" (size counties) (shape-type counties))
+;; Roughly C's %g: integral doubles print without a fractional part.
+(define (fmt-g x)
+  (if (integer? x) (number->string (inexact->exact x)) (format #f "~,6f" x)))
+(format #t "bounds = [~a]\n\n" (string-join (map fmt-g (bounds counties)) ", "))
 
-(define attributes (ShapeLayer-attributes counties))
-(format #t "attributes\n")
-(format #t "~a\n" (DataFrame-to-string attributes))
-(newline)
+(define attrs (attributes counties))
+(format #t "attributes\n~a\n\n" (to-string attrs))
 
-(do ((i 0 (+ i 1))) ((= i (ShapeLayer-size counties)))
-  (format #t "~a: ~a ring(s)\n"
-          (DataFrame-string-at attributes "NAME" i) (ShapeLayer-num-parts counties i)))
+(do ((i 0 (+ i 1))) ((= i (size counties)))
+  (format #t "~a: ~a ring(s)\n" (string-at attrs "NAME" i) (num-parts counties i)))
 
 (define svg-path "datamunge_gis_ex_map_guile.svg")
-(Plot-save-svg (ShapeLayer-plot counties) svg-path)
+(save-svg (plot counties) svg-path)
 (format #t "\nmap saved to ~a\n" svg-path)

@@ -1,45 +1,51 @@
 (* CMD: just TARGET=knn_iris_ex run-ocaml *)
-
-open Swig
+(* k-nearest-neighbours classifier on iris: leave-one-out accuracy and decision regions for several k. *)
 open Datamunge
 
-let () =
-  let iris = _data_iris C_void in
-  Printf.printf "iris: %d rows x %d cols\n\n"
-    (get_int (invoke iris "nrows" C_void)) (get_int (invoke iris "ncols" C_void));
+let formula = "Species ~ Petal.Length + Petal.Width"
 
-  let model = new_KNNClassifier (C_list [iris; C_string "Species ~ Petal.Length + Petal.Width"]) in
-  ignore (invoke model "print_summary" C_void);
+let () =
+  let iris = Data.iris () in
+  Printf.printf "iris: %d rows x %d cols\n\n" (DataFrame.nrows iris) (DataFrame.ncols iris);
+
+  let model = KNNClassifier.create iris formula in
+  KNNClassifier.print_summary model;
 
   print_endline "\nConfusion matrix (leave-one-out; rows = actual, cols = predicted):";
-  print_endline (get_string (invoke (invoke model "confusion_matrix" C_void) "to_string" C_void));
+  print_endline (DataFrame.to_string (KNNClassifier.confusion_matrix model));
 
   print_endline "\nLeave-one-out misclassified rows:";
-  let fitted = invoke model "predict" iris in
-  let n = get_int (invoke iris "nrows" C_void) in
+  let fitted = KNNClassifier.predict model iris in
+  let n = DataFrame.nrows iris in
   let misclassified = ref 0 in
-  for i = 0 to n - 1 do
-    let actual = get_string (invoke iris "string_at" (C_list [C_string "Species"; C_int64 (Int64.of_int i)])) in
-    let pred = get_string (invoke fitted "[]" (C_int i)) in
-    if pred <> actual then begin
-      incr misclassified;
-      Printf.printf "  row %d: Petal.Length=%g Petal.Width=%g  actual=%s  predicted=%s\n" i
-        (get_float (invoke iris "numeric_at" (C_list [C_string "Petal.Length"; C_int64 (Int64.of_int i)])))
-        (get_float (invoke iris "numeric_at" (C_list [C_string "Petal.Width"; C_int64 (Int64.of_int i)])))
-        actual pred
-    end
-  done;
-  Printf.printf "%d of %d misclassified (%g%%)\n" !misclassified n (100.0 *. float_of_int !misclassified /. float_of_int n);
+  List.iteri
+    (fun i predicted ->
+      let actual = DataFrame.string_at iris "Species" i in
+      if predicted <> actual then begin
+        incr misclassified;
+        Printf.printf "  row %d: Petal.Length=%g Petal.Width=%g  actual=%s  predicted=%s\n" i
+          (DataFrame.numeric_at iris "Petal.Length" i)
+          (DataFrame.numeric_at iris "Petal.Width" i)
+          actual predicted
+      end)
+    fitted;
+  Printf.printf "%d of %d misclassified (%g%%)\n" !misclassified n
+    (100.0 *. float_of_int !misclassified /. float_of_int n);
 
-  ignore (invoke (invoke model "plot_decision_regions" (C_list [C_string "Petal.Length"; C_string "Petal.Width"])) "save" (C_string "knn_iris_decision_regions_k5.svg"));
+  Plot.save
+    (KNNClassifier.plot_decision_regions model "Petal.Length" "Petal.Width")
+    "knn_iris_decision_regions_k5.svg";
   print_endline "\nSaved knn_iris_decision_regions_k5.svg";
 
-  let k1 = new_KNNClassifier (C_list [iris; C_string "Species ~ Petal.Length + Petal.Width"; C_int64 1L]) in
-  Printf.printf "\nk=1  leave-one-out accuracy: %g%%\n" (get_float (invoke k1 "training_accuracy" C_void) *. 100.0);
-  ignore (invoke (invoke k1 "plot_decision_regions" (C_list [C_string "Petal.Length"; C_string "Petal.Width"])) "save" (C_string "knn_iris_decision_regions_k1.svg"));
-  print_endline "Saved knn_iris_decision_regions_k1.svg";
-
-  let k25 = new_KNNClassifier (C_list [iris; C_string "Species ~ Petal.Length + Petal.Width"; C_int64 25L]) in
-  Printf.printf "\nk=25 leave-one-out accuracy: %g%%\n" (get_float (invoke k25 "training_accuracy" C_void) *. 100.0);
-  ignore (invoke (invoke k25 "plot_decision_regions" (C_list [C_string "Petal.Length"; C_string "Petal.Width"])) "save" (C_string "knn_iris_decision_regions_k25.svg"));
-  print_endline "Saved knn_iris_decision_regions_k25.svg"
+  (* k=1 memorizes every training point exactly (jagged, overfit boundary with an island around
+     every point, including noise); k=25 averages over a much larger neighborhood (very smooth,
+     underfit boundary). *)
+  List.iter
+    (fun k ->
+      let knn = KNNClassifier.create ~k iris formula in
+      let file = Printf.sprintf "knn_iris_decision_regions_k%d.svg" k in
+      Printf.printf "\nk=%-2d leave-one-out accuracy: %g%%\n" k
+        (KNNClassifier.training_accuracy knn *. 100.0);
+      Plot.save (KNNClassifier.plot_decision_regions knn "Petal.Length" "Petal.Width") file;
+      Printf.printf "Saved %s\n" file)
+    [ 1; 25 ]

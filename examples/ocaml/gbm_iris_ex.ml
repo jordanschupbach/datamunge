@@ -1,48 +1,58 @@
 (* CMD: just TARGET=gbm_iris_ex run-ocaml *)
+(* Gradient-boosted trees (GBM) on iris: summary, confusion matrix, misclassified rows, 5 vs 100 rounds. *)
 
-open Swig
 open Datamunge
 
-let last_of v =
-  let n = get_int (invoke v "size" C_void) in
-  get_float (invoke v "[]" (C_int (n - 1)))
+let formula = "Species ~ Petal.Length + Petal.Width"
+
+let final_deviance model =
+  let deviance = GBMClassifier.training_deviance model in
+  deviance.(Array.length deviance - 1)
 
 let () =
-  let iris = _data_iris C_void in
-  Printf.printf "iris: %d rows x %d cols\n\n"
-    (get_int (invoke iris "nrows" C_void)) (get_int (invoke iris "ncols" C_void));
+  let iris = Data.iris () in
+  Printf.printf "iris: %d rows x %d cols\n\n" (DataFrame.nrows iris) (DataFrame.ncols iris);
 
-  let model = new_GBMClassifier (C_list [iris; C_string "Species ~ Petal.Length + Petal.Width"]) in
-  ignore (invoke model "print_summary" C_void);
+  let model = GBMClassifier.create iris formula in
+  GBMClassifier.print_summary model;
 
-  print_endline "\nConfusion matrix (rows = actual, cols = predicted):";
-  print_endline (get_string (invoke (invoke model "confusion_matrix" C_void) "to_string" C_void));
+  Printf.printf "\nConfusion matrix (rows = actual, cols = predicted):\n%s\n"
+    (DataFrame.to_string (GBMClassifier.confusion_matrix model));
 
   print_endline "\nMisclassified rows:";
-  let predictions = invoke model "predict" iris in
-  let n = get_int (invoke iris "nrows" C_void) in
+  let predictions = GBMClassifier.predict model iris in
+  let n = DataFrame.nrows iris in
   let misclassified = ref 0 in
-  for i = 0 to n - 1 do
-    let actual = get_string (invoke iris "string_at" (C_list [C_string "Species"; C_int64 (Int64.of_int i)])) in
-    let pred = get_string (invoke predictions "[]" (C_int i)) in
-    if pred <> actual then begin
-      incr misclassified;
-      Printf.printf "  row %d: Petal.Length=%g Petal.Width=%g  actual=%s  predicted=%s\n" i
-        (get_float (invoke iris "numeric_at" (C_list [C_string "Petal.Length"; C_int64 (Int64.of_int i)])))
-        (get_float (invoke iris "numeric_at" (C_list [C_string "Petal.Width"; C_int64 (Int64.of_int i)])))
-        actual pred
-    end
-  done;
-  Printf.printf "%d of %d misclassified (%g%%)\n" !misclassified n (100.0 *. float_of_int !misclassified /. float_of_int n);
+  List.iteri
+    (fun i predicted ->
+      let actual = DataFrame.string_at iris "Species" i in
+      if predicted <> actual then begin
+        incr misclassified;
+        Printf.printf "  row %d: Petal.Length=%g Petal.Width=%g  actual=%s  predicted=%s\n" i
+          (DataFrame.numeric_at iris "Petal.Length" i)
+          (DataFrame.numeric_at iris "Petal.Width" i)
+          actual predicted
+      end)
+    predictions;
+  Printf.printf "%d of %d misclassified (%g%%)\n" !misclassified n
+    (100.0 *. float !misclassified /. float n);
 
-  ignore (invoke (invoke model "plot_training_deviance" C_void) "save" (C_string "gbm_iris_training_deviance.svg"));
-  ignore (invoke (invoke model "plot_decision_regions" (C_list [C_string "Petal.Length"; C_string "Petal.Width"])) "save" (C_string "gbm_iris_decision_regions.svg"));
+  RPlot.save (GBMClassifier.plot_training_deviance model) "gbm_iris_training_deviance.svg";
+  RPlot.save
+    (GBMClassifier.plot_decision_regions model "Petal.Length" "Petal.Width")
+    "gbm_iris_decision_regions.svg";
   print_endline "\nSaved gbm_iris_training_deviance.svg and gbm_iris_decision_regions.svg";
 
-  let few = new_GBMClassifier (C_list [iris; C_string "Species ~ Petal.Length + Petal.Width"; C_int64 5L]) in
+  (* A handful of boosting rounds vs a well-boosted ensemble: each additional round chips away at
+     the training loss, gradually sharpening the decision boundary. *)
+  let few = GBMClassifier.create ~n_trees:5 iris formula in
   Printf.printf "\n5-round ensemble:   training accuracy=%g%%  deviance=%g\n"
-    (get_float (invoke few "training_accuracy" C_void) *. 100.0) (last_of (invoke few "training_deviance" C_void));
+    (100.0 *. GBMClassifier.training_accuracy few)
+    (final_deviance few);
   Printf.printf "100-round ensemble: training accuracy=%g%%  deviance=%g\n"
-    (get_float (invoke model "training_accuracy" C_void) *. 100.0) (last_of (invoke model "training_deviance" C_void));
-  ignore (invoke (invoke few "plot_decision_regions" (C_list [C_string "Petal.Length"; C_string "Petal.Width"])) "save" (C_string "gbm_iris_decision_regions_5rounds.svg"));
+    (100.0 *. GBMClassifier.training_accuracy model)
+    (final_deviance model);
+  RPlot.save
+    (GBMClassifier.plot_decision_regions few "Petal.Length" "Petal.Width")
+    "gbm_iris_decision_regions_5rounds.svg";
   print_endline "Saved gbm_iris_decision_regions_5rounds.svg"

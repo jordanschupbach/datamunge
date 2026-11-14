@@ -1,25 +1,27 @@
 // CMD: just TARGET=datamunge_ex run-go
 
+//go:build ignore
+
+// Smoke test of the basic bindings: vectors, pairs and a native Callback object.
 package main
 
 import (
-	"fmt"
 	"datamunge"
+	"fmt"
 )
 
 func main() {
-	datamunge.Hello()
+	datamunge.Must(0, datamunge.Hello())
 
-	dp := datamunge.NewDPair(1.0, 2.0)
-	fmt.Printf("DPair: First=%v, Second=%v\n", dp.GetFirst(), dp.GetSecond())
+	v := datamunge.Must(datamunge.MakeDvector(1.0, 2.0, 3.0))
+	fmt.Printf("sum_dvector:\t%v\n", datamunge.Must(datamunge.SumDvector(v)))
 
-	s := datamunge.NewSVector(int64(3))
-	s.Set(0, "1")
-	s.Set(1, "2")
-	s.Set(2, "3")
-	fmt.Printf("SVector: [0]=%v, [1]=%v, [2]=%v\n", s.Get(0), s.Get(1), s.Get(2))
+	p := datamunge.Must(datamunge.MakeDpair(1.25, 2.75))
+	fmt.Printf("sum_dpair:\t%v\n", datamunge.Must(datamunge.SumDpair(p)))
 
-	// Clean up
-	datamunge.DeleteDPair(dp)
-	datamunge.DeleteSVector(s)
+	cb := datamunge.Must(datamunge.NewCallback())
+	defer cb.Close()
+	fmt.Printf("call_with_callback(3.0):\t%v\n", datamunge.Must(datamunge.CallWithCallback(3.0, cb)))
+	v2 := datamunge.Must(datamunge.MapDvectorWithCallback(datamunge.Must(datamunge.MakeDvector(1.0, 2.0, 3.0)), cb))
+	fmt.Printf("sum_dvector(map_dvector_with_callback(1,2,3)):\t%v\n", datamunge.Must(datamunge.SumDvector(v2)))
 }

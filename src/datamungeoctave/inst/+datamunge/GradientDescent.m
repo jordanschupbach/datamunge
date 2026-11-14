@@ -1,0 +1,84 @@
+classdef GradientDescent < datamunge.NativeObject
+  % GradientDescent  GradientDescent on the DifferentiableFunction callback interface. Velocity is momentum*velocity-step_size*gradient. Updates before testing the gradient just used or absolute objective change. Equal objective values can stop an oscillation away from stationarity. O(p) reset velocity state; no line search. The caller supplies finite, dimensionally consistent callbacks. Inputs are borrowed; coordinates mutate in place and can retain a partial state if a callback throws. Calls use local optimizer state and propagate callback exceptions; sharing a mutable objective across threads requires external synchronisation. Normal return alone is not a uniform convergence certificate.
+  %
+  %   obj = datamunge.GradientDescent ()
+  %   obj = datamunge.GradientDescent (options)
+  %
+  %   Example:
+  %     const dm::optim::GradientDescent optimizer;
+  %     std::print("{}\n",optimizer.options().max_iterations); // 10000
+  %
+  %   References:
+  %   - J. Nocedal and S. J. Wright (2006), Numerical Optimization, second edition, https://doi.org/10.1007/978-0-387-40065-5. The implemented variant and stopping rules are specified above.
+  %
+  %   Methods:
+  %     optimize  Run GradientDescent from the supplied point using the configured finite budget. Velocity is momentum*velocity-step_size*gradient. Updates before testing the gradient just used or absolute objective change. Equal objective values can stop an oscillation away from stationarity. O(p) reset velocity state; no line search.
+  %     options  Borrow this optimizer's stored configuration.
+  %
+  %   C++: class datamunge::optim::GradientDescent
+  %
+  %   See also: datamunge.GradientDescentOptions, datamunge.trace_optimize()
+  methods
+    function obj = GradientDescent (varargin)
+      % GradientDescent  Construct a C++ datamunge::optim::GradientDescent.
+      %
+      %   obj = datamunge.GradientDescent ()
+      %   obj = datamunge.GradientDescent (options)
+      %
+      %   Example:
+      %     const dm::optim::GradientDescent optimizer;
+      %     std::print("{}\n",optimizer.options().max_iterations); // 10000
+      %
+      %   Store a copy of the controls without running the objective.
+      %
+      %   Inputs:
+      %     options  datamunge.GradientDescentOptions, default the C++ default: Method-specific controls; defaults are listed by GradientDescentOptions.
+      %
+      %   C++: datamunge::optim::GradientDescent::GradientDescent(GradientDescentOptions options = {})
+      obj@datamunge.NativeObject(struct('rosetta_skip__', true));
+      if nargin == 1 && isstruct (varargin{1}) && isfield (varargin{1}, 'rosetta_skip__')
+        return;
+      end
+      __datamunge__(-2, obj, 1539, false, varargin{:});
+    end
+    function varargout = optimize (obj, varargin)
+      % optimize  Run GradientDescent from the supplied point using the configured finite budget. Velocity is momentum*velocity-step_size*gradient. Updates before testing the gradient just used or absolute objective change. Equal objective values can stop an oscillation away from stationarity. O(p) reset velocity state; no line search.
+      %
+      %   [r, coordinates] = obj.optimize (function_, coordinates)
+      %
+      %   Example:
+      %     dm::optim::QuadraticObjective f({2,8},{1,-2});
+      %     dm::optim::GradientDescentOptions controls;controls.max_iterations=5;
+      %     std::vector<double> x{0,0};
+      %     const auto value=dm::optim::GradientDescent(controls).optimize(f,x);
+      %     std::print("{}\n",std::isfinite(value)); // true
+      %
+      %   Inputs:
+      %     function_  datamunge.DifferentiableFunction: Borrowed DifferentiableFunction with matching finite output shapes.
+      %     coordinates  double vector (updated: also an output): Owned-by-caller finite start; overwritten with the native returned point.
+      %
+      %   Output:
+      %     r  double: Objective at the native returned coordinates; not a stop-status code.
+      %
+      %   Errors:
+      %     datamunge:native  Exceptions from supplied callbacks propagate. Raw solvers do not uniformly reject nonfinite inputs. (C++ std::exception)
+      %
+      %   C++: double datamunge::optim::GradientDescent::optimize(DifferentiableFunction & function, std::vector<double> & coordinates) const
+      %
+      %   See also: datamunge.trace_optimize(), datamunge.GradientDescentOptions
+      [varargout{1:max(nargout, 1)}] = __datamunge__(1537, obj, varargin{:});
+    end
+    function r = options (obj)
+      % options  Borrow this optimizer's stored configuration.
+      %
+      %   r = obj.options ()
+      %
+      %   Output:
+      %     r  datamunge.GradientDescentOptions: Const option reference, valid during this object's lifetime; no mutation.
+      %
+      %   C++: const GradientDescentOptions & datamunge::optim::GradientDescent::options() const
+      r = __datamunge__(1538, obj);
+    end
+  end
+end
+% Generated by Rosetta from datamungeoctave/rosetta/bindings.hpp: class datamunge::optim::GradientDescent. Do not edit.

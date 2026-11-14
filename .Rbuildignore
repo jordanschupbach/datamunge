@@ -18,7 +18,7 @@
 ^tests/.*\.(cpp|hpp|txt)$
 ^src/[^/]*_python_wrap\.(cpp|h)$
 ^src/[^/]*_js_wrap\.(cpp|h)$
-^src/(pydatamunge|datamungejs|datamungecsharp|jdatamunge.*|rustdatamunge|godatamunge|datamunged|datamungelua|datamungePHP|perldatamunge|datamungetcl|datamungeguile|datamungeoctave|datamungeocaml|octruby)(/|$)
+^src/(pydatamunge|datamungejs|datamungecsharp|datamungefortran|datamungejava|rustdatamunge|datamungego|datamunged|datamungelua|datamungePHP|perldatamunge|datamungetcl|datamungeguile|datamungeoctave|datamungeocaml|datamungeruby)(/|$)
 ^src/.*\.egg-info$
 ^PERFORMANCE\.md$
 ^AGENTS\.md$
@@ -27,11 +27,9 @@
 ^setup\.py$
 ^pyproject\.toml$
 ^Manifest\.in$
-^tests/(cpp|d|guile|javascript|lua|ocaml|octave|perl|php|ruby|tcl)(/|$)
+^tests/(cpp|d|go|guile|java|javascript|lua|ocaml|octave|perl|php|ruby|tcl)(/|$)
 ^src/datamunge_php_wrap\.(cpp|h)$
-^src/godatamunge_wrap\.cxx$
 ^src/php_datamunge\.h$
 ^src/index\.js$
-^src/godatamunge_legacy(/|$)
 ^src/nn_python_wrap\.cpp$
 ^data-raw$

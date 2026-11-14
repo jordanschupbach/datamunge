@@ -9,7 +9,6 @@ module.exports = [
       "**/result/**",
       "src/**/*_wrap.*",
       "src/datamungejs/**",
-      "src/jdatamunge/**",
     ],
     languageOptions: {
       ecmaVersion: "latest",

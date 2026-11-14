@@ -1,69 +1,33 @@
 % CMD: just TARGET=dataframe_ex run-octave
+% DataFrame basics: nulls, drop_duplicates, fill_null, select/sort, group-by, join and summaries.
 
-1;
+sales = datamunge.DataFrame ();
+sales.add_string_column ('region', {'west', 'west', 'east', 'south', 'south', 'south'});
+sales.add_string_column ('product', {'widget', 'widget', 'widget', 'gizmo', 'gizmo', 'gizmo'});
+sales.add_numeric_column ('sales', [10 10 14 8 0 11], [1 1 1 1 0 1]);
+sales.add_string_column ('quarter', {'Q1', 'Q1', 'Q1', 'Q2', 'Q2', ''}, [1 1 1 1 1 0]);
 
-datamunge;
+printf ('raw data\n%s\n\n', sales.to_string ());
 
-% Octave's SWIG bindings use flat ClassName_method(obj, ...) function calls (no obj.method()
-% sugar), and plain Octave arrays/cell arrays never auto-convert to any vector<T> parameter --
-% build a real DVector/SVector/IVector via the object constructor + push_back.
-function v = dv(t)
-  datamunge;
-  v = DVector();
-  for i = 1:numel(t)
-    DVector_push_back(v, t(i));
-  end
-endfunction
+cleaned = sales.drop_duplicates ({'region', 'product', 'sales', 'quarter'});
+cleaned.fill_null_string ('quarter', 'unknown');
+cleaned.fill_null_numeric ('sales', 0);
+printf ('after drop_duplicates + fill_null\n%s\n\n', cleaned.to_string ());
 
-function v = sv(t)
-  datamunge;
-  v = SVector();
-  for i = 1:numel(t)
-    SVector_push_back(v, t{i});
-  end
-endfunction
+selected = cleaned.select ({'region', 'sales', 'quarter'}).sort_by ('sales', false);
+printf ('selected + sorted\n%s\n\n', selected.to_string ());
 
-function v = iv(t)
-  datamunge;
-  v = IVector();
-  for i = 1:numel(t)
-    IVector_push_back(v, t(i));
-  end
-endfunction
+grouped = cleaned.group_by_sum ({'region'}, {'sales'}).sort_by ('sales', false);
+printf ('group_by_sum(region)\n%s\n\n', grouped.to_string ());
 
-sales = DataFrame_empty();
-DataFrame_add_string_column(sales, "region", sv({"west", "west", "east", "south", "south", "south"}));
-DataFrame_add_string_column(sales, "product", sv({"widget", "widget", "widget", "gizmo", "gizmo", "gizmo"}));
-DataFrame_add_numeric_column(sales, "sales", dv([10, 10, 14, 8, 0, 11]), iv([1, 1, 1, 1, 0, 1]));
-DataFrame_add_string_column(sales, "quarter", sv({"Q1", "Q1", "Q1", "Q2", "Q2", ""}), iv([1, 1, 1, 1, 1, 0]));
+targets = datamunge.DataFrame ();
+targets.add_string_column ('region', {'west', 'east', 'south'});
+targets.add_numeric_column ('target', [18 12 25]);
+printf ('joined with targets\n%s\n\n', grouped.join (targets, 'region', 'region', 'left').to_string ());
 
-printf("raw data\n");
-printf("%s\n\n", DataFrame_to_string(sales));
-
-cleaned = DataFrame_drop_duplicates(sales, sv({"region", "product", "sales", "quarter"}));
-DataFrame_fill_null_string(cleaned, "quarter", "unknown");
-DataFrame_fill_null_numeric(cleaned, "sales", 0.0);
-printf("after drop_duplicates + fill_null\n");
-printf("%s\n\n", DataFrame_to_string(cleaned));
-
-selected = DataFrame_sort_by(DataFrame_select(cleaned, sv({"region", "sales", "quarter"})), "sales", false);
-printf("selected + sorted\n");
-printf("%s\n\n", DataFrame_to_string(selected));
-
-grouped = DataFrame_sort_by(DataFrame_group_by_sum(cleaned, sv({"region"}), sv({"sales"})), "sales", false);
-printf("group_by_sum(region)\n");
-printf("%s\n\n", DataFrame_to_string(grouped));
-
-targets = DataFrame_empty();
-DataFrame_add_string_column(targets, "region", sv({"west", "east", "south"}));
-DataFrame_add_numeric_column(targets, "target", dv([18, 12, 25]));
-joined = DataFrame_join(grouped, targets, "region", "region", "left");
-printf("joined with targets\n");
-printf("%s\n\n", DataFrame_to_string(joined));
-
-shape = DataFrame_shape(cleaned);
-printf("shape = (%d, %d)\n", shape{1}, shape{2});
-printf("sales count = %g\n", DataFrame_numeric_count(cleaned, "sales"));
-printf("sales nulls = %g\n", DataFrame_numeric_null_count(cleaned, "sales"));
-printf("sales sum = %g\n", DataFrame_numeric_sum(cleaned, "sales"));
-printf("sales mean = %g\n", DataFrame_numeric_mean(cleaned, "sales"));
+shape = cleaned.shape ();
+printf ('shape = (%d, %d)\n', shape(1), shape(2));
+printf ('sales count = %d\n', cleaned.numeric_count ('sales'));
+printf ('sales nulls = %d\n', cleaned.numeric_null_count ('sales'));
+printf ('sales sum = %g\n', cleaned.numeric_sum ('sales'));
+printf ('sales mean = %g\n', cleaned.numeric_mean ('sales'));

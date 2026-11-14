@@ -1,38 +1,34 @@
 % CMD: just TARGET=elastic_net_iris_ex run-octave
+% Ridge, Lasso and Elastic Net on iris, with coefficient-path and CV-curve figures.
 
-1;
+formula = 'Petal.Length ~ Sepal.Length + Sepal.Width + Petal.Width + Sepal.Length:Petal.Width';
 
-datamunge;
+iris = datamunge.Data.iris ();
+printf ('iris: %d rows x %d cols\n', iris.nrows (), iris.ncols ());
+printf ('formula: %s\n\n', formula);
 
-FORMULA = "Petal.Length ~ Sepal.Length + Sepal.Width + Petal.Width + Sepal.Length:Petal.Width";
+printf ('=================== Ridge ===================\n');
+ridge = datamunge.Ridge (iris, formula);
+ridge.print_summary ();
 
-iris = data_iris();
-printf("iris: %d rows x %d cols\n", DataFrame_nrows(iris), DataFrame_ncols(iris));
-printf("formula: %s\n\n", FORMULA);
+printf ('\n=================== Lasso ===================\n');
+lasso = datamunge.Lasso (iris, formula);
+lasso.print_summary ();
 
-printf("=================== Ridge ===================\n");
-ridge = Ridge(iris, FORMULA);
-Ridge_print_summary(ridge);
+printf ('\n================= Elastic Net =================\n');
+% datamunge.ElasticNet (data, formula, alpha=0.5, lambda, n_lambda, cv_folds, standardize, seed)
+elastic = datamunge.ElasticNet (iris, formula, 0.5);
+elastic.print_summary ();
 
-printf("\n=================== Lasso ===================\n");
-lasso = Lasso(iris, FORMULA);
-Lasso_print_summary(lasso);
+printf (['\nSaved figures showing how each model''s coefficients respond to the regularization strength, ' ...
+         'and the cross-validation curve used to pick it:\n']);
 
-printf("\n================= Elastic Net =================\n");
-% ElasticNet(data, formula, alpha, lambda, n_lambda, cv_folds, standardize, seed)
-elastic = ElasticNet(iris, FORMULA, 0.5);
-ElasticNet_print_summary(elastic);
-
-printf("\nSaved figures showing how each model's coefficients respond to the regularization strength, and the cross-validation curve used to pick it:\n");
-
-Plot_save(Ridge_plot_coefficient_path(ridge), "elastic_net_ridge_path.svg");
-Plot_save(Ridge_plot_cv_curve(ridge), "elastic_net_ridge_cv.svg");
-printf("  ridge:       elastic_net_ridge_path.svg, elastic_net_ridge_cv.svg\n");
-
-Plot_save(Lasso_plot_coefficient_path(lasso), "elastic_net_lasso_path.svg");
-Plot_save(Lasso_plot_cv_curve(lasso), "elastic_net_lasso_cv.svg");
-printf("  lasso:       elastic_net_lasso_path.svg, elastic_net_lasso_cv.svg\n");
-
-Plot_save(ElasticNet_plot_coefficient_path(elastic), "elastic_net_elasticnet_path.svg");
-Plot_save(ElasticNet_plot_cv_curve(elastic), "elastic_net_elasticnet_cv.svg");
-printf("  elastic net: elastic_net_elasticnet_path.svg, elastic_net_elasticnet_cv.svg\n");
+figures = {ridge.plot_coefficient_path(), ridge.plot_cv_curve(), 'ridge', 'ridge:      ';
+           lasso.plot_coefficient_path(), lasso.plot_cv_curve(), 'lasso', 'lasso:      ';
+           elastic.plot_coefficient_path(), elastic.plot_cv_curve(), 'elasticnet', 'elastic net:'};
+for k = 1:rows (figures)
+  [path_plot, cv_plot, name, label] = figures{k, :};
+  path_plot.save (sprintf ('elastic_net_%s_path.svg', name));
+  cv_plot.save (sprintf ('elastic_net_%s_cv.svg', name));
+  printf ('  %s elastic_net_%s_path.svg, elastic_net_%s_cv.svg\n', label, name, name);
+end

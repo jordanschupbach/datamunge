@@ -1,46 +1,57 @@
 % CMD: just TARGET=xgboost_iris_ex run-octave
+% XGBoost classifier on iris: summary, confusion matrix, misclassified rows, L2-regularization comparison.
 
 1;
 
-datamunge;
-
-iris = data_iris();
-printf("iris: %d rows x %d cols\n\n", DataFrame_nrows(iris), DataFrame_ncols(iris));
-
-model = XGBoostClassifier(iris, "Species ~ Petal.Length + Petal.Width");
-XGBoostClassifier_print_summary(model);
-
-printf("\nConfusion matrix (rows = actual, cols = predicted):\n");
-printf("%s\n", DataFrame_to_string(XGBoostClassifier_confusion_matrix(model)));
-
-printf("\nMisclassified rows:\n");
-predictions = XGBoostClassifier_predict(model, iris);
-misclassified = 0;
-n = DataFrame_nrows(iris);
-for i = 0:(n - 1)
-  actual = DataFrame_string_at(iris, "Species", i);
-  pred = predictions{i + 1};
-  if !strcmp(pred, actual)
-    misclassified = misclassified + 1;
-    printf("  row %d: Petal.Length=%g Petal.Width=%g  actual=%s  predicted=%s\n", i, ...
-           DataFrame_numeric_at(iris, "Petal.Length", i), DataFrame_numeric_at(iris, "Petal.Width", i), actual, pred);
+% Shortest round-trip decimal text for x (like C#'s default double printing).
+function s = num (x)
+  for d = 1:17
+    s = sprintf ('%.*g', d, x);
+    if str2double (s) == x
+      break;
+    end
   end
 end
-printf("%d of %d misclassified (%g%%)\n", misclassified, n, 100.0 * misclassified / n);
 
-Plot_save(XGBoostClassifier_plot_training_deviance(model), "xgboost_iris_training_deviance.svg");
-Plot_save(XGBoostClassifier_plot_decision_regions(model, "Petal.Length", "Petal.Width"), "xgboost_iris_decision_regions.svg");
-printf("\nSaved xgboost_iris_training_deviance.svg and xgboost_iris_decision_regions.svg\n");
+iris = datamunge.Data.iris ();
+printf ('iris: %d rows x %d cols\n\n', iris.nrows (), iris.ncols ());
+
+model = datamunge.XGBoostClassifier (iris, 'Species ~ Petal.Length + Petal.Width');
+model.print_summary ();
+
+printf ('\nConfusion matrix (rows = actual, cols = predicted):\n%s\n', model.confusion_matrix ().to_string ());
+
+printf ('\nMisclassified rows:\n');
+predictions = model.predict (iris);
+n = iris.nrows ();
+misclassified = 0;
+for i = 0:n - 1
+  actual = iris.string_at ('Species', i);
+  predicted = predictions{i + 1};
+  if strcmp (predicted, actual)
+    continue;
+  end
+  misclassified += 1;
+  printf ('  row %d: Petal.Length=%s Petal.Width=%s  actual=%s  predicted=%s\n', i, ...
+          num (iris.numeric_at ('Petal.Length', i)), num (iris.numeric_at ('Petal.Width', i)), actual, predicted);
+end
+printf ('%d of %d misclassified (%s%%)\n', misclassified, n, num (100.0 * misclassified / n));
+
+model.plot_training_deviance ().save ('xgboost_iris_training_deviance.svg');
+model.plot_decision_regions ('Petal.Length', 'Petal.Width').save ('xgboost_iris_decision_regions.svg');
+printf ('\nSaved xgboost_iris_training_deviance.svg and xgboost_iris_decision_regions.svg\n');
 
 % XGBoost's defining lever is regularization: a heavily L2-regularized model (large lambda)
 % grows the same deep trees but keeps every leaf weight small, producing a much smoother
 % decision boundary than the lightly-regularized default.
-% XGBoostClassifier(data, formula, n_trees, learning_rate, max_depth, lambda, alpha, gamma,
-%                    min_child_weight, min_samples_leaf, subsample, colsample_bytree, seed)
-heavy = XGBoostClassifier(iris, "Species ~ Petal.Length + Petal.Width", 100, 0.3, 6, 50.0);
-model_dev = XGBoostClassifier_training_deviance(model);
-heavy_dev = XGBoostClassifier_training_deviance(heavy);
-printf("\nlambda=1 (default):   training accuracy=%g%%  deviance=%g\n", XGBoostClassifier_training_accuracy(model) * 100.0, model_dev{end});
-printf("lambda=50 (heavy L2): training accuracy=%g%%  deviance=%g\n", XGBoostClassifier_training_accuracy(heavy) * 100.0, heavy_dev{end});
-Plot_save(XGBoostClassifier_plot_decision_regions(heavy, "Petal.Length", "Petal.Width"), "xgboost_iris_decision_regions_heavy_lambda.svg");
-printf("Saved xgboost_iris_decision_regions_heavy_lambda.svg\n");
+% datamunge.XGBoostClassifier (data, formula, n_trees, learning_rate, max_depth, lambda, alpha, gamma,
+%                              min_child_weight, min_samples_leaf, subsample, colsample_bytree, seed)
+heavy = datamunge.XGBoostClassifier (iris, 'Species ~ Petal.Length + Petal.Width', 100, 0.3, 6, 50.0);
+deviance = model.training_deviance ();
+heavy_deviance = heavy.training_deviance ();
+printf ('\nlambda=1 (default):   training accuracy=%s%%  deviance=%s\n', ...
+        num (100 * model.training_accuracy ()), num (deviance(end)));
+printf ('lambda=50 (heavy L2): training accuracy=%s%%  deviance=%s\n', ...
+        num (100 * heavy.training_accuracy ()), num (heavy_deviance(end)));
+heavy.plot_decision_regions ('Petal.Length', 'Petal.Width').save ('xgboost_iris_decision_regions_heavy_lambda.svg');
+printf ('Saved xgboost_iris_decision_regions_heavy_lambda.svg\n');

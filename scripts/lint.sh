@@ -54,7 +54,7 @@ lint_shell() {
 	local -a files=()
 	while IFS= read -r -d '' f; do
 		case "$f" in
-		./nix/update-jdatamunge-gradle-deps.sh | ./nix/update-nuget-deps.sh) continue ;;
+		./nix/update-nuget-deps.sh) continue ;;
 		esac
 		files+=("$f")
 	done < <(run_find_xargs -type f -name '*.sh' -print0)
@@ -137,29 +137,28 @@ lint_markdown_yaml_actions() {
 }
 
 lint_go() {
-	if [ ! -f src/godatamunge/go.mod ]; then
+	if [ ! -f src/datamungego/go/datamunge/go.mod ]; then
 		return 0
 	fi
 	require_cmd go
-	# Go bindings rely on CGO + the native lib; only run build-based checks if `datamunge`
-	# is available via pkg-config (e.g. in the Nix `.#go`/`.#default` shells).
-	if command -v pkg-config >/dev/null 2>&1 && pkg-config --exists datamunge 2>/dev/null; then
+	# The Go binding (Rosetta) links libdatamunge_go from build/go/prefix (just build-go); vet the
+	# tests and examples only once it is built. The workspace holds the committed module and both.
+	local lib="$PWD/build/go/prefix/lib"
+	if [ -d "$lib" ]; then
 		(
-			cd src/godatamunge
 			cache="${TMPDIR:-/tmp}/go-build"
-			mkdir -p "$cache"
-			HOME="${TMPDIR:-/tmp}" GOCACHE="$cache" go test ./...
+			mkdir -p "$cache" build/go
+			printf 'go 1.24\n\nuse (\n\t%s\n\t%s\n\t%s\n)\n' "$PWD/src/datamungego/go/datamunge" \
+				"$PWD/examples/go" "$PWD/tests/go" >build/go/lint.go.work
+			export GOWORK="$PWD/build/go/lint.go.work" GOTOOLCHAIN=local GOPROXY=off GOFLAGS= GOCACHE="$cache"
+			export CGO_LDFLAGS="-L$lib -Wl,-rpath,$lib"
+			go vet datamunge datamunge/data ./tests/go
+			for example in examples/go/*.go; do
+				go vet "$example"
+			done
 		)
-		if command -v golangci-lint >/dev/null 2>&1; then
-			(
-				cd src/godatamunge
-				cache="${TMPDIR:-/tmp}/go-build"
-				mkdir -p "$cache"
-				HOME="${TMPDIR:-/tmp}" GOCACHE="$cache" golangci-lint run
-			)
-		fi
 	else
-		echo "Skipping Go build checks: 'datamunge' not available via pkg-config" >&2
+		echo "Skipping Go checks: build/go/prefix is not built (just build-go)" >&2
 	fi
 }
 

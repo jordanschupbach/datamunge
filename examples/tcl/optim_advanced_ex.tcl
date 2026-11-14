@@ -1,122 +1,113 @@
 # CMD: just TARGET=optim_advanced_ex run-tcl
+# Advanced datamunge optimizers (ProximalGradient, FISTA, LevenbergMarquardt, Newton, TrustRegionNewton, AugmentedLagrangian, SQP, InteriorPoint, BayesianOptimization, RBFGaussianProcessSurrogate) from Tcl.
+package require datamunge
 
-package require Datamunge 0.0.1
+# Every one of these optimizers takes an interface (ProximalFunction / HessianFunction /
+# EqualityConstrainedFunction / InequalityConstrainedFunction / ResidualFunction, or
+# ArbitraryFunction for BayesianOptimization) that the C++ library leaves abstract: callers
+# implement the objective. From Tcl, subclass the interface class with TclOO and define its
+# virtual methods; the optimizer then calls the Tcl methods. The coordinates are passed as a
+# variable name and updated in place.
 
-# ================================================================================================
-# NOTE ON DIRECTOR SUPPORT (read this first)
-#
-# This project's own accumulated notes already established that Tcl's stock SWIG backend has NO
-# director support at all -- confirmed empirically for THIS build:
-#   grep -c -i director build/datamungetcl/datamunge_tcl_wrap.cxx   -> 0
-# despite "%module(directors=\"1\") Datamunge" and every "%feature(\"director\")" line (including
-# the 6 new ones added for ProximalFunction/HessianFunction/EqualityConstrainedFunction/
-# InequalityConstrainedFunction/ResidualFunction/BayesianSurrogate) being present in the .i file.
-#
-# The concrete, load-bearing symptom: SWIG only emits a "new_X" constructor for a class if it can
-# actually be instantiated. For every ABSTRACT function-type interface -- old (ArbitraryFunction,
-# DifferentiableFunction, ...) and new (ProximalFunction, HessianFunction,
-# EqualityConstrainedFunction, InequalityConstrainedFunction, ResidualFunction, BayesianSurrogate)
-# alike -- there is NO "new_<Interface>" command at all:
-#
-#   % info commands ::datamunge::new_HessianFunction
-#   {}
-#   % info commands ::datamunge::new_ResidualFunction
-#   {}
-#   % info commands ::datamunge::new_ArbitraryFunction
-#   {}
-#
-# Only method-call/delete commands exist (e.g. "HessianFunction_hessian", "delete_HessianFunction")
-# -- usable only if you already have an instance, which nothing in plain Tcl can produce, since
-# Tcl has no built-in class/inheritance mechanism SWIG's Tcl backend can hook a director proxy
-# into (no itcl dependency anywhere in this binding either).
-#
-# Practical consequence for THIS task: every one of the 10 new optimizer classes requires a
-# user-supplied objective that satisfies an abstract interface (ProximalFunction, HessianFunction,
-# EqualityConstrainedFunction, InequalityConstrainedFunction, or ResidualFunction), and
-# BayesianOptimization ALSO requires a user-supplied ArbitraryFunction objective (the surrogate
-# argument is the only piece that can be concrete/subclass-free). So NONE of the 10 new optimizers
-# can actually be driven end-to-end from Tcl -- this is not specific to the 6 brand-new interface
-# types, it is the SAME pre-existing whole-module limitation already documented for
-# ArbitraryFunction/DifferentiableFunction (which is why optim_ex.tcl/bayes_ex.tcl were never
-# written for this language either).
-#
-# What CAN be verified from Tcl, and what this example demonstrates:
-#   1. The SWIG wiring for all 10 new classes + their Options structs is correct: every one
-#      constructs cleanly with default options (proves %include/%template plumbing is intact,
-#      including the std::vector<std::vector<double>> (DVectorVector) container the Hessian/
-#      Jacobian-returning interfaces need -- already registered, no new %template required).
-#   2. RBFGaussianProcessSurrogate -- the one NEW class that is concrete (does not require
-#      subclassing) -- is fully exercised standalone: fit() on real nested-vector training data
-#      and acquisition() queries, with sane, real (not assumed) output.
-#   3. An explicit, reproducible empirical check that subclassing genuinely fails (no
-#      "new_<Interface>" command exists) for HessianFunction, ResidualFunction, and
-#      ArbitraryFunction -- the three interfaces the brief's step 2a/2b/2c would have required.
-# ================================================================================================
-
-set dm ::datamunge::
-
-puts "=================== 1. All 10 new optimizer classes construct with default options ==================="
-foreach cls {ProximalGradient FISTA LevenbergMarquardt Newton TrustRegionNewton \
-             AugmentedLagrangian SQP InteriorPoint BayesianOptimization} {
-  set opts [${dm}new_${cls}Options]
-  set obj [${dm}new_${cls} $opts]
-  puts [format {  %-22s constructed ok (options=%s, optimizer=%s)} $cls $opts $obj]
+# f(x, y) = (x - 1)^2 + 10 (y + 2)^2 with exact gradient and Hessian.
+oo::class create Quadratic {
+    superclass ::datamunge::HessianFunction
+    method evaluate {c} {
+        lassign $c x y
+        expr {($x - 1)**2 + 10 * ($y + 2)**2}
+    }
+    method gradient {c} {
+        lassign $c x y
+        list [expr {2 * ($x - 1)}] [expr {20 * ($y + 2)}]
+    }
+    method hessian {c} {
+        return {{2.0 0.0} {0.0 20.0}}
+    }
 }
 
-puts ""
-puts "=================== 2. RBFGaussianProcessSurrogate (concrete -- no subclassing needed) ==================="
-
-# Ground-truth objective used only to generate synthetic training data (not run through any
-# optimizer -- there is no way to hand it to BayesianOptimization::optimize() from Tcl, see the
-# note above): a simple 2D quadratic bowl with minimum at (1.0, 2.0).
-proc bowl {x y} {
-  return [expr {($x - 1.0) * ($x - 1.0) + ($y - 2.0) * ($y - 2.0)}]
+# Residuals of y = a * exp(b t) against exact data from a = 2, b = 0.5.
+oo::class create Exponential {
+    superclass ::datamunge::ResidualFunction
+    variable ts
+    constructor {times} {
+        next
+        set ts $times
+    }
+    method residuals {p} {
+        lassign $p a b
+        lmap t $ts {expr {$a * exp($b * $t) - 2 * exp(0.5 * $t)}}
+    }
+    method jacobian {p} {
+        lassign $p a b
+        lmap t $ts {list [expr {exp($b * $t)}] [expr {$a * $t * exp($b * $t)}]}
+    }
 }
 
-set surrogate [${dm}new_RBFGaussianProcessSurrogate 1.0 1e-6]
-
-# Nested vector<vector<double>> parameters do NOT auto-convert from plain Tcl lists (only
-# scalar-element vector<T> does) -- build a real DVectorVector of real DVector rows.
-set training_points {{0.0 0.0} {2.0 0.0} {0.0 4.0} {2.0 4.0} {1.0 2.0} {-1.0 1.0} {3.0 3.0}}
-set pts [${dm}new_DVectorVector]
-set values [${dm}new_DVector]
-foreach row $training_points {
-  set v [${dm}new_DVector]
-  foreach e $row { ${dm}DVector_push_back $v $e }
-  ${dm}DVectorVector_push_back $pts $v
-  ${dm}DVector_push_back $values [bowl [lindex $row 0] [lindex $row 1]]
-}
-puts "  training set: [${dm}DVectorVector_size $pts] points"
-
-${dm}BayesianSurrogate_fit $surrogate $pts $values
-puts "  fit() succeeded on real nested-vector training data"
-
-# Query the acquisition function at a few candidate points against the best observed value so
-# far (min of the training values, which is 0.0 at the true minimum (1.0, 2.0)).
-set incumbent 0.0
-foreach candidate {{1.0 2.0} {1.5 2.5} {5.0 5.0} {-2.0 -2.0}} {
-  set cv [${dm}new_DVector]
-  foreach e $candidate { ${dm}DVector_push_back $cv $e }
-  set acq [${dm}BayesianSurrogate_acquisition $surrogate $cv $incumbent]
-  puts [format {  acquisition at (%.1f, %.1f): %.6g} [lindex $candidate 0] [lindex $candidate 1] $acq]
+# Leaves gradient and hessian out.
+oo::class create Incomplete {
+    superclass ::datamunge::HessianFunction
+    method evaluate {c} {
+        return 0.0
+    }
 }
 
-puts ""
-puts "=================== 3. Empirical director/subclass check (this IS the important finding) ==================="
-foreach iface {ArbitraryFunction ProximalFunction HessianFunction EqualityConstrainedFunction \
-               InequalityConstrainedFunction ResidualFunction BayesianSurrogate} {
-  set has_ctor [expr {[llength [info commands ${dm}new_${iface}]] > 0}]
-  puts [format {  new_%-28s exists: %s  (%s)} $iface $has_ctor \
-        [expr {$has_ctor ? "subclass-capable" : "NO constructor -- cannot instantiate, no director proxy"}]]
+puts "=================== RBFGaussianProcessSurrogate (concrete BayesianSurrogate) ==================="
+# Fit a 1D surrogate to a simple bowl y = (x-1)^2 sampled at a few points,
+# then check the acquisition function favors an unexplored region.
+set xs {0.0 0.5 1.0 1.5 2.0 3.0}
+set ys [lmap x $xs {expr {($x - 1)**2}}]
+set surrogate [datamunge::RBFGaussianProcessSurrogate new 1.0 1e-6]
+$surrogate fit [lmap x $xs {list $x}] $ys
+set incumbent [tcl::mathfunc::min 0.0 {*}$ys]  ;# best observed value so far
+puts "incumbent (best observed y): $incumbent"
+foreach x {0.25 1.0 2.5} {
+    puts [format "acquisition(x=%.2f) = %.6f" $x [$surrogate acquisition [list $x] $incumbent]]
 }
-puts ""
-puts "CONCLUSION: Tcl cannot subclass HessianFunction/ResidualFunction/ProximalFunction/"
-puts "EqualityConstrainedFunction/InequalityConstrainedFunction/BayesianSurrogate (new in this"
-puts "task) or the pre-existing ArbitraryFunction/DifferentiableFunction/etc -- confirming the"
-puts "already-documented whole-module director gap also covers all 10 new optimizer classes."
-puts "Newton/TrustRegionNewton/LevenbergMarquardt/ProximalGradient/FISTA/AugmentedLagrangian/SQP/"
-puts "InteriorPoint/BayesianOptimization cannot be driven end-to-end from Tcl; only the concrete"
-puts "RBFGaussianProcessSurrogate (demonstrated above) is usable standalone."
 
-puts ""
-puts "Tcl optim_advanced_ex ran successfully (within Tcl's director limitations)."
+puts "\n=================== Options structs + optimizer construction (all 10 new classes) ==================="
+# Every new Options struct and optimizer class constructs cleanly, proving
+# the binding for the whole batch is wired correctly.
+# A new datamunge Options object of the given class with some fields set.
+proc options {class args} {
+    set options [datamunge::$class new]
+    if {[llength $args]} {
+        $options configure {*}$args
+    }
+    return $options
+}
+set pg [datamunge::ProximalGradient new [options ProximalGradientOptions -step_size 0.05]]
+set fista [datamunge::FISTA new [options FISTAOptions]]
+set lm [datamunge::LevenbergMarquardt new [options LevenbergMarquardtOptions -max_iterations 200]]
+set newton [datamunge::Newton new [options NewtonOptions]]
+set trn [datamunge::TrustRegionNewton new [options TrustRegionNewtonOptions]]
+set al [datamunge::AugmentedLagrangian new [options AugmentedLagrangianOptions]]
+set sqp [datamunge::SQP new [options SQPOptions]]
+set ip [datamunge::InteriorPoint new [options InteriorPointOptions]]
+set bo [datamunge::BayesianOptimization new [options BayesianOptimizationOptions -initial_samples 8]]
+foreach optimizer [list $pg $fista $lm $newton $trn $al $sqp $ip $bo] {
+    set name [namespace tail [info object class $optimizer]]
+    puts "$name: ${name}()"
+}
+
+puts "\n=================== Tcl objectives (subclassing the C++ interfaces) ==================="
+# Newton's method on the quadratic bowl.
+set start {5.0 5.0}
+set value [$newton optimize [Quadratic new] start]
+puts [format "Newton: f = %.6g at (%.6f, %.6f) (exact minimum 0 at (1, -2))" $value {*}$start]
+
+# Levenberg-Marquardt fitting y = a * exp(b t).
+set params {1.0 0.1}
+set sse [$lm optimize [Exponential new {0.0 0.5 1.0 1.5 2.0}] params]
+puts [format "LevenbergMarquardt: residual = %.3g, a = %.6f, b = %.6f (exact: 2, 0.5)" $sse {*}$params]
+
+# An interface method a subclass leaves out raises when the optimizer calls it.
+set coordinates {0.0 0.0}
+set ok 1
+set mentions 0
+try {
+    $newton optimize [Incomplete new] coordinates
+} trap {DATAMUNGE} {msg} {
+    set ok 0
+    set mentions [string match *gradient* $msg]
+}
+puts "missing gradient(): ok=[expr {$ok ? "true" : "false"}], error mentions it: [expr {$mentions ? "true" : "false"}]"

@@ -1,41 +1,44 @@
 # CMD: just TARGET=knn_iris_ex run-tcl
+# k-nearest-neighbours classifier on iris: leave-one-out accuracy and decision regions for several k.
+package require datamunge
 
-package require Datamunge 0.0.1
+set formula "Species ~ Petal.Length + Petal.Width"
 
-set iris [datamunge::data_iris]
-puts "iris: [datamunge::DataFrame_nrows $iris] rows x [datamunge::DataFrame_ncols $iris] cols\n"
+set iris [datamunge::Data::iris]
+puts "iris: [$iris nrows] rows x [$iris ncols] cols\n"
 
-set model [datamunge::new_KNNClassifier $iris "Species ~ Petal.Length + Petal.Width"]
-datamunge::KNNClassifier_print_summary $model
+set model [datamunge::KNNClassifier new $iris $formula]
+$model print_summary
 
 puts "\nConfusion matrix (leave-one-out; rows = actual, cols = predicted):"
-puts "[datamunge::DataFrame_to_string [datamunge::KNNClassifier_confusion_matrix $model]]"
+puts [[$model confusion_matrix] to_string]
 
 puts "\nLeave-one-out misclassified rows:"
-set fitted [datamunge::KNNClassifier_predict $model $iris]
+set fitted [$model predict $iris]
+set n [$iris nrows]
 set misclassified 0
-set n [datamunge::DataFrame_nrows $iris]
 for {set i 0} {$i < $n} {incr i} {
-  set actual [datamunge::DataFrame_string_at $iris "Species" $i]
-  set pred [lindex $fitted $i]
-  if {$pred ne $actual} {
+    set actual [$iris string_at Species $i]
+    set predicted [lindex $fitted $i]
+    if {$predicted eq $actual} {
+        continue
+    }
     incr misclassified
-    set pl [datamunge::DataFrame_numeric_at $iris "Petal.Length" $i]
-    set pw [datamunge::DataFrame_numeric_at $iris "Petal.Width" $i]
-    puts "  row $i: Petal.Length=$pl Petal.Width=$pw  actual=$actual  predicted=$pred"
-  }
+    puts "  row $i: Petal.Length=[$iris numeric_at Petal.Length $i]\
+        Petal.Width=[$iris numeric_at Petal.Width $i]  actual=$actual  predicted=$predicted"
 }
 puts "$misclassified of $n misclassified ([expr {100.0 * $misclassified / $n}]%)"
 
-datamunge::Plot_save [datamunge::KNNClassifier_plot_decision_regions $model "Petal.Length" "Petal.Width"] "knn_iris_decision_regions_k5.svg"
+[$model plot_decision_regions Petal.Length Petal.Width] save knn_iris_decision_regions_k5.svg
 puts "\nSaved knn_iris_decision_regions_k5.svg"
 
-set k1 [datamunge::new_KNNClassifier $iris "Species ~ Petal.Length + Petal.Width" 1]
-puts "\nk=1  leave-one-out accuracy: [expr {[datamunge::KNNClassifier_training_accuracy $k1] * 100.0}]%"
-datamunge::Plot_save [datamunge::KNNClassifier_plot_decision_regions $k1 "Petal.Length" "Petal.Width"] "knn_iris_decision_regions_k1.svg"
-puts "Saved knn_iris_decision_regions_k1.svg"
-
-set k25 [datamunge::new_KNNClassifier $iris "Species ~ Petal.Length + Petal.Width" 25]
-puts "\nk=25 leave-one-out accuracy: [expr {[datamunge::KNNClassifier_training_accuracy $k25] * 100.0}]%"
-datamunge::Plot_save [datamunge::KNNClassifier_plot_decision_regions $k25 "Petal.Length" "Petal.Width"] "knn_iris_decision_regions_k25.svg"
-puts "Saved knn_iris_decision_regions_k25.svg"
+# k=1 memorizes every training point exactly (jagged, overfit boundary with an island around
+# every point, including noise); k=25 averages over a much larger neighborhood (very smooth,
+# underfit boundary). KNNClassifier new data formula ?k? ?metric? ?weighted? ?standardize?
+foreach k {1 25} {
+    set knn [datamunge::KNNClassifier new $iris $formula $k]
+    set file knn_iris_decision_regions_k$k.svg
+    puts "\nk=[format %-2s $k] leave-one-out accuracy: [expr {[$knn training_accuracy] * 100}]%"
+    [$knn plot_decision_regions Petal.Length Petal.Width] save $file
+    puts "Saved $file"
+}

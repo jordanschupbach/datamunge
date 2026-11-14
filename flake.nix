@@ -157,12 +157,20 @@
           mkdir -p "$datamungeRoot/build/node_modules/@datamunge"
           ln -sfn "$datamungeRoot" "$datamungeRoot/build/node_modules/@datamunge/datamungejs"
           export NODE_PATH="$datamungeRoot/build/node_modules''${NODE_PATH:+:}$NODE_PATH"
-          # just build-ruby
-          export RUBYLIB="$datamungeRoot/src/octruby/lib''${RUBYLIB:+:}$RUBYLIB"
+          # just build-ruby (Rosetta): `require 'datamunge'` loads the committed
+          # src/datamungeruby/lib/datamunge.rb, which require_relative's datamunge/datamunge.so; the
+          # build installs both into build/ruby/prefix/lib, which comes first. mep's Ruby LSP follows
+          # the require through RUBYLIB to the YARD docs in src/datamungeruby/lib/datamunge.rb.
+          export RUBYLIB="$datamungeRoot/build/ruby/prefix/lib:$datamungeRoot/src/datamungeruby/lib''${RUBYLIB:+:}$RUBYLIB"
           # just build-perl
           export PERL5LIB="$datamungeRoot/build/perl/lib/perl5''${PERL5LIB:+:}$PERL5LIB"
-          # just build-tcl (space-separated list)
-          export TCLLIBPATH="$datamungeRoot/build/datamungetcl''${TCLLIBPATH:+ $TCLLIBPATH}"
+          # just build-tcl (Rosetta; installs the package directory datamunge/ into build/tcl/prefix/lib):
+          # `package require datamunge` from tclsh. TCLLIBPATH is a Tcl list (space-separated). mep's
+          # Tcl LSP reads the documented proc/oo::class stubs of the committed
+          # src/datamungetcl/pkg/datamunge/datamunge.tcl through MEP_TCL_PATH (it scans each directory
+          # and its package subdirectories).
+          export TCLLIBPATH="$datamungeRoot/build/tcl/prefix/lib''${TCLLIBPATH:+ $TCLLIBPATH}"
+          export MEP_TCL_PATH="$datamungeRoot/src/datamungetcl/pkg''${MEP_TCL_PATH:+:$MEP_TCL_PATH}"
           # just build-lua (installs into build/lua/prefix)
           export LUA_PATH="$datamungeRoot/build/lua/prefix/share/lua/?.lua;''${LUA_PATH:-;}"
           export LUA_CPATH="$datamungeRoot/build/lua/prefix/lib/lua/?.so;$datamungeRoot/build/lua/prefix/lib64/lua/?.so;''${LUA_CPATH:-;}"
@@ -177,35 +185,100 @@
           csharpLibrary="$datamungeRoot/build/csharp/prefix/share/dotnet/Datamunge/lib/datamunge_csharp.so"
           if [ "$(uname)" = Darwin ]; then csharpLibrary="''${csharpLibrary%.so}.dylib"; fi
           export DATAMUNGE_CSHARP_LIBRARY="''${DATAMUNGE_CSHARP_LIBRARY:-$csharpLibrary}"
+          # just build-fortran (installs libdatamunge_fortran, libdatamunge_fortran_mod.a and the .mod
+          # files into build/fortran/prefix): compile with $DATAMUNGE_FORTRAN_FLAGS after the source
+          # (just run-fortran spells it out). mep's Fortran LSP resolves `use datamunge` through
+          # MEP_FORTRAN_PATH to the committed src/datamungefortran/datamunge.f90 and its FORD docs.
+          fortranPrefix="$datamungeRoot/build/fortran/prefix"
+          export DATAMUNGE_FORTRAN_FLAGS="''${DATAMUNGE_FORTRAN_FLAGS:--I$fortranPrefix/include/datamunge/fortran -L$fortranPrefix/lib -ldatamunge_fortran_mod -ldatamunge_fortran -Wl,-rpath,$fortranPrefix/lib}"
+          export MEP_FORTRAN_PATH="$datamungeRoot/src/datamungefortran''${MEP_FORTRAN_PATH:+:$MEP_FORTRAN_PATH}"
           # just build-cobol (installs libdatamungecobol and the copybooks into build/cobol/prefix):
           # COPY "datamunge.cpy" finds them through COBCPY (cobc and mep's COBOL LSP).
           export COBCPY="$datamungeRoot/build/cobol/prefix/share/cobol/copy''${COBCPY:+:$COBCPY}"
-          # just build-octave
-          export OCTAVE_PATH="$datamungeRoot/build/datamungeoctave''${OCTAVE_PATH:+:}$OCTAVE_PATH"
-          # just build-guile (installs into build/guile/prefix)
+          # just build-octave (Rosetta; installs __datamunge__.oct and +datamunge into
+          # build/octave/prefix/share/octave/site/m): datamunge.DataFrame (...) from octave/octave-cli
+          # in the default or octave shell. A site init file adds that directory to the load path
+          # (rather than OCTAVE_PATH) after silencing Octave:shadowed-function, which Octave raises on
+          # every path refresh for datamunge.resize and datamunge.Data.load (they shadow nothing).
+          # mep's Octave LSP resolves datamunge.* through MEP_OCTAVE_PATH to the committed package
+          # src/datamungeoctave/inst/+datamunge and its help text; mep's Octave console (which reads
+          # the site init file) adds MEP_OCTAVE_PATH to its load path too.
+          octaveSiteInit="$datamungeRoot/build/octave/octaverc"
+          mkdir -p "$datamungeRoot/build/octave"
+          {
+            if [ -n "''${OCTAVE_SITE_INITFILE:-}" ] && [ "$OCTAVE_SITE_INITFILE" != "$octaveSiteInit" ]; then
+              printf 'source ("%s");\n' "$OCTAVE_SITE_INITFILE"
+            fi
+            printf 'warning ("off", "Octave:shadowed-function");\nif (isfolder ("%s"))\n  addpath ("%s");\nend\n' \
+              "$datamungeRoot/build/octave/prefix/share/octave/site/m" "$datamungeRoot/build/octave/prefix/share/octave/site/m"
+          } > "$octaveSiteInit"
+          export OCTAVE_SITE_INITFILE="$octaveSiteInit"
+          export MEP_OCTAVE_PATH="$datamungeRoot/src/datamungeoctave/inst''${MEP_OCTAVE_PATH:+:$MEP_OCTAVE_PATH}"
+          # just build-guile (Rosetta; installs datamunge.scm, datamunge/ and libdatamunge_guile.so
+          # together into build/guile/prefix/share/guile/site/<version>): (use-modules (datamunge))
+          # from guile in the default or guile shell; the module loads the extension beside it.
+          # mep's Scheme LSP reads the docstrings of the committed src/datamungeguile/scheme/datamunge.scm
+          # through MEP_GUILE_PATH.
           guileVersion="$(pkg-config --variable=effective-version guile-3.0 2>/dev/null || echo 3.0)"
           # (empty, not a failure, when guile-3.0.pc isn't on PKG_CONFIG_PATH -- as in the default shell)
           guileVersion="''${guileVersion:-3.0}"
           export GUILE_LOAD_PATH="$datamungeRoot/build/guile/prefix/share/guile/site/$guileVersion''${GUILE_LOAD_PATH:+:}$GUILE_LOAD_PATH"
-          export GUILE_EXTENSION_PATH="$datamungeRoot/build/guile/prefix/lib/guile/$guileVersion/extensions''${GUILE_EXTENSION_PATH:+:}$GUILE_EXTENSION_PATH"
-          # just install-ocaml
+          # the precompiled datamunge.go (built by build-guile), so loading needn't compile the module
+          export GUILE_LOAD_COMPILED_PATH="$datamungeRoot/build/guile/prefix/lib/guile/$guileVersion/site-ccache''${GUILE_LOAD_COMPILED_PATH:+:}$GUILE_LOAD_COMPILED_PATH"
+          export MEP_GUILE_PATH="$datamungeRoot/src/datamungeguile/scheme''${MEP_GUILE_PATH:+:$MEP_GUILE_PATH}"
+          # just build-ocaml (Rosetta; installs the findlib package datamunge/ into
+          # build/ocaml/prefix/lib): `ocamlfind ocamlopt -package datamunge`, dune
+          # `(libraries datamunge)` or `#require "datamunge"` in the toplevel. Native programs link
+          # libdatamunge_stubs.a and libdatamunge (rpath); bytecode and the toplevel load
+          # dlldatamunge_stubs.so from the package directory (CAML_LD_LIBRARY_PATH), and the toplevel
+          # finds `#use "topfind"` through OCAMLTOP_INCLUDE_PATH. mep's OCaml server reads the odoc
+          # comments of the committed src/datamungeocaml/ocaml/datamunge/datamunge.mli through
+          # MEP_OCAML_PATH.
           export OCAMLPATH="$datamungeRoot/build/ocaml/prefix/lib''${OCAMLPATH:+:}$OCAMLPATH"
-          # (the toplevel's `#require "datamungeocaml"` dlopens the stubs from here, and finds
-          # `#use "topfind"` through OCAMLTOP_INCLUDE_PATH)
-          export CAML_LD_LIBRARY_PATH="$datamungeRoot/build/ocaml/prefix/lib/stublibs''${CAML_LD_LIBRARY_PATH:+:}$CAML_LD_LIBRARY_PATH"
+          export CAML_LD_LIBRARY_PATH="$datamungeRoot/build/ocaml/prefix/lib/datamunge''${CAML_LD_LIBRARY_PATH:+:}$CAML_LD_LIBRARY_PATH"
+          export MEP_OCAML_PATH="$datamungeRoot/src/datamungeocaml/ocaml''${MEP_OCAML_PATH:+:$MEP_OCAML_PATH}"
           if command -v ocamlfind >/dev/null 2>&1; then
             export OCAMLTOP_INCLUDE_PATH="$(dirname "$(ocamlfind query findlib)")''${OCAMLTOP_INCLUDE_PATH:+:}$OCAMLTOP_INCLUDE_PATH"
           fi
-          # just prebuild-go: a workspace holding src/godatamunge, so `import "datamunge"` resolves
-          # from a Go program anywhere (a mepml block's temp file, say), linked against the core.
+          # just build-go (Rosetta; installs libdatamunge_go into build/go/prefix/lib): the committed
+          # module src/datamungego/go/datamunge links -ldatamunge_go, found through CGO_LDFLAGS (with
+          # an rpath, so programs need no LD_LIBRARY_PATH). The workspace build/go/go.work holds that
+          # module plus examples/go and tests/go, so `import "datamunge"` resolves from the root
+          # (`go run examples/go/x.go`) and from a Go program anywhere (a mepml block's temp file).
+          # mep's Go server reads the godoc of the committed module through the replace directives
+          # in examples/go/go.mod and tests/go/go.mod.
+          export DATAMUNGE_GO_LIB="''${DATAMUNGE_GO_LIB:-$datamungeRoot/build/go/prefix/lib}"
+          # go compares the current directory with the workspace's paths without resolving
+          # symlinks, so they are spelled as the shell reaches the repository (git's root is the
+          # resolved path; $PWD may run through a symlink).
+          goRoot="$datamungeRoot"
+          goPrefix="$(git rev-parse --show-prefix 2>/dev/null || true)"
+          goLogical="''${PWD%/}"
+          if [ -n "$goPrefix" ]; then goLogical="''${goLogical%/''${goPrefix%/}}"; fi
+          if [ "$goLogical" != "$datamungeRoot" ] && [ "$goLogical" -ef "$datamungeRoot" ]; then goRoot="$goLogical"; fi
           mkdir -p "$datamungeRoot/build/go"
-          printf 'go 1.21\n\nuse %s\n' "$datamungeRoot/src/godatamunge" > "$datamungeRoot/build/go/go.work"
+          printf 'go 1.24\n\nuse (\n\t%s\n\t%s\n\t%s\n)\n' "$goRoot/src/datamungego/go/datamunge" \
+            "$goRoot/examples/go" "$goRoot/tests/go" > "$datamungeRoot/build/go/go.work"
           export GOWORK="$datamungeRoot/build/go/go.work"
-          export CGO_CPPFLAGS="$(pkg-config --cflags datamunge)''${CGO_CPPFLAGS:+ $CGO_CPPFLAGS}"
-          export CGO_LDFLAGS="$(pkg-config --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)''${CGO_LDFLAGS:+ $CGO_LDFLAGS}"
-          # just build-java: the generated classes' jar, and the JNI library they load
-          export CLASSPATH="$datamungeRoot/src/jdatamunge/build/libs/jdatamunge.jar''${CLASSPATH:+:}$CLASSPATH"
-          export JDK_JAVA_OPTIONS="-Djava.library.path=$datamungeRoot/src/jdatamunge-datamunge/build/cmake''${JDK_JAVA_OPTIONS:+ $JDK_JAVA_OPTIONS}"
+          export CGO_LDFLAGS="-L$DATAMUNGE_GO_LIB -Wl,-rpath,$DATAMUNGE_GO_LIB''${CGO_LDFLAGS:+ $CGO_LDFLAGS}"
+          # just build-java (Rosetta; installs datamunge.jar and libdatamunge_java into
+          # build/java/prefix): `java -cp $MEP_JAVA_CLASSPATH App.java`; the package datamunge loads
+          # the JNI library named by DATAMUNGE_JAVA_LIBRARY. mep's Java mode puts MEP_JAVA_CLASSPATH
+          # on its class path, and its Java server reads the Javadoc of the committed sources
+          # src/datamungejava/java through MEP_JAVA_SOURCEPATH.
+          javaLibrary="$datamungeRoot/build/java/prefix/lib/libdatamunge_java.so"
+          if [ "$(uname)" = Darwin ]; then javaLibrary="''${javaLibrary%.so}.dylib"; fi
+          export DATAMUNGE_JAVA_LIBRARY="''${DATAMUNGE_JAVA_LIBRARY:-$javaLibrary}"
+          export MEP_JAVA_CLASSPATH="$datamungeRoot/build/java/prefix/share/java/datamunge.jar''${MEP_JAVA_CLASSPATH:+:$MEP_JAVA_CLASSPATH}"
+          export MEP_JAVA_SOURCEPATH="$datamungeRoot/src/datamungejava/java''${MEP_JAVA_SOURCEPATH:+:$MEP_JAVA_SOURCEPATH}"
+          # just build-apl (Rosetta; installs libdatamunge_gnu_apl.so into build/apl/prefix/lib and the
+          # script datamunge.apl into build/apl/prefix/share/apl): `apl --script -f
+          # $DATAMUNGE_APL_SCRIPT -f x.apl`; the script ⎕FX's the library DATAMUNGE_APL_LIBRARY names.
+          # mep's APL server reads the ⍝ documentation of the committed
+          # src/datamungeapl/apl/datamunge.apl through MEP_APL_PATH.
+          export DATAMUNGE_APL_LIBRARY="''${DATAMUNGE_APL_LIBRARY:-$datamungeRoot/build/apl/prefix/lib/libdatamunge_gnu_apl.so}"
+          export DATAMUNGE_APL_SCRIPT="''${DATAMUNGE_APL_SCRIPT:-$datamungeRoot/src/datamungeapl/apl/datamunge.apl}"
+          export MEP_APL_PATH="$datamungeRoot/src/datamungeapl/apl''${MEP_APL_PATH:+:$MEP_APL_PATH}"
           # just build-d: libdatamunge_wrap, which the generated D module dlopens by leaf name at
           # startup. (macOS ignores LD_LIBRARY_PATH there; its fallback path can't shadow anything.)
           case "$(uname -s)" in
@@ -267,31 +340,26 @@
         };
 
         datamungetcl = import ./nix/datamungetcl.nix { pkgs = bindingPkgs; };
-        octruby = import ./nix/octruby.nix { pkgs = bindingPkgs; };
+        datamungejava = import ./nix/datamungejava.nix { pkgs = bindingPkgs; };
+        datamungego = import ./nix/datamungego.nix { pkgs = bindingPkgs; };
+        datamungeruby = import ./nix/datamungeruby.nix { pkgs = bindingPkgs; };
         datamungelua = import ./nix/datamungelua.nix { pkgs = bindingPkgs; };
         datamungelisp = import ./nix/datamungelisp.nix { pkgs = bindingPkgs; };
         datamungejulia = import ./nix/datamungejulia.nix { pkgs = bindingPkgs; };
         datamungecsharp = import ./nix/datamungecsharp.nix { pkgs = bindingPkgs; inherit dotnetSdk; };
         datamungecobol = import ./nix/datamungecobol.nix { pkgs = bindingPkgs; };
+        datamungefortran = import ./nix/datamungefortran.nix { pkgs = bindingPkgs; };
         # GnuCOBOL: cobc lives in the bin output, which a shell's packages leave out.
         gnuCobol = [ pkgs.gnucobol pkgs.gnucobol.bin ];
         datamungeocaml = import ./nix/datamungeocaml.nix { pkgs = bindingPkgs; };
+        # GNU APL (Linux only: nixpkgs marks gnuapl broken on macOS). Its native functions compile
+        # against GNU APL's configured headers, datamungeapl.gnuAplHeaders.
+        datamungeapl = import ./nix/datamungeapl.nix { pkgs = bindingPkgs; };
         datamungeguile = import ./nix/datamungeguile.nix { pkgs = bindingPkgs; };
         datamungeoctave = import ./nix/datamungeoctave.nix { pkgs = bindingPkgs; };
         datamunged = import ./nix/datamunged.nix { pkgs = bindingPkgs; };
 
         # }}} Bindings
-
-        gradleWrapped = pkgs.gradle-packages.gradle.wrapped;
-        jdatamungeGradleDeps = gradleWrapped.passthru.fetchDeps {
-          pkg = pkgs.stdenvNoCC.mkDerivation {
-            pname = "jdatamunge";
-            version = "0.0.1";
-            src = pkgs.emptyDirectory;
-            installPhase = "mkdir -p $out";
-          };
-          data = ./nix/jdatamunge-gradle-deps.json;
-        };
 
         formatCheckTools = [
           pkgs.bash
@@ -367,17 +435,19 @@
             phpDev
             dotnetSdk
             datamungecsharp
-            gradleWrapped
-            jdatamungeGradleDeps
+            datamungefortran
+            datamungejava
+            datamungego
             pydatamunge
             datamunger
             datamungejs
-            octruby
+            datamungeruby
             datamungelua
             datamungetcl
             datamungeoctave
             datamungeguile
             datamungeocaml
+            datamungeapl
             datamunged
             ;
         };
@@ -521,44 +591,28 @@
           java = pkgs.stdenv.mkDerivation {
             name = "datamunge-java-check";
             src = pkgs.lib.cleanSource ./.;
-            nativeBuildInputs = [
-              gradleWrapped
-              pkgs.jdk
-              pkgs.cmake
-              pkgs.pkg-config
-            ];
-            buildInputs = [
-              pkgs.libxml2
-            ];
-
-            # Provide a deterministic HTTP replay cache for Gradle via mitm-cache.
-            mitmCache = jdatamungeGradleDeps;
-
+            nativeBuildInputs = [ pkgs.jdk ];
             phases = [
               "unpackPhase"
-              "configurePhase"
-              "buildPhase"
+              "checkPhase"
               "installPhase"
             ];
-            configurePhase = "runHook preConfigure";
-            buildPhase = ''
-              cmake -S src/jdatamunge-datamunge -B src/jdatamunge-datamunge/build/cmake -DCMAKE_BUILD_TYPE=Release
-              cmake --build src/jdatamunge-datamunge/build/cmake -j $NIX_BUILD_CORES
-              export LD_LIBRARY_PATH="$PWD/src/jdatamunge-datamunge/build/cmake:''${LD_LIBRARY_PATH:-}"
-              gradle test --no-configuration-cache
+            doCheck = true;
+            # tests/java/TestDatamunge.java (a single-file launch) against the nix-built jar and JNI
+            # library; it reads the committed sources src/datamungejava/java for the documentation checks.
+            checkPhase = ''
+              export DATAMUNGE_JAVA_LIBRARY="${datamungejava.library}"
+              java -cp "${datamungejava.jar}" tests/java/TestDatamunge.java src/datamungejava/java
             '';
             installPhase = "mkdir -p $out";
           };
 
-          tcl = pkgs.stdenv.mkDerivation {
-            name = "datamunge-tcl-check";
+          go = pkgs.stdenv.mkDerivation {
+            name = "datamunge-go-check";
             src = pkgs.lib.cleanSource ./.;
             nativeBuildInputs = [
-              pkgs.tcl
-              pkgs.tk
-            ];
-            buildInputs = [
-              datamungetcl
+              bindingPkgs.go
+              bindingPkgs.stdenv.cc
             ];
             phases = [
               "unpackPhase"
@@ -566,10 +620,85 @@
               "installPhase"
             ];
             doCheck = true;
+            # tests/go (go test, offline) against the nix-built library and module (a workspace
+            # using it, so tests/go/go.mod's replace of the committed copy is overridden); it reads
+            # the committed src/datamungego/go/datamunge for the documentation checks. The build
+            # cache starts from the package's warm one.
             checkPhase = ''
-              tclVersionDir="$(basename "$(${pkgs.tcl}/bin/tclsh <<< 'puts [info library]')")"
-              export TCLLIBPATH="${datamungetcl}/lib/$tclVersionDir"
-              tclsh tests/tcl/test_datamunge.tcl
+              export HOME="$TMPDIR" GOTOOLCHAIN=local GOPROXY=off GOFLAGS= GOCACHE="$TMPDIR/go-cache"
+              export CGO_ENABLED=1 CGO_LDFLAGS="${datamungego.cgoLdflags}"
+              cp -r --no-preserve=mode "${datamungego}/share/go-cache" "$GOCACHE"
+              printf 'go 1.24\n\nuse (\n\t%s\n\t%s\n)\n' "${datamungego.module}" "$PWD/tests/go" > "$TMPDIR/go.work"
+              export GOWORK="$TMPDIR/go.work"
+              (cd tests/go && go test -count=1 -v .)
+            '';
+            installPhase = "mkdir -p $out";
+          };
+
+          ocaml = pkgs.stdenv.mkDerivation {
+            name = "datamunge-ocaml-check";
+            src = pkgs.lib.cleanSource ./.;
+            nativeBuildInputs = [
+              pkgs.ocamlPackages.ocaml
+              pkgs.ocamlPackages.findlib
+            ];
+            phases = [
+              "unpackPhase"
+              "checkPhase"
+              "installPhase"
+            ];
+            doCheck = true;
+            # tests/ocaml/test_datamunge.ml, compiled natively against the nix-built findlib package;
+            # it reads the committed src/datamungeocaml/ocaml/datamunge/datamunge.mli for the
+            # documentation checks.
+            checkPhase = ''
+              export OCAMLPATH="${datamungeocaml}/lib"
+              mkdir -p build && cp tests/ocaml/test_datamunge.ml build/
+              ocamlfind ocamlopt -package datamunge -linkpkg -o build/test_datamunge build/test_datamunge.ml
+              ./build/test_datamunge src/datamungeocaml/ocaml/datamunge/datamunge.mli
+            '';
+            installPhase = "mkdir -p $out";
+          };
+
+          apl = pkgs.stdenv.mkDerivation {
+            name = "datamunge-apl-check";
+            src = pkgs.lib.cleanSource ./.;
+            nativeBuildInputs = [ pkgs.gnuapl ];
+            phases = [
+              "unpackPhase"
+              "checkPhase"
+              "installPhase"
+            ];
+            doCheck = true;
+            # tests/apl/test_datamunge.apl against the nix-built library and script; it reads the
+            # committed src/datamungeapl/apl/datamunge.apl (DATAMUNGE_APL_DOCS) for the documentation
+            # checks.
+            checkPhase = ''
+              export HOME="$TMPDIR"
+              export DATAMUNGE_APL_LIBRARY="${datamungeapl.library}"
+              export DATAMUNGE_APL_DOCS="$PWD/src/datamungeapl/apl/datamunge.apl"
+              apl --script --noSV --noColor --silent -f "${datamungeapl.script}" -f tests/apl/test_datamunge.apl \
+                | tee apl-test.log
+              grep -q "^DATAMUNGE APL PASS" apl-test.log
+            '';
+            installPhase = "mkdir -p $out";
+          };
+
+          tcl = pkgs.stdenv.mkDerivation {
+            name = "datamunge-tcl-check";
+            src = pkgs.lib.cleanSource ./.;
+            nativeBuildInputs = [ pkgs.tcl ];
+            phases = [
+              "unpackPhase"
+              "checkPhase"
+              "installPhase"
+            ];
+            doCheck = true;
+            # tests/tcl/test_datamunge.tcl against the nix-built package; it reads the committed
+            # src/datamungetcl/pkg/datamunge/datamunge.tcl for the documentation checks.
+            checkPhase = ''
+              export TCLLIBPATH="${datamungetcl}/lib"
+              tclsh tests/tcl/test_datamunge.tcl src/datamungetcl/pkg/datamunge/datamunge.tcl
             '';
             installPhase = "mkdir -p $out";
           };
@@ -662,21 +791,18 @@
           ruby = pkgs.stdenv.mkDerivation {
             name = "datamunge-ruby-check";
             src = pkgs.lib.cleanSource ./.;
-            nativeBuildInputs = [
-              pkgs.ruby
-            ];
-            buildInputs = [
-              octruby
-            ];
+            nativeBuildInputs = [ pkgs.ruby ];
             phases = [
               "unpackPhase"
               "checkPhase"
               "installPhase"
             ];
             doCheck = true;
+            # tests/ruby/test_datamunge.rb against the nix-built extension; it reads the committed
+            # src/datamungeruby/lib/datamunge.rb for the YARD documentation checks.
             checkPhase = ''
-              export RUBYLIB="${octruby}/lib''${RUBYLIB:+:}$RUBYLIB"
-              ruby -I tests/ruby -e 'require "test_datamunge"'
+              export HOME="$TMPDIR"
+              ruby -I "${datamungeruby}/lib" tests/ruby/test_datamunge.rb src/datamungeruby/lib/datamunge.rb
             '';
             installPhase = "mkdir -p $out";
           };
@@ -697,14 +823,12 @@
             ];
             doCheck = true;
             checkPhase = ''
-              effectiveVersion="$(${pkgs.pkg-config}/bin/pkg-config --variable=effective-version guile-3.0 2>/dev/null || true)"
-              if [ -z "$effectiveVersion" ]; then
-                effectiveVersion="3.0"
-              fi
-
-              export GUILE_LOAD_PATH="${datamungeguile}/share/guile/site/$effectiveVersion''${GUILE_LOAD_PATH:+:}$GUILE_LOAD_PATH"
-              export GUILE_EXTENSION_PATH="${datamungeguile}/lib/guile/$effectiveVersion/extensions:${datamungeguile}/lib64/guile/$effectiveVersion/extensions''${GUILE_EXTENSION_PATH:+:}$GUILE_EXTENSION_PATH"
-              ${pkgs.guile}/bin/guile -s tests/guile/test_datamunge.scm
+              # tests/guile/test_datamunge.scm against the nix-built extension and module; it reads
+              # the committed src/datamungeguile/scheme/datamunge.scm for the docstring checks.
+              export HOME="$TMPDIR"
+              export GUILE_LOAD_PATH="${datamungeguile}/share/guile/site/${pkgs.guile.effectiveVersion or "3.0"}''${GUILE_LOAD_PATH:+:}$GUILE_LOAD_PATH"
+              export GUILE_LOAD_COMPILED_PATH="${datamungeguile}/lib/guile/${pkgs.guile.effectiveVersion or "3.0"}/site-ccache''${GUILE_LOAD_COMPILED_PATH:+:}$GUILE_LOAD_COMPILED_PATH"
+              ${pkgs.guile}/bin/guile --no-auto-compile -s tests/guile/test_datamunge.scm src/datamungeguile/scheme/datamunge.scm
             '';
             installPhase = "mkdir -p $out";
           };
@@ -712,21 +836,19 @@
           octave = pkgs.stdenv.mkDerivation {
             name = "datamunge-octave-check";
             src = pkgs.lib.cleanSource ./.;
-            nativeBuildInputs = [
-              pkgs.octave
-            ];
-            buildInputs = [
-              datamungeoctave
-            ];
+            nativeBuildInputs = [ pkgs.octave ];
             phases = [
               "unpackPhase"
               "checkPhase"
               "installPhase"
             ];
             doCheck = true;
+            # tests/octave/test_datamunge.m against the nix-built oct-file and package (as just
+            # test-octave does; see OCTAVE in the justfile for the warning).
             checkPhase = ''
-              export OCTAVE_PATH="${datamungeoctave}/share/octave/site/m''${OCTAVE_PATH:+:}$OCTAVE_PATH"
-              ${pkgs.octave}/bin/octave -qf --eval 'test("tests/octave/test_datamunge.m")'
+              export HOME="$TMPDIR"
+              octave-cli --norc --no-history --quiet --eval \
+                "warning off Octave:shadowed-function; addpath (\"${datamungeoctave}/share/octave/site/m\"); source tests/octave/test_datamunge.m"
             '';
             installPhase = "mkdir -p $out";
           };
@@ -830,6 +952,29 @@
             '';
             installPhase = "mkdir -p $out";
           };
+
+          fortran = pkgs.stdenv.mkDerivation {
+            name = "datamunge-fortran-check";
+            src = pkgs.lib.cleanSource ./.;
+            nativeBuildInputs = [ pkgs.gfortran ];
+            phases = [
+              "unpackPhase"
+              "checkPhase"
+              "installPhase"
+            ];
+            doCheck = true;
+            # tests/fortran/test_datamunge.f90 against the nix-built modules and native library; it reads
+            # src/datamungefortran/datamunge.f90 for the FORD documentation checks.
+            checkPhase = ''
+              prefix="${datamungefortran}"
+              mkdir -p "$TMPDIR/mod"
+              gfortran -std=f2018 -Wall -Wno-compare-reals -I "$prefix/include/datamunge/fortran" -J "$TMPDIR/mod" \
+                tests/fortran/test_datamunge.f90 -L "$prefix/lib" -ldatamunge_fortran_mod -ldatamunge_fortran \
+                -Wl,-rpath,"$prefix/lib" -o "$TMPDIR/test_datamunge"
+              "$TMPDIR/test_datamunge" src/datamungefortran/datamunge.f90
+            '';
+            installPhase = "mkdir -p $out";
+          };
         };
 
         packages = {
@@ -841,13 +986,17 @@
             datamungejs
             datamunger
             datamungetcl
-            octruby
+            datamungejava
+            datamungego
+            datamungeruby
             datamungelua
             datamungelisp
             datamungejulia
             datamungecsharp
             datamungecobol
+            datamungefortran
             datamungeocaml
+            datamungeapl
             datamungeguile
             datamungeoctave
             datamunged
@@ -1130,17 +1279,21 @@
 
         devShells.java = pkgs.mkShell {
           packages = [
-            gradleWrapped
+            datamunge
+            # javac, jar, java and jshell, plus the JNI headers (build-java builds libdatamunge_java).
             pkgs.jdk
+            # just prebuild-java: scripts/prebuild_bindings.py java runs rosetta.
+            rosettaPkg
+            pkgs.python3
             pkgs.cmake
-            swigPkg
+            pkgs.ninja
+            pkgs.pkg-config
             pkgs.just
+            # datamungeConfig.cmake find_dependency(Arrow) for build-java.
+            pkgs.arrow-cpp
           ];
 
-          shellHook = ''
-            export CMAKE_PATH=${pkgs.cmake}/bin/cmake
-          '';
-
+          shellHook = localBindingsHook;
         };
 
         devShells.python = pkgs.mkShell {
@@ -1269,12 +1422,22 @@
 
         devShells.go = pkgs.mkShell {
           packages = [
+            datamunge
+            # go (cgo builds the examples and tests against build/go/prefix/lib/libdatamunge_go).
             pkgs.go
             pkgs.stdenv.cc
-            pkgs.pkg-config
+            # just prebuild-go: scripts/prebuild_bindings.py go runs rosetta.
+            rosettaPkg
+            pkgs.python3
             pkgs.cmake
+            pkgs.ninja
+            pkgs.pkg-config
             pkgs.just
+            # datamungeConfig.cmake find_dependency(Arrow) for build-go.
+            pkgs.arrow-cpp
           ];
+
+          shellHook = localBindingsHook;
         };
 
         devShells.rust = pkgs.mkShell {
@@ -1352,13 +1515,18 @@
         devShells.tcl = pkgs.mkShell {
           packages = [
             datamunge
+            # tclsh, tcl.h and the stub library (build-tcl builds a stubs-enabled extension).
             pkgs.tcl
             pkgs.tk
-            pkgs.arrow-cpp
-            swigPkg
+            # just prebuild-tcl: scripts/prebuild_bindings.py tcl runs rosetta.
+            rosettaPkg
+            pkgs.python3
             pkgs.cmake
+            pkgs.ninja
             pkgs.pkg-config
             pkgs.just
+            # datamungeConfig.cmake find_dependency(Arrow) for build-tcl.
+            pkgs.arrow-cpp
           ];
 
           shellHook = localBindingsHook;
@@ -1368,10 +1536,15 @@
           packages = [
             datamunge
             pkgs.ruby
-            swigPkg
+            # just prebuild-ruby: scripts/prebuild_bindings.py ruby runs rosetta.
+            rosettaPkg
+            pkgs.python3
+            pkgs.cmake
+            pkgs.ninja
             pkgs.pkg-config
-            pkgs.libxml2
             pkgs.just
+            # datamungeConfig.cmake find_dependency(Arrow) for build-ruby.
+            pkgs.arrow-cpp
           ];
 
           shellHook = localBindingsHook;
@@ -1380,12 +1553,17 @@
         devShells.octave = pkgs.mkShell {
           packages = [
             datamunge
+            # octave-cli and mkoctfile (build-octave reads its include and library directories).
             pkgs.octave
-            pkgs.arrow-cpp
-            swigPkg
+            # just prebuild-octave: scripts/prebuild_bindings.py octave runs rosetta.
+            rosettaPkg
+            pkgs.python3
             pkgs.cmake
+            pkgs.ninja
             pkgs.pkg-config
             pkgs.just
+            # datamungeConfig.cmake find_dependency(Arrow) for build-octave.
+            pkgs.arrow-cpp
           ];
 
           shellHook = localBindingsHook;
@@ -1443,6 +1621,24 @@
           shellHook = localBindingsHook;
         };
 
+        devShells.fortran = pkgs.mkShell {
+          packages = [
+            datamunge
+            pkgs.gfortran
+            # just prebuild-fortran: scripts/prebuild_bindings.py fortran runs rosetta.
+            rosettaPkg
+            pkgs.python3
+            pkgs.cmake
+            pkgs.ninja
+            pkgs.pkg-config
+            pkgs.just
+            # datamungeConfig.cmake find_dependency(Arrow) for build-fortran.
+            pkgs.arrow-cpp
+          ];
+
+          shellHook = localBindingsHook;
+        };
+
         devShells.cobol = pkgs.mkShell {
           packages = [
             datamunge
@@ -1463,36 +1659,64 @@
         devShells.ocaml = pkgs.mkShell {
           packages = [
             datamunge
-            swigPkg
-            pkgs.pkg-config
-            pkgs.stdenv.cc
-            pkgs.gnumake
+            # ocamlc/ocamlopt and caml/*.h (build-ocaml builds the stubs and the library), ocamlfind
+            # (`-package datamunge`, the toplevel's `#require`), odoc for the .mli documentation,
+            # dune for `(libraries datamunge)` consumers and utop for repl-ocaml.
             pkgs.ocamlPackages.ocaml
-            pkgs.ocamlPackages.dune_3
             pkgs.ocamlPackages.findlib
+            pkgs.ocamlPackages.odoc
+            pkgs.ocamlPackages.dune_3
             pkgs.ocamlPackages.utop
-            pkgs.ocamlPackages.alcotest
+            # just prebuild-ocaml: scripts/prebuild_bindings.py ocaml runs rosetta.
+            rosettaPkg
+            pkgs.python3
+            pkgs.cmake
+            pkgs.ninja
+            pkgs.pkg-config
             pkgs.just
+            # datamungeConfig.cmake find_dependency(Arrow) for build-ocaml.
+            pkgs.arrow-cpp
+          ];
+
+          shellHook = localBindingsHook;
+        };
+
+        devShells.apl = pkgs.mkShell {
+          packages = [
+            datamunge
+            # The interpreter (apl --script, repl-apl). build-apl compiles the native functions against
+            # its configured headers, ROSETTA_GNU_APL_SOURCE_DIR below.
+            pkgs.gnuapl
+            # just prebuild-apl: scripts/prebuild_bindings.py apl runs rosetta.
+            rosettaPkg
+            pkgs.python3
+            pkgs.cmake
+            pkgs.ninja
+            pkgs.pkg-config
+            pkgs.just
+            # datamungeConfig.cmake find_dependency(Arrow) for build-apl.
+            pkgs.arrow-cpp
           ];
 
           shellHook = ''
-            export DATAMUNGE_PREFIX="${datamunge}"
-            export PKG_CONFIG_PATH="${datamunge}/lib/pkgconfig''${PKG_CONFIG_PATH:+:}$PKG_CONFIG_PATH"
-            export LD_LIBRARY_PATH="${datamunge}/lib/datamunge-0.0.1''${LD_LIBRARY_PATH:+:}$LD_LIBRARY_PATH"
-            export CAML_LD_LIBRARY_PATH="${datamunge}/lib/datamunge-0.0.1''${CAML_LD_LIBRARY_PATH:+:}$CAML_LD_LIBRARY_PATH"
-            export XDG_CACHE_HOME="$(pwd)/build/xdg-cache"
-          '';
+            export ROSETTA_GNU_APL_SOURCE_DIR=${datamungeapl.gnuAplHeaders}
+          ''
+          + localBindingsHook;
         };
 
         devShells.guile = pkgs.mkShell {
           packages = [
             datamunge
             pkgs.guile
-            pkgs.arrow-cpp
-            swigPkg
+            # just prebuild-guile: scripts/prebuild_bindings.py guile runs rosetta.
+            rosettaPkg
+            pkgs.python3
             pkgs.cmake
+            pkgs.ninja
             pkgs.pkg-config
             pkgs.just
+            # datamungeConfig.cmake find_dependency(Arrow) for build-guile.
+            pkgs.arrow-cpp
           ];
 
           shellHook = localBindingsHook;
@@ -1527,6 +1751,7 @@
           '';
         };
 
+        devShells.report-apl = reportShell "apl";
         devShells.report-cpp = reportShell "cpp";
         devShells.report-python = reportShell "python";
         devShells.report-r = reportShell "r";
@@ -1582,7 +1807,7 @@
             pkgs.nodejs
             datamunger
             pkgs.R
-            octruby
+            datamungeruby
             pkgs.ruby
             pkgs.perl
             phpPackage
@@ -1590,6 +1815,8 @@
             lua
             datamungetcl
             pkgs.tcl
+            datamungejava
+            pkgs.jdk
             datamungeoctave
             pkgs.octave
             datamungeguile
@@ -1606,13 +1833,13 @@
 
             export DATAMUNGE_PREFIX="${datamunge}"
             export OCTAVE_PATH="${datamungeoctave}/share/octave/site/m''${OCTAVE_PATH:+:}$OCTAVE_PATH"
+            export RUBYLIB="${datamungeruby}/lib''${RUBYLIB:+:}$RUBYLIB"
+            export TCLLIBPATH="${datamungetcl}/lib''${TCLLIBPATH:+ $TCLLIBPATH}"
+            export DATAMUNGE_JAVA_LIBRARY="${datamungejava.library}"
+            export CLASSPATH="${datamungejava.jar}''${CLASSPATH:+:}$CLASSPATH"
 
-            effectiveVersion="$(pkg-config --variable=effective-version guile-3.0 2>/dev/null || true)"
-            if [ -z "$effectiveVersion" ]; then
-              effectiveVersion="3.0"
-            fi
-            export GUILE_LOAD_PATH="${datamungeguile}/share/guile/site/$effectiveVersion''${GUILE_LOAD_PATH:+:}$GUILE_LOAD_PATH"
-            export GUILE_EXTENSION_PATH="${datamungeguile}/lib/guile/$effectiveVersion/extensions:${datamungeguile}/lib64/guile/$effectiveVersion/extensions''${GUILE_EXTENSION_PATH:+:}$GUILE_EXTENSION_PATH"
+            export GUILE_LOAD_PATH="${datamungeguile}/share/guile/site/${pkgs.guile.effectiveVersion or "3.0"}''${GUILE_LOAD_PATH:+:}$GUILE_LOAD_PATH"
+            export GUILE_LOAD_COMPILED_PATH="${datamungeguile}/lib/guile/${pkgs.guile.effectiveVersion or "3.0"}/site-ccache''${GUILE_LOAD_COMPILED_PATH:+:}$GUILE_LOAD_COMPILED_PATH"
           '';
         };
       }

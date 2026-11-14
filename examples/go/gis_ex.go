@@ -1,11 +1,8 @@
 // CMD: just TARGET=gis_ex run-go
 
-// Demonstrates datamunge.ShapeLayer: reading a shapefile (.shp geometry + .dbf attributes) and
-// drawing it as a map. Real .shp/.dbf files are large binary bundles that don't belong in this
-// repo, so this example first writes a tiny synthetic shapefile by hand (two "counties": one
-// plain square, one with a lake-shaped hole) using the same ESRI byte layout ShapeLayer.read()
-// expects, then reads it back through the public API. Go's encoding/binary reproduces the byte
-// layout Python's struct.pack produces.
+//go:build ignore
+
+// ShapeLayer: write a tiny synthetic shapefile (.shp + .dbf) by hand, read it back and draw it as a map.
 package main
 
 import (
@@ -13,183 +10,155 @@ import (
 	"datamunge"
 	"encoding/binary"
 	"fmt"
+	"math"
 	"os"
+	"strconv"
 	"strings"
 )
 
-// padRight clips to n bytes if longer, otherwise pads on the right with pad up to n bytes.
-func padRight(b []byte, n int, pad byte) []byte {
-	if len(b) >= n {
-		return b[:n]
+// Real .shp/.dbf files are large binary bundles that don't belong in this repo, so this example
+// writes two "counties" (one plain square, one with a lake-shaped hole) using the same ESRI byte
+// layout ShapeLayerRead expects, then reads them back through the public API.
+
+func check(err error) {
+	if err != nil {
+		panic(err)
 	}
-	out := make([]byte, n)
-	copy(out, b)
-	for i := len(b); i < n; i++ {
-		out[i] = pad
-	}
-	return out
 }
 
-func bounds(points [][2]float64) (minx, miny, maxx, maxy float64) {
-	minx, miny = points[0][0], points[0][1]
-	maxx, maxy = points[0][0], points[0][1]
-	for _, p := range points {
-		if p[0] < minx {
-			minx = p[0]
-		}
-		if p[0] > maxx {
-			maxx = p[0]
-		}
-		if p[1] < miny {
-			miny = p[1]
-		}
-		if p[1] > maxy {
-			maxy = p[1]
+// A shape is a list of rings; a ring is a list of {x, y} points.
+type shape [][][2]float64
+
+// bounds is the bounding box {minx, miny, maxx, maxy} of every point in the given shapes.
+func bounds(shapes []shape) [4]float64 {
+	b := [4]float64{math.Inf(1), math.Inf(1), math.Inf(-1), math.Inf(-1)}
+	for _, s := range shapes {
+		for _, ring := range s {
+			for _, p := range ring {
+				b[0] = math.Min(b[0], p[0])
+				b[1] = math.Min(b[1], p[1])
+				b[2] = math.Max(b[2], p[0])
+				b[3] = math.Max(b[3], p[1])
+			}
 		}
 	}
-	return
+	return b
 }
 
-func polygonRecord(rings [][][2]float64) []byte {
-	var allPoints [][2]float64
-	for _, ring := range rings {
-		allPoints = append(allPoints, ring...)
+// put appends the binary encoding of each value to buf in the given byte order.
+func put(buf *bytes.Buffer, order binary.ByteOrder, values ...any) {
+	for _, v := range values {
+		check(binary.Write(buf, order, v))
 	}
-	minx, miny, maxx, maxy := bounds(allPoints)
+}
 
-	buf := new(bytes.Buffer)
-	binary.Write(buf, binary.LittleEndian, int32(5)) // shape type: Polygon
-	binary.Write(buf, binary.LittleEndian, minx)
-	binary.Write(buf, binary.LittleEndian, miny)
-	binary.Write(buf, binary.LittleEndian, maxx)
-	binary.Write(buf, binary.LittleEndian, maxy)
-	binary.Write(buf, binary.LittleEndian, int32(len(rings)))
-	binary.Write(buf, binary.LittleEndian, int32(len(allPoints)))
-	start := int32(0)
-	for _, ring := range rings {
-		binary.Write(buf, binary.LittleEndian, start)
-		start += int32(len(ring))
+// polygonRecord is the bytes of one Polygon record's contents (without the record header).
+func polygonRecord(s shape) []byte {
+	var buf bytes.Buffer
+	le := binary.LittleEndian
+	total := 0
+	for _, ring := range s {
+		total += len(ring)
 	}
-	for _, ring := range rings {
+	// Shape type 5 = Polygon, then bounds, part/point counts, part starts and the points.
+	put(&buf, le, int32(5), bounds([]shape{s}), int32(len(s)), int32(total))
+	start := 0
+	for _, ring := range s {
+		put(&buf, le, int32(start))
+		start += len(ring)
+	}
+	for _, ring := range s {
 		for _, p := range ring {
-			binary.Write(buf, binary.LittleEndian, p[0])
-			binary.Write(buf, binary.LittleEndian, p[1])
+			put(&buf, le, p)
 		}
 	}
 	return buf.Bytes()
 }
 
-func writeCountiesShp(path string, shapes [][][][2]float64) {
-	contents := make([][]byte, len(shapes))
-	for i, rings := range shapes {
-		contents[i] = polygonRecord(rings)
-	}
+func writeCountiesShp(path string, shapes []shape) {
+	var contents [][]byte
 	totalWords := 0
-	for _, c := range contents {
+	for _, s := range shapes {
+		c := polygonRecord(s)
+		contents = append(contents, c)
 		totalWords += 4 + len(c)/2
 	}
-	var allPoints [][2]float64
-	for _, rings := range shapes {
-		for _, ring := range rings {
-			allPoints = append(allPoints, ring...)
-		}
+	var out bytes.Buffer
+	be, le := binary.BigEndian, binary.LittleEndian
+	// big-endian file code and length, then little-endian version, Polygon type and bounds
+	put(&out, be, int32(9994), [5]int32{}, int32(50+totalWords))
+	put(&out, le, int32(1000), int32(5), bounds(shapes), [4]float64{})
+	for i, c := range contents {
+		put(&out, be, int32(i+1), int32(len(c)/2))
+		out.Write(c)
 	}
-	minx, miny, maxx, maxy := bounds(allPoints)
+	check(os.WriteFile(path, out.Bytes(), 0o644))
+}
 
-	buf := new(bytes.Buffer)
-	binary.Write(buf, binary.BigEndian, int32(9994))
-	for k := 0; k < 5; k++ {
-		binary.Write(buf, binary.BigEndian, int32(0))
-	}
-	binary.Write(buf, binary.BigEndian, int32(50+totalWords))
-	binary.Write(buf, binary.LittleEndian, int32(1000))
-	binary.Write(buf, binary.LittleEndian, int32(5)) // Polygon
-	binary.Write(buf, binary.LittleEndian, minx)
-	binary.Write(buf, binary.LittleEndian, miny)
-	binary.Write(buf, binary.LittleEndian, maxx)
-	binary.Write(buf, binary.LittleEndian, maxy)
-	binary.Write(buf, binary.LittleEndian, float64(0))
-	binary.Write(buf, binary.LittleEndian, float64(0))
-	binary.Write(buf, binary.LittleEndian, float64(0))
-	binary.Write(buf, binary.LittleEndian, float64(0))
-	for i, content := range contents {
-		binary.Write(buf, binary.BigEndian, int32(i+1))
-		binary.Write(buf, binary.BigEndian, int32(len(content)/2))
-		buf.Write(content)
-	}
-	if err := os.WriteFile(path, buf.Bytes(), 0644); err != nil {
-		panic(err)
-	}
+// dbfField is one 32-byte dBASE field descriptor.
+func dbfField(name string, typ byte, length int) []byte {
+	b := make([]byte, 32)
+	copy(b[:11], name)
+	b[11] = typ
+	b[16] = byte(length)
+	return b
 }
 
 func writeCountiesDbf(path string, names, populations []string) {
 	headerSize := 32 + 2*32 + 1
 	recordSize := 1 + 12 + 8
-
-	buf := new(bytes.Buffer)
-	buf.Write([]byte{0x03, 0, 0, 0})
-	binary.Write(buf, binary.LittleEndian, uint32(len(names)))
-	binary.Write(buf, binary.LittleEndian, uint16(headerSize))
-	binary.Write(buf, binary.LittleEndian, uint16(recordSize))
-	buf.Write(make([]byte, 20))
-
-	writeField := func(name string, fieldType byte, length byte) {
-		buf.Write(padRight([]byte(name), 11, 0))
-		buf.WriteByte(fieldType)
-		buf.Write(make([]byte, 4))
-		buf.WriteByte(length)
-		buf.Write(make([]byte, 15))
-	}
-
-	writeField("NAME", 'C', 12)
-	writeField("POP", 'N', 8)
-	buf.WriteByte(0x0D)
-
+	var out bytes.Buffer
+	le := binary.LittleEndian
+	put(&out, le, [4]byte{3, 0, 0, 0}, int32(len(names)), int16(headerSize), int16(recordSize), [20]byte{})
+	out.Write(dbfField("NAME", 'C', 12))
+	out.Write(dbfField("POP", 'N', 8))
+	out.WriteByte('\r')
 	for i := range names {
-		buf.WriteByte(' ')
-		buf.Write(padRight([]byte(names[i]), 12, ' '))
-		buf.Write(padRight([]byte(populations[i]), 8, ' '))
+		fmt.Fprintf(&out, " %-12.12s%-8.8s", names[i], populations[i])
 	}
-	if err := os.WriteFile(path, buf.Bytes(), 0644); err != nil {
-		panic(err)
+	check(os.WriteFile(path, out.Bytes(), 0o644))
+}
+
+// fmtG is roughly C's %g: integral doubles print without a fractional part.
+func fmtG(x float64) string {
+	if x == math.Floor(x) {
+		return strconv.FormatInt(int64(x), 10)
 	}
+	return fmt.Sprintf("%.6f", x)
 }
 
 func main() {
-	base := "datamunge_gis_ex_counties_go"
+	basePath := "datamunge_gis_ex_counties_go"
 
 	// Per the ESRI winding convention, outer rings are clockwise, holes counterclockwise.
-	plain := [][][2]float64{{{10, 0}, {10, 10}, {20, 10}, {20, 0}, {10, 0}}}
-	withLake := [][][2]float64{
+	plain := shape{{{10, 0}, {10, 10}, {20, 10}, {20, 0}, {10, 0}}}
+	withLake := shape{
 		{{0, 0}, {0, 10}, {10, 10}, {10, 0}, {0, 0}},
 		{{3, 3}, {4, 3}, {4, 4}, {3, 4}, {3, 3}},
 	}
 
-	writeCountiesShp(base+".shp", [][][][2]float64{withLake, plain})
-	writeCountiesDbf(base+".dbf", []string{"Lakeside", "Plainview"}, []string{"48231", "19876"})
+	writeCountiesShp(basePath+".shp", []shape{withLake, plain})
+	writeCountiesDbf(basePath+".dbf", []string{"Lakeside", "Plainview"}, []string{"48231", "19876"})
 
-	counties := datamunge.ShapeLayerRead(base)
+	counties := datamunge.Must(datamunge.ShapeLayerRead(basePath))
+	defer counties.Close()
 
-	fmt.Printf("shapes = %d, shape_type = %s\n", counties.Size(), counties.Shape_type())
-	b := counties.Bounds()
-	parts := make([]string, b.Size())
-	for i := 0; i < int(b.Size()); i++ {
-		parts[i] = fmt.Sprintf("%g", b.Get(i))
+	fmt.Printf("shapes = %d, shape_type = %s\n", datamunge.Must(counties.Size()), datamunge.Must(counties.ShapeType()))
+	var b []string
+	for _, x := range datamunge.Must(counties.Bounds()) {
+		b = append(b, fmtG(x))
 	}
-	fmt.Printf("bounds = [%s]\n", strings.Join(parts, ", "))
-	fmt.Println()
+	fmt.Printf("bounds = [%s]\n\n", strings.Join(b, ", "))
 
-	attributes := counties.Attributes()
-	fmt.Println("attributes")
-	fmt.Println(attributes.To_string())
-	fmt.Println()
+	attrs := datamunge.Must(counties.Attributes())
+	defer attrs.Close()
+	fmt.Printf("attributes\n%v\n\n", attrs)
 
-	for i := int64(0); i < counties.Size(); i++ {
-		name := attributes.String_at("NAME", i)
-		fmt.Printf("%s: %d ring(s)\n", name, counties.Num_parts(i))
+	for i := 0; i < datamunge.Must(counties.Size()); i++ {
+		fmt.Printf("%s: %d ring(s)\n", datamunge.Must(attrs.StringAt("NAME", i)), datamunge.Must(counties.NumParts(i)))
 	}
 
 	svgPath := "datamunge_gis_ex_map_go.svg"
-	counties.Plot().Save_svg(svgPath)
-	fmt.Printf("\nmap saved to %s\n", svgPath)
+	check(datamunge.Must(counties.Plot()).SaveSvg(svgPath))
+	fmt.Println("\nmap saved to " + svgPath)
 }

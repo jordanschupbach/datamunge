@@ -1,32 +1,37 @@
 (* CMD: just TARGET=kernel_regression_iris_ex run-ocaml *)
-
-open Swig
+(* Nadaraya-Watson kernel regression on iris: CV-selected bandwidth vs. too-small and too-large ones. *)
 open Datamunge
 
 let formula = "Petal.Length ~ Petal.Width"
 
 let () =
-  let iris = _data_iris C_void in
-  Printf.printf "iris: %d rows x %d cols\n" (get_int (invoke iris "nrows" C_void)) (get_int (invoke iris "ncols" C_void));
+  let iris = Data.iris () in
+  Printf.printf "iris: %d rows x %d cols\n" (DataFrame.nrows iris) (DataFrame.ncols iris);
   Printf.printf "formula: %s\n\n" formula;
 
-  let model = new_KernelRegression (C_list [iris; C_string formula]) in
-  ignore (invoke model "print_summary" C_void);
+  (* Bandwidth auto-selected via leave-one-out CV. *)
+  let model = KernelRegression.create iris formula in
+  KernelRegression.print_summary model;
 
-  ignore (invoke (invoke model "plot_fit" iris) "save" (C_string "kernel_regression_iris_fit.svg"));
-  ignore (invoke (invoke model "plot_cv_curve" C_void) "save" (C_string "kernel_regression_iris_cv.svg"));
+  Plot.save (KernelRegression.plot_fit model iris) "kernel_regression_iris_fit.svg";
+  Plot.save (KernelRegression.plot_cv_curve model) "kernel_regression_iris_cv.svg";
   print_endline "\nSaved kernel_regression_iris_fit.svg and kernel_regression_iris_cv.svg";
 
-  let small = new_KernelRegression (C_list [iris; C_string formula; C_string "gaussian"; C_double 0.05]) in
+  (* A too-small and a too-large bandwidth, for comparison -- the classic kernel regression
+     bias-variance story. *)
+  let small = KernelRegression.create ~kernel:"gaussian" ~bandwidth:0.05 iris formula in
   Printf.printf "\nbandwidth=0.05 (too small): LOO R-squared=%g  LOO RMSE=%g\n"
-    (get_float (invoke small "r_squared" C_void)) (get_float (invoke small "rmse" C_void));
-  ignore (invoke (invoke small "plot_fit" iris) "save" (C_string "kernel_regression_iris_fit_small_bandwidth.svg"));
+    (KernelRegression.r_squared small) (KernelRegression.rmse small);
+  Plot.save (KernelRegression.plot_fit small iris) "kernel_regression_iris_fit_small_bandwidth.svg";
 
-  let large = new_KernelRegression (C_list [iris; C_string formula; C_string "gaussian"; C_double 5.0]) in
+  let large = KernelRegression.create ~kernel:"gaussian" ~bandwidth:5.0 iris formula in
   Printf.printf "bandwidth=5.0 (too large):  LOO R-squared=%g  LOO RMSE=%g\n"
-    (get_float (invoke large "r_squared" C_void)) (get_float (invoke large "rmse" C_void));
-  ignore (invoke (invoke large "plot_fit" iris) "save" (C_string "kernel_regression_iris_fit_large_bandwidth.svg"));
+    (KernelRegression.r_squared large) (KernelRegression.rmse large);
+  Plot.save (KernelRegression.plot_fit large iris) "kernel_regression_iris_fit_large_bandwidth.svg";
 
   Printf.printf "bandwidth=%g (CV-selected): LOO R-squared=%g  LOO RMSE=%g\n"
-    (get_float (invoke model "bandwidth" C_void)) (get_float (invoke model "r_squared" C_void)) (get_float (invoke model "rmse" C_void));
-  print_endline "\nSaved kernel_regression_iris_fit_small_bandwidth.svg and kernel_regression_iris_fit_large_bandwidth.svg"
+    (KernelRegression.bandwidth model) (KernelRegression.r_squared model)
+    (KernelRegression.rmse model);
+  print_endline
+    "\nSaved kernel_regression_iris_fit_small_bandwidth.svg and \
+     kernel_regression_iris_fit_large_bandwidth.svg"

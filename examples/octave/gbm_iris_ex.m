@@ -1,44 +1,53 @@
 % CMD: just TARGET=gbm_iris_ex run-octave
-
+% Gradient-boosted trees (GBM) on iris: summary, confusion matrix, misclassified rows, 5 vs 100 rounds.
 1;
 
-datamunge;
-
-iris = data_iris();
-printf("iris: %d rows x %d cols\n\n", DataFrame_nrows(iris), DataFrame_ncols(iris));
-
-model = GBMClassifier(iris, "Species ~ Petal.Length + Petal.Width");
-GBMClassifier_print_summary(model);
-
-printf("\nConfusion matrix (rows = actual, cols = predicted):\n");
-printf("%s\n", DataFrame_to_string(GBMClassifier_confusion_matrix(model)));
-
-printf("\nMisclassified rows:\n");
-predictions = GBMClassifier_predict(model, iris);
-misclassified = 0;
-n = DataFrame_nrows(iris);
-for i = 0:(n - 1)
-  actual = DataFrame_string_at(iris, "Species", i);
-  pred = predictions{i + 1};
-  if !strcmp(pred, actual)
-    misclassified = misclassified + 1;
-    printf("  row %d: Petal.Length=%g Petal.Width=%g  actual=%s  predicted=%s\n", i, ...
-           DataFrame_numeric_at(iris, "Petal.Length", i), DataFrame_numeric_at(iris, "Petal.Width", i), actual, pred);
+% Shortest round-trip decimal text for x (like C#'s default double printing).
+function s = num (x)
+  for p = 1:17
+    s = sprintf ('%.*g', p, x);
+    if (str2double (s) == x)
+      return;
+    end
   end
 end
-printf("%d of %d misclassified (%g%%)\n", misclassified, n, 100.0 * misclassified / n);
 
-Plot_save(GBMClassifier_plot_training_deviance(model), "gbm_iris_training_deviance.svg");
-Plot_save(GBMClassifier_plot_decision_regions(model, "Petal.Length", "Petal.Width"), "gbm_iris_decision_regions.svg");
-printf("\nSaved gbm_iris_training_deviance.svg and gbm_iris_decision_regions.svg\n");
+iris = datamunge.Data.iris ();
+printf ('iris: %d rows x %d cols\n\n', iris.nrows (), iris.ncols ());
+
+model = datamunge.GBMClassifier (iris, 'Species ~ Petal.Length + Petal.Width');
+model.print_summary ();
+
+printf ('\nConfusion matrix (rows = actual, cols = predicted):\n%s\n', model.confusion_matrix ().to_string ());
+
+printf ('\nMisclassified rows:\n');
+predictions = model.predict (iris);
+n = iris.nrows ();
+misclassified = 0;
+for i = 0:n - 1
+  actual = iris.string_at ('Species', i);
+  predicted = predictions{i + 1};
+  if (strcmp (predicted, actual))
+    continue;
+  end
+  misclassified++;
+  printf ('  row %d: Petal.Length=%s Petal.Width=%s  actual=%s  predicted=%s\n', i, ...
+          num (iris.numeric_at ('Petal.Length', i)), num (iris.numeric_at ('Petal.Width', i)), actual, predicted);
+end
+printf ('%d of %d misclassified (%s%%)\n', misclassified, n, num (100 * misclassified / n));
+
+model.plot_training_deviance ().save ('gbm_iris_training_deviance.svg');
+model.plot_decision_regions ('Petal.Length', 'Petal.Width').save ('gbm_iris_decision_regions.svg');
+printf ('\nSaved gbm_iris_training_deviance.svg and gbm_iris_decision_regions.svg\n');
 
 % A handful of boosting rounds vs a well-boosted ensemble: each additional round chips away
 % at the training loss, gradually sharpening the decision boundary.
-% GBMClassifier(data, formula, n_trees, learning_rate, max_depth, min_samples_split, min_samples_leaf, subsample, seed)
-few = GBMClassifier(iris, "Species ~ Petal.Length + Petal.Width", 5);
-few_dev = GBMClassifier_training_deviance(few);
-model_dev = GBMClassifier_training_deviance(model);
-printf("\n5-round ensemble:   training accuracy=%g%%  deviance=%g\n", GBMClassifier_training_accuracy(few) * 100.0, few_dev{end});
-printf("100-round ensemble: training accuracy=%g%%  deviance=%g\n", GBMClassifier_training_accuracy(model) * 100.0, model_dev{end});
-Plot_save(GBMClassifier_plot_decision_regions(few, "Petal.Length", "Petal.Width"), "gbm_iris_decision_regions_5rounds.svg");
-printf("Saved gbm_iris_decision_regions_5rounds.svg\n");
+% datamunge.GBMClassifier (data, formula, n_trees, learning_rate, max_depth, min_samples_split,
+%                          min_samples_leaf, subsample, seed)
+few = datamunge.GBMClassifier (iris, 'Species ~ Petal.Length + Petal.Width', 5);
+dev_few = few.training_deviance ();
+dev_model = model.training_deviance ();
+printf ('\n5-round ensemble:   training accuracy=%s%%  deviance=%s\n', num (100 * few.training_accuracy ()), num (dev_few(end)));
+printf ('100-round ensemble: training accuracy=%s%%  deviance=%s\n', num (100 * model.training_accuracy ()), num (dev_model(end)));
+few.plot_decision_regions ('Petal.Length', 'Petal.Width').save ('gbm_iris_decision_regions_5rounds.svg');
+printf ('Saved gbm_iris_decision_regions_5rounds.svg\n');

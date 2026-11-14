@@ -1,38 +1,41 @@
 # CMD: just TARGET=forest_iris_ex run-tcl
+# Random forest classifier on iris: summary, confusion matrix, misclassifications, OOB accuracy.
+package require datamunge
 
-package require Datamunge 0.0.1
+set iris [datamunge::Data::iris]
+puts "iris: [$iris nrows] rows x [$iris ncols] cols\n"
 
-set iris [datamunge::data_iris]
-puts "iris: [datamunge::DataFrame_nrows $iris] rows x [datamunge::DataFrame_ncols $iris] cols\n"
-
-set model [datamunge::new_RandomForestClassifier $iris "Species ~ Petal.Length + Petal.Width"]
-datamunge::RandomForestClassifier_print_summary $model
+set model [datamunge::RandomForestClassifier new $iris "Species ~ Petal.Length + Petal.Width"]
+$model print_summary
 
 puts "\nConfusion matrix (rows = actual, cols = predicted):"
-puts "[datamunge::DataFrame_to_string [datamunge::RandomForestClassifier_confusion_matrix $model]]"
+puts [[$model confusion_matrix] to_string]
 
 puts "\nMisclassified rows:"
-set predictions [datamunge::RandomForestClassifier_predict $model $iris]
+set predictions [$model predict $iris]
+set n [$iris nrows]
 set misclassified 0
-set n [datamunge::DataFrame_nrows $iris]
 for {set i 0} {$i < $n} {incr i} {
-  set actual [datamunge::DataFrame_string_at $iris "Species" $i]
-  set pred [lindex $predictions $i]
-  if {$pred ne $actual} {
+    set actual [$iris string_at Species $i]
+    set predicted [lindex $predictions $i]
+    if {$predicted eq $actual} {
+        continue
+    }
     incr misclassified
-    set pl [datamunge::DataFrame_numeric_at $iris "Petal.Length" $i]
-    set pw [datamunge::DataFrame_numeric_at $iris "Petal.Width" $i]
-    puts "  row $i: Petal.Length=$pl Petal.Width=$pw  actual=$actual  predicted=$pred"
-  }
+    puts "  row $i: Petal.Length=[$iris numeric_at Petal.Length $i] Petal.Width=[$iris numeric_at Petal.Width $i]  actual=$actual  predicted=$predicted"
 }
 puts "$misclassified of $n misclassified ([expr {100.0 * $misclassified / $n}]%)"
 
-datamunge::Plot_save [datamunge::RandomForestClassifier_plot_classification $model $iris "Petal.Length" "Petal.Width"] "forest_iris_classification.svg"
-datamunge::Plot_save [datamunge::RandomForestClassifier_plot_decision_regions $model "Petal.Length" "Petal.Width"] "forest_iris_decision_regions.svg"
+[$model plot_classification $iris Petal.Length Petal.Width] save forest_iris_classification.svg
+[$model plot_decision_regions Petal.Length Petal.Width] save forest_iris_decision_regions.svg
 puts "\nSaved forest_iris_classification.svg and forest_iris_decision_regions.svg"
 
-set small_forest [datamunge::new_RandomForestClassifier $iris "Species ~ Petal.Length + Petal.Width" 5]
-puts "\n5-tree forest:   training accuracy=[expr {[datamunge::RandomForestClassifier_training_accuracy $small_forest] * 100.0}]%  OOB accuracy=[expr {[datamunge::RandomForestClassifier_oob_accuracy $small_forest] * 100.0}]%"
-puts "100-tree forest: training accuracy=[expr {[datamunge::RandomForestClassifier_training_accuracy $model] * 100.0}]%  OOB accuracy=[expr {[datamunge::RandomForestClassifier_oob_accuracy $model] * 100.0}]%"
-datamunge::Plot_save [datamunge::RandomForestClassifier_plot_decision_regions $small_forest "Petal.Length" "Petal.Width"] "forest_iris_decision_regions_5trees.svg"
+# A small forest, for comparison, showing how out-of-bag accuracy stabilizes as more trees
+# are added -- the defining random forest effect a single decision tree cannot demonstrate.
+# datamunge::RandomForestClassifier new data formula ?n_trees? ?max_depth? ?min_samples_split?
+#     ?min_samples_leaf? ?max_features? ?criterion? ?bootstrap? ?sample_fraction? ?seed?
+set small_forest [datamunge::RandomForestClassifier new $iris "Species ~ Petal.Length + Petal.Width" 5]
+puts "\n5-tree forest:   training accuracy=[expr {[$small_forest training_accuracy] * 100}]%  OOB accuracy=[expr {[$small_forest oob_accuracy] * 100}]%"
+puts "100-tree forest: training accuracy=[expr {[$model training_accuracy] * 100}]%  OOB accuracy=[expr {[$model oob_accuracy] * 100}]%"
+[$small_forest plot_decision_regions Petal.Length Petal.Width] save forest_iris_decision_regions_5trees.svg
 puts "Saved forest_iris_decision_regions_5trees.svg"

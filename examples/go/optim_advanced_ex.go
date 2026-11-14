@@ -1,163 +1,139 @@
 // CMD: just TARGET=optim_advanced_ex run-go
 
+//go:build ignore
+
+// Advanced datamunge optimizers (ProximalGradient, FISTA, LevenbergMarquardt, Newton, TrustRegionNewton, AugmentedLagrangian, SQP, InteriorPoint, BayesianOptimization, RBFGaussianProcessSurrogate) from Go.
 package main
 
 import (
 	"datamunge"
 	"fmt"
 	"math"
+	"strings"
 )
 
-// ---- Go-side helpers for building/reading the SWIG vector types. ----
+// Every one of these optimizers takes an interface (ProximalFunction / HessianFunction /
+// EqualityConstrainedFunction / InequalityConstrainedFunction / ResidualFunction, or
+// ArbitraryFunction for BayesianOptimization) that the C++ library leaves abstract: callers
+// implement the objective. From Go, write a type with the virtual methods and wrap it with
+// NewXFrom(impl); the optimizer then calls the Go methods. The coordinates are passed as a
+// *[]float64 and updated in place.
 
-func dvector(values []float64) datamunge.DVector {
-	out := datamunge.NewDVector(int64(len(values)))
-	for i, v := range values {
-		out.Set(i, v)
+func check(err error) {
+	if err != nil {
+		panic(err)
 	}
-	return out
 }
 
-func dvectorSlice(v datamunge.DVector) []float64 {
-	n := int(v.Size())
-	out := make([]float64, n)
-	for i := 0; i < n; i++ {
-		out[i] = v.Get(i)
-	}
-	return out
+// quadratic is f(x, y) = (x - 1)^2 + 10 (y + 2)^2 with exact gradient and Hessian.
+type quadratic struct{}
+
+func (quadratic) Evaluate(c []float64) float64 {
+	return math.Pow(c[0]-1, 2) + 10*math.Pow(c[1]+2, 2)
 }
 
-func dvectorvector(rows [][]float64) datamunge.DVectorVector {
-	out := datamunge.NewDVectorVector(int64(len(rows)))
-	for i, row := range rows {
-		out.Set(i, dvector(row))
-	}
-	return out
+func (quadratic) Gradient(c []float64) []float64 {
+	return []float64{2 * (c[0] - 1), 20 * (c[1] + 2)}
 }
 
-// ---- New function-type interfaces (director-based extension points): subclassing them in
-// Go means defining a plain Go struct with matching methods and wrapping it via the
-// NewDirectorXxx(v interface{}) constructor SWIG generates for each director-enabled type.
-// This is the load-bearing capability under test: does a C++ optimizer, calling back through
-// the director shim into this Go struct's methods, actually reach Go code? ----
-
-// QuadraticBowlHessian: f(x) = (x-target)^T A (x-target), a well-conditioned 2-D bowl with a
-// known minimum, exposing an exact constant Hessian -- the natural example for Newton's method.
-type QuadraticBowlHessian struct {
-	target [2]float64
-	a      [2][2]float64
+func (quadratic) Hessian(c []float64) [][]float64 {
+	return [][]float64{{2.0, 0.0}, {0.0, 20.0}}
 }
 
-func newQuadraticBowlHessian(target [2]float64) *QuadraticBowlHessian {
-	return &QuadraticBowlHessian{target: target, a: [2][2]float64{{4.0, 0.5}, {0.5, 2.0}}}
-}
-
-func (q *QuadraticBowlHessian) Evaluate(coords datamunge.DVector) float64 {
-	x := dvectorSlice(coords)
-	d0, d1 := x[0]-q.target[0], x[1]-q.target[1]
-	return d0*(q.a[0][0]*d0+q.a[0][1]*d1) + d1*(q.a[1][0]*d0+q.a[1][1]*d1)
-}
-
-func (q *QuadraticBowlHessian) Gradient(coords datamunge.DVector) datamunge.DVector {
-	x := dvectorSlice(coords)
-	d0, d1 := x[0]-q.target[0], x[1]-q.target[1]
-	return dvector([]float64{
-		2.0 * (q.a[0][0]*d0 + q.a[0][1]*d1),
-		2.0 * (q.a[1][0]*d0 + q.a[1][1]*d1),
-	})
-}
-
-func (q *QuadraticBowlHessian) Hessian(coords datamunge.DVector) datamunge.DVectorVector {
-	return dvectorvector([][]float64{
-		{2.0 * q.a[0][0], 2.0 * q.a[0][1]},
-		{2.0 * q.a[1][0], 2.0 * q.a[1][1]},
-	})
-}
-
-// ExpDecayResidual: residuals for fitting A*exp(-k*t)+c to synthetic noise-free data -- the
-// textbook nonlinear least-squares curve fit, and the use case LevenbergMarquardt targets.
-type ExpDecayResidual struct {
+// exponential is the residuals of y = a * exp(b t) against exact data from a = 2, b = 0.5.
+type exponential struct {
 	ts []float64
-	ys []float64
 }
 
-func (e *ExpDecayResidual) Residuals(params datamunge.DVector) datamunge.DVector {
-	p := dvectorSlice(params)
-	a, k, c := p[0], p[1], p[2]
-	out := make([]float64, len(e.ts))
+func (e exponential) Residuals(p []float64) []float64 {
+	r := make([]float64, len(e.ts))
 	for i, t := range e.ts {
-		out[i] = a*math.Exp(-k*t) + c - e.ys[i]
+		r[i] = p[0]*math.Exp(p[1]*t) - 2*math.Exp(0.5*t)
 	}
-	return dvector(out)
+	return r
 }
 
-func (e *ExpDecayResidual) Jacobian(params datamunge.DVector) datamunge.DVectorVector {
-	p := dvectorSlice(params)
-	a, k, _ := p[0], p[1], p[2]
-	rows := make([][]float64, len(e.ts))
-	for i, t := range e.ts {
-		expo := math.Exp(-k * t)
-		rows[i] = []float64{expo, -a * t * expo, 1.0}
+func (e exponential) Jacobian(p []float64) [][]float64 {
+	var rows [][]float64
+	for _, t := range e.ts {
+		rows = append(rows, []float64{math.Exp(p[1] * t), p[0] * t * math.Exp(p[1]*t)})
 	}
-	return dvectorvector(rows)
+	return rows
 }
 
-// Shifted1DBowl: a 1-D bowl with a known minimum near x=1.7 and no gradient exposed -- the
-// black-box setting BayesianOptimization targets. Only needs ArbitraryFunction (no subclassing
-// of BayesianSurrogate is required here -- RBFGaussianProcessSurrogate is ready-to-use).
-type Shifted1DBowl struct{}
+// incomplete leaves Gradient and Hessian out.
+type incomplete struct{}
 
-func (Shifted1DBowl) Evaluate(coords datamunge.DVector) float64 {
-	x := dvectorSlice(coords)[0]
-	return (x-1.7)*(x-1.7) + 0.1*math.Sin(10.0*x)
-}
+func (incomplete) Evaluate(c []float64) float64 { return 0.0 }
 
 func main() {
-	fmt.Println("=================== HessianFunction: Newton's method on a quadratic bowl ===================")
-	target := [2]float64{3.0, -1.5}
-	newtonFn := datamunge.NewDirectorHessianFunction(newQuadraticBowlHessian(target))
-	x := dvector([]float64{0.0, 0.0})
-	newtonOpts := datamunge.NewNewtonOptions()
-	newtonOpts.SetMax_iterations(50)
-	newtonOpts.SetTolerance(1e-10)
-	value := datamunge.NewNewton(newtonOpts).Optimize(newtonFn, x)
-	fmt.Printf("Newton:            f=%v x=%v (true minimum: f=0 at %v)\n", value, dvectorSlice(x), target)
-
-	fmt.Println("\n=================== HessianFunction: TrustRegionNewton on the same bowl ===================")
-	trnFn := datamunge.NewDirectorHessianFunction(newQuadraticBowlHessian(target))
-	x2 := dvector([]float64{5.0, 5.0})
-	trnOpts := datamunge.NewTrustRegionNewtonOptions()
-	trnOpts.SetMax_iterations(100)
-	trnOpts.SetTolerance(1e-10)
-	value2 := datamunge.NewTrustRegionNewton(trnOpts).Optimize(trnFn, x2)
-	fmt.Printf("TrustRegionNewton: f=%v x=%v (true minimum: f=0 at %v)\n", value2, dvectorSlice(x2), target)
-
-	fmt.Println("\n=================== ResidualFunction: LevenbergMarquardt curve fit ===================")
-	trueA, trueK, trueC := 5.0, 0.7, 1.0
-	ts := []float64{0.0, 0.5, 1.0, 1.5, 2.0, 2.5, 3.0, 3.5, 4.0}
-	ys := make([]float64, len(ts))
-	for i, t := range ts {
-		ys[i] = trueA*math.Exp(-trueK*t) + trueC
+	fmt.Println("=================== RBFGaussianProcessSurrogate (concrete BayesianSurrogate)" +
+		" ===================")
+	// Fit a 1D surrogate to a simple bowl y = (x-1)^2 sampled at a few points,
+	// then check the acquisition function favors an unexplored region.
+	xs := []float64{0.0, 0.5, 1.0, 1.5, 2.0, 3.0}
+	var points [][]float64
+	var ys []float64
+	for _, x := range xs {
+		points = append(points, []float64{x})
+		ys = append(ys, (x-1)*(x-1))
 	}
-	residualFn := datamunge.NewDirectorResidualFunction(&ExpDecayResidual{ts: ts, ys: ys})
-	p := dvector([]float64{1.0, 0.1, 0.0})
-	lmOpts := datamunge.NewLevenbergMarquardtOptions()
-	lmOpts.SetMax_iterations(200)
-	lmOpts.SetTolerance(1e-12)
-	value3 := datamunge.NewLevenbergMarquardt(lmOpts).Optimize(residualFn, p)
-	fmt.Printf("LevenbergMarquardt: sum-sq-residual=%v params(A,k,c)=%v\n", value3, dvectorSlice(p))
-	fmt.Printf("                    true params(A,k,c)=[%v, %v, %v]\n", trueA, trueK, trueC)
+	surrogate := datamunge.Must(datamunge.NewRBFGaussianProcessSurrogateWithNoise(1.0, 1e-6))
+	defer surrogate.Close()
+	check(surrogate.Fit(points, ys))
+	incumbent := 0.0 // best observed so far
+	for _, y := range ys {
+		incumbent = math.Min(incumbent, y)
+	}
+	fmt.Printf("incumbent (best observed y): %v\n", incumbent)
+	for _, x := range []float64{0.25, 1.0, 2.5} {
+		fmt.Printf("acquisition(x=%.2f) = %.6f\n", x, datamunge.Must(surrogate.Acquisition([]float64{x}, incumbent)))
+	}
 
-	fmt.Println("\n=================== BayesianOptimization with RBFGaussianProcessSurrogate ===================")
-	boFn := datamunge.NewDirectorArbitraryFunction(Shifted1DBowl{})
-	x4 := dvector([]float64{0.0})
-	lower := dvector([]float64{-3.0})
-	upper := dvector([]float64{5.0})
-	surrogate := datamunge.NewRBFGaussianProcessSurrogate(1.0, 1e-6)
-	boOpts := datamunge.NewBayesianOptimizationOptions()
-	boOpts.SetInitial_samples(10)
-	boOpts.SetMax_iterations(60)
-	boOpts.SetSeed(42)
-	value4 := datamunge.NewBayesianOptimization(boOpts).Optimize(boFn, x4, lower, upper, surrogate.SwigGetBayesianSurrogate())
-	fmt.Printf("BayesianOptimization: f=%v x=%v (target minimum near x=1.7)\n", value4, dvectorSlice(x4))
+	fmt.Println("\n=================== Options structs + optimizer construction (all 10 new classes)" +
+		" ===================")
+	// Every new Options struct and optimizer class constructs cleanly, proving
+	// the binding for the whole batch is wired correctly.
+	pgOptions := datamunge.Must(datamunge.NewProximalGradientOptions())
+	check(pgOptions.SetStepSize(0.05))
+	pg := datamunge.Must(datamunge.NewProximalGradientWithOptions(pgOptions))
+	fista := datamunge.Must(datamunge.NewFISTAWithOptions(datamunge.Must(datamunge.NewFISTAOptions())))
+	lmOptions := datamunge.Must(datamunge.NewLevenbergMarquardtOptions())
+	check(lmOptions.SetMaxIterations(200))
+	lm := datamunge.Must(datamunge.NewLevenbergMarquardtWithOptions(lmOptions))
+	newton := datamunge.Must(datamunge.NewNewtonWithOptions(datamunge.Must(datamunge.NewNewtonOptions())))
+	trn := datamunge.Must(datamunge.NewTrustRegionNewtonWithOptions(datamunge.Must(datamunge.NewTrustRegionNewtonOptions())))
+	al := datamunge.Must(datamunge.NewAugmentedLagrangianWithOptions(datamunge.Must(datamunge.NewAugmentedLagrangianOptions())))
+	sqp := datamunge.Must(datamunge.NewSQPWithOptions(datamunge.Must(datamunge.NewSQPOptions())))
+	ip := datamunge.Must(datamunge.NewInteriorPointWithOptions(datamunge.Must(datamunge.NewInteriorPointOptions())))
+	boOptions := datamunge.Must(datamunge.NewBayesianOptimizationOptions())
+	check(boOptions.SetInitialSamples(8))
+	bo := datamunge.Must(datamunge.NewBayesianOptimizationWithOptions(boOptions))
+	for _, optimizer := range []fmt.Stringer{pg, fista, lm, newton, trn, al, sqp, ip, bo} {
+		name := strings.TrimPrefix(fmt.Sprintf("%T", optimizer), "*datamunge.")
+		fmt.Printf("%s: %v\n", name, optimizer)
+	}
+
+	fmt.Println("\n=================== Go objectives (implementing the C++ interfaces) ===================")
+	// Newton's method on the quadratic bowl.
+	objective := datamunge.Must(datamunge.NewHessianFunctionFrom(quadratic{}))
+	defer objective.Close()
+	start := []float64{5.0, 5.0}
+	value := datamunge.Must(newton.Optimize(objective, &start))
+	fmt.Printf("Newton: f = %.6g at (%.6f, %.6f) (exact minimum 0 at (1, -2))\n", value, start[0], start[1])
+
+	// Levenberg-Marquardt fitting y = a * exp(b t).
+	residuals := datamunge.Must(datamunge.NewResidualFunctionFrom(exponential{ts: []float64{0.0, 0.5, 1.0, 1.5, 2.0}}))
+	defer residuals.Close()
+	params := []float64{1.0, 0.1}
+	sse := datamunge.Must(lm.Optimize(residuals, &params))
+	fmt.Printf("LevenbergMarquardt: residual = %.3g, a = %.6f, b = %.6f (exact: 2, 0.5)\n", sse, params[0], params[1])
+
+	// An interface method the Go type leaves out is an error when the optimizer calls it.
+	missing := datamunge.Must(datamunge.NewHessianFunctionFrom(incomplete{}))
+	defer missing.Close()
+	_, err := newton.Optimize(missing, &[]float64{0.0, 0.0})
+	ok := err == nil
+	mentions := err != nil && strings.Contains(err.Error(), "gradient")
+	fmt.Printf("missing gradient(): ok=%v, error mentions it: %v\n", ok, mentions)
 }

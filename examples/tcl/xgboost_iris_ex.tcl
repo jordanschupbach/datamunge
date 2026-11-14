@@ -1,40 +1,41 @@
 # CMD: just TARGET=xgboost_iris_ex run-tcl
+# XGBoost classifier on iris: summary, confusion matrix, misclassified rows, L2-regularization comparison.
+package require datamunge
 
-package require Datamunge 0.0.1
+set iris [datamunge::Data::iris]
+puts "iris: [$iris nrows] rows x [$iris ncols] cols\n"
 
-set iris [datamunge::data_iris]
-puts "iris: [datamunge::DataFrame_nrows $iris] rows x [datamunge::DataFrame_ncols $iris] cols\n"
+set model [datamunge::XGBoostClassifier new $iris "Species ~ Petal.Length + Petal.Width"]
+$model print_summary
 
-set model [datamunge::new_XGBoostClassifier $iris "Species ~ Petal.Length + Petal.Width"]
-datamunge::XGBoostClassifier_print_summary $model
-
-puts "\nConfusion matrix (rows = actual, cols = predicted):"
-puts "[datamunge::DataFrame_to_string [datamunge::XGBoostClassifier_confusion_matrix $model]]"
+puts "\nConfusion matrix (rows = actual, cols = predicted):\n[[$model confusion_matrix] to_string]"
 
 puts "\nMisclassified rows:"
-set predictions [datamunge::XGBoostClassifier_predict $model $iris]
+set predictions [$model predict $iris]
+set n [$iris nrows]
 set misclassified 0
-set n [datamunge::DataFrame_nrows $iris]
 for {set i 0} {$i < $n} {incr i} {
-  set actual [datamunge::DataFrame_string_at $iris "Species" $i]
-  set pred [lindex $predictions $i]
-  if {$pred ne $actual} {
+    set actual [$iris string_at Species $i]
+    set predicted [lindex $predictions $i]
+    if {$predicted eq $actual} {
+        continue
+    }
     incr misclassified
-    set pl [datamunge::DataFrame_numeric_at $iris "Petal.Length" $i]
-    set pw [datamunge::DataFrame_numeric_at $iris "Petal.Width" $i]
-    puts "  row $i: Petal.Length=$pl Petal.Width=$pw  actual=$actual  predicted=$pred"
-  }
+    puts "  row $i: Petal.Length=[$iris numeric_at Petal.Length $i] Petal.Width=[$iris numeric_at Petal.Width $i]  actual=$actual  predicted=$predicted"
 }
 puts "$misclassified of $n misclassified ([expr {100.0 * $misclassified / $n}]%)"
 
-datamunge::Plot_save [datamunge::XGBoostClassifier_plot_training_deviance $model] "xgboost_iris_training_deviance.svg"
-datamunge::Plot_save [datamunge::XGBoostClassifier_plot_decision_regions $model "Petal.Length" "Petal.Width"] "xgboost_iris_decision_regions.svg"
+[$model plot_training_deviance] save xgboost_iris_training_deviance.svg
+[$model plot_decision_regions Petal.Length Petal.Width] save xgboost_iris_decision_regions.svg
 puts "\nSaved xgboost_iris_training_deviance.svg and xgboost_iris_decision_regions.svg"
 
-set heavy [datamunge::new_XGBoostClassifier $iris "Species ~ Petal.Length + Petal.Width" 100 0.3 6 50.0]
-set model_dev [datamunge::XGBoostClassifier_training_deviance $model]
-set heavy_dev [datamunge::XGBoostClassifier_training_deviance $heavy]
-puts "\nlambda=1 (default):   training accuracy=[expr {[datamunge::XGBoostClassifier_training_accuracy $model] * 100.0}]%  deviance=[lindex $model_dev end]"
-puts "lambda=50 (heavy L2): training accuracy=[expr {[datamunge::XGBoostClassifier_training_accuracy $heavy] * 100.0}]%  deviance=[lindex $heavy_dev end]"
-datamunge::Plot_save [datamunge::XGBoostClassifier_plot_decision_regions $heavy "Petal.Length" "Petal.Width"] "xgboost_iris_decision_regions_heavy_lambda.svg"
+# XGBoost's defining lever is regularization: a heavily L2-regularized model (large lambda)
+# grows the same deep trees but keeps every leaf weight small, producing a much smoother
+# decision boundary than the lightly-regularized default.
+# datamunge::XGBoostClassifier new data formula ?n_trees? ?learning_rate? ?max_depth? ?lambda?
+#     ?alpha? ?gamma? ?min_child_weight? ?min_samples_leaf? ?subsample? ?colsample_bytree? ?seed?
+set heavy [datamunge::XGBoostClassifier new $iris "Species ~ Petal.Length + Petal.Width" 100 0.3 6 50.0]
+puts "\nlambda=1 (default):   training accuracy=[expr {100 * [$model training_accuracy]}]%  deviance=[lindex [$model training_deviance] end]"
+puts "lambda=50 (heavy L2): training accuracy=[expr {100 * [$heavy training_accuracy]}]%  deviance=[lindex [$heavy training_deviance] end]"
+[$heavy plot_decision_regions Petal.Length Petal.Width] save xgboost_iris_decision_regions_heavy_lambda.svg
 puts "Saved xgboost_iris_decision_regions_heavy_lambda.svg"

@@ -4,7 +4,11 @@
 All come from Rosetta: Python from src/pydatamunge/rosetta, R from src/datamunger/rosetta,
 Lua from src/datamungelua/rosetta, Common Lisp from src/datamungelisp/rosetta, Julia from
 src/datamungejulia/rosetta, C# from src/datamungecsharp/rosetta, COBOL from
-src/datamungecobol/rosetta, JavaScript from src/datamungejs/rosetta."""
+src/datamungecobol/rosetta, JavaScript from src/datamungejs/rosetta, Fortran from
+src/datamungefortran/rosetta, Ruby from src/datamungeruby/rosetta, Octave from
+src/datamungeoctave/rosetta, Tcl from src/datamungetcl/rosetta, Guile from
+src/datamungeguile/rosetta, Java from src/datamungejava/rosetta, Go from src/datamungego/rosetta,
+OCaml from src/datamungeocaml/rosetta, GNU APL from src/datamungeapl/rosetta."""
 
 import argparse
 import os
@@ -30,10 +34,36 @@ JULIA_PARTS = 16
 CSHARP_PARTS = 16
 COBOL_PARTS = 16
 JS_PARTS = 16
+FORTRAN_PARTS = 16
+RUBY_PARTS = 16
+OCTAVE_PARTS = 16
+TCL_PARTS = 16
+GUILE_PARTS = 16
+JAVA_PARTS = 16
+GO_PARTS = 16
+OCAML_PARTS = 16
+APL_PARTS = 16
+
+
+def sync_directory(generated, destination, pattern):
+    """Make the files matching pattern under destination those under generated: files no longer
+    generated are removed (with directories left empty), changed ones replaced."""
+    generated_files = {f.relative_to(generated) for f in generated.rglob(pattern) if f.is_file()}
+    if destination.exists():
+        for old in sorted(destination.rglob("*"), reverse=True):
+            if old.is_file() and old.match(pattern) and old.relative_to(destination) not in generated_files:
+                old.unlink()
+            elif old.is_dir() and not any(old.iterdir()):
+                old.rmdir()
+    for relative in sorted(generated_files):
+        (destination / relative).parent.mkdir(parents=True, exist_ok=True)
+        install_if_changed(generated / relative, destination / relative)
 
 
 def generate_rosetta(header, policy, module, stem, parts, include_dirs=("include",), r_interface=None, lua_meta=None,
-                     lisp_dir=None, julia_dir=None, csharp_dir=None, cobol_dir=None, js_types=None):
+                     lisp_dir=None, julia_dir=None, csharp_dir=None, cobol_dir=None, js_types=None,
+                     fortran_dir=None, ruby_lib=None, octave_dir=None, tcl_dir=None, guile_dir=None, java_dir=None,
+                     go_dir=None, ocaml_dir=None, apl_dir=None):
     """Generate src/<stem>*.cpp with Rosetta: the Python extension `module`, with
     r_interface (a path) the R package `module` and its R6 classes at that path, or with
     lua_meta (a path) the Lua module `module` and its LuaCATS stub at that path, or with
@@ -41,7 +71,21 @@ def generate_rosetta(header, policy, module, stem, parts, include_dirs=("include
     julia_dir (a directory) the Julia package Datamunge: julia_dir/src/Datamunge.jl and Project.toml, or with
     csharp_dir (a directory) the C# assembly Datamunge: csharp_dir/Datamunge.cs and Datamunge.csproj, or with
     cobol_dir (a directory) the COBOL copybooks cobol_dir/module.cpy and module-callbacks.cpy, or with
-    js_types (a path) the Node.js addon `module` and its TypeScript declarations at that path."""
+    js_types (a path) the Node.js addon `module` and its TypeScript declarations at that path, or with
+    fortran_dir (a directory) the Fortran module `module`: fortran_dir/module.f90, or with
+    ruby_lib (a directory) the Ruby extension `module` and its loader ruby_lib/module.rb, or with
+    octave_dir (a directory) the Octave oct-file __module__ and its package octave_dir/+module, or with
+    tcl_dir (a directory) the Tcl extension `module` and its package files tcl_dir/module.tcl and pkgIndex.tcl, or with
+    guile_dir (a directory) the Guile extension libmodule_guile and its modules guile_dir/module.scm and
+    guile_dir/module/*.scm, or with
+    java_dir (a directory) the JNI library libmodule_java and the Java sources of package `module` under
+    java_dir (java_dir/module/*.java, java_dir/module/<submodule>/*.java), or with
+    go_dir (a directory) the shared library libmodule_go and the Go module `module` in go_dir (go.mod,
+    module.go, internal/rosetta/*.go and one subpackage per policy module, go_dir/<submodule>/*.go), or with
+    ocaml_dir (a directory) the C ABI library with its OCaml C stubs and the findlib package `module` in
+    ocaml_dir (module.ml, module.mli with the odoc documentation, META), or with
+    apl_dir (a directory) the GNU APL native function library libmodule_gnu_apl and the GNU APL script
+    apl_dir/module.apl (dm∆ functions whose ⍝ comments carry the documentation)."""
     with tempfile.TemporaryDirectory(prefix=".rosetta-", dir=ROOT / "src") as tmp:
         generated = Path(tmp) / (stem + ".cpp")
         language = ["--language", "python"]
@@ -70,6 +114,59 @@ def generate_rosetta(header, policy, module, stem, parts, include_dirs=("include
                         "--cobol-callbacks", str(Path(tmp) / (module + "-callbacks.cpy"))]
         if js_types is not None:
             language = ["--language", "javascript", "--js-types", str(Path(tmp) / Path(js_types).name)]
+        if fortran_dir is not None:
+            # The native library is datamunge_fortran (libdatamunge_fortran), not libdatamunge.
+            language = ["--language", "fortran", "--fortran-api", "full",
+                        "--fortran-output", str(Path(tmp) / (module + ".f90"))]
+        if ruby_lib is not None:
+            # ruby_lib/module.rb require_relative's the native extension module/module.<DLEXT>
+            # beside it and carries the YARD documentation (stubs under `if nil`).
+            language = ["--language", "ruby", "--ruby-api", "full", "--ruby-module", "Datamunge",
+                        "--ruby-output", str(Path(tmp) / (module + ".rb")),
+                        "--ruby-native", module + "/" + module]
+        if octave_dir is not None:
+            # The oct-file's one DEFMETHOD_DLD is __module__ (build it as __module__.oct); the
+            # +module package of classdef .m files (with the documentation) goes beside it.
+            language = ["--language", "octave", "--octave-api", "full",
+                        "--octave-output", str(Path(tmp) / "octave")]
+        if tcl_dir is not None:
+            # tcl_dir is the package directory: module.tcl loads the extension module[info
+            # sharedlibextension] beside it (Module_Init) and holds the documentation stubs.
+            language = ["--language", "tcl", "--tcl-api", "full",
+                        "--tcl-output", str(Path(tmp) / (module + ".tcl")),
+                        "--tcl-pkgindex", str(Path(tmp) / "pkgIndex.tcl"),
+                        "--tcl-version", "0.0.1"]
+        if guile_dir is not None:
+            # guile_dir/module.scm (with the policy submodules guile_dir/module/*.scm) is the module
+            # (module); it load-extension's libmodule_guile from its own directory and holds the
+            # documented GOOPS API (docstrings).
+            language = ["--language", "guile", "--guile-api", "full", "--guile-module", module,
+                        "--guile-extension", "lib" + module + "_guile",
+                        "--guile-output", str(Path(tmp) / "guile" / (module + ".scm"))]
+        if java_dir is not None:
+            # One documented .java file per class under java_dir/module/ (Javadoc); the classes load
+            # the JNI library libmodule_java (libmodule is the C++ library itself).
+            language = ["--language", "java", "--java-api", "full", "--java-package", module,
+                        "--java-library", module + "_java",
+                        "--java-output", str(Path(tmp) / "java")]
+        if go_dir is not None:
+            # The Go module `module` (go.mod, module.go, internal/rosetta, one subpackage per policy
+            # module) with godoc comments; cgo links the shared library libmodule_go built from the parts
+            # (libmodule is the C++ library itself).
+            language = ["--language", "go", "--go-api", "full", "--go-package", module,
+                        "--go-module-path", module, "--go-library", module + "_go",
+                        "--go-output", str(Path(tmp) / "go" / (module + ".go"))]
+        if ocaml_dir is not None:
+            # ocaml_dir is the findlib package directory: module.ml (externals into the stubs
+            # dllmodule_stubs/libmodule_stubs built from the parts), module.mli (odoc) and META.
+            language = ["--language", "ocaml", "--ocaml-api", "full",
+                        "--ocaml-output", str(Path(tmp) / "ocaml" / (module + ".ml"))]
+        if apl_dir is not None:
+            # One GNU APL native function library (libmodule_gnu_apl.so) and the script module.apl that
+            # ⎕FX's it: from the current directory, or the file named by DATAMUNGE_APL_LIBRARY (set
+            # by the dev shells and the justfile), so the committed script holds no build paths.
+            language = ["--language", "apl", "--apl-api", "full", "--apl-prefix", "dm", "--apl-library-dir", ".",
+                        "--gnu-apl-output", str(Path(tmp) / "apl" / (module + ".apl"))]
         subprocess.run(
             [
                 os.environ.get("ROSETTA", "rosetta"),
@@ -120,6 +217,35 @@ def generate_rosetta(header, policy, module, stem, parts, include_dirs=("include
                 install_if_changed(Path(tmp) / name, ROOT / cobol_dir / name)
         if js_types is not None:
             install_if_changed(Path(tmp) / Path(js_types).name, ROOT / js_types)
+        if fortran_dir is not None:
+            (ROOT / fortran_dir).mkdir(parents=True, exist_ok=True)
+            install_if_changed(Path(tmp) / (module + ".f90"), ROOT / fortran_dir / (module + ".f90"))
+        if ruby_lib is not None:
+            (ROOT / ruby_lib).mkdir(parents=True, exist_ok=True)
+            install_if_changed(Path(tmp) / (module + ".rb"), ROOT / ruby_lib / (module + ".rb"))
+        if octave_dir is not None:
+            # Rosetta does not delete .m files of an earlier generation, so the package directory is
+            # synchronised: files no longer generated go, changed ones are replaced.
+            sync_directory(Path(tmp) / "octave" / ("+" + module), ROOT / octave_dir / ("+" + module), "*")
+        if tcl_dir is not None:
+            (ROOT / tcl_dir).mkdir(parents=True, exist_ok=True)
+            for name in (module + ".tcl", "pkgIndex.tcl"):
+                install_if_changed(Path(tmp) / name, ROOT / tcl_dir / name)
+        if guile_dir is not None:
+            # As for Octave, guile_dir is synchronised: .scm files no longer generated go.
+            sync_directory(Path(tmp) / "guile", ROOT / guile_dir, "*.scm")
+        if java_dir is not None:
+            # As for Octave, java_dir is synchronised: .java files no longer generated go.
+            sync_directory(Path(tmp) / "java", ROOT / java_dir, "*.java")
+        if go_dir is not None:
+            # As for Octave, go_dir is synchronised: files no longer generated go.
+            sync_directory(Path(tmp) / "go", ROOT / go_dir, "*")
+        if ocaml_dir is not None:
+            # As for Octave, ocaml_dir is synchronised: files no longer generated go.
+            sync_directory(Path(tmp) / "ocaml", ROOT / ocaml_dir, "*")
+        if apl_dir is not None:
+            (ROOT / apl_dir).mkdir(parents=True, exist_ok=True)
+            install_if_changed(Path(tmp) / "apl" / (module + ".apl"), ROOT / apl_dir / (module + ".apl"))
 
 
 def prebuild_python():
@@ -131,7 +257,7 @@ def prebuild_python():
 
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument("language", choices=["python", "r", "lua", "lisp", "julia", "csharp", "cobol", "javascript"])
+    parser.add_argument("language", choices=["python", "r", "lua", "lisp", "julia", "csharp", "cobol", "javascript", "fortran", "ruby", "octave", "tcl", "guile", "java", "go", "ocaml", "apl"])
     args = parser.parse_args()
     if args.language == "python":
         prebuild_python()
@@ -153,6 +279,33 @@ def main():
         return
     if args.language == "javascript":
         prebuild_javascript()
+        return
+    if args.language == "fortran":
+        prebuild_fortran()
+        return
+    if args.language == "ruby":
+        prebuild_ruby()
+        return
+    if args.language == "octave":
+        prebuild_octave()
+        return
+    if args.language == "tcl":
+        prebuild_tcl()
+        return
+    if args.language == "guile":
+        prebuild_guile()
+        return
+    if args.language == "java":
+        prebuild_java()
+        return
+    if args.language == "go":
+        prebuild_go()
+        return
+    if args.language == "ocaml":
+        prebuild_ocaml()
+        return
+    if args.language == "apl":
+        prebuild_apl()
         return
     prebuild_r()
 
@@ -230,6 +383,96 @@ def prebuild_javascript():
     bindings = Path("src/datamungejs/rosetta")
     generate_rosetta(bindings / "bindings.hpp", bindings / "policy.json", "datamungejs", "datamunge_js_wrap", JS_PARTS,
                      js_types="index.d.ts")
+
+
+def prebuild_fortran():
+    """Generate src/datamunge_fortran_wrap*.cpp (the native library libdatamunge_fortran) and the
+    Fortran 2018 module src/datamungefortran/datamunge.f90 (modules datamunge, datamunge_rosetta and
+    datamunge_data): derived types and type-bound procedures whose FORD `!>` comments carry the C++
+    documentation (mep's Fortran LSP reads them from the committed source)."""
+    bindings = Path("src/datamungefortran/rosetta")
+    generate_rosetta(bindings / "bindings.hpp", bindings / "policy.json", "datamunge", "datamunge_fortran_wrap", FORTRAN_PARTS,
+                     fortran_dir="src/datamungefortran")
+
+
+def prebuild_ruby():
+    """Generate src/datamunge_ruby_wrap*.cpp (the MRI extension datamunge/datamunge.<DLEXT>) and
+    src/datamungeruby/lib/datamunge.rb, which loads it (`require 'datamunge'`) and holds YARD
+    documentation for module Datamunge (yard, mep's Ruby LSP)."""
+    bindings = Path("src/datamungeruby/rosetta")
+    generate_rosetta(bindings / "bindings.hpp", bindings / "policy.json", "datamunge", "datamunge_ruby_wrap", RUBY_PARTS,
+                     ruby_lib="src/datamungeruby/lib")
+
+
+def prebuild_octave():
+    """Generate src/datamunge_octave_wrap*.cpp (the oct-file __datamunge__.oct) and the Octave
+    package src/datamungeoctave/inst/+datamunge: one classdef or function .m file per class, enum,
+    function and constant, whose help text carries the C++ documentation (`help
+    datamunge.DataFrame.filter`, mep's Octave LSP through MEP_OCTAVE_PATH)."""
+    bindings = Path("src/datamungeoctave/rosetta")
+    generate_rosetta(bindings / "bindings.hpp", bindings / "policy.json", "datamunge", "datamunge_octave_wrap", OCTAVE_PARTS,
+                     octave_dir="src/datamungeoctave/inst")
+
+
+def prebuild_tcl():
+    """Generate src/datamunge_tcl_wrap*.cpp (the Tcl stubs extension datamunge[info
+    sharedlibextension], Datamunge_Init) and the package files src/datamungetcl/pkg/datamunge/
+    datamunge.tcl and pkgIndex.tcl (`package require datamunge`): TclOO classes in ::datamunge, with
+    the documentation as commented proc/oo::class stubs (mep's Tcl LSP through MEP_TCL_PATH)."""
+    bindings = Path("src/datamungetcl/rosetta")
+    generate_rosetta(bindings / "bindings.hpp", bindings / "policy.json", "datamunge", "datamunge_tcl_wrap", TCL_PARTS,
+                     tcl_dir="src/datamungetcl/pkg/datamunge")
+
+
+def prebuild_guile():
+    """Generate src/datamunge_guile_wrap*.cpp (the libguile extension libdatamunge_guile) and the
+    module src/datamungeguile/scheme/datamunge.scm (plus the policy submodule datamunge/data.scm):
+    GOOPS classes and generics whose docstrings carry the C++ documentation (`(use-modules
+    (datamunge))`, procedure-documentation, mep's Scheme LSP through MEP_GUILE_PATH)."""
+    bindings = Path("src/datamungeguile/rosetta")
+    generate_rosetta(bindings / "bindings.hpp", bindings / "policy.json", "datamunge", "datamunge_guile_wrap", GUILE_PARTS,
+                     guile_dir="src/datamungeguile/scheme")
+
+
+def prebuild_java():
+    """Generate src/datamunge_java_wrap*.cpp (the JNI library libdatamunge_java) and the Java sources
+    of package datamunge under src/datamungejava/java (datamunge/*.java, datamunge/data/Data.java):
+    AutoCloseable classes whose Javadoc carries the C++ documentation (javadoc, mep's Java server
+    through MEP_JAVA_SOURCEPATH)."""
+    bindings = Path("src/datamungejava/rosetta")
+    generate_rosetta(bindings / "bindings.hpp", bindings / "policy.json", "datamunge", "datamunge_java_wrap", JAVA_PARTS,
+                     java_dir="src/datamungejava/java")
+
+
+def prebuild_go():
+    """Generate src/datamunge_go_wrap*.cpp (the shared library libdatamunge_go that cgo links) and the Go
+    module datamunge under src/datamungego/go/datamunge (go.mod, datamunge.go, the policy subpackage
+    data/ and internal/rosetta): structs with Close and godoc comments carrying the C++
+    documentation (go doc, mep's Go server through a go.mod replace)."""
+    bindings = Path("src/datamungego/rosetta")
+    generate_rosetta(bindings / "bindings.hpp", bindings / "policy.json", "datamunge", "datamunge_go_wrap", GO_PARTS,
+                     go_dir="src/datamungego/go/datamunge")
+
+
+def prebuild_ocaml():
+    """Generate src/datamunge_ocaml_wrap*.cpp (the C ABI library with its OCaml C stubs, built as
+    dlldatamunge_stubs and libdatamunge_stubs) and the findlib package src/datamungeocaml/ocaml/datamunge
+    (datamunge.ml, META and datamunge.mli, whose odoc comments carry the C++ documentation: odoc, mep's
+    OCaml server through MEP_OCAML_PATH). Classes are submodules (Datamunge.DataFrame)."""
+    bindings = Path("src/datamungeocaml/rosetta")
+    generate_rosetta(bindings / "bindings.hpp", bindings / "policy.json", "datamunge", "datamunge_ocaml_wrap", OCAML_PARTS,
+                     ocaml_dir="src/datamungeocaml/ocaml/datamunge")
+
+
+
+def prebuild_apl():
+    """Generate src/datamunge_apl_wrap*.cpp (the GNU APL native function library libdatamunge_gnu_apl)
+    and the GNU APL script src/datamungeapl/apl/datamunge.apl, which ⎕FX's that library and defines one
+    dm∆ function per C++ function, constructor, method and field; their ⍝ comments carry the C++
+    documentation (⎕CR, mep's APL server through MEP_APL_PATH)."""
+    bindings = Path("src/datamungeapl/rosetta")
+    generate_rosetta(bindings / "bindings.hpp", bindings / "policy.json", "datamunge", "datamunge_apl_wrap", APL_PARTS,
+                     apl_dir="src/datamungeapl/apl")
 
 
 if __name__ == "__main__":

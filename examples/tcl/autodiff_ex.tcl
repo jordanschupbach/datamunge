@@ -1,120 +1,120 @@
 # CMD: just TARGET=autodiff_ex run-tcl
-# CMD: nix develop .#tcl --command tclsh '/mnt/projects/datamunge/examples/tcl/autodiff_ex.tcl'
+# Automatic differentiation: forward mode (Dual), reverse mode (Tape/Var), Hessians (HyperDual).
+package require datamunge
+namespace import datamunge::Dual datamunge::Tape datamunge::Var datamunge::HyperDual
 
-package require Datamunge 0.0.1
+# Note: the C++ autodiff_ex.cpp additionally demonstrates the generic template drivers
+# (derivative/gradient_forward/gradient_reverse/jacobian_forward/hessian), which can't be
+# bound. This port demonstrates the same ideas with the bound named-method API.
+# [$var index] is the Var's position in the adjoint list [$tape backward $output] returns.
 
 proc rosenbrock_dual {x0 x1} {
-  set a [datamunge::Dual_subtract [datamunge::new_Dual 1.0 0.0] $x0]
-  set b [datamunge::Dual_subtract $x1 [datamunge::Dual_multiply $x0 $x0]]
-  return [datamunge::Dual_add [datamunge::Dual_multiply $a $a] [datamunge::Dual_multiply_scalar [datamunge::Dual_multiply $b $b] 100.0]]
+    set a [[Dual new 1.0 0.0] subtract $x0]
+    set b [$x1 subtract [$x0 multiply $x0]]
+    return [[$a multiply $a] add [[$b multiply $b] multiply_scalar 100.0]]
 }
 
 proc rosenbrock_value {x0 x1} {
-  set a [expr {1.0 - $x0}]
-  set b [expr {$x1 - $x0 * $x0}]
-  return [expr {$a * $a + 100.0 * $b * $b}]
+    expr {(1.0 - $x0)**2 + 100.0 * ($x1 - $x0 * $x0)**2}
 }
 
-proc rosenbrock_hyperdual {x0 x1} {
-  set a [datamunge::HyperDual_subtract [datamunge::new_HyperDual 1.0 0.0 0.0 0.0] $x0]
-  set b [datamunge::HyperDual_subtract $x1 [datamunge::HyperDual_multiply $x0 $x0]]
-  return [datamunge::HyperDual_add [datamunge::HyperDual_multiply $a $a] [datamunge::HyperDual_multiply_scalar [datamunge::HyperDual_multiply $b $b] 100.0]]
+# Build the Rosenbrock graph on tape; returns the output Var.
+proc rosenbrock_var {tape x0 x1} {
+    set a [[Var new $tape 1.0] subtract $x0]
+    set b [$x1 subtract [$x0 multiply $x0]]
+    return [[$a multiply $a] add [[$b multiply $b] multiply_scalar 100.0]]
+}
+
+proc rosenbrock_hyper_dual {x0 x1} {
+    set a [[HyperDual new 1.0 0.0 0.0 0.0] subtract $x0]
+    set b [$x1 subtract [$x0 multiply $x0]]
+    return [[$a multiply $a] add [[$b multiply $b] multiply_scalar 100.0]]
+}
+
+proc adjoint {adjoints v} {
+    lindex $adjoints [$v index]
 }
 
 puts "=================== Forward mode: scalar derivative ==================="
-set x0 [datamunge::new_Dual 2.0 1.0]
-set f [datamunge::Dual_subtract [datamunge::Dual_multiply [datamunge::Dual_multiply $x0 $x0] $x0] [datamunge::Dual_multiply_scalar $x0 2.0]]
-puts "f(x) = x^3 - 2x, f'(2) = [datamunge::Dual_derivative $f] (exact: 10)"
+set x0 [Dual new 2.0 1.0] ;# seed derivative = 1 to read df/dx directly
+set f [[[$x0 multiply $x0] multiply $x0] subtract [$x0 multiply_scalar 2.0]] ;# x^3 - 2x
+puts "f(x) = x^3 - 2x, f'(2) = [$f derivative] (exact: 10)"
 
 puts "\n=================== Reverse mode: build a graph by hand ==================="
-set tape [datamunge::new_Tape]
-set a [datamunge::new_Var $tape 2.0]
-set b [datamunge::new_Var $tape 3.0]
-set y [datamunge::Var_add [datamunge::Var_multiply $a $b] [datamunge::Var_sin $a]]
-puts "y = a*b + sin(a) at a=2, b=3 -> y = [datamunge::Var_value $y]"
-set adjoint [datamunge::Tape_backward $tape $y]
-puts "dy/da = [lindex $adjoint [datamunge::Var_index $a]] (exact: b + cos(a))"
-puts "dy/db = [lindex $adjoint [datamunge::Var_index $b]] (exact: a)"
+set tape [Tape new]
+set a [Var new $tape 2.0]
+set b [Var new $tape 3.0]
+set y [[$a multiply $b] add [$a sin]]
+puts "y = a*b + sin(a) at a=2, b=3 -> y = [$y value]"
+set adj [$tape backward $y]
+puts "dy/da = [adjoint $adj $a] (exact: b + cos(a))"
+puts "dy/db = [adjoint $adj $b] (exact: a)"
 
 puts "\n=================== Forward vs reverse mode agree on the Rosenbrock function ==================="
 set px 0.0
 set py 0.0
-
-set gx [datamunge::Dual_derivative [rosenbrock_dual [datamunge::new_Dual $px 1.0] [datamunge::new_Dual $py 0.0]]]
-set gy [datamunge::Dual_derivative [rosenbrock_dual [datamunge::new_Dual $px 0.0] [datamunge::new_Dual $py 1.0]]]
-
-set tape2 [datamunge::new_Tape]
-set vx [datamunge::new_Var $tape2 $px]
-set vy [datamunge::new_Var $tape2 $py]
-set va [datamunge::Var_subtract [datamunge::new_Var $tape2 1.0] $vx]
-set vb [datamunge::Var_subtract $vy [datamunge::Var_multiply $vx $vx]]
-set vf [datamunge::Var_add [datamunge::Var_multiply $va $va] [datamunge::Var_multiply_scalar [datamunge::Var_multiply $vb $vb] 100.0]]
-set grad_rev [datamunge::Tape_backward $tape2 $vf]
-
+# Forward mode: one Dual pass per partial derivative, seeding the direction of interest.
+set gx [[rosenbrock_dual [Dual new $px 1.0] [Dual new $py 0.0]] derivative]
+set gy [[rosenbrock_dual [Dual new $px 0.0] [Dual new $py 1.0]] derivative]
+# Reverse mode: one Tape/Var pass computes every partial at once.
+set tape [Tape new]
+set vx [Var new $tape $px]
+set vy [Var new $tape $py]
+set grad [$tape backward [rosenbrock_var $tape $vx $vy]]
 puts "f(0,0) = [rosenbrock_value $px $py]"
 puts "gradient (forward mode): \[$gx, $gy\]"
-puts "gradient (reverse mode): \[[lindex $grad_rev [datamunge::Var_index $vx]], [lindex $grad_rev [datamunge::Var_index $vy]]\]"
+puts "gradient (reverse mode): \[[adjoint $grad $vx], [adjoint $grad $vy]\]"
 
 puts "\n=================== Jacobian of a vector-valued function ==================="
-set vx_val 2.0
-set vy_val 3.0
-
-array set jac {}
-set cols {{0 1.0 0.0} {1 0.0 1.0}}
-foreach c $cols {
-  set col [lindex $c 0]
-  set seed_x [lindex $c 1]
-  set seed_y [lindex $c 2]
-  set ox [datamunge::Dual_multiply [datamunge::new_Dual $vx_val $seed_x] [datamunge::new_Dual $vx_val $seed_x]]
-  set oy [datamunge::Dual_multiply [datamunge::new_Dual $vx_val $seed_x] [datamunge::new_Dual $vy_val $seed_y]]
-  set oz [datamunge::Dual_multiply [datamunge::Dual_multiply [datamunge::new_Dual $vy_val $seed_y] [datamunge::new_Dual $vy_val $seed_y]] [datamunge::new_Dual $vy_val $seed_y]]
-  set jac(0,$col) [datamunge::Dual_derivative $ox]
-  set jac(1,$col) [datamunge::Dual_derivative $oy]
-  set jac(2,$col) [datamunge::Dual_derivative $oz]
+# f(x,y) = [x^2, xy, y^3] at (2,3) -- one Dual pass per (output, input) pair.
+proc vector_fn {x y} {
+    list [$x multiply $x] [$x multiply $y] [[$y multiply $y] multiply $y]
+}
+set jac [lrepeat 3 [lrepeat 2 {}]]
+foreach {col sx sy} {0 1.0 0.0  1 0.0 1.0} {
+    set row 0
+    foreach out [vector_fn [Dual new 2.0 $sx] [Dual new 3.0 $sy]] {
+        lset jac $row $col [$out derivative]
+        incr row
+    }
 }
 puts "f(x,y) = \[x^2, xy, y^3\] at (2,3), Jacobian:"
-for {set row 0} {$row < 3} {incr row} {
-  puts "  \[$jac($row,0), $jac($row,1)\]"
+foreach r $jac {
+    puts "  \[[join $r {, }]\]"
 }
 
 puts "\n=================== Hessian via second-order forward mode (HyperDual) ==================="
+# One HyperDual pass per (i, j) pair reads off d^2f/dxi dxj directly from eps1eps2.
 set mx 1.0
-set my 1.0
-
+set my 1.0 ;# the Rosenbrock function's minimum
 set seeds {{1.0 0.0} {0.0 1.0}}
-array set h {}
-for {set i 0} {$i < 2} {incr i} {
-  for {set j 0} {$j < 2} {incr j} {
-    set e1 [lindex $seeds $i]
-    set e2 [lindex $seeds $j]
-    set hx [datamunge::new_HyperDual $mx [lindex $e1 0] [lindex $e2 0] 0.0]
-    set hy [datamunge::new_HyperDual $my [lindex $e1 1] [lindex $e2 1] 0.0]
-    set h($i,$j) [datamunge::HyperDual_eps1eps2 [rosenbrock_hyperdual $hx $hy]]
-  }
-}
+set h [lmap e1 $seeds {
+    lmap e2 $seeds {
+        [rosenbrock_hyper_dual \
+            [HyperDual new $mx [lindex $e1 0] [lindex $e2 0] 0.0] \
+            [HyperDual new $my [lindex $e1 1] [lindex $e2 1] 0.0]] eps1eps2
+    }
+}]
 puts "Hessian of the Rosenbrock function at its minimum (1,1):"
-for {set row 0} {$row < 2} {incr row} {
-  puts "  \[$h($row,0), $h($row,1)\]"
+foreach r $h {
+    puts "  \[[join $r {, }]\]"
 }
 
 puts "\n=================== Gradient descent driven by reverse-mode gradients ==================="
-set point_x -1.2
-set point_y 1.0
+set point {-1.2 1.0} ;# the classic Rosenbrock start
 set learning_rate 0.001
-set n_steps 50000
+set n_steps 2000
 for {set step 0} {$step < $n_steps} {incr step} {
-  set t [datamunge::new_Tape]
-  set vx2 [datamunge::new_Var $t $point_x]
-  set vy2 [datamunge::new_Var $t $point_y]
-  set va2 [datamunge::Var_subtract [datamunge::new_Var $t 1.0] $vx2]
-  set vb2 [datamunge::Var_subtract $vy2 [datamunge::Var_multiply $vx2 $vx2]]
-  set vf2 [datamunge::Var_add [datamunge::Var_multiply $va2 $va2] [datamunge::Var_multiply_scalar [datamunge::Var_multiply $vb2 $vb2] 100.0]]
-  set grad [datamunge::Tape_backward $t $vf2]
-  set loss [datamunge::Var_value $vf2]
-  set point_x [expr {$point_x - $learning_rate * [lindex $grad [datamunge::Var_index $vx2]]}]
-  set point_y [expr {$point_y - $learning_rate * [lindex $grad [datamunge::Var_index $vy2]]}]
-  if {$step == 0 || $step == $n_steps - 1} {
-    puts "step $step: loss = $loss, x = \[$point_x, $point_y\]"
-  }
+    set tape [Tape new]
+    set vx [Var new $tape [lindex $point 0]]
+    set vy [Var new $tape [lindex $point 1]]
+    set vf [rosenbrock_var $tape $vx $vy]
+    set grad [$tape backward $vf]
+    set loss [$vf value]
+    lset point 0 [expr {[lindex $point 0] - $learning_rate * [adjoint $grad $vx]}]
+    lset point 1 [expr {[lindex $point 1] - $learning_rate * [adjoint $grad $vy]}]
+    if {$step == 0 || $step == $n_steps - 1} {
+        puts "step $step: loss = $loss, x = \[[join $point {, }]\]"
+    }
 }
 puts "(true minimum is at \[1, 1\] with loss 0)"

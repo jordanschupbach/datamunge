@@ -1,40 +1,40 @@
 # CMD: just TARGET=gbm_iris_ex run-tcl
+# Gradient-boosted trees (GBM) on iris: summary, confusion matrix, misclassified rows, 5 vs 100 rounds.
+package require datamunge
 
-package require Datamunge 0.0.1
+set iris [datamunge::Data::iris]
+puts "iris: [$iris nrows] rows x [$iris ncols] cols\n"
 
-set iris [datamunge::data_iris]
-puts "iris: [datamunge::DataFrame_nrows $iris] rows x [datamunge::DataFrame_ncols $iris] cols\n"
+set model [datamunge::GBMClassifier new $iris "Species ~ Petal.Length + Petal.Width"]
+$model print_summary
 
-set model [datamunge::new_GBMClassifier $iris "Species ~ Petal.Length + Petal.Width"]
-datamunge::GBMClassifier_print_summary $model
-
-puts "\nConfusion matrix (rows = actual, cols = predicted):"
-puts "[datamunge::DataFrame_to_string [datamunge::GBMClassifier_confusion_matrix $model]]"
+puts "\nConfusion matrix (rows = actual, cols = predicted):\n[[$model confusion_matrix] to_string]"
 
 puts "\nMisclassified rows:"
-set predictions [datamunge::GBMClassifier_predict $model $iris]
+set predictions [$model predict $iris]
+set n [$iris nrows]
 set misclassified 0
-set n [datamunge::DataFrame_nrows $iris]
 for {set i 0} {$i < $n} {incr i} {
-  set actual [datamunge::DataFrame_string_at $iris "Species" $i]
-  set pred [lindex $predictions $i]
-  if {$pred ne $actual} {
+    set actual [$iris string_at Species $i]
+    set predicted [lindex $predictions $i]
+    if {$predicted eq $actual} {
+        continue
+    }
     incr misclassified
-    set pl [datamunge::DataFrame_numeric_at $iris "Petal.Length" $i]
-    set pw [datamunge::DataFrame_numeric_at $iris "Petal.Width" $i]
-    puts "  row $i: Petal.Length=$pl Petal.Width=$pw  actual=$actual  predicted=$pred"
-  }
+    puts "  row $i: Petal.Length=[$iris numeric_at Petal.Length $i] Petal.Width=[$iris numeric_at Petal.Width $i]  actual=$actual  predicted=$predicted"
 }
 puts "$misclassified of $n misclassified ([expr {100.0 * $misclassified / $n}]%)"
 
-datamunge::Plot_save [datamunge::GBMClassifier_plot_training_deviance $model] "gbm_iris_training_deviance.svg"
-datamunge::Plot_save [datamunge::GBMClassifier_plot_decision_regions $model "Petal.Length" "Petal.Width"] "gbm_iris_decision_regions.svg"
+[$model plot_training_deviance] save gbm_iris_training_deviance.svg
+[$model plot_decision_regions Petal.Length Petal.Width] save gbm_iris_decision_regions.svg
 puts "\nSaved gbm_iris_training_deviance.svg and gbm_iris_decision_regions.svg"
 
-set few [datamunge::new_GBMClassifier $iris "Species ~ Petal.Length + Petal.Width" 5]
-set few_dev [datamunge::GBMClassifier_training_deviance $few]
-set model_dev [datamunge::GBMClassifier_training_deviance $model]
-puts "\n5-round ensemble:   training accuracy=[expr {[datamunge::GBMClassifier_training_accuracy $few] * 100.0}]%  deviance=[lindex $few_dev end]"
-puts "100-round ensemble: training accuracy=[expr {[datamunge::GBMClassifier_training_accuracy $model] * 100.0}]%  deviance=[lindex $model_dev end]"
-datamunge::Plot_save [datamunge::GBMClassifier_plot_decision_regions $few "Petal.Length" "Petal.Width"] "gbm_iris_decision_regions_5rounds.svg"
+# A handful of boosting rounds vs a well-boosted ensemble: each additional round chips away
+# at the training loss, gradually sharpening the decision boundary.
+# datamunge::GBMClassifier new data formula ?n_trees? ?learning_rate? ?max_depth?
+#     ?min_samples_split? ?min_samples_leaf? ?subsample? ?seed?
+set few [datamunge::GBMClassifier new $iris "Species ~ Petal.Length + Petal.Width" 5]
+puts "\n5-round ensemble:   training accuracy=[expr {100 * [$few training_accuracy]}]%  deviance=[lindex [$few training_deviance] end]"
+puts "100-round ensemble: training accuracy=[expr {100 * [$model training_accuracy]}]%  deviance=[lindex [$model training_deviance] end]"
+[$few plot_decision_regions Petal.Length Petal.Width] save gbm_iris_decision_regions_5rounds.svg
 puts "Saved gbm_iris_decision_regions_5rounds.svg"

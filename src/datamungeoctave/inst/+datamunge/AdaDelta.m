@@ -1,0 +1,85 @@
+classdef AdaDelta < datamunge.NativeObject
+  % AdaDelta  AdaDelta on the DifferentiableFunction callback interface. Uses squared-gradient and squared-update exponential averages. The update multiplies the gradient by sqrt(previous_update_average+epsilon)/sqrt(current_gradient_average+epsilon). No separate learning-rate option. Tests the gradient used after applying its update; O(p) reset local state. The caller supplies finite, dimensionally consistent callbacks. Inputs are borrowed; coordinates mutate in place and can retain a partial state if a callback throws. Calls use local optimizer state and propagate callback exceptions; sharing a mutable objective across threads requires external synchronisation. Normal return alone is not a uniform convergence certificate.
+  %
+  %   obj = datamunge.AdaDelta ()
+  %   obj = datamunge.AdaDelta (options)
+  %
+  %   Example:
+  %     const dm::optim::AdaDelta optimizer;
+  %     std::print("{}\n",optimizer.options().max_iterations); // 10000
+  %
+  %   References:
+  %   - M. D. Zeiler (2012), ADADELTA: An Adaptive Learning Rate Method, https://arxiv.org/abs/1212.5701
+  %
+  %   Methods:
+  %     optimize  Run AdaDelta from the supplied point using the configured finite budget. Uses squared-gradient and squared-update exponential averages. The update multiplies the gradient by sqrt(previous_update_average+epsilon)/sqrt(current_gradient_average+epsilon). No separate learning-rate option. Tests the gradient used after applying its update; O(p) reset local state.
+  %     options  Borrow this optimizer's stored configuration.
+  %
+  %   C++: class datamunge::optim::AdaDelta
+  %
+  %   See also: datamunge.AdaDeltaOptions, datamunge.trace_optimize()
+  methods
+    function obj = AdaDelta (varargin)
+      % AdaDelta  Construct a C++ datamunge::optim::AdaDelta.
+      %
+      %   obj = datamunge.AdaDelta ()
+      %   obj = datamunge.AdaDelta (options)
+      %
+      %   Example:
+      %     const dm::optim::AdaDelta optimizer;
+      %     std::print("{}\n",optimizer.options().max_iterations); // 10000
+      %
+      %   Store a copy of the controls without running the objective.
+      %
+      %   Inputs:
+      %     options  datamunge.AdaDeltaOptions, default the C++ default: Method-specific controls; defaults are listed by AdaDeltaOptions.
+      %
+      %   C++: datamunge::optim::AdaDelta::AdaDelta(AdaDeltaOptions options = {})
+      obj@datamunge.NativeObject(struct('rosetta_skip__', true));
+      if nargin == 1 && isstruct (varargin{1}) && isfield (varargin{1}, 'rosetta_skip__')
+        return;
+      end
+      __datamunge__(-2, obj, 1256, false, varargin{:});
+    end
+    function varargout = optimize (obj, varargin)
+      % optimize  Run AdaDelta from the supplied point using the configured finite budget. Uses squared-gradient and squared-update exponential averages. The update multiplies the gradient by sqrt(previous_update_average+epsilon)/sqrt(current_gradient_average+epsilon). No separate learning-rate option. Tests the gradient used after applying its update; O(p) reset local state.
+      %
+      %   [r, coordinates] = obj.optimize (function_, coordinates)
+      %
+      %   Example:
+      %     dm::optim::QuadraticObjective f({2,8},{1,-2});
+      %     dm::optim::AdaDeltaOptions controls;controls.max_iterations=5;
+      %     std::vector<double> x{0,0};
+      %     const auto value=dm::optim::AdaDelta(controls).optimize(f,x);
+      %     std::print("{}\n",std::isfinite(value)); // true
+      %
+      %   Inputs:
+      %     function_  datamunge.DifferentiableFunction: Borrowed DifferentiableFunction with matching finite output shapes.
+      %     coordinates  double vector (updated: also an output): Owned-by-caller finite start; overwritten with the native returned point.
+      %
+      %   Output:
+      %     r  double: Objective at the native returned coordinates; not a stop-status code.
+      %
+      %   Errors:
+      %     datamunge:invalid_argument  AdaDelta: decay_rate must be in [0, 1); AdaDelta: epsilon must be positive; AdaDelta: tolerance must be non-negative. (C++ std::invalid_argument)
+      %     datamunge:native  Exceptions from supplied callbacks propagate. Raw solvers do not uniformly reject nonfinite inputs. (C++ std::exception)
+      %
+      %   C++: double datamunge::optim::AdaDelta::optimize(DifferentiableFunction & function, std::vector<double> & coordinates) const
+      %
+      %   See also: datamunge.trace_optimize(), datamunge.AdaDeltaOptions
+      [varargout{1:max(nargout, 1)}] = __datamunge__(1254, obj, varargin{:});
+    end
+    function r = options (obj)
+      % options  Borrow this optimizer's stored configuration.
+      %
+      %   r = obj.options ()
+      %
+      %   Output:
+      %     r  datamunge.AdaDeltaOptions: Const option reference, valid during this object's lifetime; no mutation.
+      %
+      %   C++: const AdaDeltaOptions & datamunge::optim::AdaDelta::options() const
+      r = __datamunge__(1255, obj);
+    end
+  end
+end
+% Generated by Rosetta from datamungeoctave/rosetta/bindings.hpp: class datamunge::optim::AdaDelta. Do not edit.

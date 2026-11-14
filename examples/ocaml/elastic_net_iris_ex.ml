@@ -1,37 +1,44 @@
 (* CMD: just TARGET=elastic_net_iris_ex run-ocaml *)
+(* Ridge, Lasso and Elastic Net on iris, with coefficient-path and CV-curve figures. *)
 
-open Swig
 open Datamunge
 
 let formula = "Petal.Length ~ Sepal.Length + Sepal.Width + Petal.Width + Sepal.Length:Petal.Width"
 
 let () =
-  let iris = _data_iris C_void in
-  Printf.printf "iris: %d rows x %d cols\n" (get_int (invoke iris "nrows" C_void)) (get_int (invoke iris "ncols" C_void));
+  let iris = Data.iris () in
+  Printf.printf "iris: %d rows x %d cols\n" (DataFrame.nrows iris) (DataFrame.ncols iris);
   Printf.printf "formula: %s\n\n" formula;
 
   print_endline "=================== Ridge ===================";
-  let ridge = new_Ridge (C_list [iris; C_string formula]) in
-  ignore (invoke ridge "print_summary" C_void);
+  let ridge = Ridge.create iris formula in
+  Ridge.print_summary ridge;
 
   print_endline "\n=================== Lasso ===================";
-  let lasso = new_Lasso (C_list [iris; C_string formula]) in
-  ignore (invoke lasso "print_summary" C_void);
+  let lasso = Lasso.create iris formula in
+  Lasso.print_summary lasso;
 
   print_endline "\n================= Elastic Net =================";
-  let elastic = new_ElasticNet (C_list [iris; C_string formula; C_double 0.5]) in
-  ignore (invoke elastic "print_summary" C_void);
+  let elastic = ElasticNet.create ~alpha:0.5 iris formula in
+  ElasticNet.print_summary elastic;
 
-  print_endline "\nSaved figures showing how each model's coefficients respond to the regularization strength, and the cross-validation curve used to pick it:";
-
-  ignore (invoke (invoke ridge "plot_coefficient_path" C_void) "save" (C_string "elastic_net_ridge_path.svg"));
-  ignore (invoke (invoke ridge "plot_cv_curve" C_void) "save" (C_string "elastic_net_ridge_cv.svg"));
-  print_endline "  ridge:       elastic_net_ridge_path.svg, elastic_net_ridge_cv.svg";
-
-  ignore (invoke (invoke lasso "plot_coefficient_path" C_void) "save" (C_string "elastic_net_lasso_path.svg"));
-  ignore (invoke (invoke lasso "plot_cv_curve" C_void) "save" (C_string "elastic_net_lasso_cv.svg"));
-  print_endline "  lasso:       elastic_net_lasso_path.svg, elastic_net_lasso_cv.svg";
-
-  ignore (invoke (invoke elastic "plot_coefficient_path" C_void) "save" (C_string "elastic_net_elasticnet_path.svg"));
-  ignore (invoke (invoke elastic "plot_cv_curve" C_void) "save" (C_string "elastic_net_elasticnet_cv.svg"));
-  print_endline "  elastic net: elastic_net_elasticnet_path.svg, elastic_net_elasticnet_cv.svg"
+  print_endline
+    "\n\
+     Saved figures showing how each model's coefficients respond to the regularization strength, \
+     and the cross-validation curve used to pick it:";
+  (* The three model types share no base class, so pair each one's two plots up front. *)
+  List.iter
+    (fun (name, label, path_plot, cv_plot) ->
+      let path_file = Printf.sprintf "elastic_net_%s_path.svg" name in
+      let cv_file = Printf.sprintf "elastic_net_%s_cv.svg" name in
+      RPlot.save path_plot path_file;
+      RPlot.save cv_plot cv_file;
+      Printf.printf "  %s %s, %s\n" label path_file cv_file)
+    [
+      ("ridge", "ridge:      ", Ridge.plot_coefficient_path ridge, Ridge.plot_cv_curve ridge);
+      ("lasso", "lasso:      ", Lasso.plot_coefficient_path lasso, Lasso.plot_cv_curve lasso);
+      ( "elasticnet",
+        "elastic net:",
+        ElasticNet.plot_coefficient_path elastic,
+        ElasticNet.plot_cv_curve elastic );
+    ]

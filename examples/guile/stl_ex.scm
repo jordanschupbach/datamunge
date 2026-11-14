@@ -1,22 +1,19 @@
 ;; CMD: just TARGET=stl_ex run-guile
-
-(use-modules (datamunge))
+;; C++ std::vector and std::pair values in Guile: vectors are lists, pairs are Scheme pairs.
+(use-modules (oop goops) (datamunge))
 
 (define n 100)
-(define v (new-DVector))
-(do ((i 0 (+ i 1))) ((= i n))
-  (DVector-push! v (* i 1.5)))
-(do ((i 0 (+ i 1))) ((= i n))
-  (format #t "~a\n" (DVector-ref v i)))
+(define v (map (lambda (i) (* i 1.5)) (iota n)))
+(for-each (lambda (x) (display x) (newline)) v)
+(define v2 (map (lambda (i) (inexact->exact (floor (* i 1.5)))) (iota n)))
+(for-each (lambda (x) (display x) (newline)) v2)
 
-(define v2 (new-IVector))
-(do ((i 0 (+ i 1))) ((= i n))
-  (IVector-push! v2 (inexact->exact (truncate (* i 1.5)))))
-(do ((i 0 (+ i 1))) ((= i n))
-  (format #t "~a\n" (IVector-ref v2 i)))
+(define p '(3 . 4))
+(format #t "p: (~a, ~a)\n" (car p) (cdr p))
 
-(define p (new-IPair 3 4))
-(format #t "p: (~a, ~a)\n" (IPair-first-get p) (IPair-second-get p))
+(define p2 '(10 . 20))
+(format #t "p2: (~a, ~a)\n" (car p2) (cdr p2))
 
-(define p2 (new-DPair 10.0 20.0))
-(format #t "p2: (~a, ~a)\n" (DPair-first-get p2) (DPair-second-get p2))
+;; A C++ std::pair<double,double> comes back as a Scheme pair.
+(define p3 (make-dpair 1.25 2.75))
+(format #t "make_dpair(1.25, 2.75): (~a, ~a), sum_dpair = ~a\n" (car p3) (cdr p3) (sum-dpair p3))

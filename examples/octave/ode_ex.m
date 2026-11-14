@@ -1,105 +1,67 @@
 % CMD: just TARGET=ode_ex run-octave
-
+% ODEs: built-in named systems, harmonic-oscillator energy check and a Lorenz phase plot.
 1;
 
-datamunge;
+function state = last_state (sol)
+  state = sol.state_at (sol.size_ () - 1);
+end
 
-function v = dv(t)
-  datamunge;
-  v = DVector();
-  for i = 1:numel(t)
-    DVector_push_back(v, t(i));
+% The time vector followed by the requested state components (1-based), one value per step.
+function [ts, components] = solution_series (sol, varargin)
+  n = sol.size_ ();
+  ts = zeros (1, n);
+  states = zeros (n, numel (sol.state_at (0)));
+  for i = 0:n-1
+    ts(i+1) = sol.time_at (i);
+    states(i+1, :) = sol.state_at (i);
   end
-endfunction
+  components = cellfun (@(c) states(:, c)', varargin, 'UniformOutput', false);
+end
 
-function s = state_str(sol, idx)
-  datamunge;
-  % state_at() returns std::vector<double>, which arrives as a native Octave cell array.
-  st = ODESolution_state_at(sol, idx);
-  parts = {};
-  for i = 1:numel(st)
-    parts{end + 1} = sprintf("%g", st{i});
-  end
-  s = strjoin(parts, ", ");
-endfunction
+function solver = rk4_solver (step)
+  options = datamunge.ODEOptions ();
+  options.method = datamunge.StepMethod.RK4;
+  options.step_size = step;
+  solver = datamunge.ODESolver (options);
+end
 
-function idx = last_index(sol)
-  datamunge;
-  idx = ODESolution_size(sol) - 1;
-endfunction
+% NOTE: like the Lua version this example uses the built-in named systems via solve_builtin.
 
-% NOTE: the Python/Ruby ode examples also demonstrate a live, user-supplied RHS by subclassing
-% datamunge.RHS (a SWIG director). datamunge::ode::RHS::evaluate() returns std::vector<double>,
-% and RHS is not director-enabled in the Octave binding (rhs.hpp documents that only Python's
-% backend can generate a working director for a vector<double>-returning virtual method); this
-% example therefore uses the built-in named systems via solve_builtin(), like every non-Python
-% binding.
-
-printf("=================== Every named built-in system (no director needed) ===================\n");
-solver = ODESolver();
-systems = { ...
-  {"exponential_decay", [1.0], [1.0]}, ...
-  {"logistic_growth", [1.0, 1.0], [0.5]}, ...
-  {"harmonic_oscillator", [1.0], [1.0, 0.0]}, ...
-  {"van_der_pol", [1.0], [2.0, 0.0]}, ...
-  {"lorenz", [10.0, 28.0, 8.0 / 3.0], [1.0, 1.0, 1.0]} ...
+printf ('=================== Every named built-in system (no director needed) ===================\n');
+solver = datamunge.ODESolver ();
+systems = {
+  'exponential_decay', 1.0, 1.0
+  'logistic_growth', [1.0 1.0], 0.5
+  'harmonic_oscillator', 1.0, [1.0 0.0]
+  'van_der_pol', 1.0, [2.0 0.0]
+  'lorenz', [10.0 28.0 8.0/3], [1.0 1.0 1.0]
 };
-for i = 1:numel(systems)
-  s = systems{i};
-  sol = ODESolver_solve_builtin(solver, s{1}, dv(s{2}), dv(s{3}), 0.0, 1.0);
-  printf("%-22s steps=%-6d final state=[%s]\n", ...
-         s{1}, ODESolution_steps_taken_get(sol), state_str(sol, last_index(sol)));
+for i = 1:rows (systems)
+  [name, params, y0] = systems{i, :};
+  sol = solver.solve_builtin (name, params, y0, 0.0, 1.0);
+  state = strjoin (arrayfun (@(x) sprintf ('%g', x), last_state (sol), 'UniformOutput', false), ', ');
+  printf ('%-22s steps=%-6d final state=[%s]\n', name, sol.steps_taken, state);
 end
 
-printf("\n=================== Harmonic oscillator (energy conservation) ===================\n");
-options = ODEOptions();
-ODEOptions_method_set(options, StepMethod_RK4);
-ODEOptions_step_size_set(options, 0.01);
-solver = ODESolver(options);
-sol = ODESolver_solve_builtin(solver, "harmonic_oscillator", dv([1.0]), dv([1.0, 0.0]), 0.0, 20.0);
-final = ODESolution_state_at(sol, last_index(sol));
-xval = final{1};
-vval = final{2};
-printf("x(20) = %.6f (cos(20) = %.6f)\n", xval, cos(20));
-printf("energy x^2+v^2 = %.6f (should stay near 1.0)\n", xval * xval + vval * vval);
+printf ('\n=================== Harmonic oscillator (energy conservation) ===================\n');
+sol = rk4_solver (0.01).solve_builtin ('harmonic_oscillator', 1.0, [1.0 0.0], 0.0, 20.0);
+last = last_state (sol);
+x = last(1);
+v = last(2);
+printf ('x(20) = %.6f (cos(20) = %.6f)\n', x, cos (20.0));
+printf ('energy x^2+v^2 = %.6f (should stay near 1.0)\n', x * x + v * v);
+[ts, series] = solution_series (sol, 1, 2);
+p = datamunge.RPlot.plot (ts, series{1}, 'l', 'x(t)');
+p.lines (ts, series{2}, 'v(t)');
+p.title ('Harmonic Oscillator').x_label ('t').y_label ('state');
+p.save_svg ('ode_harmonic_oscillator_octave.svg');
+printf ('wrote ode_harmonic_oscillator_octave.svg\n');
 
-nsteps = ODESolution_size(sol);
-t_series = [];
-x_series = [];
-v_series = [];
-for i = 0:(nsteps - 1)
-  t_series(end + 1) = ODESolution_time_at(sol, i);
-  st = ODESolution_state_at(sol, i);
-  x_series(end + 1) = st{1};
-  v_series(end + 1) = st{2};
-end
-plot = RPlot_plot(dv(t_series), dv(x_series), "l", "x(t)");
-RPlot_lines(plot, dv(t_series), dv(v_series), "v(t)");
-Plot_title(plot, "Harmonic Oscillator");
-Plot_x_label(plot, "t");
-Plot_y_label(plot, "state");
-Plot_save_svg(plot, "ode_harmonic_oscillator_octave.svg");
-printf("wrote ode_harmonic_oscillator_octave.svg\n");
-
-printf("\n=================== Lorenz attractor (phase plane) ===================\n");
-options = ODEOptions();
-ODEOptions_method_set(options, StepMethod_RK4);
-ODEOptions_step_size_set(options, 0.005);
-solver = ODESolver(options);
-sol = ODESolver_solve_builtin(solver, "lorenz", dv([10.0, 28.0, 8.0 / 3.0]), dv([1.0, 1.0, 1.0]), 0.0, 25.0);
-printf("steps_taken = %d\n", ODESolution_steps_taken_get(sol));
-
-nsteps = ODESolution_size(sol);
-xs = [];
-zs = [];
-for i = 0:(nsteps - 1)
-  st = ODESolution_state_at(sol, i);
-  xs(end + 1) = st{1};
-  zs(end + 1) = st{3};
-end
-plot = RPlot_plot(dv(xs), dv(zs), "l", "trajectory");
-Plot_title(plot, "Lorenz Attractor (x-z phase plane)");
-Plot_x_label(plot, "x");
-Plot_y_label(plot, "z");
-Plot_save_svg(plot, "ode_lorenz_phase_plane_octave.svg");
-printf("wrote ode_lorenz_phase_plane_octave.svg\n");
+printf ('\n=================== Lorenz attractor (phase plane) ===================\n');
+sol = rk4_solver (0.005).solve_builtin ('lorenz', [10.0 28.0 8.0/3], [1.0 1.0 1.0], 0.0, 25.0);
+printf ('steps_taken = %d\n', sol.steps_taken);
+[~, series] = solution_series (sol, 1, 3);
+p = datamunge.RPlot.plot (series{1}, series{2}, 'l', 'trajectory');
+p.title ('Lorenz Attractor (x-z phase plane)').x_label ('x').y_label ('z');
+p.save_svg ('ode_lorenz_phase_plane_octave.svg');
+printf ('wrote ode_lorenz_phase_plane_octave.svg\n');

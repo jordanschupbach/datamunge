@@ -1,7 +1,0 @@
-(lang dune 3.11)
-(name datamungeocaml_tests)
-
-(package
- (name datamungeocaml_tests)
- (synopsis "Tests for datamunge OCaml bindings")
- (depends alcotest datamungeocaml))

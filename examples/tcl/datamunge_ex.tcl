@@ -1,18 +1,17 @@
 # CMD: just TARGET=datamunge_ex run-tcl
-
-package require Datamunge 0.0.1
+# Smoke test of the basic bindings: vectors, pairs and a native Callback object.
+package require datamunge
 
 datamunge::hello
 
-set v [datamunge::new_DVector]
-datamunge::DVector_push_back $v 1.25
-datamunge::DVector_push_back $v 2.5
-puts "DVector size: [datamunge::DVector_size $v]"
-puts [format {DVector[0]: %s} [datamunge::DVector_get $v 0]]
-datamunge::delete_DVector $v
+set v [datamunge::make_dvector 1.0 2.0 3.0]
+puts "sum_dvector:\t[datamunge::sum_dvector $v]"
 
-set p [datamunge::new_DPair 3.0 4.5]
-puts "DPair: ([datamunge::DPair_first_get $p], [datamunge::DPair_second_get $p])"
-datamunge::delete_DPair $p
+set p [datamunge::make_dpair 1.25 2.75]
+puts "sum_dpair:\t[datamunge::sum_dpair $p]"
 
-puts "Datamunge Tcl example ran successfully."
+set cb [datamunge::Callback new]
+puts "call_with_callback(3.0):\t[datamunge::call_with_callback 3.0 $cb]"
+set v2 [datamunge::map_dvector_with_callback [datamunge::make_dvector 1.0 2.0 3.0] $cb]
+puts "sum_dvector(map_dvector_with_callback(1,2,3)):\t[datamunge::sum_dvector $v2]"
+$cb destroy

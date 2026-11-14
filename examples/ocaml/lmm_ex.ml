@@ -1,67 +1,73 @@
 (* CMD: just TARGET=lmm_ex run-ocaml *)
-
-open Swig
+(* Linear mixed models: random intercept (penguins) and random intercept + slope (simulated schools). *)
 open Datamunge
 
-let dv values =
-  let v = new_DVector C_void in
-  List.iter (fun x -> ignore (invoke v "push_back" (C_double x))) values;
-  v
-
-let gauss () =
-  let u1 = Random.float 1.0 and u2 = Random.float 1.0 in
-  sqrt (-2.0 *. log u1) *. cos (2.0 *. Float.pi *. u2)
+(* One draw from datamunge's own generator (seeded below), so the simulated data (and the fit
+   below) differ from languages that use their own generator. *)
+let gauss () = (rnorm 0.0 1.0 1).(0)
+let uniform () = (runif 0.0 1.0 1).(0)
 
 let () =
-  print_endline "=================== Random intercept on a real dataset (penguins) ===================";
-  let penguins = _data_penguins C_void in
-  let species_model = new_LMM (C_list [penguins; C_string "body_mass_g ~ flipper_length_mm + bill_length_mm + (1 | species)"]) in
-  ignore (invoke species_model "print_summary" C_void);
+  set_seed 2024;
 
-  print_endline "\n=================== Random intercept + slope on a simulated multi-school dataset ===================";
-  Random.init 2024;
+  print_endline
+    "=================== Random intercept on a real dataset (penguins) ===================";
+  let penguin_model =
+    LMM.create (Data.penguins ()) "body_mass_g ~ flipper_length_mm + bill_length_mm + (1 | species)"
+  in
+  LMM.print_summary penguin_model;
+
+  print_endline
+    "\n=================== Random intercept + slope on a simulated multi-school dataset \
+     ===================";
+  (* 30 schools, ~25 students each: score depends on study_hours, but both the baseline score
+     and the return on an extra hour of study vary by school -- the textbook case for a
+     random-intercept-and-slope model. *)
   let n_schools = 30 in
-  let school_intercept = Array.init n_schools (fun _ -> gauss () *. 6.0) in
+  let school_intercept = Array.init n_schools (fun _ -> gauss () *. 6.) in
   let school_slope = Array.init n_schools (fun _ -> gauss () *. 1.2) in
-
   let true_intercept = 60.0 and true_slope = 3.0 in
-  let school = ref [] and study_hours = ref [] and score = ref [] in
-  for s = 0 to n_schools - 1 do
-    let n_students = 15 + Random.int 21 in
-    for _ = 1 to n_students do
-      let hours = Random.float 10.0 in
-      let noise = gauss () *. 4.0 in
-      let s_val = true_intercept +. school_intercept.(s) +. (true_slope +. school_slope.(s)) *. hours +. noise in
-      school := float_of_int s :: !school;
-      study_hours := hours :: !study_hours;
-      score := s_val :: !score
-    done
-  done;
 
-  let df = new_DataFrame C_void in
-  ignore (invoke df "add_numeric_column" (C_list [C_string "school"; dv (List.rev !school)]));
-  ignore (invoke df "add_numeric_column" (C_list [C_string "study_hours"; dv (List.rev !study_hours)]));
-  ignore (invoke df "add_numeric_column" (C_list [C_string "score"; dv (List.rev !score)]));
+  let rows =
+    List.init n_schools (fun s ->
+        let n_students = 15 + int_of_float (uniform () *. 21.) in
+        List.init n_students (fun _ ->
+            let hours = uniform () *. 10. in
+            let score =
+              true_intercept +. school_intercept.(s)
+              +. ((true_slope +. school_slope.(s)) *. hours)
+              +. (gauss () *. 4.)
+            in
+            (float_of_int s, hours, score)))
+    |> List.concat |> Array.of_list
+  in
+  let df = DataFrame.create () in
+  DataFrame.add_numeric_column df "school" (Array.map (fun (s, _, _) -> s) rows);
+  DataFrame.add_numeric_column df "study_hours" (Array.map (fun (_, h, _) -> h) rows);
+  DataFrame.add_numeric_column df "score" (Array.map (fun (_, _, y) -> y) rows);
 
-  let model = new_LMM (C_list [df; C_string "score ~ study_hours + (1 + study_hours | school)"]) in
-  ignore (invoke model "print_summary" C_void);
+  let model = LMM.create df "score ~ study_hours + (1 + study_hours | school)" in
+  LMM.print_summary model;
 
-  Printf.printf "\nTrue generating values: intercept=%g, slope=%g, random-intercept SD=6.0, random-slope SD=1.2, residual SD=4.0\n" true_intercept true_slope;
+  Printf.printf
+    "\nTrue generating values: intercept=%.1f, slope=%.1f, random-intercept SD=6.0, random-slope \
+     SD=1.2, residual SD=4.0\n"
+    true_intercept true_slope;
 
   print_endline "\n--- Best Linear Unbiased Predictors (BLUPs) for a few schools ---";
-  let group_labels = invoke model "group_labels" C_void in
-  List.iter (fun idx ->
-    let re = invoke model "random_effects_for_group" (C_int64 (Int64.of_int idx)) in
-    Printf.printf "school %s: intercept shift=%g, slope shift=%g\n"
-      (get_string (invoke group_labels "[]" (C_int idx)))
-      (get_float (invoke re "[]" (C_int 0))) (get_float (invoke re "[]" (C_int 1)))
-  ) [0; 1; 2];
+  let labels = Array.of_list (LMM.group_labels model) in
+  for idx = 0 to 2 do
+    let shifts = LMM.random_effects_for_group model idx in
+    Printf.printf "school %s: intercept shift=%g, slope shift=%g\n" labels.(idx) shifts.(0)
+      shifts.(1)
+  done;
 
   print_endline "\n--- Prediction: population-level vs. school-adjusted ---";
-  let newdata_population = new_DataFrame C_void in
-  ignore (invoke newdata_population "add_numeric_column" (C_list [C_string "study_hours"; dv [5.0]]));
-  let newdata_school0 = new_DataFrame C_void in
-  ignore (invoke newdata_school0 "add_numeric_column" (C_list [C_string "study_hours"; dv [5.0]]));
-  ignore (invoke newdata_school0 "add_numeric_column" (C_list [C_string "school"; dv [0.0]]));
-  Printf.printf "5 study hours, unseen school:      %g (fixed effects only)\n" (get_float (invoke (invoke model "predict" newdata_population) "[]" (C_int 0)));
-  Printf.printf "5 study hours, school 0 (known):    %g (fixed effects + school 0's BLUP)\n" (get_float (invoke (invoke model "predict" newdata_school0) "[]" (C_int 0)))
+  let population = DataFrame.create () and school0 = DataFrame.create () in
+  DataFrame.add_numeric_column population "study_hours" [| 5.0 |];
+  DataFrame.add_numeric_column school0 "study_hours" [| 5.0 |];
+  DataFrame.add_numeric_column school0 "school" [| 0.0 |];
+  Printf.printf "5 study hours, unseen school:      %g (fixed effects only)\n"
+    (LMM.predict model population).(0);
+  Printf.printf "5 study hours, school 0 (known):    %g (fixed effects + school 0's BLUP)\n"
+    (LMM.predict model school0).(0)

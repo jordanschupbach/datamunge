@@ -1,0 +1,84 @@
+classdef SQP < datamunge.NativeObject
+  % SQP  SQP on the EqualityConstrainedFunction callback interface. Restricted projection-like implementation, not a general SQP QP solver: takes an objective-gradient step, then sequential linearised row corrections using squared Jacobian-row norms plus regularization. Its stopping condition compares constraint norm and the constant absolute step_size to tolerance, not the actual displacement or Lagrangian gradient. The caller supplies finite, dimensionally consistent callbacks. Inputs are borrowed; coordinates mutate in place and can retain a partial state if a callback throws. Calls use local optimizer state and propagate callback exceptions; sharing a mutable objective across threads requires external synchronisation. Normal return alone is not a uniform convergence certificate.
+  %
+  %   obj = datamunge.SQP ()
+  %   obj = datamunge.SQP (options)
+  %
+  %   Example:
+  %     const dm::optim::SQP optimizer;
+  %     std::print("{}\n",optimizer.options().max_iterations); // 200
+  %
+  %   References:
+  %   - J. Nocedal and S. J. Wright (2006), Numerical Optimization, second edition, https://doi.org/10.1007/978-0-387-40065-5. The implemented variant and stopping rules are specified above.
+  %
+  %   Methods:
+  %     optimize  Run SQP from the supplied point using the configured finite budget. Restricted projection-like implementation, not a general SQP QP solver: takes an objective-gradient step, then sequential linearised row corrections using squared Jacobian-row norms plus regularization. Its stopping condition compares constraint norm and the constant absolute step_size to tolerance, not the actual displacement or Lagrangian gradient.
+  %     options  Borrow this optimizer's stored configuration.
+  %
+  %   C++: class datamunge::optim::SQP
+  %
+  %   See also: datamunge.SQPOptions, datamunge.trace_optimize()
+  methods
+    function obj = SQP (varargin)
+      % SQP  Construct a C++ datamunge::optim::SQP.
+      %
+      %   obj = datamunge.SQP ()
+      %   obj = datamunge.SQP (options)
+      %
+      %   Example:
+      %     const dm::optim::SQP optimizer;
+      %     std::print("{}\n",optimizer.options().max_iterations); // 200
+      %
+      %   Store a copy of the controls without running the objective.
+      %
+      %   Inputs:
+      %     options  datamunge.SQPOptions, default the C++ default: Method-specific controls; defaults are listed by SQPOptions.
+      %
+      %   C++: datamunge::optim::SQP::SQP(SQPOptions options = {})
+      obj@datamunge.NativeObject(struct('rosetta_skip__', true));
+      if nargin == 1 && isstruct (varargin{1}) && isfield (varargin{1}, 'rosetta_skip__')
+        return;
+      end
+      __datamunge__(-2, obj, 1862, false, varargin{:});
+    end
+    function varargout = optimize (obj, varargin)
+      % optimize  Run SQP from the supplied point using the configured finite budget. Restricted projection-like implementation, not a general SQP QP solver: takes an objective-gradient step, then sequential linearised row corrections using squared Jacobian-row norms plus regularization. Its stopping condition compares constraint norm and the constant absolute step_size to tolerance, not the actual displacement or Lagrangian gradient.
+      %
+      %   [r, coordinates] = obj.optimize (function_, coordinates)
+      %
+      %   Example:
+      %     dm::optim::EqualityQuadratic f({2,0},1);
+      %     dm::optim::SQPOptions controls;controls.max_iterations=5;
+      %     std::vector<double> x{0,0};
+      %     const auto value=dm::optim::SQP(controls).optimize(f,x);
+      %     std::print("{}\n",std::isfinite(value)); // true
+      %
+      %   Inputs:
+      %     function_  datamunge.EqualityConstrainedFunction: Borrowed EqualityConstrainedFunction with matching finite output shapes.
+      %     coordinates  double vector (updated: also an output): Owned-by-caller finite start; overwritten with the native returned point.
+      %
+      %   Output:
+      %     r  double: Objective at the native returned coordinates; not a stop-status code.
+      %
+      %   Errors:
+      %     datamunge:native  Exceptions from supplied callbacks propagate. Raw solvers do not uniformly reject nonfinite inputs. (C++ std::exception)
+      %
+      %   C++: double datamunge::optim::SQP::optimize(EqualityConstrainedFunction & function, std::vector<double> & coordinates) const
+      %
+      %   See also: datamunge.trace_optimize(), datamunge.SQPOptions
+      [varargout{1:max(nargout, 1)}] = __datamunge__(1860, obj, varargin{:});
+    end
+    function r = options (obj)
+      % options  Borrow this optimizer's stored configuration.
+      %
+      %   r = obj.options ()
+      %
+      %   Output:
+      %     r  datamunge.SQPOptions: Const option reference, valid during this object's lifetime; no mutation.
+      %
+      %   C++: const SQPOptions & datamunge::optim::SQP::options() const
+      r = __datamunge__(1861, obj);
+    end
+  end
+end
+% Generated by Rosetta from datamungeoctave/rosetta/bindings.hpp: class datamunge::optim::SQP. Do not edit.

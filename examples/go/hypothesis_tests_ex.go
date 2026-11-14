@@ -1,116 +1,112 @@
 // CMD: just TARGET=hypothesis_tests_ex run-go
 
+//go:build ignore
+
+// Classical hypothesis tests (t, Wilcoxon, ANOVA, correlation, F, normality, chi-squared, binomial) on iris.
 package main
 
 import (
 	"datamunge"
+	"datamunge/data"
 	"fmt"
-	"sort"
+	"slices"
+	"strings"
 )
 
-func dvector(values []float64) datamunge.DVector {
-	out := datamunge.NewDVector(int64(len(values)))
-	for i, v := range values {
-		out.Set(i, v)
+func printResult(label string, r *datamunge.HypothesisTestResult) {
+	defer r.Close()
+	alternative := map[datamunge.Alternative]string{
+		datamunge.AlternativeTwoSided: "two.sided",
+		datamunge.AlternativeLess:     "less",
+		datamunge.AlternativeGreater:  "greater",
+	}[r.Alternative()]
+	var line strings.Builder
+	fmt.Fprintf(&line, "%s: statistic=%v", label, r.Statistic())
+	if r.Parameter1() != 0 {
+		fmt.Fprintf(&line, ", df1=%v", r.Parameter1())
 	}
-	return out
+	if r.Parameter2() != 0 {
+		fmt.Fprintf(&line, ", df2=%v", r.Parameter2())
+	}
+	fmt.Fprintf(&line, ", p=%v (%s)", r.PValue(), alternative)
+	if r.HasConfInt() {
+		fmt.Fprintf(&line, ", CI=[%v, %v]", r.ConfIntLower(), r.ConfIntUpper())
+	}
+	fmt.Println(line.String() + " -- " + r.Method())
 }
 
-func szvector(values []int64) datamunge.SizeVector {
-	out := datamunge.NewSizeVector(int64(len(values)))
-	for i, v := range values {
-		out.Set(i, v)
-	}
-	return out
-}
-
-func printResult(label string, r datamunge.HypothesisTestResult) {
-	line := fmt.Sprintf("%s: statistic=%g", label, r.GetStatistic())
-	if r.GetParameter1() != 0.0 {
-		line += fmt.Sprintf(", df1=%g", r.GetParameter1())
-	}
-	if r.GetParameter2() != 0.0 {
-		line += fmt.Sprintf(", df2=%g", r.GetParameter2())
-	}
-	altNames := []string{"two.sided", "less", "greater"}
-	line += fmt.Sprintf(", p=%g (%s)", r.GetP_value(), altNames[int(r.GetAlternative())])
-	if r.GetHas_conf_int() {
-		line += fmt.Sprintf(", CI=[%g, %g]", r.GetConf_int_lower(), r.GetConf_int_upper())
-	}
-	line += fmt.Sprintf(" -- %s", r.GetMethod())
-	fmt.Println(line)
-}
-
-func columnForSpecies(df datamunge.DataFrame, column string, species string) []float64 {
-	out := []float64{}
-	n := df.Nrows()
-	for i := int64(0); i < n; i++ {
-		if df.String_at("Species", i) == species {
-			out = append(out, df.Numeric_at(column, i))
+// Values of a numeric column, optionally only for rows of one species ("" = all rows).
+func column(df *datamunge.DataFrame, name, species string) []float64 {
+	var values []float64
+	n := datamunge.Must(df.Nrows())
+	for i := 0; i < n; i++ {
+		if species == "" || datamunge.Must(df.StringAt("Species", i)) == species {
+			values = append(values, datamunge.Must(df.NumericAt(name, i)))
 		}
 	}
-	return out
+	return values
+}
+
+// Number of values strictly greater than threshold.
+func countAbove(values []float64, threshold float64) int {
+	count := 0
+	for _, x := range values {
+		if x > threshold {
+			count++
+		}
+	}
+	return count
 }
 
 func main() {
-	iris := datamunge.DataIris()
+	iris := datamunge.Must(data.Iris())
+	defer iris.Close()
 
-	setosaPetal := columnForSpecies(iris, "Petal.Length", "setosa")
-	versicolorPetal := columnForSpecies(iris, "Petal.Length", "versicolor")
-	virginicaPetal := columnForSpecies(iris, "Petal.Length", "virginica")
+	setosaPetal := column(iris, "Petal.Length", "setosa")
+	versicolorPetal := column(iris, "Petal.Length", "versicolor")
+	virginicaPetal := column(iris, "Petal.Length", "virginica")
 
 	fmt.Println("=================== t-tests: petal length, setosa vs. versicolor ===================")
-	printResult("Welch two-sample t-test", datamunge.T_test_two_sample(dvector(setosaPetal), dvector(versicolorPetal)))
-	printResult("Wilcoxon rank-sum test", datamunge.Wilcoxon_rank_sum_test(dvector(setosaPetal), dvector(versicolorPetal)))
+	printResult("Welch two-sample t-test", datamunge.Must(datamunge.TTestTwoSample(setosaPetal, versicolorPetal)))
+	printResult("Wilcoxon rank-sum test", datamunge.Must(datamunge.WilcoxonRankSumTest(setosaPetal, versicolorPetal)))
 
 	fmt.Println("\n=================== One-way ANOVA / Kruskal-Wallis across all 3 species ===================")
-	allPetal := append(append(append([]float64{}, setosaPetal...), versicolorPetal...), virginicaPetal...)
-	sizes := szvector([]int64{int64(len(setosaPetal)), int64(len(versicolorPetal)), int64(len(virginicaPetal))})
-	printResult("One-way ANOVA", datamunge.One_way_anova(dvector(allPetal), sizes))
-	printResult("Kruskal-Wallis", datamunge.Kruskal_wallis_test(dvector(allPetal), sizes))
+	allPetal := slices.Concat(setosaPetal, versicolorPetal, virginicaPetal)
+	sizes := []int{len(setosaPetal), len(versicolorPetal), len(virginicaPetal)}
+	printResult("One-way ANOVA", datamunge.Must(datamunge.OneWayAnova(allPetal, sizes)))
+	printResult("Kruskal-Wallis", datamunge.Must(datamunge.KruskalWallisTest(allPetal, sizes)))
 
 	fmt.Println("\n=================== Correlation: sepal length vs. petal length ===================")
-	n := iris.Nrows()
-	sepalLength := []float64{}
-	petalLength := []float64{}
-	for i := int64(0); i < n; i++ {
-		sepalLength = append(sepalLength, iris.Numeric_at("Sepal.Length", i))
-		petalLength = append(petalLength, iris.Numeric_at("Petal.Length", i))
-	}
-	printResult("Pearson correlation", datamunge.Pearson_correlation_test(dvector(sepalLength), dvector(petalLength)))
-	printResult("Spearman correlation", datamunge.Spearman_correlation_test(dvector(sepalLength), dvector(petalLength)))
+	sepalLength := column(iris, "Sepal.Length", "")
+	petalLength := column(iris, "Petal.Length", "")
+	printResult("Pearson correlation", datamunge.Must(datamunge.PearsonCorrelationTest(sepalLength, petalLength)))
+	printResult("Spearman correlation", datamunge.Must(datamunge.SpearmanCorrelationTest(sepalLength, petalLength)))
 
 	fmt.Println("\n=================== F-test: petal length variance, setosa vs. virginica ===================")
-	printResult("F test", datamunge.F_test_variance(dvector(setosaPetal), dvector(virginicaPetal)))
+	printResult("F test", datamunge.Must(datamunge.FTestVariance(setosaPetal, virginicaPetal)))
 
 	fmt.Println("\n=================== Normality: is sepal length normally distributed within setosa? ===================")
-	setosaSepal := columnForSpecies(iris, "Sepal.Length", "setosa")
-	printResult("Shapiro-Francia", datamunge.Shapiro_francia_test(dvector(setosaSepal)))
-	printResult("KS vs. fitted normal", datamunge.Ks_test_one_sample_normal(dvector(setosaSepal), 5.006, 0.3525))
+	setosaSepal := column(iris, "Sepal.Length", "setosa")
+	printResult("Shapiro-Francia", datamunge.Must(datamunge.ShapiroFranciaTest(setosaSepal)))
+	printResult("KS vs. fitted normal", datamunge.Must(datamunge.KsTestOneSampleNormalWithSd(setosaSepal, 5.006, 0.3525)))
 
 	fmt.Println("\n=================== Chi-squared / Fisher: is petal length \"long\" independent of species? ===================")
-	sortedAll := append([]float64{}, allPetal...)
-	sort.Float64s(sortedAll)
-	medianAll := sortedAll[len(allPetal)/2]
-	setosaLong, setosaShort := countAboveBelow(setosaPetal, medianAll)
-	versicolorLong, versicolorShort := countAboveBelow(versicolorPetal, medianAll)
+	sortedPetal := slices.Clone(allPetal)
+	slices.Sort(sortedPetal)
+	medianAll := sortedPetal[len(sortedPetal)/2]
+	setosaLong := countAbove(setosaPetal, medianAll)
+	setosaShort := len(setosaPetal) - setosaLong
+	versicolorLong := countAbove(versicolorPetal, medianAll)
+	versicolorShort := len(versicolorPetal) - versicolorLong
 	fmt.Printf("table: setosa=[%d,%d] versicolor=[%d,%d]\n", setosaLong, setosaShort, versicolorLong, versicolorShort)
-	tableVec := dvector([]float64{float64(setosaLong), float64(setosaShort), float64(versicolorLong), float64(versicolorShort)})
-	printResult("Chi-squared independence", datamunge.Chi_squared_test_independence(tableVec, int64(2), int64(2)))
-	printResult("Fisher's exact test", datamunge.Fisher_exact_test_2x2(int64(setosaLong), int64(setosaShort), int64(versicolorLong), int64(versicolorShort)))
+	table := []float64{float64(setosaLong), float64(setosaShort), float64(versicolorLong), float64(versicolorShort)}
+	printResult("Chi-squared independence", datamunge.Must(datamunge.ChiSquaredTestIndependence(table, 2, 2)))
+	printResult("Fisher's exact test",
+		datamunge.Must(datamunge.FisherExactTest2x2(setosaLong, setosaShort, versicolorLong, versicolorShort)))
 
 	fmt.Println("\n=================== Proportion / binomial: fraction of \"long\" petals overall ===================")
-	longCount, _ := countAboveBelow(allPetal, medianAll)
-	printResult("One-sample proportion test (vs 0.5)", datamunge.Proportion_test_one_sample(int64(longCount), int64(len(allPetal)), 0.5))
-	printResult("Exact binomial test (vs 0.5)", datamunge.Binomial_test(int64(longCount), int64(len(allPetal)), 0.5))
-}
-
-func countAboveBelow(values []float64, threshold float64) (int, int) {
-	above := 0
-	for _, v := range values {
-		if v > threshold {
-			above++
-		}
-	}
-	return above, len(values) - above
+	longCount := countAbove(allPetal, medianAll)
+	n := len(allPetal)
+	printResult("One-sample proportion test (vs 0.5)", datamunge.Must(datamunge.ProportionTestOneSampleWithP(longCount, n, 0.5)))
+	printResult("Exact binomial test (vs 0.5)", datamunge.Must(datamunge.BinomialTestWithP(longCount, n, 0.5)))
 }

@@ -1,26 +1,32 @@
 # CMD: just TARGET=stl_ex run-tcl
+# C++ std::vector and std::pair values in Tcl: vectors are lists, pairs are two-element lists.
+package require datamunge
 
-package require Datamunge 0.0.1
+# The integers 0 .. n-1 as a list.
+proc range {n} {
+    set result {}
+    for {set i 0} {$i < $n} {incr i} {
+        lappend result $i
+    }
+    return $result
+}
 
 set n 100
-set v [datamunge::new_DVector]
-for {set i 0} {$i < $n} {incr i} {
-  datamunge::DVector_push $v [expr {$i * 1.5}]
+set v [lmap i [range $n] {expr {$i * 1.5}}]
+foreach x $v {
+    puts $x
 }
-for {set i 0} {$i < $n} {incr i} {
-  puts [datamunge::DVector_get $v $i]
-}
-
-set v2 [datamunge::new_IVector]
-for {set i 0} {$i < $n} {incr i} {
-  datamunge::IVector_push $v2 [expr {int($i * 1.5)}]
-}
-for {set i 0} {$i < $n} {incr i} {
-  puts [datamunge::IVector_get $v2 $i]
+set v2 [lmap i [range $n] {expr {entier(floor($i * 1.5))}}]
+foreach x $v2 {
+    puts $x
 }
 
-set p [datamunge::new_IPair 3 4]
-puts "p: ([datamunge::IPair_first_get $p], [datamunge::IPair_second_get $p])"
+set p {3 4}
+puts "p: ([lindex $p 0], [lindex $p 1])"
 
-set p2 [datamunge::new_DPair 10.0 20.0]
-puts "p2: ([datamunge::DPair_first_get $p2], [datamunge::DPair_second_get $p2])"
+set p2 {10 20}
+puts "p2: ([lindex $p2 0], [lindex $p2 1])"
+
+# A C++ std::pair<double,double> comes back as a two-element list.
+set p3 [datamunge::make_dpair 1.25 2.75]
+puts "make_dpair(1.25, 2.75): ([join $p3 {, }]), sum_dpair = [datamunge::sum_dpair $p3]"

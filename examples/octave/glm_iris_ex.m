@@ -1,85 +1,69 @@
 % CMD: just TARGET=glm_iris_ex run-octave
-
+% Generalized linear models on iris: logistic regression (binomial) and Poisson regression.
 1;
 
-datamunge;
-
-function v = dv(t)
-  datamunge;
-  v = DVector();
-  for i = 1:numel(t)
-    DVector_push_back(v, t(i));
+% Shortest round-trip decimal text for x (like C#'s default double printing).
+function s = num (x)
+  for p = 1:17
+    s = sprintf ('%.*g', p, x);
+    if (str2double (s) == x)
+      return;
+    end
   end
-endfunction
+end
 
-iris = data_iris();
+iris = datamunge.Data.iris ();
+n = iris.nrows ();
+species = cell (1, n);
+for i = 1:n
+  species{i} = iris.string_at ('Species', i - 1);
+end
+column = @(name) arrayfun (@(i) iris.numeric_at (name, i), 0:n - 1);
 
 % Logistic regression: versicolor vs virginica only -- setosa is perfectly separable from
 % the other two on these predictors, which sends logistic regression's coefficients toward
 % +/-infinity (a genuine degeneracy of the method, not a bug) -- so this is the well-behaved
 % binary split for a demo.
-is_virginica = [];
-petal_length = [];
-petal_width = [];
-n = DataFrame_nrows(iris);
-for i = 0:(n - 1)
-  species = DataFrame_string_at(iris, "Species", i);
-  if strcmp(species, "versicolor") || strcmp(species, "virginica")
-    is_virginica(end + 1) = strcmp(species, "virginica");
-    petal_length(end + 1) = DataFrame_numeric_at(iris, "Petal.Length", i);
-    petal_width(end + 1) = DataFrame_numeric_at(iris, "Petal.Width", i);
-  end
-end
+kept = ismember (species, {'versicolor', 'virginica'});
+is_virginica = double (strcmp (species(kept), 'virginica'));
+all_petal_length = column ('Petal.Length');
+all_petal_width = column ('Petal.Width');
+petal_length = all_petal_length(kept);
+petal_width = all_petal_width(kept);
 
-sub = DataFrame_empty();
-DataFrame_add_numeric_column(sub, "Petal.Length", dv(petal_length));
-DataFrame_add_numeric_column(sub, "Petal.Width", dv(petal_width));
-DataFrame_add_numeric_column(sub, "is_virginica", dv(is_virginica));
+sub = datamunge.DataFrame ();
+sub.add_numeric_column ('Petal.Length', petal_length);
+sub.add_numeric_column ('Petal.Width', petal_width);
+sub.add_numeric_column ('is_virginica', is_virginica);
 
-printf("=================== Logistic regression (binomial, logit link) ===================\n");
-logit = GLM(sub, "is_virginica ~ Petal.Length + Petal.Width", "binomial");
-GLM_print_summary(logit);
+printf ('=================== Logistic regression (binomial, logit link) ===================\n');
+logit = datamunge.GLM (sub, 'is_virginica ~ Petal.Length + Petal.Width', 'binomial');
+logit.print_summary ();
 
-fitted = GLM_fitted_values(logit);
-correct = 0;
-for i = 1:numel(is_virginica)
-  if (fitted{i} >= 0.5) == (is_virginica(i) >= 0.5)
-    correct = correct + 1;
-  end
-end
-printf("\nResubstitution accuracy at 0.5 threshold: %g%%\n", 100.0 * correct / numel(is_virginica));
+fitted = logit.fitted_values ();
+correct = sum ((fitted >= 0.5) == (is_virginica >= 0.5));
+printf ('\nResubstitution accuracy at 0.5 threshold: %s%%\n', num (100 * correct / numel (is_virginica)));
 
-GLM_save_diagnostic_plots(logit, "glm_logistic_iris");
-printf("\nSaved glm_logistic_iris_{residuals_vs_fitted,normal_qq,scale_location,residuals_vs_leverage}.svg\n");
+logit.save_diagnostic_plots ('glm_logistic_iris');
+printf ('\nSaved glm_logistic_iris_{residuals_vs_fitted,normal_qq,scale_location,residuals_vs_leverage}.svg\n');
 
 % Predicted-probability curve across Petal.Length, with Petal.Width held at its mean -- the
-% classic sigmoid shape of a fitted logistic regression, with a 95%% confidence band.
-width_mean = mean(petal_width);
+% classic sigmoid shape of a fitted logistic regression, with a 95% confidence band.
 grid_n = 100;
-pl_min = min(petal_length) - 0.3;
-pl_max = max(petal_length) + 0.3;
-grid_x = pl_min + (pl_max - pl_min) * (0:(grid_n - 1)) / (grid_n - 1);
-grid = DataFrame_empty();
-DataFrame_add_numeric_column(grid, "Petal.Length", dv(grid_x));
-DataFrame_add_numeric_column(grid, "Petal.Width", dv(repmat(width_mean, 1, grid_n)));
-curve_frame = GLM_predict_frame(logit, grid, "confidence");
-printf("\nPredicted-probability curve (first 5 rows):\n");
-printf("%s\n", DataFrame_to_string(curve_frame, 5));
+width_mean = mean (petal_width);
+pl_min = min (petal_length) - 0.3;
+pl_max = max (petal_length) + 0.3;
+grid = datamunge.DataFrame ();
+grid.add_numeric_column ('Petal.Length', pl_min + (pl_max - pl_min) * (0:grid_n - 1) / (grid_n - 1));
+grid.add_numeric_column ('Petal.Width', repmat (width_mean, 1, grid_n));
+curve_frame = logit.predict_frame (grid, 'confidence');
+printf ('\nPredicted-probability curve (first 5 rows):\n');
+printf ('%s\n', curve_frame.to_string (5));
 
 % Poisson regression, for contrast: same IRLS engine, different family/link.
-printf("\n=================== Poisson regression (log link) ===================\n");
-count = [];
-sepal_width = [];
-all_petal_length = [];
-for i = 0:(n - 1)
-  count(end + 1) = round(DataFrame_numeric_at(iris, "Sepal.Length", i));
-  sepal_width(end + 1) = DataFrame_numeric_at(iris, "Sepal.Width", i);
-  all_petal_length(end + 1) = DataFrame_numeric_at(iris, "Petal.Length", i);
-end
-count_data = DataFrame_empty();
-DataFrame_add_numeric_column(count_data, "Sepal.Width", dv(sepal_width));
-DataFrame_add_numeric_column(count_data, "Petal.Length", dv(all_petal_length));
-DataFrame_add_numeric_column(count_data, "count", dv(count));
-
-poisson = GLM(count_data, "count ~ Sepal.Width + Petal.Length", "poisson");
-GLM_print_summary(poisson);
+printf ('\n=================== Poisson regression (log link) ===================\n');
+count_data = datamunge.DataFrame ();
+count_data.add_numeric_column ('Sepal.Width', column ('Sepal.Width'));
+count_data.add_numeric_column ('Petal.Length', all_petal_length);
+count_data.add_numeric_column ('count', floor (column ('Sepal.Length') + 0.5));
+datamunge.GLM (count_data, 'count ~ Sepal.Width + Petal.Length', 'poisson').print_summary ();

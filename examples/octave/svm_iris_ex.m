@@ -1,36 +1,24 @@
 % CMD: just TARGET=svm_iris_ex run-octave
+% Support vector machine on iris: RBF vs. linear kernels, confusion matrix and predictions.
 
-1;
+formula = 'Species ~ Sepal.Length + Sepal.Width + Petal.Length + Petal.Width';
+iris = datamunge.Data.iris ();
+printf ('iris: %d rows x %d cols\n\n', iris.nrows (), iris.ncols ());
 
-datamunge;
+printf ('=== RBF kernel (default) ===\n');
+rbf_model = datamunge.SVM (iris, formula);
+rbf_model.print_summary ();
+printf ('\nConfusion matrix (rows = actual, cols = predicted):\n%s\n', rbf_model.confusion_matrix ().to_string ());
 
-function v = dv(t)
-  datamunge;
-  v = DVector();
-  for i = 1:numel(t)
-    DVector_push_back(v, t(i));
-  end
-endfunction
+printf ('\n=== Linear kernel, for comparison ===\n');
+linear_model = datamunge.SVM (iris, formula, 'linear');
+printf ('Training accuracy: %.16g%%\n', linear_model.training_accuracy () * 100);
+printf ('Support vectors: %d\n', linear_model.num_support_vectors ());
 
-iris = data_iris();
-printf("iris: %d rows x %d cols\n\n", DataFrame_nrows(iris), DataFrame_ncols(iris));
-
-printf("=== RBF kernel (default) ===\n");
-rbf_model = SVM(iris, "Species ~ Sepal.Length + Sepal.Width + Petal.Length + Petal.Width");
-SVM_print_summary(rbf_model);
-printf("\nConfusion matrix (rows = actual, cols = predicted):\n");
-printf("%s\n", DataFrame_to_string(SVM_confusion_matrix(rbf_model)));
-
-printf("\n=== Linear kernel, for comparison ===\n");
-linear_model = SVM(iris, "Species ~ Sepal.Length + Sepal.Width + Petal.Length + Petal.Width", "linear");
-printf("Training accuracy: %g%%\n", SVM_training_accuracy(linear_model) * 100.0);
-printf("Support vectors: %d\n", SVM_num_support_vectors(linear_model));
-
-newdata = DataFrame_empty();
-DataFrame_add_numeric_column(newdata, "Sepal.Length", dv([5.1, 6.0, 6.5, 6.2]));
-DataFrame_add_numeric_column(newdata, "Sepal.Width", dv([3.5, 2.7, 3.0, 2.8]));
-DataFrame_add_numeric_column(newdata, "Petal.Length", dv([1.4, 4.5, 5.5, 4.8]));
-DataFrame_add_numeric_column(newdata, "Petal.Width", dv([0.2, 1.5, 2.0, 1.8]));
-
-printf("\nRBF predictions for new flowers (votes out of 3 one-vs-one pairs):\n");
-printf("%s\n", DataFrame_to_string(SVM_predict_frame(rbf_model, newdata)));
+newdata = datamunge.DataFrame ();
+newdata.add_numeric_column ('Sepal.Length', [5.1 6.0 6.5 6.2]);
+newdata.add_numeric_column ('Sepal.Width', [3.5 2.7 3.0 2.8]);
+newdata.add_numeric_column ('Petal.Length', [1.4 4.5 5.5 4.8]);
+newdata.add_numeric_column ('Petal.Width', [0.2 1.5 2.0 1.8]);
+printf ('\nRBF predictions for new flowers (votes out of 3 one-vs-one pairs):\n%s\n', ...
+        rbf_model.predict_frame (newdata).to_string ());

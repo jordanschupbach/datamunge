@@ -1,104 +1,83 @@
 # CMD: just TARGET=optim_advanced_ex run-ruby
+# Advanced datamunge optimizers (ProximalGradient, FISTA, LevenbergMarquardt, Newton, TrustRegionNewton, AugmentedLagrangian, SQP, InteriorPoint, BayesianOptimization, RBFGaussianProcessSurrogate) from Ruby.
+require "datamunge"
 
-require "octruby"
+# Every one of these optimizers takes an interface (ProximalFunction / HessianFunction /
+# EqualityConstrainedFunction / InequalityConstrainedFunction / ResidualFunction, or
+# ArbitraryFunction for BayesianOptimization) that the C++ library leaves abstract: callers
+# implement the objective. From Ruby, subclass the interface class and override its virtual
+# methods; the optimizer then calls the Ruby overrides. The coordinates Array is updated in place.
 
-# Exercises three of the ten new datamunge::optim classes:
-#   1. HessianFunction (subclassed here, a director callback) run through Newton.
-#   2. ResidualFunction (subclassed here) run through LevenbergMarquardt for a nonlinear
-#      curve fit.
-#   3. BayesianOptimization using the ready-to-use RBFGaussianProcessSurrogate (no
-#      subclassing needed for the surrogate itself).
-
-def dv(*values)
-  Datamunge::DVector.new(values)
+# f(x, y) = (x - 1)^2 + 10 (y + 2)^2 with exact gradient and Hessian.
+class Quadratic < Datamunge::HessianFunction
+  def evaluate(c) = (c[0] - 1)**2 + 10 * (c[1] + 2)**2
+  def gradient(c) = [2 * (c[0] - 1), 20 * (c[1] + 2)]
+  def hessian(_c) = [[2.0, 0.0], [0.0, 20.0]]
 end
 
-puts "=================== HessianFunction: Newton on a 2D quadratic bowl ==================="
-
-class QuadraticBowl2D < Datamunge::HessianFunction
-  # f(x, y) = (x - a)^2 + 3*(y - b)^2, minimum at (a, b).
-  def initialize(a, b)
+# Residuals of y = a * exp(b t) against exact data from a = 2, b = 0.5.
+class Exponential < Datamunge::ResidualFunction
+  def initialize(ts)
     super()
-    @a = a
-    @b = b
+    @ts = ts
   end
 
-  def evaluate(coordinates)
-    x, y = coordinates
-    (x - @a)**2 + 3.0 * (y - @b)**2
-  end
-
-  def gradient(coordinates)
-    x, y = coordinates
-    [2.0 * (x - @a), 6.0 * (y - @b)]
-  end
-
-  def hessian(_coordinates)
-    [[2.0, 0.0], [0.0, 6.0]]
-  end
+  def residuals(p) = @ts.map { |t| p[0] * Math.exp(p[1] * t) - 2 * Math.exp(0.5 * t) }
+  def jacobian(p) = @ts.map { |t| [Math.exp(p[1] * t), p[0] * t * Math.exp(p[1] * t)] }
 end
 
-f = QuadraticBowl2D.new(5.0, -3.0)
-x = dv(0.0, 0.0)
-value = Datamunge::Newton.new.optimize(f, x)
-puts "Newton: f=#{value} x=#{x.to_a} (true minimum: f=0 at [5, -3])"
-
-puts "\n=================== ResidualFunction: LevenbergMarquardt curve fit ===================\n"
-
-# Fit y = A * exp(-k * t) + c to synthetic noiseless data generated from known parameters.
-A_true = 2.5
-k_true = 0.75
-c_true = 0.3
-
-t_data = [0.0, 0.5, 1.0, 1.5, 2.0, 2.5, 3.0]
-y_data = t_data.map { |t| A_true * Math.exp(-k_true * t) + c_true }
-
-class ExpDecayResidual < Datamunge::ResidualFunction
-  def initialize(t, y)
-    super()
-    @t = t
-    @y = y
-  end
-
-  def residuals(coordinates)
-    a, k, c = coordinates
-    @t.each_with_index.map { |t, i| (a * Math.exp(-k * t) + c) - @y[i] }
-  end
-
-  def jacobian(coordinates)
-    a, k, c = coordinates
-    @t.map do |t|
-      e = Math.exp(-k * t)
-      [e, -a * t * e, 1.0]
-    end
-  end
+# Leaves gradient() and hessian() out.
+class Incomplete < Datamunge::HessianFunction
+  def evaluate(_c) = 0.0
 end
 
-residual_fn = ExpDecayResidual.new(t_data, y_data)
-params = dv(1.0, 0.1, 0.0)
-lm_value = Datamunge::LevenbergMarquardt.new.optimize(residual_fn, params)
-puts "LevenbergMarquardt: sse=#{lm_value} params=#{params.to_a}"
-puts "(true params: A=#{A_true} k=#{k_true} c=#{c_true})"
-
-puts "\n=================== BayesianOptimization with RBFGaussianProcessSurrogate ===================\n"
-
-class Sphere1D < Datamunge::ArbitraryFunction
-  # f(x) = (x - 2)^2 + 1, minimum at x=2, f=1.
-  def evaluate(coordinates)
-    (coordinates[0] - 2.0)**2 + 1.0
-  end
-end
-
-bo_f = Sphere1D.new
-bo_x = dv(-4.0)
-lower = dv(-5.0)
-upper = dv(5.0)
+puts "=================== RBFGaussianProcessSurrogate (concrete BayesianSurrogate) ==================="
+# Fit a 1D surrogate to a simple bowl y = (x-1)^2 sampled at a few points,
+# then check the acquisition function favors an unexplored region.
+xs = [0.0, 0.5, 1.0, 1.5, 2.0, 3.0]
+ys = xs.map { |x| (x - 1)**2 }
 surrogate = Datamunge::RBFGaussianProcessSurrogate.new(1.0, 1e-6)
+surrogate.fit(xs.map { |x| [x] }, ys)
+incumbent = [0.0, ys.min].min  # best observed value so far
+puts "incumbent (best observed y): #{incumbent}"
+[0.25, 1.0, 2.5].each do |x|
+  printf("acquisition(x=%.2f) = %.6f\n", x, surrogate.acquisition([x], incumbent))
+end
 
-bo_options = Datamunge::BayesianOptimizationOptions.new
-bo_options.initial_samples = 8
-bo_options.max_iterations = 50
-bo_options.seed = 42
+puts "\n=================== Options structs + optimizer construction (all 10 new classes) ==================="
+# Every new Options struct and optimizer class constructs cleanly, proving
+# the binding for the whole batch is wired correctly.
+D = Datamunge
+pg = D::ProximalGradient.new(D::ProximalGradientOptions.new.tap { |o| o.step_size = 0.05 })
+fista = D::FISTA.new(D::FISTAOptions.new)
+lm = D::LevenbergMarquardt.new(D::LevenbergMarquardtOptions.new.tap { |o| o.max_iterations = 200 })
+newton = D::Newton.new(D::NewtonOptions.new)
+trn = D::TrustRegionNewton.new(D::TrustRegionNewtonOptions.new)
+al = D::AugmentedLagrangian.new(D::AugmentedLagrangianOptions.new)
+sqp = D::SQP.new(D::SQPOptions.new)
+ip = D::InteriorPoint.new(D::InteriorPointOptions.new)
+bo = D::BayesianOptimization.new(D::BayesianOptimizationOptions.new.tap { |o| o.initial_samples = 8 })
+[pg, fista, lm, newton, trn, al, sqp, ip, bo].each do |optimizer|
+  name = optimizer.class.name.split("::").last
+  puts "#{name}: #{name}()"
+end
 
-bo_value = Datamunge::BayesianOptimization.new(bo_options).optimize(bo_f, bo_x, lower, upper, surrogate)
-puts "BayesianOptimization: f=#{bo_value} x=#{bo_x.to_a} (true minimum: f=1 at x=2)"
+puts "\n=================== Ruby objectives (subclassing the C++ interfaces) ==================="
+# Newton's method on the quadratic bowl.
+start = [5.0, 5.0]
+value = newton.optimize(Quadratic.new, start)
+printf("Newton: f = %.6g at (%.6f, %.6f) (exact minimum 0 at (1, -2))\n", value, *start)
+
+# Levenberg-Marquardt fitting y = a * exp(b t).
+params = [1.0, 0.1]
+sse = lm.optimize(Exponential.new([0.0, 0.5, 1.0, 1.5, 2.0]), params)
+printf("LevenbergMarquardt: residual = %.3g, a = %.6f, b = %.6f (exact: 2, 0.5)\n", sse, *params)
+
+# An interface method a subclass leaves out raises when the optimizer calls it.
+err = begin
+  newton.optimize(Incomplete.new, [0.0, 0.0])
+  nil
+rescue Datamunge::Error => e  # mixed into every binding exception class
+  e
+end
+puts "missing gradient(): ok=#{err.nil?}, error mentions it: #{!err.nil? && err.message.include?("gradient")}"
