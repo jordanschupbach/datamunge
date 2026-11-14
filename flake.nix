@@ -169,6 +169,14 @@
           # just build-lisp (installs datamunge.asd, .lisp and .so into build/lisp/prefix):
           # (asdf:load-system "datamunge") from SBCL in the default or lisp shell.
           export CL_SOURCE_REGISTRY="$datamungeRoot/build/lisp/prefix/share/common-lisp/source//''${CL_SOURCE_REGISTRY:+:$CL_SOURCE_REGISTRY}"
+          # just build-julia (installs the Datamunge package into build/julia/prefix):
+          # `using Datamunge` from Julia in the default or julia shell (and mep's Julia LSP).
+          export JULIA_LOAD_PATH="$datamungeRoot/build/julia/prefix/share/julia:''${JULIA_LOAD_PATH:-@:@v#.#:@stdlib}"
+          # just build-csharp (installs the native library into build/csharp/prefix): examples and
+          # tests `#:project` src/datamungecsharp/Datamunge.csproj, whose loader reads this variable.
+          csharpLibrary="$datamungeRoot/build/csharp/prefix/share/dotnet/Datamunge/lib/datamunge_csharp.so"
+          if [ "$(uname)" = Darwin ]; then csharpLibrary="''${csharpLibrary%.so}.dylib"; fi
+          export DATAMUNGE_CSHARP_LIBRARY="''${DATAMUNGE_CSHARP_LIBRARY:-$csharpLibrary}"
           # just build-cobol (installs libdatamungecobol and the copybooks into build/cobol/prefix):
           # COPY "datamunge.cpy" finds them through COBCPY (cobc and mep's COBOL LSP).
           export COBCPY="$datamungeRoot/build/cobol/prefix/share/cobol/copy''${COBCPY:+:$COBCPY}"
@@ -262,6 +270,8 @@
         octruby = import ./nix/octruby.nix { pkgs = bindingPkgs; };
         datamungelua = import ./nix/datamungelua.nix { pkgs = bindingPkgs; };
         datamungelisp = import ./nix/datamungelisp.nix { pkgs = bindingPkgs; };
+        datamungejulia = import ./nix/datamungejulia.nix { pkgs = bindingPkgs; };
+        datamungecsharp = import ./nix/datamungecsharp.nix { pkgs = bindingPkgs; inherit dotnetSdk; };
         datamungecobol = import ./nix/datamungecobol.nix { pkgs = bindingPkgs; };
         # GnuCOBOL: cobc lives in the bin output, which a shell's packages leave out.
         gnuCobol = [ pkgs.gnucobol pkgs.gnucobol.bin ];
@@ -356,6 +366,7 @@
             phpPackage
             phpDev
             dotnetSdk
+            datamungecsharp
             gradleWrapped
             jdatamungeGradleDeps
             pydatamunge
@@ -610,6 +621,25 @@
             installPhase = "mkdir -p $out";
           };
 
+          julia = pkgs.stdenv.mkDerivation {
+            name = "datamunge-julia-check";
+            src = pkgs.lib.cleanSource ./.;
+            nativeBuildInputs = [ pkgs.julia-bin ];
+            phases = [
+              "unpackPhase"
+              "checkPhase"
+              "installPhase"
+            ];
+            doCheck = true;
+            checkPhase = ''
+              export JULIA_LOAD_PATH="${datamungejulia}/share/julia:@stdlib"
+              export JULIA_DEPOT_PATH="$TMPDIR/julia-depot"
+              export HOME="$TMPDIR"
+              julia --startup-file=no --threads=2 tests/julia/test_datamunge.jl
+            '';
+            installPhase = "mkdir -p $out";
+          };
+
           cobol = pkgs.stdenv.mkDerivation {
             name = "datamunge-cobol-check";
             src = pkgs.lib.cleanSource ./.;
@@ -781,49 +811,25 @@
             installPhase = "mkdir -p $out";
           };
 
-          csharp =
-            let
-              nativeDatamunge = pkgs.stdenv.mkDerivation {
-                pname = "datamunge-csharp-native";
-                version = "0.0.1";
-                src = pkgs.lib.cleanSource ./.;
-                nativeBuildInputs = [
-                  pkgs.cmake
-                  pkgs.pkg-config
-                ];
-                buildInputs = [
-                  pkgs.libxml2
-                ];
-                phases = [
-                  "unpackPhase"
-                  "buildPhase"
-                  "installPhase"
-                ];
-                buildPhase = ''
-                  cmake -S src/datamungedotnet -B build -DCMAKE_BUILD_TYPE=Release
-                  cmake --build build -j $NIX_BUILD_CORES
-                '';
-                installPhase = ''
-                  mkdir -p $out/lib
-                  cp -v build/libdatamunge_csharp.so $out/lib/
-                  cp -v build/_deps/datamunge-build/libdatamunge.so $out/lib/
-                '';
-              };
-            in
-            pkgs.buildDotnetModule {
-              name = "datamunge-csharp-check";
-              src = pkgs.lib.cleanSourceWith {
-                src = ./.;
-                filter = path: type: builtins.baseNameOf path != "dotnet-tools.json";
-              };
-              dotnet-sdk = pkgs.dotnet-sdk_10;
-              nugetDeps = ./nix/nuget-deps.json;
-              testProjectFile = "src/datamungedotnet.tests/datamungedotnet.tests.csproj";
-              runtimeDeps = [ nativeDatamunge ];
-              doCheck = true;
-              dontDotnetInstall = true;
-              installPhase = "mkdir -p $out";
-            };
+          csharp = pkgs.stdenv.mkDerivation {
+            name = "datamunge-csharp-check";
+            src = pkgs.lib.cleanSource ./.;
+            nativeBuildInputs = [ dotnetSdk ];
+            phases = [
+              "unpackPhase"
+              "checkPhase"
+              "installPhase"
+            ];
+            doCheck = true;
+            # tests/csharp/test_datamunge.cs is a file-based app (`#:project` the generated project);
+            # it needs no NuGet packages (tests/csharp/nuget.config clears the sources).
+            checkPhase = ''
+              export HOME="$TMPDIR" DOTNET_CLI_HOME="$TMPDIR" DOTNET_NOLOGO=1 DOTNET_CLI_TELEMETRY_OPTOUT=1
+              export DATAMUNGE_CSHARP_LIBRARY="${datamungecsharp}/share/dotnet/Datamunge/lib/datamunge_csharp${pkgs.stdenv.hostPlatform.extensions.sharedLibrary}"
+              dotnet run tests/csharp/test_datamunge.cs
+            '';
+            installPhase = "mkdir -p $out";
+          };
         };
 
         packages = {
@@ -838,6 +844,8 @@
             octruby
             datamungelua
             datamungelisp
+            datamungejulia
+            datamungecsharp
             datamungecobol
             datamungeocaml
             datamungeguile
@@ -919,6 +927,8 @@
             lua
             # Common Lisp: mep's Lisp UI mode runs `sbcl` from this shell (see lispHook).
             pkgs.sbcl
+            # Julia: mep's Julia UI mode runs `julia` from this shell (JULIA_LOAD_PATH above).
+            pkgs.julia-bin
           ]
           # COBOL: mep's COBOL UI mode runs `cobc` from this shell.
           ++ gnuCobol
@@ -1219,22 +1229,22 @@
 
         devShells.csharp = pkgs.mkShell {
           packages = [
-            pkgs.cmake
+            datamunge
             dotnetSdk
-            pkgs.just
-            # just run-csharp builds the core from source via CPM, which
-            # requires the data-asset dependencies (DATAMUNGE_ENABLE_DATA_ASSETS).
+            # just prebuild-csharp: scripts/prebuild_bindings.py csharp runs rosetta.
+            rosettaPkg
+            pkgs.python3
+            pkgs.cmake
+            pkgs.ninja
             pkgs.pkg-config
-            pkgs.libarchive
-            pkgs.openssl
-            pkgs.nlohmann_json
-            pkgs.hdf5-cpp
+            pkgs.just
+            # datamungeConfig.cmake find_dependency(Arrow) for build-csharp.
+            pkgs.arrow-cpp
           ]
-          # (neither builds on aarch64-darwin)
-          ++ opt pkgs.stdenv.isLinux [
-            pkgs.mono
-            pkgs.dotnet-repl
-          ];
+          # just repl-csharp (it doesn't build on aarch64-darwin)
+          ++ opt pkgs.stdenv.isLinux [ pkgs.dotnet-repl ];
+
+          shellHook = localBindingsHook;
         };
 
         devShells.php = pkgs.mkShell {
@@ -1413,6 +1423,24 @@
           ];
 
           shellHook = localBindingsHook + lispHook;
+        };
+
+        devShells.julia = pkgs.mkShell {
+          packages = [
+            datamunge
+            pkgs.julia-bin
+            # just prebuild-julia: scripts/prebuild_bindings.py julia runs rosetta.
+            rosettaPkg
+            pkgs.python3
+            pkgs.cmake
+            pkgs.ninja
+            pkgs.pkg-config
+            pkgs.just
+            # datamungeConfig.cmake find_dependency(Arrow) for build-julia.
+            pkgs.arrow-cpp
+          ];
+
+          shellHook = localBindingsHook;
         };
 
         devShells.cobol = pkgs.mkShell {

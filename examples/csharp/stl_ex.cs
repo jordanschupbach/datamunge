@@ -1,39 +1,20 @@
 // CMD: just TARGET=stl_ex run-csharp
+#:project ../../src/datamungecsharp/Datamunge.csproj
+// C++ std::vector and std::pair values in C#: vectors are List<T>, pairs are tuples.
+using Datamunge;
 
-using System;
-using System.Diagnostics;
-using System.Collections.Generic;
+const int n = 100;
+var v = Enumerable.Range(0, n).Select(i => i * 1.5).ToList();
+v.ForEach(Console.WriteLine);
+var v2 = Enumerable.Range(0, n).Select(i => (int)Math.Floor(i * 1.5)).ToList();
+v2.ForEach(Console.WriteLine);
 
-// NOTE: if using repl, uncomment the following line to load the datamungedotnet.dll
-// and then recomment it back when compiling as a standalone program
-// #r "src/datamungedotnet/bin/Debug/net10.0/datamungedotnet.dll"
+var p = (3, 4);
+Console.WriteLine($"p: ({p.Item1}, {p.Item2})");
 
-class Program {
-  static void Main() {
-    Console.WriteLine("Hello, World!");
+var p2 = (10, 20);
+Console.WriteLine($"p2: ({p2.Item1}, {p2.Item2})");
 
-    var v = new DVector();
-    for(uint i=0; i<10; i++) {
-      v.Add(((double)i)*1.1);
-    }
-    for(uint i=0; i<v.Count; i++) {
-      Console.WriteLine(v[(int)i]);
-    }
-
-    var v2 = new IVector();
-    for(uint i=0; i<10; i++) {
-      v2.Add((int)(i*2));
-    }
-    for(uint i=0; i<v2.Count; i++) {
-      Console.WriteLine(v2[(int)i]);
-    }
-
-    var p = new DPair(3.14, 2.71);
-    Console.WriteLine(p.first);
-    Console.WriteLine(p.second);
-
-    var p2 = new IPair(42, 7);
-    Console.WriteLine(p2.first);
-
-  }
-}
+// A C++ std::pair<double,double> comes back as a tuple.
+var p3 = Functions.MakeDpair(1.25, 2.75);
+Console.WriteLine($"make_dpair(1.25, 2.75): {p3}, sum_dpair = {Functions.SumDpair(p3)}");

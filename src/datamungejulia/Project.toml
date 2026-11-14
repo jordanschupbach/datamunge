@@ -1,0 +1,6 @@
+name = "Datamunge"
+uuid = "9fdeb025-e4c6-52c5-af17-189a2c7ae507"
+version = "0.1.0"
+
+[deps]
+Libdl = "8f399da3-3557-5675-b5ff-fb832c97cbdb"

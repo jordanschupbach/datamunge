@@ -1,0 +1,7 @@
+<Project>
+  <!-- File-based apps (`dotnet run file.cs`) default to PublishAot, whose restore wants the
+       ILCompiler packages; these programs only run, so they need no NuGet packages at all. -->
+  <PropertyGroup>
+    <PublishAot>false</PublishAot>
+  </PropertyGroup>
+</Project>

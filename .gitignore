@@ -24,10 +24,6 @@ build
 compile_commands.json
 .dub
 **/.dub
-datamungedotnet/bin
-datamungedotnet/obj
-datamungedotnet.tests/bin
-datamungedotnet.tests/obj
 ./buildSrc/.gradle/
 .gradle
 dist
@@ -42,11 +38,8 @@ datamunged/libdatamunged.a
 **/.null-ls*
 
 src/rustdatamunge/target
-src/datamungedotnet/bin
-src/datamungedotnet/obj
-
-src/datamungedotnet.tests/bin
-src/datamungedotnet.tests/obj
+src/datamungecsharp/bin
+src/datamungecsharp/obj
 tests/rust/target
 target
 src/octruby/ext/octruby/Makefile

@@ -1,65 +1,46 @@
 // CMD: just TARGET=clustering_ex run-csharp
+#:project ../../src/datamungecsharp/Datamunge.csproj
+// Clustering iris: k-means, agglomerative (several linkages, dendrogram re-cut) and DBSCAN.
+using Datamunge;
 
-using System;
-using System.Collections.Generic;
-using System.Linq;
+var iris = Data.Iris()!;
+var species = Enumerable.Range(0, (int)iris.Nrows()).Select(i => iris.StringAt("Species", (ulong)i)).ToList();
+string[] featureColumns = ["Sepal.Length", "Sepal.Width", "Petal.Length", "Petal.Width"];
 
-class Program {
-  static void ReportPurity(IEnumerable<int> clusterLabelsEnum, List<string> species, int nClusters) {
-    var clusterLabels = clusterLabelsEnum.ToList();
-    var votes = new Dictionary<(int, string), int>();
-    for (int i = 0; i < clusterLabels.Count; i++) {
-      int label = clusterLabels[i];
-      if (label >= 0) {
-        var key = (label, species[i]);
-        votes[key] = votes.GetValueOrDefault(key, 0) + 1;
-      }
+// For each cluster, print its size and its majority species (negative labels are noise).
+void ReportPurity(IEnumerable<long> clusterLabels, int nClusters)
+{
+    var votes = Enumerable.Range(0, nClusters).Select(_ => new Dictionary<string, int>()).ToArray();
+    foreach (var (label, sp) in clusterLabels.Zip(species))
+        if (label >= 0)
+            votes[label][sp] = votes[label].GetValueOrDefault(sp) + 1;
+    for (var c = 0; c < nClusters; c++)
+    {
+        var total = votes[c].Values.Sum();
+        if (total == 0) continue;
+        var (bestSpecies, best) = votes[c].MaxBy(kv => kv.Value);
+        Console.WriteLine($"  cluster {c}: {total} points, majority {bestSpecies} ({best}/{total})");
     }
-    for (int c = 0; c < nClusters; c++) {
-      int total = 0;
-      int best = 0;
-      string bestSp = "";
-      foreach (var kv in votes) {
-        if (kv.Key.Item1 == c) {
-          total += kv.Value;
-          if (kv.Value > best) {
-            best = kv.Value;
-            bestSp = kv.Key.Item2;
-          }
-        }
-      }
-      if (total > 0) {
-        Console.WriteLine($"  cluster {c}: {total} points, majority {bestSp} ({best}/{total})");
-      }
-    }
-  }
-
-  static void Main() {
-    var iris = datamunge.data_iris();
-    uint n = iris.nrows();
-    var species = new List<string>();
-    for (uint i = 0; i < n; i++) species.Add(iris.string_at("Species", i));
-    var features = new SVector(new string[] { "Sepal.Length", "Sepal.Width", "Petal.Length", "Petal.Width" });
-
-    Console.WriteLine("=================== K-means (k=3) on iris ===================");
-    var kmeans = new KMeans(iris, features, 3);
-    Console.WriteLine($"Inertia: {kmeans.inertia()}, iterations (best run): {kmeans.iterations_used()}");
-    ReportPurity(kmeans.labels().Select(x => (int)x), species, 3);
-
-    Console.WriteLine("\n=================== Agglomerative clustering on iris ===================");
-    foreach (var linkage in new[] { "ward", "complete", "average" }) {
-      var model = new AgglomerativeClustering(iris, features, 3, linkage);
-      Console.WriteLine($"--- linkage={linkage} ---");
-      ReportPurity(model.labels().Select(x => (int)x), species, 3);
-    }
-
-    Console.WriteLine("\n--- Re-cutting the ward dendrogram at k=2 without refitting ---");
-    var wardModel = new AgglomerativeClustering(iris, features, 3, "ward");
-    ReportPurity(wardModel.cut(2).Select(x => (int)x), species, 2);
-
-    Console.WriteLine("\n=================== DBSCAN on iris ===================");
-    var dbscan = new DBSCAN(iris, features, 0.6, 5);
-    Console.WriteLine($"Clusters found: {dbscan.n_clusters()}, noise points: {dbscan.n_noise()} (of {dbscan.observations()})");
-    ReportPurity(dbscan.labels(), species, (int)dbscan.n_clusters());
-  }
 }
+
+Console.WriteLine("=================== K-means (k=3) on iris ===================");
+var kmeans = new KMeans(iris, featureColumns, 3);
+Console.WriteLine($"Inertia: {kmeans.Inertia()}, iterations (best run): {kmeans.IterationsUsed()}");
+ReportPurity(kmeans.Labels().Select(l => (long)l), 3);
+
+Console.WriteLine("\n=================== Agglomerative clustering on iris ===================");
+foreach (var linkage in new[] { "ward", "complete", "average" })
+{
+    var model = new AgglomerativeClustering(iris, featureColumns, 3, linkage);
+    Console.WriteLine($"--- linkage={linkage} ---");
+    ReportPurity(model.Labels().Select(l => (long)l), 3);
+}
+
+Console.WriteLine("\n--- Re-cutting the ward dendrogram at k=2 without refitting ---");
+var wardModel = new AgglomerativeClustering(iris, featureColumns, 3, "ward");
+ReportPurity(wardModel.Cut(2).Select(l => (long)l), 2);
+
+Console.WriteLine("\n=================== DBSCAN on iris ===================");
+var dbscan = new DBSCAN(iris, featureColumns, 0.6, 5);
+Console.WriteLine($"Clusters found: {dbscan.NClusters()}, noise points: {dbscan.NNoise()} (of {dbscan.Observations()})");
+ReportPurity(dbscan.Labels().Select(l => (long)l), (int)dbscan.NClusters());

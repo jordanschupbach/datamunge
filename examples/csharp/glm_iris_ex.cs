@@ -1,77 +1,55 @@
 // CMD: just TARGET=glm_iris_ex run-csharp
+#:project ../../src/datamungecsharp/Datamunge.csproj
+// Generalized linear models on iris: logistic regression (binomial) and Poisson regression.
+using Datamunge;
 
-using System;
-using System.Collections.Generic;
-using System.Linq;
+var iris = Data.Iris()!;
+var rows = Enumerable.Range(0, (int)iris.Nrows()).Select(i => (ulong)i).ToList();
 
-class Program {
-  static void Main() {
-    var iris = datamunge.data_iris();
+// Logistic regression: versicolor vs virginica only -- setosa is perfectly separable from
+// the other two on these predictors, which sends logistic regression's coefficients toward
+// +/-infinity (a genuine degeneracy of the method, not a bug) -- so this is the well-behaved
+// binary split for a demo.
+var kept = rows.Where(i => iris.StringAt("Species", i) is "versicolor" or "virginica").ToList();
+var isVirginica = kept.Select(i => iris.StringAt("Species", i) == "virginica" ? 1.0 : 0.0).ToList();
+var petalLength = kept.Select(i => iris.NumericAt("Petal.Length", i)).ToList();
+var petalWidth = kept.Select(i => iris.NumericAt("Petal.Width", i)).ToList();
 
-    var isVirginica = new List<double>();
-    var petalLength = new List<double>();
-    var petalWidth = new List<double>();
-    uint n = iris.nrows();
-    for (uint i = 0; i < n; i++) {
-      var species = iris.string_at("Species", i);
-      if (species == "versicolor" || species == "virginica") {
-        isVirginica.Add(species == "virginica" ? 1.0 : 0.0);
-        petalLength.Add(iris.numeric_at("Petal.Length", i));
-        petalWidth.Add(iris.numeric_at("Petal.Width", i));
-      }
-    }
+var sub = new DataFrame();
+sub.AddNumericColumn("Petal.Length", petalLength);
+sub.AddNumericColumn("Petal.Width", petalWidth);
+sub.AddNumericColumn("is_virginica", isVirginica);
 
-    var sub = new DataFrame();
-    sub.add_numeric_column("Petal.Length", new DVector(petalLength));
-    sub.add_numeric_column("Petal.Width", new DVector(petalWidth));
-    sub.add_numeric_column("is_virginica", new DVector(isVirginica));
+Console.WriteLine("=================== Logistic regression (binomial, logit link) ===================");
+var logit = new GLM(sub, "is_virginica ~ Petal.Length + Petal.Width", "binomial");
+logit.PrintSummary();
 
-    Console.WriteLine("=================== Logistic regression (binomial, logit link) ===================");
-    var logit = new GLM(sub, "is_virginica ~ Petal.Length + Petal.Width", "binomial");
-    logit.print_summary();
+var fitted = logit.FittedValues();
+var n = isVirginica.Count;
+var correct = Enumerable.Range(0, n).Count(i => (fitted[i] >= 0.5) == (isVirginica[i] >= 0.5));
+Console.WriteLine($"\nResubstitution accuracy at 0.5 threshold: {100.0 * correct / n}%");
 
-    var fitted = logit.fitted_values();
-    int correct = 0;
-    for (int i = 0; i < isVirginica.Count; i++) {
-      if ((fitted[i] >= 0.5) == (isVirginica[i] >= 0.5)) correct += 1;
-    }
-    Console.WriteLine($"\nResubstitution accuracy at 0.5 threshold: {(100.0 * correct) / isVirginica.Count}%");
+logit.SaveDiagnosticPlots("glm_logistic_iris");
+Console.WriteLine("\nSaved glm_logistic_iris_{residuals_vs_fitted,normal_qq,scale_location,residuals_vs_leverage}.svg");
 
-    logit.save_diagnostic_plots("glm_logistic_iris");
-    Console.WriteLine("\nSaved glm_logistic_iris_{residuals_vs_fitted,normal_qq,scale_location,residuals_vs_leverage}.svg");
-
-    double widthMean = petalWidth.Average();
-    int gridN = 100;
-    double plMin = petalLength.Min() - 0.3;
-    double plMax = petalLength.Max() + 0.3;
-    var gridX = new List<double>();
-    var gridW = new List<double>();
-    for (int i = 0; i < gridN; i++) {
-      gridX.Add(plMin + (plMax - plMin) * i / (gridN - 1));
-      gridW.Add(widthMean);
-    }
+// Predicted-probability curve across Petal.Length, with Petal.Width held at its mean -- the
+// classic sigmoid shape of a fitted logistic regression, with a 95% confidence band.
+{
+    const int gridN = 100;
+    var widthMean = petalWidth.Average();
+    double plMin = petalLength.Min() - 0.3, plMax = petalLength.Max() + 0.3;
     var grid = new DataFrame();
-    grid.add_numeric_column("Petal.Length", new DVector(gridX));
-    grid.add_numeric_column("Petal.Width", new DVector(gridW));
-    var curveFrame = logit.predict_frame(grid, "confidence");
+    grid.AddNumericColumn("Petal.Length", Enumerable.Range(0, gridN).Select(i => plMin + (plMax - plMin) * i / (gridN - 1)));
+    grid.AddNumericColumn("Petal.Width", Enumerable.Repeat(widthMean, gridN));
+    var curveFrame = logit.PredictFrame(grid, "confidence")!;
     Console.WriteLine("\nPredicted-probability curve (first 5 rows):");
-    Console.WriteLine(curveFrame.to_string(5));
-
-    Console.WriteLine("\n=================== Poisson regression (log link) ===================");
-    var count = new List<double>();
-    var sepalWidth = new List<double>();
-    var allPetalLength = new List<double>();
-    for (uint i = 0; i < n; i++) {
-      count.Add(Math.Round(iris.numeric_at("Sepal.Length", i)));
-      sepalWidth.Add(iris.numeric_at("Sepal.Width", i));
-      allPetalLength.Add(iris.numeric_at("Petal.Length", i));
-    }
-    var countData = new DataFrame();
-    countData.add_numeric_column("Sepal.Width", new DVector(sepalWidth));
-    countData.add_numeric_column("Petal.Length", new DVector(allPetalLength));
-    countData.add_numeric_column("count", new DVector(count));
-
-    var poisson = new GLM(countData, "count ~ Sepal.Width + Petal.Length", "poisson");
-    poisson.print_summary();
-  }
+    Console.WriteLine(curveFrame.ToString(5));
 }
+
+// Poisson regression, for contrast: same IRLS engine, different family/link.
+Console.WriteLine("\n=================== Poisson regression (log link) ===================");
+var countData = new DataFrame();
+countData.AddNumericColumn("Sepal.Width", rows.Select(i => iris.NumericAt("Sepal.Width", i)));
+countData.AddNumericColumn("Petal.Length", rows.Select(i => iris.NumericAt("Petal.Length", i)));
+countData.AddNumericColumn("count", rows.Select(i => Math.Floor(iris.NumericAt("Sepal.Length", i) + 0.5)));
+new GLM(countData, "count ~ Sepal.Width + Petal.Length", "poisson").PrintSummary();

@@ -194,8 +194,8 @@ check_csharp() {
 		return 0
 	fi
 	require_cmd dotnet
-	if [ -f src/datamungedotnet.tests/datamungedotnet.tests.csproj ]; then
-		dotnet format src/datamungedotnet.tests/datamungedotnet.tests.csproj --verify-no-changes --verbosity minimal || true
+	if [ -f tests/csharp/test_datamunge.cs ]; then
+		dotnet format tests/csharp/test_datamunge.cs --verify-no-changes --verbosity minimal || true
 	fi
 }
 

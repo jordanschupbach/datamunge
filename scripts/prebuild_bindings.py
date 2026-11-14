@@ -2,7 +2,8 @@
 """Generate binding sources before packaging; failed generation leaves old files intact.
 
 All come from Rosetta: Python from src/pydatamunge/rosetta, R from src/datamunger/rosetta,
-Lua from src/datamungelua/rosetta, Common Lisp from src/datamungelisp/rosetta, COBOL from
+Lua from src/datamungelua/rosetta, Common Lisp from src/datamungelisp/rosetta, Julia from
+src/datamungejulia/rosetta, C# from src/datamungecsharp/rosetta, COBOL from
 src/datamungecobol/rosetta, JavaScript from src/datamungejs/rosetta."""
 
 import argparse
@@ -25,16 +26,20 @@ PYTHON_PARTS = 16
 R_PARTS = 16
 LUA_PARTS = 16
 LISP_PARTS = 16
+JULIA_PARTS = 16
+CSHARP_PARTS = 16
 COBOL_PARTS = 16
 JS_PARTS = 16
 
 
 def generate_rosetta(header, policy, module, stem, parts, include_dirs=("include",), r_interface=None, lua_meta=None,
-                     lisp_dir=None, cobol_dir=None, js_types=None):
+                     lisp_dir=None, julia_dir=None, csharp_dir=None, cobol_dir=None, js_types=None):
     """Generate src/<stem>*.cpp with Rosetta: the Python extension `module`, with
     r_interface (a path) the R package `module` and its R6 classes at that path, or with
     lua_meta (a path) the Lua module `module` and its LuaCATS stub at that path, or with
     lisp_dir (a directory) the Common Lisp system `module`: lisp_dir/module.lisp and .asd, or with
+    julia_dir (a directory) the Julia package Datamunge: julia_dir/src/Datamunge.jl and Project.toml, or with
+    csharp_dir (a directory) the C# assembly Datamunge: csharp_dir/Datamunge.cs and Datamunge.csproj, or with
     cobol_dir (a directory) the COBOL copybooks cobol_dir/module.cpy and module-callbacks.cpy, or with
     js_types (a path) the Node.js addon `module` and its TypeScript declarations at that path."""
     with tempfile.TemporaryDirectory(prefix=".rosetta-", dir=ROOT / "src") as tmp:
@@ -48,6 +53,16 @@ def generate_rosetta(header, policy, module, stem, parts, include_dirs=("include
             language = ["--language", "common-lisp", "--lisp-api", "full", "--lisp-nicknames", "dm",
                         "--lisp-output", str(Path(tmp) / (module + ".lisp")),
                         "--lisp-system", str(Path(tmp) / (module + ".asd"))]
+        if julia_dir is not None:
+            language = ["--language", "julia", "--julia-api", "full", "--julia-package", "Datamunge",
+                        "--julia-output", str(Path(tmp) / "Datamunge.jl"),
+                        "--julia-project", str(Path(tmp) / "Project.toml")]
+        if csharp_dir is not None:
+            # The native library is datamunge_csharp, not libdatamunge (the C++ library itself).
+            language = ["--language", "csharp", "--csharp-api", "full", "--csharp-namespace", "Datamunge",
+                        "--csharp-library", "datamunge_csharp",
+                        "--csharp-output", str(Path(tmp) / "Datamunge.cs"),
+                        "--csharp-project", str(Path(tmp) / "Datamunge.csproj")]
         if cobol_dir is not None:
             # String results (summaries, to_string) get 16 KiB; other strings the default 256 bytes.
             language = ["--language", "cobol", "--cobol-api", "full", "--cobol-prefix", "dm", "--cobol-result-size", "16384",
@@ -91,6 +106,14 @@ def generate_rosetta(header, policy, module, stem, parts, include_dirs=("include
         if lisp_dir is not None:
             for name in (module + ".lisp", module + ".asd"):
                 install_if_changed(Path(tmp) / name, ROOT / lisp_dir / name)
+        if julia_dir is not None:
+            (ROOT / julia_dir / "src").mkdir(parents=True, exist_ok=True)
+            install_if_changed(Path(tmp) / "Datamunge.jl", ROOT / julia_dir / "src" / "Datamunge.jl")
+            install_if_changed(Path(tmp) / "Project.toml", ROOT / julia_dir / "Project.toml")
+        if csharp_dir is not None:
+            (ROOT / csharp_dir).mkdir(parents=True, exist_ok=True)
+            for name in ("Datamunge.cs", "Datamunge.csproj"):
+                install_if_changed(Path(tmp) / name, ROOT / csharp_dir / name)
         if cobol_dir is not None:
             (ROOT / cobol_dir).mkdir(parents=True, exist_ok=True)
             for name in (module + ".cpy", module + "-callbacks.cpy"):
@@ -108,7 +131,7 @@ def prebuild_python():
 
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument("language", choices=["python", "r", "lua", "lisp", "cobol", "javascript"])
+    parser.add_argument("language", choices=["python", "r", "lua", "lisp", "julia", "csharp", "cobol", "javascript"])
     args = parser.parse_args()
     if args.language == "python":
         prebuild_python()
@@ -118,6 +141,12 @@ def main():
         return
     if args.language == "lisp":
         prebuild_lisp()
+        return
+    if args.language == "julia":
+        prebuild_julia()
+        return
+    if args.language == "csharp":
+        prebuild_csharp()
         return
     if args.language == "cobol":
         prebuild_cobol()
@@ -165,6 +194,24 @@ def prebuild_lisp():
     bindings = Path("src/datamungelisp/rosetta")
     generate_rosetta(bindings / "bindings.hpp", bindings / "policy.json", "datamunge", "datamunge_lisp_wrap", LISP_PARTS,
                      lisp_dir="src/datamungelisp")
+
+
+def prebuild_julia():
+    """Generate src/datamunge_julia_wrap*.cpp (the native library datamunge.so) and the Julia
+    package src/datamungejulia (Project.toml, src/Datamunge.jl): abstract types and generic
+    functions whose Markdown docstrings carry the C++ documentation (`?fit` in the REPL, mep)."""
+    bindings = Path("src/datamungejulia/rosetta")
+    generate_rosetta(bindings / "bindings.hpp", bindings / "policy.json", "datamunge", "datamunge_julia_wrap", JULIA_PARTS,
+                     julia_dir="src/datamungejulia")
+
+
+def prebuild_csharp():
+    """Generate src/datamunge_csharp_wrap*.cpp (the native library datamunge_csharp) and the C#
+    project src/datamungecsharp (Datamunge.cs, Datamunge.csproj): classes, overloads and properties
+    whose XML documentation comments carry the C++ documentation (IDEs, mep's C# LSP)."""
+    bindings = Path("src/datamungecsharp/rosetta")
+    generate_rosetta(bindings / "bindings.hpp", bindings / "policy.json", "datamunge", "datamunge_csharp_wrap", CSHARP_PARTS,
+                     csharp_dir="src/datamungecsharp")
 
 
 def prebuild_cobol():

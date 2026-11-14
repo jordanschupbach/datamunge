@@ -1,42 +1,39 @@
 // CMD: just TARGET=gbm_iris_ex run-csharp
+#:project ../../src/datamungecsharp/Datamunge.csproj
+// Gradient-boosted trees (GBM) on iris: summary, confusion matrix, misclassified rows, 5 vs 100 rounds.
+using Datamunge;
 
-using System;
+var iris = Data.Iris()!;
+Console.WriteLine($"iris: {iris.Nrows()} rows x {iris.Ncols()} cols\n");
 
-class Program {
-  static void Main() {
-    var iris = datamunge.data_iris();
-    Console.WriteLine($"iris: {iris.nrows()} rows x {iris.ncols()} cols\n");
+var model = new GBMClassifier(iris, "Species ~ Petal.Length + Petal.Width");
+model.PrintSummary();
 
-    var model = new GBMClassifier(iris, "Species ~ Petal.Length + Petal.Width");
-    model.print_summary();
+Console.WriteLine($"\nConfusion matrix (rows = actual, cols = predicted):\n{model.ConfusionMatrix()}");
 
-    Console.WriteLine("\nConfusion matrix (rows = actual, cols = predicted):");
-    Console.WriteLine(model.confusion_matrix().to_string());
-
-    Console.WriteLine("\nMisclassified rows:");
-    var predictions = model.predict(iris);
-    int misclassified = 0;
-    uint n = iris.nrows();
-    for (uint i = 0; i < n; i++) {
-      var actual = iris.string_at("Species", i);
-      var pred = predictions[(int)i];
-      if (pred != actual) {
-        misclassified += 1;
-        Console.WriteLine($"  row {i}: Petal.Length={iris.numeric_at("Petal.Length", i)} Petal.Width={iris.numeric_at("Petal.Width", i)}  actual={actual}  predicted={pred}");
-      }
-    }
-    Console.WriteLine($"{misclassified} of {n} misclassified ({(100.0 * misclassified) / n}%)");
-
-    model.plot_training_deviance().save("gbm_iris_training_deviance.svg");
-    model.plot_decision_regions("Petal.Length", "Petal.Width").save("gbm_iris_decision_regions.svg");
-    Console.WriteLine("\nSaved gbm_iris_training_deviance.svg and gbm_iris_decision_regions.svg");
-
-    var few = new GBMClassifier(iris, "Species ~ Petal.Length + Petal.Width", 5);
-    var fewDev = few.training_deviance();
-    var modelDev = model.training_deviance();
-    Console.WriteLine($"\n5-round ensemble:   training accuracy={few.training_accuracy() * 100.0}%  deviance={fewDev[fewDev.Count - 1]}");
-    Console.WriteLine($"100-round ensemble: training accuracy={model.training_accuracy() * 100.0}%  deviance={modelDev[modelDev.Count - 1]}");
-    few.plot_decision_regions("Petal.Length", "Petal.Width").save("gbm_iris_decision_regions_5rounds.svg");
-    Console.WriteLine("Saved gbm_iris_decision_regions_5rounds.svg");
-  }
+Console.WriteLine("\nMisclassified rows:");
+var predictions = model.Predict(iris);
+var n = iris.Nrows();
+var misclassified = 0;
+for (ulong i = 0; i < n; i++)
+{
+    var (actual, predicted) = (iris.StringAt("Species", i), predictions[(int)i]);
+    if (predicted == actual) continue;
+    misclassified++;
+    Console.WriteLine($"  row {i}: Petal.Length={iris.NumericAt("Petal.Length", i)} Petal.Width={iris.NumericAt("Petal.Width", i)}  actual={actual}  predicted={predicted}");
 }
+Console.WriteLine($"{misclassified} of {n} misclassified ({100.0 * misclassified / n}%)");
+
+model.PlotTrainingDeviance().Save("gbm_iris_training_deviance.svg");
+model.PlotDecisionRegions("Petal.Length", "Petal.Width").Save("gbm_iris_decision_regions.svg");
+Console.WriteLine("\nSaved gbm_iris_training_deviance.svg and gbm_iris_decision_regions.svg");
+
+// A handful of boosting rounds vs a well-boosted ensemble: each additional round chips away
+// at the training loss, gradually sharpening the decision boundary.
+// new GBMClassifier(data, formula, nTrees, learningRate, maxDepth, minSamplesSplit,
+//                   minSamplesLeaf, subsample, seed)
+var few = new GBMClassifier(iris, "Species ~ Petal.Length + Petal.Width", 5);
+Console.WriteLine($"\n5-round ensemble:   training accuracy={100 * few.TrainingAccuracy()}%  deviance={few.TrainingDeviance()[^1]}");
+Console.WriteLine($"100-round ensemble: training accuracy={100 * model.TrainingAccuracy()}%  deviance={model.TrainingDeviance()[^1]}");
+few.PlotDecisionRegions("Petal.Length", "Petal.Width").Save("gbm_iris_decision_regions_5rounds.svg");
+Console.WriteLine("Saved gbm_iris_decision_regions_5rounds.svg");

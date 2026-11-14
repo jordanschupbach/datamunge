@@ -47,15 +47,11 @@ fmt: format
 
 run-all: run-cpp run-csharp run-java run-go run-rust run-d run-python run-php run-perl run-tcl run-lua run-ruby run-r run-guile run-javascript run-ocaml run-octave
 
-# dotnet run always compiles whatever's in datamungedotnet/Program.cs (no per-example TARGET
-# mechanism, like D's dub) -- copy the selected example over Program.cs before building, same
-# pattern as run-d's examples-src/ -> source/app.d copy.
-run-csharp: prebuild-csharp
-  {{ NIX_DEVELOP }} .#csharp --command bash -c "rm -rf build/dotnet/release"
-  {{ NIX_DEVELOP }} .#csharp --command bash -c "cmake -S ./{{ BINDINGS_DIR }}/datamungedotnet -B build/dotnet/release -DCMAKE_MAKE_PROGRAM=$(command -v make)"
-  {{ NIX_DEVELOP }} .#csharp --command bash -c "cmake --build build/dotnet/release -j{{ JOBS }} --verbose"
-  cp examples/csharp/{{ TARGET }}.cs {{ BINDINGS_DIR }}/datamungedotnet/Program.cs
-  {{ NIX_DEVELOP }} .#csharp --command bash -c 'LD_LIBRARY_PATH="$(pwd)/build/dotnet/release/_deps/datamunge-build:$(pwd)/build/dotnet/release${LD_LIBRARY_PATH:+:}$LD_LIBRARY_PATH" dotnet run --project ./{{ BINDINGS_DIR }}/datamungedotnet'
+# Each example is a .NET 10 file-based app: `#:project ../../src/datamungecsharp/Datamunge.csproj`
+# references the generated project, and the dev shells point DATAMUNGE_CSHARP_LIBRARY at the
+# native library build-csharp installs.
+run-csharp: build-csharp
+  {{ NIX_DEVELOP }} .#csharp --command bash -c 'dotnet run examples/csharp/{{ TARGET }}.cs'
 
 run-java: build-java
   {{ NIX_DEVELOP }} .#java --command bash -c "gradle run --no-configuration-cache --args='{{ TARGET }}'"
@@ -94,6 +90,9 @@ run-lua: build-lua
 
 run-lisp: build-lisp
   {{ NIX_DEVELOP }} .#lisp --command bash -c 'sbcl --noinform --non-interactive --load examples/lisp/{{ TARGET }}.lisp'
+
+run-julia: build-julia
+  {{ NIX_DEVELOP }} .#julia --command bash -c 'export JULIA_LOAD_PATH="$(pwd)/build/julia/prefix/share/julia:@:@v#.#:@stdlib" && julia --startup-file=no --threads=auto examples/julia/{{ TARGET }}.jl'
 
 run-cobol: build-cobol
   {{ NIX_DEVELOP }} .#cobol --command bash -c 'mkdir -p build/cobol/bin && {{ COBC }} -o build/cobol/bin/{{ TARGET }} examples/cobol/{{ TARGET }}.cob && build/cobol/bin/{{ TARGET }}'
@@ -136,6 +135,20 @@ run-all-lisp: build-lisp
     for f in examples/lisp/*.lisp; do n="$(basename "$f")"; printf "\n========== %s ==========\n" "$n"; \
       if sbcl --noinform --non-interactive --load "$f"; then pass=$((pass+1)); else fail=$((fail+1)); failed="$failed $n"; fi; done; \
     printf "\n########## lisp: %d passed, %d failed ##########\n" "$pass" "$fail"; \
+    if [ -n "$failed" ]; then echo "FAILED:$failed"; fi; [ "$fail" -eq 0 ]'
+
+run-all-csharp: build-csharp
+  {{ NIX_DEVELOP }} .#csharp --command bash -c 'pass=0; fail=0; failed=""; \
+    for f in examples/csharp/*.cs; do n="$(basename "$f")"; printf "\n========== %s ==========\n" "$n"; \
+      if dotnet run "$f"; then pass=$((pass+1)); else fail=$((fail+1)); failed="$failed $n"; fi; done; \
+    printf "\n########## csharp: %d passed, %d failed ##########\n" "$pass" "$fail"; \
+    if [ -n "$failed" ]; then echo "FAILED:$failed"; fi; [ "$fail" -eq 0 ]'
+
+run-all-julia: build-julia
+  {{ NIX_DEVELOP }} .#julia --command bash -c 'export JULIA_LOAD_PATH="$(pwd)/build/julia/prefix/share/julia:@:@v#.#:@stdlib" && pass=0; fail=0; failed=""; \
+    for f in examples/julia/*.jl; do n="$(basename "$f")"; printf "\n========== %s ==========\n" "$n"; \
+      if julia --startup-file=no --threads=auto "$f"; then pass=$((pass+1)); else fail=$((fail+1)); failed="$failed $n"; fi; done; \
+    printf "\n########## julia: %d passed, %d failed ##########\n" "$pass" "$fail"; \
     if [ -n "$failed" ]; then echo "FAILED:$failed"; fi; [ "$fail" -eq 0 ]'
 
 run-all-cobol: build-cobol
@@ -289,7 +302,7 @@ embed-plot-font:
 update-swig:
   nix flake update swig
 
-prebuild-swig: prebuild-python prebuild-javascript prebuild-csharp prebuild-r prebuild-perl prebuild-ruby prebuild-tcl prebuild-lua prebuild-d prebuild-guile prebuild-octave prebuild-go prebuild-php prebuild-java prebuild-ocaml
+prebuild-swig: prebuild-python prebuild-javascript prebuild-r prebuild-perl prebuild-ruby prebuild-tcl prebuild-lua prebuild-d prebuild-guile prebuild-octave prebuild-go prebuild-php prebuild-java prebuild-ocaml
   @echo "SWIG wrappers regenerated (with Doxygen comments enabled)"
 
 prebuild-python:
@@ -300,10 +313,10 @@ prebuild-python:
 prebuild-javascript:
   {{ NIX_DEVELOP }} .#javascript --command python3 scripts/prebuild_bindings.py javascript
 
+# C# (Rosetta): src/datamunge_csharp_wrap*.cpp (the native library datamunge_csharp) and the project
+# src/datamungecsharp (Datamunge.cs, Datamunge.csproj), whose XML doc comments carry the Doxygen documentation.
 prebuild-csharp:
-  {{ NIX_DEVELOP }} .#cpp --command bash -c "find ./{{ BINDINGS_DIR }}/datamungedotnet -type f -name '*.cs' ! -name 'Program.cs' -exec rm {} +"
-  {{ NIX_DEVELOP }} .#cpp --command bash -c "cd ./include && swig -doxygen -c++ -csharp -dllimport datamunge_csharp -o ../{{ BINDINGS_DIR }}/datamungedotnet/datamunge_csharp_wrap.cpp -oh ../{{ BINDINGS_DIR }}/datamungedotnet/datamunge_csharp_wrap.h ../src/datamungedotnet/swig/datamungedotnet.i"
-  {{ NIX_DEVELOP }} .#cpp --command bash -c "sed -i 's/DllImport(\"datamunge\"/DllImport(\"datamunge_csharp\"/g' ./{{ BINDINGS_DIR }}/datamungedotnet/datamungePINVOKE.cs"
+  {{ NIX_DEVELOP }} .#csharp --command python3 scripts/prebuild_bindings.py csharp
 
 prebuild-r:
   {{ NIX_DEVELOP }} .#r --command python3 scripts/prebuild_bindings.py r
@@ -327,6 +340,11 @@ prebuild-lua:
 # Common Lisp (Rosetta): src/datamunge_lisp_wrap*.cpp and src/datamungelisp/datamunge.{lisp,asd}
 prebuild-lisp:
   {{ NIX_DEVELOP }} .#lisp --command python3 scripts/prebuild_bindings.py lisp
+
+# Julia (Rosetta): src/datamunge_julia_wrap*.cpp and the package src/datamungejulia
+# (Project.toml, src/Datamunge.jl), whose docstrings carry the Doxygen documentation.
+prebuild-julia:
+  {{ NIX_DEVELOP }} .#julia --command python3 scripts/prebuild_bindings.py julia
 
 # COBOL (Rosetta): src/datamunge_cobol_wrap*.cpp and the copybooks
 # src/datamungecobol/copybooks/datamunge{,-callbacks}.cpy (record prefix DM)
@@ -407,11 +425,13 @@ build-cpp:
     {{ NIX_DEVELOP }} .#cpp-tools --command bash -c "find ./build -name 'compile_commands.json' -exec cat {} + | jq -s add > compile_commands.json"
 
 
+# Installs the native library and the project into build/csharp/prefix/share/dotnet/Datamunge, and
+# builds Datamunge.dll (with Datamunge.xml) into its bin/ for `#r` in a C# console.
 build-csharp: prebuild-csharp
-  {{ NIX_DEVELOP }} .#csharp --command bash -c "rm -rf build/dotnet/release"
-  {{ NIX_DEVELOP }} .#csharp --command bash -c "cmake -S ./{{ BINDINGS_DIR }}/datamungedotnet -B build/dotnet/release -DCMAKE_MAKE_PROGRAM=$(command -v make)"
-  {{ NIX_DEVELOP }} .#csharp --command bash -c "cmake --build build/dotnet/release -j{{ JOBS }} --verbose"
-  {{ NIX_DEVELOP }} .#csharp --command bash -c "cd ./{{ BINDINGS_DIR }}/datamungedotnet && dotnet build"
+  {{ NIX_DEVELOP }} .#csharp --command bash -c 'datamunge_prefix="$(pkg-config --variable=prefix datamunge)" && cmake -S src/datamungecsharp -B build/datamungecsharp -G Ninja -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_RPATH_USE_LINK_PATH=ON -U datamunge_DIR -DCMAKE_PREFIX_PATH="$datamunge_prefix${CMAKE_PREFIX_PATH:+;$CMAKE_PREFIX_PATH}"'
+  {{ NIX_DEVELOP }} .#csharp --command bash -c 'cmake --build build/datamungecsharp -j{{ JOBS }}'
+  {{ NIX_DEVELOP }} .#csharp --command bash -c 'rm -rf build/csharp/prefix && cmake --install build/datamungecsharp --prefix build/csharp/prefix'
+  {{ NIX_DEVELOP }} .#csharp --command bash -c 'dotnet build src/datamungecsharp/Datamunge.csproj -c Release -nologo -v q -o build/csharp/prefix/share/dotnet/Datamunge/bin'
 
 
 # Links the shell's datamunge library rather than recompiling the core into the addon.
@@ -432,11 +452,6 @@ build-python: prebuild-python
 build-java: prebuild-java
   {{ NIX_DEVELOP }} .#java --command bash -c "gradle cmakeBuild"
   {{ NIX_DEVELOP }} .#java --command bash -c "gradle build"
-
-build-dotnet:
-    {{ NIX_DEVELOP }} . --command bash -c "cmake -S {{ BINDINGS_DIR }}/datamungedotnet -B build/datamungedotnet"
-    {{ NIX_DEVELOP }} . --command bash -c "cmake --build build/datamungedotnet"
-    # nix develop ./datamungedotnet --command bash -c "just --justfile ./datamungedotnet/justfile build"
 
 build-go: prebuild-go build-cpp
   # For Go bindings, we need to run go build on the generated files
@@ -492,6 +507,16 @@ build-lisp: prebuild-lisp
 test-lisp: build-lisp
   {{ NIX_DEVELOP }} .#lisp --command bash -c 'sbcl --noinform --non-interactive --load tests/lisp/test_datamunge.lisp'
 
+# Installs the Datamunge package (Project.toml, src/Datamunge.jl, lib/datamunge.so) into
+# build/julia/prefix/share/julia, which the dev shells put on JULIA_LOAD_PATH: `using Datamunge`.
+build-julia: prebuild-julia
+  {{ NIX_DEVELOP }} .#julia --command bash -c 'datamunge_prefix="$(pkg-config --variable=prefix datamunge)" && cmake -S src/datamungejulia -B build/datamungejulia -G Ninja -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_RPATH_USE_LINK_PATH=ON -U datamunge_DIR -DCMAKE_PREFIX_PATH="$datamunge_prefix${CMAKE_PREFIX_PATH:+;$CMAKE_PREFIX_PATH}"'
+  {{ NIX_DEVELOP }} .#julia --command bash -c 'cmake --build build/datamungejulia -j{{ JOBS }}'
+  {{ NIX_DEVELOP }} .#julia --command bash -c 'rm -rf build/julia/prefix && cmake --install build/datamungejulia --prefix build/julia/prefix'
+
+test-julia: build-julia
+  {{ NIX_DEVELOP }} .#julia --command bash -c 'export JULIA_LOAD_PATH="$(pwd)/build/julia/prefix/share/julia:@:@v#.#:@stdlib" && julia --startup-file=no --threads=2 tests/julia/test_datamunge.jl'
+
 # Installs libdatamungecobol and the copybooks into build/cobol/prefix (lib/ and
 # share/cobol/copy/, which the dev shells put on COBCPY).
 build-cobol: prebuild-cobol
@@ -543,8 +568,9 @@ repl-php: build-php
 repl-perl: build-perl
   {{ NIX_DEVELOP }} .#perl --command bash -c 'export PERL5LIB="$(pwd)/build/perl/lib/perl5:$PERL5LIB" && export LD_LIBRARY_PATH="$(pwd)/build:$LD_LIBRARY_PATH" && perl -de 1'
 
+# dotnet-repl with Datamunge.dll referenced (`#r`) and `using Datamunge;` (mep's C# console: `#:project` in a file).
 repl-csharp: build-csharp
-  {{ NIX_DEVELOP }} .#csharp --command bash -c 'LD_LIBRARY_PATH="$(pwd)/build/dotnet/release/_deps/datamunge-build:$(pwd)/build/dotnet/release${LD_LIBRARY_PATH:+:}$LD_LIBRARY_PATH" if command -v dotnet-repl >/dev/null 2>&1; then dotnet-repl; elif command -v csi >/dev/null 2>&1; then csi; else echo "No C# REPL found (expected dotnet-repl or csi)" >&2; exit 1; fi'
+  {{ NIX_DEVELOP }} .#csharp --command bash -c 'printf "#r \"%s\"\nusing Datamunge;\n" "$(pwd)/build/csharp/prefix/share/dotnet/Datamunge/bin/Datamunge.dll" > build/csharp/repl.csx && dotnet-repl --run build/csharp/repl.csx'
 
 repl-java:
   {{ NIX_DEVELOP }} .#java --command bash -c 'export LD_LIBRARY_PATH={{ BINDINGS_DIR }}/jdatamunge-datamunge/build/cmake:$LD_LIBRARY_PATH && jshell --class-path ./{{ BINDINGS_DIR }}/jdatamunge/build/libs/jdatamunge.jar'
@@ -567,6 +593,9 @@ repl-lua: build-lua
 
 repl-lisp: build-lisp
   {{ NIX_DEVELOP }} .#lisp --command bash -c 'sbcl --eval "(require \"asdf\")" --eval "(asdf:load-system \"datamunge\")"'
+
+repl-julia: build-julia
+  {{ NIX_DEVELOP }} .#julia --command bash -c 'export JULIA_LOAD_PATH="$(pwd)/build/julia/prefix/share/julia:@:@v#.#:@stdlib" && julia --threads=auto -i -e "using Datamunge"'
 
 repl-ruby: build-ruby
   {{ NIX_DEVELOP }} .#ruby --command bash -c 'irb -r octruby'
@@ -611,7 +640,7 @@ test-r: build-r
 
 
 test-csharp: build-csharp
-  {{ NIX_DEVELOP }} .#csharp --command bash -c 'LD_LIBRARY_PATH="$(pwd)/build/dotnet/release/_deps/datamunge-build:$(pwd)/build/dotnet/release${LD_LIBRARY_PATH:+:}$LD_LIBRARY_PATH" dotnet test ./{{ BINDINGS_DIR }}/datamungedotnet.tests'
+  {{ NIX_DEVELOP }} .#csharp --command bash -c 'dotnet run tests/csharp/test_datamunge.cs'
 
 test-java: build-java
   {{ NIX_DEVELOP }} .#java --command bash -c 'export LD_LIBRARY_PATH={{ BINDINGS_DIR }}/jdatamunge-datamunge/build/cmake:$LD_LIBRARY_PATH && gradle test'
@@ -1055,8 +1084,8 @@ debuggable:
 
 clean:
     rm -rf build/
-    rm -rf {{ BINDINGS_DIR }}/datamungedotnet/bin
-    rm -rf {{ BINDINGS_DIR }}/datamungedotnet/obj
+    rm -rf {{ BINDINGS_DIR }}/datamungecsharp/bin
+    rm -rf {{ BINDINGS_DIR }}/datamungecsharp/obj
     rm -rf {{ BINDINGS_DIR }}/jdatamunge-datamunge/build/
     rm -rf {{ BINDINGS_DIR }}/jdatamunge/build/
 
@@ -1366,9 +1395,6 @@ build-nix PACKAGE="datamunge":
 
 update-java-deps:
   nix/update-jdatamunge-gradle-deps.sh
-
-update-csharp-deps:
-  nix/update-nuget-deps.sh
 
 all-test:
   bash ./scripts/test_all.sh
