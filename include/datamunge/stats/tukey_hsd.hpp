@@ -6,6 +6,7 @@
 #include <cstddef>
 #include <datamunge/dstruct/dataframe.hpp>
 #include <datamunge/plot/plot.hpp>
+#include <datamunge/stats/formula.hpp>
 #include <map>
 #include <string>
 #include <vector>
@@ -67,7 +68,7 @@ double studentized_range_quantile(double p, std::size_t nmeans, double df);
 ///
 /// @par Example
 /// @code
-/// const dm::stats::TukeyHSD hsd(dm::datasets::iris(), "Sepal.Length", "Species");
+/// const dm::stats::TukeyHSD hsd(dm::datasets::iris(), "Sepal.Length ~ Species");
 /// std::print("{} {:.3f}\n", hsd.comparisons()[0].label(), hsd.comparisons()[0].diff);
 /// // versicolor-setosa 0.930
 /// @endcode
@@ -126,6 +127,27 @@ class TukeyHSD {
            const std::string&        value_column,
            const std::string&        group_column,
            double                    conf_level = 0.95);
+
+  /// @brief Runs Tukey's HSD from a one-way formula, like R's
+  ///        `TukeyHSD(aov(value ~ group, data))`.
+  ///
+  /// The formula must be `response ~ group` with a numeric response column and a single string
+  /// grouping column; anything else on the right-hand side is rejected. Strings convert
+  /// implicitly to Formula, so `TukeyHSD(iris, "Sepal.Length ~ Species")` works. Otherwise
+  /// identical to the column-name constructor.
+  /// @param data Frame holding both columns; unchanged.
+  /// @param formula `value ~ group`.
+  /// @param conf_level Family-wise confidence level, default 0.95.
+  /// @throws std::out_of_range A missing column.
+  /// @throws std::invalid_argument A right-hand side that is not a single column name, a
+  /// mistyped column (the message suggests the swapped formula when the sides look reversed),
+  /// or any error of the vector constructor.
+  /// @par Example
+  /// @code
+  /// const dm::stats::TukeyHSD hsd(dm::datasets::iris(), "Sepal.Length ~ Species");
+  /// std::print("{}\n", hsd.comparisons()[0].label());   // versicolor-setosa
+  /// @endcode
+  TukeyHSD(const dstruct::DataFrame& data, const Formula& formula, double conf_level = 0.95);
 
   /// @brief The comparisons, in R's order (see the class description).
   /// @return k(k-1)/2 comparisons.

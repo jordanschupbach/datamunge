@@ -60,6 +60,22 @@ TEST(TukeyHSD, DataFrameAndPlot) {
     EXPECT_THROW(TukeyHSD({1, 2, 3}, {"a", "a", "a"}), std::invalid_argument);
 }
 
+TEST(TukeyHSD, FormulaMatchesColumns) {
+    const auto     iris = datamunge::datasets::iris();
+    const TukeyHSD by_formula(iris, "Sepal.Length ~ Species");
+    const TukeyHSD by_columns(iris, "Sepal.Length", "Species");
+    ASSERT_EQ(by_formula.comparisons().size(), by_columns.comparisons().size());
+    for (std::size_t i = 0; i < by_formula.comparisons().size(); ++i) {
+        EXPECT_EQ(by_formula.comparisons()[i].label(), by_columns.comparisons()[i].label());
+        EXPECT_DOUBLE_EQ(by_formula.comparisons()[i].diff, by_columns.comparisons()[i].diff);
+        EXPECT_DOUBLE_EQ(by_formula.comparisons()[i].p_adjusted, by_columns.comparisons()[i].p_adjusted);
+    }
+    EXPECT_DOUBLE_EQ(TukeyHSD(iris, "Sepal.Length~Species", 0.9).conf_level(), 0.9);
+    EXPECT_THROW(TukeyHSD(iris, "Species ~ Sepal.Length"), std::invalid_argument);
+    EXPECT_THROW(TukeyHSD(iris, "Sepal.Length ~ Species + Petal.Width"), std::invalid_argument);
+    EXPECT_THROW(TukeyHSD(iris, "Sepal.Length ~ Nope"), std::out_of_range);
+}
+
 TEST(PairwiseTTest, MatchesR) {
     const auto iris   = datamunge::datasets::iris();
     const auto pooled = pairwise_t_test(iris, "Sepal.Length", "Species");

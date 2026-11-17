@@ -155,6 +155,52 @@ TukeyHSD::TukeyHSD(const dstruct::DataFrame& data, const std::string& value_colu
   fit(data.split(value_column, group_column));
 }
 
+namespace {
+
+/// @brief Trims ASCII whitespace from both ends of @p text.
+/// @param text Input.
+/// @return The trimmed copy.
+std::string trim_spaces(const std::string& text) {
+  const auto first = text.find_first_not_of(" \t\r\n");
+  if (first == std::string::npos) return {};
+  return text.substr(first, text.find_last_not_of(" \t\r\n") - first + 1);
+}
+
+/// @brief The single grouping column named on the right of a one-way formula.
+/// @param formula Formula `value ~ group`.
+/// @return The trimmed group column name.
+/// @throws std::invalid_argument A right-hand side that is not one plain column name.
+std::string one_way_group(const Formula& formula) {
+  const std::string& text  = formula.text();
+  const std::string  group = trim_spaces(text.substr(text.find('~') + 1));
+  if (group.find_first_of("+-*:/^()~ \t") != std::string::npos || group == "." || group == "1" || group == "0")
+    throw std::invalid_argument("TukeyHSD: formula must be one-way, 'value ~ group', got \"" + text + "\"");
+  return group;
+}
+
+/// @brief Throws a hint when the formula sides look swapped (string response, numeric group).
+/// @param data Frame holding both columns.
+/// @param value Response column name.
+/// @param group Group column name.
+/// @throws std::out_of_range A missing column.
+/// @throws std::invalid_argument The sides look reversed.
+void check_one_way_sides(const dstruct::DataFrame& data, const std::string& value, const std::string& group) {
+  using Type = dstruct::DataFrame::ColumnType;
+  if (data.column_type(value) == Type::String && data.column_type(group) == Type::Numeric)
+    throw std::invalid_argument("TukeyHSD: response '" + value + "' is a string column and group '" + group +
+                                "' is numeric; did you mean \"" + group + " ~ " + value + "\"?");
+}
+
+} // namespace
+
+TukeyHSD::TukeyHSD(const dstruct::DataFrame& data, const Formula& formula, double conf_level)
+    : conf_level_(conf_level) {
+  detail::check_confidence(conf_level);
+  const std::string group = one_way_group(formula);
+  check_one_way_sides(data, formula.response_name(), group);
+  fit(data.split(formula.response_name(), group));
+}
+
 void TukeyHSD::fit(const std::map<std::string, std::vector<double>>& by) {
   const std::size_t k = by.size();
   if (k < 2) throw std::invalid_argument("TukeyHSD: need at least two groups");
